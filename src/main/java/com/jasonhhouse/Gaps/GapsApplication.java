@@ -16,6 +16,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,20 +57,71 @@ public class GapsApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        //findAllPlexMovies();
-        plexMovies.add(new Movie("Alien", 1979));
-        plexMovies.add(new Movie("Aliens", 1986));
-        plexMovies.add(new Movie("the burbs", 1989));
+        findAllPlexMovies();
+        //plexMovies.add(new Movie("Alien", 1979));
+        //plexMovies.add(new Movie("Aliens", 1986));
+        //plexMovies.add(new Movie("the burbs", 1989));
         searchForPlexMovie();
         printRecommended();
     }
+
+/*
+    public List<Section> getSections(String address) {
+        HttpGet request = new HttpGet(address + "/library/sections");
+        HttpClient client = new DefaultHttpClient();
+
+        HttpResponse response = null;
+        try {
+            response = client.execute(request);
+        } catch (IOException e) {
+            System.err.println("Failed to connect to server.");
+            e.printStackTrace();
+        }
+
+        RootElement root = new RootElement("MediaContainer");
+
+        List<Section> sections = SwingUtilities2.Section.appendArrayListener(root, 0);
+
+        try {
+            Xml.parse(response.getEntity().getContent(), Xml.Encoding.UTF_8, root.getContentHandler());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return sections;
+    }
+
+    public List<Movie> getAllMoviesForSection(String address, int section) {
+        HttpGet request = new HttpGet(address + "/library/sections/" + section + "/all");
+        HttpClient client = new DefaultHttpClient();
+
+        HttpResponse response = null;
+        try {
+            response = client.execute(request);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        RootElement root = new RootElement("MediaContainer");
+        List<Movie> movies = Movie.appendArrayListener(root, 0);
+
+        try {
+            Xml.parse(response.getEntity().getContent(), Xml.Encoding.UTF_8, root.getContentHandler());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.d("PlexAPI", "Found " + movies.size() + " movies.");
+
+        return movies;
+    }*/
 
     private void findAllPlexMovies() {
         OkHttpClient client = new OkHttpClient();
 
         //Build out the plex address
-        String plexToken = "&X-Plex-Token=" + properties.getPlexToken();
-        String url = "http://" + properties.getPlexIpAddress() + ":" + properties.getPlexPort() + "/" + plexToken;
+        //String plexToken = "&X-Plex-Token=" + properties.getPlexToken();
+        //String url = "http://" + properties.getPlexIpAddress() + ":" + properties.getPlexPort() + "/" + plexToken;
+        String url = "https://72-83-212-34.06b5f3bbe8be4ceaafe87782b1eadff4.plex.direct:19427/library/sections/1/all/?X-Plex-Token=mQw4uawxTyYEmqNUrvBz";
 
         Request request = new Request.Builder()
                 .url(url)
@@ -89,8 +141,12 @@ public class GapsApplication implements CommandLineRunner {
             for (int i = 0; i < nodeList.getLength(); i++) {
                 Node node = nodeList.item(i);
                 String title = node.getAttributes().getNamedItem("title").getNodeValue();
+                if(node.getAttributes().getNamedItem("year") == null) {
+                    logger.warn("Year not found for " + title);
+                    continue;
+                }
                 String year = node.getAttributes().getNamedItem("year").getNodeValue();
-                Movie movie = new Movie(title, Integer.getInteger(year));
+                Movie movie = new Movie(title, Integer.parseInt(year));
                 plexMovies.add(movie);
             }
         } catch (IOException e) {
@@ -108,7 +164,7 @@ public class GapsApplication implements CommandLineRunner {
                 continue;
             }
 
-            String searchMovieUrl = "https://api.themoviedb.org/3/search/movie?api_key=" + properties.getMovieDbApiKey() + "&language=en-US&query=" + movie.getName() + "&year=" + movie.getYear();
+            String searchMovieUrl = "https://api.themoviedb.org/3/search/movie?api_key=" + properties.getMovieDbApiKey() + "&language=en-US&page=1&include_adult=false&query=" + movie.getName() + "&year=" + movie.getYear();
 
             Request request = new Request.Builder()
                     .url(searchMovieUrl)
@@ -178,15 +234,17 @@ public class GapsApplication implements CommandLineRunner {
                         searched.add(movie);
 
                     } catch (IOException e) {
-                        logger.error("Error getting collections", e);
+                        logger.error("Error getting collections " + movie, e);
                     }
 
                 } catch (IOException e) {
-                    logger.error("Error getting movie details", e);
+                    logger.error("Error getting movie details " + movie, e);
                 }
 
             } catch (IOException e) {
-                logger.error("Error searching for movie", e);
+                logger.error("Error searching for movie " + movie, e);
+            } catch (JSONException e) {
+                logger.error("Error parsing movie " + movie, e);
             }
 
         }
