@@ -1,4 +1,4 @@
-plexToken: mQw4uawxTyYEmqNUrvBz
+plexUrl: http://127.0.0.1:32400/library/sections/1/all/?X-Plex-Token=mQw4uawxTyYEmqNUrvBz
 outputFolder: /Users/jhouse/Desktop
 plexIpAddress: 127.0.0.1
 plexPort: 12345

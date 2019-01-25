@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class Properties {
 
-    @Value("${plexToken}")
-    private String plexToken;
+    @Value("${plexUrl}")
+    private String plexUrl;
 
     @Value("${plexIpAddress}")
     private String plexIpAddress;
@@ -40,12 +40,12 @@ public class Properties {
         this.plexPort = plexPort;
     }
 
-    public String getPlexToken() {
-        return plexToken;
+    public String getPlexUrl() {
+        return plexUrl;
     }
 
-    public void setPlexToken(String plexToken) {
-        this.plexToken = plexToken;
+    public void setPlexUrl(String plexUrl) {
+        this.plexUrl = plexUrl;
     }
 
     public String getOutputFolder() {
