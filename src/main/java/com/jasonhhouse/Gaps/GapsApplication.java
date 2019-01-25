@@ -212,7 +212,7 @@ public class GapsApplication implements CommandLineRunner {
                 try {
                     Thread.sleep(900);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    logger.error("Error sleeping", e);
                 }
 
                 count++;
