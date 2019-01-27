@@ -2,17 +2,27 @@ package com.jasonhhouse.Gaps;
 
 import java.util.Objects;
 
-public class Movie {
+public class Movie implements Comparable<Movie> {
 
     private String name;
     private int year;
+    private String collection;
 
     public Movie() {
     }
 
-    public Movie(String name, int year) {
+    Movie(String name, int year, String collection) {
         this.name = name;
         this.year = year;
+        this.collection = collection;
+    }
+
+    public String getCollection() {
+        return collection;
+    }
+
+    public void setCollection(String collection) {
+        this.collection = collection;
     }
 
     public String getName() {
@@ -47,10 +57,12 @@ public class Movie {
 
     @Override
     public String toString() {
-        return "Movie{" +
-                "name='" + name + '\'' +
+        return "name='" + name + '\'' +
                 ", year=" + year +
-                '}';
+                ", collection='" + collection + '\'';
     }
 
+    public int compareTo(Movie o) {
+        return o.getName().compareTo(getName());
+    }
 }
