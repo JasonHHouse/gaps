@@ -240,7 +240,7 @@ public class GapsApplication implements CommandLineRunner {
 
                     count++;
                     if (count % 20 == 0) {
-                        System.out.println("Processed " + count + " files of " + plexMovies.size() + ". " + ((int) ((count) / ((double) (plexMovies.size())) * 100)) + "%");
+                        System.out.println("Processed " + count + " files of " + plexMovies.size() + ". " + ((int) ((count) / ((double) (plexMovies.size())) * 100)) + "% Complete");
                     }
                 }
             } catch (UnsupportedEncodingException e) {
