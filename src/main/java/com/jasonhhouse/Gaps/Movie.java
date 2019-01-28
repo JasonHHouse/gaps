@@ -1,15 +1,14 @@
 package com.jasonhhouse.Gaps;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Objects;
 
-public class Movie implements Comparable<Movie> {
+final class Movie implements Comparable<Movie> {
 
-    private String name;
-    private int year;
-    private String collection;
-
-    public Movie() {
-    }
+    private final String name;
+    private final int year;
+    private final String collection;
 
     Movie(String name, int year, String collection) {
         this.name = name;
@@ -17,28 +16,12 @@ public class Movie implements Comparable<Movie> {
         this.collection = collection;
     }
 
-    public String getCollection() {
-        return collection;
-    }
-
-    public void setCollection(String collection) {
-        this.collection = collection;
-    }
-
-    public String getName() {
+    String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getYear() {
+    int getYear() {
         return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
     }
 
     @Override
@@ -57,12 +40,10 @@ public class Movie implements Comparable<Movie> {
 
     @Override
     public String toString() {
-        return "name='" + name + '\'' +
-                ", year=" + year +
-                ", collection='" + collection + '\'';
+        return name + " (" + year + ")" + (StringUtils.isNotEmpty(collection) ? "  ---  collection='" + collection + '\'' : "");
     }
 
     public int compareTo(Movie o) {
-        return o.getName().compareTo(getName());
+        return getName().compareTo(o.getName());
     }
 }

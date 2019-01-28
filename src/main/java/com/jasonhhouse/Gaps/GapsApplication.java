@@ -29,17 +29,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 @SpringBootApplication
 public class GapsApplication implements CommandLineRunner {
 
-
-    Logger logger = LoggerFactory.getLogger(GapsApplication.class);
+    private final Logger logger = LoggerFactory.getLogger(GapsApplication.class);
 
     private final Properties properties;
 
@@ -70,18 +67,18 @@ public class GapsApplication implements CommandLineRunner {
 
     private void findAllPlexMovies() {
         OkHttpClient client = new OkHttpClient();
-
-        //Build out the plex address
-        //String plexToken = "&X-Plex-Token=" + properties.getPlexUrl();
-        //String url = "http://" + properties.getPlexIpAddress() + ":" + properties.getPlexPort() + "/" + plexToken;
         String url = properties.getPlexUrl();
-
         Request request = new Request.Builder()
                 .url(url)
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
-            String body = response.body().string();
+            String body = response.body() != null ? response.body().string() : null;
+
+            if (body == null) {
+                logger.error("Body returned null from Plex");
+                return;
+            }
 
             InputStream fileIS = new ByteArrayInputStream(body.getBytes());
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
@@ -136,7 +133,12 @@ public class GapsApplication implements CommandLineRunner {
 
                 String json = "";
                 try (Response response = client.newCall(request).execute()) {
-                    json = response.body().string();
+                    json = response.body() != null ? response.body().string() : null;
+
+                    if (json == null) {
+                        logger.error("Body returned null from TheMovieDB for " + movie.getName());
+                        continue;
+                    }
 
                     JSONObject foundMovies = new JSONObject(json);
                     JSONArray results = foundMovies.getJSONArray("results");
@@ -149,7 +151,7 @@ public class GapsApplication implements CommandLineRunner {
 
                     if (results.length() > 1) {
                         logger.warn("Results for " + movie + " came back with " + results.length() + " results. Using first result.");
-                        logger.warn("URL: " + searchMovieUrl);
+                        logger.warn(movie + " URL: " + searchMovieUrl);
                     }
 
                     JSONObject result = results.getJSONObject(0);
@@ -162,7 +164,13 @@ public class GapsApplication implements CommandLineRunner {
                             .build();
 
                     try (Response movieDetailResponse = client.newCall(request).execute()) {
-                        String movieDetailJson = movieDetailResponse.body().string();
+
+                        String movieDetailJson = movieDetailResponse.body() != null ? movieDetailResponse.body().string() : null;
+
+                        if (movieDetailJson == null) {
+                            logger.error("Body returned null from TheMovieDB for details on " + movie.getName());
+                            continue;
+                        }
 
                         JSONObject movieDetails = new JSONObject(movieDetailJson);
                         if (!movieDetails.has("belongs_to_collection") || movieDetails.isNull("belongs_to_collection")) {
@@ -180,7 +188,12 @@ public class GapsApplication implements CommandLineRunner {
                                 .build();
 
                         try (Response collectionResponse = client.newCall(request).execute()) {
-                            String collectionJson = collectionResponse.body().string();
+                            String collectionJson = collectionResponse.body() != null ? collectionResponse.body().string() : null;
+
+                            if (collectionJson == null) {
+                                logger.error("Body returned null from TheMovieDB for collection information about " + movie.getName());
+                                continue;
+                            }
 
                             JSONObject collection = new JSONObject(collectionJson);
                             JSONArray parts = collection.getJSONArray("parts");
@@ -214,22 +227,20 @@ public class GapsApplication implements CommandLineRunner {
                 } catch (IOException e) {
                     logger.error("Error searching for movie " + movie, e);
                     logger.error("URL: " + searchMovieUrl);
-                    logger.error("Body: " + json);
                 } catch (JSONException e) {
                     logger.error("Error parsing movie " + movie, e);
                     logger.error("URL: " + searchMovieUrl);
-                    logger.error("Body: " + json);
                 } finally {
                     try {
                         //can't have too many connections to the movie database in a specific time, have to wait
-                        Thread.sleep(900);
+                        Thread.sleep(800);
                     } catch (InterruptedException e) {
                         logger.error("Error sleeping", e);
                     }
 
                     count++;
                     if (count % 20 == 0) {
-                        System.out.println("Processed " + count + " files of " + plexMovies.size()  + ". " + ((int) ((count) / ((double) (plexMovies.size())) * 100)) + "%");
+                        System.out.println("Processed " + count + " files of " + plexMovies.size() + ". " + ((int) ((count) / ((double) (plexMovies.size())) * 100)) + "%");
                     }
                 }
             } catch (UnsupportedEncodingException e) {
