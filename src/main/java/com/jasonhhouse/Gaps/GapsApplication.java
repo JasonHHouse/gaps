@@ -233,7 +233,7 @@ public class GapsApplication implements CommandLineRunner {
                 } finally {
                     try {
                         //can't have too many connections to the movie database in a specific time, have to wait
-                        Thread.sleep(800);
+                        Thread.sleep(900);
                     } catch (InterruptedException e) {
                         logger.error("Error sleeping", e);
                     }
