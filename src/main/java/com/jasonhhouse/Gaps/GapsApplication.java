@@ -1,3 +1,13 @@
+/*
+ * Copyright 2019 Jason H House
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 package com.jasonhhouse.Gaps;
 
 import okhttp3.OkHttpClient;
@@ -67,7 +77,7 @@ public class GapsApplication implements CommandLineRunner {
 
     private void findAllPlexMovies() {
         OkHttpClient client = new OkHttpClient();
-        String url = properties.getPlexUrl();
+        String url = properties.getPlexMovieAllUrl();
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -99,7 +109,7 @@ public class GapsApplication implements CommandLineRunner {
                 Movie movie = new Movie(title, Integer.parseInt(year), "");
                 plexMovies.add(movie);
             }
-            System.out.println(plexMovies.size() + " movies found in plex");
+            logger.info(plexMovies.size() + " movies found in plex");
 
         } catch (IOException e) {
             logger.error("Error connecting to Plex to get Movie list", e);
@@ -117,7 +127,6 @@ public class GapsApplication implements CommandLineRunner {
                 continue;
             }
 
-
             String searchMovieUrl;
             try {
                 searchMovieUrl = "https://api.themoviedb.org/3/search/movie?api_key=" +
@@ -131,7 +140,7 @@ public class GapsApplication implements CommandLineRunner {
                         .url(searchMovieUrl)
                         .build();
 
-                String json = "";
+                String json;
                 try (Response response = client.newCall(request).execute()) {
                     json = response.body() != null ? response.body().string() : null;
 
@@ -209,7 +218,9 @@ public class GapsApplication implements CommandLineRunner {
                                 }
                                 Movie movieFromCollection = new Movie(title, year, collectionName);
 
-                                if (!searched.contains(movieFromCollection) && !plexMovies.contains(movieFromCollection) && year != 0 && year < 2019) {
+                                if (plexMovies.contains(movieFromCollection)) {
+                                    searched.add(movieFromCollection);
+                                } else if (!searched.contains(movieFromCollection) && year != 0 && year < 2019) {
                                     recommended.add(movieFromCollection);
                                 }
                             }
@@ -240,7 +251,7 @@ public class GapsApplication implements CommandLineRunner {
 
                     count++;
                     if (count % 20 == 0) {
-                        System.out.println("Processed " + count + " files of " + plexMovies.size() + ". " + ((int) ((count) / ((double) (plexMovies.size())) * 100)) + "% Complete");
+                        logger.info("Processed " + count + " files of " + plexMovies.size() + ". " + ((int) ((count) / ((double) (plexMovies.size())) * 100)) + "% Complete");
                     }
                 }
             } catch (UnsupportedEncodingException e) {
@@ -252,7 +263,7 @@ public class GapsApplication implements CommandLineRunner {
     private void printRecommended() {
         System.out.println(recommended.size() + " Recommended Movies");
         for (Movie movie : recommended) {
-            System.out.println(movie);
+            System.out.println(movie.toString());
         }
     }
 

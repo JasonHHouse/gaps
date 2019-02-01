@@ -1,67 +1,33 @@
+/*
+ * Copyright 2019 Jason H House
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 package com.jasonhhouse.Gaps;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Properties {
+class Properties {
 
-    @Value("${plexUrl}")
-    private String plexUrl;
-
-    @Value("${plexIpAddress}")
-    private String plexIpAddress;
-
-    @Value("${plexPort}")
-    private Integer plexPort;
-
-    @Value("${outputFolder}")
-    private String outputFolder;
+    @Value("${plexMovieAllUrl}")
+    private String plexMovieAllUrl;
 
     @Value("${movieDbApiKey}")
     private String movieDbApiKey;
 
-    public Properties() {
+    String getPlexMovieAllUrl() {
+        return plexMovieAllUrl;
     }
 
-    public String getPlexIpAddress() {
-        return plexIpAddress;
-    }
-
-    public void setPlexIpAddress(String plexIpAddress) {
-        this.plexIpAddress = plexIpAddress;
-    }
-
-    public Integer getPlexPort() {
-        return plexPort;
-    }
-
-    public void setPlexPort(Integer plexPort) {
-        this.plexPort = plexPort;
-    }
-
-    public String getPlexUrl() {
-        return plexUrl;
-    }
-
-    public void setPlexUrl(String plexUrl) {
-        this.plexUrl = plexUrl;
-    }
-
-    public String getOutputFolder() {
-        return outputFolder;
-    }
-
-    public void setOutputFolder(String outputFolder) {
-        this.outputFolder = outputFolder;
-    }
-
-    public String getMovieDbApiKey() {
+    String getMovieDbApiKey() {
         return movieDbApiKey;
-    }
-
-    public void setMovieDbApiKey(String movieDbApiKey) {
-        this.movieDbApiKey = movieDbApiKey;
     }
 
 }
