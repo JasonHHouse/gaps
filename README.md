@@ -24,6 +24,26 @@ mvn spring-boot:run
 ```
 The logger will print out information about duplicate movies and movies not found. The program takes time but in the end you will get a list of movies missing from collections you have. If you have any questions, hit me up. Feel free to put up PRs to improve this as well.
 
+### Running with Docker
+
+First, the container must be built:
+
+```bash
+docker build -t gaps .
+```
+
+Next, run the container with the environment variables:
+
+```bash
+docker run -t -e DBAPIKEY= -e PLEXADDRESS= gaps
+```
+
+In example:
+
+```bash
+docker run -t -e DBAPIKEY=myapikey PLEXADDRESS=http://192.168.0.10:32400/library/sections/1/all/?X-Plex-Token=plextoken gaps
+```
+
 ## License
 Copyright 2019 Jason H House
 
