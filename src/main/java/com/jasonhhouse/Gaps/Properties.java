@@ -22,6 +22,9 @@ class Properties {
     @Value("${movieDbApiKey}")
     private String movieDbApiKey;
 
+    @Value("${writeToFile}")
+    private Boolean writeToFile;
+
     String getPlexMovieAllUrl() {
         return plexMovieAllUrl;
     }
@@ -30,4 +33,7 @@ class Properties {
         return movieDbApiKey;
     }
 
+    Boolean getWriteToFile() {
+        return writeToFile;
+    }
 }

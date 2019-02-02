@@ -10,6 +10,8 @@
 
 package com.jasonhhouse.Gaps;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -35,6 +37,9 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -43,6 +48,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ * Search for all missing movies in your plex collection by MovieDB collection.
+ */
 @SpringBootApplication
 public class GapsApplication implements CommandLineRunner {
 
@@ -50,7 +58,7 @@ public class GapsApplication implements CommandLineRunner {
 
     private final Properties properties;
 
-    private final Set<Movie> plexMovies;
+    private Set<Movie> plexMovies;
 
     private final Set<Movie> searched;
 
@@ -72,10 +80,20 @@ public class GapsApplication implements CommandLineRunner {
     public void run(String... args) {
         findAllPlexMovies();
         searchForPlexMovie();
+
+        if (properties.getWriteToFile()) {
+            writeToFile();
+        }
+        //Always write to command line
         printRecommended();
     }
 
+    /**
+     * Connect to plex via the URL and parse all of the movies from the returned XML creating a HashSet of movies the
+     * user has.
+     */
     private void findAllPlexMovies() {
+        logger.info("Searching for Plex Movies...");
         OkHttpClient client = new OkHttpClient();
         String url = properties.getPlexMovieAllUrl();
         Request request = new Request.Builder()
@@ -118,7 +136,16 @@ public class GapsApplication implements CommandLineRunner {
         }
     }
 
+    /**
+     * With all of the movies to search, now the connections to MovieDB need to be made. First we must search for
+     * movie keys by movie name and year. With the movie key we can get full properties of a movie. Once we have the
+     * full properties that contains the collection id, we can search that collection id for it's list of movies. We
+     * compare the full collection list to the movies found in plex, any missing we add to the recommended list. To
+     * optimize some network calls, we add movies found in a collection and in plex to our already searched list, so we
+     * don't re-query collections again and again.
+     */
     private void searchForPlexMovie() {
+        logger.info("Searching for Movie Collections...");
         OkHttpClient client = new OkHttpClient();
 
         int count = 0;
@@ -154,13 +181,13 @@ public class GapsApplication implements CommandLineRunner {
 
                     if (results.length() == 0) {
                         logger.error("Results not found for " + movie);
-                        logger.warn("URL: " + searchMovieUrl);
+                        logger.error("URL: " + searchMovieUrl);
                         continue;
                     }
 
                     if (results.length() > 1) {
-                        logger.warn("Results for " + movie + " came back with " + results.length() + " results. Using first result.");
-                        logger.warn(movie + " URL: " + searchMovieUrl);
+                        logger.debug("Results for " + movie + " came back with " + results.length() + " results. Using first result.");
+                        logger.debug(movie + " URL: " + searchMovieUrl);
                     }
 
                     JSONObject result = results.getJSONObject(0);
@@ -250,8 +277,8 @@ public class GapsApplication implements CommandLineRunner {
                     }
 
                     count++;
-                    if (count % 20 == 0) {
-                        logger.info("Processed " + count + " files of " + plexMovies.size() + ". " + ((int) ((count) / ((double) (plexMovies.size())) * 100)) + "% Complete");
+                    if (count % 10 == 0) {
+                        logger.info(((int) ((count) / ((double) (plexMovies.size())) * 100)) + "% Complete. Processed " + count + " files of " + plexMovies.size() + ". ");
                     }
                 }
             } catch (UnsupportedEncodingException e) {
@@ -260,10 +287,52 @@ public class GapsApplication implements CommandLineRunner {
         }
     }
 
+    /**
+     * Prints out all recommended files to the terminal or command line
+     */
     private void printRecommended() {
         System.out.println(recommended.size() + " Recommended Movies");
         for (Movie movie : recommended) {
             System.out.println(movie.toString());
+        }
+    }
+
+    /**
+     * Prints out all recommended files to a text file called gaps_recommended_movies.txt
+     */
+    private void writeToFile() {
+        File file = new File("gaps_recommended_movies.txt");
+        if (file.exists()) {
+            boolean deleted = file.delete();
+            if (!deleted) {
+                logger.error("Can't delete existing file gaps_recommended_movies.txt");
+                return;
+            }
+        }
+
+        try {
+            boolean created = file.createNewFile();
+            if (!created) {
+                logger.error("Can't create file gaps_recommended_movies.txt");
+                return;
+            }
+        } catch (IOException e) {
+            logger.error("Can't create file gaps_recommended_movies.txt", e);
+            return;
+        }
+
+        try (FileOutputStream outputStream = new FileOutputStream("gaps_recommended_movies.txt")) {
+            for (Movie movie : recommended) {
+                String output = movie.toString() + System.lineSeparator();
+                outputStream.write(output.getBytes());
+            }
+            return;
+        } catch (FileNotFoundException e) {
+            logger.error("Can't find file gaps_recommended_movies.txt", e);
+            return;
+        } catch (IOException e) {
+            logger.error("Can't write to file gaps_recommended_movies.txt", e);
+            return;
         }
     }
 
