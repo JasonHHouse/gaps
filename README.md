@@ -2,6 +2,16 @@
 Searches through your Plex Server for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.
 
 ## Usage
+### Local Requirements
+
+It's a Spring Boot App and you need Java to run this. You'll need to make sure Java is accessible in your command window or terminal. 
+
+#### Windows 
+This is a good write up on getting Java in the path variable on [windows](https://javatutorial.net/set-java-home-windows-10). 
+
+#### Mac and Linux
+You'll just need to add the Java classpath to your bash_profile.
+
 ### Properties
 You need to find your plex movie all URL. Plex has a great write up on to get the URL. But first you'll need to get your token. The write ups are below.
 
@@ -17,12 +27,12 @@ Put that in your application.yaml plexMovieAllUrl
 Then you need to go make an account on https://www.themoviedb.org and generate an API Key. Add that key to the application.yaml file under the movieDbApiKey property.
 
 ### Running
-It's a Spring Boot App. I run from Intellij to make things easier but you can run
+
+You can run it with the run.bat or run.sh scripts. If you want to run command line you can run with. 
 ```bash
-mvn clean install
-mvn spring-boot:run
+java -jar Gaps.{version-number}.jar
 ```
-The logger will print out information about duplicate movies and movies not found. The program takes time but in the end you will get a list of movies missing from collections you have. If you have any questions, hit me up. Feel free to put up PRs to improve this as well.
+The output will come either to a file or the console. By default the output comes to a file. Gaps will print out information about duplicate movies and movies not found in the terminal. The program takes time but in the end you will get a list of movies missing from collections you have. If you have any questions, hit me up. Feel free to put up PRs to improve this as well.
 
 ## License
 Copyright 2019 Jason H House
