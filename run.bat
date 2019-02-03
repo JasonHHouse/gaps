@@ -1,2 +1,2 @@
-java -jar Gaps-0.0.1-SNAPSHOT.jar
+java -jar Gaps-0.0.2.jar
 PAUSE
