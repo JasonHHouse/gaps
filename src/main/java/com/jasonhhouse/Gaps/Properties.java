@@ -11,13 +11,21 @@
 package com.jasonhhouse.Gaps;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
+@Configuration
+@EnableConfigurationProperties
+@ConfigurationProperties
 class Properties {
 
-    @Value("${plexMovieAllUrl}")
-    private String plexMovieAllUrl;
+    @Value("${plexMovieUrls}")
+    private List<String> plexMovieUrls;
 
     @Value("${movieDbApiKey}")
     private String movieDbApiKey;
@@ -25,8 +33,12 @@ class Properties {
     @Value("${writeToFile}")
     private Boolean writeToFile;
 
-    String getPlexMovieAllUrl() {
-        return plexMovieAllUrl;
+    public void setPlexMovieUrls(List<String> plexMovieUrls) {
+        this.plexMovieUrls = plexMovieUrls;
+    }
+
+    List<String> getPlexMovieUrls() {
+        return plexMovieUrls;
     }
 
     String getMovieDbApiKey() {

@@ -17,7 +17,7 @@ if [ -z $PLEXADDRESS ]; then
 fi
 
 cat >/usr/src/app/src/main/resources/application.yaml <<EOF
-plexMovieAllUrl: $PLEXADDRESS
+plexMovieUrls: $PLEXADDRESS
 
 movieDbApiKey: $DBAPIKEY
 
