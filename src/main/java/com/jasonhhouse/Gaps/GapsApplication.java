@@ -96,7 +96,7 @@ public class GapsApplication implements CommandLineRunner {
     private void findAllPlexMovies() {
         logger.info("Searching for Plex Movies...");
         OkHttpClient client = new OkHttpClient();
-        List<String> urls = properties.getPlexMovieUrls();
+        List<String> urls = properties.getMovieUrls();
 
         if(CollectionUtils.isEmpty(urls)) {
             logger.error("No URLs added to plexMovieUrls. Check your application.yaml file.");

@@ -10,42 +10,53 @@
 
 package com.jasonhhouse.Gaps;
 
-import org.springframework.beans.factory.annotation.Value;
+import java.util.List;
+import javax.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
-import java.util.List;
-
-@Component
 @Configuration
 @EnableConfigurationProperties
-@ConfigurationProperties
-class Properties {
+@ConfigurationProperties(prefix = "gaps")
+@Component
+@Validated
+public class Properties {
 
-    @Value("${plexMovieUrls}")
-    private List<String> plexMovieUrls;
+    @NotNull(message = "Plex Movie Urls cannot be null")
+    private List<String> movieUrls;
 
-    @Value("${movieDbApiKey}")
+    @NotNull(message = "Movie DB API Key cannot be null")
     private String movieDbApiKey;
 
-    @Value("${writeToFile}")
+    @NotNull(message = "Write to file boolean cannot be null")
     private Boolean writeToFile;
 
-    public void setPlexMovieUrls(List<String> plexMovieUrls) {
-        this.plexMovieUrls = plexMovieUrls;
+
+    public List<String> getMovieUrls() {
+        return movieUrls;
     }
 
-    List<String> getPlexMovieUrls() {
-        return plexMovieUrls;
+    public void setMovieUrls(List<String> movieUrls) {
+        this.movieUrls = movieUrls;
     }
 
-    String getMovieDbApiKey() {
+    public String getMovieDbApiKey() {
         return movieDbApiKey;
     }
 
-    Boolean getWriteToFile() {
+    public void setMovieDbApiKey(String movieDbApiKey) {
+        this.movieDbApiKey = movieDbApiKey;
+    }
+
+    public Boolean getWriteToFile() {
         return writeToFile;
     }
+
+    public void setWriteToFile(Boolean writeToFile) {
+        this.writeToFile = writeToFile;
+    }
+
 }
