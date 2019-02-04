@@ -51,7 +51,7 @@ docker run -t -e DBAPIKEY= -e PLEXADDRESS= gaps
 In example:
 
 ```bash
-docker run -t -e DBAPIKEY=myapikey PLEXADDRESS=http://192.168.0.10:32400/library/sections/1/all/?X-Plex-Token=plextoken gaps
+docker run -t -e DBAPIKEY=myapikey -e PLEXADDRESS=http://192.168.0.10:32400/library/sections/1/all/?X-Plex-Token=plextoken gaps
 ```
 
 ## License
