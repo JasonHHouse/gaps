@@ -10,6 +10,25 @@
 
 package com.jasonhhouse.Gaps;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -28,26 +47,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Search for all missing movies in your plex collection by MovieDB collection.
@@ -98,12 +97,12 @@ public class GapsApplication implements CommandLineRunner {
         OkHttpClient client = new OkHttpClient();
         List<String> urls = properties.getMovieUrls();
 
-        if(CollectionUtils.isEmpty(urls)) {
+        if (CollectionUtils.isEmpty(urls)) {
             logger.error("No URLs added to plexMovieUrls. Check your application.yaml file.");
             return;
         }
 
-        for(String url : urls) {
+        for (String url : urls) {
             Request request = new Request.Builder()
                     .url(url)
                     .build();
@@ -157,7 +156,7 @@ public class GapsApplication implements CommandLineRunner {
         logger.info("Searching for Movie Collections...");
         OkHttpClient client = new OkHttpClient();
 
-        if(StringUtils.isEmpty(properties.getMovieDbApiKey())) {
+        if (StringUtils.isEmpty(properties.getMovieDbApiKey())) {
             logger.error("No MovieDb Key added to movieDbApiKey. Check your application.yaml file.");
             return;
         }
