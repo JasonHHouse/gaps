@@ -20,29 +20,35 @@ if [[ -z $WRITETOFILE ]]; then
   fail "Need to specify WRITETOFILE as environment variable\nRefer to README.md"
 fi
 
-REGEX='\;'
-echo $PLEXADDRESS
+URL=""
+PREFIX='- '
+NEW_LINE=$'\n       '
+
+REGEX='\,'
+#echo $PLEXADDRESS
 if [[ $PLEXADDRESS =~ $REGEX ]]; then
-    echo true
+    IFS=$REGEX read -r -a array <<< "$PLEXADDRESS"
+    for element in "${array[@]}"
+    do
+        URL=$URL$PREFIX$element$NEW_LINE
+    done
 else
-    echo false
+    URL=$PREFIX$PLEXADDRESS
 fi
 
-PREFIX='- '
-URL=$PREFIX$PLEXADDRESS
 
 cat > /usr/src/app/src/main/resources/application.yaml <<EOF
 gaps:
     movieUrls:
-        $URL
-  movieDbApiKey: $DBAPIKEY
-  writeToFile: $WRITETOFILE
+        ${URL}
+  movieDbApiKey: ${DBAPIKEY}
+  writeToFile: ${WRITETOFILE}
 logging:
   level:
     root: INFO
 EOF
 
 cat /usr/src/app/src/main/resources/application.yaml
-#exec mvn spring-boot:run
+exec mvn spring-boot:run
 
 
