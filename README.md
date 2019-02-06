@@ -51,7 +51,10 @@ docker run -t -e DBAPIKEY= -e PLEXADDRESS= -e WRITETOFILE= gaps
 In example:
 
 ```bash
-docker run -t -e DBAPIKEY=myapikey -e PLEXADDRESS=http://192.168.0.10:32400/library/sections/1/all/?X-Plex-Token=plextoken -e WRITETOFILE=true gaps 
+docker run -t -e DBAPIKEY=myapikey -e PLEXADDRESS=http://192.168.0.10:32400/library/sections/1/all/?X-Plex-Token=plextoken -e WRITETOFILE=true gaps
+
+Multiple URL:
+docker run -t -e DBAPIKEY=myapikey -e PLEXADDRESS=http://192.168.0.10:32400/library/sections/1/all/?X-Plex-Token=plextoken,http://192.168.0.10:32400/library/sections/2/all/?X-Plex-Token=plextoken  -e WRITETOFILE=true gaps
 ```
 
 ## License
