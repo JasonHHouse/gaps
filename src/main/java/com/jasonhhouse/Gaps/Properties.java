@@ -13,13 +13,11 @@ package com.jasonhhouse.Gaps;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 @Configuration
-@EnableConfigurationProperties
 @ConfigurationProperties(prefix = "gaps")
 @Component
 @Validated
@@ -34,7 +32,11 @@ public class Properties {
     @NotNull(message = "Write to file boolean cannot be null")
     private Boolean writeToFile;
 
+    @NotNull(message = "Plex property cannot be null")
+    private PlexProperties plex;
+
     private String movieDbListId;
+
 
     public List<String> getMovieUrls() {
         return movieUrls;
@@ -58,6 +60,14 @@ public class Properties {
 
     public void setWriteToFile(Boolean writeToFile) {
         this.writeToFile = writeToFile;
+    }
+
+    public PlexProperties getPlex() {
+        return plex;
+    }
+
+    public void setPlex(PlexProperties plex) {
+        this.plex = plex;
     }
 
     public String getMovieDbListId() {

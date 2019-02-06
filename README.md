@@ -24,29 +24,36 @@ http://127.0.0.1:32400/library/sections/1/all/?X-Plex-Token={My-Plex-Token}
 
 Gaps supports a single movie URL or multiple. You can adjust to your needs. Then you need to go make an account on https://www.themoviedb.org and generate an API Key. Add that key to the application.yaml file under the movieDbApiKey property.
  ```yaml
+gaps:
+  #Put your Plex Movie All URLs here
+  #Gaps supports a single movie URL or multiple.
   #Single
   #movieUrls:
   #  - http://127.0.0.1:32400/library/sections/1/all/?X-Plex-Token={My-Plex-Token}
-  
+
   #Mulitple
   #movieUrls:
   #  - http://127.0.0.1:32400/library/sections/1/all/?X-Plex-Token={My-Plex-Token}
   #  - http://127.0.0.1:32400/library/sections/2/all/?X-Plex-Token={My-Plex-Token}
   #  - http://127.0.0.1:32400/library/sections/3/all/?X-Plex-Token={My-Plex-Token}
   movieUrls:
-    - 
-
-  #Go to https://www.themoviedb.org and make an API Key, place that key here
-  #movieDbApiKey: {key}
+    - #Go to https://www.themoviedb.org and make an API Key, place that key here
+    #movieDbApiKey: {key}
   movieDbApiKey:
 
-  #Should Gaps write out to a file as well as console
-  writeToFile: true
-  
   # Optional
   # Go to https://www.themoviedb.org and make a custom list for GAPS https://www.themoviedb.org/list/<id number>
   # enter the <id number> below if you want GAPS to populate the list
   movieDbListId:
+
+  #Should Gaps write out to a file as well as console
+  writeToFile: true
+
+  #Plex connection timeouts when querying for all movies in the Plex section. Time is in seconds. Default is 180 seconds
+  plex:
+    connectTimeout: 180
+    writeTimeout: 180
+    readTimeout: 180
 ```
 
 ##### movieDbListId: \<list id>  
@@ -87,6 +94,21 @@ docker run -t -e DBAPIKEY=myapikey -e PLEXADDRESS=http://192.168.0.10:32400/libr
 Multiple URL:
 docker run -t -e DBAPIKEY=myapikey -e PLEXADDRESS=http://192.168.0.10:32400/library/sections/1/all/?X-Plex-Token=plextoken,http://192.168.0.10:32400/library/sections/2/all/?X-Plex-Token=plextoken  -e WRITETOFILE=true gaps
 ```
+
+###Option Properties in Docker
+
+CONNECT_TIMEOUT
+
+WRITE_TIMEOUT
+
+READ_TIMEOUT 
+
+These are optional properties to help with Plex Sections that are very large. Timeouts can be set longer to help when parsing the big XML returned by Plex. They are not required and will default to 180 seconds.
+
+```bash
+docker run -t -e DBAPIKEY=myapikey -e PLEXADDRESS=http://192.168.0.10:32400/library/sections/1/all/?X-Plex-Token=plextoken -e WRITETOFILE=true -e CONNECT_TIMEOUT=180 -e WRITE_TIMEOUT=180 -e READ_TIMEOUT=180 gaps
+```
+
 
 ## License
 Copyright 2019 Jason H House

@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.TimeUnit;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -65,7 +66,7 @@ public class GapsApplication implements CommandLineRunner {
 
     private final Set<Movie> recommended;
 
-    private Set<Movie> plexMovies;
+    private final Set<Movie> plexMovies;
 
     @Autowired
     public GapsApplication(Properties properties) {
@@ -183,7 +184,11 @@ public class GapsApplication implements CommandLineRunner {
      */
     private void findAllPlexMovies() {
         logger.info("Searching for Plex Movies...");
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(properties.getPlex().getConnectTimeout(), TimeUnit.SECONDS)
+                .writeTimeout(properties.getPlex().getWriteTimeout(), TimeUnit.SECONDS)
+                .readTimeout(properties.getPlex().getReadTimeout(), TimeUnit.SECONDS)
+                .build();
         List<String> urls = properties.getMovieUrls();
 
         if (CollectionUtils.isEmpty(urls)) {
@@ -429,13 +434,10 @@ public class GapsApplication implements CommandLineRunner {
                 String output = movie.toString() + System.lineSeparator();
                 outputStream.write(output.getBytes());
             }
-            return;
         } catch (FileNotFoundException e) {
             logger.error("Can't find file gaps_recommended_movies.txt", e);
-            return;
         } catch (IOException e) {
             logger.error("Can't write to file gaps_recommended_movies.txt", e);
-            return;
         }
     }
 
