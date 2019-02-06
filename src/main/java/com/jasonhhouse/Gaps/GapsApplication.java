@@ -31,11 +31,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
 import okhttp3.MediaType;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -70,7 +66,7 @@ public class GapsApplication implements CommandLineRunner {
 
     private final Set<Movie> recommended;
 
-    private Set<Movie> plexMovies;
+    private final Set<Movie> plexMovies;
 
     @Autowired
     public GapsApplication(Properties properties) {
@@ -87,7 +83,6 @@ public class GapsApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
         findAllPlexMovies();
-        plexMovies = ImmutableSet.copyOf(Iterables.limit(plexMovies, 100));
         searchForPlexMovie();
 
         if (properties.getWriteToFile()) {
@@ -189,7 +184,7 @@ public class GapsApplication implements CommandLineRunner {
      */
     private void findAllPlexMovies() {
         logger.info("Searching for Plex Movies...");
-        OkHttpClient  client = new OkHttpClient.Builder()
+        OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(properties.getPlex().getConnectTimeout(), TimeUnit.SECONDS)
                 .writeTimeout(properties.getPlex().getWriteTimeout(), TimeUnit.SECONDS)
                 .readTimeout(properties.getPlex().getReadTimeout(), TimeUnit.SECONDS)
