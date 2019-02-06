@@ -10,6 +10,26 @@
 
 package com.jasonhhouse.Gaps;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -31,26 +51,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 /**
  * Search for all missing movies in your plex collection by MovieDB collection.
  */
@@ -61,11 +61,11 @@ public class GapsApplication implements CommandLineRunner {
 
     private final Properties properties;
 
-    private Set<Movie> plexMovies;
-
     private final Set<Movie> searched;
 
     private final Set<Movie> recommended;
+
+    private Set<Movie> plexMovies;
 
     @Autowired
     public GapsApplication(Properties properties) {
@@ -220,7 +220,7 @@ public class GapsApplication implements CommandLineRunner {
                         continue;
                     }
                     String year = node.getAttributes().getNamedItem("year").getNodeValue();
-                Movie movie = new Movie(-1, title, Integer.parseInt(year), "");
+                    Movie movie = new Movie(-1, title, Integer.parseInt(year), "");
                     plexMovies.add(movie);
                 }
                 logger.info(plexMovies.size() + " movies found in plex");
@@ -442,6 +442,7 @@ public class GapsApplication implements CommandLineRunner {
     public class UserInputThreadCountdown implements java.lang.Runnable {
 
         int time_limit = 60;
+
         Date start;
 
         @Override

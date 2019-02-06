@@ -10,15 +10,17 @@
 
 package com.jasonhhouse.Gaps;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.Objects;
+import org.apache.commons.lang3.StringUtils;
 
 final class Movie implements Comparable<Movie> {
 
     private final String name;
+
     private final int year;
+
     private final String collection;
+
     private final int media_id;
 
     Movie(int media_id, String name, int year, String collection) {
@@ -28,7 +30,9 @@ final class Movie implements Comparable<Movie> {
         this.collection = collection;
     }
 
-    public int getMedia_id() {return media_id; }
+    public int getMedia_id() {
+        return media_id;
+    }
 
     String getName() {
         return name;

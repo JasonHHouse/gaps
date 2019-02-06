@@ -42,8 +42,12 @@ Gaps supports a single movie URL or multiple. You can adjust to your needs. Then
 
   #Should Gaps write out to a file as well as console
   writeToFile: true
+  
+  # Optional
+  # Go to https://www.themoviedb.org and make a custom list for GAPS https://www.themoviedb.org/list/<id number>
+  # enter the <id number> below if you want GAPS to populate the list
+  movieDbListId:
 ```
-
 
 ##### movieDbListId: \<list id>  
 https://www.themoviedb.org/list/<list_id>  

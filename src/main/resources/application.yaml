@@ -19,12 +19,11 @@ gaps:
   #  - http://127.0.0.1:32400/library/sections/2/all/?X-Plex-Token={My-Plex-Token}
   #  - http://127.0.0.1:32400/library/sections/3/all/?X-Plex-Token={My-Plex-Token}
   movieUrls:
-    - 
-
-  #Go to https://www.themoviedb.org and make an API Key, place that key here
-  #movieDbApiKey: {key}
+    - #Go to https://www.themoviedb.org and make an API Key, place that key here
+    #movieDbApiKey: {key}
   movieDbApiKey:
 
+  # Optional
   # Go to https://www.themoviedb.org and make a custom list for GAPS https://www.themoviedb.org/list/<id number>
   # enter the <id number> below if you want GAPS to populate the list
   movieDbListId:
@@ -34,6 +33,6 @@ gaps:
 
   #Adjust logging as you see fit
 logging:
- level:
+  level:
     root: INFO
 
