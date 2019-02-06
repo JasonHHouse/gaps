@@ -52,6 +52,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 /**
  * Search for all missing movies in your plex collection by MovieDB collection.
  */
@@ -96,8 +97,11 @@ public class GapsApplication implements CommandLineRunner {
         }
     }
 
+    /**
+     * Using TMDB api (V3), get access to user list and add recommended movies to
+     */
     private void createTmdbList() {
-        // create-request-token
+        // Create the request_token request
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/octet-stream");
@@ -114,18 +118,20 @@ public class GapsApplication implements CommandLineRunner {
             JSONObject responseJson = new JSONObject(response.body().string());
             request_token = responseJson.getString("request_token");
 
-            // Have user click link:
-            logger.info("############################################");
-            logger.info("Click the link below to authorize TMDB list access: " + "https://www.themoviedb.org/authenticate/" + request_token);
-            logger.info("Press enter to continue");
-            logger.info("############################################");
+            // Have user click link to authorize the token
+            logger.info("\n############################################\n" +
+                    "Click the link below to authorize TMDB list access: \n" +
+                    "https://www.themoviedb.org/authenticate/" + request_token + "\n" +
+                    "Press enter to continue\n" +
+                    "############################################\n");
+            new UserInputThreadCountdown().run();
             System.in.read();
         } catch (Exception e) {
             logger.error("Unable to authenticate tmdb, and add movies to list. ", e);
             return;
         }
 
-        // create session id
+        // Create the sesssion ID for MovieDB using the approved token
         mediaType = MediaType.parse("application/json");
         body = RequestBody.create(mediaType, "{\"request_token\":\"" + request_token + "\"}");
         request = new Request.Builder()
@@ -139,13 +145,13 @@ public class GapsApplication implements CommandLineRunner {
         try {
             response = client.newCall(request).execute();
             JSONObject sessionResponse = new JSONObject(response.body().string());
-            session_id = sessionResponse.getString("session_id");
+            session_id = sessionResponse.getString("session_id"); // TODO: Save sessionID to file for reuse
         } catch (IOException e) {
             logger.error("Unable to create session id: " + e.getMessage());
             return;
         }
 
-        // Add item to list
+        // Add item to TMDB list specified by user
         int counter = 0;
         if (session_id != null)
             for (Movie m : recommended) {
@@ -433,6 +439,32 @@ public class GapsApplication implements CommandLineRunner {
             logger.error("Can't write to file gaps_recommended_movies.txt", e);
             return;
         }
+    }
+
+    public class UserInputThreadCountdown implements java.lang.Runnable {
+
+        int time_limit = 60;
+        Date start;
+
+        @Override
+        public void run() {
+            start = new Date();
+            try {
+                this.runTimer();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void runTimer() throws IOException {
+            long timePassedstart = 0;
+            do {
+                timePassedstart = (new Date().getTime() - start.getTime()) / 1000;
+            } while (timePassedstart < time_limit);
+            System.in.close();
+
+        }
+
     }
 
 }
