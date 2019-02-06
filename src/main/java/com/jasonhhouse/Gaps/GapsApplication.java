@@ -122,7 +122,7 @@ public class GapsApplication implements CommandLineRunner {
                     "https://www.themoviedb.org/authenticate/" + request_token + "\n" +
                     "Press enter to continue\n" +
                     "############################################\n");
-            new UserInputThreadCountdown().run();
+            new Thread(new UserInputThreadCountdown()).start();
             System.in.read();
         } catch (Exception e) {
             logger.error("Unable to authenticate tmdb, and add movies to list. ", e);
