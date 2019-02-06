@@ -41,4 +41,5 @@ public class PlexProperties {
     public void setReadTimeout(Integer readTimeout) {
         this.readTimeout = readTimeout;
     }
+
 }

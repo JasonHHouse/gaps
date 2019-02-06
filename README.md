@@ -53,7 +53,7 @@ gaps:
   plex:
     connectTimeout: 180
     writeTimeout: 180
-    readTimeout: 
+    readTimeout: 180
 ```
 
 ##### movieDbListId: \<list id>  
