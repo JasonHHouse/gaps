@@ -10,13 +10,14 @@
 
 package com.jasonhhouse.Gaps;
 
-import java.util.List;
-import javax.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Configuration
 @EnableConfigurationProperties
@@ -34,7 +35,6 @@ public class Properties {
     @NotNull(message = "Write to file boolean cannot be null")
     private Boolean writeToFile;
 
-    @Value("${movieDbListId}")
     private String movieDbListId;
 
     public List<String> getMovieUrls() {
