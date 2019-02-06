@@ -22,9 +22,28 @@ It will look something like this.
 
 http://127.0.0.1:32400/library/sections/1/all/?X-Plex-Token={My-Plex-Token}
 
-Put that in your application.yaml plexMovieAllUrl
+Gaps supports a single movie URL or multiple. You can adjust to your needs. Then you need to go make an account on https://www.themoviedb.org and generate an API Key. Add that key to the application.yaml file under the movieDbApiKey property.
+ ```yaml
+  #Single
+  #movieUrls:
+  #  - http://127.0.0.1:32400/library/sections/1/all/?X-Plex-Token={My-Plex-Token}
+  
+  #Mulitple
+  #movieUrls:
+  #  - http://127.0.0.1:32400/library/sections/1/all/?X-Plex-Token={My-Plex-Token}
+  #  - http://127.0.0.1:32400/library/sections/2/all/?X-Plex-Token={My-Plex-Token}
+  #  - http://127.0.0.1:32400/library/sections/3/all/?X-Plex-Token={My-Plex-Token}
+  movieUrls:
+    - 
 
-Then you need to go make an account on https://www.themoviedb.org and generate an API Key. Add that key to the application.yaml file under the movieDbApiKey property.
+  #Go to https://www.themoviedb.org and make an API Key, place that key here
+  #movieDbApiKey: {key}
+  movieDbApiKey:
+
+  #Should Gaps write out to a file as well as console
+  writeToFile: true
+```
+
 
 ### Running
 
