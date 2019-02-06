@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.TimeUnit;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -29,6 +30,9 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -79,6 +83,7 @@ public class GapsApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
         findAllPlexMovies();
+        plexMovies = ImmutableSet.copyOf(Iterables.limit(plexMovies, 100));
         searchForPlexMovie();
 
         if (properties.getWriteToFile()) {
@@ -94,7 +99,11 @@ public class GapsApplication implements CommandLineRunner {
      */
     private void findAllPlexMovies() {
         logger.info("Searching for Plex Movies...");
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient  client = new OkHttpClient.Builder()
+                .connectTimeout(properties.getPlex().getConnectTimeout(), TimeUnit.SECONDS)
+                .writeTimeout(properties.getPlex().getWriteTimeout(), TimeUnit.SECONDS)
+                .readTimeout(properties.getPlex().getReadTimeout(), TimeUnit.SECONDS)
+                .build();
         List<String> urls = properties.getMovieUrls();
 
         if (CollectionUtils.isEmpty(urls)) {
@@ -339,13 +348,10 @@ public class GapsApplication implements CommandLineRunner {
                 String output = movie.toString() + System.lineSeparator();
                 outputStream.write(output.getBytes());
             }
-            return;
         } catch (FileNotFoundException e) {
             logger.error("Can't find file gaps_recommended_movies.txt", e);
-            return;
         } catch (IOException e) {
             logger.error("Can't write to file gaps_recommended_movies.txt", e);
-            return;
         }
     }
 

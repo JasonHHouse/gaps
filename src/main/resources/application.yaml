@@ -20,14 +20,19 @@ gaps:
   #  - http://127.0.0.1:32400/library/sections/2/all/?X-Plex-Token={My-Plex-Token}
   #  - http://127.0.0.1:32400/library/sections/3/all/?X-Plex-Token={My-Plex-Token}
   movieUrls:
-    -
+    -  http://127.0.0.1:32400/library/sections/1/all/?X-Plex-Token=mQw4uawxTyYEmqNUrvBz
 
   #Go to https://www.themoviedb.org and make an API Key, place that key here
   #movieDbApiKey: {key}
-  movieDbApiKey:
+  movieDbApiKey: 723b4c763114904392ca441909aa0375
 
   #Should Gaps write out to a file as well as console
   writeToFile: true
+
+  plex:
+    connectTimeout: 3000
+    writeTimeout: 3000
+    readTimeout: 3000
 
   #Adjust logging as you see fit
 logging:
