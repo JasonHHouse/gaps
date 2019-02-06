@@ -24,34 +24,45 @@ http://127.0.0.1:32400/library/sections/1/all/?X-Plex-Token={My-Plex-Token}
 
 Gaps supports a single movie URL or multiple. You can adjust to your needs. Then you need to go make an account on https://www.themoviedb.org and generate an API Key. Add that key to the application.yaml file under the movieDbApiKey property.
  ```yaml
+gaps:
+  #Put your Plex Movie All URLs here
+  #Gaps supports a single movie URL or multiple.
   #Single
   #movieUrls:
   #  - http://127.0.0.1:32400/library/sections/1/all/?X-Plex-Token={My-Plex-Token}
-  
+
   #Mulitple
   #movieUrls:
   #  - http://127.0.0.1:32400/library/sections/1/all/?X-Plex-Token={My-Plex-Token}
   #  - http://127.0.0.1:32400/library/sections/2/all/?X-Plex-Token={My-Plex-Token}
   #  - http://127.0.0.1:32400/library/sections/3/all/?X-Plex-Token={My-Plex-Token}
   movieUrls:
-    - 
-
-  #Go to https://www.themoviedb.org and make an API Key, place that key here
-  #movieDbApiKey: {key}
+    - #Go to https://www.themoviedb.org and make an API Key, place that key here
+    #movieDbApiKey: {key}
   movieDbApiKey:
+
+  # Optional
+  # Go to https://www.themoviedb.org and make a custom list for GAPS https://www.themoviedb.org/list/<id number>
+  # enter the <id number> below if you want GAPS to populate the list
+  movieDbListId:
 
   #Should Gaps write out to a file as well as console
   writeToFile: true
-  
-  #Optional
+
   #Plex connection timeouts when querying for all movies in the Plex section. Time is in seconds. Default is 180 seconds
   plex:
     connectTimeout: 180
     writeTimeout: 180
-    readTimeout: 180
-
+    readTimeout: 
 ```
 
+##### movieDbListId: \<list id>  
+https://www.themoviedb.org/list/<list_id>  
+https://www.themoviedb.org/list/123456
+ 
+This property will populate a list for you in your TheMovieDB account. This list can then be imported into radarr using the "add from list" feature, or other media managment software.
+
+**_**Enabling this feature will require user input in the terminal.**_**
 
 ### Running
 
@@ -72,13 +83,13 @@ docker build -t gaps .
 Next, run the container with the environment variables:
 
 ```bash
-docker run -t -e DBAPIKEY= -e PLEXADDRESS= -e WRITETOFILE= gaps  
+docker run -t -e DBAPIKEY= -e PLEXADDRESS= -e WRITETOFILE= [-e TMDBLISTID= ] gaps  
 ```
 
 In example:
 
 ```bash
-docker run -t -e DBAPIKEY=myapikey -e PLEXADDRESS=http://192.168.0.10:32400/library/sections/1/all/?X-Plex-Token=plextoken -e WRITETOFILE=true gaps
+docker run -t -e DBAPIKEY=myapikey -e PLEXADDRESS=http://192.168.0.10:32400/library/sections/1/all/?X-Plex-Token=plextoken -e WRITETOFILE=true [-e TMDBLISTID=id] gaps 
 
 Multiple URL:
 docker run -t -e DBAPIKEY=myapikey -e PLEXADDRESS=http://192.168.0.10:32400/library/sections/1/all/?X-Plex-Token=plextoken,http://192.168.0.10:32400/library/sections/2/all/?X-Plex-Token=plextoken  -e WRITETOFILE=true gaps

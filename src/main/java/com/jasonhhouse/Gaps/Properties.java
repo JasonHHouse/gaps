@@ -36,6 +36,9 @@ public class Properties {
     @NotNull(message = "Plex property cannot be null")
     private PlexProperties plex;
 
+    private String movieDbListId;
+
+
     public List<String> getMovieUrls() {
         return movieUrls;
     }
@@ -67,4 +70,13 @@ public class Properties {
     public void setPlex(PlexProperties plex) {
         this.plex = plex;
     }
+
+    public String getMovieDbListId() {
+        return movieDbListId;
+    }
+
+    public void setMovieDbListId(String listId) {
+        this.movieDbListId = listId;
+    }
+
 }

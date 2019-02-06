@@ -69,6 +69,8 @@ gaps:
         connectTimeout: ${DEFAULT_CONNECT_TIMEOUT}
         writeTimeout: ${DEFAULT_WRITE_TIMEOUT}
         readTimeout: ${DEFAULT_READ_TIMEOUT}
+    movieDbListId: $TMDBLISTID
+
 logging:
   level:
     root: INFO
