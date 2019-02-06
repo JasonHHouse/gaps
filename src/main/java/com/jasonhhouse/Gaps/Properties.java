@@ -44,7 +44,6 @@ public class Properties {
     public void setMovieUrls(List<String> movieUrls) {
         this.movieUrls = movieUrls;
     }
-
     public String getMovieDbApiKey() {
         return movieDbApiKey;
     }
@@ -68,4 +67,5 @@ public class Properties {
     public void setMovieDbListId(String listId) {
         this.movieDbListId = listId;
     }
+
 }

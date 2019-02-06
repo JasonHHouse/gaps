@@ -43,6 +43,8 @@ gaps:
       ${URL}
     movieDbApiKey: ${DBAPIKEY}
     writeToFile: ${WRITETOFILE}
+    movieDbListId: $TMDBLISTID
+
 logging:
   level:
     root: INFO

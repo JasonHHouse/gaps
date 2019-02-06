@@ -10,11 +10,11 @@
 
 package com.jasonhhouse.Gaps;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -45,6 +45,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 /**
  * Search for all missing movies in your plex collection by MovieDB collection.
  */
@@ -114,13 +121,11 @@ public class GapsApplication implements CommandLineRunner {
             logger.info("############################################");
             System.in.read();
         } catch (Exception e) {
-            logger.error("Unable to authenticate tmdb, and add movies to list. ");
-            logger.error(e.getMessage());
+            logger.error("Unable to authenticate tmdb, and add movies to list. ", e);
             return;
         }
-        // approve https://www.themoviedb.org/authenticate/ccf26e747f3ae7cd40ce989a3caddd1445f7e976/
-        // create session id
 
+        // create session id
         mediaType = MediaType.parse("application/json");
         body = RequestBody.create(mediaType, "{\"request_token\":\"" + request_token + "\"}");
         request = new Request.Builder()
@@ -140,32 +145,12 @@ public class GapsApplication implements CommandLineRunner {
             return;
         }
 
-
-        // Write the session id to Yaml file
-        // TheMovieDB_session: 888d4d8d35f531d4c8c8ae1e66e4d167be5972f0
-        // Create list, or use
-
-        /**
-         * OkHttpClient client = new OkHttpClient();
-         *
-         * MediaType mediaType = MediaType.parse("application/json");
-         * RequestBody body = RequestBody.create(mediaType, "{\"name\":\"GAPS\",\"description\":\"Just an awesome list dawg.\",\"language\":\"en\"}");
-         * Request request = new Request.Builder()
-         *   .url("https://api.themoviedb.org/3/list?session_id="+properties.getSessionId()+"&api_key=a0a294ab3abff488c7d9a39660230730")
-         *   .post(body)
-         *   .addHeader("content-type", "application/json;charset=utf-8")
-         *   .build();
-         *
-         * Response response = client.newCall(request).execute();
-         **/
-
         // Add item to list
         int counter = 0;
         if (session_id != null)
             for (Movie m : recommended) {
                 client = new OkHttpClient();
 
-                mediaType = MediaType.parse("application/json");
                 body = RequestBody.create(mediaType, "{\"media_id\":" + m.getMedia_id() + "}");
                 String url = "https://api.themoviedb.org/3/list/" + properties.getMovieDbListId()
                         + "/add_item?session_id=" + session_id + "&api_key=" + properties.getMovieDbApiKey();
@@ -231,7 +216,7 @@ public class GapsApplication implements CommandLineRunner {
                         continue;
                     }
                     String year = node.getAttributes().getNamedItem("year").getNodeValue();
-                    Movie movie = new Movie(-1, title, Integer.parseInt(year), "");
+                Movie movie = new Movie(-1, title, Integer.parseInt(year), "");
                     plexMovies.add(movie);
                 }
                 logger.info(plexMovies.size() + " movies found in plex");
