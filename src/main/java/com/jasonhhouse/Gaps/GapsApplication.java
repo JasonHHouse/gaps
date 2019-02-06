@@ -10,9 +10,30 @@
 
 package com.jasonhhouse.Gaps;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,25 +47,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Search for all missing movies in your plex collection by MovieDB collection.
@@ -93,44 +95,52 @@ public class GapsApplication implements CommandLineRunner {
     private void findAllPlexMovies() {
         logger.info("Searching for Plex Movies...");
         OkHttpClient client = new OkHttpClient();
-        String url = properties.getPlexMovieAllUrl();
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
+        List<String> urls = properties.getMovieUrls();
 
-        try (Response response = client.newCall(request).execute()) {
-            String body = response.body() != null ? response.body().string() : null;
+        if (CollectionUtils.isEmpty(urls)) {
+            logger.error("No URLs added to plexMovieUrls. Check your application.yaml file.");
+            return;
+        }
 
-            if (body == null) {
-                logger.error("Body returned null from Plex");
-                return;
-            }
+        for (String url : urls) {
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
 
-            InputStream fileIS = new ByteArrayInputStream(body.getBytes());
-            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = builderFactory.newDocumentBuilder();
-            Document xmlDocument = builder.parse(fileIS);
-            XPath xPath = XPathFactory.newInstance().newXPath();
-            String expression = "/MediaContainer/Video";
-            NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
+            try (Response response = client.newCall(request).execute()) {
+                String body = response.body() != null ? response.body().string() : null;
 
-            for (int i = 0; i < nodeList.getLength(); i++) {
-                Node node = nodeList.item(i);
-                String title = node.getAttributes().getNamedItem("title").getNodeValue();
-                if (node.getAttributes().getNamedItem("year") == null) {
-                    logger.warn("Year not found for " + title);
-                    continue;
+                if (body == null) {
+                    logger.error("Body returned null from Plex");
+                    return;
                 }
-                String year = node.getAttributes().getNamedItem("year").getNodeValue();
-                Movie movie = new Movie(title, Integer.parseInt(year), "");
-                plexMovies.add(movie);
-            }
-            logger.info(plexMovies.size() + " movies found in plex");
 
-        } catch (IOException e) {
-            logger.error("Error connecting to Plex to get Movie list", e);
-        } catch (ParserConfigurationException | XPathExpressionException | SAXException e) {
-            logger.error("Error parsing XML from Plex", e);
+                InputStream fileIS = new ByteArrayInputStream(body.getBytes());
+                DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder builder = builderFactory.newDocumentBuilder();
+                Document xmlDocument = builder.parse(fileIS);
+                XPath xPath = XPathFactory.newInstance().newXPath();
+                String expression = "/MediaContainer/Video";
+                NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
+
+                for (int i = 0; i < nodeList.getLength(); i++) {
+                    Node node = nodeList.item(i);
+                    String title = node.getAttributes().getNamedItem("title").getNodeValue();
+                    if (node.getAttributes().getNamedItem("year") == null) {
+                        logger.warn("Year not found for " + title);
+                        continue;
+                    }
+                    String year = node.getAttributes().getNamedItem("year").getNodeValue();
+                    Movie movie = new Movie(title, Integer.parseInt(year), "");
+                    plexMovies.add(movie);
+                }
+                logger.info(plexMovies.size() + " movies found in plex");
+
+            } catch (IOException e) {
+                logger.error("Error connecting to Plex to get Movie list", e);
+            } catch (ParserConfigurationException | XPathExpressionException | SAXException e) {
+                logger.error("Error parsing XML from Plex", e);
+            }
         }
     }
 
@@ -145,6 +155,11 @@ public class GapsApplication implements CommandLineRunner {
     private void searchForPlexMovie() {
         logger.info("Searching for Movie Collections...");
         OkHttpClient client = new OkHttpClient();
+
+        if (StringUtils.isEmpty(properties.getMovieDbApiKey())) {
+            logger.error("No MovieDb Key added to movieDbApiKey. Check your application.yaml file.");
+            return;
+        }
 
         int count = 0;
         for (Movie movie : plexMovies) {
