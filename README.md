@@ -45,6 +45,14 @@ Gaps supports a single movie URL or multiple. You can adjust to your needs. Then
 ```
 
 
+##### movieDbListId: \<list id>  
+https://www.themoviedb.org/list/<list_id>  
+https://www.themoviedb.org/list/123456
+ 
+This property will populate a list for you in your TheMovieDB account. This list can then be imported into radarr using the "add from list" feature, or other media managment software.
+
+**_**Enabling this feature will require user input in the terminal.**_**
+
 ### Running
 
 You can run it with the run.bat or run.sh scripts. If you want to run command line you can run with. 
