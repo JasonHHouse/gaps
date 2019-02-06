@@ -20,19 +20,20 @@ gaps:
   #  - http://127.0.0.1:32400/library/sections/2/all/?X-Plex-Token={My-Plex-Token}
   #  - http://127.0.0.1:32400/library/sections/3/all/?X-Plex-Token={My-Plex-Token}
   movieUrls:
-    -  http://127.0.0.1:32400/library/sections/1/all/?X-Plex-Token=mQw4uawxTyYEmqNUrvBz
+    -
 
   #Go to https://www.themoviedb.org and make an API Key, place that key here
   #movieDbApiKey: {key}
-  movieDbApiKey: 723b4c763114904392ca441909aa0375
+  movieDbApiKey:
 
   #Should Gaps write out to a file as well as console
   writeToFile: true
 
+  #Plex connection timeouts when querying for all movies in the Plex section. Time is in seconds. Default is 180 seconds
   plex:
-    connectTimeout: 3000
-    writeTimeout: 3000
-    readTimeout: 3000
+    connectTimeout: 180
+    writeTimeout: 180
+    readTimeout: 180
 
   #Adjust logging as you see fit
 logging:
