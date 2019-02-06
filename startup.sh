@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#
 # avoid dumping keys where possible
 set +x
 
@@ -22,7 +22,7 @@ fi
 
 URL=""
 PREFIX='- '
-NEW_LINE=$'\n       '
+NEW_LINE=$'\n      '
 
 REGEX='\,'
 #echo $PLEXADDRESS
@@ -31,7 +31,7 @@ if [[ $PLEXADDRESS =~ $REGEX ]]; then
     for element in "${array[@]}"
     do
         URL=$URL$PREFIX$element$NEW_LINE
-    done
+	done
 else
     URL=$PREFIX$PLEXADDRESS
 fi
@@ -40,9 +40,9 @@ fi
 cat > /usr/src/app/src/main/resources/application.yaml <<EOF
 gaps:
     movieUrls:
-        ${URL}
-  movieDbApiKey: ${DBAPIKEY}
-  writeToFile: ${WRITETOFILE}
+      ${URL}
+    movieDbApiKey: ${DBAPIKEY}
+    writeToFile: ${WRITETOFILE}
 logging:
   level:
     root: INFO
@@ -50,5 +50,3 @@ EOF
 
 cat /usr/src/app/src/main/resources/application.yaml
 exec mvn spring-boot:run
-
-
