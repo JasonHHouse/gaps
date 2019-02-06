@@ -29,9 +29,6 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
@@ -86,6 +83,109 @@ public class GapsApplication implements CommandLineRunner {
         }
         //Always write to command line
         printRecommended();
+
+        if (properties.getMovieDbListId() != null) {
+            createTmdbList();
+        }
+    }
+
+    private void createTmdbList() {
+        // create-request-token
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/octet-stream");
+        RequestBody.create(mediaType, "{}");
+        RequestBody body;
+        Request request = new Request.Builder()
+                .url("https://api.themoviedb.org/3/authentication/token/new?api_key=" + properties.getMovieDbApiKey())
+                .get()
+                .build();
+
+        String request_token;
+        try {
+            Response response = client.newCall(request).execute();
+            JSONObject responseJson = new JSONObject(response.body().string());
+            request_token = responseJson.getString("request_token");
+
+            // Have user click link:
+            logger.info("############################################");
+            logger.info("Click the link below to authorize TMDB list access: " + "https://www.themoviedb.org/authenticate/" + request_token);
+            logger.info("Press enter to continue");
+            logger.info("############################################");
+            System.in.read();
+        } catch (Exception e) {
+            logger.error("Unable to authenticate tmdb, and add movies to list. ");
+            logger.error(e.getMessage());
+            return;
+        }
+        // approve https://www.themoviedb.org/authenticate/ccf26e747f3ae7cd40ce989a3caddd1445f7e976/
+        // create session id
+
+        mediaType = MediaType.parse("application/json");
+        body = RequestBody.create(mediaType, "{\"request_token\":\"" + request_token + "\"}");
+        request = new Request.Builder()
+                .url("https://api.themoviedb.org/3/authentication/session/new?api_key=" + properties.getMovieDbApiKey())
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .build();
+
+        Response response = null;
+        String session_id = null;
+        try {
+            response = client.newCall(request).execute();
+            JSONObject sessionResponse = new JSONObject(response.body().string());
+            session_id = sessionResponse.getString("session_id");
+        } catch (IOException e) {
+            logger.error("Unable to create session id: " + e.getMessage());
+            return;
+        }
+
+
+        // Write the session id to Yaml file
+        // TheMovieDB_session: 888d4d8d35f531d4c8c8ae1e66e4d167be5972f0
+        // Create list, or use
+
+        /**
+         * OkHttpClient client = new OkHttpClient();
+         *
+         * MediaType mediaType = MediaType.parse("application/json");
+         * RequestBody body = RequestBody.create(mediaType, "{\"name\":\"GAPS\",\"description\":\"Just an awesome list dawg.\",\"language\":\"en\"}");
+         * Request request = new Request.Builder()
+         *   .url("https://api.themoviedb.org/3/list?session_id="+properties.getSessionId()+"&api_key=a0a294ab3abff488c7d9a39660230730")
+         *   .post(body)
+         *   .addHeader("content-type", "application/json;charset=utf-8")
+         *   .build();
+         *
+         * Response response = client.newCall(request).execute();
+         **/
+
+        // Add item to list
+        int counter = 0;
+        if (session_id != null)
+            for (Movie m : recommended) {
+                client = new OkHttpClient();
+
+                mediaType = MediaType.parse("application/json");
+                body = RequestBody.create(mediaType, "{\"media_id\":" + m.getMedia_id() + "}");
+                String url = "https://api.themoviedb.org/3/list/" + properties.getMovieDbListId()
+                        + "/add_item?session_id=" + session_id + "&api_key=" + properties.getMovieDbApiKey();
+                request = new Request.Builder()
+                        .url(url)
+                        .post(body)
+                        .addHeader("content-type", "application/json;charset=utf-8")
+                        .build();
+
+                try {
+
+                    response = client.newCall(request).execute();
+                    if (response.isSuccessful())
+                        counter++;
+                } catch (IOException e) {
+                    logger.error("Unable to add movie: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        logger.info(counter + " Movies added to list. \nList located at: https://www.themoviedb.org/list/" + properties.getMovieDbListId());
     }
 
     /**
@@ -131,7 +231,7 @@ public class GapsApplication implements CommandLineRunner {
                         continue;
                     }
                     String year = node.getAttributes().getNamedItem("year").getNodeValue();
-                    Movie movie = new Movie(title, Integer.parseInt(year), "");
+                    Movie movie = new Movie(-1, title, Integer.parseInt(year), "");
                     plexMovies.add(movie);
                 }
                 logger.info(plexMovies.size() + " movies found in plex");
@@ -248,6 +348,7 @@ public class GapsApplication implements CommandLineRunner {
                             JSONArray parts = collection.getJSONArray("parts");
                             for (int i = 0; i < parts.length(); i++) {
                                 JSONObject part = parts.getJSONObject(i);
+                                int media_id = part.getInt("id");
                                 String title = part.getString("original_title");
                                 int year;
                                 try {
@@ -256,7 +357,7 @@ public class GapsApplication implements CommandLineRunner {
                                     logger.warn("No year found for " + title + ". Value returned was '" + part.getString("release_date") + "'. Skipping adding the movie to recommended list.");
                                     continue;
                                 }
-                                Movie movieFromCollection = new Movie(title, year, collectionName);
+                                Movie movieFromCollection = new Movie(media_id, title, year, collectionName);
 
                                 if (plexMovies.contains(movieFromCollection)) {
                                     searched.add(movieFromCollection);

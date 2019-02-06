@@ -34,6 +34,8 @@ public class Properties {
     @NotNull(message = "Write to file boolean cannot be null")
     private Boolean writeToFile;
 
+    @Value("${movieDbListId}")
+    private String movieDbListId;
 
     public List<String> getMovieUrls() {
         return movieUrls;
@@ -59,4 +61,11 @@ public class Properties {
         this.writeToFile = writeToFile;
     }
 
+    public String getMovieDbListId() {
+        return movieDbListId;
+    }
+
+    public void setMovieDbListId(String listId) {
+        this.movieDbListId = listId;
+    }
 }
