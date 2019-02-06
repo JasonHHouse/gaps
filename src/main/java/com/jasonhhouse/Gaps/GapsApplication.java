@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,10 +30,11 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,6 +45,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.util.CollectionUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -58,11 +61,11 @@ public class GapsApplication implements CommandLineRunner {
 
     private final Properties properties;
 
-    private Set<Movie> plexMovies;
-
     private final Set<Movie> searched;
 
     private final Set<Movie> recommended;
+
+    private Set<Movie> plexMovies;
 
     @Autowired
     public GapsApplication(Properties properties) {
@@ -86,6 +89,92 @@ public class GapsApplication implements CommandLineRunner {
         }
         //Always write to command line
         printRecommended();
+
+        if (properties.getMovieDbListId() != null) {
+            createTmdbList();
+        }
+    }
+
+    /**
+     * Using TMDB api (V3), get access to user list and add recommended movies to
+     */
+    private void createTmdbList() {
+        // Create the request_token request
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/octet-stream");
+        RequestBody.create(mediaType, "{}");
+        RequestBody body;
+        Request request = new Request.Builder()
+                .url("https://api.themoviedb.org/3/authentication/token/new?api_key=" + properties.getMovieDbApiKey())
+                .get()
+                .build();
+
+        String request_token;
+        try {
+            Response response = client.newCall(request).execute();
+            JSONObject responseJson = new JSONObject(response.body().string());
+            request_token = responseJson.getString("request_token");
+
+            // Have user click link to authorize the token
+            logger.info("\n############################################\n" +
+                    "Click the link below to authorize TMDB list access: \n" +
+                    "https://www.themoviedb.org/authenticate/" + request_token + "\n" +
+                    "Press enter to continue\n" +
+                    "############################################\n");
+            new Thread(new UserInputThreadCountdown()).start();
+            System.in.read();
+        } catch (Exception e) {
+            logger.error("Unable to authenticate tmdb, and add movies to list. ", e);
+            return;
+        }
+
+        // Create the sesssion ID for MovieDB using the approved token
+        mediaType = MediaType.parse("application/json");
+        body = RequestBody.create(mediaType, "{\"request_token\":\"" + request_token + "\"}");
+        request = new Request.Builder()
+                .url("https://api.themoviedb.org/3/authentication/session/new?api_key=" + properties.getMovieDbApiKey())
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .build();
+
+        Response response = null;
+        String session_id = null;
+        try {
+            response = client.newCall(request).execute();
+            JSONObject sessionResponse = new JSONObject(response.body().string());
+            session_id = sessionResponse.getString("session_id"); // TODO: Save sessionID to file for reuse
+        } catch (IOException e) {
+            logger.error("Unable to create session id: " + e.getMessage());
+            return;
+        }
+
+        // Add item to TMDB list specified by user
+        int counter = 0;
+        if (session_id != null)
+            for (Movie m : recommended) {
+                client = new OkHttpClient();
+
+                body = RequestBody.create(mediaType, "{\"media_id\":" + m.getMedia_id() + "}");
+                String url = "https://api.themoviedb.org/3/list/" + properties.getMovieDbListId()
+                        + "/add_item?session_id=" + session_id + "&api_key=" + properties.getMovieDbApiKey();
+                request = new Request.Builder()
+                        .url(url)
+                        .post(body)
+                        .addHeader("content-type", "application/json;charset=utf-8")
+                        .build();
+
+                try {
+
+                    response = client.newCall(request).execute();
+                    if (response.isSuccessful())
+                        counter++;
+                } catch (IOException e) {
+                    logger.error("Unable to add movie: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        logger.info(counter + " Movies added to list. \nList located at: https://www.themoviedb.org/list/" + properties.getMovieDbListId());
     }
 
     /**
@@ -131,7 +220,7 @@ public class GapsApplication implements CommandLineRunner {
                         continue;
                     }
                     String year = node.getAttributes().getNamedItem("year").getNodeValue();
-                    Movie movie = new Movie(title, Integer.parseInt(year), "");
+                    Movie movie = new Movie(-1, title, Integer.parseInt(year), "");
                     plexMovies.add(movie);
                 }
                 logger.info(plexMovies.size() + " movies found in plex");
@@ -248,6 +337,7 @@ public class GapsApplication implements CommandLineRunner {
                             JSONArray parts = collection.getJSONArray("parts");
                             for (int i = 0; i < parts.length(); i++) {
                                 JSONObject part = parts.getJSONObject(i);
+                                int media_id = part.getInt("id");
                                 String title = part.getString("original_title");
                                 int year;
                                 try {
@@ -256,7 +346,7 @@ public class GapsApplication implements CommandLineRunner {
                                     logger.warn("No year found for " + title + ". Value returned was '" + part.getString("release_date") + "'. Skipping adding the movie to recommended list.");
                                     continue;
                                 }
-                                Movie movieFromCollection = new Movie(title, year, collectionName);
+                                Movie movieFromCollection = new Movie(media_id, title, year, collectionName);
 
                                 if (plexMovies.contains(movieFromCollection)) {
                                     searched.add(movieFromCollection);
@@ -347,6 +437,33 @@ public class GapsApplication implements CommandLineRunner {
             logger.error("Can't write to file gaps_recommended_movies.txt", e);
             return;
         }
+    }
+
+    public class UserInputThreadCountdown implements java.lang.Runnable {
+
+        int time_limit = 60;
+
+        Date start;
+
+        @Override
+        public void run() {
+            start = new Date();
+            try {
+                this.runTimer();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void runTimer() throws IOException {
+            long timePassedstart = 0;
+            do {
+                timePassedstart = (new Date().getTime() - start.getTime()) / 1000;
+            } while (timePassedstart < time_limit);
+            System.in.close();
+
+        }
+
     }
 
 }
