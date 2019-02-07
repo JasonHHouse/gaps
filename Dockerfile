@@ -9,6 +9,6 @@ COPY src /usr/src/app/src/
 
 RUN chmod +x /usr/src/app/startup.sh
 
-RUN mvn clean install
+RUN mvn clean install -Dassembly.skipAssembly=true
 
 CMD "/usr/src/app/startup.sh"
