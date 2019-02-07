@@ -7,11 +7,6 @@
     <formats>
         <format>zip</format>
     </formats>
-    <!--<fileSets>
-        <fileSet>
-            <directory>${project.basedir}/conf</directory>
-        </fileSet>
-    </fileSets>-->
     <files>
         <file>
             <source>${project.build.directory}/${project.artifactId}-${project.version}.jar</source>
