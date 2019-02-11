@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -36,6 +38,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,12 +69,12 @@ public class GapsApplication implements CommandLineRunner {
 
     private final Set<Movie> recommended;
 
-    private final Set<Movie> plexMovies;
+    private final Set<Movie> ownedMovies;
 
     @Autowired
     public GapsApplication(Properties properties) {
         this.properties = properties;
-        this.plexMovies = new HashSet<>();
+        this.ownedMovies = new HashSet<>();
         this.searched = new HashSet<>();
         this.recommended = new TreeSet<>();
     }
@@ -82,8 +85,15 @@ public class GapsApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        findAllPlexMovies();
-        searchForPlexMovie();
+        if (properties.getPlex().getSearchFromPlex()) {
+            findAllPlexMovies();
+        }
+
+        if (properties.getFolder().getSearchFromFolder()) {
+            findAllFolderMovies();
+        }
+
+        searchForMovies();
 
         if (properties.getWriteToFile()) {
             writeToFile();
@@ -91,9 +101,67 @@ public class GapsApplication implements CommandLineRunner {
         //Always write to command line
         printRecommended();
 
-        if (properties.getMovieDbListId() != null) {
+        if (StringUtils.isNotEmpty(properties.getMovieDbListId())) {
             createTmdbList();
         }
+    }
+
+    private void findAllFolderMovies() {
+        if (CollectionUtils.isEmpty(properties.getFolder().getFolders())) {
+            logger.error("folders property cannot be empty when searchFromFolder is true");
+            return;
+        }
+
+        if (CollectionUtils.isEmpty(properties.getFolder().getMovieFormats())) {
+            logger.error("movie formats property cannot be empty when searchFromFolder is true");
+            return;
+        }
+
+        for (String strFolder : properties.getFolder().getFolders()) {
+            File folder = new File(strFolder);
+
+            if (!folder.exists()) {
+                logger.warn("Folder in folders property does not exist: " + strFolder);
+                continue;
+            }
+
+            if (!folder.isDirectory()) {
+                logger.warn("Folder in folders property is not a directory: " + strFolder);
+                continue;
+            }
+
+            File[] files = folder.listFiles();
+            if (files == null) {
+                logger.warn("Folder in folders property is empty: " + strFolder);
+                continue;
+            }
+
+            for (File file : files) {
+                String extension = FilenameUtils.getExtension(file.toString());
+
+                if (properties.getFolder().getMovieFormats().contains(extension)) {
+                    String fullMovie = FilenameUtils.getBaseName(file.toString());
+                    Pattern pattern = Pattern.compile(properties.getFolder().getYearRegex());
+                    Matcher matcher = pattern.matcher(fullMovie);
+
+                    if (!matcher.find()) {
+                        logger.warn("No regex matches found for " + fullMovie);
+                        continue;
+                    }
+
+                    String year = matcher.group(matcher.groupCount()).replaceAll("[)(]", "");
+                    String title = fullMovie.substring(0, fullMovie.indexOf(" (") - 2);
+
+                    Movie movie = new Movie(-1, title, Integer.parseInt(year), "");
+                    ownedMovies.add(movie);
+                }
+
+
+            }
+
+
+        }
+
     }
 
     /**
@@ -139,8 +207,8 @@ public class GapsApplication implements CommandLineRunner {
                 .addHeader("content-type", "application/json")
                 .build();
 
-        Response response = null;
-        String session_id = null;
+        Response response;
+        String session_id;
         try {
             response = client.newCall(request).execute();
             JSONObject sessionResponse = new JSONObject(response.body().string());
@@ -166,7 +234,6 @@ public class GapsApplication implements CommandLineRunner {
                         .build();
 
                 try {
-
                     response = client.newCall(request).execute();
                     if (response.isSuccessful())
                         counter++;
@@ -189,7 +256,7 @@ public class GapsApplication implements CommandLineRunner {
                 .writeTimeout(properties.getPlex().getWriteTimeout(), TimeUnit.SECONDS)
                 .readTimeout(properties.getPlex().getReadTimeout(), TimeUnit.SECONDS)
                 .build();
-        List<String> urls = properties.getMovieUrls();
+        List<String> urls = properties.getPlex().getMovieUrls();
 
         if (CollectionUtils.isEmpty(urls)) {
             logger.error("No URLs added to plexMovieUrls. Check your application.yaml file.");
@@ -226,9 +293,9 @@ public class GapsApplication implements CommandLineRunner {
                     }
                     String year = node.getAttributes().getNamedItem("year").getNodeValue();
                     Movie movie = new Movie(-1, title, Integer.parseInt(year), "");
-                    plexMovies.add(movie);
+                    ownedMovies.add(movie);
                 }
-                logger.info(plexMovies.size() + " movies found in plex");
+                logger.info(ownedMovies.size() + " movies found in plex");
 
             } catch (IOException e) {
                 logger.error("Error connecting to Plex to get Movie list", e);
@@ -246,7 +313,7 @@ public class GapsApplication implements CommandLineRunner {
      * optimize some network calls, we add movies found in a collection and in plex to our already searched list, so we
      * don't re-query collections again and again.
      */
-    private void searchForPlexMovie() {
+    private void searchForMovies() {
         logger.info("Searching for Movie Collections...");
         OkHttpClient client = new OkHttpClient();
 
@@ -256,7 +323,7 @@ public class GapsApplication implements CommandLineRunner {
         }
 
         int count = 0;
-        for (Movie movie : plexMovies) {
+        for (Movie movie : ownedMovies) {
             if (searched.contains(movie)) {
                 continue;
             }
@@ -353,7 +420,7 @@ public class GapsApplication implements CommandLineRunner {
                                 }
                                 Movie movieFromCollection = new Movie(media_id, title, year, collectionName);
 
-                                if (plexMovies.contains(movieFromCollection)) {
+                                if (ownedMovies.contains(movieFromCollection)) {
                                     searched.add(movieFromCollection);
                                 } else if (!searched.contains(movieFromCollection) && year != 0 && year < 2019) {
                                     recommended.add(movieFromCollection);
@@ -386,7 +453,7 @@ public class GapsApplication implements CommandLineRunner {
 
                     count++;
                     if (count % 10 == 0) {
-                        logger.info(((int) ((count) / ((double) (plexMovies.size())) * 100)) + "% Complete. Processed " + count + " files of " + plexMovies.size() + ". ");
+                        logger.info(((int) ((count) / ((double) (ownedMovies.size())) * 100)) + "% Complete. Processed " + count + " files of " + ownedMovies.size() + ". ");
                     }
                 }
             } catch (UnsupportedEncodingException e) {
