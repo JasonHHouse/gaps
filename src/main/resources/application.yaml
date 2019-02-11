@@ -15,7 +15,7 @@ gaps:
 
   #Go to https://www.themoviedb.org and make an API Key, place that key here
   #movieDbApiKey: {key}
-  movieDbApiKey:
+  movieDbApiKey: asdb-asdf
 
   # Optional
   # Go to https://www.themoviedb.org and make a custom list for GAPS https://www.themoviedb.org/list/<id number>
@@ -41,7 +41,7 @@ gaps:
     #Required if searching from folders
     #List of folders to search in
     folders:
-      - C:/movies
+      - /Users/jhouse/Movies
 
     #Required if searching from folders
     #If the subfolder should be searched in
@@ -64,11 +64,14 @@ gaps:
       - 3gp
       - 3g2
 
+    #Movie Regex
+    #Expected format is Movie Name (Year)
+    #Example: The Fast and the Furious (2001)
     yearRegex: \(([1-2][0-9][0-9][0-9])\)
 
   #Plex connection timeouts when querying for all movies in the Plex section. Time is in seconds. Default is 180 seconds
   plex:
-    searchFromPlex: true
+    searchFromPlex: false
     connectTimeout: 180
     writeTimeout: 180
     readTimeout: 180

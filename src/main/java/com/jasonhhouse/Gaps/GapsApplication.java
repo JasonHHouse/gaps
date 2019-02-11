@@ -119,49 +119,57 @@ public class GapsApplication implements CommandLineRunner {
 
         for (String strFolder : properties.getFolder().getFolders()) {
             File folder = new File(strFolder);
+            searchFolders(folder);
+        }
 
-            if (!folder.exists()) {
-                logger.warn("Folder in folders property does not exist: " + strFolder);
+    }
+
+    private void searchFolders(File folder) {
+        if (!folder.exists()) {
+            logger.warn("Folder in folders property does not exist: " + folder);
+            return;
+        }
+
+        if (!folder.isDirectory()) {
+            logger.warn("Folder in folders property is not a directory: " + folder);
+            return;
+        }
+
+        File[] files = folder.listFiles();
+        if (files == null) {
+            logger.warn("Folder in folders property is empty: " + folder);
+            return;
+        }
+
+        for (File file : files) {
+            if(file.isDirectory() && properties.getFolder().getRecursive()) {
+                searchFolders(file);
                 continue;
             }
 
-            if (!folder.isDirectory()) {
-                logger.warn("Folder in folders property is not a directory: " + strFolder);
-                continue;
-            }
+            String extension = FilenameUtils.getExtension(file.toString());
 
-            File[] files = folder.listFiles();
-            if (files == null) {
-                logger.warn("Folder in folders property is empty: " + strFolder);
-                continue;
-            }
+            if (properties.getFolder().getMovieFormats().contains(extension)) {
+                String fullMovie = FilenameUtils.getBaseName(file.toString());
+                Pattern pattern = Pattern.compile(properties.getFolder().getYearRegex());
+                Matcher matcher = pattern.matcher(fullMovie);
 
-            for (File file : files) {
-                String extension = FilenameUtils.getExtension(file.toString());
-
-                if (properties.getFolder().getMovieFormats().contains(extension)) {
-                    String fullMovie = FilenameUtils.getBaseName(file.toString());
-                    Pattern pattern = Pattern.compile(properties.getFolder().getYearRegex());
-                    Matcher matcher = pattern.matcher(fullMovie);
-
-                    if (!matcher.find()) {
-                        logger.warn("No regex matches found for " + fullMovie);
-                        continue;
-                    }
-
-                    String year = matcher.group(matcher.groupCount()).replaceAll("[)(]", "");
-                    String title = fullMovie.substring(0, fullMovie.indexOf(" (") - 2);
-
-                    Movie movie = new Movie(-1, title, Integer.parseInt(year), "");
-                    ownedMovies.add(movie);
+                if (!matcher.find()) {
+                    logger.warn("No regex matches found for " + fullMovie);
+                    continue;
                 }
 
+                String year = matcher.group(matcher.groupCount()).replaceAll("[)(]", "");
+                String title = fullMovie.substring(0, fullMovie.indexOf(" ("));
 
+                Movie movie = new Movie(-1, title, Integer.parseInt(year), "");
+                ownedMovies.add(movie);
+            } else {
+                logger.warn("Skipping file " + file);
             }
 
 
         }
-
     }
 
     /**
