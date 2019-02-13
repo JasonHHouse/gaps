@@ -84,9 +84,10 @@ public class GapsApplication implements CommandLineRunner {
     public void run(String... args) {
         // Get TMDB Authorizatoin from user,
         // requires user input so needs to be done early before user walks away
-        if (properties.getMovieDbListId().length() > 0)
+        if (properties.getMovieDbListId().length() > 0){
             getTmdbAuthorization();
-
+        }
+        
         findAllPlexMovies();
         searchForPlexMovie();
 
