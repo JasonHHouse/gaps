@@ -19,14 +19,14 @@ gaps:
   #  - http://127.0.0.1:32400/library/sections/2/all/?X-Plex-Token={My-Plex-Token}
   #  - http://127.0.0.1:32400/library/sections/3/all/?X-Plex-Token={My-Plex-Token}
   movieUrls:
-    - #Go to https://www.themoviedb.org and make an API Key, place that key here
-    #movieDbApiKey: {key}
-  movieDbApiKey:
+    - http://192.168.0111:32400/library/sections/4/all?X-Plex-Token=xnEsssfKF5RSqrjubd2s
+
+  movieDbApiKey: a0a294ab3abff488c7d9a39660230730
 
   # Optional
   # Go to https://www.themoviedb.org and make a custom list for GAPS https://www.themoviedb.org/list/<id number>
   # enter the <id number> below if you want GAPS to populate the list
-  movieDbListId:
+  movieDbListId: 104676
 
   #Should Gaps write out to a file as well as console
   writeToFile: true
