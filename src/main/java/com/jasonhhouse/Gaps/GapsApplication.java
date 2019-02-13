@@ -82,6 +82,12 @@ public class GapsApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        // Get TMDB Authorizatoin from user,
+        // requires user input so needs to be done early before user walks away
+        if (properties.getMovieDbListId().length() > 0){
+            getTmdbAuthorization();
+        }
+        
         findAllPlexMovies();
         searchForPlexMovie();
 
@@ -96,10 +102,9 @@ public class GapsApplication implements CommandLineRunner {
         }
     }
 
-    /**
-     * Using TMDB api (V3), get access to user list and add recommended movies to
-     */
-    private void createTmdbList() {
+    private String session_id = null;
+
+    private void getTmdbAuthorization() {
         // Create the request_token request
         OkHttpClient client = new OkHttpClient();
 
@@ -140,7 +145,7 @@ public class GapsApplication implements CommandLineRunner {
                 .build();
 
         Response response = null;
-        String session_id = null;
+
         try {
             response = client.newCall(request).execute();
             JSONObject sessionResponse = new JSONObject(response.body().string());
@@ -149,6 +154,15 @@ public class GapsApplication implements CommandLineRunner {
             logger.error("Unable to create session id: " + e.getMessage());
             return;
         }
+    }
+
+    /**
+     * Using TMDB api (V3), get access to user list and add recommended movies to
+     */
+    private void createTmdbList() {
+        OkHttpClient client;
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body;
 
         // Add item to TMDB list specified by user
         int counter = 0;
@@ -159,7 +173,7 @@ public class GapsApplication implements CommandLineRunner {
                 body = RequestBody.create(mediaType, "{\"media_id\":" + m.getMedia_id() + "}");
                 String url = "https://api.themoviedb.org/3/list/" + properties.getMovieDbListId()
                         + "/add_item?session_id=" + session_id + "&api_key=" + properties.getMovieDbApiKey();
-                request = new Request.Builder()
+                Request request = new Request.Builder()
                         .url(url)
                         .post(body)
                         .addHeader("content-type", "application/json;charset=utf-8")
@@ -167,7 +181,7 @@ public class GapsApplication implements CommandLineRunner {
 
                 try {
 
-                    response = client.newCall(request).execute();
+                    Response response = client.newCall(request).execute();
                     if (response.isSuccessful())
                         counter++;
                 } catch (IOException e) {
