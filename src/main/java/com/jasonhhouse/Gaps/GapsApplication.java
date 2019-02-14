@@ -267,7 +267,7 @@ public class GapsApplication implements CommandLineRunner {
         List<String> urls = properties.getPlex().getMovieUrls();
 
         if (CollectionUtils.isEmpty(urls)) {
-            logger.error("No URLs added to plexMovieUrls. Check your application.yaml file.");
+            logger.info("No URLs added to plexMovieUrls. Check your application.yaml file if needed.");
             return;
         }
 
