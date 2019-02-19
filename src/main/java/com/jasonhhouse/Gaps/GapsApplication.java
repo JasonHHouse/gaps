@@ -40,6 +40,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -85,6 +86,13 @@ public class GapsApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        String sessionId = null;
+        // Get TMDB Authorizatoin from user,
+        // requires user input so needs to be done early before user walks away
+        if (properties.getMovieDbListId().length() > 0) {
+            sessionId = getTmdbAuthorization();
+        }
+
         if (properties.getPlex().getSearchFromPlex()) {
             findAllPlexMovies();
         }
@@ -102,7 +110,7 @@ public class GapsApplication implements CommandLineRunner {
         printRecommended();
 
         if (StringUtils.isNotEmpty(properties.getMovieDbListId())) {
-            createTmdbList();
+            createTmdbList(sessionId);
         }
     }
 
@@ -142,7 +150,7 @@ public class GapsApplication implements CommandLineRunner {
         }
 
         for (File file : files) {
-            if(file.isDirectory() && properties.getFolder().getRecursive()) {
+            if (file.isDirectory() && properties.getFolder().getRecursive()) {
                 searchFolders(file);
                 continue;
             }
@@ -175,7 +183,7 @@ public class GapsApplication implements CommandLineRunner {
     /**
      * Using TMDB api (V3), get access to user list and add recommended movies to
      */
-    private void createTmdbList() {
+    private @Nullable String getTmdbAuthorization() {
         // Create the request_token request
         OkHttpClient client = new OkHttpClient();
 
@@ -203,7 +211,7 @@ public class GapsApplication implements CommandLineRunner {
             System.in.read();
         } catch (Exception e) {
             logger.error("Unable to authenticate tmdb, and add movies to list. ", e);
-            return;
+            return null;
         }
 
         // Create the sesssion ID for MovieDB using the approved token
@@ -215,34 +223,44 @@ public class GapsApplication implements CommandLineRunner {
                 .addHeader("content-type", "application/json")
                 .build();
 
-        Response response;
-        String session_id;
+        Response response = null;
+
         try {
             response = client.newCall(request).execute();
             JSONObject sessionResponse = new JSONObject(response.body().string());
-            session_id = sessionResponse.getString("session_id"); // TODO: Save sessionID to file for reuse
+            return sessionResponse.getString("session_id"); // TODO: Save sessionID to file for reuse
         } catch (IOException e) {
             logger.error("Unable to create session id: " + e.getMessage());
-            return;
+            return null;
         }
+    }
+
+    /**
+     * Using TMDB api (V3), get access to user list and add recommended movies to
+     */
+    private void createTmdbList(@Nullable String sessionId) {
+        OkHttpClient client;
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body;
 
         // Add item to TMDB list specified by user
         int counter = 0;
-        if (session_id != null)
+        if (sessionId != null)
             for (Movie m : recommended) {
                 client = new OkHttpClient();
 
                 body = RequestBody.create(mediaType, "{\"media_id\":" + m.getMedia_id() + "}");
                 String url = "https://api.themoviedb.org/3/list/" + properties.getMovieDbListId()
-                        + "/add_item?session_id=" + session_id + "&api_key=" + properties.getMovieDbApiKey();
-                request = new Request.Builder()
+                        + "/add_item?session_id=" + sessionId + "&api_key=" + properties.getMovieDbApiKey();
+                Request request = new Request.Builder()
                         .url(url)
                         .post(body)
                         .addHeader("content-type", "application/json;charset=utf-8")
                         .build();
 
                 try {
-                    response = client.newCall(request).execute();
+
+                    Response response = client.newCall(request).execute();
                     if (response.isSuccessful())
                         counter++;
                 } catch (IOException e) {
