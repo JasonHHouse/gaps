@@ -153,7 +153,7 @@ Multiple URL:
 docker run -t -e DBAPIKEY=myapikey -e PLEXADDRESS=http://192.168.0.10:32400/library/sections/1/all/?X-Plex-Token=plextoken,http://192.168.0.10:32400/library/sections/2/all/?X-Plex-Token=plextoken  -e WRITETOFILE=true gaps
 ```
 
-###Option Properties in Docker
+### Option Properties in Docker
 
 CONNECT_TIMEOUT
 
