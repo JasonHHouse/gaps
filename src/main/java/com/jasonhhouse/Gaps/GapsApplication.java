@@ -350,6 +350,13 @@ public class GapsApplication implements CommandLineRunner {
 
         int count = 0;
         for (Movie movie : ownedMovies) {
+
+            //Print the count first to handle the continue if block or the regular searching case
+            if (count % 10 == 0) {
+                logger.info(((int) ((count) / ((double) (ownedMovies.size())) * 100)) + "% Complete. Processed " + count + " files of " + ownedMovies.size() + ". ");
+            }
+            count++;
+
             if (searched.contains(movie)) {
                 continue;
             }
@@ -477,10 +484,6 @@ public class GapsApplication implements CommandLineRunner {
                         logger.error("Error sleeping", e);
                     }
 
-                    count++;
-                    if (count % 10 == 0) {
-                        logger.info(((int) ((count) / ((double) (ownedMovies.size())) * 100)) + "% Complete. Processed " + count + " files of " + ownedMovies.size() + ". ");
-                    }
                 }
             } catch (UnsupportedEncodingException e) {
                 logger.error("Error parsing movie URL " + movie, e);
