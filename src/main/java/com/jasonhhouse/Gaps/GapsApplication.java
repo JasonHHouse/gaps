@@ -312,7 +312,8 @@ public class GapsApplication implements CommandLineRunner {
 
                 for (int i = 0; i < nodeList.getLength(); i++) {
                     Node node = nodeList.item(i);
-                    String title = node.getAttributes().getNamedItem("title").getNodeValue();
+                    //Files can't have : so need to remove to find matches correctly
+                    String title = node.getAttributes().getNamedItem("title").getNodeValue().replaceAll(":", "");
                     if (node.getAttributes().getNamedItem("year") == null) {
                         logger.warn("Year not found for " + title);
                         continue;
@@ -443,12 +444,13 @@ public class GapsApplication implements CommandLineRunner {
                             for (int i = 0; i < parts.length(); i++) {
                                 JSONObject part = parts.getJSONObject(i);
                                 int media_id = part.getInt("id");
-                                String title = part.getString("original_title");
+                                //Files can't have : so need to remove to find matches correctly
+                                String title = part.getString("original_title").replaceAll(":", "");
                                 int year;
                                 try {
                                     year = Integer.parseInt(part.getString("release_date").substring(0, 4));
                                 } catch (StringIndexOutOfBoundsException | NumberFormatException e) {
-                                    logger.warn("No year found for " + title + ". Value returned was '" + part.getString("release_date") + "'. Skipping adding the movie to recommended list.");
+                                    logger.warn("No year found for " + title + ". Value returned was '" + part.getString("release_date") + "'. Not adding the movie to recommended list.");
                                     continue;
                                 }
                                 Movie movieFromCollection = new Movie(media_id, title, year, collectionName);
@@ -474,7 +476,7 @@ public class GapsApplication implements CommandLineRunner {
                     logger.error("Error searching for movie " + movie, e);
                     logger.error("URL: " + searchMovieUrl);
                 } catch (JSONException e) {
-                    logger.error("Error parsing movie " + movie, e);
+                    logger.error("Error parsing movie " + movie + ". " + e.getMessage());
                     logger.error("URL: " + searchMovieUrl);
                 } finally {
                     try {
