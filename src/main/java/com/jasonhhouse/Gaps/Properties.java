@@ -10,7 +10,6 @@
 
 package com.jasonhhouse.Gaps;
 
-import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -23,9 +22,6 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class Properties {
 
-    @NotNull(message = "Plex Movie Urls cannot be null")
-    private List<String> movieUrls;
-
     @NotNull(message = "Movie DB API Key cannot be null")
     private String movieDbApiKey;
 
@@ -35,15 +31,17 @@ public class Properties {
     @NotNull(message = "Plex property cannot be null")
     private PlexProperties plex;
 
+    @NotNull(message = "Folder property cannot be null")
+    private FolderProperties folder;
+
     private String movieDbListId;
 
-
-    public List<String> getMovieUrls() {
-        return movieUrls;
+    public FolderProperties getFolder() {
+        return folder;
     }
 
-    public void setMovieUrls(List<String> movieUrls) {
-        this.movieUrls = movieUrls;
+    public void setFolder(FolderProperties folder) {
+        this.folder = folder;
     }
 
     public String getMovieDbApiKey() {

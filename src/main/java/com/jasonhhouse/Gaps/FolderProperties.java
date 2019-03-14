@@ -13,57 +13,57 @@ package com.jasonhhouse.Gaps;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 
-public class PlexProperties {
+public class FolderProperties {
 
-    @NotNull(message = "Search from plex boolean cannot be null")
-    private Boolean searchFromPlex;
+    @NotNull(message = "Search from folder boolean cannot be null")
+    private Boolean searchFromFolder;
 
-    private Integer connectTimeout;
+    private Boolean recursive;
 
-    private Integer writeTimeout;
+    private List<String> folders;
 
-    private Integer readTimeout;
+    private List<String> movieFormats;
 
-    private List<String> movieUrls;
+    private String yearRegex;
 
-    public Boolean getSearchFromPlex() {
-        return searchFromPlex;
+    public String getYearRegex() {
+        return yearRegex;
     }
 
-    public void setSearchFromPlex(Boolean searchFromPlex) {
-        this.searchFromPlex = searchFromPlex;
+    public void setYearRegex(String yearRegex) {
+        this.yearRegex = yearRegex;
     }
 
-    public Integer getConnectTimeout() {
-        return connectTimeout;
+    public Boolean getRecursive() {
+        return recursive;
     }
 
-    public void setConnectTimeout(Integer connectTimeout) {
-        this.connectTimeout = connectTimeout;
+    public void setRecursive(Boolean recursive) {
+        this.recursive = recursive;
     }
 
-    public Integer getWriteTimeout() {
-        return writeTimeout;
+    public Boolean getSearchFromFolder() {
+        return searchFromFolder;
     }
 
-    public void setWriteTimeout(Integer writeTimeout) {
-        this.writeTimeout = writeTimeout;
+    public void setSearchFromFolder(Boolean searchFromFolder) {
+        this.searchFromFolder = searchFromFolder;
     }
 
-    public Integer getReadTimeout() {
-        return readTimeout;
+    public List<String> getFolders() {
+        return folders;
     }
 
-    public void setReadTimeout(Integer readTimeout) {
-        this.readTimeout = readTimeout;
+    public void setFolders(List<String> folders) {
+        this.folders = folders;
     }
 
-    public List<String> getMovieUrls() {
-        return movieUrls;
+    public List<String> getMovieFormats() {
+        return movieFormats;
     }
 
-    public void setMovieUrls(List<String> movieUrls) {
-        this.movieUrls = movieUrls;
+    public void setMovieFormats(List<String> movieFormats) {
+        this.movieFormats = movieFormats;
     }
 
 }

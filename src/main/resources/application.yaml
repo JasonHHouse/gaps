@@ -13,15 +13,9 @@ gaps:
   #movieUrls:
   #  - http://127.0.0.1:32400/library/sections/1/all/?X-Plex-Token={My-Plex-Token}
 
-  #Mulitple
-  #movieUrls:
-  #  - http://127.0.0.1:32400/library/sections/1/all/?X-Plex-Token={My-Plex-Token}
-  #  - http://127.0.0.1:32400/library/sections/2/all/?X-Plex-Token={My-Plex-Token}
-  #  - http://127.0.0.1:32400/library/sections/3/all/?X-Plex-Token={My-Plex-Token}
-  movieUrls:
-    - #Go to https://www.themoviedb.org and make an API Key, place that key here
-    #movieDbApiKey: {key}
-  movieDbApiKey:
+  #Go to https://www.themoviedb.org and make an API Key, place that key here
+  #movieDbApiKey: {key}
+  movieDbApiKey: asdb-asdf
 
   # Optional
   # Go to https://www.themoviedb.org and make a custom list for GAPS https://www.themoviedb.org/list/<id number>
@@ -31,11 +25,63 @@ gaps:
   #Should Gaps write out to a file as well as console
   writeToFile: true
 
+
+  #######################################
+  #
+  #Can read from a folder, Plex, or both
+  #At least, one of the two property groups needs to be filled in though
+  #
+  #######################################
+
+  #List of folders where movies can be pulled from
+  folder:
+    #Required
+    searchFromFolder: true
+
+    #Required if searching from folders
+    #List of folders to search in
+    folders:
+      - /Users/jhouse/Movies
+
+    #Required if searching from folders
+    #If the subfolder should be searched in
+    recursive: true
+
+    #Required if searching from folders
+    #Add any movie formats as needed
+    movieFormats:
+      - avi
+      - mkv
+      - mp4
+      - mov
+      - webm
+      - vob
+      - flv
+      - mts
+      - m2ts
+      - m4p
+      - m4v
+      - 3gp
+      - 3g2
+
+    #Movie Regex
+    #Expected format is Movie Name (Year)
+    #Example: The Fast and the Furious (2001)
+    yearRegex: \(([1-2][0-9][0-9][0-9])\)
+
   #Plex connection timeouts when querying for all movies in the Plex section. Time is in seconds. Default is 180 seconds
   plex:
+    searchFromPlex: false
     connectTimeout: 180
     writeTimeout: 180
     readTimeout: 180
+
+    #Mulitple
+    #movieUrls:
+    #  - http://127.0.0.1:32400/library/sections/1/all/?X-Plex-Token={My-Plex-Token}
+    #  - http://127.0.0.1:32400/library/sections/2/all/?X-Plex-Token={My-Plex-Token}
+    #  - http://127.0.0.1:32400/library/sections/3/all/?X-Plex-Token={My-Plex-Token}
+    movieUrls:
 
   #Adjust logging as you see fit
 logging:

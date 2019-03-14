@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -36,7 +38,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,12 +70,12 @@ public class GapsApplication implements CommandLineRunner {
 
     private final Set<Movie> recommended;
 
-    private final Set<Movie> plexMovies;
+    private final Set<Movie> ownedMovies;
 
     @Autowired
     public GapsApplication(Properties properties) {
         this.properties = properties;
-        this.plexMovies = new HashSet<>();
+        this.ownedMovies = new HashSet<>();
         this.searched = new HashSet<>();
         this.recommended = new TreeSet<>();
     }
@@ -82,14 +86,22 @@ public class GapsApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        String sessionId = null;
         // Get TMDB Authorizatoin from user,
         // requires user input so needs to be done early before user walks away
-        if (properties.getMovieDbListId().length() > 0){
-            getTmdbAuthorization();
+        if (properties.getMovieDbListId().length() > 0) {
+            sessionId = getTmdbAuthorization();
         }
-        
-        findAllPlexMovies();
-        searchForPlexMovie();
+
+        if (properties.getPlex().getSearchFromPlex()) {
+            findAllPlexMovies();
+        }
+
+        if (properties.getFolder().getSearchFromFolder()) {
+            findAllFolderMovies();
+        }
+
+        searchForMovies();
 
         if (properties.getWriteToFile()) {
             writeToFile();
@@ -97,14 +109,81 @@ public class GapsApplication implements CommandLineRunner {
         //Always write to command line
         printRecommended();
 
-        if (properties.getMovieDbListId() != null) {
-            createTmdbList();
+        if (StringUtils.isNotEmpty(properties.getMovieDbListId())) {
+            createTmdbList(sessionId);
         }
     }
 
-    private String session_id = null;
+    private void findAllFolderMovies() {
+        if (CollectionUtils.isEmpty(properties.getFolder().getFolders())) {
+            logger.error("folders property cannot be empty when searchFromFolder is true");
+            return;
+        }
 
-    private void getTmdbAuthorization() {
+        if (CollectionUtils.isEmpty(properties.getFolder().getMovieFormats())) {
+            logger.error("movie formats property cannot be empty when searchFromFolder is true");
+            return;
+        }
+
+        for (String strFolder : properties.getFolder().getFolders()) {
+            File folder = new File(strFolder);
+            searchFolders(folder);
+        }
+
+    }
+
+    private void searchFolders(File folder) {
+        if (!folder.exists()) {
+            logger.warn("Folder in folders property does not exist: " + folder);
+            return;
+        }
+
+        if (!folder.isDirectory()) {
+            logger.warn("Folder in folders property is not a directory: " + folder);
+            return;
+        }
+
+        File[] files = folder.listFiles();
+        if (files == null) {
+            logger.warn("Folder in folders property is empty: " + folder);
+            return;
+        }
+
+        for (File file : files) {
+            if (file.isDirectory() && properties.getFolder().getRecursive()) {
+                searchFolders(file);
+                continue;
+            }
+
+            String extension = FilenameUtils.getExtension(file.toString());
+
+            if (properties.getFolder().getMovieFormats().contains(extension)) {
+                String fullMovie = FilenameUtils.getBaseName(file.toString());
+                Pattern pattern = Pattern.compile(properties.getFolder().getYearRegex());
+                Matcher matcher = pattern.matcher(fullMovie);
+
+                if (!matcher.find()) {
+                    logger.warn("No regex matches found for " + fullMovie);
+                    continue;
+                }
+
+                String year = matcher.group(matcher.groupCount()).replaceAll("[)(]", "");
+                String title = fullMovie.substring(0, fullMovie.indexOf(" ("));
+
+                Movie movie = new Movie(-1, title, Integer.parseInt(year), "");
+                ownedMovies.add(movie);
+            } else {
+                logger.warn("Skipping file " + file);
+            }
+
+
+        }
+    }
+
+    /**
+     * Using TMDB api (V3), get access to user list and add recommended movies to
+     */
+    private @Nullable String getTmdbAuthorization() {
         // Create the request_token request
         OkHttpClient client = new OkHttpClient();
 
@@ -132,7 +211,7 @@ public class GapsApplication implements CommandLineRunner {
             System.in.read();
         } catch (Exception e) {
             logger.error("Unable to authenticate tmdb, and add movies to list. ", e);
-            return;
+            return null;
         }
 
         // Create the sesssion ID for MovieDB using the approved token
@@ -149,30 +228,30 @@ public class GapsApplication implements CommandLineRunner {
         try {
             response = client.newCall(request).execute();
             JSONObject sessionResponse = new JSONObject(response.body().string());
-            session_id = sessionResponse.getString("session_id"); // TODO: Save sessionID to file for reuse
+            return sessionResponse.getString("session_id"); // TODO: Save sessionID to file for reuse
         } catch (IOException e) {
             logger.error("Unable to create session id: " + e.getMessage());
-            return;
+            return null;
         }
     }
 
     /**
      * Using TMDB api (V3), get access to user list and add recommended movies to
      */
-    private void createTmdbList() {
+    private void createTmdbList(@Nullable String sessionId) {
         OkHttpClient client;
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body;
 
         // Add item to TMDB list specified by user
         int counter = 0;
-        if (session_id != null)
+        if (sessionId != null)
             for (Movie m : recommended) {
                 client = new OkHttpClient();
 
                 body = RequestBody.create(mediaType, "{\"media_id\":" + m.getMedia_id() + "}");
                 String url = "https://api.themoviedb.org/3/list/" + properties.getMovieDbListId()
-                        + "/add_item?session_id=" + session_id + "&api_key=" + properties.getMovieDbApiKey();
+                        + "/add_item?session_id=" + sessionId + "&api_key=" + properties.getMovieDbApiKey();
                 Request request = new Request.Builder()
                         .url(url)
                         .post(body)
@@ -203,10 +282,10 @@ public class GapsApplication implements CommandLineRunner {
                 .writeTimeout(properties.getPlex().getWriteTimeout(), TimeUnit.SECONDS)
                 .readTimeout(properties.getPlex().getReadTimeout(), TimeUnit.SECONDS)
                 .build();
-        List<String> urls = properties.getMovieUrls();
+        List<String> urls = properties.getPlex().getMovieUrls();
 
         if (CollectionUtils.isEmpty(urls)) {
-            logger.error("No URLs added to plexMovieUrls. Check your application.yaml file.");
+            logger.info("No URLs added to plexMovieUrls. Check your application.yaml file if needed.");
             return;
         }
 
@@ -233,16 +312,17 @@ public class GapsApplication implements CommandLineRunner {
 
                 for (int i = 0; i < nodeList.getLength(); i++) {
                     Node node = nodeList.item(i);
-                    String title = node.getAttributes().getNamedItem("title").getNodeValue();
+                    //Files can't have : so need to remove to find matches correctly
+                    String title = node.getAttributes().getNamedItem("title").getNodeValue().replaceAll(":", "");
                     if (node.getAttributes().getNamedItem("year") == null) {
                         logger.warn("Year not found for " + title);
                         continue;
                     }
                     String year = node.getAttributes().getNamedItem("year").getNodeValue();
                     Movie movie = new Movie(-1, title, Integer.parseInt(year), "");
-                    plexMovies.add(movie);
+                    ownedMovies.add(movie);
                 }
-                logger.info(plexMovies.size() + " movies found in plex");
+                logger.info(ownedMovies.size() + " movies found in plex");
 
             } catch (IOException e) {
                 logger.error("Error connecting to Plex to get Movie list", e);
@@ -260,7 +340,7 @@ public class GapsApplication implements CommandLineRunner {
      * optimize some network calls, we add movies found in a collection and in plex to our already searched list, so we
      * don't re-query collections again and again.
      */
-    private void searchForPlexMovie() {
+    private void searchForMovies() {
         logger.info("Searching for Movie Collections...");
         OkHttpClient client = new OkHttpClient();
 
@@ -270,7 +350,14 @@ public class GapsApplication implements CommandLineRunner {
         }
 
         int count = 0;
-        for (Movie movie : plexMovies) {
+        for (Movie movie : ownedMovies) {
+
+            //Print the count first to handle the continue if block or the regular searching case
+            if (count % 10 == 0) {
+                logger.info(((int) ((count) / ((double) (ownedMovies.size())) * 100)) + "% Complete. Processed " + count + " files of " + ownedMovies.size() + ". ");
+            }
+            count++;
+
             if (searched.contains(movie)) {
                 continue;
             }
@@ -357,17 +444,18 @@ public class GapsApplication implements CommandLineRunner {
                             for (int i = 0; i < parts.length(); i++) {
                                 JSONObject part = parts.getJSONObject(i);
                                 int media_id = part.getInt("id");
-                                String title = part.getString("original_title");
+                                //Files can't have : so need to remove to find matches correctly
+                                String title = part.getString("original_title").replaceAll(":", "");
                                 int year;
                                 try {
                                     year = Integer.parseInt(part.getString("release_date").substring(0, 4));
                                 } catch (StringIndexOutOfBoundsException | NumberFormatException e) {
-                                    logger.warn("No year found for " + title + ". Value returned was '" + part.getString("release_date") + "'. Skipping adding the movie to recommended list.");
+                                    logger.warn("No year found for " + title + ". Value returned was '" + part.getString("release_date") + "'. Not adding the movie to recommended list.");
                                     continue;
                                 }
                                 Movie movieFromCollection = new Movie(media_id, title, year, collectionName);
 
-                                if (plexMovies.contains(movieFromCollection)) {
+                                if (ownedMovies.contains(movieFromCollection)) {
                                     searched.add(movieFromCollection);
                                 } else if (!searched.contains(movieFromCollection) && year != 0 && year < 2019) {
                                     recommended.add(movieFromCollection);
@@ -388,7 +476,7 @@ public class GapsApplication implements CommandLineRunner {
                     logger.error("Error searching for movie " + movie, e);
                     logger.error("URL: " + searchMovieUrl);
                 } catch (JSONException e) {
-                    logger.error("Error parsing movie " + movie, e);
+                    logger.error("Error parsing movie " + movie + ". " + e.getMessage());
                     logger.error("URL: " + searchMovieUrl);
                 } finally {
                     try {
@@ -398,10 +486,6 @@ public class GapsApplication implements CommandLineRunner {
                         logger.error("Error sleeping", e);
                     }
 
-                    count++;
-                    if (count % 10 == 0) {
-                        logger.info(((int) ((count) / ((double) (plexMovies.size())) * 100)) + "% Complete. Processed " + count + " files of " + plexMovies.size() + ". ");
-                    }
                 }
             } catch (UnsupportedEncodingException e) {
                 logger.error("Error parsing movie URL " + movie, e);
