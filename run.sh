@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-java -jar Gaps-0.0.3.jar
+java -jar Gaps-0.0.4.jar
 pause
