@@ -13,7 +13,7 @@ function onSubmitGapsSearch() {
         connectTimeout: $('#connect_timeout').val(),
         writeTimeout: $('#write_timeout').val(),
         readTimeout: $('#read_timeout').val(),
-        movieUrls: []
+        movieUrls: [$('#plex_movie_urls').val()]
     };
 
     $.ajax({

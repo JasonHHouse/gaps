@@ -34,12 +34,16 @@ public final class Movie implements Comparable<Movie> {
         return media_id;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
-    int getYear() {
+    public int getYear() {
         return year;
+    }
+
+    public String getCollection() {
+        return collection;
     }
 
     @Override

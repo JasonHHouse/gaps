@@ -44,7 +44,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class GapsSearch {
+public class GapsSearch{
 
     private final Logger logger = LoggerFactory.getLogger(GapsSearch.class);
 
@@ -63,11 +63,11 @@ public class GapsSearch {
         this.recommended = new TreeSet<>();
     }
 
-    public void run() {
+    public Set<Movie> run() {
         String sessionId = null;
         // Get TMDB Authorizatoin from user,
         // requires user input so needs to be done early before user walks away
-        if (properties.getMovieDbListId().length() > 0) {
+        if (StringUtils.isNotEmpty(properties.getMovieDbListId())) {
             sessionId = getTmdbAuthorization();
         }
 
@@ -90,6 +90,8 @@ public class GapsSearch {
         if (StringUtils.isNotEmpty(properties.getMovieDbListId())) {
             createTmdbList(sessionId);
         }
+
+        return recommended;
     }
 
     private void findAllFolderMovies() {
@@ -288,7 +290,7 @@ public class GapsSearch {
                 String expression = "/MediaContainer/Video";
                 NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
 
-                for (int i = 0; i < nodeList.getLength(); i++) {
+                for (int i = 0; i < nodeList.getLength() && i < 5; i++) {
                     Node node = nodeList.item(i);
                     //Files can't have : so need to remove to find matches correctly
                     String title = node.getAttributes().getNamedItem("title").getNodeValue().replaceAll(":", "");
