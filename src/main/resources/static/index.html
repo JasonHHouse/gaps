@@ -64,15 +64,14 @@
             <div class="row blue darken-3">
                 <h5 class="col s12">Plex</h5>
                 <p class="col s12">Search using Plex Movie Urls</p>
+                <label class="col s12 grey-text text-lighten-4">
+                    <input id="search_plex" type="checkbox" class="filled-in" checked="checked" onclick="searchPlexChanged(this);"/>
+                    <span>Search Plex</span>
+                </label>
+                <p class="col s12"></p>
             </div>
 
             <div class="row">
-                <div class="col s12">
-                    <label>
-                        <input id="search_plex" type="checkbox" class="filled-in" checked="checked"/>
-                        <span>Search Plex</span>
-                    </label>
-                </div>
 
                 <div class="input-field col s12">
                         <textarea
@@ -113,28 +112,25 @@
             <div class="row blue darken-3">
                 <h5 class="col s12">Folder</h5>
                 <p class="col s12">Search your local or remote folder system</p>
+                <label class="col s12">
+                    <input id="search_folder" type="checkbox" class="filled-in white-text" onclick="searchFolderChanged(this);"/>
+                    <span>Search Folder</span>
+                </label>
             </div>
             <div class="row">
-
-                <div class="col s2">
-                    <label>
-                        <input id="search_folder" type="checkbox" class="filled-in"/>
-                        <span>Search Folder</span>
-                    </label>
-                </div>
 
                 <p class="col s12">List of folders to search for movies</p>
                 <div class="input-field col s6">
                         <textarea
                                 placeholder="/home/{username}/movies, C:/movies, etc"
-                                id="folder_directory" class="materialize-textarea grey-text text-lighten-2"></textarea>
+                                id="folder_directory" class="materialize-textarea grey-text text-lighten-2 " disabled></textarea>
                     <label for="folder_directory">Folders to Search</label>
                 </div>
 
                 <p class="col s12">If the subfolders should be searched</p>
                 <div class="col s2">
                     <label>
-                        <input id="folder_recursive" type="checkbox" class="filled-in" checked="checked"/>
+                        <input id="folder_recursive" type="checkbox" class="filled-in" checked="checked" disabled/>
                         <span>Search Recursively</span>
                     </label>
                 </div>
@@ -144,7 +140,7 @@
                         <textarea
                                 placeholder="avi
                                              mkv"
-                                id="movie_formats" class="materialize-textarea grey-text text-lighten-2">avi&#13;&#10mkv&#13;&#10mp4&#13;&#10mov&#13;&#10webm&#13;&#10vob&#13;&#10flv&#13;&#10mts&#13;&#10m2ts&#13;&#10m4p&#13;&#10m4v&#13;&#103gp&#13;&#103g2</textarea>
+                                id="movie_formats" class="materialize-textarea grey-text text-lighten-2" disabled>avi&#13;&#10mkv&#13;&#10mp4&#13;&#10mov&#13;&#10webm&#13;&#10vob&#13;&#10flv&#13;&#10mts&#13;&#10m2ts&#13;&#10m4p&#13;&#10m4v&#13;&#103gp&#13;&#103g2</textarea>
                     <label for="movie_formats">Folders to Search</label>
                 </div>
 
@@ -152,9 +148,24 @@
                     (2001)</i> be <i>{Movie Name} ({Year})</i></p>
                 <div class="input-field col s6">
                     <input placeholder="{Movie Name} ({Year})" value="\(([1-2][0-9][0-9][0-9])\)"
-                           id="folder_regex" type="text" class="validate grey-text text-lighten-2">
+                           id="folder_regex" type="text" class="validate grey-text text-lighten-2" disabled>
                     <label for="folder_regex">Movie Regex*</label>
                 </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row grey darken-4 grey-text text-lighten-2">
+        <form class="col s12">
+            <div class="row blue darken-3">
+                <h5 class="col s12">Submit</h5>
+                <p class="col s12">Execute your Search</p>
+            </div>
+            <div class="row">
+                <div class="col s2">
+                    <a class="waves-effect waves-light btn yellow darken-2 black">Submit</a>
+                </div>
+
             </div>
         </form>
     </div>
@@ -162,7 +173,9 @@
 </div>
 
 <!--JavaScript at end of body for optimized loading-->
+<script src="js/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="js/materialize.min.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
 
 </body>
 </html>
