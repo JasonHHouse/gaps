@@ -13,7 +13,7 @@ package com.jasonhhouse.Gaps;
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 
-final class Movie implements Comparable<Movie> {
+public final class Movie implements Comparable<Movie> {
 
     private final String name;
 
