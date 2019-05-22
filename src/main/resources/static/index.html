@@ -35,7 +35,7 @@
 
     <div class="row grey lighten-3">
         <form class="col s12">
-            <div class="row blue lighten-2 grey-text text-darken-3">
+            <div class="row blue lighten-3 grey-text text-darken-3">
                 <h5 class="col s12">Gaps</h5>
 
                 <p class="col s12">Gaps searches through your Plex Server or folders for all movies, then queries
@@ -71,7 +71,7 @@
 
     <div class="row grey lighten-3">
         <form class="col s12">
-            <div class="row blue lighten-2 grey-text text-darken-3">
+            <div class="row blue lighten-3 grey-text text-darken-3">
                 <h5 class="col s12">Plex</h5>
                 <p class="col s12">Search using Plex Movie Urls</p>
                 <label class="col s12">
@@ -119,7 +119,7 @@
 
     <div class="row grey lighten-3">
         <form class="col s12">
-            <div class="row blue lighten-2 grey-text text-darken-3">
+            <div class="row blue lighten-3 grey-text text-darken-3">
                 <h5 class="col s12">Folder</h5>
                 <p class="col s12">Search your local or remote folder system</p>
                 <label class="col s12">
@@ -171,6 +171,9 @@
         <div class="modal-content">
             <h4 id="searchModelTitle">Searching</h4>
             <div id="searchingBody"></div>
+            <div id="progressContainer" class="progress">
+                <div id="progressBar" class="determinate" style="width: 0%"></div>
+            </div>
         </div>
         <div class="modal-footer">
             <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
