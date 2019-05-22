@@ -70,7 +70,7 @@ function polling() {
                 if(keepChecking) {
                     var obj = JSON.parse(data);
                     if(!obj.searchedMovieCount && !obj.totalMovieCount && obj.totalMovieCount === 0) {
-                        $('#searchingBody').text("Looking for movies...");
+                        $('#searchingBody').text("Searching for movies...");
                     } else {
                         $('#progressContainer').show();
                         var percentage = Math.trunc(obj.searchedMovieCount / obj.totalMovieCount * 100);
