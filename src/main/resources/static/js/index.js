@@ -1,10 +1,14 @@
-"use strict";
+"use strict"
 
 function start() {
-
+    $('.modal').modal()
 }
 
+var keepChecking
+
 function onSubmitGapsSearch() {
+    keepChecking = true
+
     var gaps = {
         movieDbApiKey: $('#movie_db_api_key').val(),
         writeToFile: true,
@@ -14,40 +18,68 @@ function onSubmitGapsSearch() {
         writeTimeout: $('#write_timeout').val(),
         readTimeout: $('#read_timeout').val(),
         movieUrls: [$('#plex_movie_urls').val()]
-    };
+    }
 
     $.ajax({
         type: "POST",
         url: "http://localhost:8080/submit",
         data: JSON.stringify(gaps),
-        contentType:"application/json"
-    });
+        contentType: "application/json",
+        success: function (msg) {
+            keepChecking = false
+            $('#searchingBody').text(JSON.stringify(msg))
+        },
+        error: function (err) {
+            alert(err.responseText)
+        }
+    })
+
+    $('#searchModal').modal('open')
+    
+    polling()
+}
+
+function polling() {
+    if(keepChecking) {
+        $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/status",
+        contentType: "application/json",
+        success: function(data) {
+                if(keepChecking) {
+                    var obj = JSON.parse(data)
+                    $('#searchingBody').text(obj.searchedMovieCount + ' of ' + obj.totalMovieCount + " movies searched.")
+                    setTimeout(polling, 2000)
+                }
+            }
+        })
+    }
 }
 
 function searchPlexChanged(checkbox) {
     if (checkbox.checked) {
-        $("#plex_movie_urls").prop('disabled', false);
-        $("#connect_timeout").prop('disabled', false);
-        $("#write_timeout").prop('disabled', false);
-        $("#read_timeout").prop('disabled', false);
+        $("#plex_movie_urls").prop('disabled', false)
+        $("#connect_timeout").prop('disabled', false)
+        $("#write_timeout").prop('disabled', false)
+        $("#read_timeout").prop('disabled', false)
     } else {
-        $("#plex_movie_urls").prop('disabled', true);
-        $("#connect_timeout").prop('disabled', true);
-        $("#write_timeout").prop('disabled', true);
-        $("#read_timeout").prop('disabled', true);
+        $("#plex_movie_urls").prop('disabled', true)
+        $("#connect_timeout").prop('disabled', true)
+        $("#write_timeout").prop('disabled', true)
+        $("#read_timeout").prop('disabled', true)
     }
 }
 
 function searchFolderChanged(checkbox) {
     if (checkbox.checked) {
-        $("#folder_directory").prop('disabled', false);
-        $("#folder_recursive").removeAttr("disabled");
-        $("#movie_formats").prop('disabled', false);
-        $("#folder_regex").prop('disabled', false);
+        $("#folder_directory").prop('disabled', false)
+        $("#folder_recursive").removeAttr("disabled")
+        $("#movie_formats").prop('disabled', false)
+        $("#folder_regex").prop('disabled', false)
     } else {
-        $("#folder_directory").prop('disabled', true);
-        $("#folder_recursive").attr("disabled", true);
-        $("#movie_formats").prop('disabled', true);
-        $("#folder_regex").prop('disabled', true);
+        $("#folder_directory").prop('disabled', true)
+        $("#folder_recursive").attr("disabled", true)
+        $("#movie_formats").prop('disabled', true)
+        $("#folder_regex").prop('disabled', true)
     }
 }

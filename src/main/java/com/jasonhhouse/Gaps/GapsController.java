@@ -1,6 +1,8 @@
 package com.jasonhhouse.Gaps;
 
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,12 +32,11 @@ public class GapsController {
 
     @RequestMapping(value = "submit", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
-    public DeferredResult<ResponseEntity<Set<Movie>>> submit(@RequestBody Gaps gaps) {
+    public Future<ResponseEntity<Set<Movie>>> submit(@RequestBody Gaps gaps) {
         logger.info("submit()");
 
-        final DeferredResult<ResponseEntity<Set<Movie>>> deferredResult = new DeferredResult<>();
-        runInOtherThread(gaps, deferredResult);
-        return deferredResult;
+        Future future = runInOtherThread(gaps);
+        return future;
     }
 
     @RequestMapping(value = "/status", method = RequestMethod.GET)
@@ -47,7 +48,7 @@ public class GapsController {
         return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
     }
 
-    private void runInOtherThread(Gaps gaps, DeferredResult<ResponseEntity<Set<Movie>>> deferredResult) {
+    private Future<ResponseEntity<Set<Movie>>> runInOtherThread(Gaps gaps) {
         Properties properties = new Properties();
         properties.setMovieDbApiKey(gaps.getMovieDbApiKey());
         properties.setWriteToFile(false);
@@ -64,10 +65,7 @@ public class GapsController {
         folderProperties.setSearchFromFolder(false);
         properties.setFolder(folderProperties);
 
-        Set<Movie> recommendMovies = gapsSearch.run(properties);
-
-        ResponseEntity<Set<Movie>> responseEntity = new ResponseEntity<>(recommendMovies, HttpStatus.OK);
-        deferredResult.setResult(responseEntity);
+        return gapsSearch.run(properties);
     }
 
 

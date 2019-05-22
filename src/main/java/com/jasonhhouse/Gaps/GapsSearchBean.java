@@ -14,8 +14,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
@@ -38,6 +40,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -62,14 +66,16 @@ public class GapsSearchBean implements GapsSearch {
         this.searched = new HashSet<>();
         this.recommended = new TreeSet<>();
 
-        totalMovieCount = new AtomicInteger(0);
-        searchedMovieCount = new AtomicInteger(0);
+        totalMovieCount = new AtomicInteger();
+        searchedMovieCount = new AtomicInteger();
     }
 
     @Async
     @Override
-    public Set<Movie> run(Properties properties) {
+    public CompletableFuture<ResponseEntity<Set<Movie>>> run(Properties properties) {
         this.properties = properties;
+        totalMovieCount.set(0);
+        searchedMovieCount.set(0);
 
         String sessionId = null;
         // Get TMDB Authorizatoin from user,
@@ -98,7 +104,15 @@ public class GapsSearchBean implements GapsSearch {
             createTmdbList(sessionId);
         }
 
-        return recommended;
+        Set<Movie> set = new HashSet<>(recommended);
+        CompletableFuture completableFuture = CompletableFuture.supplyAsync(new Supplier<ResponseEntity<Set<Movie>>>() {
+
+            @Override
+            public ResponseEntity<Set<Movie>> get() {
+                return new ResponseEntity<>(set, HttpStatus.OK);
+            }
+        });
+        return completableFuture;
     }
 
     @Override
@@ -307,7 +321,7 @@ public class GapsSearchBean implements GapsSearch {
                 String expression = "/MediaContainer/Video";
                 NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
 
-                for (int i = 0; i < nodeList.getLength(); i++) {
+                for (int i = 0; i < nodeList.getLength() && i < 11; i++) {
                     Node node = nodeList.item(i);
                     //Files can't have : so need to remove to find matches correctly
                     String title = node.getAttributes().getNamedItem("title").getNodeValue().replaceAll(":", "");
