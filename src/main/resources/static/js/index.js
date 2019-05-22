@@ -36,7 +36,7 @@ function onSubmitGapsSearch() {
 
             $('#progressContainer').hide();
             $('#searchingBody').html(buildMovies(movieHtml));
-            $('#searchModelTitle').text(movies.length + ' Movies missing from your collections');
+            $('#searchModelTitle').text(movies.length + ' movies to add to complete your collections');
         },
         error: function (err) {
             alert(err.responseText);
