@@ -88,3 +88,8 @@ logging:
   level:
     root: INFO
 
+spring:
+  mvc:
+    async:
+      request-timeout: -1
+

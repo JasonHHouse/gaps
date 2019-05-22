@@ -22,7 +22,6 @@ public class GapsController {
 
     private final Logger logger = LoggerFactory.getLogger(GapsController.class);
 
-
     private final GapsSearch gapsSearch;
 
     @Autowired
@@ -34,7 +33,6 @@ public class GapsController {
     @ResponseStatus(value = HttpStatus.OK)
     public Future<ResponseEntity<Set<Movie>>> submit(@RequestBody Gaps gaps) {
         logger.info("submit()");
-
         Future future = runInOtherThread(gaps);
         return future;
     }
@@ -42,6 +40,7 @@ public class GapsController {
     @RequestMapping(value = "/status", method = RequestMethod.GET)
     @ResponseBody
     ResponseEntity<String> fetchStatus() {
+        logger.info("fetchStatus()");
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("searchedMovieCount", gapsSearch.getSearchedMovieCount());
         jsonObject.put("totalMovieCount", gapsSearch.getTotalMovieCount());
@@ -66,12 +65,5 @@ public class GapsController {
         properties.setFolder(folderProperties);
 
         return gapsSearch.run(properties);
-    }
-
-
-    @RequestMapping(value = "/test", method = RequestMethod.POST)
-    public ResponseEntity<?> test() {
-        logger.info("test()");
-        return new ResponseEntity<Gaps>(new Gaps(), HttpStatus.OK);
     }
 }

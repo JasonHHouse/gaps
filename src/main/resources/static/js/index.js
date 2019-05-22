@@ -25,9 +25,16 @@ function onSubmitGapsSearch() {
         url: "http://localhost:8080/submit",
         data: JSON.stringify(gaps),
         contentType: "application/json",
-        success: function (msg) {
+        timeout: 10000000,
+        success: function (movies) {
             keepChecking = false
-            $('#searchingBody').text(JSON.stringify(msg))
+            var movieHtml = ""
+            movies.forEach(function(movie) {
+                movieHtml += buildMovieDiv(movie)
+            })
+
+            $('#searchingBody').html(buildMovies(movieHtml))
+            $('#searchModelTitle').text('Results')
         },
         error: function (err) {
             alert(err.responseText)
@@ -37,6 +44,18 @@ function onSubmitGapsSearch() {
     $('#searchModal').modal('open')
     
     polling()
+}
+
+function buildMovies(html) {
+    return '<ul class="collection">' + html + '</ul>'
+}
+
+function buildMovieDiv(movie) {
+    return '<li class="collection-item">' + buildMovie(movie) + '</li>'
+}
+
+function buildMovie(movie) {
+    return movie.name + " (" + movie.year + ") from '" + movie.collection + "'"
 }
 
 function polling() {

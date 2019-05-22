@@ -321,7 +321,7 @@ public class GapsSearchBean implements GapsSearch {
                 String expression = "/MediaContainer/Video";
                 NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
 
-                for (int i = 0; i < nodeList.getLength() && i < 11; i++) {
+                for (int i = 0; i < nodeList.getLength(); i++) {
                     Node node = nodeList.item(i);
                     //Files can't have : so need to remove to find matches correctly
                     String title = node.getAttributes().getNamedItem("title").getNodeValue().replaceAll(":", "");
