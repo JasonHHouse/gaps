@@ -86,5 +86,5 @@ gaps:
   #Adjust logging as you see fit
 logging:
   level:
-    root: DEBUG
+    root: INFO
 
