@@ -21,10 +21,12 @@ public class Gaps {
 
     private List<String> movieUrls;
 
+    private Boolean searchFromFolder;
+
     public Gaps() {
     }
 
-    public Gaps(String movieDbApiKey, Boolean writeToFile, String movieDbListId, Boolean searchFromPlex, Integer connectTimeout, Integer writeTimeout, Integer readTimeout, List<String> movieUrls) {
+    public Gaps(String movieDbApiKey, Boolean writeToFile, String movieDbListId, Boolean searchFromPlex, Integer connectTimeout, Integer writeTimeout, Integer readTimeout, List<String> movieUrls, Boolean searchFromFolder) {
         this.movieDbApiKey = movieDbApiKey;
         this.writeToFile = writeToFile;
         this.movieDbListId = movieDbListId;
@@ -33,6 +35,7 @@ public class Gaps {
         this.writeTimeout = writeTimeout;
         this.readTimeout = readTimeout;
         this.movieUrls = movieUrls;
+        this.searchFromFolder = searchFromFolder;
     }
 
     public String getMovieDbApiKey() {
@@ -99,6 +102,14 @@ public class Gaps {
         this.movieUrls = movieUrls;
     }
 
+    public Boolean getSearchFromFolder() {
+        return searchFromFolder;
+    }
+
+    public void setSearchFromFolder(Boolean searchFromFolder) {
+        this.searchFromFolder = searchFromFolder;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -111,12 +122,13 @@ public class Gaps {
                 Objects.equals(connectTimeout, gaps.connectTimeout) &&
                 Objects.equals(writeTimeout, gaps.writeTimeout) &&
                 Objects.equals(readTimeout, gaps.readTimeout) &&
-                Objects.equals(movieUrls, gaps.movieUrls);
+                Objects.equals(movieUrls, gaps.movieUrls) &&
+                Objects.equals(searchFromFolder, gaps.searchFromFolder);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(movieDbApiKey, writeToFile, movieDbListId, searchFromPlex, connectTimeout, writeTimeout, readTimeout, movieUrls);
+        return Objects.hash(movieDbApiKey, writeToFile, movieDbListId, searchFromPlex, connectTimeout, writeTimeout, readTimeout, movieUrls, searchFromFolder);
     }
 
     @Override
@@ -130,6 +142,8 @@ public class Gaps {
                 ", writeTimeout=" + writeTimeout +
                 ", readTimeout=" + readTimeout +
                 ", movieUrls=" + movieUrls +
+                ", searchFromFolder=" + searchFromFolder +
                 '}';
     }
+
 }

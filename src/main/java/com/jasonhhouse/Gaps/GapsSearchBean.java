@@ -45,6 +45,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.server.ResponseStatusException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -54,11 +55,17 @@ import org.xml.sax.SAXException;
 public class GapsSearchBean implements GapsSearch {
 
     private final Logger logger = LoggerFactory.getLogger(GapsSearchBean.class);
+
     private final Set<Movie> searched;
+
     private final Set<Movie> recommended;
+
     private final Set<Movie> ownedMovies;
+
     private final AtomicInteger totalMovieCount;
+
     private final AtomicInteger searchedMovieCount;
+
     private Properties properties;
 
     public GapsSearchBean() {
@@ -301,45 +308,60 @@ public class GapsSearchBean implements GapsSearch {
         }
 
         for (String url : urls) {
-            Request request = new Request.Builder()
-                    .url(url)
-                    .build();
+            try {
+                Request request = new Request.Builder()
+                        .url(url)
+                        .build();
 
-            try (Response response = client.newCall(request).execute()) {
-                String body = response.body() != null ? response.body().string() : null;
+                try (Response response = client.newCall(request).execute()) {
+                    String body = response.body() != null ? response.body().string() : null;
 
-                if (body == null) {
-                    logger.error("Body returned null from Plex");
-                    return;
-                }
-
-                InputStream fileIS = new ByteArrayInputStream(body.getBytes());
-                DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder builder = builderFactory.newDocumentBuilder();
-                Document xmlDocument = builder.parse(fileIS);
-                XPath xPath = XPathFactory.newInstance().newXPath();
-                String expression = "/MediaContainer/Video";
-                NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
-
-                for (int i = 0; i < nodeList.getLength() && i < 25; i++) {
-                    Node node = nodeList.item(i);
-                    //Files can't have : so need to remove to find matches correctly
-                    String title = node.getAttributes().getNamedItem("title").getNodeValue().replaceAll(":", "");
-                    if (node.getAttributes().getNamedItem("year") == null) {
-                        logger.warn("Year not found for " + title);
-                        continue;
+                    if (body == null) {
+                        logger.error("Body returned null from Plex");
+                        return;
                     }
-                    String year = node.getAttributes().getNamedItem("year").getNodeValue();
-                    Movie movie = new Movie(-1, title, Integer.parseInt(year), "");
-                    ownedMovies.add(movie);
-                    totalMovieCount.incrementAndGet();
-                }
-                logger.info(ownedMovies.size() + " movies found in plex");
 
-            } catch (IOException e) {
-                logger.error("Error connecting to Plex to get Movie list", e);
-            } catch (ParserConfigurationException | XPathExpressionException | SAXException e) {
-                logger.error("Error parsing XML from Plex", e);
+                    InputStream fileIS = new ByteArrayInputStream(body.getBytes());
+                    DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder builder = builderFactory.newDocumentBuilder();
+                    Document xmlDocument = builder.parse(fileIS);
+                    XPath xPath = XPathFactory.newInstance().newXPath();
+                    String expression = "/MediaContainer/Video";
+                    NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
+
+                    if(nodeList.getLength() == 0) {
+                        String reason = "No movies found in url: " + url;
+                        logger.warn(reason);
+                    }
+
+                    for (int i = 0; i < nodeList.getLength(); i++) {
+                        Node node = nodeList.item(i);
+                        //Files can't have : so need to remove to find matches correctly
+                        String title = node.getAttributes().getNamedItem("title").getNodeValue().replaceAll(":", "");
+                        if (node.getAttributes().getNamedItem("year") == null) {
+                            logger.warn("Year not found for " + title);
+                            continue;
+                        }
+                        String year = node.getAttributes().getNamedItem("year").getNodeValue();
+                        Movie movie = new Movie(-1, title, Integer.parseInt(year), "");
+                        ownedMovies.add(movie);
+                        totalMovieCount.incrementAndGet();
+                    }
+                    logger.info(ownedMovies.size() + " movies found in plex");
+
+                } catch (IOException e) {
+                    String reason = "Error connecting to Plex to get Movie list: " + url;
+                    logger.error(reason, e);
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason, e);
+                } catch (ParserConfigurationException | XPathExpressionException | SAXException e) {
+                    String reason = "Error parsing XML from Plex: " + url;
+                    logger.error(reason, e);
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
+                }
+            } catch (IllegalArgumentException e) {
+                String reason = "Error with plex Url: " + url;
+                logger.error(reason, e);
+                throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason, e);
             }
         }
     }

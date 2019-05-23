@@ -4,13 +4,13 @@ function start() {
     $('.modal').modal();
 }
 
-var keepChecking;
+let keepChecking;
 
 function onSubmitGapsSearch() {
     keepChecking = true;
     $('#progressContainer').hide();
 
-    var gaps = {
+    const gaps = {
         movieDbApiKey: $('#movie_db_api_key').val(),
         writeToFile: true,
         movieDbListId: $('#movie_db_list_id').val(),
@@ -18,19 +18,19 @@ function onSubmitGapsSearch() {
         connectTimeout: $('#connect_timeout').val(),
         writeTimeout: $('#write_timeout').val(),
         readTimeout: $('#read_timeout').val(),
-        movieUrls: [$('#plex_movie_urls').val()]
+        movieUrls: $('#plex_movie_urls').val().split("\n")
     }
 
     $.ajax({
         type: "POST",
-        url: "http://localhost:8080/submit",
+        url: "http://" + $('#address').val() + ":" + $('#port').val() + "/submit",
         data: JSON.stringify(gaps),
         contentType: "application/json",
         timeout: 10000000,
         success: function (movies) {
             keepChecking = false;
-            var movieHtml = "";
-            movies.forEach(function(movie) {
+            let movieHtml = "";
+            movies.forEach(function (movie) {
                 movieHtml += buildMovieDiv(movie);
             });
 
@@ -39,12 +39,21 @@ function onSubmitGapsSearch() {
             $('#searchModelTitle').text(movies.length + ' movies to add to complete your collections');
         },
         error: function (err) {
-            alert(err.responseText);
+            let message = "Unknown error. Check docker Gaps log file.";
+            if (err) {
+                message = JSON.parse(err.responseText).message;
+            }
+
+            $('#progressContainer').hide();
+            $('#searchingBody').html(message);
+            $('#searchModelTitle').text("An error occurred...");
+
+            keepChecking = false;
         }
     })
 
     $('#searchModal').modal('open');
-    
+
     polling();
 }
 
@@ -61,21 +70,21 @@ function buildMovie(movie) {
 }
 
 function polling() {
-    if(keepChecking) {
+    if (keepChecking) {
         $.ajax({
-        type: "GET",
-        url: "http://localhost:8080/status",
-        contentType: "application/json",
-        success: function(data) {
-                if(keepChecking) {
-                    var obj = JSON.parse(data);
-                    if(!obj.searchedMovieCount && !obj.totalMovieCount && obj.totalMovieCount === 0) {
+            type: "GET",
+            url: "http://" + $('#address').val() + ":" + $('#port').val() + "/status",
+            contentType: "application/json",
+            success: function (data) {
+                if (keepChecking) {
+                    const obj = JSON.parse(data);
+                    if (!obj.searchedMovieCount && !obj.totalMovieCount && obj.totalMovieCount === 0) {
                         $('#searchingBody').text("Searching for movies...");
                     } else {
                         $('#progressContainer').show();
                         var percentage = Math.trunc(obj.searchedMovieCount / obj.totalMovieCount * 100);
                         $('#searchingBody').text(obj.searchedMovieCount + ' of ' + obj.totalMovieCount + " movies searched. " + percentage + "% complete.");
-                        $('#progressBar').css( "width", percentage + "%" );
+                        $('#progressBar').css("width", percentage + "%");
                     }
                     setTimeout(polling, 2000);
                 }
