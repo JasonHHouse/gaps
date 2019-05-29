@@ -1,6 +1,5 @@
 package com.jasonhhouse.Gaps;
 
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -111,15 +110,7 @@ public class GapsSearchBean implements GapsSearch {
             createTmdbList(sessionId);
         }
 
-        Set<Movie> set = new HashSet<>(recommended);
-        CompletableFuture completableFuture = CompletableFuture.supplyAsync(new Supplier<ResponseEntity<Set<Movie>>>() {
-
-            @Override
-            public ResponseEntity<Set<Movie>> get() {
-                return new ResponseEntity<>(set, HttpStatus.OK);
-            }
-        });
-        return completableFuture;
+        return CompletableFuture.supplyAsync(() -> new ResponseEntity<>(recommended, HttpStatus.OK));
     }
 
     @Override
