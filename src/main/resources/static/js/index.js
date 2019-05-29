@@ -9,6 +9,7 @@ let keepChecking;
 function onSubmitGapsSearch() {
     keepChecking = true;
     $('#progressContainer').hide();
+    $('#modelButton').text('cancel');
 
     const gaps = {
         movieDbApiKey: $('#movie_db_api_key').val(),
@@ -26,7 +27,7 @@ function onSubmitGapsSearch() {
         url: "http://" + $('#address').val() + ":" + $('#port').val() + "/submit",
         data: JSON.stringify(gaps),
         contentType: "application/json",
-        timeout: 10000000,
+        timeout: 0,
         success: function (movies) {
             keepChecking = false;
             let movieHtml = "";
@@ -37,6 +38,7 @@ function onSubmitGapsSearch() {
             $('#progressContainer').hide();
             $('#searchingBody').html(buildMovies(movieHtml));
             $('#searchModelTitle').text(movies.length + ' movies to add to complete your collections');
+            $('#modelButton').text('close');
         },
         error: function (err) {
             let message = "Unknown error. Check docker Gaps log file.";
@@ -47,6 +49,7 @@ function onSubmitGapsSearch() {
             $('#progressContainer').hide();
             $('#searchingBody').html(message);
             $('#searchModelTitle').text("An error occurred...");
+            $('#modelButton').text('close');
 
             keepChecking = false;
         }
