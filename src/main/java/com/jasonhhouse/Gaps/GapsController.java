@@ -31,6 +31,13 @@ public class GapsController {
         this.gapsSearch = gapsSearch;
     }
 
+    @RequestMapping(value = "cancelSearch", method = RequestMethod.PUT)
+    public ResponseEntity<String> cancelSearch() {
+        logger.info("cancelSearch()");
+        gapsSearch.cancelSearch();
+        return new ResponseEntity<>("Canceled Search", HttpStatus.OK);
+    }
+
     @RequestMapping(value = "submit", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
     public Future<ResponseEntity<Set<Movie>>> submit(@RequestBody Gaps gaps) {
@@ -61,8 +68,8 @@ public class GapsController {
                 Exception e = new IllegalArgumentException();
                 throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason, e);
             } else {
-                for(String url : gaps.getMovieUrls()) {
-                    if(StringUtils.isEmpty(url)) {
+                for (String url : gaps.getMovieUrls()) {
+                    if (StringUtils.isEmpty(url)) {
                         String reason = "Found empty Plex movie collection url. This field is required to search from Plex.";
                         logger.error(reason);
 
@@ -74,17 +81,17 @@ public class GapsController {
         }
 
         //Fill in default values if missing
-        if(gaps.getWriteTimeout() == null) {
+        if (gaps.getWriteTimeout() == null) {
             logger.info("Missing write timeout. Setting default to 180 seconds.");
             gaps.setWriteTimeout(180);
         }
 
-        if(gaps.getConnectTimeout() == null) {
+        if (gaps.getConnectTimeout() == null) {
             logger.info("Missing connect timeout. Setting default to 180 seconds.");
             gaps.setConnectTimeout(180);
         }
 
-        if(gaps.getReadTimeout() == null) {
+        if (gaps.getReadTimeout() == null) {
             logger.info("Missing read timeout. Setting default to 180 seconds.");
             gaps.setReadTimeout(180);
         }

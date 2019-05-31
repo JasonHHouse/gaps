@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -15,8 +16,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
@@ -65,6 +66,8 @@ public class GapsSearchBean implements GapsSearch {
 
     private final AtomicInteger searchedMovieCount;
 
+    private final AtomicBoolean cancelSearch;
+
     private Properties properties;
 
     public GapsSearchBean() {
@@ -74,43 +77,53 @@ public class GapsSearchBean implements GapsSearch {
 
         totalMovieCount = new AtomicInteger();
         searchedMovieCount = new AtomicInteger();
+        cancelSearch = new AtomicBoolean();
     }
 
     @Async
     @Override
     public CompletableFuture<ResponseEntity<Set<Movie>>> run(Properties properties) {
         this.properties = properties;
+        searched.clear();
         totalMovieCount.set(0);
         searchedMovieCount.set(0);
+        cancelSearch.set(false);
 
-        String sessionId = null;
-        // Get TMDB Authorizatoin from user,
-        // requires user input so needs to be done early before user walks away
-        if (StringUtils.isNotEmpty(properties.getMovieDbListId())) {
-            sessionId = getTmdbAuthorization();
+        try {
+            String sessionId = null;
+            // Get TMDB Authorizatoin from user,
+            // requires user input so needs to be done early before user walks away
+            if (StringUtils.isNotEmpty(properties.getMovieDbListId())) {
+                sessionId = getTmdbAuthorization();
+            }
+
+            if (properties.getPlex().getSearchFromPlex()) {
+                findAllPlexMovies();
+            }
+
+            if (properties.getFolder().getSearchFromFolder()) {
+                findAllFolderMovies();
+            }
+
+            searchForMovies();
+
+            if (properties.getWriteToFile()) {
+                writeToFile();
+            }
+
+            //Always write to command line
+            printRecommended();
+
+            if (StringUtils.isNotEmpty(properties.getMovieDbListId())) {
+                createTmdbList(sessionId);
+            }
+
+            return CompletableFuture.supplyAsync(() -> new ResponseEntity<>(recommended, HttpStatus.OK));
+        } catch (SearchCancelledException e) {
+            String reason = "Search cancelled";
+            logger.error(reason, e);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
         }
-
-        if (properties.getPlex().getSearchFromPlex()) {
-            findAllPlexMovies();
-        }
-
-        if (properties.getFolder().getSearchFromFolder()) {
-            findAllFolderMovies();
-        }
-
-        searchForMovies();
-
-        if (properties.getWriteToFile()) {
-            writeToFile();
-        }
-        //Always write to command line
-        printRecommended();
-
-        if (StringUtils.isNotEmpty(properties.getMovieDbListId())) {
-            createTmdbList(sessionId);
-        }
-
-        return CompletableFuture.supplyAsync(() -> new ResponseEntity<>(recommended, HttpStatus.OK));
     }
 
     @Override
@@ -121,6 +134,11 @@ public class GapsSearchBean implements GapsSearch {
     @Override
     public Integer getSearchedMovieCount() {
         return searchedMovieCount.get();
+    }
+
+    @Override
+    public void cancelSearch() {
+        cancelSearch.set(true);
     }
 
     private void findAllFolderMovies() {
@@ -284,7 +302,7 @@ public class GapsSearchBean implements GapsSearch {
      * Connect to plex via the URL and parse all of the movies from the returned XML creating a HashSet of movies the
      * user has.
      */
-    private void findAllPlexMovies() {
+    private void findAllPlexMovies() throws SearchCancelledException {
         logger.info("Searching for Plex Movies...");
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(properties.getPlex().getConnectTimeout(), TimeUnit.SECONDS)
@@ -299,6 +317,11 @@ public class GapsSearchBean implements GapsSearch {
         }
 
         for (String url : urls) {
+            //Cancel search if needed
+            if(cancelSearch.get()) {
+                throw new SearchCancelledException("Search was cancelled");
+            }
+
             try {
                 Request request = new Request.Builder()
                         .url(url)
@@ -365,7 +388,7 @@ public class GapsSearchBean implements GapsSearch {
      * optimize some network calls, we add movies found in a collection and in plex to our already searched list, so we
      * don't re-query collections again and again.
      */
-    private void searchForMovies() {
+    private void searchForMovies() throws SearchCancelledException {
         logger.info("Searching for Movie Collections...");
         OkHttpClient client = new OkHttpClient();
 
@@ -376,6 +399,11 @@ public class GapsSearchBean implements GapsSearch {
 
 
         for (Movie movie : ownedMovies) {
+
+            //Cancel search if needed
+            if(cancelSearch.get()) {
+                throw new SearchCancelledException("Search was cancelled");
+            }
 
             //Print the count first to handle the continue if block or the regular searching case
             if (searchedMovieCount.get() % 10 == 0) {

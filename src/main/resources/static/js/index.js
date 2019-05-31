@@ -2,14 +2,30 @@
 
 function start() {
     $('.modal').modal();
+
+    $('#searchModal').modal('onCloseEnd', function() {
+        $.ajax({
+            type: "PUT",
+            url: "http://" + $('#address').val() + ":" + $('#port').val() + "/cancelSearch",
+            contentType: "application/json",
+            timeout: 0
+        });
+    });
 }
 
 let keepChecking;
 
 function onSubmitGapsSearch() {
     keepChecking = true;
-    $('#progressContainer').hide();
-    $('#modelButton').text('cancel');
+    let searchModelTitle = $('#searchModelTitle');
+    let progressContainer = $('#progressContainer');
+    let searchingBody = $('#searchingBody');
+    let modelButton = $('#modelButton');
+
+    progressContainer.hide();
+    modelButton.text('cancel');
+    searchModelTitle.text("Searching");
+    searchingBody.empty();
 
     const gaps = {
         movieDbApiKey: $('#movie_db_api_key').val(),
@@ -35,10 +51,10 @@ function onSubmitGapsSearch() {
                 movieHtml += buildMovieDiv(movie);
             });
 
-            $('#progressContainer').hide();
-            $('#searchingBody').html(buildMovies(movieHtml));
-            $('#searchModelTitle').text(movies.length + ' movies to add to complete your collections');
-            $('#modelButton').text('close');
+            progressContainer.hide();
+            searchingBody.html(buildMovies(movieHtml));
+            searchModelTitle.text(movies.length + ' movies to add to complete your collections');
+            modelButton.text('close');
         },
         error: function (err) {
             let message = "Unknown error. Check docker Gaps log file.";
@@ -46,14 +62,14 @@ function onSubmitGapsSearch() {
                 message = JSON.parse(err.responseText).message;
             }
 
-            $('#progressContainer').hide();
-            $('#searchingBody').html(message);
-            $('#searchModelTitle').text("An error occurred...");
-            $('#modelButton').text('close');
+            progressContainer.hide();
+            searchingBody.html(message);
+            searchModelTitle.text("An error occurred...");
+            modelButton.text('close');
 
             keepChecking = false;
         }
-    })
+    });
 
     $('#searchModal').modal('open');
 
