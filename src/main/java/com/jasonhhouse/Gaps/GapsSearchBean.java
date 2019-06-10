@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -18,8 +17,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -32,8 +29,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,8 +65,6 @@ public class GapsSearchBean implements GapsSearch {
 
     private final AtomicBoolean cancelSearch;
 
-    private Properties properties;
-
     public GapsSearchBean() {
         this.ownedMovies = new HashSet<>();
         this.searched = new HashSet<>();
@@ -80,10 +75,9 @@ public class GapsSearchBean implements GapsSearch {
         cancelSearch = new AtomicBoolean();
     }
 
-    @Async
+    @NotNull
     @Override
-    public CompletableFuture<ResponseEntity<Set<Movie>>> run(Properties properties) {
-        this.properties = properties;
+    public CompletableFuture run(@NotNull Gaps gaps) {
         searched.clear();
         totalMovieCount.set(0);
         searchedMovieCount.set(0);
@@ -91,31 +85,32 @@ public class GapsSearchBean implements GapsSearch {
 
         try {
             String sessionId = null;
-            // Get TMDB Authorizatoin from user,
+            // Get TMDB Authorization from user,
             // requires user input so needs to be done early before user walks away
-            if (StringUtils.isNotEmpty(properties.getMovieDbListId())) {
-                sessionId = getTmdbAuthorization();
+            if (StringUtils.isNotEmpty(gaps.getMovieDbListId())) {
+                sessionId = getTmdbAuthorization(gaps);
             }
 
-            if (properties.getPlex().getSearchFromPlex()) {
-                findAllPlexMovies();
+            if (gaps.getSearchFromPlex()) {
+                findAllPlexMovies(gaps);
             }
 
-            if (properties.getFolder().getSearchFromFolder()) {
+            //ToDo
+            /*if (properties.getFolder().getSearchFromFolder()) {
                 findAllFolderMovies();
-            }
+            }*/
 
-            searchForMovies();
+            searchForMovies(gaps);
 
-            if (properties.getWriteToFile()) {
+            if (gaps.getWriteToFile()) {
                 writeToFile();
             }
 
             //Always write to command line
             printRecommended();
 
-            if (StringUtils.isNotEmpty(properties.getMovieDbListId())) {
-                createTmdbList(sessionId);
+            if (StringUtils.isNotEmpty(gaps.getMovieDbListId())) {
+                createTmdbList(gaps, sessionId);
             }
 
             return CompletableFuture.supplyAsync(() -> new ResponseEntity<>(recommended, HttpStatus.OK));
@@ -126,11 +121,13 @@ public class GapsSearchBean implements GapsSearch {
         }
     }
 
+    @NotNull
     @Override
     public Integer getTotalMovieCount() {
         return totalMovieCount.get();
     }
 
+    @NotNull
     @Override
     public Integer getSearchedMovieCount() {
         return searchedMovieCount.get();
@@ -141,8 +138,10 @@ public class GapsSearchBean implements GapsSearch {
         cancelSearch.set(true);
     }
 
+
     private void findAllFolderMovies() {
-        if (CollectionUtils.isEmpty(properties.getFolder().getFolders())) {
+        //ToDo
+        /*if (CollectionUtils.isEmpty(properties.getFolder().getFolders())) {
             logger.error("folders property cannot be empty when searchFromFolder is true");
             return;
         }
@@ -155,12 +154,13 @@ public class GapsSearchBean implements GapsSearch {
         for (String strFolder : properties.getFolder().getFolders()) {
             File folder = new File(strFolder);
             searchFolders(folder);
-        }
+        }*/
 
     }
 
     private void searchFolders(File folder) {
-        if (!folder.exists()) {
+        //ToDo
+        /*if (!folder.exists()) {
             logger.warn("Folder in folders property does not exist: " + folder);
             return;
         }
@@ -204,13 +204,13 @@ public class GapsSearchBean implements GapsSearch {
             }
 
 
-        }
+        }*/
     }
 
     /**
      * Using TMDB api (V3), get access to user list and add recommended movies to
      */
-    private @Nullable String getTmdbAuthorization() {
+    private @Nullable String getTmdbAuthorization(@NotNull Gaps gaps) {
         // Create the request_token request
         OkHttpClient client = new OkHttpClient();
 
@@ -218,7 +218,7 @@ public class GapsSearchBean implements GapsSearch {
         RequestBody.create(mediaType, "{}");
         RequestBody body;
         Request request = new Request.Builder()
-                .url("https://api.themoviedb.org/3/authentication/token/new?api_key=" + properties.getMovieDbApiKey())
+                .url("https://api.themoviedb.org/3/authentication/token/new?api_key=" + gaps.getMovieDbApiKey())
                 .get()
                 .build();
 
@@ -245,15 +245,13 @@ public class GapsSearchBean implements GapsSearch {
         mediaType = MediaType.parse("application/json");
         body = RequestBody.create(mediaType, "{\"request_token\":\"" + request_token + "\"}");
         request = new Request.Builder()
-                .url("https://api.themoviedb.org/3/authentication/session/new?api_key=" + properties.getMovieDbApiKey())
+                .url("https://api.themoviedb.org/3/authentication/session/new?api_key=" + gaps.getMovieDbApiKey())
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .build();
 
-        Response response = null;
-
         try {
-            response = client.newCall(request).execute();
+            Response response = client.newCall(request).execute();
             JSONObject sessionResponse = new JSONObject(response.body().string());
             return sessionResponse.getString("session_id"); // TODO: Save sessionID to file for reuse
         } catch (IOException e) {
@@ -265,7 +263,7 @@ public class GapsSearchBean implements GapsSearch {
     /**
      * Using TMDB api (V3), get access to user list and add recommended movies to
      */
-    private void createTmdbList(@Nullable String sessionId) {
+    private void createTmdbList(@NotNull Gaps gaps, @Nullable String sessionId) {
         OkHttpClient client;
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body;
@@ -277,8 +275,8 @@ public class GapsSearchBean implements GapsSearch {
                 client = new OkHttpClient();
 
                 body = RequestBody.create(mediaType, "{\"media_id\":" + m.getMedia_id() + "}");
-                String url = "https://api.themoviedb.org/3/list/" + properties.getMovieDbListId()
-                        + "/add_item?session_id=" + sessionId + "&api_key=" + properties.getMovieDbApiKey();
+                String url = "https://api.themoviedb.org/3/list/" + gaps.getMovieDbListId()
+                        + "/add_item?session_id=" + sessionId + "&api_key=" + gaps.getMovieDbApiKey();
                 Request request = new Request.Builder()
                         .url(url)
                         .post(body)
@@ -295,21 +293,21 @@ public class GapsSearchBean implements GapsSearch {
                     e.printStackTrace();
                 }
             }
-        logger.info(counter + " Movies added to list. \nList located at: https://www.themoviedb.org/list/" + properties.getMovieDbListId());
+        logger.info(counter + " Movies added to list. \nList located at: https://www.themoviedb.org/list/" + gaps.getMovieDbListId());
     }
 
     /**
      * Connect to plex via the URL and parse all of the movies from the returned XML creating a HashSet of movies the
      * user has.
      */
-    private void findAllPlexMovies() throws SearchCancelledException {
+    private void findAllPlexMovies(@NotNull Gaps gaps) throws SearchCancelledException {
         logger.info("Searching for Plex Movies...");
         OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(properties.getPlex().getConnectTimeout(), TimeUnit.SECONDS)
-                .writeTimeout(properties.getPlex().getWriteTimeout(), TimeUnit.SECONDS)
-                .readTimeout(properties.getPlex().getReadTimeout(), TimeUnit.SECONDS)
+                .connectTimeout(gaps.getConnectTimeout(), TimeUnit.SECONDS)
+                .writeTimeout(gaps.getWriteTimeout(), TimeUnit.SECONDS)
+                .readTimeout(gaps.getReadTimeout(), TimeUnit.SECONDS)
                 .build();
-        List<String> urls = properties.getPlex().getMovieUrls();
+        List<String> urls = gaps.getMovieUrls();
 
         if (CollectionUtils.isEmpty(urls)) {
             logger.info("No URLs added to plexMovieUrls. Check your application.yaml file if needed.");
@@ -318,7 +316,7 @@ public class GapsSearchBean implements GapsSearch {
 
         for (String url : urls) {
             //Cancel search if needed
-            if(cancelSearch.get()) {
+            if (cancelSearch.get()) {
                 throw new SearchCancelledException("Search was cancelled");
             }
 
@@ -343,7 +341,7 @@ public class GapsSearchBean implements GapsSearch {
                     String expression = "/MediaContainer/Video";
                     NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
 
-                    if(nodeList.getLength() == 0) {
+                    if (nodeList.getLength() == 0) {
                         String reason = "No movies found in url: " + url;
                         logger.warn(reason);
                     }
@@ -388,11 +386,11 @@ public class GapsSearchBean implements GapsSearch {
      * optimize some network calls, we add movies found in a collection and in plex to our already searched list, so we
      * don't re-query collections again and again.
      */
-    private void searchForMovies() throws SearchCancelledException {
+    private void searchForMovies(@NotNull Gaps gaps) throws SearchCancelledException {
         logger.info("Searching for Movie Collections...");
         OkHttpClient client = new OkHttpClient();
 
-        if (StringUtils.isEmpty(properties.getMovieDbApiKey())) {
+        if (StringUtils.isEmpty(gaps.getMovieDbApiKey())) {
             logger.error("No MovieDb Key added to movieDbApiKey. Check your application.yaml file.");
             return;
         }
@@ -401,7 +399,7 @@ public class GapsSearchBean implements GapsSearch {
         for (Movie movie : ownedMovies) {
 
             //Cancel search if needed
-            if(cancelSearch.get()) {
+            if (cancelSearch.get()) {
                 throw new SearchCancelledException("Search was cancelled");
             }
 
@@ -418,7 +416,7 @@ public class GapsSearchBean implements GapsSearch {
             String searchMovieUrl;
             try {
                 searchMovieUrl = "https://api.themoviedb.org/3/search/movie?api_key=" +
-                        properties.getMovieDbApiKey() +
+                        gaps.getMovieDbApiKey() +
                         "&language=en-US&page=1&include_adult=false&query=" +
                         URLEncoder.encode(movie.getName(), "UTF-8") +
                         "&year=" +
@@ -454,7 +452,7 @@ public class GapsSearchBean implements GapsSearch {
                     JSONObject result = results.getJSONObject(0);
                     int id = result.getInt("id");
 
-                    String movieDetailUrl = "https://api.themoviedb.org/3/movie/" + id + "?api_key=" + properties.getMovieDbApiKey() + "&language=en-US";
+                    String movieDetailUrl = "https://api.themoviedb.org/3/movie/" + id + "?api_key=" + gaps.getMovieDbApiKey() + "&language=en-US";
 
                     request = new Request.Builder()
                             .url(movieDetailUrl)
@@ -478,7 +476,7 @@ public class GapsSearchBean implements GapsSearch {
 
                         int collectionId = movieDetails.getJSONObject("belongs_to_collection").getInt("id");
                         String collectionName = movieDetails.getJSONObject("belongs_to_collection").getString("name");
-                        String collectionUrl = "https://api.themoviedb.org/3/collection/" + collectionId + "?api_key=" + properties.getMovieDbApiKey() + "&language=en-US";
+                        String collectionUrl = "https://api.themoviedb.org/3/collection/" + collectionId + "?api_key=" + gaps.getMovieDbApiKey() + "&language=en-US";
 
                         request = new Request.Builder()
                                 .url(collectionUrl)

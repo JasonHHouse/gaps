@@ -1,14 +1,15 @@
 package com.jasonhhouse.Gaps;
 
 import java.util.concurrent.CompletableFuture;
+import org.jetbrains.annotations.NotNull;
 
 public interface GapsSearch {
 
-    CompletableFuture run(Properties properties);
+    @NotNull CompletableFuture run(@NotNull Gaps gaps);
 
-    Integer getTotalMovieCount();
+    @NotNull Integer getTotalMovieCount();
 
-    Integer getSearchedMovieCount();
+    @NotNull Integer getSearchedMovieCount();
 
     void cancelSearch();
 }

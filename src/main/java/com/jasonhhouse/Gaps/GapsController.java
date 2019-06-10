@@ -96,8 +96,7 @@ public class GapsController {
             gaps.setReadTimeout(180);
         }
 
-
-        return runInOtherThread(gaps);
+        return gapsSearch.run(gaps);
     }
 
     @RequestMapping(value = "/status", method = RequestMethod.GET)
@@ -108,26 +107,6 @@ public class GapsController {
         jsonObject.put("searchedMovieCount", gapsSearch.getSearchedMovieCount());
         jsonObject.put("totalMovieCount", gapsSearch.getTotalMovieCount());
         return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
-    }
-
-    private Future<ResponseEntity<Set<Movie>>> runInOtherThread(Gaps gaps) {
-        Properties properties = new Properties();
-        properties.setMovieDbApiKey(gaps.getMovieDbApiKey());
-        properties.setWriteToFile(false);
-
-        PlexProperties plexProperties = new PlexProperties();
-        plexProperties.setReadTimeout(gaps.getReadTimeout());
-        plexProperties.setConnectTimeout(gaps.getConnectTimeout());
-        plexProperties.setWriteTimeout(gaps.getWriteTimeout());
-        plexProperties.setMovieUrls(gaps.getMovieUrls());
-        plexProperties.setSearchFromPlex(true);
-        properties.setPlex(plexProperties);
-
-        FolderProperties folderProperties = new FolderProperties();
-        folderProperties.setSearchFromFolder(false);
-        properties.setFolder(folderProperties);
-
-        return gapsSearch.run(properties);
     }
 
 }
