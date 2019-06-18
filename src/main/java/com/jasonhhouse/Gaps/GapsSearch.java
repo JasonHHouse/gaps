@@ -12,4 +12,6 @@ public interface GapsSearch {
     @NotNull Integer getSearchedMovieCount();
 
     void cancelSearch();
+
+    boolean isSearching();
 }

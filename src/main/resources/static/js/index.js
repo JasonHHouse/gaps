@@ -14,8 +14,11 @@ function start() {
 }
 
 let keepChecking;
+let stompClient;
 
 function onSubmitGapsSearch() {
+    connect();
+
     keepChecking = true;
     let searchModelTitle = $('#searchModelTitle');
     let progressContainer = $('#progressContainer');
@@ -55,6 +58,8 @@ function onSubmitGapsSearch() {
             searchingBody.html(buildMovies(movieHtml));
             searchModelTitle.text(movies.length + ' movies to add to complete your collections');
             modelButton.text('close');
+
+            disconnect();
         },
         error: function (err) {
             let message = "Unknown error. Check docker Gaps log file.";
@@ -68,6 +73,8 @@ function onSubmitGapsSearch() {
             modelButton.text('close');
 
             keepChecking = false;
+
+            disconnect();
         }
     });
 
@@ -95,18 +102,7 @@ function polling() {
             url: "http://" + $('#address').val() + ":" + $('#port').val() + "/status",
             contentType: "application/json",
             success: function (data) {
-                if (keepChecking) {
-                    const obj = JSON.parse(data);
-                    if (!obj.searchedMovieCount && !obj.totalMovieCount && obj.totalMovieCount === 0) {
-                        $('#searchingBody').text("Searching for movies...");
-                    } else {
-                        $('#progressContainer').show();
-                        var percentage = Math.trunc(obj.searchedMovieCount / obj.totalMovieCount * 100);
-                        $('#searchingBody').text(obj.searchedMovieCount + ' of ' + obj.totalMovieCount + " movies searched. " + percentage + "% complete.");
-                        $('#progressBar').css("width", percentage + "%");
-                    }
-                    setTimeout(polling, 2000);
-                }
+
             }
         })
     }
@@ -137,5 +133,36 @@ function searchFolderChanged(checkbox) {
         $("#folder_recursive").attr("disabled", true);
         $("#movie_formats").prop('disabled', true);
         $("#folder_regex").prop('disabled', true);
+    }
+}
+
+function connect() {
+    var socket = new SockJS('/gs-guide-websocket');
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, function (frame) {
+        console.log('Connected: ' + frame);
+        stompClient.subscribe('/topic/searchStatus', function (status) {
+            showSearchStatus(JSON.parse(status.body));
+        });
+    });
+}
+
+function disconnect() {
+    if (stompClient !== null) {
+        stompClient.disconnect();
+    }
+    console.log("Disconnected");
+}
+
+function showSearchStatus(obj) {
+    if (keepChecking) {
+        if (!obj.searchedMovieCount && !obj.totalMovieCount && obj.totalMovieCount === 0) {
+            $('#searchingBody').text("Searching for movies...");
+        } else {
+            $('#progressContainer').show();
+            var percentage = Math.trunc(obj.searchedMovieCount / obj.totalMovieCount * 100);
+            $('#searchingBody').text(obj.searchedMovieCount + ' of ' + obj.totalMovieCount + " movies searched. " + percentage + "% complete.");
+            $('#progressBar').css("width", percentage + "%");
+        }
     }
 }

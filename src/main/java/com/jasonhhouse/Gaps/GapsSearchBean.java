@@ -72,7 +72,7 @@ public class GapsSearchBean implements GapsSearch {
 
         totalMovieCount = new AtomicInteger();
         searchedMovieCount = new AtomicInteger();
-        cancelSearch = new AtomicBoolean();
+        cancelSearch = new AtomicBoolean(true);
     }
 
     @NotNull
@@ -138,6 +138,10 @@ public class GapsSearchBean implements GapsSearch {
         cancelSearch.set(true);
     }
 
+    @Override
+    public boolean isSearching() {
+        return !cancelSearch.get();
+    }
 
     private void findAllFolderMovies() {
         //ToDo

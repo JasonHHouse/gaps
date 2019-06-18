@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,8 +29,12 @@ public class GapsController {
     private final GapsSearch gapsSearch;
 
     @Autowired
-    GapsController(GapsSearch gapsSearch) {
+    private final SimpMessagingTemplate template;
+
+    @Autowired
+    GapsController(GapsSearch gapsSearch, SimpMessagingTemplate template) {
         this.gapsSearch = gapsSearch;
+        this.template = template;
     }
 
     @RequestMapping(value = "cancelSearch", method = RequestMethod.PUT)
@@ -98,7 +104,7 @@ public class GapsController {
 
         return gapsSearch.run(gaps);
     }
-
+/*
     @RequestMapping(value = "/status", method = RequestMethod.GET)
     @ResponseBody
     ResponseEntity<String> fetchStatus() {
@@ -107,6 +113,14 @@ public class GapsController {
         jsonObject.put("searchedMovieCount", gapsSearch.getSearchedMovieCount());
         jsonObject.put("totalMovieCount", gapsSearch.getTotalMovieCount());
         return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
+    }*/
+
+    @Scheduled(fixedDelay = 1000)
+    public void searchStatus() {
+        if (gapsSearch.isSearching()) {
+            logger.info("searchStatus()");
+            template.convertAndSend("/topic/searchStatus", new SearchStatus(gapsSearch.getSearchedMovieCount(), gapsSearch.getTotalMovieCount()));
+        }
     }
 
 }
