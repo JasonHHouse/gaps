@@ -22,19 +22,8 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class Properties {
 
-    @NotNull(message = "Movie DB API Key cannot be null")
-    private String movieDbApiKey;
-
-    @NotNull(message = "Write to file boolean cannot be null")
-    private Boolean writeToFile;
-
-    @NotNull(message = "Plex property cannot be null")
-    private PlexProperties plex;
-
     @NotNull(message = "Folder property cannot be null")
     private FolderProperties folder;
-
-    private String movieDbListId;
 
     public FolderProperties getFolder() {
         return folder;
@@ -42,38 +31,6 @@ public class Properties {
 
     public void setFolder(FolderProperties folder) {
         this.folder = folder;
-    }
-
-    public String getMovieDbApiKey() {
-        return movieDbApiKey;
-    }
-
-    public void setMovieDbApiKey(String movieDbApiKey) {
-        this.movieDbApiKey = movieDbApiKey;
-    }
-
-    public Boolean getWriteToFile() {
-        return writeToFile;
-    }
-
-    public void setWriteToFile(Boolean writeToFile) {
-        this.writeToFile = writeToFile;
-    }
-
-    public PlexProperties getPlex() {
-        return plex;
-    }
-
-    public void setPlex(PlexProperties plex) {
-        this.plex = plex;
-    }
-
-    public String getMovieDbListId() {
-        return movieDbListId;
-    }
-
-    public void setMovieDbListId(String listId) {
-        this.movieDbListId = listId;
     }
 
 }

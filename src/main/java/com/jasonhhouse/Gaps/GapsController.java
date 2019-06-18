@@ -104,16 +104,6 @@ public class GapsController {
 
         return gapsSearch.run(gaps);
     }
-/*
-    @RequestMapping(value = "/status", method = RequestMethod.GET)
-    @ResponseBody
-    ResponseEntity<String> fetchStatus() {
-        logger.info("fetchStatus()");
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("searchedMovieCount", gapsSearch.getSearchedMovieCount());
-        jsonObject.put("totalMovieCount", gapsSearch.getTotalMovieCount());
-        return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
-    }*/
 
     @Scheduled(fixedDelay = 1000)
     public void searchStatus() {

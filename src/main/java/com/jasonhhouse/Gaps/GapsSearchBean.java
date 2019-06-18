@@ -118,6 +118,8 @@ public class GapsSearchBean implements GapsSearch {
             String reason = "Search cancelled";
             logger.error(reason, e);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
+        } finally {
+            cancelSearch.set(true);
         }
     }
 
@@ -398,7 +400,6 @@ public class GapsSearchBean implements GapsSearch {
             logger.error("No MovieDb Key added to movieDbApiKey. Check your application.yaml file.");
             return;
         }
-
 
         for (Movie movie : ownedMovies) {
 
