@@ -1,0 +1,8 @@
+#toast-container {
+  top: auto !important;
+  right: auto !important;
+  bottom: 10% !important;
+  left: 50% !important;
+  position: absolute !important;
+  transform: translate(-50%, 0%) !important;
+}

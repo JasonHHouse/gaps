@@ -1,22 +1,63 @@
 "use strict"
 
-function start() {
-    $('.modal').modal();
-
-    $('#searchModal').modal('onCloseEnd', function() {
-        $.ajax({
-            type: "PUT",
-            url: "http://" + $('#address').val() + ":" + $('#port').val() + "/cancelSearch",
-            contentType: "application/json",
-            timeout: 0
-        });
-    });
-}
-
 let keepChecking;
 let stompClient;
+let modal;
+
+document.addEventListener('DOMContentLoaded', function () {
+    M.AutoInit();
+
+    var elems = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elems, {
+        onCloseEnd: function () {
+            $.ajax({
+                type: "PUT",
+                url: "http://" + $('#address').val() + ":" + $('#port').val() + "/cancelSearch",
+                contentType: "application/json",
+                timeout: 0
+            });
+        }
+    });
+
+    var modal = M.Modal.getInstance($('#searchModal'));
+});
 
 function onSubmitGapsSearch() {
+    if (validateInput()) {
+        search();
+    }
+}
+
+function validateInput() {
+    if (!$('#movie_db_api_key').val()) {
+        M.toast({ html: 'Movie DB Api Key must not be empty' });
+        return false;
+    }
+
+    if (!$('#plex_movie_urls').val()) {
+        M.toast({ html: 'Plex Movie URLs must not be empty' });
+        return false;
+    }
+
+    if (!$('#connect_timeout').val()) {
+        M.toast({ html: 'Connection timeout must not be empty' });
+        return false;
+    }
+
+    if (!$('#write_timeout').val()) {
+        M.toast({ html: 'Connection timeout must not be empty' });
+        return false;
+    }
+
+    if (!$('#read_timeout').val()) {
+        M.toast({ html: 'Connection timeout must not be empty' });
+        return false;
+    }
+
+    return true;
+}
+
+function search() {
     connect();
 
     keepChecking = true;
@@ -140,7 +181,6 @@ function connect() {
     var socket = new SockJS('/gs-guide-websocket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
-        console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/searchStatus', function (status) {
             showSearchStatus(JSON.parse(status.body));
         });
