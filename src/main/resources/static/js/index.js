@@ -29,13 +29,28 @@ function onSubmitGapsSearch() {
 }
 
 function validateInput() {
+    if(!$('#search_plex').is(':checked') && !$('#search_folder').is(':checked')) {
+        M.toast({ html: 'Must search from Plex or folders' });
+        return false;
+    }
+
     if (!$('#movie_db_api_key').val()) {
-        M.toast({ html: 'Movie DB Api Key must not be empty' });
+        M.toast({ html: 'Movie DB api key must not be empty' });
+        return false;
+    }
+
+    if (!$('#address').val()) {
+        M.toast({ html: 'Gaps IP address must not be empty' });
+        return false;
+    }
+
+    if (!$('#port').val()) {
+        M.toast({ html: 'Gaps port must not be empty' });
         return false;
     }
 
     if (!$('#plex_movie_urls').val()) {
-        M.toast({ html: 'Plex Movie URLs must not be empty' });
+        M.toast({ html: 'Plex movie URLs must not be empty' });
         return false;
     }
 
