@@ -3,7 +3,7 @@
 function onStart() {
     $('#plex').click(function() {
         if(validateInput()) {
-            location.replace("plex.html");
+            location.replace("plex_configuration.html");
             let obj = {
                 'movie_db_api_key' : $('#movie_db_api_key').val()
             };

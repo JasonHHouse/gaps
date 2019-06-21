@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <title>Gaps</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="icon" type="image/x-icon" href="image/baseline-video_library-24px.ico">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/index.css"/>
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+</head>
+
+<body class="grey lighten-4" onload="onStart()">
+<main>
+
+    <nav>
+        <div class="nav-wrapper blue lighten-1">
+            <div class="brand-logo center white-text">Gaps for Plex</div>
+        </div>
+    </nav>
+
+    <br>
+
+    <div class="container">
+
+        <div class="row grey lighten-3">
+            <form class="col s12">
+                <div class="row blue lighten-2 grey-text white-text">
+                    <h5 class="col s12">Configuring Gaps for Plex</h5>
+
+                    <p class="col s12 text-lighten-4">We'll need a few pieces of information to work with Plex. Once
+                        you have all those, enter them below and we'll keep moving forward.</p>
+                    <ul class="collection">
+                        <li class="collection-item blue lighten-2 text-lighten-4 avatar">
+                            <img src="image/icons8-web-address-96.svg" alt="" class="circle">
+                            <h6 class="text-lighten-4">IP Address</h6>
+                            <p class="text-lighten-4">localhost and 127.0.0.1 will also work</p>
+                        </li>
+                        <li class="collection-item blue lighten-2 text-lighten-4 avatar">
+                            <img src="image/icons8-numbers-input-form-96.svg" alt="" class="circle">
+                            <h6 class="text-lighten-4">Port</h6>
+                            <p class="text-lighten-4">Defaults to 32400</p>
+                        </li>
+                        <li class="collection-item blue lighten-2 text-lighten-4 avatar">
+                            <img src="image/icons8-key-96.svg" alt="" class="circle">
+                            <h6 class="text-lighten-4">Your Personal Plex Token</h6>
+                            <p class="text-lighten-4">If you do not know already it's easy to find. Plex has a great write up
+                                <a href="https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/">here</a>
+                                about how to find your token.</p>
+                        </li>
+                    </ul>
+
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s5">
+                        <input type="text" id="address" type="text" class="validate">
+                        <label for="address">Set the IP address for Plex*</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s3">
+                        <input type="number" id="port" type="text" class="validate">
+                        <label for="port">Set the port for Plex*</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s5">
+                        <input id="plex_token" type="text" class="validate">
+                        <label for="plex_token">Set your Plex Token*</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s1">
+                        <a class="waves-effect waves-light btn white teal-text" id="back">Back</a>
+                    </div>
+                    <div class="col s1">
+                        <a class="waves-effect waves-light btn" id="next">Next</a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</main>
+<footer class="page-footer blue lighten-2">
+    <div class="container">
+        <div class="row">
+            <div class="col l6 s12">
+                <h5 class="white-text">Gaps v0.0.4</h5>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <div class="container">
+            © 2019 Gaps
+        </div>
+    </div>
+</footer>
+
+</body>
+
+</html>
