@@ -4,10 +4,7 @@ function onStart() {
     $('#plex').click(function() {
         if(validateInput()) {
             location.replace("plex_configuration.html");
-
-            let obj = JSON.parse(document.cookie);
-
-            obj = {
+            let obj = {
                 'movie_db_api_key' : $('#movie_db_api_key').val()
             };
             document.cookie = JSON.stringify(obj);

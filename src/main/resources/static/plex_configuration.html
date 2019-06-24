@@ -14,14 +14,14 @@
 
     <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/plex_configuration.js"></script>
 </head>
 
 <body class="grey lighten-4" onload="onStart()">
 <main>
 
     <nav>
-        <div class="nav-wrapper blue lighten-1">
+        <div class="nav-wrapper indigo">
             <div class="brand-logo center white-text">Gaps for Plex</div>
         </div>
     </nav>
@@ -32,23 +32,23 @@
 
         <div class="row grey lighten-3">
             <form class="col s12">
-                <div class="row blue lighten-2 grey-text white-text">
+                <div class="row indigo darken-1 white-text">
                     <h5 class="col s12">Configuring Gaps for Plex</h5>
 
-                    <p class="col s12 text-lighten-4">We'll need a few pieces of information to work with Plex. Once
+                    <p class="col s12 grey-text text-lighten-4">We'll need a few pieces of information to work with Plex. Once
                         you have all those, enter them below and we'll keep moving forward.</p>
                     <ul class="collection">
-                        <li class="collection-item blue lighten-2 text-lighten-4 avatar">
+                        <li class="collection-item indigo darken-1 grey-text text-lighten-4 avatar">
                             <img src="image/icons8-web-address-96.svg" alt="" class="circle">
                             <h6 class="text-lighten-4">IP Address</h6>
                             <p class="text-lighten-4">localhost and 127.0.0.1 will also work</p>
                         </li>
-                        <li class="collection-item blue lighten-2 text-lighten-4 avatar">
+                        <li class="collection-item indigo darken-1 grey-text text-lighten-4  avatar">
                             <img src="image/icons8-numbers-input-form-96.svg" alt="" class="circle">
                             <h6 class="text-lighten-4">Port</h6>
                             <p class="text-lighten-4">Defaults to 32400</p>
                         </li>
-                        <li class="collection-item blue lighten-2 text-lighten-4 avatar">
+                        <li class="collection-item indigo darken-1 grey-text text-lighten-4  avatar">
                             <img src="image/icons8-key-96.svg" alt="" class="circle">
                             <h6 class="text-lighten-4">Your Personal Plex Token</h6>
                             <p class="text-lighten-4">If you do not know already it's easy to find. Plex has a great write up
@@ -93,7 +93,7 @@
         </div>
     </div>
 </main>
-<footer class="page-footer blue lighten-2">
+<footer class="page-footer indigo">
     <div class="container">
         <div class="row">
             <div class="col l6 s12">
@@ -103,7 +103,11 @@
     </div>
     <div class="footer-copyright">
         <div class="container">
-            © 2019 Gaps
+            <div class="row">
+                <div class="col s12">
+                    © 2019 Gaps
+                </div>
+            </div>
         </div>
     </div>
 </footer>

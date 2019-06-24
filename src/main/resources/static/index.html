@@ -21,7 +21,7 @@
 <main>
 
     <nav>
-        <div class="nav-wrapper blue lighten-1">
+        <div class="nav-wrapper indigo">
             <div class="brand-logo center white-text">Gaps - Find your missing movies</div>
         </div>
     </nav>
@@ -32,26 +32,30 @@
 
         <div class="row grey lighten-3">
             <form class="col s12">
-                <div class="row blue lighten-2 grey-text white-text">
+                <div class="row indigo darken-1 white-text">
                     <h5 class="col s12">Welcome to Gaps</h5>
 
-                    <p class="col s12  text-lighten-4">Gaps searches through your Plex Server. It then queries for known
+                    <p class="col s12 grey-text text-lighten-4">Gaps searches through your Plex Server. It then queries
+                        for known
                         movies in the same
                         collection using The MovieDB, which you will need to get. Don't worry, we'll walk you through
                         those
                         steps. Anyway, if those movies don't exist in your library, Gaps will recommend getting those
                         movies, legally of course.</p>
 
-                    <p class="col s12  text-lighten-4">An example would be owning 'Alien (1979)' and Gaps recommending
+                    <p class="col s12 grey-text text-lighten-4">An example would be owning 'Alien (1979)' and Gaps
+                        recommending
                         'Aliens (1986)' and
                         'Alien³ (1992)' to be added to your collection.</p>
+
+                    <p class="col s12 grey-text text-lighten-4">To use Gaps, you'll need a MovieDB api key. Navigate
+                        over to <a
+                                href="https://www.themoviedb.org/settings/api" target="_blank">The Movie DB</a>, create
+                        an
+                        account, and make an API Key. Copy that key and paste it below.</p>
                 </div>
 
                 <div class="row">
-                    <p class="col s12">To use Gaps, you'll need a MovieDB api key. Navigate over to <a
-                            href="https://www.themoviedb.org/settings/api" target="_blank">The Movie DB</a>, create an
-                        account, and make an API Key. Copy that key and paste it below.</p>
-
                     <div class="input-field col s6">
                         <input placeholder="Api Key" id="movie_db_api_key" type="text" class="validate">
                         <label for="movie_db_api_key">Movie Database Api Key*</label>
@@ -60,17 +64,17 @@
 
                 <div class="row">
                     <div class="col s2">
-                        <a class="waves-effect waves-light btn" id="plex">Search Plex</a>
+                        <a class="waves-effect waves-light btn disabled" id="folder">Search Folders</a>
                     </div>
                     <div class="col s2">
-                        <a class="waves-effect waves-light btn disabled" id="folder">Search Folders</a>
+                        <a class="waves-effect waves-light btn" id="plex">Search Plex</a>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </main>
-<footer class="page-footer blue lighten-2">
+<footer class="page-footer indigo">
     <div class="container">
         <div class="row">
             <div class="col l6 s12">
@@ -81,7 +85,11 @@
     </div>
     <div class="footer-copyright">
         <div class="container">
-            © 2019 Gaps
+            <div class="row">
+                <div class="col s12">
+                    © 2019 Gaps
+                </div>
+            </div>
         </div>
     </div>
 </footer>
