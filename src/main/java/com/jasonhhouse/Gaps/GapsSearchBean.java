@@ -24,6 +24,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -39,7 +40,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ResponseStatusException;
@@ -134,6 +134,84 @@ public class GapsSearchBean implements GapsSearch {
     public Integer getSearchedMovieCount() {
         return searchedMovieCount.get();
     }
+
+    @Override
+    public @NotNull Set<PlexLibrary> getPlexLibraries(@NotNull String address, @NotNull int port, @NotNull String token) {
+        logger.info("Searching for Plex Movies...");
+        OkHttpClient client = new OkHttpClient.Builder()
+                .build();
+
+        Set<PlexLibrary> plexLibraries = new TreeSet<>();
+
+        HttpUrl url = new HttpUrl.Builder()
+                .scheme("http")
+                .host(address)
+                .port(port)
+                .addPathSegment("library")
+                .addPathSegment("sections")
+                .addQueryParameter("X-Plex-Token", token)
+                .build();
+
+        try {
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            try (Response response = client.newCall(request).execute()) {
+                String body = response.body() != null ? response.body().string() : null;
+
+                if (body == null) {
+                    String reason = "Body returned null from Plex. Url: " + url;
+                    logger.error(reason);
+                    throw new IllegalStateException(reason);
+                }
+
+                InputStream fileIS = new ByteArrayInputStream(body.getBytes());
+                DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder builder = builderFactory.newDocumentBuilder();
+                Document xmlDocument = builder.parse(fileIS);
+                XPath xPath = XPathFactory.newInstance().newXPath();
+                String expression = "/MediaContainer/Directory";
+                NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
+
+                if (nodeList.getLength() == 0) {
+                    String reason = "No libraries found in url: " + url;
+                    logger.warn(reason);
+                }
+
+                for (int i = 0; i < nodeList.getLength(); i++) {
+                    Node node = nodeList.item(i);
+
+                    String type = node.getAttributes().getNamedItem("type").getNodeValue();
+
+                    if (type.equals("movie")) {
+                        String title = node.getAttributes().getNamedItem("title").getNodeValue().replaceAll(":", "");
+                        Integer key = Integer.valueOf(node.getAttributes().getNamedItem("title").getNodeValue());
+
+                        PlexLibrary plexLibrary = new PlexLibrary(key, title);
+                        plexLibraries.add(plexLibrary);
+
+                    }
+                }
+
+            } catch (IOException e) {
+                String reason = "Error connecting to Plex to get library list: " + url;
+                logger.error(reason, e);
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason, e);
+            } catch (ParserConfigurationException | XPathExpressionException | SAXException e) {
+                String reason = "Error parsing XML from Plex: " + url;
+                logger.error(reason, e);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
+            }
+        } catch (IllegalArgumentException e) {
+            String reason = "Error with plex Url: " + url;
+            logger.error(reason, e);
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason, e);
+        }
+
+        return plexLibraries;
+    }
+
 
     @Override
     public void cancelSearch() {

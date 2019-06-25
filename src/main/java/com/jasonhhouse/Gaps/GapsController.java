@@ -4,7 +4,6 @@ import java.util.Set;
 import java.util.concurrent.Future;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -35,6 +35,16 @@ public class GapsController {
     GapsController(GapsSearch gapsSearch, SimpMessagingTemplate template) {
         this.gapsSearch = gapsSearch;
         this.template = template;
+    }
+
+    @RequestMapping(value = "getPlexLibraries", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Set<PlexLibrary>> getPlexLibraries(@RequestParam("address") String address,
+                                                             @RequestParam("port") int port,
+                                                             @RequestParam("token") String token) {
+        logger.info("getPlexLibraries()");
+        Set<PlexLibrary> plexLibraries = gapsSearch.getPlexLibraries(address, port, token);
+        return new ResponseEntity<>(plexLibraries, HttpStatus.OK);
     }
 
     @RequestMapping(value = "cancelSearch", method = RequestMethod.PUT)

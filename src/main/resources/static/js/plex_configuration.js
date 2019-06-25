@@ -7,7 +7,7 @@ function onStart() {
 
     $('#next').click(function () {
         if (validateInput()) {
-            location.replace("plex_sections.html");
+            location.replace("plex_libraries.html");
 
             let obj = JSON.parse(document.cookie);
 
@@ -20,6 +20,9 @@ function onStart() {
     });
 
     populateCookieValues();
+
+    M.AutoInit();
+    M.updateTextFields();
 }
 
 function populateCookieValues() {

@@ -1,24 +1,33 @@
 "use strict"
 
+let libraries;
+
 function onStart() {
-    $('#plex').click(function () {
+    $('#back').click(function () {
+        location.replace("plex_configuration.html");
+    });
+
+    $('#next').click(function () {
         if (validateInput()) {
-            location.replace("plex_configuration.html");
+            location.replace("plex_movie_list.html");
 
             let obj = JSON.parse(document.cookie);
 
-            if (!obj) {
-                obj = {
-                    'movie_db_api_key': $('#movie_db_api_key').val()
-                };
-            } else {
-                obj.movie_db_api_key = $('#movie_db_api_key').val();
+            let selectedLibraries = [];
+            for (library of libraries) {
+
+                if ($('#' + library).is(':checked')) {
+                    selectedLibraries.push(library);
+                }
+
             }
+
+            obj.libraries = selectedLibraries;
             document.cookie = JSON.stringify(obj);
         }
     });
 
-    populateCookieValues();
+    //populateCookieValues();
 
     M.AutoInit();
     M.updateTextFields();
@@ -36,10 +45,10 @@ function populateCookieValues() {
 }
 
 function validateInput() {
-    if (!$('#movie_db_api_key').val()) {
+    /*if (!$('#movie_db_api_key').val()) {
         M.toast({ html: 'The MovieDB api key must not be empty' });
         return false;
-    }
+    }*/
 
     return true;
 }
