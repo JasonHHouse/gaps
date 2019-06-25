@@ -186,7 +186,7 @@ public class GapsSearchBean implements GapsSearch {
 
                     if (type.equals("movie")) {
                         String title = node.getAttributes().getNamedItem("title").getNodeValue().replaceAll(":", "");
-                        Integer key = Integer.valueOf(node.getAttributes().getNamedItem("title").getNodeValue());
+                        Integer key = Integer.valueOf(node.getAttributes().getNamedItem("key").getNodeValue());
 
                         PlexLibrary plexLibrary = new PlexLibrary(key, title);
                         plexLibraries.add(plexLibrary);
