@@ -15,11 +15,9 @@ function onStart() {
 
             let selectedLibraries = [];
             for (library of libraries) {
-
                 if ($('#' + library).is(':checked')) {
                     selectedLibraries.push(library);
                 }
-
             }
 
             obj.libraries = selectedLibraries;
@@ -59,6 +57,7 @@ function getLibraries() {
         url: "http://" + location.hostname + ":" + location.port + "/getPlexLibraries?" + encodeQueryData(data),
         contentType: "application/json",
         success: function (data) {
+            libraries = data;
             generateLibrariesCheckbox(data);
         }
     });
@@ -71,10 +70,10 @@ function encodeQueryData(data) {
     return ret.join('&');
 }
 
-function generateLibrariesCheckbox(movies) {
+function generateLibrariesCheckbox() {
     let row = '';
-    for (let movie of movies) {
-        row += '<div class="row"><p class="col s5"><label><input type="checkbox" class="filled-in" /><span>' + movie.title + '</span></label></p></div>';
+    for (let library of libraries) {
+        row += '<div class="row"><p class="col s5"><label><input id="' + library.key + '"type="checkbox" class="filled-in" /><span>' + library.title + '</span></label></p></div>';
     }
 
     $('#libraryCheckboxes').html(row);
@@ -92,10 +91,22 @@ function populateCookieValues() {
 }
 
 function validateInput() {
-    /*if (!$('#movie_db_api_key').val()) {
+    let selectedLibraries = [];
+
+    for (library of libraries) {
+        if ($('#' + library).is(':checked')) {
+            selectedLibraries.push(library);
+        }
+    }
+
+    if (!$('#movie_db_api_key').val()) {
         M.toast({ html: 'The MovieDB api key must not be empty' });
         return false;
-    }*/
+    }
 
     return true;
+}
+
+function onClickBanner() {
+    location.replace("index.html");
 }
