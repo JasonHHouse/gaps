@@ -38,6 +38,24 @@
                         Server. Select any and all you would like to look for gaps in.</p>
                 </div>
 
+                <div class="row" id="progressBar">
+                    <div class="col s4">
+                        <div class="preloader-wrapper big active">
+                            <div class="spinner-layer spinner-blue">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="libraryCheckboxes"></div>
 
                 <div class="row">
@@ -45,12 +63,37 @@
                         <a class="waves-effect waves-light btn white teal-text" id="back">Back</a>
                     </div>
                     <div class="col s1">
-                        <a class="waves-effect waves-light btn" id="next">Next</a>
+                        <a class="waves-effect waves-light btn" id="search">Search</a>
                     </div>
                 </div>
 
             </form>
         </div>
+    </div>
+
+
+    <!-- Modal Structure -->
+    <div id="warningModal" class="modal">
+        <div class="modal-content">
+            <h4 id="searchModelTitle">Before you Start Searching</h4>
+            <div id="body">
+                Warning: Searching for all movies missing from your libraries could take a very long time. Be sure to
+                make sure your connection won't go down while searching and go make yourself some coffee.
+                <p>
+                    <label>
+                        <input type="checkbox" class="filled-in"/>
+                        <span>Don't show this dialog again</span>
+                    </label>
+                </p>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat teal-text">Agree</a>
+        </div>
+    </div>
+
     </div>
 </main>
 <footer class="page-footer indigo">

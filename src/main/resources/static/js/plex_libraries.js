@@ -2,17 +2,18 @@
 
 let allLibraries;
 
+
+
 function onStart() {
     $('#back').click(function () {
         location.replace("plex_configuration.html");
     });
 
-    $('#next').click(function () {
-        if (validateInput()) {
-            location.replace("plex_movie_list.html");
-            updatedSelectedLibraries();
-        }
+    $('#search').click(function () {
+        $('#warningModal').modal('open');
     });
+
+    setPreloaderVisibility(true);
 
     //populateCookieValues();
 
@@ -20,6 +21,22 @@ function onStart() {
 
     M.AutoInit();
     M.updateTextFields();
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('.modal');
+        var instances = M.Modal.init(elems, {
+            onCloseEnd: function () {
+                /*  if (validateInput()) {
+                     location.replace("plex_movie_list.html");
+                     updatedSelectedLibraries();
+                 } */
+            }
+        });
+    });
+}
+
+function setPreloaderVisibility(bool) {
+    $("#progressBar").toggle(bool);
 }
 
 function getLibraries() {
@@ -47,6 +64,7 @@ function getLibraries() {
         contentType: "application/json",
         success: function (data) {
             allLibraries = data;
+            setPreloaderVisibility(false);
             generateLibrariesCheckbox(data);
         }
     });
