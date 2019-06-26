@@ -1,6 +1,6 @@
 "use strict"
 
-let libraries;
+let allLibraries;
 
 function onStart() {
     $('#back').click(function () {
@@ -46,7 +46,7 @@ function getLibraries() {
         url: "http://" + location.hostname + ":" + location.port + "/getPlexLibraries?" + encodeQueryData(data),
         contentType: "application/json",
         success: function (data) {
-            libraries = data;
+            allLibraries = data;
             generateLibrariesCheckbox(data);
         }
     });
@@ -60,12 +60,28 @@ function encodeQueryData(data) {
 }
 
 function generateLibrariesCheckbox() {
+    let obj = JSON.parse(document.cookie);
+    let selectedLibraries = obj.libraries || [];
+
     let row = '';
-    for (let library of libraries) {
-        row += '<div class="row"><p class="col s5"><label><input onclick="updatedSelectedLibraries()" id="' + library.key + '"type="checkbox" class="filled-in" /><span>' + library.title + '</span></label></p></div>';
+    for (let library of allLibraries) {
+        row += '<div class="row"><p class="col s5"><label><input onclick="updatedSelectedLibraries()" id="'
+            + library.key
+            + '"type="checkbox" class="filled-in"'
+            + (findIfChecked(selectedLibraries, library.key) ? ' checked="checked"' : '')
+            + ' /><span>' + library.title + '</span></label></p></div>';
     }
 
     $('#libraryCheckboxes').html(row);
+}
+
+function findIfChecked(selectedLibraries, key) {
+    for (var i = 0; i < selectedLibraries.length; i++) {
+        if (selectedLibraries[i].key == key) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function updatedSelectedLibraries() {
@@ -78,7 +94,7 @@ function updatedSelectedLibraries() {
 
 function findSelectedLibraries() {
     let selectedLibraries = [];
-    for (let library of libraries) {
+    for (let library of allLibraries) {
         if ($('#' + library.key).is(':checked')) {
             selectedLibraries.push(library);
         }
@@ -98,7 +114,7 @@ function populateCookieValues() {
 }
 
 function validateInput() {
-    let selectedLibraries =  findSelectedLibraries();
+    let selectedLibraries = findSelectedLibraries();
 
     if (selectedLibraries === undefined || selectedLibraries.length == 0) {
         M.toast({ html: 'Must select at least one library' });
