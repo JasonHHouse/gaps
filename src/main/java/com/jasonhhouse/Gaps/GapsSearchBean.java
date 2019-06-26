@@ -137,7 +137,7 @@ public class GapsSearchBean implements GapsSearch {
 
     @Override
     public @NotNull Set<PlexLibrary> getPlexLibraries(@NotNull String address, @NotNull int port, @NotNull String token) {
-        logger.info("Searching for Plex Movies...");
+        logger.info("Searching for Plex Libraries...");
         OkHttpClient client = new OkHttpClient.Builder()
                 .build();
 
@@ -208,6 +208,8 @@ public class GapsSearchBean implements GapsSearch {
             logger.error(reason, e);
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason, e);
         }
+
+        logger.info(plexLibraries.size() + " Plex libraries found");
 
         return plexLibraries;
     }

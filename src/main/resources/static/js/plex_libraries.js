@@ -10,18 +10,7 @@ function onStart() {
     $('#next').click(function () {
         if (validateInput()) {
             location.replace("plex_movie_list.html");
-
-            let obj = JSON.parse(document.cookie);
-
-            let selectedLibraries = [];
-            for (library of libraries) {
-                if ($('#' + library).is(':checked')) {
-                    selectedLibraries.push(library);
-                }
-            }
-
-            obj.libraries = selectedLibraries;
-            document.cookie = JSON.stringify(obj);
+            updatedSelectedLibraries();
         }
     });
 
@@ -73,10 +62,29 @@ function encodeQueryData(data) {
 function generateLibrariesCheckbox() {
     let row = '';
     for (let library of libraries) {
-        row += '<div class="row"><p class="col s5"><label><input id="' + library.key + '"type="checkbox" class="filled-in" /><span>' + library.title + '</span></label></p></div>';
+        row += '<div class="row"><p class="col s5"><label><input onclick="updatedSelectedLibraries()" id="' + library.key + '"type="checkbox" class="filled-in" /><span>' + library.title + '</span></label></p></div>';
     }
 
     $('#libraryCheckboxes').html(row);
+}
+
+function updatedSelectedLibraries() {
+    let obj = JSON.parse(document.cookie);
+    let selectedLibraries = findSelectedLibraries();
+
+    obj.libraries = selectedLibraries;
+    document.cookie = JSON.stringify(obj);
+}
+
+function findSelectedLibraries() {
+    let selectedLibraries = [];
+    for (let library of libraries) {
+        if ($('#' + library.key).is(':checked')) {
+            selectedLibraries.push(library);
+        }
+    }
+
+    return selectedLibraries;
 }
 
 function populateCookieValues() {
@@ -86,21 +94,14 @@ function populateCookieValues() {
         if (obj.movie_db_api_key) {
             $('#movie_db_api_key').val(obj.movie_db_api_key);
         }
-
     }
 }
 
 function validateInput() {
-    let selectedLibraries = [];
+    let selectedLibraries =  findSelectedLibraries();
 
-    for (library of libraries) {
-        if ($('#' + library).is(':checked')) {
-            selectedLibraries.push(library);
-        }
-    }
-
-    if (!$('#movie_db_api_key').val()) {
-        M.toast({ html: 'The MovieDB api key must not be empty' });
+    if (selectedLibraries === undefined || selectedLibraries.length == 0) {
+        M.toast({ html: 'Must select at least one library' });
         return false;
     }
 
