@@ -17,11 +17,11 @@
 </head>
 
 
-<body class="grey lighten-4" onload="onStart()">
+<body class="grey darken-4" onload="onStart()">
 <main>
 
     <nav>
-        <div onclick="onClickBanner()" class="nav-wrapper indigo">
+        <div onclick="onClickBanner()" class="nav-wrapper indigo lighten-1">
             <div class="brand-logo center white-text">Gaps for Plex</div>
         </div>
     </nav>
@@ -29,10 +29,9 @@
     <br>
 
     <div class="container">
-
-        <div class="row grey lighten-3">
+        <div class="row grey darken-3">
             <form class="col s12">
-                <div class="row indigo darken-1 white-text">
+                <div class="row indigo white-text">
                     <h5 class="col s12">Plex Movie Libraries</h5>
 
                     <p class="col s12 grey-text text-lighten-4">These are the movie libraries we found in your Plex
@@ -57,21 +56,20 @@
                     </div>
                 </div>
 
-                <div id="libraryCheckboxes"></div>
+                <div id="libraryCheckboxes" class="grey-text text-lighten-4"></div>
 
                 <div class="row">
                     <div class="col s1">
                         <a class="waves-effect waves-light btn white teal-text" id="back">Back</a>
                     </div>
                     <div class="col s1">
-                        <a class="waves-effect waves-light btn" id="search">Search</a>
+                        <a class="waves-effect waves-light btn" id="search" onclick="searchForMovies()">Search</a>
                     </div>
                 </div>
 
             </form>
         </div>
     </div>
-
 
     <!-- Modal Structure -->
     <div id="warningModal" class="modal">
@@ -98,7 +96,7 @@
 
     </div>
 </main>
-<footer class="page-footer indigo">
+<footer class="page-footer indigo lighten-1">
     <div class="container">
         <div class="row">
             <div class="col l6 s12">

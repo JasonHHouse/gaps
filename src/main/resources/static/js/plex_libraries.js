@@ -2,8 +2,6 @@
 
 let allLibraries;
 
-
-
 function onStart() {
     $('#back').click(function () {
         location.replace("plex_configuration.html");
@@ -85,7 +83,7 @@ function generateLibrariesCheckbox() {
     for (let library of allLibraries) {
         row += '<div class="row"><p class="col s5"><label><input onclick="updatedSelectedLibraries()" id="'
             + library.key
-            + '"type="checkbox" class="filled-in"'
+            + '"type="checkbox" class="filled-in grey-text text-lighten-4"'
             + (findIfChecked(selectedLibraries, library.key) ? ' checked="checked"' : '')
             + ' /><span>' + library.title + '</span></label></p></div>';
     }
@@ -144,4 +142,8 @@ function validateInput() {
 
 function onClickBanner() {
     location.replace("index.html");
+}
+
+function searchForMovies() {
+    location.replace("plex_movie_list.html");
 }
