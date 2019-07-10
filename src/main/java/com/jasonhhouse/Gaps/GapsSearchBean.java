@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -133,6 +134,11 @@ public class GapsSearchBean implements GapsSearch {
     @Override
     public Integer getSearchedMovieCount() {
         return searchedMovieCount.get();
+    }
+
+    @Override
+    public @NotNull CopyOnWriteArrayList<Movie> getRecommendedMovies() {
+        return new CopyOnWriteArrayList<>(recommended);
     }
 
     @Override

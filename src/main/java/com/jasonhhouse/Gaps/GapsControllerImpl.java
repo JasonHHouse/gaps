@@ -1,7 +1,10 @@
 package com.jasonhhouse.Gaps;
 
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -12,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,19 +24,20 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 @Controller
-public class GapsController {
+public class GapsControllerImpl {
 
-    private final Logger logger = LoggerFactory.getLogger(GapsController.class);
+    private final Logger logger = LoggerFactory.getLogger(GapsControllerImpl.class);
 
     private final GapsSearch gapsSearch;
-
     @Autowired
     private final SimpMessagingTemplate template;
+    private AtomicInteger position;
 
     @Autowired
-    GapsController(GapsSearch gapsSearch, SimpMessagingTemplate template) {
+    GapsControllerImpl(GapsSearch gapsSearch, SimpMessagingTemplate template) {
         this.gapsSearch = gapsSearch;
         this.template = template;
+        position = new AtomicInteger(0);
     }
 
     @RequestMapping(value = "getPlexLibraries", method = RequestMethod.GET)
@@ -58,6 +61,9 @@ public class GapsController {
     @ResponseStatus(value = HttpStatus.OK)
     public Future<ResponseEntity<Set<Movie>>> submit(@RequestBody Gaps gaps) {
         logger.info("submit()");
+
+        //Reset position
+        position.set(0);
 
         //Error checking
         if (StringUtils.isEmpty(gaps.getMovieDbApiKey())) {
@@ -120,6 +126,21 @@ public class GapsController {
         if (gapsSearch.isSearching()) {
             logger.info("searchStatus()");
             template.convertAndSend("/topic/searchStatus", new SearchStatus(gapsSearch.getSearchedMovieCount(), gapsSearch.getTotalMovieCount()));
+        }
+    }
+
+    @Scheduled(fixedDelay = 200)
+    public void currentSearchResults() {
+        if (gapsSearch.isSearching()) {
+            logger.info("currentSearchResults()");
+
+            List<Movie> newMovies = gapsSearch.getRecommendedMovies().subList(position.get(), gapsSearch.getRecommendedMovies().size() - 1);
+
+            if (CollectionUtils.isNotEmpty(newMovies)) {
+                position.addAndGet(newMovies.size());
+                SearchResults searchResults = new SearchResults(gapsSearch.getSearchedMovieCount(), gapsSearch.getTotalMovieCount(), newMovies);
+                template.convertAndSend("/topic/currentSearchResults", searchResults);
+            }
         }
     }
 

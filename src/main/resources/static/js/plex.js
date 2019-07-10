@@ -30,49 +30,6 @@ function onSubmitGapsSearch() {
     }
 }
 
-function validateInput() {
-    if(!$('#search_plex').is(':checked') && !$('#search_folder').is(':checked')) {
-        M.toast({ html: 'Must search from Plex or folders' });
-        return false;
-    }
-
-    if (!$('#movie_db_api_key').val()) {
-        M.toast({ html: 'Movie DB api key must not be empty' });
-        return false;
-    }
-
-    if (!$('#address').val()) {
-        M.toast({ html: 'Gaps IP address must not be empty' });
-        return false;
-    }
-
-    if (!$('#port').val()) {
-        M.toast({ html: 'Gaps port must not be empty' });
-        return false;
-    }
-
-    if (!$('#plex_movie_urls').val()) {
-        M.toast({ html: 'Plex movie URLs must not be empty' });
-        return false;
-    }
-
-    if (!$('#connect_timeout').val()) {
-        M.toast({ html: 'Connection timeout must not be empty' });
-        return false;
-    }
-
-    if (!$('#write_timeout').val()) {
-        M.toast({ html: 'Connection timeout must not be empty' });
-        return false;
-    }
-
-    if (!$('#read_timeout').val()) {
-        M.toast({ html: 'Connection timeout must not be empty' });
-        return false;
-    }
-
-    return true;
-}
 
 function search() {
     connect();
@@ -165,6 +122,7 @@ function polling() {
         })
     }
 }
+/*
 
 function searchPlexChanged(checkbox) {
     if (checkbox.checked) {
@@ -193,12 +151,13 @@ function searchFolderChanged(checkbox) {
         $("#folder_regex").prop('disabled', true);
     }
 }
+*/
 
 function connect() {
     var socket = new SockJS('/gs-guide-websocket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
-        stompClient.subscribe('/topic/searchStatus', function (status) {
+        stompClient.subscribe('/topic/searchResults', function (status) {
             showSearchStatus(JSON.parse(status.body));
         });
     });
@@ -218,7 +177,7 @@ function showSearchStatus(obj) {
         } else {
             $('#progressContainer').show();
             var percentage = Math.trunc(obj.searchedMovieCount / obj.totalMovieCount * 100);
-            $('#searchingBody').text(obj.searchedMovieCount + ' of ' + obj.totalMovieCount + " movies searched. " + percentage + "% complete.");
+            $('#searchingBody').text(obj.searchedMovieCount + ' of ' + obj.totalMovieCount + " movies searched. " + percentage + "% complete. "  + obj.moviesFound);
             $('#progressBar').css("width", percentage + "%");
         }
     }

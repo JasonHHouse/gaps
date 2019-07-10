@@ -14,10 +14,12 @@
 
     <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/sockjs-1.3.0.min.js"></script>
+    <script type="text/javascript" src="js/stomp-2.3.3.min.js"></script>
     <script type="text/javascript" src="js/plex_movie_list.js"></script>
 </head>
 
-<body class="grey darken-4" onload="onStart()">
+<body class="grey darken-4">
 <main>
 
     <nav>
@@ -39,13 +41,17 @@
                 </div>
 
                 <div class="row">
-                    <div id="searchingBody" class="col s12"></div>
+                    <div id="searchingPosition" class="col s12"></div>
                 </div>
 
                 <div class="row">
                     <div id="progressContainer" class="progress" class="col s8 offset-s2">
                         <div id="progressBar" class="col s8 offset-s2" class="determinate" style="width: 0%"></div>
                     </div>
+                </div>
+
+                <div class="row">
+                    <div id="searchingResults" class="col s12"></div>
                 </div>
 
                 <div class="row">
