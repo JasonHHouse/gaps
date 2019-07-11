@@ -140,10 +140,6 @@ function validateInput() {
     return true;
 }
 
-function onClickBanner() {
-    location.replace("index.html");
-}
-
 function searchForMovies() {
     location.replace("plex_movie_list.html");
 }

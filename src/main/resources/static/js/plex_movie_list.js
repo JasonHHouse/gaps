@@ -3,12 +3,6 @@
 let keepChecking;
 let stompClient;
 
-function onClickBanner() {
-    //Warn of canceling here
-    location.replace("index.html");
-    disconnect();
-}
-
 document.addEventListener('DOMContentLoaded', function () {
     keepChecking = true;
     connect();
@@ -138,3 +132,28 @@ function encodeQueryData(data) {
         ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
     return ret.join('&');
 }
+
+/*
+function goToPlexMovieList() {
+    location.replace("plex_movie_list.html");
+    //ToDo: Issue warning if running
+    disconnect();
+}
+
+function goToPlexLibraries() {
+    location.replace("plex_libraries.html");
+    //ToDo: Issue warning if running
+    disconnect();
+}
+
+function goToPlexConfiguration() {
+    location.replace("plex_configuration.html");
+    //ToDo: Issue warning if running
+    disconnect();
+}
+
+function goToIndex() {
+    location.replace("index.html");
+    //ToDo: Issue warning if running
+    disconnect();
+}*/

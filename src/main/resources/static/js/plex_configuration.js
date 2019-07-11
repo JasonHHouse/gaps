@@ -67,7 +67,3 @@ function validateInput() {
 
     return true;
 }
-
-function onClickBanner() {
-    location.replace("index.html");
-}

@@ -20,3 +20,24 @@ input:-webkit-autofill:active  {
 input:-webkit-autofill {
     -webkit-text-fill-color: #f5f5f5 !important;
 }
+
+
+/* unvisited link */
+a:link {
+  color: #26a69a;
+}
+
+/* visited link */
+a:visited {
+  color: #64d8cb;
+}
+
+/* mouse over link */
+a:hover {
+  color: #78909c;
+}
+
+/* selected link */
+a:active {
+  color: #a7c0cd;
+}
