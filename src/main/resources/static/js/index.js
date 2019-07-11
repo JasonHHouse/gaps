@@ -31,12 +31,15 @@ function onStart() {
 
 function populateCookieValues() {
     if (document.cookie) {
-        let obj = JSON.parse(document.cookie);
+        try {
+            let obj = JSON.parse(document.cookie);
 
-        if (obj.movie_db_api_key) {
-            $('#movie_db_api_key').val(obj.movie_db_api_key);
+            if (obj.movie_db_api_key) {
+                $('#movie_db_api_key').val(obj.movie_db_api_key);
+            }
+        } catch (e) {
+        //Nothing, no cookie
         }
-
     }
 }
 
