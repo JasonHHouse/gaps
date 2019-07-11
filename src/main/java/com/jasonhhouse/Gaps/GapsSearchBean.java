@@ -80,6 +80,8 @@ public class GapsSearchBean implements GapsSearch {
     @Override
     public CompletableFuture run(@NotNull Gaps gaps) {
         searched.clear();
+        ownedMovies.clear();
+        recommended.clear();
         totalMovieCount.set(0);
         searchedMovieCount.set(0);
         cancelSearch.set(false);

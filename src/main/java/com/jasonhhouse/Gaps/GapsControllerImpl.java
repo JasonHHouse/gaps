@@ -121,17 +121,17 @@ public class GapsControllerImpl {
         return gapsSearch.run(gaps);
     }
 
-    @Scheduled(fixedDelay = 1000)
+/*    @Scheduled(fixedDelay = 1000)
     public void searchStatus() {
         if (gapsSearch.isSearching()) {
             logger.info("searchStatus()");
             template.convertAndSend("/topic/searchStatus", new SearchStatus(gapsSearch.getSearchedMovieCount(), gapsSearch.getTotalMovieCount()));
         }
-    }
+    }*/
 
-    @Scheduled(fixedDelay = 200)
+    @Scheduled(fixedDelay = 500)
     public void currentSearchResults() {
-        if (gapsSearch.isSearching()) {
+        if (gapsSearch.isSearching() && CollectionUtils.isNotEmpty(gapsSearch.getRecommendedMovies())) {
             logger.info("currentSearchResults()");
 
             List<Movie> newMovies = gapsSearch.getRecommendedMovies().subList(position.get(), gapsSearch.getRecommendedMovies().size() - 1);

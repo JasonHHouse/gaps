@@ -7,15 +7,21 @@ function onStart() {
 
     $('#next').click(function () {
         if (validateInput()) {
-            location.replace("plex_libraries.html");
-
-            let obj = JSON.parse(document.cookie);
+            let obj;
+            try {
+                obj = JSON.parse(document.cookie);
+            } catch (e) {
+                //report error here, missing movie db api key
+                obj = {};
+            }
 
             obj.address = $('#address').val();
             obj.port = $('#port').val();
             obj.plex_token = $('#plex_token').val();
 
             document.cookie = JSON.stringify(obj);
+
+            location.replace("plex_libraries.html");
         }
     });
 

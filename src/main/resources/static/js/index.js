@@ -3,18 +3,23 @@
 function onStart() {
     $('#plex').click(function () {
         if (validateInput()) {
-            location.replace("plex_configuration.html");
+            let obj;
+            try {
+                obj = JSON.parse(document.cookie);
+            } catch (e) {
+                obj = {};
+            }
 
-            let obj = JSON.parse(document.cookie);
-
-            if (!obj) {
+            /*if (!obj) {
                 obj = {
                     'movie_db_api_key': $('#movie_db_api_key').val()
                 };
-            } else {
-                obj.movie_db_api_key = $('#movie_db_api_key').val();
-            }
+            } else {*/
+            obj.movie_db_api_key = $('#movie_db_api_key').val();
+            /*}*/
             document.cookie = JSON.stringify(obj);
+
+            location.replace("plex_configuration.html");
         }
     });
 
