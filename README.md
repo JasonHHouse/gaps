@@ -4,6 +4,8 @@ Searches through your Plex Server or local folders for all movies, then queries 
 ## Usage
 ### Local Requirements
 
+Gaps runs in [Docker](https://www.docker.com/), so you'll need to be able to work with containers. 
+
 It's a Spring Boot App and you need Java to run this if you want to use the jar. You'll need to make sure Java is accessible in your command window or terminal. You can also run as a docker container, in which case, you would need Docker. 
 
 #### Windows 
