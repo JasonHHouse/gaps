@@ -41,7 +41,7 @@ function onStart() {
 
     document.addEventListener('DOMContentLoaded', function () {
         var elems = document.querySelectorAll('.modal');
-        var instances = M.Modal.init(elems);
+        M.Modal.init(elems);
     });
 }
 
@@ -50,7 +50,7 @@ function setPreloaderVisibility(bool) {
 }
 
 function setSearchEnabled(bool) {
-    if(bool) {
+    if (bool) {
         $('#search').removeClass('disabled');
     } else {
         $('#search').addClass('disabled');
@@ -110,9 +110,9 @@ function encodeQueryData(data) {
 
 function setErrorMessage() {
     $('#libraryCheckboxes').html('<p>Something went wrong. ' +
-    'Please make sure your connection to Plex is correct. ' +
-    'You can navigate back to make changes and then retry connecting. ' +
-    'Check the browser and Docker logs for more information.</p>');
+        'Please make sure your connection to Plex is correct. ' +
+        'You can navigate back to make changes and then retry connecting. ' +
+        'Check the browser and Docker logs for more information.</p>');
 }
 
 function generateLibrariesCheckbox() {

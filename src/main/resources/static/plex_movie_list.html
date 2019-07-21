@@ -3,14 +3,14 @@
 
 <head>
     <title>Gaps</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="shortcut icon" href="image/gaps.ico"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="shortcut icon" href="image/gaps.ico" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="css/plex_movie_list.css"/>
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="css/plex_movie_list.css" />
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
 
     <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
@@ -20,81 +20,95 @@
 </head>
 
 <body class="grey darken-4">
-<main>
+    <main>
 
-    <nav>
-        <div onclick="onClickBanner()" class="nav-wrapper indigo lighten-1">
-            <div class="brand-logo center white-text">
-                <a href="index.html">Gaps</a>
-                <span>&nbsp;>&nbsp;</span>
-                <a href="plex_configuration.html">Plex</a>
-                <span>&nbsp;>&nbsp;</span>
-                <a href="plex_libraries.html">Libraries</a>
-                <span>&nbsp;>&nbsp;Missing Movies</span>
+        <nav>
+            <div onclick="onClickBanner()" class="nav-wrapper indigo lighten-1">
+                <div class="brand-logo center white-text">
+                    <a href="index.html">Gaps</a>
+                    <span>&nbsp;>&nbsp;</span>
+                    <a href="plex_configuration.html">Plex</a>
+                    <span>&nbsp;>&nbsp;</span>
+                    <a href="plex_libraries.html">Libraries</a>
+                    <span>&nbsp;>&nbsp;Missing Movies</span>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <br>
+        <br>
 
-    <div class="container">
-        <div class="row grey darken-3">
-            <form class="col s12">
-                <div class="row indigo white-text">
-                    <h5 id="searchTitle" class="col s12">Searching...</h5>
+        <div class="container">
+            <div class="row grey darken-3">
+                <form class="col s12">
+                    <div class="row indigo white-text">
+                        <h5 id="searchTitle" class="col s12">Searching...</h5>
 
-                    <p id="searchDescription" class="col s12 grey-text text-lighten-4"></p>
-                </div>
-
-                <div class="row">
-                    <div id="searchPosition" class="col s12 grey-text text-lighten-4"></div>
-                </div>
-
-                <div class="row">
-                    <div id="progressContainer" class="progress" class="col s8 offset-s2">
-                        <div id="progressBar" class="col s8 offset-s2" class="determinate" style="width: 0%"></div>
+                        <p id="searchDescription" class="col s12 grey-text text-lighten-4"></p>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div id="searchResults" class="col s12 grey-text text-lighten-4"></div>
-                </div>
-
-                <div class="row">
-                    <div class="col s2">
-                        <a class="waves-effect waves-light btn white teal-text disabled" id="back">Start Over</a>
+                    <div class="row">
+                        <div id="searchPosition" class="col s12 grey-text text-lighten-4"></div>
                     </div>
-                    <div class="col s2">
-                        <a class="waves-effect waves-light btn disabled" id="rss">View RSS</a>
-                    </div>
-                    <div class="col s3">
-                        <a class="waves-effect waves-light btn disabled" id="copyToClipboard">Copy to clipboard</a>
-                    </div>
-                </div>
-            </form>
-        </div>
 
+                    <div class="row">
+                        <div id="progressContainer" class="progress" class="col s8 offset-s2">
+                            <div id="progressBar" class="col s8 offset-s2" class="determinate" style="width: 0%"></div>
+                        </div>
+                    </div>
 
-    </div>
-</main>
-<footer class="page-footer indigo lighten-1">
-    <div class="container">
-        <div class="row">
-            <div class="col l6 s12">
-                <h5 class="white-text">Gaps v0.0.4</h5>
+                    <div class="row">
+                        <div id="searchResults" class="col s12 grey-text text-lighten-4"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s2">
+                            <a class="waves-effect waves-light btn white teal-text" id="cancel">Cancel</a>
+                        </div>
+                        <div class="col s2">
+                            <a class="waves-effect waves-light btn disabled" id="rss">View RSS</a>
+                        </div>
+                        <div class="col s3">
+                            <a class="waves-effect waves-light btn disabled" id="copyToClipboard">Copy to clipboard</a>
+                        </div>
+                    </div>
+                </form>
             </div>
+
+            <!-- Modal Structure -->
+            <div id="warningModal" class="modal">
+                <div class="modal-content">
+                    <h4 id="searchModelTitle">Cancel Search</h4>
+                    <div id="body">
+                        <p>Are you sure you want to cancel searching?</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a id="agree" href="#!" class="modal-close waves-effect waves-green btn-flat teal-text">Cancel
+                        Search</a>
+                </div>
+            </div>
+
         </div>
-    </div>
-    <div class="footer-copyright">
+    </main>
+    <footer class="page-footer indigo lighten-1">
         <div class="container">
             <div class="row">
-                <div class="col s12">
-                    © 2019 Gaps
+                <div class="col l6 s12">
+                    <h5 class="white-text">Gaps v0.0.4</h5>
                 </div>
             </div>
         </div>
-    </div>
-</footer>
+        <div class="footer-copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col s12">
+                        © 2019 Gaps
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 </body>
+
 </html>

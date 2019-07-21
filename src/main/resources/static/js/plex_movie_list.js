@@ -2,9 +2,31 @@
 
 let keepChecking;
 let stompClient;
+let backButton;
 
 document.addEventListener('DOMContentLoaded', function () {
     keepChecking = true;
+
+    var elems = document.querySelectorAll('.modal');
+    M.Modal.init(elems);
+
+    backButton = $('#cancel');
+    backButton.click(function () {
+        $('#warningModal').modal('open');
+    });
+
+    $('#agree').click(function () {
+        //Cancel Search
+        $.ajax({
+            type: "PUT",
+            url: "http://" + location.hostname + ":" + location.port + "/cancelSearch",
+            contentType: "application/json",
+        });
+
+        //Navigate Home
+        location.replace("index.html");
+    });
+
     connect();
     search();
 });
@@ -14,7 +36,9 @@ function search() {
     let progressContainer = $('#progressContainer');
     let searchResults = $('#searchResults');
     let searchDescription = $('#searchDescription');
-    let backButton = $('#back');
+
+
+
 
     progressContainer.hide();
     searchTitle.text("Searching...");
@@ -24,7 +48,7 @@ function search() {
 
     let plexMovieUrls = [];
 
-    for(let library of obj.libraries) {
+    for (let library of obj.libraries) {
         let data = {
             'X-Plex-Token': obj.plex_token
         };
