@@ -47,7 +47,23 @@ function setPreloaderVisibility(bool) {
     $("#progressBar").toggle(bool);
 }
 
+function setSearchEnabled(bool) {
+    if(bool) {
+        $("#search").css("waves-effect waves-light btn");
+    } else {
+        $("#search").css("waves-effect waves-light btn disabled");
+    }
+}
+
+function clearLibrariesAndErrors() {
+    $("#libraryException").html('');
+    $("#libraryCheckboxes").html('');
+}
+
 function getLibraries() {
+
+    setSearchEnabled(false);
+    clearLibrariesAndErrors();
 
     let obj = JSON.parse(document.cookie);
     let token = obj.plex_token;
@@ -73,7 +89,12 @@ function getLibraries() {
         success: function (data) {
             allLibraries = data;
             setPreloaderVisibility(false);
+            setSearchEnabled(true);
             generateLibrariesCheckbox(data);
+        }, error: function (data) {
+            setPreloaderVisibility(false);
+            setSearchEnabled(false);
+            setErrorMessage();
         }
     });
 }
@@ -83,6 +104,10 @@ function encodeQueryData(data) {
     for (let d in data)
         ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
     return ret.join('&');
+}
+
+function setErrorMessage() {
+    $('#libraryCheckboxes').html('<p>Something went wrong. Please make sure your connection to Plex is correct. You can navigate back in the title bar and retry. Check the browser and Docker logs for more information.</p>');
 }
 
 function generateLibrariesCheckbox() {
