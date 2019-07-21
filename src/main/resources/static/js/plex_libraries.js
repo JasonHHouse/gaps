@@ -74,7 +74,7 @@ function getLibraries() {
 
     if (!token || !port || !address) {
         console.error('Could not find plex token, port, or address in cookies');
-        //Return error toast here
+        M.toast({ html: 'Could not find plex token, port, or address in cookies' });
         return;
     }
 

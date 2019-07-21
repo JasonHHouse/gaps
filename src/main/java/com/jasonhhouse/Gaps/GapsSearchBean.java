@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -56,7 +57,7 @@ public class GapsSearchBean implements GapsSearch {
 
     private final Set<Movie> searched;
 
-    private final Set<Movie> recommended;
+    private final List<Movie> recommended;
 
     private final Set<Movie> ownedMovies;
 
@@ -69,7 +70,7 @@ public class GapsSearchBean implements GapsSearch {
     public GapsSearchBean() {
         this.ownedMovies = new HashSet<>();
         this.searched = new HashSet<>();
-        this.recommended = new TreeSet<>();
+        this.recommended = new ArrayList<>();
 
         totalMovieCount = new AtomicInteger();
         searchedMovieCount = new AtomicInteger();

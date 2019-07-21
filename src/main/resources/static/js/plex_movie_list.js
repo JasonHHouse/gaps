@@ -3,6 +3,8 @@
 let keepChecking;
 let stompClient;
 let backButton;
+let copyToClipboard;
+let searchResults = $('#searchResults');
 
 document.addEventListener('DOMContentLoaded', function () {
     keepChecking = true;
@@ -11,8 +13,17 @@ document.addEventListener('DOMContentLoaded', function () {
     M.Modal.init(elems);
 
     backButton = $('#cancel');
+    copyToClipboard = $('#copyToClipboard');
+    searchResults = $('#searchResults');
+
     backButton.click(function () {
         $('#warningModal').modal('open');
+    });
+
+    setCopyToClipboardEnabled(false);
+    copyToClipboard.click(function () {
+        CopyToClipboard('searchResults');
+        M.toast({ html: 'Copied to Clipboard' });
     });
 
     $('#agree').click(function () {
@@ -31,14 +42,19 @@ document.addEventListener('DOMContentLoaded', function () {
     search();
 });
 
+function setCopyToClipboardEnabled(bool) {
+    if (bool) {
+        copyToClipboard.removeClass('disabled');
+    } else {
+        copyToClipboard.addClass('disabled');
+    }
+}
+
 function search() {
     let searchTitle = $('#searchTitle');
     let progressContainer = $('#progressContainer');
-    let searchResults = $('#searchResults');
+
     let searchDescription = $('#searchDescription');
-
-
-
 
     progressContainer.hide();
     searchTitle.text("Searching...");
@@ -84,6 +100,8 @@ function search() {
 
             searchResults.html(movieHtml);
 
+            setCopyToClipboardEnabled(true);
+
             disconnect();
         },
         error: function (err) {
@@ -99,6 +117,8 @@ function search() {
             searchResults.html(message);
             keepChecking = false;
             backButton.text('restart');
+
+            setCopyToClipboardEnabled(false);
 
             disconnect();
         }
@@ -135,14 +155,14 @@ function disconnect() {
 function showSearchStatus(obj) {
     if (keepChecking) {
         if (!obj || (!obj.searchedMovieCount && !obj.totalMovieCount && obj.totalMovieCount === 0)) {
-            $('#searchResults').text("Searching for movies...");
+            searchResults.html("<p>Searching for movies...</p>");
         } else {
             $('#progressContainer').show();
             let percentage = Math.trunc(obj.searchedMovieCount / obj.totalMovieCount * 100);
             $('#searchPosition').text(obj.searchedMovieCount + ' of ' + obj.totalMovieCount + " movies searched. " + percentage + "% complete.");
 
             for (let movie of obj.moviesFound) {
-                $('#searchResults').append(buildMovieDiv(movie));
+                searchResults.append(buildMovieDiv(movie));
             }
 
             $('#progressBar').css("width", percentage + "%");
@@ -157,27 +177,17 @@ function encodeQueryData(data) {
     return ret.join('&');
 }
 
-/*
-function goToPlexMovieList() {
-    location.replace("plex_movie_list.html");
-    //ToDo: Issue warning if running
-    disconnect();
-}
+function CopyToClipboard(containerid) {
+    if (document.selection) {
+        var range = document.body.createTextRange();
+        range.moveToElementText(document.getElementById(containerid));
+        range.select().createTextRange();
+        document.execCommand("copy");
 
-function goToPlexLibraries() {
-    location.replace("plex_libraries.html");
-    //ToDo: Issue warning if running
-    disconnect();
+    } else if (window.getSelection) {
+        var range = document.createRange();
+        range.selectNode(document.getElementById(containerid));
+        window.getSelection().addRange(range);
+        document.execCommand("copy");
+    }
 }
-
-function goToPlexConfiguration() {
-    location.replace("plex_configuration.html");
-    //ToDo: Issue warning if running
-    disconnect();
-}
-
-function goToIndex() {
-    location.replace("index.html");
-    //ToDo: Issue warning if running
-    disconnect();
-}*/
