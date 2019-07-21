@@ -11,7 +11,9 @@ function onStart() {
         let obj = JSON.parse(document.cookie);
 
         if (!obj.dialogDontShowAgain) {
-            $('#warningModal').modal('open');
+            if (validateInput()) {
+                $('#warningModal').modal('open');
+            }
         } else {
             if (validateInput()) {
                 updatedSelectedLibraries();
