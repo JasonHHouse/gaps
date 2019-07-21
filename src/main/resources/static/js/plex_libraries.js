@@ -49,9 +49,9 @@ function setPreloaderVisibility(bool) {
 
 function setSearchEnabled(bool) {
     if(bool) {
-        $("#search").css("waves-effect waves-light btn");
+        $('#search').removeClass('disabled');
     } else {
-        $("#search").css("waves-effect waves-light btn disabled");
+        $('#search').addClass('disabled');
     }
 }
 
@@ -107,7 +107,10 @@ function encodeQueryData(data) {
 }
 
 function setErrorMessage() {
-    $('#libraryCheckboxes').html('<p>Something went wrong. Please make sure your connection to Plex is correct. You can navigate back in the title bar and retry. Check the browser and Docker logs for more information.</p>');
+    $('#libraryCheckboxes').html('<p>Something went wrong. ' +
+    'Please make sure your connection to Plex is correct. ' +
+    'You can navigate back to make changes and then retry connecting. ' +
+    'Check the browser and Docker logs for more information.</p>');
 }
 
 function generateLibrariesCheckbox() {
