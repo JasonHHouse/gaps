@@ -1,24 +1,61 @@
 # Gaps
-Searches through your Plex Server or local folders for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.
+Gaps searches through your Plex Server or local folders for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.
+
+## Setup
+### Docker
+
+Gaps runs in [Docker](https://www.docker.com/), so you'll need a basic ability to download and run a container. If you already have Docker, skip to installing and running.
+
+*Underneath the covers, Gaps runs as a Spring Boot app. Don't worry about it though. The container will pull down Java for you and automatically run the jar.* 
+
+Docker has a good write up on installing Docker CE. Check it out [here](https://docs.docker.com/install/). Once you get docker up and running
+
+## Installing and Running
+
+With Docker installed, you'll need to now pull down the latest Gaps image. The Gaps image is hosted [here](https://hub.docker.com/r/housewrecker/gaps).
+
+To pull the image, run the following command in a terminal
+
+    docker pull housewrecker/gaps
+
+You now have the Gaps image and you need to do a little configuration. The command to run Gaps follows
+
+    docker run -p 8080:8080 --name mygaps --expose 32400 housewrecker/gaps:latest
+
+### Important Notes
+
+1. -p or publish exposes maps ports from the container to the outside world. Docker has a great write up [here](https://docs.docker.com/config/containers/container-networking/). 
+
+    *Note: If 8080 is in us on your system, change the publish command to -p <new available port>:8080*
+
+2. --name mygaps sets the name of the local running container. You can change it to whatever you want, just don't forget the name in the future!
+
+3. --expose 32400 is there to commucate with Plex. By default, Plex is set to 32400 by default. If you've changed the port, change that here. 
+
+Once all those values are updated correctly for your system, you can run the command and Gaps will start up.
+
+To track the logs from Gaps, use the following command. Again, change the container, if you changed the name.
+
+     docker logs -f mygaps
 
 ## Usage
-### Local Requirements
 
-Gaps runs in [Docker](https://www.docker.com/), so you'll need to be able to work with containers. 
+To see Gaps, open up your browser and navigate over to the ip address and port you set for Gaps.
 
-It's a Spring Boot App and you need Java to run this if you want to use the jar. You'll need to make sure Java is accessible in your command window or terminal. You can also run as a docker container, in which case, you would need Docker. 
+If your browser is on the same machine running Docker and you did not change the port, then you can navigate to 
 
-#### Windows 
-##### Jar
-This is a good write up on getting Java in the path variable on [windows](https://javatutorial.net/set-java-home-windows-10).
-##### Docker
-Check out https://www.docker.com/ to get docker for Windows. 
+    http://localhost:8080
+    
+Or
 
-#### Mac and Linux
-##### Jar
-You'll just need to add the Java classpath to your bash_profile.
-##### Docker
-Check out https://www.docker.com/ to get docker for Mac and Linux.
+    http://127.0.0.1:8080 
+
+
+
+
+
+
+
 
 ### Properties
 #### Plex
