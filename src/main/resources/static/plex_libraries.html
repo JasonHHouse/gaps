@@ -67,7 +67,7 @@
                         <a class="waves-effect waves-light btn white teal-text" id="back">Back</a>
                     </div>
                     <div class="col s1">
-                        <a class="waves-effect waves-light btn" id="search" onclick="searchForMovies()">Search</a>
+                        <a class="waves-effect waves-light btn" id="search">Search</a>
                     </div>
                 </div>
 
@@ -85,7 +85,7 @@
                 </p>
                 <p>
                     <label>
-                        <input type="checkbox" class="filled-in"/>
+                        <input id="dialogDontShowAgain" type="checkbox" class="filled-in"/>
                         <span>Don't show this dialog again</span>
                     </label>
                 </p>
@@ -94,7 +94,7 @@
         </div>
         <div class="modal-footer">
             <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
-            <a href="#!" class="modal-close waves-effect waves-green btn-flat teal-text">Agree</a>
+            <a id="agree" href="#!" class="modal-close waves-effect waves-green btn-flat teal-text">Agree</a>
         </div>
     </div>
 

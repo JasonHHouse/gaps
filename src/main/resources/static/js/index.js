@@ -10,13 +10,7 @@ function onStart() {
                 obj = {};
             }
 
-            /*if (!obj) {
-                obj = {
-                    'movie_db_api_key': $('#movie_db_api_key').val()
-                };
-            } else {*/
             obj.movie_db_api_key = $('#movie_db_api_key').val();
-            /*}*/
             document.cookie = JSON.stringify(obj);
 
             location.replace("plex_configuration.html");

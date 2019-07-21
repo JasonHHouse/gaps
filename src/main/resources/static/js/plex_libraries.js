@@ -8,12 +8,29 @@ function onStart() {
     });
 
     $('#search').click(function () {
-        $('#warningModal').modal('open');
+        let obj = JSON.parse(document.cookie);
+
+        if (!obj.dialogDontShowAgain) {
+            $('#warningModal').modal('open');
+        } else {
+            if (validateInput()) {
+                updatedSelectedLibraries();
+                location.replace("plex_movie_list.html");
+            }
+        }
+    });
+
+    $('#agree').click(function () {
+        if (validateInput()) {
+            let obj = JSON.parse(document.cookie);
+            obj.dialogDontShowAgain = $('#dialogDontShowAgain').is(':checked');
+            document.cookie = JSON.stringify(obj);
+            updatedSelectedLibraries();
+            location.replace("plex_movie_list.html");
+        }
     });
 
     setPreloaderVisibility(true);
-
-    //populateCookieValues();
 
     getLibraries();
 
@@ -22,14 +39,7 @@ function onStart() {
 
     document.addEventListener('DOMContentLoaded', function () {
         var elems = document.querySelectorAll('.modal');
-        var instances = M.Modal.init(elems, {
-            onCloseEnd: function () {
-                /*  if (validateInput()) {
-                     location.replace("plex_movie_list.html");
-                     updatedSelectedLibraries();
-                 } */
-            }
-        });
+        var instances = M.Modal.init(elems);
     });
 }
 
