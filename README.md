@@ -78,6 +78,10 @@ The host/ip address and port are the same ones you use to connect to Plex via th
 Or
 
     http://127.0.0.1:32400/web/index.html
+    
+If Plex and Gaps are both running in the same Docker, you may need to use the IP address on the local network. Example 
+
+    http://192.168.1.10:32400/web/index.html
 
 So, in the first case the host is localhost and the port 32400. In the second case, the host is 127.0.0.1 with the same port.
 
