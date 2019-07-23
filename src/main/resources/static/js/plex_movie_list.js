@@ -88,6 +88,8 @@ function search() {
         timeout: 0,
         success: function (movies) {
             keepChecking = false;
+            disconnect();
+
             let movieHtml = "";
             movies.forEach(function (movie) {
                 movieHtml += buildMovieDiv(movie);
@@ -101,10 +103,11 @@ function search() {
             searchResults.html(movieHtml);
 
             setCopyToClipboardEnabled(true);
-
-            disconnect();
         },
         error: function (err) {
+            keepChecking = false;
+            disconnect();
+
             let message = "Unknown error. Check docker Gaps log file.";
             if (err) {
                 message = JSON.parse(err.responseText).message;
@@ -115,12 +118,10 @@ function search() {
             progressContainer.hide();
 
             searchResults.html(message);
-            keepChecking = false;
+
             backButton.text('restart');
 
             setCopyToClipboardEnabled(false);
-
-            disconnect();
         }
     });
 

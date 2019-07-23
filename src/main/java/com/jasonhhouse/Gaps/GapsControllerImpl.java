@@ -129,7 +129,7 @@ public class GapsControllerImpl {
         }
     }*/
 
-    @Scheduled(fixedDelay = 500)
+    @Scheduled(fixedDelay = 1000)
     public void currentSearchResults() {
         if (gapsSearch.isSearching() && CollectionUtils.isNotEmpty(gapsSearch.getRecommendedMovies())) {
             logger.info("currentSearchResults()");
