@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         //Navigate Home
-        location.replace("index.html");
+        location.assign("index.html");
     });
 
     connect();

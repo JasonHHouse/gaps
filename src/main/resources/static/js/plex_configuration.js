@@ -2,7 +2,7 @@
 
 function onStart() {
     $('#back').click(function () {
-        location.replace("index.html");
+        location.assign("index.html");
     });
 
     $('#next').click(function () {
@@ -21,7 +21,7 @@ function onStart() {
 
             document.cookie = JSON.stringify(obj);
 
-            location.replace("plex_libraries.html");
+            location.assign("plex_libraries.html");
         }
     });
 

@@ -13,7 +13,7 @@ function onStart() {
             obj.movie_db_api_key = $('#movie_db_api_key').val();
             document.cookie = JSON.stringify(obj);
 
-            location.replace("plex_configuration.html");
+            location.assign("plex_configuration.html");
         }
     });
 

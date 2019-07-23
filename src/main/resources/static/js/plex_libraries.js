@@ -4,7 +4,7 @@ let allLibraries;
 
 function onStart() {
     $('#back').click(function () {
-        location.replace("plex_configuration.html");
+        location.assign("plex_configuration.html");
     });
 
     $('#search').click(function () {
@@ -17,7 +17,7 @@ function onStart() {
         } else {
             if (validateInput()) {
                 updatedSelectedLibraries();
-                location.replace("plex_movie_list.html");
+                location.assign("plex_movie_list.html");
             }
         }
     });
@@ -28,7 +28,7 @@ function onStart() {
             obj.dialogDontShowAgain = $('#dialogDontShowAgain').is(':checked');
             document.cookie = JSON.stringify(obj);
             updatedSelectedLibraries();
-            location.replace("plex_movie_list.html");
+            location.assign("plex_movie_list.html");
         }
     });
 
@@ -181,5 +181,5 @@ function validateInput() {
 }
 
 function searchForMovies() {
-    location.replace("plex_movie_list.html");
+    location.assign("plex_movie_list.html");
 }
