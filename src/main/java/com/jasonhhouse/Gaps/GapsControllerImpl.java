@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+/**
+ * Handles REST and WebSocket calls for Gaps.
+ */
 @Controller
 public class GapsControllerImpl {
 
@@ -40,6 +43,14 @@ public class GapsControllerImpl {
         position = new AtomicInteger(0);
     }
 
+    /**
+     * Searches Plex for the "Movie" libraries it can find
+     *
+     * @param address Host name of the machine to connect to Plex on
+     * @param port    Port Plex runs on
+     * @param token   User specific Plex token
+     * @return List of PlexLibraries found
+     */
     @RequestMapping(value = "getPlexLibraries", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Set<PlexLibrary>> getPlexLibraries(@RequestParam("address") String address,
@@ -50,6 +61,11 @@ public class GapsControllerImpl {
         return new ResponseEntity<>(plexLibraries, HttpStatus.OK);
     }
 
+    /**
+     * Forces a stop to searching. Used commonly if navigated away from page.
+     *
+     * @return success of search canceled
+     */
     @RequestMapping(value = "cancelSearch", method = RequestMethod.PUT)
     public ResponseEntity<String> cancelSearch() {
         logger.info("cancelSearch()");
@@ -57,6 +73,12 @@ public class GapsControllerImpl {
         return new ResponseEntity<>("Canceled Search", HttpStatus.OK);
     }
 
+    /**
+     * Main REST call to start Gaps searching for missing movies
+     *
+     * @param gaps Needs the gaps object to get started with Plex information and The Movie DB key
+     * @return All missing movies with their release year and collections associated to them
+     */
     @RequestMapping(value = "submit", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
     public Future<ResponseEntity<Set<Movie>>> submit(@RequestBody Gaps gaps) {
@@ -121,14 +143,10 @@ public class GapsControllerImpl {
         return gapsSearch.run(gaps);
     }
 
-/*    @Scheduled(fixedDelay = 1000)
-    public void searchStatus() {
-        if (gapsSearch.isSearching()) {
-            logger.info("searchStatus()");
-            template.convertAndSend("/topic/searchStatus", new SearchStatus(gapsSearch.getSearchedMovieCount(), gapsSearch.getTotalMovieCount()));
-        }
-    }*/
-
+    /**
+     * WebSocket connection that when Gaps is searching returns the updated collection results for more real time
+     * visualization of Gaps
+     */
     @Scheduled(fixedDelay = 1000)
     public void currentSearchResults() {
         if (gapsSearch.isSearching() && CollectionUtils.isNotEmpty(gapsSearch.getRecommendedMovies())) {
