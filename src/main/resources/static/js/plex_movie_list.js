@@ -3,16 +3,24 @@
 let stompClient;
 let backButton;
 let copyToClipboard;
-let searchResults = $('#searchResults');
-let searchingForMovies = $('#searchingForMovies');
+let searchResults;
+let searchPosition;
+let progressContainer;
+let searchTitle;
+let searchDescription;
 
 document.addEventListener('DOMContentLoaded', function () {
     var elems = document.querySelectorAll('.modal');
     M.Modal.init(elems);
 
+    searchResults = $('#searchResults');
     backButton = $('#cancel');
     copyToClipboard = $('#copyToClipboard');
     searchResults = $('#searchResults');
+    searchPosition = $('#searchPosition');
+    progressContainer = $('#progressContainer');
+    searchTitle = $('#searchTitle');
+    searchDescription = $('#searchDescription');
 
     backButton.click(function () {
         $('#warningModal').modal('open');
@@ -52,22 +60,10 @@ function setCopyToClipboardEnabled(bool) {
     }
 }
 
-function setSearchingForMoviesVisibility(bool) {
-    if (bool) {
-        searchingForMovies.show();
-    } else {
-        searchingForMovies.hide();
-    }
-}
-
 function search() {
-    let searchTitle = $('#searchTitle');
-    let progressContainer = $('#progressContainer');
-
-    let searchDescription = $('#searchDescription');
 
     progressContainer.hide();
-    searchTitle.text("Searching...");
+    searchTitle.text("Searching for Movies...");
     searchDescription.text("Gaps is looking through your Plex libraries. This could take a while so just sit tight and we'll find all the missing movies for you.");
 
     let obj = JSON.parse(document.cookie);
@@ -109,7 +105,7 @@ function search() {
             setCopyToClipboardEnabled(true);
         },
         error: function (err) {
-            //disconnect();
+            disconnect();
             let message = "Unknown error. Check docker Gaps log file.";
             if (err) {
                 message = JSON.parse(err.responseText).message;
@@ -119,8 +115,6 @@ function search() {
             searchDescription.text("");
             progressContainer.hide();
             backButton.text('restart');
-
-            setSearchingForMoviesVisibility(false);
             setCopyToClipboardEnabled(false);
         }
     });
@@ -165,18 +159,11 @@ function disconnect() {
 
 function showSearchStatus(obj) {
     if (!obj || (!obj.searchedMovieCount && !obj.totalMovieCount && obj.totalMovieCount === 0)) {
-        setSearchingForMoviesVisibility(true);
         searchResults.html("");
     } else {
-        if(obj.searchedMovieCount === obj.totalMovieCount) {
-        setSearchingForMoviesVisibility(false);
-        } else {
-            setSearchingForMoviesVisibility(true);
-        }
-
-        $('#progressContainer').show();
+        progressContainer.show();
         let percentage = Math.trunc(obj.searchedMovieCount / obj.totalMovieCount * 100);
-        $('#searchPosition').text(obj.searchedMovieCount + ' of ' + obj.totalMovieCount + " movies searched. " + percentage + "% complete.");
+        searchPosition.html('<h5>' + obj.searchedMovieCount + ' of ' + obj.totalMovieCount + ' movies searched. ' + percentage + '% complete.</h5>');
 
         searchResults.html(buildMoviesDiv(obj.moviesFound));
 
