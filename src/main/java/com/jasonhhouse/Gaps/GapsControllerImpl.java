@@ -34,13 +34,11 @@ public class GapsControllerImpl {
     private final GapsSearch gapsSearch;
     @Autowired
     private final SimpMessagingTemplate template;
-    private AtomicInteger position;
 
     @Autowired
     GapsControllerImpl(GapsSearch gapsSearch, SimpMessagingTemplate template) {
         this.gapsSearch = gapsSearch;
         this.template = template;
-        position = new AtomicInteger(0);
     }
 
     /**
@@ -83,9 +81,6 @@ public class GapsControllerImpl {
     @ResponseStatus(value = HttpStatus.OK)
     public Future<ResponseEntity<Set<Movie>>> submit(@RequestBody Gaps gaps) {
         logger.info("submit()");
-
-        //Reset position
-        position.set(0);
 
         //Error checking
         if (StringUtils.isEmpty(gaps.getMovieDbApiKey())) {
@@ -152,10 +147,9 @@ public class GapsControllerImpl {
         if (gapsSearch.isSearching() && CollectionUtils.isNotEmpty(gapsSearch.getRecommendedMovies())) {
             logger.info("currentSearchResults()");
 
-            List<Movie> newMovies = gapsSearch.getRecommendedMovies().subList(position.get(), gapsSearch.getRecommendedMovies().size() - 1);
+            List<Movie> newMovies = gapsSearch.getRecommendedMovies();
 
             if (CollectionUtils.isNotEmpty(newMovies)) {
-                position.addAndGet(newMovies.size());
                 SearchResults searchResults = new SearchResults(gapsSearch.getSearchedMovieCount(), gapsSearch.getTotalMovieCount(), newMovies);
                 template.convertAndSend("/topic/currentSearchResults", searchResults);
             }
