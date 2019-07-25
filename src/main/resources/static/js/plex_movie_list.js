@@ -145,7 +145,9 @@ function connect() {
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         stompClient.subscribe('/topic/currentSearchResults', function (status) {
-            showSearchStatus(JSON.parse(status.body));
+            let obj = JSON.parse(status.body);
+            showSearchStatus(obj);
+            shouldDisconnect(obj)
         });
     });
 }
@@ -155,6 +157,19 @@ function disconnect() {
         stompClient.disconnect();
     }
     console.log("Disconnected");
+}
+
+function shouldDisconnect(obj) {
+    if (obj && obj.searchedMovieCount && obj.totalMovieCount && obj.totalMovieCount === obj.searchedMovieCount) {
+        disconnect();
+
+        //Cancel Search
+        $.ajax({
+            type: "PUT",
+            url: "http://" + location.hostname + ":" + location.port + "/cancelSearch",
+            contentType: "application/json",
+        });
+    }
 }
 
 function showSearchStatus(obj) {
@@ -169,7 +184,6 @@ function showSearchStatus(obj) {
 
         $('#progressBar').css("width", percentage + "%");
     }
-
 }
 
 function encodeQueryData(data) {

@@ -226,7 +226,13 @@ public class GapsSearchBean implements GapsSearch {
 
     @Override
     public void cancelSearch() {
+        logger.debug("cancelSearch()");
         cancelSearch.set(true);
+        searched.clear();
+        ownedMovies.clear();
+        recommended.clear();
+        totalMovieCount.set(0);
+        searchedMovieCount.set(0);
     }
 
     @Override
