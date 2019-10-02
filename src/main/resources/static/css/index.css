@@ -2,42 +2,8 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
-
 }
 
 main {
   flex: 1 0 auto;
-}
-
-/* Change the white to any color ;) */
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active  {
-    -webkit-box-shadow: 0 0 0 30px #212121 inset !important;
-}
-
-/*Change text in autofill textbox*/
-input:-webkit-autofill {
-    -webkit-text-fill-color: #f5f5f5 !important;
-}
-
-/* unvisited link */
-a:link {
-  color: #fffde7;
-}
-
-/* visited link */
-a:visited {
-  color: #fff59d;
-}
-
-/* mouse over link */
-a:hover {
-  color: #fdd835;
-}
-
-/* selected link */
-a:active {
-  color: #ffcdd2;
 }

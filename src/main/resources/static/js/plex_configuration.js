@@ -1,11 +1,11 @@
-"use strict"
+"use strict";
 
 function onStart() {
-    $('#back').click(function () {
+    $("#back").click(function () {
         location.assign("index.html");
     });
 
-    $('#next').click(function () {
+    $("#next").click(function () {
         if (validateInput()) {
             let obj;
             try {
@@ -51,17 +51,17 @@ function populateCookieValues() {
 
 function validateInput() {
     if (!$('#address').val()) {
-        M.toast({ html: 'Plex IP address must not be empty' });
+        M.toast({html: "Plex IP address must not be empty"});
         return false;
     }
 
-    if (!$('#port').val()) {
-        M.toast({ html: 'Plex port must not be empty' });
+    if (!$("#port").val()) {
+        M.toast({html: "Plex port must not be empty"});
         return false;
     }
 
-    if (!$('#plex_token').val()) {
-        M.toast({ html: 'Plex Token must not be empty' });
+    if (!$("#plex_token").val()) {
+        M.toast({html: "Plex Token must not be empty"});
         return false;
     }
 

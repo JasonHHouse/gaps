@@ -1,23 +1,26 @@
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/html">
+<html xmlns="http://www.w3.org/1999/html" lang="en">
 
 <head>
     <title>Gaps</title>
+    <meta name="theme-color" content="#3f51b5"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="shortcut icon" href="image/gaps.ico"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="css/plex_configuration.css"/>
+    <link type="text/css" rel="stylesheet" href="css/plex_configuration.min.css"/>
+    <link type="text/css" rel="stylesheet" href="css/links.min.css"/>
+    <link type="text/css" rel="stylesheet" href="css/input.min.css"/>
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection"/>
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 
-<body class="grey darken-4" onload="onStart()">
+<body class="black" onload="onStart()">
 <main>
 
     <nav>
-        <div class="nav-wrapper indigo lighten-1">
+        <div class="nav-wrapper indigo darken-1">
             <div class="brand-logo center white-text">
                 <a href="index.html">Gaps</a>
                 <span>&nbsp;>&nbsp;Plex</span>
@@ -28,7 +31,7 @@
     <br>
 
     <div class="container">
-        <div class="row grey darken-3">
+        <div class="row grey darken-4">
             <form class="col s12">
                 <div class="row indigo white-text">
                     <h5 class="col s12">Configuring Gaps for Plex</h5>
@@ -83,10 +86,10 @@
 
                 <div class="row">
                     <div class="col s1">
-                        <a class="waves-effect waves-light btn white teal-text" id="back">Back</a>
+                        <a class="waves-effect waves-light btn white black-text" id="back">Back</a>
                     </div>
                     <div class="col s1">
-                        <a class="waves-effect waves-light btn" id="next">Next</a>
+                        <a class="waves-effect waves-light btn black-text" id="next">Next</a>
                     </div>
                 </div>
 
@@ -94,7 +97,7 @@
         </div>
     </div>
 </main>
-<footer class="page-footer indigo lighten-1">
+<footer class="page-footer indigo">
     <div class="container">
         <div class="row">
             <div class="col l6 s12">
@@ -115,6 +118,6 @@
 
 <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="js/materialize.min.js"></script>
-<script type="text/javascript" src="js/plex_configuration.js"></script>
+<script type="text/javascript" src="js/plex_configuration.min.js"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 let keepChecking;
 let stompClient;

@@ -171,6 +171,7 @@ function shouldDisconnect(obj) {
             contentType: "application/json",
         });
     }
+
 }
 
 function showSearchStatus(obj) {
