@@ -84,7 +84,7 @@ function search() {
         writeToFile: true,
         searchFromPlex: true,
         movieUrls: plexMovieUrls
-    }
+    };
 
     $.ajax({
         type: "POST",
@@ -109,6 +109,7 @@ function search() {
             let message = "Unknown error. Check docker Gaps log file.";
             if (err) {
                 message = JSON.parse(err.responseText).message;
+                Console.error(message);
             }
 
             searchTitle.text("An error occurred...");
@@ -141,7 +142,7 @@ function buildMovie(movie) {
 }
 
 function connect() {
-    var socket = new SockJS('/gs-guide-websocket');
+    const socket = new SockJS('/gs-guide-websocket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         stompClient.subscribe('/topic/currentSearchResults', function (status) {
@@ -188,20 +189,22 @@ function showSearchStatus(obj) {
 
 function encodeQueryData(data) {
     const ret = [];
-    for (let d in data)
+    for (let d in data) {
         ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+    }
     return ret.join('&');
 }
 
 function CopyToClipboard(containerid) {
+    let range;
     if (document.selection) {
-        var range = document.body.createTextRange();
+        range = document.body.createTextRange();
         range.moveToElementText(document.getElementById(containerid));
         range.select().createTextRange();
         document.execCommand("copy");
 
     } else if (window.getSelection) {
-        var range = document.createRange();
+        range = document.createRange();
         range.selectNode(document.getElementById(containerid));
         window.getSelection().addRange(range);
         document.execCommand("copy");

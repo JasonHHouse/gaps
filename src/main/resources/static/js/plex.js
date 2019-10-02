@@ -7,8 +7,8 @@ let modal;
 document.addEventListener('DOMContentLoaded', function () {
     M.AutoInit();
 
-    var elems = document.querySelectorAll('.modal');
-    var instances = M.Modal.init(elems, {
+    const elems = document.querySelectorAll('.modal');
+    M.Modal.init(elems, {
         onCloseEnd: function () {
             $.ajax({
                 type: "PUT",
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    var modal = M.Modal.getInstance($('#searchModal'));
+    M.Modal.getInstance($('#searchModal'));
 
     console.debug(document.cookie);
 });
@@ -122,39 +122,9 @@ function polling() {
         })
     }
 }
-/*
-
-function searchPlexChanged(checkbox) {
-    if (checkbox.checked) {
-        $("#plex_movie_urls").prop('disabled', false);
-        $("#connect_timeout").prop('disabled', false);
-        $("#write_timeout").prop('disabled', false);
-        $("#read_timeout").prop('disabled', false);
-    } else {
-        $("#plex_movie_urls").prop('disabled', true);
-        $("#connect_timeout").prop('disabled', true);
-        $("#write_timeout").prop('disabled', true);
-        $("#read_timeout").prop('disabled', true);
-    }
-}
-
-function searchFolderChanged(checkbox) {
-    if (checkbox.checked) {
-        $("#folder_directory").prop('disabled', false);
-        $("#folder_recursive").removeAttr("disabled");
-        $("#movie_formats").prop('disabled', false);
-        $("#folder_regex").prop('disabled', false);
-    } else {
-        $("#folder_directory").prop('disabled', true)
-        $("#folder_recursive").attr("disabled", true);
-        $("#movie_formats").prop('disabled', true);
-        $("#folder_regex").prop('disabled', true);
-    }
-}
-*/
 
 function connect() {
-    var socket = new SockJS('/gs-guide-websocket');
+    const socket = new SockJS('/gs-guide-websocket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         stompClient.subscribe('/topic/searchResults', function (status) {
@@ -176,7 +146,7 @@ function showSearchStatus(obj) {
             $('#searchingBody').text("Searching for movies...");
         } else {
             $('#progressContainer').show();
-            var percentage = Math.trunc(obj.searchedMovieCount / obj.totalMovieCount * 100);
+            const percentage = Math.trunc(obj.searchedMovieCount / obj.totalMovieCount * 100);
             $('#searchingBody').text(obj.searchedMovieCount + ' of ' + obj.totalMovieCount + " movies searched. " + percentage + "% complete. "  + obj.moviesFound);
             $('#progressBar').css("width", percentage + "%");
         }

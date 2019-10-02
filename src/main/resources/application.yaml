@@ -55,8 +55,36 @@ logging:
   level:
     root: INFO
 
+# Maximum time the response should be cached (in seconds)
+# The cache must re-validate stale resources with the server. Any expired resources must not be used without re-validating.
+# The resources are public and any cache may store the response.
 spring:
   mvc:
     async:
       request-timeout: -1
+  resources:
+    cache:
+      cachecontrol:
+        max-age: 120
+        must-revalidate: true
+        cache-public: true
 
+# Enable response compression
+# The comma-separated list of mime types that should be compressed
+# Compress the response only if the response size is at least 1KB
+# Enable HTTP/2 support, if the current environment supports it
+server:
+  port: 8443
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
+  http2:
+    enabled: true
+  ssl:
+    key-store-type: PKCS12
+    key-store: classpath:keystore/gaps.p12
+    key-store-password: gapsgapsgaps
+    key-alias: gaps
+security:
+  require-ssl: true

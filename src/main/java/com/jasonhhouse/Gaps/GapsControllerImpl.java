@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -57,6 +58,12 @@ public class GapsControllerImpl {
         logger.info("getPlexLibraries()");
         Set<PlexLibrary> plexLibraries = gapsSearch.getPlexLibraries(address, port, token);
         return new ResponseEntity<>(plexLibraries, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/ssl-test", method = RequestMethod.GET)
+    @ResponseBody
+    public String greeting() {
+        return "Self Signed SSL is Working!!";
     }
 
     /**

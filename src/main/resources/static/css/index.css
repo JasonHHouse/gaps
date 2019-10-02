@@ -2,6 +2,7 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
+
 }
 
 main {
@@ -23,20 +24,20 @@ input:-webkit-autofill {
 
 /* unvisited link */
 a:link {
-  color: #26a69a;
+  color: #fffde7;
 }
 
 /* visited link */
 a:visited {
-  color: #64d8cb;
+  color: #fff59d;
 }
 
 /* mouse over link */
 a:hover {
-  color: #78909c;
+  color: #fdd835;
 }
 
 /* selected link */
 a:active {
-  color: #a7c0cd;
+  color: #ffcdd2;
 }
