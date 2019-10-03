@@ -1,7 +1,8 @@
-"use strict"
+"use strict";
 
 function onStart() {
-    $('#plex').click(function () {
+
+    $("#plex").click(function () {
         if (validateInput()) {
             let obj;
             try {
@@ -10,7 +11,7 @@ function onStart() {
                 obj = {};
             }
 
-            obj.movie_db_api_key = $('#movie_db_api_key').val();
+            obj.movie_db_api_key = $("#movie_db_api_key").val();
             document.cookie = JSON.stringify(obj);
 
             location.assign("plex_configuration.html");
@@ -20,7 +21,9 @@ function onStart() {
     populateCookieValues();
 
     M.AutoInit();
+
     M.updateTextFields();
+
 }
 
 function populateCookieValues() {
@@ -29,7 +32,7 @@ function populateCookieValues() {
             let obj = JSON.parse(document.cookie);
 
             if (obj.movie_db_api_key) {
-                $('#movie_db_api_key').val(obj.movie_db_api_key);
+                $("#movie_db_api_key").val(obj.movie_db_api_key);
             }
         } catch (e) {
         //Nothing, no cookie
@@ -38,8 +41,8 @@ function populateCookieValues() {
 }
 
 function validateInput() {
-    if (!$('#movie_db_api_key').val()) {
-        M.toast({ html: 'The MovieDB api key must not be empty' });
+    if (!$("#movie_db_api_key").val()) {
+        M.toast({html: "The MovieDB api key must not be empty"});
         return false;
     }
 

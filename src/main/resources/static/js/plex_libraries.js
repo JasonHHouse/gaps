@@ -117,7 +117,6 @@ function validateInput() {
         M.toast({html: "Must select at least one library"});
         return false;
     }
-
     return true;
 }
 
