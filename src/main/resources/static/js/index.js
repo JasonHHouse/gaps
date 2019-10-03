@@ -21,7 +21,6 @@ function onStart() {
 
     M.AutoInit();
     M.updateTextFields();
-
 }
 
 function populateCookieValues() {
