@@ -141,16 +141,16 @@ docker build -t gaps .
 Next, run the container with the environment variables:
 
 ```bash
-docker run -t -e DBAPIKEY= -e PLEXADDRESS= -e WRITETOFILE= [-e TMDBLISTID= ] gaps  
+docker run -t -e DB_API_KEY= -e $PLEX_ADDRESS= -e $WRITE_TO_FILE= [-e TMDBLISTID= ] gaps  
 ```
 
 In example:
 
 ```bash
-docker run -t -e DBAPIKEY=myapikey -e PLEXADDRESS=http://192.168.0.10:32400/library/sections/1/all/?X-Plex-Token=plextoken -e WRITETOFILE=true [-e TMDBLISTID=id] gaps 
+docker run -t -e DB_API_KEY=myapikey -e $PLEX_ADDRESS=http://192.168.0.10:32400/library/sections/1/all/?X-Plex-Token=plextoken -e $WRITE_TO_FILE=true [-e TMDBLISTID=id] gaps 
 
 Multiple URL:
-docker run -t -e DBAPIKEY=myapikey -e PLEXADDRESS=http://192.168.0.10:32400/library/sections/1/all/?X-Plex-Token=plextoken,http://192.168.0.10:32400/library/sections/2/all/?X-Plex-Token=plextoken  -e WRITETOFILE=true gaps
+docker run -t -e DB_API_KEY=myapikey -e $PLEX_ADDRESS=http://192.168.0.10:32400/library/sections/1/all/?X-Plex-Token=plextoken,http://192.168.0.10:32400/library/sections/2/all/?X-Plex-Token=plextoken  -e $WRITE_TO_FILE=true gaps
 ```
 
 ### Option Properties in Docker
@@ -164,7 +164,7 @@ READ_TIMEOUT
 These are optional properties to help with Plex Sections that are very large. Timeouts can be set longer to help when parsing the big XML returned by Plex. They are not required and will default to 180 seconds.
 
 ```bash
-docker run -t -e DBAPIKEY=myapikey -e PLEXADDRESS=http://192.168.0.10:32400/library/sections/1/all/?X-Plex-Token=plextoken -e WRITETOFILE=true -e CONNECT_TIMEOUT=180 -e WRITE_TIMEOUT=180 -e READ_TIMEOUT=180 gaps
+docker run -t -e DB_API_KEY=myapikey -e PLEX_ADDRESS=http://192.168.0.10:32400/library/sections/1/all/?X-Plex-Token=plextoken -e WRITE_TO_FILE=true -e CONNECT_TIMEOUT=180 -e WRITE_TIMEOUT=180 -e READ_TIMEOUT=180 gaps
 ```
 
 
