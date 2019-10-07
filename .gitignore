@@ -27,3 +27,4 @@
 .vscode
 gaps_recommended_movies.txt
 package-lock.json
+node_modules
