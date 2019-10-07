@@ -1,37 +1,16 @@
+/*
+ * Copyright 2019 Jason H House
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 package com.jasonhhouse.Gaps;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-import okhttp3.HttpUrl;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import okhttp3.*;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -49,6 +28,22 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+import java.io.*;
+import java.net.URLEncoder;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class GapsSearchBean implements GapsSearch {
@@ -145,7 +140,7 @@ public class GapsSearchBean implements GapsSearch {
     }
 
     @Override
-    public @NotNull Set<PlexLibrary> getPlexLibraries(@NotNull String address, @NotNull int port, @NotNull String token) {
+    public @NotNull Set<PlexLibrary> getPlexLibraries(@NotNull String address, int port, @NotNull String token) {
         logger.info("Searching for Plex Libraries...");
         OkHttpClient client = new OkHttpClient.Builder()
                 .build();
@@ -316,7 +311,7 @@ public class GapsSearchBean implements GapsSearch {
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/octet-stream");
-        RequestBody.create(mediaType, "{}");
+        RequestBody.create("{}", mediaType);
         RequestBody body;
         Request request = new Request.Builder()
                 .url("https://api.themoviedb.org/3/authentication/token/new?api_key=" + gaps.getMovieDbApiKey())
@@ -344,7 +339,7 @@ public class GapsSearchBean implements GapsSearch {
 
         // Create the sesssion ID for MovieDB using the approved token
         mediaType = MediaType.parse("application/json");
-        body = RequestBody.create(mediaType, "{\"request_token\":\"" + request_token + "\"}");
+        body = RequestBody.create("{\"request_token\":\"" + request_token + "\"}", mediaType);
         request = new Request.Builder()
                 .url("https://api.themoviedb.org/3/authentication/session/new?api_key=" + gaps.getMovieDbApiKey())
                 .post(body)
@@ -375,7 +370,7 @@ public class GapsSearchBean implements GapsSearch {
             for (Movie m : recommended) {
                 client = new OkHttpClient();
 
-                body = RequestBody.create(mediaType, "{\"media_id\":" + m.getMedia_id() + "}");
+                body = RequestBody.create("{\"media_id\":" + m.getMedia_id() + "}", mediaType);
                 String url = "https://api.themoviedb.org/3/list/" + gaps.getMovieDbListId()
                         + "/add_item?session_id=" + sessionId + "&api_key=" + gaps.getMovieDbApiKey();
                 Request request = new Request.Builder()
@@ -690,7 +685,7 @@ public class GapsSearchBean implements GapsSearch {
         }
     }
 
-    public class UserInputThreadCountdown implements java.lang.Runnable {
+    public static class UserInputThreadCountdown implements java.lang.Runnable {
 
         int time_limit = 60;
 
@@ -706,15 +701,12 @@ public class GapsSearchBean implements GapsSearch {
             }
         }
 
-        public void runTimer() throws IOException {
-            long timePassedstart = 0;
+        private void runTimer() throws IOException {
+            long timePassedStart;
             do {
-                timePassedstart = (new Date().getTime() - start.getTime()) / 1000;
-            } while (timePassedstart < time_limit);
+                timePassedStart = (new Date().getTime() - start.getTime()) / 1000;
+            } while (timePassedStart < time_limit);
             System.in.close();
-
         }
-
     }
-
 }

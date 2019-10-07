@@ -10,8 +10,8 @@
 
 package com.jasonhhouse.Gaps;
 
-import java.util.List;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 public class FolderProperties {
 

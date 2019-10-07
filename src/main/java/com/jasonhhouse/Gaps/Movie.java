@@ -10,8 +10,9 @@
 
 package com.jasonhhouse.Gaps;
 
-import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.Objects;
 
 public final class Movie implements Comparable<Movie> {
 
