@@ -21,7 +21,9 @@ function onStart() {
             try {
                 obj = JSON.parse(document.cookie);
             } catch (e) {
-                //report error here, missing movie db api key
+                const errorMessage = "Missing cookie information for address, port, and token";
+                M.toast({html: errorMessage});
+                Console.error(errorMessage);
                 obj = {};
             }
 
