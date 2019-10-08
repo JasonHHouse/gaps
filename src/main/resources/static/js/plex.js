@@ -16,8 +16,8 @@ let modal;
 document.addEventListener('DOMContentLoaded', function () {
     M.AutoInit();
 
-    const elems = document.querySelectorAll('.modal');
-    M.Modal.init(elems, {
+    const elements = document.querySelectorAll('.modal');
+    M.Modal.init(elements, {
         onCloseEnd: function () {
             $.ajax({
                 type: "PUT",
@@ -63,7 +63,7 @@ function search() {
         writeTimeout: $('#write_timeout').val(),
         readTimeout: $('#read_timeout').val(),
         movieUrls: $('#plex_movie_urls').val().split("\n")
-    }
+    };
 
     $.ajax({
         type: "POST",
@@ -125,8 +125,7 @@ function polling() {
             type: "GET",
             url: "http://" + $('#address').val() + ":" + $('#port').val() + "/status",
             contentType: "application/json",
-            success: function (data) {
-
+            success: function () {
             }
         })
     }
@@ -135,7 +134,7 @@ function polling() {
 function connect() {
     const socket = new SockJS('/gs-guide-websocket');
     stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
+    stompClient.connect({}, function () {
         stompClient.subscribe('/topic/searchResults', function (status) {
             showSearchStatus(JSON.parse(status.body));
         });

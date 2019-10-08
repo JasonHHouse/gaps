@@ -51,8 +51,8 @@ function onStart() {
     M.updateTextFields();
 
     document.addEventListener("DOMContentLoaded", function () {
-        var elems = document.querySelectorAll(".modal");
-        M.Modal.init(elems);
+        const elements = document.querySelectorAll(".modal");
+        M.Modal.init(elements);
     });
 }
 
@@ -148,7 +148,7 @@ function generateLibrariesCheckbox() {
 }
 
 function findIfChecked(selectedLibraries, key) {
-    for (const i = 0; i < selectedLibraries.length; i++) {
+    for (let i = 0; i < selectedLibraries.length; i++) {
         if (selectedLibraries[i].key === key) {
             return true;
         }

@@ -8,7 +8,7 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-"use strict"
+"use strict";
 
 let stompClient;
 let backButton;
@@ -20,10 +20,9 @@ let searchTitle;
 let searchDescription;
 
 document.addEventListener('DOMContentLoaded', function () {
-    var elems = document.querySelectorAll('.modal');
-    M.Modal.init(elems);
+    const elements = document.querySelectorAll('.modal');
+    M.Modal.init(elements);
 
-    searchResults = $('#searchResults');
     backButton = $('#cancel');
     copyToClipboard = $('#copyToClipboard');
     searchResults = $('#searchResults');
@@ -60,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 window.onbeforeunload = function () {
     disconnect();
-}
+};
 
 function setCopyToClipboardEnabled(bool) {
     if (bool) {
@@ -154,7 +153,7 @@ function buildMovie(movie) {
 function connect() {
     const socket = new SockJS('/gs-guide-websocket');
     stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
+    stompClient.connect({}, function () {
         stompClient.subscribe('/topic/currentSearchResults', function (status) {
             let obj = JSON.parse(status.body);
             showSearchStatus(obj);
@@ -205,17 +204,17 @@ function encodeQueryData(data) {
     return ret.join('&');
 }
 
-function CopyToClipboard(containerid) {
+function CopyToClipboard(containerId) {
     let range;
     if (document.selection) {
         range = document.body.createTextRange();
-        range.moveToElementText(document.getElementById(containerid));
+        range.moveToElementText(document.getElementById(containerId));
         range.select().createTextRange();
         document.execCommand("copy");
 
     } else if (window.getSelection) {
         range = document.createRange();
-        range.selectNode(document.getElementById(containerid));
+        range.selectNode(document.getElementById(containerId));
         window.getSelection().addRange(range);
         document.execCommand("copy");
     }
