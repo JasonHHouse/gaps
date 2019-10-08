@@ -141,7 +141,7 @@ function generateLibrariesCheckbox() {
     let row = "";
     for (const library of allLibraries) {
         const ifChecked = findIfChecked(selectedLibraries, library.key) ? " checked='checked'" : "";
-        row += "<div class='row'><p class='col s5'><label><input onclick='updatedSelectedLibraries()' id='${library.key}' type='checkbox' class='filled-in grey-text text-lighten-4'" + ifChecked + "/><span>${library.title}</span></label></p></div>";
+        row += `<div class='row'><p class='col s5'><label><input onclick='updatedSelectedLibraries()' id='${library.key}' type='checkbox' class='filled-in grey-text text-lighten-4' ${ifChecked} /><span>${library.title}</span></label></p></div>`;
     }
 
     $("#libraryCheckboxes").html(row);
