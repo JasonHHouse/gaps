@@ -11,6 +11,7 @@
 package com.jasonhhouse.Gaps;
 
 import okhttp3.*;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,6 +30,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javax.validation.constraints.NotEmpty;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -74,13 +76,21 @@ public class GapsSearchBean implements GapsSearch {
 
     @NotNull
     @Override
-    public CompletableFuture run(@NotNull Gaps gaps) {
+    public CompletableFuture<ResponseEntity> run(@NotNull Gaps gaps) {
         searched.clear();
         ownedMovies.clear();
         recommended.clear();
         totalMovieCount.set(0);
         searchedMovieCount.set(0);
         cancelSearch.set(false);
+
+        if (isGapsPropertyValid(gaps)) {
+            String reason = "No search property defined. Must search from at least one type: Folder or Plex";
+            cancelSearch.set(true);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason);
+        }
+
+        defaultValues(gaps);
 
         try {
             String sessionId = null;
@@ -90,8 +100,10 @@ public class GapsSearchBean implements GapsSearch {
                 sessionId = getTmdbAuthorization(gaps);
             }
 
-            if (gaps.getSearchFromPlex()) {
+            if (BooleanUtils.isTrue(gaps.getSearchFromPlex())) {
                 findAllPlexMovies(gaps);
+            } else {
+                logger.info("Not searching from Plex");
             }
 
             //ToDo
@@ -105,7 +117,7 @@ public class GapsSearchBean implements GapsSearch {
                 writeToFile();
             }
 
-            //Always write to command line
+            //Always write to log
             printRecommended();
 
             if (StringUtils.isNotEmpty(gaps.getMovieDbListId())) {
@@ -119,6 +131,28 @@ public class GapsSearchBean implements GapsSearch {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
         } finally {
             cancelSearch.set(true);
+        }
+    }
+
+    private boolean isGapsPropertyValid(Gaps gaps) {
+        return BooleanUtils.isNotTrue(gaps.getSearchFromPlex()) && BooleanUtils.isNotTrue(gaps.getSearchFromFolder());
+    }
+
+    private void defaultValues(Gaps gaps) {
+        if (gaps.getConnectTimeout() == null) {
+            gaps.setConnectTimeout(180);
+        }
+
+        if (gaps.getReadTimeout() == null) {
+            gaps.setReadTimeout(180);
+        }
+
+        if (gaps.getWriteTimeout() == null) {
+            gaps.setWriteTimeout(180);
+        }
+
+        if (gaps.getWriteToFile() == null) {
+            gaps.setWriteToFile(true);
         }
     }
 
@@ -140,21 +174,16 @@ public class GapsSearchBean implements GapsSearch {
     }
 
     @Override
-    public @NotNull Set<PlexLibrary> getPlexLibraries(@NotNull String address, int port, @NotNull String token) {
+    public @NotNull Set<PlexLibrary> getPlexLibraries(@NotNull HttpUrl url) {
         logger.info("Searching for Plex Libraries...");
+
+        //ToDo
+        //Need to control time out here, using gaps object
         OkHttpClient client = new OkHttpClient.Builder()
                 .build();
 
         Set<PlexLibrary> plexLibraries = new TreeSet<>();
 
-        HttpUrl url = new HttpUrl.Builder()
-                .scheme("http")
-                .host(address)
-                .port(port)
-                .addPathSegment("library")
-                .addPathSegment("sections")
-                .addQueryParameter("X-Plex-Token", token)
-                .build();
 
         try {
             Request request = new Request.Builder()

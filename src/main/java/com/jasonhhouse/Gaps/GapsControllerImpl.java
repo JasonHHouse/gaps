@@ -9,6 +9,7 @@
  */
 package com.jasonhhouse.Gaps;
 
+import okhttp3.HttpUrl;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -58,7 +59,23 @@ public class GapsControllerImpl {
                                                              @RequestParam("port") int port,
                                                              @RequestParam("token") String token) {
         logger.info("getPlexLibraries()");
-        Set<PlexLibrary> plexLibraries = gapsSearch.getPlexLibraries(address, port, token);
+
+        if(StringUtils.isEmpty(token)) {
+            String reason = "Plex token cannot be empty";
+            logger.error(reason);
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason);
+        }
+
+        HttpUrl url = new HttpUrl.Builder()
+                .scheme("http")
+                .host(address)
+                .port(port)
+                .addPathSegment("library")
+                .addPathSegment("sections")
+                .addQueryParameter("X-Plex-Token", token)
+                .build();
+
+        Set<PlexLibrary> plexLibraries = gapsSearch.getPlexLibraries(url);
         return new ResponseEntity<>(plexLibraries, HttpStatus.OK);
     }
 

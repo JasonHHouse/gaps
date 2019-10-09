@@ -10,6 +10,7 @@
 
 package com.jasonhhouse.Gaps;
 
+import okhttp3.HttpUrl;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
@@ -26,7 +27,7 @@ public interface GapsSearch {
 
     @NotNull CopyOnWriteArrayList<Movie> getRecommendedMovies();
 
-    @NotNull Set<PlexLibrary> getPlexLibraries(@NotNull String address, int port, @NotNull String token);
+    @NotNull Set<PlexLibrary> getPlexLibraries(@NotNull HttpUrl url);
 
     void cancelSearch();
 
