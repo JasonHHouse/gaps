@@ -4,7 +4,7 @@ import okhttp3.HttpUrl;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service(value="real")
 public class GapsUrlGenerator implements UrlGenerator {
 
     @Override

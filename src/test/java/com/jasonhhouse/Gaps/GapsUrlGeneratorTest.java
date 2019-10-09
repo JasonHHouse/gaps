@@ -8,7 +8,7 @@ import okhttp3.mockwebserver.RecordedRequest;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service(value="test")
 public class GapsUrlGeneratorTest implements UrlGenerator {
 
     private final static String GOOD_MOVIE_PLEX_XML = "<MediaContainer><Video title=\"Alien\" year=\"1979\"></Video></MediaContainer>";
