@@ -146,7 +146,7 @@ public class GapsControllerImpl {
      * WebSocket connection that when Gaps is searching returns the updated collection results for more real time
      * visualization of Gaps
      */
-    @Scheduled(fixedDelay = 1000)
+    @Scheduled(fixedDelay = 250)
     public void currentSearchResults() {
         if (CollectionUtils.isNotEmpty(gapsSearch.getRecommendedMovies())) {
             logger.info("currentSearchResults()");
