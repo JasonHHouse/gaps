@@ -128,11 +128,10 @@ public class GapsControllerImpl {
                 Exception e = new IllegalArgumentException();
                 throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason, e);
             } else {
-                for (String url : gaps.getMovieUrls()) {
-                    if (StringUtils.isEmpty(url)) {
-                        String reason = "Found empty Plex movie collection url. This field is required to search from Plex.";
+                for (HttpUrl url : gaps.getMovieUrls()) {
+                    if (url == null) {
+                        String reason = "Found null Plex movie collection url. This field is required to search from Plex.";
                         logger.error(reason);
-
                         Exception e = new IllegalArgumentException();
                         throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason, e);
                     }

@@ -10,6 +10,8 @@
 
 package com.jasonhhouse.Gaps;
 
+import okhttp3.HttpUrl;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -29,14 +31,14 @@ public class Gaps {
 
     private Integer readTimeout;
 
-    private List<String> movieUrls;
+    private List<HttpUrl> movieUrls;
 
     private Boolean searchFromFolder;
 
     public Gaps() {
     }
 
-    public Gaps(String movieDbApiKey, Boolean writeToFile, String movieDbListId, Boolean searchFromPlex, Integer connectTimeout, Integer writeTimeout, Integer readTimeout, List<String> movieUrls, Boolean searchFromFolder) {
+    public Gaps(String movieDbApiKey, Boolean writeToFile, String movieDbListId, Boolean searchFromPlex, Integer connectTimeout, Integer writeTimeout, Integer readTimeout, List<HttpUrl> movieUrls, Boolean searchFromFolder) {
         this.movieDbApiKey = movieDbApiKey;
         this.writeToFile = writeToFile;
         this.movieDbListId = movieDbListId;
@@ -104,11 +106,11 @@ public class Gaps {
         this.readTimeout = readTimeout;
     }
 
-    public List<String> getMovieUrls() {
+    public List<HttpUrl> getMovieUrls() {
         return movieUrls;
     }
 
-    public void setMovieUrls(List<String> movieUrls) {
+    public void setMovieUrls(List<HttpUrl> movieUrls) {
         this.movieUrls = movieUrls;
     }
 
