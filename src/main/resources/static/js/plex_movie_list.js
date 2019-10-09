@@ -18,6 +18,7 @@ let searchPosition;
 let progressContainer;
 let searchTitle;
 let searchDescription;
+let movieCounter;
 
 document.addEventListener('DOMContentLoaded', function () {
     const elements = document.querySelectorAll('.modal');
@@ -71,6 +72,9 @@ function setCopyToClipboardEnabled(bool) {
 
 function search() {
 
+    //reset movie counter;
+    movieCounter = 0;
+
     progressContainer.hide();
     searchTitle.text("Searching for Movies...");
     searchDescription.text("Gaps is looking through your Plex libraries. This could take a while so just sit tight and we'll find all the missing movies for you.");
@@ -102,12 +106,11 @@ function search() {
         contentType: "application/json",
         timeout: 0,
         success: function (movies) {
-            let movieHtml = "";
-            movies.forEach(function (movie) {
-                movieHtml += buildMovieDiv(movie);
-            });
+            searchResults.html(searchResults.html() + buildMoviesDiv(movies));
 
-            searchTitle.text(movies.length + ' movies to add to complete your collections');
+            movieCounter += movies.length;
+
+            searchTitle.text(`${movieCounter} movies to add to complete your collections`);
             searchDescription.text("Below is everything Gaps found that is missing from your movie collections.");
             progressContainer.hide();
             backButton.text('restart');
@@ -147,7 +150,7 @@ function buildMovieDiv(movie) {
 }
 
 function buildMovie(movie) {
-    return movie.name + " (" + movie.year + ") from '" + movie.collection + "'";
+    return `${movie.name} (${movie.year}) from '${movie.collection}'`;
 }
 
 function connect() {
@@ -188,7 +191,9 @@ function showSearchStatus(obj) {
     } else {
         progressContainer.show();
         let percentage = Math.trunc(obj.searchedMovieCount / obj.totalMovieCount * 100);
-        searchPosition.html('<h5>' + obj.searchedMovieCount + ' of ' + obj.totalMovieCount + ' movies searched. ' + percentage + '% complete.</h5>');
+        searchPosition.html(`<h5>${obj.searchedMovieCount} of ${obj.totalMovieCount} movies searched. ${percentage}% complete.</h5>`);
+
+        movieCounter = obj.moviesFound.length;
 
         searchResults.html(buildMoviesDiv(obj.moviesFound));
 

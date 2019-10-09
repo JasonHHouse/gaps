@@ -155,7 +155,7 @@ function showSearchStatus(obj) {
         } else {
             $('#progressContainer').show();
             const percentage = Math.trunc(obj.searchedMovieCount / obj.totalMovieCount * 100);
-            $('#searchingBody').text(obj.searchedMovieCount + ' of ' + obj.totalMovieCount + " movies searched. " + percentage + "% complete. "  + obj.moviesFound);
+            $('#searchingBody').text(`${obj.searchedMovieCount} of ${obj.totalMovieCount} movies searched. ${percentage}% complete. ${obj.moviesFound}`);
             $('#progressBar').css("width", percentage + "%");
         }
     }

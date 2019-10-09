@@ -48,32 +48,43 @@
             </div>
 
             <div class="row">
-                <div class="col s12 banner">
-                    <img src="image/computer-24px.svg" alt="">
-                    <span class="white-text">IP Address</span>
-                    <br>
-                    <p class="grey-text text-lighten-4">localhost and 127.0.0.1 will also work</p>
+                <div class="col s1">
+                    <img src="image/computer-24px.svg" class="list-item-icon" alt="">
+                </div>
+                <div class="row">
+                    <h6 class="col s10 white-text">IP Address</h6>
+                    <div class="col s10 grey-text text-lighten-4">Use your network IP address. localhost and
+                        127.0.0.1 will not work for Plex and Gaps in Docker. Use ifconfig/ipconfig to find that in a
+                        terminal or command window.
+                    </div>
                 </div>
             </div>
 
+            <hr>
+
             <div class="row">
-                <div class="col s12 banner white-text">
-                    <img src="image/device_hub-24px.svg" alt="">
-                    <span class="white-text">Port</span>
-                    <br>
-                    <p class="grey-text text-lighten-4">Defaults to 32400</p>
+                <div class="col s1">
+                    <img src="image/device_hub-24px.svg" class="list-item-icon" alt="">
+                </div>
+                <div class="row">
+                    <h6 class="col s10 white-text">Port</h6>
+                    <div class="col s10 grey-text text-lighten-4">Defaults to 32400</div>
                 </div>
             </div>
 
+            <hr>
+
             <div class="row">
-                <div class="col s12 banner white-text">
-                    <img src="image/vpn_key-24px.svg" alt="">
-                    <span class="white-text">Your Personal Plex Token</span>
-                    <br>
-                    <p class="grey-text text-lighten-4">If you do not know already it's easy to find. Plex has
+                <div class="col s1">
+                    <img src="image/vpn_key-24px.svg" class="list-item-icon"  alt="">
+                </div>
+                <div class="row">
+                    <h6 class="col s10 white-text">Your Personal Plex Token</h6>
+                    <div class="col s10 grey-text text-lighten-4">If you do not know already it's easy to find. Plex has
                         a great write up
                         <a href="https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/">here</a>
-                        about how to find your token.</p>
+                        about how to find your token.
+                    </div>
                 </div>
             </div>
         </div>
@@ -82,7 +93,7 @@
             <div class="row">
                 <div class="col s12">
                     <div class="input-field col s5 grey-text text-lighten-4">
-                        <input type="text" id="address" type="text" class="validate grey-text text-lighten-4">
+                        <input id="address" type="text" class="validate grey-text text-lighten-4">
                         <label for="address">Set the IP address for Plex*</label>
                     </div>
                 </div>
@@ -91,7 +102,7 @@
             <div class="row">
                 <div class="col s12">
                     <div class="input-field col s3 grey-text text-lighten-4">
-                        <input type="number" id="port" type="text" class="validate grey-text text-lighten-4"
+                        <input type="number" id="port" class="validate grey-text text-lighten-4"
                                value="32400">
                         <label for="port">Set the port for Plex*</label>
                     </div>
