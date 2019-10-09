@@ -49,4 +49,9 @@ public class GapsUrlGenerator implements UrlGenerator {
                 .addQueryParameter("language", "en-US")
                 .build();
     }
+
+    @Override
+    public @NotNull HttpUrl generatePlexUrl(String plexUrl) {
+        return HttpUrl.parse(plexUrl);
+    }
 }
