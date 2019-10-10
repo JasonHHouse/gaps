@@ -79,21 +79,25 @@ function search() {
     searchTitle.text("Searching for Movies...");
     searchDescription.text("Gaps is looking through your Plex libraries. This could take a while so just sit tight and we'll find all the missing movies for you.");
 
-    let obj = JSON.parse(document.cookie);
+    const libraries = Cookies.get('libraries');
+    const address = Cookies.get('address');
+    const port = Cookies.get('port');
+    const plexToken = Cookies.get('plex_token');
+    const movieDbApiKey = Cookies.get('movie_db_api_key');
 
     let plexMovieUrls = [];
 
-    for (let library of obj.libraries) {
+    for (let library of libraries) {
         let data = {
-            'X-Plex-Token': obj.plex_token
+            'X-Plex-Token': plexToken
         };
 
-        let plexMovieUrl = "http://" + obj.address + ":" + obj.port + "/library/sections/" + library.key + "/all/?" + encodeQueryData(data);
+        let plexMovieUrl = "http://" + address + ":" + port + "/library/sections/" + library.key + "/all/?" + encodeQueryData(data);
         plexMovieUrls.push(plexMovieUrl);
     }
 
     const gaps = {
-        movieDbApiKey: obj.movie_db_api_key,
+        movieDbApiKey: movieDbApiKey,
         writeToFile: true,
         searchFromPlex: true,
         movieUrls: plexMovieUrls

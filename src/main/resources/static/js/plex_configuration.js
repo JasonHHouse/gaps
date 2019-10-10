@@ -17,21 +17,9 @@ function onStart() {
 
     $("#next").click(function () {
         if (validateInput()) {
-            let obj;
-            try {
-                obj = JSON.parse(document.cookie);
-            } catch (e) {
-                const errorMessage = "Missing cookie information for address, port, and token";
-                M.toast({html: errorMessage});
-                Console.error(errorMessage);
-                obj = {};
-            }
-
-            obj.address = $('#address').val();
-            obj.port = $('#port').val();
-            obj.plex_token = $('#plex_token').val();
-
-            document.cookie = JSON.stringify(obj);
+            Cookies.set('address', $("#address").val());
+            Cookies.set('port', $("#port").val());
+            Cookies.set('plex_token', $("#plex_token").val());
 
             location.assign("plex_libraries.html");
         }
@@ -44,20 +32,20 @@ function onStart() {
 }
 
 function populateCookieValues() {
-    if (document.cookie) {
-        let obj = JSON.parse(document.cookie);
+    const address = Cookies.get('address');
+    const port = Cookies.get('port');
+    const plexToken = Cookies.get('plex_token');
 
-        if (obj.address) {
-            $('#address').val(obj.address);
-        }
+    if (address) {
+        $('#address').val(address);
+    }
 
-        if (obj.port) {
-            $('#port').val(obj.port);
-        }
+    if (port) {
+        $('#port').val(port);
+    }
 
-        if (obj.plex_token) {
-            $('#plex_token').val(obj.plex_token);
-        }
+    if (plexToken) {
+        $('#plex_token').val(plexToken);
     }
 }
 

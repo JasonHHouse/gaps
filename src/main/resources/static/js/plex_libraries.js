@@ -18,9 +18,7 @@ function onStart() {
     });
 
     $("#search").click(function () {
-        let obj = JSON.parse(document.cookie);
-
-        if (!obj.dialogDontShowAgain) {
+        if (Cookies.get('dialogDontShowAgain')) {
             if (validateInput()) {
                 $("#warningModal").modal("open");
 
@@ -35,9 +33,7 @@ function onStart() {
 
     $("#agree").click(function () {
         if (validateInput()) {
-            let obj = JSON.parse(document.cookie);
-            obj.dialogDontShowAgain = $("#dialogDontShowAgain").is(":checked");
-            document.cookie = JSON.stringify(obj);
+            Cookies.set('dialogDontShowAgain', $("#dialogDontShowAgain").is(":checked"));
             updatedSelectedLibraries();
             location.assign("plex_movie_list.html");
         }
@@ -74,23 +70,21 @@ function clearLibrariesAndErrors() {
 }
 
 function getLibraries() {
-
     setSearchEnabled(false);
     clearLibrariesAndErrors();
 
-    let obj = JSON.parse(document.cookie);
-    let token = obj.plex_token;
-    let port = obj.port;
-    let address = obj.address;
+    const address = Cookies.get('address');
+    const port = Cookies.get('port');
+    const plexToken = Cookies.get('plex_token');
 
-    if (!token || !port || !address) {
+    if (!plexToken || !port || !address) {
         console.warn("Could not find plex token, port, or address in cookies");
         M.toast({html: "Could not find plex token, port, or address in cookies"});
         return;
     }
 
     let data = {
-        token: token,
+        token: plexToken,
         port: port,
         address: address
     };
@@ -135,8 +129,7 @@ function setErrorMessage() {
 }
 
 function generateLibrariesCheckbox() {
-    let obj = JSON.parse(document.cookie);
-    let selectedLibraries = obj.libraries || [];
+    const selectedLibraries = Cookies.get('libraries') || [];
 
     let row = "";
     for (const library of allLibraries) {
@@ -157,9 +150,7 @@ function findIfChecked(selectedLibraries, key) {
 }
 
 function updatedSelectedLibraries() {
-    let obj = JSON.parse(document.cookie);
-    obj.libraries = findSelectedLibraries();
-    document.cookie = JSON.stringify(obj);
+    Cookies.set('libraries', findSelectedLibraries());
 }
 
 function findSelectedLibraries() {

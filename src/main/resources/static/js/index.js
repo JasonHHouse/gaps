@@ -14,16 +14,7 @@ function onStart() {
 
     $("#plex").click(function () {
         if (validateInput()) {
-            let obj;
-            try {
-                obj = JSON.parse(document.cookie);
-            } catch (e) {
-                obj = {};
-            }
-
-            obj.movie_db_api_key = $("#movie_db_api_key").val();
-            document.cookie = JSON.stringify(obj);
-
+            Cookies.set('movie_db_api_key', $("#movie_db_api_key").val());
             location.assign("plex_configuration.html");
         }
     });
@@ -37,14 +28,10 @@ function onStart() {
 
 function populateCookieValues() {
     if (document.cookie) {
-        try {
-            let obj = JSON.parse(document.cookie);
+        const movieDbApiKey = Cookies.get('movie_db_api_key');
 
-            if (obj.movie_db_api_key) {
-                $("#movie_db_api_key").val(obj.movie_db_api_key);
-            }
-        } catch (e) {
-        //Nothing, no cookie
+        if (movieDbApiKey) {
+            $("#movie_db_api_key").val(movieDbApiKey);
         }
     }
 }
