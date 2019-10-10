@@ -31,14 +31,14 @@ public class Gaps {
 
     private Integer readTimeout;
 
-    private List<HttpUrl> movieUrls;
+    private List<String> movieUrls;
 
     private Boolean searchFromFolder;
 
     public Gaps() {
     }
 
-    public Gaps(String movieDbApiKey, Boolean writeToFile, String movieDbListId, Boolean searchFromPlex, Integer connectTimeout, Integer writeTimeout, Integer readTimeout, List<HttpUrl> movieUrls, Boolean searchFromFolder) {
+    public Gaps(String movieDbApiKey, Boolean writeToFile, String movieDbListId, Boolean searchFromPlex, Integer connectTimeout, Integer writeTimeout, Integer readTimeout, List<String> movieUrls, Boolean searchFromFolder) {
         this.movieDbApiKey = movieDbApiKey;
         this.writeToFile = writeToFile;
         this.movieDbListId = movieDbListId;
@@ -106,11 +106,11 @@ public class Gaps {
         this.readTimeout = readTimeout;
     }
 
-    public List<HttpUrl> getMovieUrls() {
+    public List<String> getMovieUrls() {
         return movieUrls;
     }
 
-    public void setMovieUrls(List<HttpUrl> movieUrls) {
+    public void setMovieUrls(List<String> movieUrls) {
         this.movieUrls = movieUrls;
     }
 

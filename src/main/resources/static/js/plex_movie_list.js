@@ -125,7 +125,7 @@ function search() {
             let message = "Unknown error. Check docker Gaps log file.";
             if (err) {
                 message = JSON.parse(err.responseText).message;
-                Console.error(message);
+                console.error(message);
             }
 
             searchTitle.text("An error occurred...");

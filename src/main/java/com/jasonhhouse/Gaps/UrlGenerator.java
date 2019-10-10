@@ -9,4 +9,6 @@ public interface UrlGenerator {
     @NotNull HttpUrl generateMovieDetailUrl(String movieDbKey, String movieId);
 
     @NotNull HttpUrl generateCollectionUrl(String movieDbKey, String collectionId);
+
+    @NotNull HttpUrl generatePlexUrl(String plexUrl);
 }

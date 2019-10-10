@@ -491,22 +491,24 @@ public class GapsSearchBean implements GapsSearch {
                 .writeTimeout(gaps.getWriteTimeout(), TimeUnit.SECONDS)
                 .readTimeout(gaps.getReadTimeout(), TimeUnit.SECONDS)
                 .build();
-        List<HttpUrl> urls = gaps.getMovieUrls();
+        List<String> urls = gaps.getMovieUrls();
 
         if (CollectionUtils.isEmpty(urls)) {
             logger.info("No URLs added to plexMovieUrls. Check your application.yaml file if needed.");
             return;
         }
 
-        for (HttpUrl url : urls) {
+        for (String url : urls) {
             //Cancel search if needed
             if (cancelSearch.get()) {
                 throw new SearchCancelledException("Search was cancelled");
             }
 
             try {
+                HttpUrl httpUrl = urlGenerator.generatePlexUrl(url);
+
                 Request request = new Request.Builder()
-                        .url(url)
+                        .url(httpUrl)
                         .build();
 
                 try (Response response = client.newCall(request).execute()) {
