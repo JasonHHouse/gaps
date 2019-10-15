@@ -1,0 +1,7 @@
+{
+  "name": "gaps",
+  "version": "0.0.4",
+  "dependencies": {
+    "minify": "^4.1.3"
+  }
+}

@@ -13,31 +13,11 @@
             <outputDirectory></outputDirectory>
         </file>
         <file>
-            <source>${project.basedir}/run.sh</source>
-            <outputDirectory></outputDirectory>
-        </file>
-        <file>
-            <source>${project.basedir}/run.bat</source>
-            <outputDirectory></outputDirectory>
-        </file>
-        <file>
-            <source>${project.basedir}/startup.sh</source>
-            <outputDirectory></outputDirectory>
-        </file>
-        <file>
             <source>${project.basedir}/Dockerfile</source>
             <outputDirectory></outputDirectory>
         </file>
         <file>
             <source>${project.basedir}/LICENSE</source>
-            <outputDirectory></outputDirectory>
-        </file>
-        <file>
-            <source>${project.basedir}/mvnw</source>
-            <outputDirectory></outputDirectory>
-        </file>
-        <file>
-            <source>${project.basedir}/mvnw.cmd</source>
             <outputDirectory></outputDirectory>
         </file>
         <file>

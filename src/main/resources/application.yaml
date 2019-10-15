@@ -7,25 +7,6 @@
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 gaps:
-  #Put your Plex Movie All URLs here
-  #Gaps supports a single movie URL or multiple.
-  #Single
-  #movieUrls:
-  #  - http://127.0.0.1:32400/library/sections/1/all/?X-Plex-Token={My-Plex-Token}
-
-  #Go to https://www.themoviedb.org and make an API Key, place that key here
-  #movieDbApiKey: {key}
-  movieDbApiKey: asdb-asdf
-
-  # Optional
-  # Go to https://www.themoviedb.org and make a custom list for GAPS https://www.themoviedb.org/list/<id number>
-  # enter the <id number> below if you want GAPS to populate the list
-  movieDbListId:
-
-  #Should Gaps write out to a file as well as console
-  writeToFile: true
-
-
   #######################################
   #
   #Can read from a folder, Plex, or both
@@ -69,22 +50,41 @@ gaps:
     #Example: The Fast and the Furious (2001)
     yearRegex: \(([1-2][0-9][0-9][0-9])\)
 
-  #Plex connection timeouts when querying for all movies in the Plex section. Time is in seconds. Default is 180 seconds
-  plex:
-    searchFromPlex: false
-    connectTimeout: 180
-    writeTimeout: 180
-    readTimeout: 180
-
-    #Mulitple
-    #movieUrls:
-    #  - http://127.0.0.1:32400/library/sections/1/all/?X-Plex-Token={My-Plex-Token}
-    #  - http://127.0.0.1:32400/library/sections/2/all/?X-Plex-Token={My-Plex-Token}
-    #  - http://127.0.0.1:32400/library/sections/3/all/?X-Plex-Token={My-Plex-Token}
-    movieUrls:
-
   #Adjust logging as you see fit
 logging:
   level:
     root: INFO
 
+# Maximum time the response should be cached (in seconds)
+# The cache must re-validate stale resources with the server. Any expired resources must not be used without re-validating.
+# The resources are public and any cache may store the response.
+spring:
+  mvc:
+    async:
+      request-timeout: -1
+  resources:
+    cache:
+      cachecontrol:
+        max-age: 120
+        must-revalidate: true
+        cache-public: true
+
+# Enable response compression
+# The comma-separated list of mime types that should be compressed
+# Compress the response only if the response size is at least 1KB
+# Enable HTTP/2 support, if the current environment supports it
+server:
+  port: 8443
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
+  http2:
+    enabled: true
+  ssl:
+    key-store-type: PKCS12
+    key-store: classpath:keystore/gaps.p12
+    key-store-password: gapsgapsgaps
+    key-alias: gaps
+security:
+  require-ssl: true

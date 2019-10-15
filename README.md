@@ -1,172 +1,111 @@
 # Gaps
-Searches through your Plex Server or local folders for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.
+Gaps searches through your Plex Server or local folders for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.
+
+## Setup
+### Docker
+
+Gaps runs in [Docker](https://www.docker.com/), so you'll need a basic ability to download and run a container. If you already have Docker, skip to installing and running.
+
+*Underneath the covers, Gaps runs as a Spring Boot app. Don't worry about it though. The container will pull down Java for you and automatically run the jar.* 
+
+Docker has a good write up on installing Docker CE. Check it out [here](https://docs.docker.com/install/). Once you get docker up and running
+
+## Installing and Running
+
+With Docker installed, you'll need to now pull down the latest Gaps image. The Gaps image is hosted [here](https://hub.docker.com/r/housewrecker/gaps).
+
+To pull the image, run the following command in a terminal
+
+    docker pull housewrecker/gaps
+
+You now have the Gaps image and you need to do a little configuration. The command to run Gaps follows
+
+    docker run -p 8443:8443 --name mygaps --expose 32400 housewrecker/gaps:latest
+
+### Important Notes
+
+1. -p or publish exposes maps ports from the container to the outside world. Docker has a great write up [here](https://docs.docker.com/config/containers/container-networking/). 
+
+    *Note: If 8080 is in us on your system, change the publish command to -p <new available port>:8080*
+
+2. --name mygaps sets the name of the local running container. You can change it to whatever you want, just don't forget the name in the future!
+
+3. --expose 32400 is there to commucate with Plex. By default, Plex is set to 32400 by default. If you've changed the port, change that here. 
+
+Once all those values are updated correctly for your system, you can run the command and Gaps will start up.
+
+To track the logs from Gaps, use the following command. Again, change the container, if you changed the name.
+
+     docker logs -f mygaps
 
 ## Usage
-### Local Requirements
 
-It's a Spring Boot App and you need Java to run this if you want to use the jar. You'll need to make sure Java is accessible in your command window or terminal. You can also run as a docker container, in which case, you would need Docker. 
+To see Gaps, open up your browser and navigate over to the ip address and port you set for Gaps.
 
-#### Windows 
-##### Jar
-This is a good write up on getting Java in the path variable on [windows](https://javatutorial.net/set-java-home-windows-10).
-##### Docker
-Check out https://www.docker.com/ to get docker for Windows. 
+If your browser is on the same machine running Docker and you did not change the port, then you can navigate to 
 
-#### Mac and Linux
-##### Jar
-You'll just need to add the Java classpath to your bash_profile.
-##### Docker
-Check out https://www.docker.com/ to get docker for Mac and Linux.
+    http://localhost:8080
+    
+Or
 
-### Properties
-#### Plex
-You need to find your plex movie all URL. Plex has a great write up on to get the URL. But first you'll need to get your token. The write ups are below.
+    http://127.0.0.1:8080 
 
-https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/
-https://support.plex.tv/articles/201638786-plex-media-server-url-commands/
+You should be presented with this screen
 
-It will look something like this.
-
-http://127.0.0.1:32400/library/sections/1/all/?X-Plex-Token={My-Plex-Token}
-
-Gaps supports a single movie URL or multiple. You can adjust to your needs. Then you need to go make an account on https://www.themoviedb.org and generate an API Key. Add that key to the application.yaml file under the movieDbApiKey property.
-
-#### Folder
-You need to list out the folders you want to read from. Review the file types for video and make sure every type you have is covered. Make sure you enable recursive search if needed. If your files aren't in the format as specified below, be sure to update the regex to match your file name structure.
-
- ```yaml
-gaps:
-  #Put your Plex Movie All URLs here
-  #Gaps supports a single movie URL or multiple.
-  #Single
-  #movieUrls:
-  #  - http://127.0.0.1:32400/library/sections/1/all/?X-Plex-Token={My-Plex-Token}
-
-  #Go to https://www.themoviedb.org and make an API Key, place that key here
-  #movieDbApiKey: {key}
-  movieDbApiKey:
-
-  # Optional
-  # Go to https://www.themoviedb.org and make a custom list for GAPS https://www.themoviedb.org/list/<id number>
-  # enter the <id number> below if you want GAPS to populate the list
-  movieDbListId:
-
-  #Should Gaps write out to a file as well as console
-  writeToFile: true
+![Home Page](readme_images/main_screen.png)
 
 
-  #######################################
-  #
-  #Can read from a folder, Plex, or both
-  #At least, one of the two property groups needs to be filled in though
-  #
-  #######################################
+### Landing Page
 
-  #List of folders where movies can be pulled from
-  folder:
-    #Required
-    searchFromFolder: true
+On this screen, you need to enter your Movie Database Api Key. The page has information on getting the key. The basics are that you'll need navigate over to [The Movie DB](https://www.themoviedb.org/settings/api), create an account, and make an API Key. Then you would copy that key into the Api Key field.
 
-    #Required if searching from folders
-    #List of folders to search in
-    folders:
-      - /Users/jhouse/Movies
+*Note: Right now only searching via Plex is working. In time, I'll add back in searching by folder.*
 
-    #Required if searching from folders
-    #If the subfolder should be searched in
-    recursive: true
+Click the *Search via Plex* button and move on to the next page. 
 
-    #Required if searching from folders
-    #Add any movie formats as needed
-    movieFormats:
-      - avi
-      - mkv
-      - mp4
-      - mov
-      - webm
-      - vob
-      - flv
-      - mts
-      - m2ts
-      - m4p
-      - m4v
-      - 3gp
-      - 3g2
+### Plex Configuration
 
-    #Movie Regex
-    #Expected format is Movie Name (Year)
-    #Example: The Fast and the Furious (2001)
-    yearRegex: \(([1-2][0-9][0-9][0-9])\)
+With your Movie DB key added, now we need to configure the information to connect to Plex.
 
-  #Plex connection timeouts when querying for all movies in the Plex section. Time is in seconds. Default is 180 seconds
-  plex:
-    searchFromPlex: false
-    connectTimeout: 180
-    writeTimeout: 180
-    readTimeout: 180
+![Plex Connection](readme_images/plex_configuration.png)
 
-    #Mulitple
-    #movieUrls:
-    #  - http://127.0.0.1:32400/library/sections/1/all/?X-Plex-Token={My-Plex-Token}
-    #  - http://127.0.0.1:32400/library/sections/2/all/?X-Plex-Token={My-Plex-Token}
-    #  - http://127.0.0.1:32400/library/sections/3/all/?X-Plex-Token={My-Plex-Token}
-    movieUrls:
-```
+On this page, you'll need to configure how you connect to Plex. This includes three main things: the host/ip address of Plex, the port Plex uses, and your personal Plex Token.
 
-##### movieDbListId: \<list id>  
-https://www.themoviedb.org/list/<list_id>  
-https://www.themoviedb.org/list/123456
- 
-This property will populate a list for you in your TheMovieDB account. This list can then be imported into radarr using the "add from list" feature, or other media managment software.
+The host/ip address and port are the same ones you use to connect to Plex via the web. It could look something like this
 
-**_**Enabling this feature will require user input in the terminal.**_**
+    http://localhost:32400/web/index.html
+    
+Or
 
-### Running
-#### Jar
+    http://127.0.0.1:32400/web/index.html
+    
+If Plex and Gaps are both running in the same Docker, you may need to use the IP address on the local network. Example 
 
-You can run it with the run.bat or run.sh scripts. If you want to run command line you can run with. 
-```bash
-java -jar Gaps.{version-number}.jar
-```
-The output will come either to a file or the console. By default the output comes to a file. Gaps will print out information about duplicate movies and movies not found in the terminal. The program takes time but in the end you will get a list of movies missing from collections you have. If you have any questions, hit me up. Feel free to put up PRs to improve this as well.
+    http://192.168.1.10:32400/web/index.html
 
-#### Docker
+So, in the first case the host is localhost and the port 32400. In the second case, the host is 127.0.0.1 with the same port.
 
-First, the container must be built:
+Lastly, you'll need to get your personal Plex Token. If you do not know already it's easy to find. Plex has a great write up [here](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/) about how to find your token.
 
-```bash
-docker build -t gaps .
-```
+Once you have those three, click next.
 
-Next, run the container with the environment variables:
+*Note: In the title bar, if you ever need to jump back a bit, you can click any of the sections to make an edit.*
 
-```bash
-docker run -t -e DB_API_KEY= -e $PLEX_ADDRESS= -e $WRITE_TO_FILE= [-e TMDBLISTID= ] gaps  
-```
+### Libraries
 
-In example:
+On the Libraries page, Gaps will try to connect to Plex and if successful it will return the 'Movie' type libraries it found.
 
-```bash
-docker run -t -e DB_API_KEY=myapikey -e $PLEX_ADDRESS=http://192.168.0.10:32400/library/sections/1/all/?X-Plex-Token=plextoken -e $WRITE_TO_FILE=true [-e TMDBLISTID=id] gaps 
+![Plex Movie Libraries](readme_images/plex_libraries.png)
 
-Multiple URL:
-docker run -t -e DB_API_KEY=myapikey -e $PLEX_ADDRESS=http://192.168.0.10:32400/library/sections/1/all/?X-Plex-Token=plextoken,http://192.168.0.10:32400/library/sections/2/all/?X-Plex-Token=plextoken  -e $WRITE_TO_FILE=true gaps
-```
+Select any or all of the movie libraries you want to search. You must select at least one.
 
-### Option Properties in Docker
+### Results
+Once you've started searching, the movies will start populating on the final page.
 
-CONNECT_TIMEOUT
 
-WRITE_TIMEOUT
+![Plex Movie Libraries](readme_images/plex_libraries.png) 
 
-READ_TIMEOUT 
-
-These are optional properties to help with Plex Sections that are very large. Timeouts can be set longer to help when parsing the big XML returned by Plex. They are not required and will default to 180 seconds.
-
-```bash
-docker run -t -e DB_API_KEY=myapikey -e PLEX_ADDRESS=http://192.168.0.10:32400/library/sections/1/all/?X-Plex-Token=plextoken -e WRITE_TO_FILE=true -e CONNECT_TIMEOUT=180 -e WRITE_TIMEOUT=180 -e READ_TIMEOUT=180 gaps
-```
-
+## Jay add last photo, need to implement three buttons and a cancel option
 
 ## License
 Copyright 2019 Jason H House

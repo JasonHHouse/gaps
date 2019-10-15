@@ -10,40 +10,26 @@
 
 package com.jasonhhouse.Gaps;
 
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import okhttp3.HttpUrl;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.concurrent.Executor;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-/**
- * Search for all missing movies in your plex collection by MovieDB collection.
- */
-@SpringBootApplication
-@EnableAsync
-public class GapsApplication implements CommandLineRunner {
+public interface GapsSearch {
 
-    public static void main(String[] args) {
-        SpringApplication.run(GapsApplication.class, args);
-    }
+    @NotNull CompletableFuture run(@NotNull Gaps gaps);
 
-    @Bean
-    public Executor taskExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(2);
-        executor.setMaxPoolSize(2);
-        executor.setQueueCapacity(500);
-        executor.setThreadNamePrefix("Gaps-");
-        executor.initialize();
-        return executor;
-    }
+    @NotNull Integer getTotalMovieCount();
 
-    @Override
-    public void run(String... args) {
+    @NotNull Integer getSearchedMovieCount();
 
-    }
+    @NotNull CopyOnWriteArrayList<Movie> getRecommendedMovies();
 
+    @NotNull Set<PlexLibrary> getPlexLibraries(@NotNull HttpUrl url);
+
+    void cancelSearch();
+
+    boolean isSearching();
 }

@@ -1,0 +1,1 @@
+body{display:flex;min-height:100vh;flex-direction:column}main{flex:1 0 auto}.list-item-icon{display:block;margin:auto;transform:translateY(25%)}hr{display:block;height:1px;border:0;border-top:1px solid #ccc;margin:1em 0;padding:0}

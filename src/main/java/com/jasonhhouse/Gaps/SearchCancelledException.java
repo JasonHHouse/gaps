@@ -10,40 +10,23 @@
 
 package com.jasonhhouse.Gaps;
 
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-
-import java.util.concurrent.Executor;
-
-/**
- * Search for all missing movies in your plex collection by MovieDB collection.
- */
-@SpringBootApplication
-@EnableAsync
-public class GapsApplication implements CommandLineRunner {
-
-    public static void main(String[] args) {
-        SpringApplication.run(GapsApplication.class, args);
+public class SearchCancelledException extends Exception {
+    public SearchCancelledException() {
     }
 
-    @Bean
-    public Executor taskExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(2);
-        executor.setMaxPoolSize(2);
-        executor.setQueueCapacity(500);
-        executor.setThreadNamePrefix("Gaps-");
-        executor.initialize();
-        return executor;
+    public SearchCancelledException(String message) {
+        super(message);
     }
 
-    @Override
-    public void run(String... args) {
-
+    public SearchCancelledException(String message, Throwable cause) {
+        super(message, cause);
     }
 
+    public SearchCancelledException(Throwable cause) {
+        super(cause);
+    }
+
+    public SearchCancelledException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
 }

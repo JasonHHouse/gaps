@@ -10,60 +10,61 @@
 
 package com.jasonhhouse.Gaps;
 
-import java.util.List;
-import javax.validation.constraints.NotNull;
+import org.jetbrains.annotations.NotNull;
 
-public class PlexProperties {
+import java.util.Objects;
 
-    @NotNull(message = "Search from plex boolean cannot be null")
-    private Boolean searchFromPlex;
+public class PlexLibrary implements Comparable<PlexLibrary> {
+    private Integer key;
+    private String title;
 
-    private Integer connectTimeout;
-
-    private Integer writeTimeout;
-
-    private Integer readTimeout;
-
-    private List<String> movieUrls;
-
-    public Boolean getSearchFromPlex() {
-        return searchFromPlex;
+    public PlexLibrary() {
     }
 
-    public void setSearchFromPlex(Boolean searchFromPlex) {
-        this.searchFromPlex = searchFromPlex;
+    public PlexLibrary(Integer key, String title) {
+        this.key = key;
+        this.title = title;
     }
 
-    public Integer getConnectTimeout() {
-        return connectTimeout;
+    public Integer getKey() {
+        return key;
     }
 
-    public void setConnectTimeout(Integer connectTimeout) {
-        this.connectTimeout = connectTimeout;
+    public void setKey(Integer key) {
+        this.key = key;
     }
 
-    public Integer getWriteTimeout() {
-        return writeTimeout;
+    public String getTitle() {
+        return title;
     }
 
-    public void setWriteTimeout(Integer writeTimeout) {
-        this.writeTimeout = writeTimeout;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public Integer getReadTimeout() {
-        return readTimeout;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PlexLibrary that = (PlexLibrary) o;
+        return Objects.equals(key, that.key);
     }
 
-    public void setReadTimeout(Integer readTimeout) {
-        this.readTimeout = readTimeout;
+    @Override
+    public int hashCode() {
+        return Objects.hash(key);
     }
 
-    public List<String> getMovieUrls() {
-        return movieUrls;
+    @Override
+    public String toString() {
+        return "PlexLibrary{" +
+                "key=" + key +
+                ", title='" + title + '\'' +
+                '}';
     }
 
-    public void setMovieUrls(List<String> movieUrls) {
-        this.movieUrls = movieUrls;
+    @Override
+    public int compareTo(@NotNull PlexLibrary o) {
+        return this.title.compareTo(o.title);
     }
-
 }

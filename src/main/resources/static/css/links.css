@@ -8,30 +8,22 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.jasonhhouse.Gaps;
+/* unvisited link */
+a:link {
+    color: #fffde7;
+}
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
+/* visited link */
+a:visited {
+    color: #fff59d;
+}
 
-import javax.validation.constraints.NotNull;
+/* mouse over link */
+a:hover {
+    color: #fdd835;
+}
 
-@Configuration
-@ConfigurationProperties(prefix = "gaps")
-@Component
-@Validated
-public class Properties {
-
-    @NotNull(message = "Folder property cannot be null")
-    private FolderProperties folder;
-
-    public FolderProperties getFolder() {
-        return folder;
-    }
-
-    public void setFolder(FolderProperties folder) {
-        this.folder = folder;
-    }
-
+/* selected link */
+a:active {
+    color: #ffcdd2;
 }

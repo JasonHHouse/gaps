@@ -1,0 +1,139 @@
+<!--
+- Copyright 2019 Jason H House
+-
+- Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+-
+- The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+-
+- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/html" lang="en">
+
+<head>
+    <title>Gaps</title>
+    <meta name="theme-color" content="#3f51b5"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="shortcut icon" href="image/gaps.ico"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/links.min.css"/>
+    <link type="text/css" rel="stylesheet" href="css/body.min.css"/>
+    <link type="text/css" rel="stylesheet" href="css/input.min.css"/>
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<body class="black" onload="onStart()">
+<main>
+
+    <nav>
+        <div onclick="onClickBanner()" class="nav-wrapper indigo darken-1">
+            <div class="brand-logo center white-text">
+                <a href="index.html">Gaps</a>
+                <span>&nbsp;>&nbsp;</span>
+                <a href="plex_configuration.html">Plex</a>
+                <span>&nbsp;>&nbsp;Libraries</span>
+            </div>
+        </div>
+    </nav>
+
+    <br>
+
+    <div class="container">
+        <div class="row grey darken-4">
+            <form class="col s12">
+                <div class="row indigo white-text">
+                    <h5 class="col s12">Plex Movie Libraries</h5>
+
+                    <p class="col s12 grey-text text-lighten-4">These are the movie libraries we found in your Plex
+                        Server. Select any and all you would like to look for gaps in.</p>
+                </div>
+
+                <div class="row" id="progressBar">
+                    <div class="col s4">
+                        <div class="preloader-wrapper big active">
+                            <div class="spinner-layer spinner-blue">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="libraryCheckboxes" class="grey-text text-lighten-4"></div>
+
+                <div id="libraryException" class="div class='row' grey-text text-lighten-4"></div>
+
+                <div class="row">
+                    <div class="col s1">
+                        <a class="waves-effect waves-light btn white black-text" id="back">Back</a>
+                    </div>
+                    <div class="col s1">
+                        <a class="waves-effect waves-light btn disabled black-text" id="search">Search</a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="warningModal" class="modal">
+        <div class="modal-content">
+            <h4 id="searchModelTitle">Before you start searching...</h4>
+            <div id="body">
+                <p>Searching for all movies missing from your libraries could take a very long time. Be sure to
+                    make sure your connection won't go down while searching and go make yourself some coffee.
+                </p>
+                <p>
+                    <label>
+                        <input id="dialogDontShowAgain" type="checkbox" class="filled-in"/>
+                        <span>Don't show this dialog again</span>
+                    </label>
+                </p>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+            <a id="agree" href="#!" class="modal-close waves-effect waves-green btn-flat teal-text">Agree</a>
+        </div>
+    </div>
+
+    </div>
+</main>
+<footer class="page-footer indigo">
+    <div class="container">
+        <div class="row">
+            <div class="col l6 s12">
+                <h5 class="white-text">Gaps v0.0.4</h5>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    © 2019 Gaps
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="js/materialize.min.js"></script>
+<script type="text/javascript" src="js/js.cookie.min.js"></script>
+<script type="text/javascript" src="js/plex_libraries.min.js"></script>
+</body>
+</html>

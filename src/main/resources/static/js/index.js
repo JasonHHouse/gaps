@@ -8,30 +8,39 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.jasonhhouse.Gaps;
+"use strict";
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
+function onStart() {
 
-import javax.validation.constraints.NotNull;
+    $("#plex").click(function () {
+        if (validateInput()) {
+            Cookies.set('movie_db_api_key', $("#movie_db_api_key").val());
+            location.assign("plex_configuration.html");
+        }
+    });
 
-@Configuration
-@ConfigurationProperties(prefix = "gaps")
-@Component
-@Validated
-public class Properties {
+    populateCookieValues();
 
-    @NotNull(message = "Folder property cannot be null")
-    private FolderProperties folder;
+    M.AutoInit();
 
-    public FolderProperties getFolder() {
-        return folder;
+    M.updateTextFields();
+}
+
+function populateCookieValues() {
+    if (document.cookie) {
+        const movieDbApiKey = Cookies.get('movie_db_api_key');
+
+        if (movieDbApiKey) {
+            $("#movie_db_api_key").val(movieDbApiKey);
+        }
+    }
+}
+
+function validateInput() {
+    if (!$("#movie_db_api_key").val()) {
+        M.toast({html: "The MovieDB api key must not be empty"});
+        return false;
     }
 
-    public void setFolder(FolderProperties folder) {
-        this.folder = folder;
-    }
-
+    return true;
 }

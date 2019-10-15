@@ -10,40 +10,10 @@
 
 package com.jasonhhouse.Gaps;
 
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
-import java.util.concurrent.Executor;
-
-/**
- * Search for all missing movies in your plex collection by MovieDB collection.
- */
-@SpringBootApplication
-@EnableAsync
-public class GapsApplication implements CommandLineRunner {
-
-    public static void main(String[] args) {
-        SpringApplication.run(GapsApplication.class, args);
-    }
-
-    @Bean
-    public Executor taskExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(2);
-        executor.setMaxPoolSize(2);
-        executor.setQueueCapacity(500);
-        executor.setThreadNamePrefix("Gaps-");
-        executor.initialize();
-        return executor;
-    }
-
-    @Override
-    public void run(String... args) {
-
-    }
-
+@Configuration
+@EnableScheduling
+public class SchedulerConfig {
 }
