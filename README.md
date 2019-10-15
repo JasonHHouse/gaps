@@ -100,8 +100,8 @@ On the Libraries page, Gaps will try to connect to Plex and if successful it wil
 Select any or all of the movie libraries you want to search. You must select at least one.
 
 ### Results
-
 Once you've started searching, the movies will start populating on the final page.
+
 
 ![Plex Movie Libraries](readme_images/plex_libraries.png) 
 
