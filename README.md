@@ -26,11 +26,11 @@ You now have the Gaps image and you need to do a little configuration. The comma
 
 1. -p or publish exposes maps ports from the container to the outside world. Docker has a great write up [here](https://docs.docker.com/config/containers/container-networking/). 
 
-    *Note: If 8080 is in us on your system, change the publish command to -p <new available port>:8080*
+    *Note: If 8443 is in us on your system, change the publish command to -p <new available port>:8443*
 
 2. --name mygaps sets the name of the local running container. You can change it to whatever you want, just don't forget the name in the future!
 
-3. --expose 32400 is there to commucate with Plex. By default, Plex is set to 32400 by default. If you've changed the port, change that here. 
+3. --expose 32400 is there to communicate with Plex. By default, Plex is set to 32400 by default. If you've changed the port, change that here. 
 
 Once all those values are updated correctly for your system, you can run the command and Gaps will start up.
 
@@ -44,20 +44,22 @@ To see Gaps, open up your browser and navigate over to the ip address and port y
 
 If your browser is on the same machine running Docker and you did not change the port, then you can navigate to 
 
-    http://localhost:8080
+    http://localhost:8443
     
 Or
 
-    http://127.0.0.1:8080 
+    http://127.0.0.1:8443 
 
 You should be presented with this screen
 
-![Home Page](readme_images/main_screen.png)
+![Home Page](gifs/gaps_login.gif)
 
 
 ### Landing Page
 
 On this screen, you need to enter your Movie Database Api Key. The page has information on getting the key. The basics are that you'll need navigate over to [The Movie DB](https://www.themoviedb.org/settings/api), create an account, and make an API Key. Then you would copy that key into the Api Key field.
+
+![Plex Connection](gifs/gaps_movie_db_key.gif)
 
 *Note: Right now only searching via Plex is working. In time, I'll add back in searching by folder.*
 
