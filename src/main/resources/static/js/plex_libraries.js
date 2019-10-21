@@ -91,7 +91,7 @@ function getLibraries() {
 
     $.ajax({
         type: "GET",
-        url: "http://" + location.hostname + ":" + location.port + "/getPlexLibraries?" + encodeQueryData(data),
+        url: "https://" + location.hostname + ":" + location.port + "/getPlexLibraries?" + encodeQueryData(data),
         contentType: "application/json",
         success: function (data) {
             allLibraries = data;
@@ -150,7 +150,7 @@ function findIfChecked(selectedLibraries, key) {
 }
 
 function updatedSelectedLibraries() {
-    Cookies.set('libraries', findSelectedLibraries());
+    Cookies.set('libraries', JSON.stringify(findSelectedLibraries()));
 }
 
 function findSelectedLibraries() {

@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
         //Cancel Search
         $.ajax({
             type: "PUT",
-            url: "http://" + location.hostname + ":" + location.port + "/cancelSearch",
+            url: "https://" + location.hostname + ":" + location.port + "/cancelSearch",
             contentType: "application/json",
         });
 
@@ -79,7 +79,7 @@ function search() {
     searchTitle.text("Searching for Movies...");
     searchDescription.text("Gaps is looking through your Plex libraries. This could take a while so just sit tight and we'll find all the missing movies for you.");
 
-    const libraries = Cookies.get('libraries');
+    const libraries = JSON.parse(Cookies.get('libraries'));
     const address = Cookies.get('address');
     const port = Cookies.get('port');
     const plexToken = Cookies.get('plex_token');
@@ -87,7 +87,7 @@ function search() {
 
     let plexMovieUrls = [];
 
-    for (let library of libraries) {
+    for (const library of libraries) {
         let data = {
             'X-Plex-Token': plexToken
         };
@@ -105,7 +105,7 @@ function search() {
 
     $.ajax({
         type: "POST",
-        url: "http://" + location.hostname + ":" + location.port + "/submit",
+        url: "https://" + location.hostname + ":" + location.port + "/submit",
         data: JSON.stringify(gaps),
         contentType: "application/json",
         timeout: 0,

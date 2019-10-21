@@ -69,7 +69,7 @@ Click the *Search via Plex* button and move on to the next page.
 
 With your Movie DB key added, now we need to configure the information to connect to Plex.
 
-![Plex Connection](readme_images/plex_configuration.png)
+![Plex Connection](gifs/gaps_plex_movie_list.gif)
 
 On this page, you'll need to configure how you connect to Plex. This includes three main things: the host/ip address of Plex, the port Plex uses, and your personal Plex Token.
 
@@ -97,7 +97,7 @@ Once you have those three, click next.
 
 On the Libraries page, Gaps will try to connect to Plex and if successful it will return the 'Movie' type libraries it found.
 
-![Plex Movie Libraries](readme_images/plex_libraries.png)
+![Plex Movie Libraries](images/plex_libraries.png)
 
 Select any or all of the movie libraries you want to search. You must select at least one.
 
@@ -105,7 +105,7 @@ Select any or all of the movie libraries you want to search. You must select at 
 Once you've started searching, the movies will start populating on the final page.
 
 
-![Plex Movie Libraries](readme_images/plex_libraries.png) 
+![Plex Movie Libraries](gifs/gaps_missing_movies.gif) 
 
 ## Jay add last photo, need to implement three buttons and a cancel option
 
