@@ -21,6 +21,8 @@ To pull the image, run the following command in a terminal
 You now have the Gaps image and you need to do a little configuration. The command to run Gaps follows
 
     docker run -p 8443:8443 --name mygaps --expose 32400 housewrecker/gaps:latest
+    
+For unraid see the wiki: https://github.com/JasonHHouse/Gaps/wiki
 
 ### Important Notes
 
