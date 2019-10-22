@@ -76,7 +76,7 @@
 
             <div class="row">
                 <div class="col s1">
-                    <img src="image/vpn_key-24px.svg" class="list-item-icon"  alt="">
+                    <img src="image/vpn_key-24px.svg" class="list-item-icon" alt="">
                 </div>
                 <div class="row">
                     <h6 class="col s10 white-text">Your Personal Plex Token</h6>
@@ -84,6 +84,21 @@
                         a great write up
                         <a href="https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/">here</a>
                         about how to find your token.
+                    </div>
+                </div>
+            </div>
+
+
+            <hr>
+
+            <div class="row">
+                <div class="col s1">
+                    <img src="image/security-24px.svg" class="list-item-icon" alt="">
+                </div>
+                <div class="row">
+                    <h6 class="col s10 white-text">SSL/TLS</h6>
+                    <div class="col s10 grey-text text-lighten-4">Is your Plex configured to use https? If you don't
+                        know, leave this unchecked.
                     </div>
                 </div>
             </div>
@@ -115,6 +130,15 @@
                         <input id="plex_token" type="text" class="validate grey-text text-lighten-4">
                         <label for="plex_token">Set your Plex Token*</label>
                     </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <label class="col s3">
+                        <input id="plex_tls" type="checkbox" class="filled-in validate grey-text text-lighten-4">
+                        <span>Plex uses SSL/TLS</span>
+                    </label>
                 </div>
             </div>
 
