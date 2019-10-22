@@ -109,8 +109,6 @@ Once you've started searching, the movies will start populating on the final pag
 
 ![Plex Movie Libraries](gifs/gaps_missing_movies.gif) 
 
-## Jay add last photo, need to implement three buttons and a cancel option
-
 ## License
 Copyright 2019 Jason H House
 
