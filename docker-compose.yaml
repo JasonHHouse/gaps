@@ -1,0 +1,14 @@
+gaps:
+  image: housewrecker/gaps:latest
+  container_name: gaps
+  environment:
+    - PGID=${PGID}
+    - PUID=${PUID}
+    - TZ=${TZ}
+  ports:
+    - 8484:8484
+  restart: unless-stopped
+  expose:
+    - "32400"
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
