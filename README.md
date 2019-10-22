@@ -28,7 +28,7 @@ For unraid see the wiki: https://github.com/JasonHHouse/Gaps/wiki
 
 1. -p or publish exposes maps ports from the container to the outside world. Docker has a great write up [here](https://docs.docker.com/config/containers/container-networking/). 
 
-    *Note: If 8484 is in us on your system, change the publish command to -p <new available port>:8484*
+    *Note: If 8484 is in use on your system, change the publish command to -p <new available port>:8484*
 
 2. --name mygaps sets the name of the local running container. You can change it to whatever you want, just don't forget the name in the future!
 
