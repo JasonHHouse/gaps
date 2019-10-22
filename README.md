@@ -20,7 +20,7 @@ To pull the image, run the following command in a terminal
 
 You now have the Gaps image and you need to do a little configuration. The command to run Gaps follows
 
-    docker run -p 8443:8443 --name mygaps --expose 32400 housewrecker/gaps:latest
+    docker run -d -p 8484:8484 --name mygaps --expose 32400 housewrecker/gaps:latest
     
 For unraid see the wiki: https://github.com/JasonHHouse/Gaps/wiki
 
@@ -28,7 +28,7 @@ For unraid see the wiki: https://github.com/JasonHHouse/Gaps/wiki
 
 1. -p or publish exposes maps ports from the container to the outside world. Docker has a great write up [here](https://docs.docker.com/config/containers/container-networking/). 
 
-    *Note: If 8443 is in us on your system, change the publish command to -p <new available port>:8443*
+    *Note: If 8484 is in us on your system, change the publish command to -p <new available port>:8484*
 
 2. --name mygaps sets the name of the local running container. You can change it to whatever you want, just don't forget the name in the future!
 
@@ -46,11 +46,11 @@ To see Gaps, open up your browser and navigate over to the ip address and port y
 
 If your browser is on the same machine running Docker and you did not change the port, then you can navigate to 
 
-    http://localhost:8443
+    http://localhost:8484
     
 Or
 
-    http://127.0.0.1:8443 
+    http://127.0.0.1:8484 
 
 You should be presented with this screen
 

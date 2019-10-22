@@ -74,7 +74,7 @@ spring:
 # Compress the response only if the response size is at least 1KB
 # Enable HTTP/2 support, if the current environment supports it
 server:
-  port: 8443
+  port: 8484
   compression:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
