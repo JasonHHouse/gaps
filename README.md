@@ -46,11 +46,11 @@ To see Gaps, open up your browser and navigate over to the ip address and port y
 
 If your browser is on the same machine running Docker and you did not change the port, then you can navigate to 
 
-    http://localhost:8484
+    https://localhost:8484
     
 Or
 
-    http://127.0.0.1:8484 
+    https://127.0.0.1:8484 
 
 You should be presented with this screen
 
@@ -77,15 +77,15 @@ On this page, you'll need to configure how you connect to Plex. This includes th
 
 The host/ip address and port are the same ones you use to connect to Plex via the web. It could look something like this
 
-    http://localhost:32400/web/index.html
+    https://localhost:32400/web/index.html
     
 Or
 
-    http://127.0.0.1:32400/web/index.html
+    https://127.0.0.1:32400/web/index.html
     
 If Plex and Gaps are both running in the same Docker, you may need to use the IP address on the local network. Example 
 
-    http://192.168.1.10:32400/web/index.html
+    https://192.168.1.10:32400/web/index.html
 
 So, in the first case the host is localhost and the port 32400. In the second case, the host is 127.0.0.1 with the same port.
 
