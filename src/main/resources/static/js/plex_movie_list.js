@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
         //Cancel Search
         $.ajax({
             type: "PUT",
-            url: "https://" + location.hostname + ":" + location.port + "/cancelSearch",
+            url: "cancelSearch",
             contentType: "application/json",
         });
 
@@ -105,7 +105,7 @@ function search() {
 
     $.ajax({
         type: "POST",
-        url: "https://" + location.hostname + ":" + location.port + "/submit",
+        url: "submit",
         data: JSON.stringify(gaps),
         contentType: "application/json",
         timeout: 0,
@@ -158,10 +158,10 @@ function buildMovie(movie) {
 }
 
 function connect() {
-    const socket = new SockJS('/gs-guide-websocket');
+    const socket = new SockJS('gs-guide-websocket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function () {
-        stompClient.subscribe('/topic/currentSearchResults', function (status) {
+        stompClient.subscribe('topic/currentSearchResults', function (status) {
             let obj = JSON.parse(status.body);
             showSearchStatus(obj);
             shouldDisconnect(obj)
@@ -183,7 +183,7 @@ function shouldDisconnect(obj) {
         //Cancel Search
         $.ajax({
             type: "PUT",
-            url: "http://" + location.hostname + ":" + location.port + "/cancelSearch",
+            url: "cancelSearch",
             contentType: "application/json",
         });
     }
