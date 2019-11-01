@@ -1,0 +1,125 @@
+<!--
+- Copyright 2019 Jason H House
+-
+- Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+-
+- The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+-
+- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/html" lang="en">
+
+<head>
+    <title>Gaps</title>
+    <meta name="theme-color" content="#3f51b5"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="shortcut icon" href="image/gaps.ico"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/links.min.css"/>
+<!--    <link type="text/css" rel="stylesheet" href="css/body.min.css"/>-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<body class="black">
+<main>
+
+    <nav>
+        <div onclick="onClickBanner()" class="nav-wrapper indigo darken-1">
+            <div class="brand-logo center white-text">
+                <a href="index.html">Gaps</a>
+                <span>&nbsp;>&nbsp;</span>
+                <a href="plex_configuration.html">Plex</a>
+                <span>&nbsp;>&nbsp;</span>
+                <a href="plex_libraries.html">Libraries</a>
+                <span>&nbsp;>&nbsp;Missing Movies</span>
+            </div>
+        </div>
+    </nav>
+
+    <br>
+
+    <div class="container">
+        <div class="row grey darken-4">
+            <form class="col s12">
+                <div class="row indigo white-text">
+                    <h5 id="searchTitle" class="col s12">Searching for Movies...</h5>
+
+                    <p id="searchDescription" class="col s12 grey-text text-lighten-4"></p>
+                </div>
+
+                <div class="row">
+                    <div class="col s2">
+                        <a class="waves-effect waves-light btn white black-text" id="cancel">Cancel</a>
+                    </div>
+                    <!--<div class="col s2">
+                        <a class="waves-effect waves-light btn disabled black-text" id="rss">View RSS</a>
+                    </div>-->
+                    <div class="col s3">
+                        <a class="waves-effect waves-light btn disabled black-text" id="copyToClipboard">Copy to clipboard</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div id="searchPosition" class="col s12 grey-text text-lighten-4"></div>
+                </div>
+
+                <div class="row">
+                    <div id="progressContainer" class="progress col s8 offset-s2">
+                        <div id="progressBar" class="col s8 offset-s2 determinate" style="width: 0"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div id="searchResults" class="col s12 grey-text text-lighten-4"></div>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- Modal Structure -->
+        <div id="warningModal" class="modal">
+            <div class="modal-content">
+                <h4 id="searchModelTitle">Cancel Search</h4>
+                <div id="body">
+                    <p>Are you sure you want to cancel searching?</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a id="agree" href="#!" class="modal-close waves-effect waves-green btn-flat teal-text">Cancel
+                    Search</a>
+            </div>
+        </div>
+
+    </div>
+</main>
+<footer class="page-footer indigo">
+    <div class="container">
+        <div class="row">
+            <div class="col l6 s12">
+                <h5 class="white-text">Gaps v0.0.5</h5>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    © 2019 Gaps
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="js/materialize.min.js"></script>
+<script type="text/javascript" src="js/js.cookie.min.js"></script>
+<script type="text/javascript" src="js/sockjs-1.4.0.min.js"></script>
+<script type="text/javascript" src="js/stomp-2.3.3.min.js"></script>
+<script type="text/javascript" src="js/plex_movie_list.js"></script>
+</body>
+</html>

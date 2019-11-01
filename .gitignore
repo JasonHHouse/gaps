@@ -28,3 +28,5 @@
 gaps_recommended_movies.txt
 package-lock.json
 node_modules
+Core/target
+GapsWeb/target
