@@ -5,50 +5,50 @@
 # The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-gaps:
-  #######################################
-  #
-  #Can read from a folder, Plex, or both
-  #At least, one of the two property groups needs to be filled in though
-  #
-  #######################################
-
-  #List of folders where movies can be pulled from
-  folder:
-    #Required
-    searchFromFolder: true
-
-    #Required if searching from folders
-    #List of folders to search in
-    folders:
-      - /Users/jhouse/Movies
-
-    #Required if searching from folders
-    #If the subfolder should be searched in
-    recursive: true
-
-    #Required if searching from folders
-    #Add any movie formats as needed
-    movieFormats:
-      - avi
-      - mkv
-      - mp4
-      - mov
-      - webm
-      - vob
-      - flv
-      - mts
-      - m2ts
-      - m4p
-      - m4v
-      - 3gp
-      - 3g2
-
-    #Movie Regex
-    #Expected format is Movie Name (Year)
-    #Example: The Fast and the Furious (2001)
-    yearRegex: \(([1-2][0-9][0-9][0-9])\)
+#
+#gaps:
+#  #######################################
+#  #
+#  #Can read from a folder, Plex, or both
+#  #At least, one of the two property groups needs to be filled in though
+#  #
+#  #######################################
+#
+#  #List of folders where movies can be pulled from
+#  folder:
+#    #Required
+#    searchFromFolder: true
+#
+#    #Required if searching from folders
+#    #List of folders to search in
+#    folders:
+#      - /Users/jhouse/Movies
+#
+#    #Required if searching from folders
+#    #If the subfolder should be searched in
+#    recursive: true
+#
+#    #Required if searching from folders
+#    #Add any movie formats as needed
+#    movieFormats:
+#      - avi
+#      - mkv
+#      - mp4
+#      - mov
+#      - webm
+#      - vob
+#      - flv
+#      - mts
+#      - m2ts
+#      - m4p
+#      - m4v
+#      - 3gp
+#      - 3g2
+#
+#    #Movie Regex
+#    #Expected format is Movie Name (Year)
+#    #Example: The Fast and the Furious (2001)
+#    yearRegex: \(([1-2][0-9][0-9][0-9])\)
 
   #Adjust logging as you see fit
 logging:
@@ -74,7 +74,7 @@ spring:
 # Compress the response only if the response size is at least 1KB
 # Enable HTTP/2 support, if the current environment supports it
 server:
-  port: 8443
+  port: 8484
   compression:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
