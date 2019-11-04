@@ -45,6 +45,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
@@ -571,7 +572,7 @@ public class GapsSearchBean implements GapsSearch {
                         String guid = node.getAttributes().getNamedItem("guid").getNodeValue();
 
                         Movie movie;
-                        if(guid.contains("com.plexapp.agents.themoviedb")) {
+                        if (guid.contains("com.plexapp.agents.themoviedb")) {
                             guid = guid.replace("com.plexapp.agents.themoviedb://", "");
                             guid = guid.replace("?lang=en", "");
 
@@ -645,8 +646,13 @@ public class GapsSearchBean implements GapsSearch {
 
             HttpUrl searchMovieUrl;
             try {
-                //If imdbId is available use it, otherwise fall back to movie title and year search
-                if (movie.getImdbId() != null) {
+                //If TMDB is available, skip the search
+                //If IMDB is available use find
+                //Otherwise fall back to movie title and year search
+                if (movie.getMedia_id() != -1) {
+                    searchMovieDetails(gaps, movie, movie.getMedia_id(), client);
+                    continue;
+                } else if (movie.getImdbId() != null) {
                     logger.info("Used 'find' to search for " + movie.getName());
                     searchMovieUrl = urlGenerator.generateFindMovieUrl(gaps.getMovieDbApiKey(), URLEncoder.encode(movie.getImdbId(), "UTF-8"));
                 } else {
@@ -692,6 +698,10 @@ public class GapsSearchBean implements GapsSearch {
                     JSONObject result = results.getJSONObject(0);
                     int id = result.getInt("id");
 
+                    searchMovieDetails(gaps, movie, id, client);
+
+                   /*
+
                     HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(gaps.getMovieDbApiKey(), String.valueOf(id));
 
                     request = new Request.Builder()
@@ -719,7 +729,7 @@ public class GapsSearchBean implements GapsSearch {
 
                     } catch (IOException e) {
                         logger.error("Error getting movie details " + movie, e);
-                    }
+                    }*/
 
                 } catch (IOException e) {
                     logger.error("Error searching for movie " + movie, e);
@@ -742,6 +752,37 @@ public class GapsSearchBean implements GapsSearch {
                 logger.error("Error parsing movie URL " + movie, e);
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void searchMovieDetails(Gaps gaps, Movie movie, int tmdbId, OkHttpClient client) {
+        HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(gaps.getMovieDbApiKey(), String.valueOf(tmdbId));
+
+        Request request = new Request.Builder()
+                .url(movieDetailUrl)
+                .build();
+
+        try (Response movieDetailResponse = client.newCall(request).execute()) {
+
+            String movieDetailJson = movieDetailResponse.body() != null ? movieDetailResponse.body().string() : null;
+
+            if (movieDetailJson == null) {
+                logger.error("Body returned null from TheMovieDB for details on " + movie.getName());
+                return;
+            }
+
+            JSONObject movieDetails = new JSONObject(movieDetailJson);
+
+            if (!movieDetails.has("belongs_to_collection") || movieDetails.isNull("belongs_to_collection")) {
+                //No collection found, just add movie to searched and continue
+                searched.add(movie);
+                return;
+            }
+
+            handleCollection(movie, gaps, client, movieDetails);
+
+        } catch (IOException e) {
+            logger.error("Error getting movie details " + movie, e);
         }
     }
 

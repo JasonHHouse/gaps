@@ -20,7 +20,8 @@ public final class Movie implements Comparable<Movie> {
 
     private final String collection;
 
-    private final int media_id;
+    @Nullable
+    private int media_id;
 
     @Nullable
     private String imdbId;
