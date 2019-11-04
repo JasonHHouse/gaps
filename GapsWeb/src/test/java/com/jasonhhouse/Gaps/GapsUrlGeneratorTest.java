@@ -166,6 +166,14 @@ public class GapsUrlGeneratorTest implements UrlGenerator {
     }
 
     @Override
+    public @NotNull HttpUrl generateFindMovieUrl(String movieDbKey, String imdbId) {
+        //ToDo
+        //Implement and mock
+        //Fake data below
+        return mockWebServer.url(movieDetailUrl);
+    }
+
+    @Override
     public @NotNull HttpUrl generateMovieDetailUrl(String movieDbKey, String movieId) {
         return mockWebServer.url(movieDetailUrl);
     }

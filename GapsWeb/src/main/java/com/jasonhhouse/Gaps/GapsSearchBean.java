@@ -10,7 +10,39 @@
 
 package com.jasonhhouse.Gaps;
 
-import okhttp3.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.time.Year;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+import okhttp3.HttpUrl;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -32,22 +64,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-import java.io.*;
-import java.net.URLEncoder;
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class GapsSearchBean implements GapsSearch {
@@ -552,7 +568,26 @@ public class GapsSearchBean implements GapsSearch {
                             continue;
                         }
                         String year = node.getAttributes().getNamedItem("year").getNodeValue();
-                        Movie movie = new Movie(-1, title, Integer.parseInt(year), "");
+                        String guid = node.getAttributes().getNamedItem("guid").getNodeValue();
+
+                        Movie movie;
+                        if(guid.contains("com.plexapp.agents.themoviedb")) {
+                            guid = guid.replace("com.plexapp.agents.themoviedb://", "");
+                            guid = guid.replace("?lang=en", "");
+
+                            movie = new Movie(Integer.parseInt(guid), title, Integer.parseInt(year), "");
+                        } else if (guid.contains("com.plexapp.agents.imdb://")) {
+                            guid = guid.replace("com.plexapp.agents.imdb://", "");
+                            guid = guid.replace("?lang=en", "");
+
+                            movie = new Movie(-1, guid, title, Integer.parseInt(year), "");
+                        } else {
+                            logger.warn("Cannot handle guid value of " + guid);
+                            movie = new Movie(-1, title, Integer.parseInt(year), "");
+                        }
+
+                        logger.info("guid:" + guid);
+
                         ownedMovies.add(movie);
                         totalMovieCount.incrementAndGet();
                     }
@@ -610,7 +645,14 @@ public class GapsSearchBean implements GapsSearch {
 
             HttpUrl searchMovieUrl;
             try {
-                searchMovieUrl = urlGenerator.generateSearchMovieUrl(gaps.getMovieDbApiKey(), URLEncoder.encode(movie.getName(), "UTF-8"), String.valueOf(movie.getYear()));
+                //If imdbId is available use it, otherwise fall back to movie title and year search
+                if (movie.getImdbId() != null) {
+                    logger.info("Used 'find' to search for " + movie.getName());
+                    searchMovieUrl = urlGenerator.generateFindMovieUrl(gaps.getMovieDbApiKey(), URLEncoder.encode(movie.getImdbId(), "UTF-8"));
+                } else {
+                    logger.info("Used 'search' to search for " + movie.getName());
+                    searchMovieUrl = urlGenerator.generateSearchMovieUrl(gaps.getMovieDbApiKey(), URLEncoder.encode(movie.getName(), "UTF-8"), String.valueOf(movie.getYear()));
+                }
 
                 Request request = new Request.Builder()
                         .url(searchMovieUrl)
@@ -626,7 +668,15 @@ public class GapsSearchBean implements GapsSearch {
                     }
 
                     JSONObject foundMovies = new JSONObject(json);
-                    JSONArray results = foundMovies.getJSONArray("results");
+                    JSONArray results;
+
+                    if (foundMovies.has("movie_results")) {
+                        //Results from 'find'
+                        results = foundMovies.getJSONArray("movie_results");
+                    } else {
+                        //Results from 'search'
+                        results = foundMovies.getJSONArray("results");
+                    }
 
                     if (results.length() == 0) {
                         logger.error("Results not found for " + movie);
@@ -658,6 +708,7 @@ public class GapsSearchBean implements GapsSearch {
                         }
 
                         JSONObject movieDetails = new JSONObject(movieDetailJson);
+
                         if (!movieDetails.has("belongs_to_collection") || movieDetails.isNull("belongs_to_collection")) {
                             //No collection found, just add movie to searched and continue
                             searched.add(movie);
@@ -673,19 +724,23 @@ public class GapsSearchBean implements GapsSearch {
                 } catch (IOException e) {
                     logger.error("Error searching for movie " + movie, e);
                     logger.error("URL: " + searchMovieUrl);
+                    e.printStackTrace();
                 } catch (JSONException e) {
                     logger.error("Error parsing movie " + movie + ". " + e.getMessage());
                     logger.error("URL: " + searchMovieUrl);
+                    e.printStackTrace();
                 } finally {
                     try {
                         //can't have too many connections to the movie database in a specific time, have to wait
                         Thread.sleep(900);
                     } catch (InterruptedException e) {
                         logger.error("Error sleeping", e);
+                        e.printStackTrace();
                     }
                 }
             } catch (UnsupportedEncodingException e) {
                 logger.error("Error parsing movie URL " + movie, e);
+                e.printStackTrace();
             }
         }
     }
@@ -714,7 +769,7 @@ public class GapsSearchBean implements GapsSearch {
                 JSONObject part = parts.getJSONObject(i);
                 int media_id = part.getInt("id");
                 //Files can't have : so need to remove to find matches correctly
-                String title = part.getString("original_title").replaceAll(":", "");
+                String title = part.getString("title").replaceAll(":", "");
                 int year;
                 try {
                     year = Integer.parseInt(part.getString("release_date").substring(0, 4));
@@ -722,11 +777,12 @@ public class GapsSearchBean implements GapsSearch {
                     logger.warn("No year found for " + title + ". Value returned was '" + part.getString("release_date") + "'. Not adding the movie to recommended list.");
                     continue;
                 }
+
                 Movie movieFromCollection = new Movie(media_id, title, year, collectionName);
 
                 if (ownedMovies.contains(movieFromCollection)) {
                     searched.add(movieFromCollection);
-                } else if (!searched.contains(movieFromCollection) && year != 0 && year < 2019) {
+                } else if (!searched.contains(movieFromCollection) && year != 0 && year < Year.now().getValue()) {
                     recommended.add(movieFromCollection);
                 }
             }

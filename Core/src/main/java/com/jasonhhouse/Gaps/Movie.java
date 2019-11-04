@@ -8,9 +8,9 @@ package com.jasonhhouse.Gaps;/*
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.Objects;
+import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 
 public final class Movie implements Comparable<Movie> {
 
@@ -21,6 +21,17 @@ public final class Movie implements Comparable<Movie> {
     private final String collection;
 
     private final int media_id;
+
+    @Nullable
+    private String imdbId;
+
+    Movie(int media_id, String imdbId, String name, int year, String collection) {
+        this.media_id = media_id;
+        this.imdbId = imdbId;
+        this.name = name;
+        this.year = year;
+        this.collection = collection;
+    }
 
     Movie(int media_id, String name, int year, String collection) {
         this.media_id = media_id;
@@ -43,6 +54,10 @@ public final class Movie implements Comparable<Movie> {
 
     public String getCollection() {
         return collection;
+    }
+
+    public String getImdbId() {
+        return imdbId;
     }
 
     @Override

@@ -165,7 +165,7 @@ public class GapsControllerImpl {
     @Scheduled(fixedDelay = 250)
     public void currentSearchResults() {
         if (CollectionUtils.isNotEmpty(gapsSearch.getRecommendedMovies())) {
-            logger.info("currentSearchResults()");
+            //logger.info("currentSearchResults()");
 
             List<Movie> newMovies = gapsSearch.getRecommendedMovies();
 
