@@ -24,7 +24,7 @@ import java.util.concurrent.Executor;
  */
 @SpringBootApplication
 @EnableAsync
-public class GapsApplication implements CommandLineRunner {
+public class GapsApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(GapsApplication.class, args);
@@ -39,11 +39,6 @@ public class GapsApplication implements CommandLineRunner {
         executor.setThreadNamePrefix("Gaps-");
         executor.initialize();
         return executor;
-    }
-
-    @Override
-    public void run(String... args) {
-
     }
 
 }
