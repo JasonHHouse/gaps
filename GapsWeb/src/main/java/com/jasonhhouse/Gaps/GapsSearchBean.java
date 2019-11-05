@@ -45,7 +45,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
@@ -465,7 +464,7 @@ public class GapsSearchBean implements GapsSearch {
             for (Movie m : recommended) {
                 client = new OkHttpClient();
 
-                body = RequestBody.create("{\"media_id\":" + m.getMedia_id() + "}", mediaType);
+                body = RequestBody.create("{\"media_id\":" + m.getTvdbId() + "}", mediaType);
 
                 HttpUrl url = new HttpUrl.Builder()
                         .scheme("https")
@@ -569,7 +568,11 @@ public class GapsSearchBean implements GapsSearch {
                             continue;
                         }
                         String year = node.getAttributes().getNamedItem("year").getNodeValue();
-                        String guid = node.getAttributes().getNamedItem("guid").getNodeValue();
+
+                        String guid = "";
+                        if (node.getAttributes().getNamedItem("guid") != null) {
+                            guid = node.getAttributes().getNamedItem("guid").getNodeValue();
+                        }
 
                         Movie movie;
                         if (guid.contains("com.plexapp.agents.themoviedb")) {
@@ -581,10 +584,10 @@ public class GapsSearchBean implements GapsSearch {
                             guid = guid.replace("com.plexapp.agents.imdb://", "");
                             guid = guid.replace("?lang=en", "");
 
-                            movie = new Movie(-1, guid, title, Integer.parseInt(year), "");
+                            movie = new Movie(guid, title, Integer.parseInt(year), "");
                         } else {
                             logger.warn("Cannot handle guid value of " + guid);
-                            movie = new Movie(-1, title, Integer.parseInt(year), "");
+                            movie = new Movie(title, Integer.parseInt(year), "");
                         }
 
                         logger.info("guid:" + guid);
@@ -649,8 +652,8 @@ public class GapsSearchBean implements GapsSearch {
                 //If TMDB is available, skip the search
                 //If IMDB is available use find
                 //Otherwise fall back to movie title and year search
-                if (movie.getMedia_id() != -1) {
-                    searchMovieDetails(gaps, movie, movie.getMedia_id(), client);
+                if (movie.getTvdbId() != -1) {
+                    searchMovieDetails(gaps, movie, movie.getTvdbId(), client);
                     continue;
                 } else if (movie.getImdbId() != null) {
                     logger.info("Used 'find' to search for " + movie.getName());
@@ -699,38 +702,6 @@ public class GapsSearchBean implements GapsSearch {
                     int id = result.getInt("id");
 
                     searchMovieDetails(gaps, movie, id, client);
-
-                   /*
-
-                    HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(gaps.getMovieDbApiKey(), String.valueOf(id));
-
-                    request = new Request.Builder()
-                            .url(movieDetailUrl)
-                            .build();
-
-                    try (Response movieDetailResponse = client.newCall(request).execute()) {
-
-                        String movieDetailJson = movieDetailResponse.body() != null ? movieDetailResponse.body().string() : null;
-
-                        if (movieDetailJson == null) {
-                            logger.error("Body returned null from TheMovieDB for details on " + movie.getName());
-                            continue;
-                        }
-
-                        JSONObject movieDetails = new JSONObject(movieDetailJson);
-
-                        if (!movieDetails.has("belongs_to_collection") || movieDetails.isNull("belongs_to_collection")) {
-                            //No collection found, just add movie to searched and continue
-                            searched.add(movie);
-                            continue;
-                        }
-
-                        handleCollection(movie, gaps, client, movieDetails);
-
-                    } catch (IOException e) {
-                        logger.error("Error getting movie details " + movie, e);
-                    }*/
-
                 } catch (IOException e) {
                     logger.error("Error searching for movie " + movie, e);
                     logger.error("URL: " + searchMovieUrl);
@@ -808,7 +779,7 @@ public class GapsSearchBean implements GapsSearch {
             JSONArray parts = collection.getJSONArray("parts");
             for (int i = 0; i < parts.length(); i++) {
                 JSONObject part = parts.getJSONObject(i);
-                int media_id = part.getInt("id");
+                int tvdbId = part.getInt("id");
                 //Files can't have : so need to remove to find matches correctly
                 String title = part.getString("title").replaceAll(":", "");
                 int year;
@@ -819,7 +790,7 @@ public class GapsSearchBean implements GapsSearch {
                     continue;
                 }
 
-                Movie movieFromCollection = new Movie(media_id, title, year, collectionName);
+                Movie movieFromCollection = new Movie(tvdbId, title, year, collectionName);
 
                 if (ownedMovies.contains(movieFromCollection)) {
                     searched.add(movieFromCollection);

@@ -169,6 +169,23 @@ public class GapsSearchBeanTest {
         Assertions.assertThrows(ResponseStatusException.class, () -> gapsSearch.run(gaps), "Should throw exception that the title was missing from the video element");
     }
 
+
+    @Test
+    void validGuidFromPlex() throws Exception {
+        gapsUrlGeneratorTest.generatePlexUrl(GapsUrlGeneratorTest.PLEX_WITH_GUID_URL);
+
+        List<String> movieUrls = new ArrayList<>();
+        movieUrls.add(GapsUrlGeneratorTest.PLEX_WITH_GUID_URL);
+
+        gaps.setMovieUrls(movieUrls);
+        gaps.setSearchFromPlex(true);
+
+        Future<ResponseEntity> completedFuture = gapsSearch.run(gaps);
+
+        completedFuture.get();
+        assertEquals(gapsSearch.getTotalMovieCount(), 1, "Should have found exactly one movie");
+    }
+
     @Test
     void validYearXmlFromPlex() throws Exception {
         gapsUrlGeneratorTest.generatePlexUrl(GapsUrlGeneratorTest.PLEX_MOVIE_URL);

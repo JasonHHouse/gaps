@@ -20,29 +20,33 @@ public final class Movie implements Comparable<Movie> {
 
     private final String collection;
 
-    @Nullable
-    private int media_id;
+    private final int tvdbId;
 
     @Nullable
     private String imdbId;
 
-    Movie(int media_id, String imdbId, String name, int year, String collection) {
-        this.media_id = media_id;
+    private Movie(int tvdbId, @Nullable String imdbId, String name, int year, String collection) {
+        this.tvdbId = tvdbId;
         this.imdbId = imdbId;
         this.name = name;
         this.year = year;
         this.collection = collection;
     }
 
-    Movie(int media_id, String name, int year, String collection) {
-        this.media_id = media_id;
-        this.name = name;
-        this.year = year;
-        this.collection = collection;
+    Movie(String imdbId, String name, int year, String collection) {
+        this(-1, imdbId, name, year, collection);
     }
 
-    public int getMedia_id() {
-        return media_id;
+    Movie(int tvdbId, String name, int year, String collection) {
+        this(-1, null, name, year, collection);
+    }
+
+    Movie(String name, int year, String collection) {
+        this(-1, name, year, collection);
+    }
+
+    public int getTvdbId() {
+        return tvdbId;
     }
 
     public String getName() {
@@ -57,6 +61,7 @@ public final class Movie implements Comparable<Movie> {
         return collection;
     }
 
+    @Nullable
     public String getImdbId() {
         return imdbId;
     }

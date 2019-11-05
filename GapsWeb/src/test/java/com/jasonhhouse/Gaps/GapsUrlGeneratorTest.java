@@ -20,6 +20,7 @@ public class GapsUrlGeneratorTest implements UrlGenerator {
     static final String MISSING_TYPE_PLEX_URL = "/movie/missing_type";
     static final String PLEX_MOVIE_URL = "/movie/url/1";
     static final String PLEX_EMPTY_URL = "/movie/empty";
+    static final String PLEX_WITH_GUID_URL = "/movie/withGuid";
     private final static String GOOD_MOVIE_PLEX_XML = "<MediaContainer><Video title=\"Alien\" year=\"1979\"></Video></MediaContainer>";
     private final static String GOOD_ALIEN_SEARCH_RESPONSE = "{\"page\":1,\"total_results\":4,\"total_pages\":1,\"results\":[{\"popularity\":33.25,\"vote_count\":8002,\"video\":false,\"poster_path\":\"\\/2h00HrZs89SL3tXB4nbkiM7BKHs.jpg\",\"id\":348,\"adult\":false,\"backdrop_path\":\"\\/dfNrZ82poQ8blHWJreIv6JZQ9JA.jpg\",\"original_language\":\"en\",\"original_title\":\"Alien\",\"genre_ids\":[27,878],\"title\":\"Alien\",\"vote_average\":8.1,\"overview\":\"During its return to the earth, commercial spaceship Nostromo intercepts a distress signal from a distant planet. When a three-member team of the crew discovers a chamber containing thousands of eggs on the planet, a creature inside one of the eggs attacks an explorer. The entire crew is unaware of the impending nightmare set to descend upon them when the alien parasite planted inside its unfortunate host is birthed.\",\"release_date\":\"1979-05-25\"},{\"popularity\":0.975,\"id\":454788,\"video\":false,\"vote_count\":1,\"vote_average\":8,\"title\":\"Giger's Alien\",\"release_date\":\"1979-01-01\",\"original_language\":\"en\",\"original_title\":\"Giger's Alien\",\"genre_ids\":[99],\"backdrop_path\":null,\"adult\":false,\"overview\":\"Documentary about Giger's work for the movie Alien (1979).\",\"poster_path\":\"\\/dnfPMkMbrPBAmhL4jbjDtQg2KWm.jpg\"},{\"popularity\":0.6,\"id\":98401,\"video\":false,\"vote_count\":1,\"vote_average\":1,\"title\":\"The Alien Encounters\",\"release_date\":\"1979-01-01\",\"original_language\":\"en\",\"original_title\":\"The Alien Encounters\",\"genre_ids\":[878],\"backdrop_path\":null,\"adult\":false,\"overview\":\"Investigator searches for probe sent to Earth by aliens.\",\"poster_path\":\"\\/ZTg0qakePuhc4uru8RChsUNXzj.jpg\"},{\"popularity\":2.564,\"id\":42542,\"video\":false,\"vote_count\":6,\"vote_average\":2.3,\"title\":\"Starship Invasions\",\"release_date\":\"1977-10-14\",\"original_language\":\"en\",\"original_title\":\"Starship Invasions\",\"genre_ids\":[878],\"backdrop_path\":\"\\/k2dlgkyIyJAhC5CtRP2I4uVAJxr.jpg\",\"adult\":false,\"overview\":\"Captain Rameses and his Legion of the Winged Serpent brigade are out to claim Earth for their dying race. Out to save Earth is an alien guard patrol located in the Bermuda Triangle, the League of Races. LOR leaders warn Rameses that he's breaking galactic treaty rules. The alien villain responds by launching an invasion which telepathically drives Earthlings to suicide. The LOR implore UFO expert Professor Duncan to help them. Eventually, the two alien forces battle. Will the Earth be saved?\",\"poster_path\":\"\\/9Q0lbq4L7V67AfePhTPRcK9LEz7.jpg\"}]}";
     private static final String GOOD_ALIEN_DETAIL_RESPONSE = "{\"adult\":false,\"backdrop_path\":\"/dfNrZ82poQ8blHWJreIv6JZQ9JA.jpg\",\"belongs_to_collection\":{\"id\":8091,\"name\":\"Alien Collection\",\"poster_path\":\"/iVzIeC3PbG9BtDAudpwSNdKAgh6.jpg\",\"backdrop_path\":\"/kB0Y3uGe9ohJa59Lk8UO9cUOxGM.jpg\"},\"budget\":11000000,\"genres\":[{\"id\":27,\"name\":\"Horror\"},{\"id\":878,\"name\":\"Science Fiction\"}],\"homepage\":\"https://www.facebook.com/alienanthology/\",\"id\":348,\"imdb_id\":\"tt0078748\",\"original_language\":\"en\",\"original_title\":\"Alien\",\"overview\":\"During its return to the earth, commercial spaceship Nostromo intercepts a distress signal from a distant planet. When a three-member team of the crew discovers a chamber containing thousands of eggs on the planet, a creature inside one of the eggs attacks an explorer. The entire crew is unaware of the impending nightmare set to descend upon them when the alien parasite planted inside its unfortunate host is birthed.\",\"popularity\":33.25,\"poster_path\":\"/2h00HrZs89SL3tXB4nbkiM7BKHs.jpg\",\"production_companies\":[{\"id\":19747,\"logo_path\":null,\"name\":\"Brandywine Productions\",\"origin_country\":\"\"},{\"id\":25,\"logo_path\":\"/qZCc1lty5FzX30aOCVRBLzaVmcp.png\",\"name\":\"20th Century Fox\",\"origin_country\":\"US\"}],\"production_countries\":[{\"iso_3166_1\":\"US\",\"name\":\"United States of America\"},{\"iso_3166_1\":\"GB\",\"name\":\"United Kingdom\"}],\"release_date\":\"1979-05-25\",\"revenue\":104931801,\"runtime\":117,\"spoken_languages\":[{\"iso_639_1\":\"en\",\"name\":\"English\"},{\"iso_639_1\":\"es\",\"name\":\"Español\"}],\"status\":\"Released\",\"tagline\":\"In space no one can hear you scream.\",\"title\":\"Alien\",\"video\":false,\"vote_average\":8.1,\"vote_count\":8002}";
@@ -44,6 +45,35 @@ public class GapsUrlGeneratorTest implements UrlGenerator {
             "      <Location id=\"3\" path=\"/Users/plexuser/Movies/Media/TV Shows\"/>\n" +
             "   </Directory>\n" +
             "</MediaContainer>";
+    private final static String PLEX_WITH_GUID_XML = "<MediaContainer size=\"10\" allowSync=\"1\" art=\"/:/resources/movie-fanart.jpg\" identifier=\"com.plexapp.plugins.library\"\n" +
+            "                librarySectionID=\"1\" librarySectionTitle=\"Movies\"\n" +
+            "                librarySectionUUID=\"0398a41a-8282-4f90-b364-95ca7b807a8f\" mediaTagPrefix=\"/system/bundle/media/flags/\"\n" +
+            "                mediaTagVersion=\"1571305071\" thumb=\"/:/resources/movie.png\" title1=\"Movies\" title2=\"All Movies\"\n" +
+            "                viewGroup=\"movie\" viewMode=\"65592\">\n" +
+            "    <Video ratingKey=\"197\" key=\"/library/metadata/197\" guid=\"com.plexapp.agents.imdb://tt0142236?lang=en\"\n" +
+            "           studio=\"Toei Animation\" type=\"movie\" title=\"Dragon Ball Z: Fusion Reborn\"\n" +
+            "           originalTitle=\"ドラゴンボールZ 復活のフュージョン!! 悟空とベジータ\" contentRating=\"PG\"\n" +
+            "           summary=\"Not paying attention to his job, a young demon allows the evil cleansing machine to overflow and explode, turning the young demon into the infamous monster Janemba. Goku and Vegeta make solo attempts to defeat the monster, but realize their only option is fusion.\"\n" +
+            "           rating=\"7.8\" year=\"1995\" thumb=\"/library/metadata/197/thumb/1570239425\"\n" +
+            "           art=\"/library/metadata/197/art/1570239425\" duration=\"3049424\" originallyAvailableAt=\"1995-03-04\"\n" +
+            "           addedAt=\"1562810841\" updatedAt=\"1570239425\" ratingImage=\"imdb://image.rating\">\n" +
+            "        <Media id=\"540\" duration=\"3049424\" bitrate=\"1858\" width=\"640\" height=\"480\" aspectRatio=\"1.33\" audioChannels=\"2\"\n" +
+            "               audioCodec=\"mp3\" videoCodec=\"mpeg4\" videoResolution=\"480\" container=\"avi\" videoFrameRate=\"24p\"\n" +
+            "               videoProfile=\"simple\">\n" +
+            "            <Part id=\"540\" key=\"/library/parts/540/1533395502/file.avi\" duration=\"3049424\"\n" +
+            "                  file=\"/data/movies/Dragon Ball Z Fusion Reborn (1995).avi\" size=\"713056256\" container=\"avi\"\n" +
+            "                  videoProfile=\"simple\"/>\n" +
+            "        </Media>\n" +
+            "        <Genre tag=\"Action\"/>\n" +
+            "        <Genre tag=\"Animation\"/>\n" +
+            "        <Director tag=\"Shigeyasu Yamauchi\"/>\n" +
+            "        <Writer tag=\"Takao Koyama\"/>\n" +
+            "        <Country tag=\"Japan\"/>\n" +
+            "        <Role tag=\"Daisuke Gouri\"/>\n" +
+            "        <Role tag=\"Hikaru Midorikawa\"/>\n" +
+            "        <Role tag=\"Hiromi Tsuru\"/>\n" +
+            "    </Video>" +
+            "</MediaContainer>";
     private final static String MISSING_TYPE_PLEX_XML = "<MediaContainer><Directory></Directory></MediaContainer>";
     private final static String MISSING_TITLE_PLEX_XML = "<MediaContainer><Directory type=\"movie\"></Directory></MediaContainer>";
     private final static String MISSING_KEY_PLEX_XML = "<MediaContainer><Directory type=\"movie\" title=\"Movies\"></Directory></MediaContainer>";
@@ -51,6 +81,7 @@ public class GapsUrlGeneratorTest implements UrlGenerator {
     private final static String NO_MOVIE_PLEX_XML = "<MediaContainer></MediaContainer>";
     private final static String EMPTY_MOVIE_PLEX_XML = "<MediaContainer><Video></Video></MediaContainer>";
     private static final String movieDbSearchUrl = "/movieDbSearch/alien";
+    private static final String movieDbFindUrl = "/movieDbFind/alien";
     private static final String movieDetailUrl = "/movieDetail/alien";
     private static final String collectionUrl = "/collection/alien";
     private MockWebServer mockWebServer;
@@ -123,6 +154,11 @@ public class GapsUrlGeneratorTest implements UrlGenerator {
                 .addHeader("Cache-Control", "no-cache")
                 .setBody(EMPTY_MOVIE_PLEX_XML);
 
+        MockResponse movieWithGuidPlexResponse = new MockResponse()
+                .addHeader("Content-Type", "application/json; charset=utf-8")
+                .addHeader("Cache-Control", "no-cache")
+                .setBody(PLEX_WITH_GUID_XML);
+
         final Dispatcher dispatcher = new Dispatcher() {
 
             @Override
@@ -153,6 +189,8 @@ public class GapsUrlGeneratorTest implements UrlGenerator {
                         return noMoviePlexResponse;
                     case EMPTY_MOVIE_PLEX_URL:
                         return emptyMovieFromPlexResponse;
+                    case PLEX_WITH_GUID_URL:
+                        return movieWithGuidPlexResponse;
                 }
                 return new MockResponse().setResponseCode(404);
             }
@@ -167,10 +205,7 @@ public class GapsUrlGeneratorTest implements UrlGenerator {
 
     @Override
     public @NotNull HttpUrl generateFindMovieUrl(String movieDbKey, String imdbId) {
-        //ToDo
-        //Implement and mock
-        //Fake data below
-        return mockWebServer.url(movieDetailUrl);
+        return mockWebServer.url(movieDbFindUrl);
     }
 
     @Override
