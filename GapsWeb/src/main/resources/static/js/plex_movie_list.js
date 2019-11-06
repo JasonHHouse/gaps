@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
         //Cancel Search
         $.ajax({
             type: "PUT",
-            url: "https://" + location.hostname + ":" + location.port + "/cancelSearch",
+            url: "cancelSearch",
             contentType: "application/json",
         });
 
@@ -105,7 +105,7 @@ function search() {
 
     $.ajax({
         type: "POST",
-        url: "https://" + location.hostname + ":" + location.port + "/submit",
+        url: "submit",
         data: JSON.stringify(gaps),
         contentType: "application/json",
         timeout: 0,
@@ -183,7 +183,7 @@ function shouldDisconnect(obj) {
         //Cancel Search
         $.ajax({
             type: "PUT",
-            url: "http://" + location.hostname + ":" + location.port + "/cancelSearch",
+            url: "cancelSearch",
             contentType: "application/json",
         });
     }

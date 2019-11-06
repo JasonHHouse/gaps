@@ -91,7 +91,7 @@ function getLibraries() {
 
     $.ajax({
         type: "GET",
-        url: "https://" + location.hostname + ":" + location.port + "/getPlexLibraries?" + encodeQueryData(data),
+        url: "getPlexLibraries?" + encodeQueryData(data),
         contentType: "application/json",
         success: function (data) {
             allLibraries = data;
