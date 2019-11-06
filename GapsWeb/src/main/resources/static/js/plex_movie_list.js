@@ -75,7 +75,7 @@ function search() {
     //reset movie counter;
     movieCounter = 0;
 
-    progressContainer.hide();
+    progressContainer.show();
     searchTitle.text("Searching for Movies...");
     searchDescription.text("Gaps is looking through your Plex libraries. This could take a while so just sit tight and we'll find all the missing movies for you.");
 
@@ -193,15 +193,12 @@ function showSearchStatus(obj) {
     if (!obj || (!obj.searchedMovieCount && !obj.totalMovieCount && obj.totalMovieCount === 0)) {
         searchResults.html("");
     } else {
-        progressContainer.show();
         let percentage = Math.trunc(obj.searchedMovieCount / obj.totalMovieCount * 100);
         searchPosition.html(`<h5>${obj.searchedMovieCount} of ${obj.totalMovieCount} movies searched. ${percentage}% complete.</h5>`);
 
         movieCounter = obj.moviesFound.length;
 
         searchResults.html(buildMoviesDiv(obj.moviesFound));
-
-        $('#progressBar').css("width", percentage + "%");
     }
 }
 
