@@ -1,0 +1,179 @@
+<!--
+- Copyright 2019 Jason H House
+-
+- Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+-
+- The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+-
+- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/html" lang="en">
+<head>
+    <title>Gaps</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="shortcut icon" href="image/gaps.ico"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body class="grey lighten-4">
+<main>
+    <nav>
+        <div class="nav-wrapper indigo">
+            <div class="brand-logo center white-text">Gaps for Plex</div>
+        </div>
+    </nav>
+
+    <br>
+
+    <div class="container">
+
+        <div class="fixed-action-btn">
+            <a class="btn-floating btn-large teal">
+                <i class="large material-icons" onclick="onSubmitGapsSearch()">send</i>
+            </a>
+        </div>
+
+        <div class="row grey lighten-3">
+            <form class="col s12">
+                <div class="row indigo darken-1 white-text">
+                    <h5 class="col s12">Gaps</h5>
+
+                    <p class="col s12">Gaps searches through your Plex Server or folders for all movies, then queries
+                        for known movies in the same collection. If those movies don't exist in your library, Gaps will
+                        recommend getting those movies, legally of course.</p>
+                </div>
+                <div class="row">
+                    <p class="col s12">Sets address for Gaps backend. Only change if the container doesn't run in
+                        localhost.</p>
+                    <div class="input-field col s2">
+                        <input placeholder="8080" type="text"
+                               id="address" type="text" class="validate" value="localhost">
+                        <label for="address">Address*</label>
+                    </div>
+
+                    <p class="col s12">Sets port for Gaps backend. Only change if 8080 was already taken. Make sure to
+                        update docker to expose the same port.</p>
+                    <div class="input-field col s2">
+                        <input placeholder="8080" type="number"
+                               id="port" type="text" class="validate" value="8080">
+                        <label for="port">Port*</label>
+                    </div>
+
+                    <p class="col s12">Go to <a href="https://www.themoviedb.org">The Movie DB</a> and make a custom
+                        list
+                        for Gaps https://www.themoviedb.org/list/{id_number} <br>Enter the {id_number} below if you want
+                        Gaps to populate the list</p>
+                    <div class="input-field col s6">
+                        <input placeholder="List Id"
+                               id="movie_db_list_id" type="text" class="validate">
+                        <label for="movie_db_list_id">Movie Database List Id</label>
+                    </div>
+
+                    <div class="col s12">
+                        <label>
+                            <input id="write_to_file" type="checkbox" class="filled-in" checked="checked"/>
+                            <span>Write To File</span>
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="row grey lighten-3">
+            <form class="col s12">
+                <div class="row blue lighten-2 white-text">
+                    <h5 class="col s12">Plex</h5>
+                    <p class="col s12">Search using Plex Movie Urls</p>
+                    <label class="col s12">
+                        <input id="search_plex" type="checkbox" class="filled-in" checked="checked"
+                               onclick="searchPlexChanged(this);"/>
+                        <span class="grey-text text-darken-3">Search Plex</span>
+                    </label>
+                    <p class="col s12"></p>
+                </div>
+
+                <div class="row">
+
+                    <div class="input-field col s12">
+                        <textarea
+                                placeholder="Gaps supports a single movie Url or multiple. Put each Url on a new line."
+                                id="plex_movie_urls" class="materialize-textarea"></textarea>
+                        <label for="plex_movie_urls">Plex Movie Urls*</label>
+                    </div>
+
+                    <p class="col s12">Sets the default connect timeout for new connections. A value of 0 means no
+                        timeout,
+                        otherwise values must be between 1 and Integer.MAX_VALUE when converted to milliseconds.</p>
+                    <div class="input-field col s2">
+                        <input value="180" placeholder="Api Key" type="number"
+                               id="connect_timeout" type="text" class="validate">
+                        <label for="connect_timeout">Connect Timeout*</label>
+                    </div>
+
+                    <p class="col s12">Sets the default write timeout for new connections. A value of 0 means no
+                        timeout,
+                        otherwise values must be between 1 and Integer.MAX_VALUE when converted to milliseconds.</p>
+                    <div class="input-field col s2">
+                        <input value="180" placeholder="Api Key" type="number"
+                               id="write_timeout" type="text" class="validate">
+                        <label for="write_timeout">Write Timeout*</label>
+                    </div>
+
+                    <p class="col s12">Sets the default read timeout for new connections. A value of 0 means no timeout,
+                        otherwise values must be between 1 and Integer.MAX_VALUE when converted to milliseconds.</p>
+                    <div class="input-field col s2">
+                        <input value="180" placeholder="Api Key" type="number"
+                               id="read_timeout" type="text" class="validate">
+                        <label for="read_timeout">Read Timeout*</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Modal Structure -->
+        <div id="searchModal" class="modal">
+            <div class="modal-content">
+                <h4 id="searchModelTitle">Searching</h4>
+                <div id="searchingBody"></div>
+                <div id="progressContainer" class="progress">
+                    <div id="progressBar" class="determinate" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+            </div>
+        </div>
+
+    </div>
+</main>
+<footer class="page-footer indigo">
+    <div class="container">
+        <div class="row">
+            <div class="col l6 s12">
+                <h5 class="white-text">Gaps v0.0.5</h5>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    © 2019 Gaps
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="js/materialize.min.js"></script>
+<script type="text/javascript" src="js/sockjs-1.4.0.min.js"></script>
+<script type="text/javascript" src="js/stomp-2.3.3.min.js"></script>
+<script type="text/javascript" src="js/plex.js"></script>
+</body>
+</html>
