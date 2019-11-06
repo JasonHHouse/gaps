@@ -6,6 +6,6 @@ RUN mkdir -p /usr/src/app
 
 WORKDIR /usr/src/app
 
-COPY target/Gaps-0.0.4.jar /usr/src/app/
+COPY GapsWeb/target/GapsWeb-0.0.5.jar /usr/src/app/
 
-ENTRYPOINT ["java", "-jar", "Gaps-0.0.4.jar"]
+ENTRYPOINT ["java", "-jar", "GapsWeb-0.0.5.jar"]
