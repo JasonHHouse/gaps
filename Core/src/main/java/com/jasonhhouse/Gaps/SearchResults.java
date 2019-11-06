@@ -16,24 +16,12 @@ import java.util.Objects;
 public final class SearchResults {
     private final int searchedMovieCount;
     private final int totalMovieCount;
-    private final List moviesFound;
+    private final Movie nextMovie;
 
-    public SearchResults(int searchedMovieCount, int totalMovieCount, List moviesFound) {
+    public SearchResults(int searchedMovieCount, int totalMovieCount, Movie nextMovie) {
         this.searchedMovieCount = searchedMovieCount;
         this.totalMovieCount = totalMovieCount;
-        this.moviesFound = moviesFound;
-    }
-
-    public int getSearchedMovieCount() {
-        return searchedMovieCount;
-    }
-
-    public int getTotalMovieCount() {
-        return totalMovieCount;
-    }
-
-    public List getMoviesFound() {
-        return moviesFound;
+        this.nextMovie = nextMovie;
     }
 
     @Override
@@ -55,7 +43,7 @@ public final class SearchResults {
         return "SearchResults{" +
                 "searchedMovieCount=" + searchedMovieCount +
                 ", totalMovieCount=" + totalMovieCount +
-                ", moviesFound=" + moviesFound +
+                ", nextMovie=" + nextMovie +
                 '}';
     }
 }

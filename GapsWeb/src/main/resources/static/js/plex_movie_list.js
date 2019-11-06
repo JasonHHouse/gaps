@@ -109,10 +109,10 @@ function search() {
         data: JSON.stringify(gaps),
         contentType: "application/json",
         timeout: 0,
-        success: function (movies) {
-            searchResults.html(buildMoviesDiv(movies));
+        success: function () {
+            //searchResults.html(buildMoviesDiv(movies));
 
-            movieCounter = movies.length;
+            //movieCounter = movies.length;
 
             searchTitle.text(`${movieCounter} movies to add to complete your collections`);
             searchDescription.text("Below is everything Gaps found that is missing from your movie collections.");
@@ -139,16 +139,6 @@ function search() {
     showSearchStatus();
 }
 
-function buildMoviesDiv(movies) {
-    let result = '';
-
-    for (let movie of movies) {
-        result += buildMovieDiv(movie);
-    }
-
-    return result;
-}
-
 function buildMovieDiv(movie) {
     return '<div>' + buildMovie(movie) + '</div>';
 }
@@ -161,7 +151,7 @@ function connect() {
     const socket = new SockJS('/gs-guide-websocket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function () {
-        stompClient.subscribe('/topic/currentSearchResults', function (status) {
+        stompClient.subscribe('/topic/newMovieFound', function (status) {
             let obj = JSON.parse(status.body);
             showSearchStatus(obj);
             shouldDisconnect(obj)
@@ -190,15 +180,14 @@ function shouldDisconnect(obj) {
 }
 
 function showSearchStatus(obj) {
-    if (!obj || (!obj.searchedMovieCount && !obj.totalMovieCount && obj.totalMovieCount === 0)) {
+    if (!obj) {
         searchResults.html("");
     } else {
+        movieCounter++;
         let percentage = Math.trunc(obj.searchedMovieCount / obj.totalMovieCount * 100);
         searchPosition.html(`<h5>${obj.searchedMovieCount} of ${obj.totalMovieCount} movies searched. ${percentage}% complete.</h5>`);
 
-        movieCounter = obj.moviesFound.length;
-
-        searchResults.html(buildMoviesDiv(obj.moviesFound));
+        searchResults.html(buildMovieDiv(obj.nextMovie));
     }
 }
 
