@@ -798,12 +798,15 @@ public class GapsSearchBean implements GapsSearch {
 
                 if (ownedMovies.contains(movieFromCollection)) {
                     searched.add(movieFromCollection);
+                    sendEmptySearchUpdate();
                 } else if (!searched.contains(movieFromCollection) && year != 0 && year < Year.now().getValue()) {
                     recommended.add(movieFromCollection);
 
                     //Send message over websocket
                     SearchResults searchResults = new SearchResults(getSearchedMovieCount(), getTotalMovieCount(), movieFromCollection);
                     template.convertAndSend("/topic/newMovieFound", searchResults);
+                } else {
+                    sendEmptySearchUpdate();
                 }
             }
 
@@ -812,6 +815,13 @@ public class GapsSearchBean implements GapsSearch {
         }
 
         searched.add(movie);
+    }
+
+    private void sendEmptySearchUpdate() {
+        //Send message over websocket
+        //No new movie, just updated counts
+        SearchResults searchResults = new SearchResults(getSearchedMovieCount(), getTotalMovieCount(), null);
+        template.convertAndSend("/topic/newMovieFound", searchResults);
     }
 
     /**
