@@ -8,8 +8,15 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.jasonhhouse.Gaps;
+package com.jasonhhouse.gaps.service;
 
+import com.jasonhhouse.gaps.Gaps;
+import com.jasonhhouse.gaps.GapsSearch;
+import com.jasonhhouse.gaps.Movie;
+import com.jasonhhouse.gaps.PlexLibrary;
+import com.jasonhhouse.gaps.SearchCancelledException;
+import com.jasonhhouse.gaps.SearchResults;
+import com.jasonhhouse.gaps.UrlGenerator;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -67,9 +74,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 @Service
-public class GapsSearchBean implements GapsSearch {
+public class GapsSearchService implements GapsSearch {
 
-    private final Logger logger = LoggerFactory.getLogger(GapsSearchBean.class);
+    private final Logger logger = LoggerFactory.getLogger(GapsSearchService.class);
 
     private final Set<Movie> searched;
 
@@ -88,7 +95,7 @@ public class GapsSearchBean implements GapsSearch {
     private final SimpMessagingTemplate template;
 
     @Autowired
-    public GapsSearchBean(@Qualifier("real") UrlGenerator urlGenerator, SimpMessagingTemplate template) {
+    public GapsSearchService(@Qualifier("real") UrlGenerator urlGenerator, SimpMessagingTemplate template) {
         this.template = template;
         this.ownedMovies = new HashSet<>();
         this.searched = new HashSet<>();

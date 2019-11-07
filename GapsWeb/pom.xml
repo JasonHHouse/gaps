@@ -12,7 +12,7 @@
     <artifactId>GapsWeb</artifactId>
 
     <properties>
-        <start-class>com.jasonhhouse.Gaps.GapsApplication</start-class>
+        <start-class>com.jasonhhouse.gaps.GapsApplication</start-class>
     </properties>
 
     <dependencies>
@@ -138,6 +138,11 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
@@ -188,7 +193,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.jasonhhouse.Gaps.GapsApplication</mainClass>
+                    <mainClass>com.jasonhhouse.gaps.GapsApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>
