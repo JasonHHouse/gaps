@@ -56,6 +56,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ResponseStatusException;
@@ -84,8 +85,11 @@ public class GapsSearchBean implements GapsSearch {
 
     private final UrlGenerator urlGenerator;
 
+    private final SimpMessagingTemplate template;
+
     @Autowired
-    public GapsSearchBean(@Qualifier("real") UrlGenerator urlGenerator) {
+    public GapsSearchBean(@Qualifier("real") UrlGenerator urlGenerator, SimpMessagingTemplate template) {
+        this.template = template;
         this.ownedMovies = new HashSet<>();
         this.searched = new HashSet<>();
         this.recommended = new ArrayList<>();
@@ -794,8 +798,15 @@ public class GapsSearchBean implements GapsSearch {
 
                 if (ownedMovies.contains(movieFromCollection)) {
                     searched.add(movieFromCollection);
+                    sendEmptySearchUpdate();
                 } else if (!searched.contains(movieFromCollection) && year != 0 && year < Year.now().getValue()) {
                     recommended.add(movieFromCollection);
+
+                    //Send message over websocket
+                    SearchResults searchResults = new SearchResults(getSearchedMovieCount(), getTotalMovieCount(), movieFromCollection);
+                    template.convertAndSend("/topic/newMovieFound", searchResults);
+                } else {
+                    sendEmptySearchUpdate();
                 }
             }
 
@@ -804,6 +815,13 @@ public class GapsSearchBean implements GapsSearch {
         }
 
         searched.add(movie);
+    }
+
+    private void sendEmptySearchUpdate() {
+        //Send message over websocket
+        //No new movie, just updated counts
+        SearchResults searchResults = new SearchResults(getSearchedMovieCount(), getTotalMovieCount(), null);
+        template.convertAndSend("/topic/newMovieFound", searchResults);
     }
 
     /**

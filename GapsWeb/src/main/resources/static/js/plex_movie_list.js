@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
     setCopyToClipboardEnabled(false);
     copyToClipboard.click(function () {
         CopyToClipboard('searchResults');
-        M.toast({ html: 'Copied to Clipboard' });
+        M.toast({html: 'Copied to Clipboard'});
     });
 
     $('#agree').click(function () {
@@ -76,6 +76,7 @@ function search() {
     movieCounter = 0;
 
     progressContainer.show();
+    searchResults.html("");
     searchTitle.text("Searching for Movies...");
     searchDescription.text("Gaps is looking through your Plex libraries. This could take a while so just sit tight and we'll find all the missing movies for you.");
 
@@ -109,14 +110,11 @@ function search() {
         data: JSON.stringify(gaps),
         contentType: "application/json",
         timeout: 0,
-        success: function (movies) {
-            searchResults.html(buildMoviesDiv(movies));
-
-            movieCounter = movies.length;
-
+        success: function () {
             searchTitle.text(`${movieCounter} movies to add to complete your collections`);
             searchDescription.text("Below is everything Gaps found that is missing from your movie collections.");
             progressContainer.hide();
+            searchPosition.html('');
             backButton.text('restart');
             setCopyToClipboardEnabled(true);
         },
@@ -130,6 +128,7 @@ function search() {
 
             searchTitle.text("An error occurred...");
             searchDescription.text("");
+            searchPosition.html('');
             progressContainer.hide();
             backButton.text('restart');
             setCopyToClipboardEnabled(false);
@@ -137,16 +136,6 @@ function search() {
     });
 
     showSearchStatus();
-}
-
-function buildMoviesDiv(movies) {
-    let result = '';
-
-    for (let movie of movies) {
-        result += buildMovieDiv(movie);
-    }
-
-    return result;
 }
 
 function buildMovieDiv(movie) {
@@ -161,8 +150,8 @@ function connect() {
     const socket = new SockJS('/gs-guide-websocket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function () {
-        stompClient.subscribe('/topic/currentSearchResults', function (status) {
-            let obj = JSON.parse(status.body);
+        stompClient.subscribe('/topic/newMovieFound', function (status) {
+            const obj = JSON.parse(status.body);
             showSearchStatus(obj);
             shouldDisconnect(obj)
         });
@@ -190,15 +179,16 @@ function shouldDisconnect(obj) {
 }
 
 function showSearchStatus(obj) {
-    if (!obj || (!obj.searchedMovieCount && !obj.totalMovieCount && obj.totalMovieCount === 0)) {
+    if (!obj) {
         searchResults.html("");
     } else {
+        movieCounter++;
         let percentage = Math.trunc(obj.searchedMovieCount / obj.totalMovieCount * 100);
         searchPosition.html(`<h5>${obj.searchedMovieCount} of ${obj.totalMovieCount} movies searched. ${percentage}% complete.</h5>`);
 
-        movieCounter = obj.moviesFound.length;
-
-        searchResults.html(buildMoviesDiv(obj.moviesFound));
+        if(obj.nextMovie) {
+            searchResults.append(buildMovieDiv(obj.nextMovie));
+        }
     }
 }
 

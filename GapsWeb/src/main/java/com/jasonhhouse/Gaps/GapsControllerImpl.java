@@ -158,22 +158,4 @@ public class GapsControllerImpl {
         return gapsSearch.run(gaps);
     }
 
-    /**
-     * WebSocket connection that when Gaps is searching returns the updated collection results for more real time
-     * visualization of Gaps
-     */
-    @Scheduled(fixedDelay = 250)
-    public void currentSearchResults() {
-        if (CollectionUtils.isNotEmpty(gapsSearch.getRecommendedMovies())) {
-            //logger.info("currentSearchResults()");
-
-            List<Movie> newMovies = gapsSearch.getRecommendedMovies();
-
-            if (CollectionUtils.isNotEmpty(newMovies)) {
-                SearchResults searchResults = new SearchResults(gapsSearch.getSearchedMovieCount(), gapsSearch.getTotalMovieCount(), newMovies);
-                template.convertAndSend("/topic/currentSearchResults", searchResults);
-            }
-        }
-    }
-
 }

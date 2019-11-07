@@ -16,6 +16,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -25,8 +28,7 @@ import java.util.concurrent.Future;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GapsSearchBeanTest {
-
+class GapsSearchBeanTest {
 
     private final Gaps gaps = new Gaps();
     private GapsUrlGeneratorTest gapsUrlGeneratorTest;
@@ -35,7 +37,8 @@ public class GapsSearchBeanTest {
     @BeforeEach
     void setup() throws Exception {
         gapsUrlGeneratorTest = new GapsUrlGeneratorTest();
-        gapsSearch = new GapsSearchBean(gapsUrlGeneratorTest);
+        SimpMessagingTemplate template = new SimpMessagingTemplate((message, l) -> true);
+        gapsSearch = new GapsSearchBean(gapsUrlGeneratorTest, template);
 
         // Create a MockWebServer. These are lean enough that you can create a new
         // instance for every unit test.
