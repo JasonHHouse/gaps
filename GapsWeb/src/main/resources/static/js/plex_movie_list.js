@@ -117,6 +117,7 @@ function search() {
             searchPosition.html('');
             backButton.text('restart');
             setCopyToClipboardEnabled(true);
+            disconnect();
         },
         error: function (err) {
             disconnect();
@@ -153,7 +154,6 @@ function connect() {
         stompClient.subscribe('/topic/newMovieFound', function (status) {
             const obj = JSON.parse(status.body);
             showSearchStatus(obj);
-            shouldDisconnect(obj)
         });
     });
 }
@@ -165,28 +165,15 @@ function disconnect() {
     console.log("Disconnected");
 }
 
-function shouldDisconnect(obj) {
-    if (obj && obj.searchedMovieCount && obj.totalMovieCount && obj.totalMovieCount === obj.searchedMovieCount) {
-        disconnect();
-
-        //Cancel Search
-        $.ajax({
-            type: "PUT",
-            url: "cancelSearch",
-            contentType: "application/json",
-        });
-    }
-}
-
 function showSearchStatus(obj) {
     if (!obj) {
         searchResults.html("");
     } else {
-        movieCounter++;
         let percentage = Math.trunc(obj.searchedMovieCount / obj.totalMovieCount * 100);
         searchPosition.html(`<h5>${obj.searchedMovieCount} of ${obj.totalMovieCount} movies searched. ${percentage}% complete.</h5>`);
 
         if(obj.nextMovie) {
+            movieCounter++;
             searchResults.append(buildMovieDiv(obj.nextMovie));
         }
     }

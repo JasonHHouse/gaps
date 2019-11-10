@@ -1,4 +1,4 @@
-package com.jasonhhouse.Gaps;
+package com.jasonhhouse.gaps;
 
 import okhttp3.HttpUrl;
 import org.jetbrains.annotations.NotNull;

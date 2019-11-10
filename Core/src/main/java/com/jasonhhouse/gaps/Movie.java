@@ -1,4 +1,4 @@
-package com.jasonhhouse.Gaps;/*
+package com.jasonhhouse.gaps;/*
  * Copyright 2019 Jason H House
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -33,15 +33,15 @@ public final class Movie implements Comparable<Movie> {
         this.collection = collection;
     }
 
-    Movie(String imdbId, String name, int year, String collection) {
+    public Movie(String imdbId, String name, int year, String collection) {
         this(-1, imdbId, name, year, collection);
     }
 
-    Movie(int tvdbId, String name, int year, String collection) {
+    public Movie(int tvdbId, String name, int year, String collection) {
         this(-1, null, name, year, collection);
     }
 
-    Movie(String name, int year, String collection) {
+    public Movie(String name, int year, String collection) {
         this(-1, name, year, collection);
     }
 

@@ -8,16 +8,15 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.jasonhhouse.Gaps;
+package com.jasonhhouse.gaps;
 
+import com.jasonhhouse.gaps.service.GapsSearchService;
 import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -28,17 +27,17 @@ import java.util.concurrent.Future;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class GapsSearchBeanTest {
+class GapsSearchServiceTest {
 
     private final Gaps gaps = new Gaps();
     private GapsUrlGeneratorTest gapsUrlGeneratorTest;
-    private GapsSearchBean gapsSearch;
+    private GapsSearchService gapsSearch;
 
     @BeforeEach
     void setup() throws Exception {
         gapsUrlGeneratorTest = new GapsUrlGeneratorTest();
         SimpMessagingTemplate template = new SimpMessagingTemplate((message, l) -> true);
-        gapsSearch = new GapsSearchBean(gapsUrlGeneratorTest, template);
+        gapsSearch = new GapsSearchService(gapsUrlGeneratorTest, template);
 
         // Create a MockWebServer. These are lean enough that you can create a new
         // instance for every unit test.
