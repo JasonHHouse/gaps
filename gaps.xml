@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>gaps</Name>
+  <Repository>housewrecker/gaps</Repository>
+  <Registry>https://hub.docker.com/r/housewrecker/gaps/</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://hub.docker.com/r/housewrecker/gaps/</Support>
+  <Project/>
+  <Overview>Search your movies and find missing movies from MovieDB collections.   Converted By Community Applications   Always verify this template (and values) against the dockerhub support page for the container</Overview>
+  <Category>MediServer:Applications MediServer:Utilities</Category>
+  <WebUI>http://[IP]:[PORT:8884]</WebUI>
+  <TemplateURL>https://github.com/JasonHHouse/Gaps/gaps.xml</TemplateURL>
+  <Icon>https://github.com/JasonHHouse/Gaps/blob/master/GapsWeb/src/main/resources/static/image/gaps.ico</Icon>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled>1573869971</DateInstalled>
+  <DonateText/>
+  <DonateLink/>
+  <Description>Search your movies and find missing movies from MovieDB collections.   Converted By Community Applications   Always verify this template (and values) against the dockerhub support page for the container</Description>
+  <Networking>
+    <Mode>bridge</Mode>
+    <Publish>
+      <Port>
+        <HostPort>8884</HostPort>
+        <ContainerPort>8484</ContainerPort>
+        <Protocol>tcp</Protocol>
+      </Port>
+    </Publish>
+  </Networking>
+  <Data>
+    <Volume>
+      <HostDir>/mnt/user/appdata/gaps/</HostDir>
+      <ContainerDir>/usr/data</ContainerDir>
+      <Mode>rw</Mode>
+    </Volume>
+  </Data>
+  <Environment/>
+  <Labels/>
+  <Config Name="UI" Target="8484" Default="" Mode="tcp" Description="Container Port: 8484" Type="Port" Display="always" Required="false" Mask="false">8884</Config>
+  <Config Name="config" Target="/usr/data" Default="" Mode="rw" Description="File path for gaps config and data storage." Type="Path" Display="always" Required="false" Mask="false">/mnt/user/appdata/gaps/</Config>
+</Container>
