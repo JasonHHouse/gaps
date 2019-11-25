@@ -13,7 +13,7 @@
   <Category>MediServer:Applications MediServer:Utilities</Category>
   <WebUI>https://[IP]:[PORT:8884]</WebUI>
   <TemplateURL>https://github.com/JasonHHouse/Gaps/gaps.xml</TemplateURL>
-  <Icon>https://github.com/JasonHHouse/Gaps/blob/master/images/gaps.png</Icon>
+  <Icon>https://raw.githubusercontent.com/JasonHHouse/Gaps/master/images/gaps.png</Icon>
   <ExtraParams/>
   <PostArgs/>
   <CPUset/>
