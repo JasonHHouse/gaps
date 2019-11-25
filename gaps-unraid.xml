@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <Container version="2">
   <Name>gaps</Name>
-  <Repository>housewrecker/gaps</Repository>
+  <Repository>housewrecker/gaps:latest</Repository>
   <Registry>https://hub.docker.com/r/housewrecker/gaps/</Registry>
   <Network>bridge</Network>
   <MyIP/>
