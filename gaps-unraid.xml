@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <Container version="2">
   <Name>gaps</Name>
-  <Repository>housewrecker/gaps:latest</Repository>
+  <Repository>housewrecker/gaps</Repository>
   <Registry>https://hub.docker.com/r/housewrecker/gaps/</Registry>
   <Network>bridge</Network>
   <MyIP/>
   <Shell>sh</Shell>
   <Privileged>false</Privileged>
-  <Support>https://github.com/JasonHHouse/Gaps/</Support>
-  <Project/>
+  <Support>https://forums.unraid.net/topic/85461-support-gaps/</Support>
+  <Project>https://github.com/JasonHHouse/Gaps/</Project>
   <Overview>Search your movies and find missing movies from MovieDB collections.   Converted By Community Applications   Always verify this template (and values) against the dockerhub support page for the container</Overview>
-  <Category>MediServer:Applications MediServer:Utilities</Category>
+  <Category>Tools: MediaApp:Other MediaServer:Other Status:Stable</Category>
   <WebUI>https://[IP]:[PORT:8884]</WebUI>
   <TemplateURL>https://github.com/JasonHHouse/Gaps/gaps.xml</TemplateURL>
   <Icon>https://raw.githubusercontent.com/JasonHHouse/Gaps/master/images/gaps.png</Icon>
   <ExtraParams/>
   <PostArgs/>
   <CPUset/>
-  <DateInstalled>1573869971</DateInstalled>
+  <DateInstalled>1574708103</DateInstalled>
   <DonateText/>
   <DonateLink/>
   <Description>Search your movies and find missing movies from MovieDB collections.   Converted By Community Applications   Always verify this template (and values) against the dockerhub support page for the container</Description>
