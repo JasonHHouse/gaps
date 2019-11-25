@@ -7,7 +7,7 @@
   <MyIP/>
   <Shell>sh</Shell>
   <Privileged>false</Privileged>
-  <Support>https://hub.docker.com/r/housewrecker/gaps/</Support>
+  <Support>https://github.com/JasonHHouse/Gaps/</Support>
   <Project/>
   <Overview>Search your movies and find missing movies from MovieDB collections.   Converted By Community Applications   Always verify this template (and values) against the dockerhub support page for the container</Overview>
   <Category>MediServer:Applications MediServer:Utilities</Category>
