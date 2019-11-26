@@ -11,21 +11,28 @@ package com.jasonhhouse.gaps;/*
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
+import org.json.JSONObject;
 
-public final class Movie implements Comparable<Movie> {
+public final class Movie implements Comparable<Movie>, Jsonify<Movie> {
+
+    public static final String TVDB_ID = "tvdbId";
+    public static final String IMDB_ID = "imdbId";
+    public static final String NAME = "name";
+    public static final String YEAR = "year";
 
     private final String name;
 
     private final int year;
 
-    private final String collection;
+    @Nullable
+    private String collection;
 
-    private final int tvdbId;
+    private int tvdbId;
 
     @Nullable
     private String imdbId;
 
-    private Movie(int tvdbId, @Nullable String imdbId, String name, int year, String collection) {
+    public Movie(int tvdbId, @Nullable String imdbId, String name, int year, @Nullable String collection) {
         this.tvdbId = tvdbId;
         this.imdbId = imdbId;
         this.name = name;
@@ -33,16 +40,24 @@ public final class Movie implements Comparable<Movie> {
         this.collection = collection;
     }
 
+    public Movie(int tvdbId, @Nullable String imdbId, String name, int year) {
+        this(tvdbId, imdbId, name, year, null);
+    }
+
     public Movie(String imdbId, String name, int year, String collection) {
         this(-1, imdbId, name, year, collection);
     }
 
     public Movie(int tvdbId, String name, int year, String collection) {
-        this(-1, null, name, year, collection);
+        this(tvdbId, null, name, year, collection);
     }
 
     public Movie(String name, int year, String collection) {
         this(-1, name, year, collection);
+    }
+
+    public Movie(String name, int year) {
+        this(-1, name, year, null);
     }
 
     public int getTvdbId() {
@@ -87,6 +102,22 @@ public final class Movie implements Comparable<Movie> {
 
     public int compareTo(Movie o) {
         return getName().compareTo(o.getName());
+    }
+
+    public void merge(Movie movie) {
+        tvdbId = tvdbId == -1 ? movie.getTvdbId() : -1;
+        imdbId = imdbId == null ? movie.getImdbId() : null;
+        collection = collection == null ? movie.getCollection() : null;
+    }
+
+    @Override
+    public JSONObject toJSON() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(TVDB_ID, tvdbId);
+        jsonObject.put(IMDB_ID, imdbId);
+        jsonObject.put(NAME, name);
+        jsonObject.put(YEAR, year);
+        return jsonObject;
     }
 
 }
