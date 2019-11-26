@@ -9,7 +9,7 @@
   <Privileged>false</Privileged>
   <Support>https://forums.unraid.net/topic/85461-support-gaps/</Support>
   <Project>https://github.com/JasonHHouse/Gaps/</Project>
-  <Overview>Search your movies and find missing movies from MovieDB collections.   Converted By Community Applications   Always verify this template (and values) against the dockerhub support page for the container</Overview>
+  <Overview>Search your movies and find missing movies from MovieDB collections.</Overview>
   <Category>Tools: MediaApp:Other MediaServer:Other Status:Stable</Category>
   <WebUI>https://[IP]:[PORT:8884]</WebUI>
   <TemplateURL>https://github.com/JasonHHouse/Gaps/gaps.xml</TemplateURL>
