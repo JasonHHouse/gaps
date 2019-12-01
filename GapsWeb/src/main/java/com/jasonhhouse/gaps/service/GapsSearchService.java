@@ -894,13 +894,23 @@ public class GapsSearchService implements GapsSearch {
 
     private void writeRssFile(List<Movie> recommended) {
         JSONArray jsonRecommended = new JSONArray();
-        jsonRecommended.put(recommended);
 
         try {
             File file = new File("rssFeed.json");
             file.createNewFile();
             FileWriter writer = new FileWriter(file);
-            writer.write(jsonRecommended.toString());
+
+            for (Movie mov : recommended) {
+                JSONObject obj = new JSONObject();
+                obj.put("imdb_id", mov.getImdbId());
+                obj.put("tvdb_id", mov.getTvdbId());
+                obj.put("title", mov.getName());
+                obj.put("release_date", mov.getYear());
+                obj.put("poster_path", mov.getPosterUrl());
+                jsonRecommended.put(obj);
+            }
+
+            jsonRecommended.write(writer);
             writer.flush();
             writer.close();
         } catch (Exception e) {
