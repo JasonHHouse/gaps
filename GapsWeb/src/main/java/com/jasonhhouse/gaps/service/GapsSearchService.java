@@ -23,13 +23,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.Year;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -807,7 +807,7 @@ public class GapsSearchService implements GapsSearch {
             logger.debug("Merging movie data");
             everyMovie.get(indexOfMovie).merge(movie);
         } else {
-            everyMovie.add(new Movie(tmdbId, movie.getImdbId(), movie.getName(), movie.getYear(), movie.getCollection()));
+            everyMovie.add(new Movie(tmdbId, movie.getImdbId(), movie.getName(), movie.getYear(), movie.getCollection(), null));
         }
     }
 
@@ -853,7 +853,14 @@ public class GapsSearchService implements GapsSearch {
                     continue;
                 }
 
-                Movie movieFromCollection = new Movie(tvdbId, title, year, collectionName);
+                String posterUrl = "";
+                try {
+                    posterUrl = part.optString("poster_url");
+                } catch (Exception e) {
+                    logger.warn("No poster found for" + title + ".");
+                }
+
+                Movie movieFromCollection = new Movie(tvdbId, title, year, collectionName, posterUrl);
 
                 int indexOfMovie = everyMovie.indexOf(new Movie(title, year));
                 if (indexOfMovie == -1) {
@@ -869,7 +876,7 @@ public class GapsSearchService implements GapsSearch {
                     sendEmptySearchUpdate();
                 } else if (!searched.contains(movieFromCollection) && year != 0 && year < Year.now().getValue()) {
                     recommended.add(movieFromCollection);
-
+                    writeRssFile(recommended);
                     //Send message over websocket
                     SearchResults searchResults = new SearchResults(getSearchedMovieCount(), getTotalMovieCount(), movieFromCollection);
                     template.convertAndSend("/topic/newMovieFound", searchResults);
@@ -883,6 +890,22 @@ public class GapsSearchService implements GapsSearch {
         }
 
         searched.add(movie);
+    }
+
+    private void writeRssFile(List<Movie> recommended) {
+        JSONArray jsonRecommended = new JSONArray();
+        jsonRecommended.put(recommended);
+
+        try {
+            File file = new File("rssFeed.json");
+            file.createNewFile();
+            FileWriter writer = new FileWriter(file);
+            writer.write(jsonRecommended.toString());
+            writer.flush();
+            writer.close();
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+        }
     }
 
     private void sendEmptySearchUpdate() {
@@ -1044,5 +1067,7 @@ public class GapsSearchService implements GapsSearch {
             } while (timePassedStart < time_limit);
             System.in.close();
         }
+
     }
+
 }
