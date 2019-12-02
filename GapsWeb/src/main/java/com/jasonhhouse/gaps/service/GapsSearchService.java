@@ -875,11 +875,40 @@ public class GapsSearchService implements GapsSearch {
                     searched.add(movieFromCollection);
                     sendEmptySearchUpdate();
                 } else if (!searched.contains(movieFromCollection) && year != 0 && year < Year.now().getValue()) {
-                    recommended.add(movieFromCollection);
-                    writeRssFile(recommended);
-                    //Send message over websocket
-                    SearchResults searchResults = new SearchResults(getSearchedMovieCount(), getTotalMovieCount(), movieFromCollection);
-                    template.convertAndSend("/topic/newMovieFound", searchResults);
+                    HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(gaps.getMovieDbApiKey(), String.valueOf(movieFromCollection.getTvdbId()));
+
+                    Request newReq = new Request.Builder()
+                            .url(movieDetailUrl)
+                            .build();
+
+                    try (Response movieDetailResponse = client.newCall(newReq).execute()) {
+
+                        String movieDetailJson = movieDetailResponse.body() != null ? movieDetailResponse.body().string() : null;
+
+                        if (movieDetailJson == null) {
+                            logger.error("Body returned null from TheMovieDB for details on " + movie.getName());
+                            return;
+                        }
+
+                        JSONObject movieDet = new JSONObject(movieDetailJson);
+                        releaseDate = part.optString("release_date");
+                        if (StringUtils.isNotEmpty(releaseDate)) {
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
+                            LocalDate date = LocalDate.parse(releaseDate, formatter);
+                            year = date.getYear();
+                        } else {
+                            logger.warn("No year found for " + title + ". Value returned was '" + releaseDate + "'. Not adding the movie to recommended list.");
+                            continue;
+                        }
+                        recommended.add(new Movie(movieDet.getInt("id"), movieDet.getString("imdb_id"), movieDet.getString("title"), year));
+                        writeRssFile(recommended);
+                        //Send message over websocket
+                        SearchResults searchResults = new SearchResults(getSearchedMovieCount(), getTotalMovieCount(), movieFromCollection);
+                        template.convertAndSend("/topic/newMovieFound", searchResults);
+                    } catch (Exception e) {
+                        logger.warn(e.getMessage());
+                    }
+
                 } else {
                     sendEmptySearchUpdate();
                 }
@@ -901,6 +930,7 @@ public class GapsSearchService implements GapsSearch {
             FileWriter writer = new FileWriter(file);
 
             for (Movie mov : recommended) {
+
                 JSONObject obj = new JSONObject();
                 obj.put("imdb_id", mov.getImdbId());
                 obj.put("tvdb_id", mov.getTvdbId());
