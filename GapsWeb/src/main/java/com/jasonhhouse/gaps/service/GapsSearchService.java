@@ -587,14 +587,10 @@ public class GapsSearchService implements GapsSearch {
 
                         Movie movie;
                         if (guid.contains("com.plexapp.agents.themoviedb")) {
-                            guid = guid.replace("com.plexapp.agents.themoviedb://", "");
-                            guid = guid.replace("?lang=en", "");
-
+                            guid = guid.substring(guid.indexOf("://")+3, guid.indexOf("?lang="));
                             movie = new Movie(Integer.parseInt(guid), title, Integer.parseInt(year), "");
                         } else if (guid.contains("com.plexapp.agents.imdb://")) {
-                            guid = guid.replace("com.plexapp.agents.imdb://", "");
-                            guid = guid.replace("?lang=en", "");
-
+                            guid = guid.substring(guid.indexOf("://")+3, guid.indexOf("?"));
                             movie = new Movie(guid, title, Integer.parseInt(year), "");
                         } else {
                             logger.warn("Cannot handle guid value of " + guid);
