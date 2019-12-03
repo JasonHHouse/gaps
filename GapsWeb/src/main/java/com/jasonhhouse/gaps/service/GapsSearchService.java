@@ -875,6 +875,7 @@ public class GapsSearchService implements GapsSearch {
                     searched.add(movieFromCollection);
                     sendEmptySearchUpdate();
                 } else if (!searched.contains(movieFromCollection) && year != 0 && year < Year.now().getValue()) {
+                    // Get recommended Movie details from MovieDBapi
                     HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(gaps.getMovieDbApiKey(), String.valueOf(movieFromCollection.getTvdbId()));
 
                     Request newReq = new Request.Builder()
@@ -892,6 +893,8 @@ public class GapsSearchService implements GapsSearch {
 
                         JSONObject movieDet = new JSONObject(movieDetailJson);
                         releaseDate = part.optString("release_date");
+
+                        // Get the release year from movie release date
                         if (StringUtils.isNotEmpty(releaseDate)) {
                             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
                             LocalDate date = LocalDate.parse(releaseDate, formatter);
@@ -900,8 +903,12 @@ public class GapsSearchService implements GapsSearch {
                             logger.warn("No year found for " + title + ". Value returned was '" + releaseDate + "'. Not adding the movie to recommended list.");
                             continue;
                         }
+                        // Add movie with imbd_id and other details for RSS to recommended list
                         recommended.add(new Movie(movieDet.getInt("id"), movieDet.getString("imdb_id"), movieDet.getString("title"), year));
+
+                        // Write current list of recommended movies to file.
                         writeRssFile(recommended);
+
                         //Send message over websocket
                         SearchResults searchResults = new SearchResults(getSearchedMovieCount(), getTotalMovieCount(), movieFromCollection);
                         template.convertAndSend("/topic/newMovieFound", searchResults);
@@ -921,16 +928,22 @@ public class GapsSearchService implements GapsSearch {
         searched.add(movie);
     }
 
+    /**
+     * Write the recommended movie list to the RSS file for endpoint to display.
+     *
+     * @param recommended The recommended movies. (IMDB ID is required.)
+     */
     private void writeRssFile(List<Movie> recommended) {
         JSONArray jsonRecommended = new JSONArray();
 
         try {
+            // Creat the json file for writing to/endpoint access.
             File file = new File("rssFeed.json");
             file.createNewFile();
             FileWriter writer = new FileWriter(file);
 
             for (Movie mov : recommended) {
-
+                // Create movie JSONObject for adding to Json Array
                 JSONObject obj = new JSONObject();
                 obj.put("imdb_id", mov.getImdbId());
                 obj.put("tvdb_id", mov.getTvdbId());
@@ -940,9 +953,11 @@ public class GapsSearchService implements GapsSearch {
                 jsonRecommended.put(obj);
             }
 
+            // Write the JSONArray of recommended movies to the file.
             jsonRecommended.write(writer);
             writer.flush();
             writer.close();
+
         } catch (Exception e) {
             logger.warn(e.getMessage());
         }
