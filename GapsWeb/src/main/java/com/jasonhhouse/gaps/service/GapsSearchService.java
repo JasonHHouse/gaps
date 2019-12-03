@@ -76,6 +76,10 @@ import org.xml.sax.SAXException;
 @Service
 public class GapsSearchService implements GapsSearch {
 
+    public static final String ID_IDX_START = "://";
+
+    public static final String ID_IDX_END = "?";
+
     private final Logger logger = LoggerFactory.getLogger(GapsSearchService.class);
 
     private final Set<Movie> searched;
@@ -586,15 +590,12 @@ public class GapsSearchService implements GapsSearch {
                         }
 
                         Movie movie;
-                        if (guid.contains("com.plexapp.agents.themoviedb")) {
-                            guid = guid.replace("com.plexapp.agents.themoviedb://", "");
-                            guid = guid.replace("?lang=en", "");
 
+                        if (guid.contains("com.plexapp.agents.themoviedb")) {
+                            guid = guid.substring(guid.indexOf(ID_IDX_START)+ ID_IDX_START.length(), guid.indexOf(ID_IDX_END));
                             movie = new Movie(Integer.parseInt(guid), title, Integer.parseInt(year), "");
                         } else if (guid.contains("com.plexapp.agents.imdb://")) {
-                            guid = guid.replace("com.plexapp.agents.imdb://", "");
-                            guid = guid.replace("?lang=en", "");
-
+                            guid = guid.substring(guid.indexOf(ID_IDX_START)+ ID_IDX_START.length(), guid.indexOf(ID_IDX_END));
                             movie = new Movie(guid, title, Integer.parseInt(year), "");
                         } else {
                             logger.warn("Cannot handle guid value of " + guid);
