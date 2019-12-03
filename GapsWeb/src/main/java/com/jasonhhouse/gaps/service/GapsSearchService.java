@@ -10,6 +10,8 @@
 
 package com.jasonhhouse.gaps.service;
 
+import static com.jasonhhouse.gaps.controller.RSSController.RSS_FEED_JSON_FILE;
+
 import com.jasonhhouse.gaps.Gaps;
 import com.jasonhhouse.gaps.GapsSearch;
 import com.jasonhhouse.gaps.Movie;
@@ -23,13 +25,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.Year;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -807,7 +809,7 @@ public class GapsSearchService implements GapsSearch {
             logger.debug("Merging movie data");
             everyMovie.get(indexOfMovie).merge(movie);
         } else {
-            everyMovie.add(new Movie(tmdbId, movie.getImdbId(), movie.getName(), movie.getYear(), movie.getCollection()));
+            everyMovie.add(new Movie(tmdbId, movie.getImdbId(), movie.getName(), movie.getYear(), movie.getCollection(), null));
         }
     }
 
@@ -853,7 +855,14 @@ public class GapsSearchService implements GapsSearch {
                     continue;
                 }
 
-                Movie movieFromCollection = new Movie(tvdbId, title, year, collectionName);
+                String posterUrl = "";
+                try {
+                    posterUrl = part.optString("poster_url");
+                } catch (Exception e) {
+                    logger.warn("No poster found for" + title + ".");
+                }
+
+                Movie movieFromCollection = new Movie(tvdbId, title, year, collectionName, posterUrl);
 
                 int indexOfMovie = everyMovie.indexOf(new Movie(title, year));
                 if (indexOfMovie == -1) {
@@ -868,11 +877,47 @@ public class GapsSearchService implements GapsSearch {
                     searched.add(movieFromCollection);
                     sendEmptySearchUpdate();
                 } else if (!searched.contains(movieFromCollection) && year != 0 && year < Year.now().getValue()) {
-                    recommended.add(movieFromCollection);
+                    // Get recommended Movie details from MovieDBapi
+                    HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(gaps.getMovieDbApiKey(), String.valueOf(movieFromCollection.getTvdbId()));
 
-                    //Send message over websocket
-                    SearchResults searchResults = new SearchResults(getSearchedMovieCount(), getTotalMovieCount(), movieFromCollection);
-                    template.convertAndSend("/topic/newMovieFound", searchResults);
+                    Request newReq = new Request.Builder()
+                            .url(movieDetailUrl)
+                            .build();
+
+                    try (Response movieDetailResponse = client.newCall(newReq).execute()) {
+
+                        String movieDetailJson = movieDetailResponse.body() != null ? movieDetailResponse.body().string() : null;
+
+                        if (movieDetailJson == null) {
+                            logger.error("Body returned null from TheMovieDB for details on " + movie.getName());
+                            return;
+                        }
+
+                        JSONObject movieDet = new JSONObject(movieDetailJson);
+                        releaseDate = part.optString("release_date");
+
+                        // Get the release year from movie release date
+                        if (StringUtils.isNotEmpty(releaseDate)) {
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
+                            LocalDate date = LocalDate.parse(releaseDate, formatter);
+                            year = date.getYear();
+                        } else {
+                            logger.warn("No year found for " + title + ". Value returned was '" + releaseDate + "'. Not adding the movie to recommended list.");
+                            continue;
+                        }
+                        // Add movie with imbd_id and other details for RSS to recommended list
+                        recommended.add(new Movie(movieDet.getInt("id"), movieDet.getString("imdb_id"), movieDet.getString("title"), year));
+
+                        // Write current list of recommended movies to file.
+                        writeRssFile(recommended);
+
+                        //Send message over websocket
+                        SearchResults searchResults = new SearchResults(getSearchedMovieCount(), getTotalMovieCount(), movieFromCollection);
+                        template.convertAndSend("/topic/newMovieFound", searchResults);
+                    } catch (Exception e) {
+                        logger.warn(e.getMessage());
+                    }
+
                 } else {
                     sendEmptySearchUpdate();
                 }
@@ -883,6 +928,42 @@ public class GapsSearchService implements GapsSearch {
         }
 
         searched.add(movie);
+    }
+
+    /**
+     * Write the recommended movie list to the RSS file for endpoint to display.
+     *
+     * @param recommended The recommended movies. (IMDB ID is required.)
+     */
+    private void writeRssFile(List<Movie> recommended) {
+        JSONArray jsonRecommended = new JSONArray();
+
+        File file = new File(RSS_FEED_JSON_FILE);
+
+        // Create writer that java will close for us.
+        try (FileWriter writer = new FileWriter(file)) {
+
+            // Creat the json file for writing to/endpoint access.
+            file.createNewFile();
+
+            for (Movie mov : recommended) {
+                // Create movie JSONObject for adding to Json Array
+                JSONObject obj = new JSONObject();
+                obj.put("imdb_id", mov.getImdbId());
+                obj.put("tvdb_id", mov.getTvdbId());
+                obj.put("title", mov.getName());
+                obj.put("release_date", mov.getYear());
+                obj.put("poster_path", mov.getPosterUrl());
+                jsonRecommended.put(obj);
+            }
+
+            // Write the JSONArray of recommended movies to the file.
+            jsonRecommended.write(writer);
+            writer.flush();
+
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+        }
     }
 
     private void sendEmptySearchUpdate() {
@@ -1044,5 +1125,7 @@ public class GapsSearchService implements GapsSearch {
             } while (timePassedStart < time_limit);
             System.in.close();
         }
+
     }
+
 }

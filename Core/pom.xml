@@ -36,5 +36,11 @@
             <version>20190722</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.rometools</groupId>
+            <artifactId>rome</artifactId>
+            <version>1.10.0</version>
+        </dependency>
+
     </dependencies>
 </project>
