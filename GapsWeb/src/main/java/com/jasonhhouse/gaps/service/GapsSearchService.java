@@ -10,6 +10,8 @@
 
 package com.jasonhhouse.gaps.service;
 
+import static com.jasonhhouse.gaps.controller.RSSController.RSS_FEED_JSON_FILE;
+
 import com.jasonhhouse.gaps.Gaps;
 import com.jasonhhouse.gaps.GapsSearch;
 import com.jasonhhouse.gaps.Movie;
@@ -82,8 +84,6 @@ import org.xml.sax.SAXException;
 
 @Service
 public class GapsSearchService implements GapsSearch {
-
-    public static final String RSS_FEED_JSON_FILE = "rssFeed.json";
 
     private final Logger logger = LoggerFactory.getLogger(GapsSearchService.class);
 
