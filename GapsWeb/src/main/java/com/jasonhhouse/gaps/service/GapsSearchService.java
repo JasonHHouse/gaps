@@ -83,6 +83,8 @@ import org.xml.sax.SAXException;
 @Service
 public class GapsSearchService implements GapsSearch {
 
+    public static final String RSS_FEED_JSON_FILE = "rssFeed.json";
+
     private final Logger logger = LoggerFactory.getLogger(GapsSearchService.class);
 
     private final Set<Movie> readMovies;
@@ -936,11 +938,13 @@ public class GapsSearchService implements GapsSearch {
     private void writeRssFile(List<Movie> recommended) {
         JSONArray jsonRecommended = new JSONArray();
 
-        try {
+        File file = new File(RSS_FEED_JSON_FILE);
+
+        // Create writer that java will close for us.
+        try (FileWriter writer = new FileWriter(file)) {
+
             // Creat the json file for writing to/endpoint access.
-            File file = new File("rssFeed.json");
             file.createNewFile();
-            FileWriter writer = new FileWriter(file);
 
             for (Movie mov : recommended) {
                 // Create movie JSONObject for adding to Json Array
@@ -956,7 +960,6 @@ public class GapsSearchService implements GapsSearch {
             // Write the JSONArray of recommended movies to the file.
             jsonRecommended.write(writer);
             writer.flush();
-            writer.close();
 
         } catch (Exception e) {
             logger.warn(e.getMessage());
