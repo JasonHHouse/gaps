@@ -190,7 +190,7 @@ public class GapsSearchService implements GapsSearch {
             cancelSearch.set(true);
 
             watch.stop();
-            System.out.println("Time Elapsed: " + watch.getTime());
+            System.out.println("Time Elapsed: " + TimeUnit.MILLISECONDS.toSeconds(watch.getTime()) + " seconds.");
         }
     }
 
