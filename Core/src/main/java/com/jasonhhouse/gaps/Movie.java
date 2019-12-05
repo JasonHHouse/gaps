@@ -77,6 +77,10 @@ public final class Movie implements Comparable<Movie>, Jsonify<Movie> {
         return tvdbId;
     }
 
+    public void setTvdbId(int tvdbId) {
+        this.tvdbId = tvdbId;
+    }
+
     public String getName() {
         return name;
     }
@@ -85,6 +89,7 @@ public final class Movie implements Comparable<Movie>, Jsonify<Movie> {
         return year;
     }
 
+    @Nullable
     public String getCollection() {
         return collection;
     }
@@ -103,6 +108,7 @@ public final class Movie implements Comparable<Movie>, Jsonify<Movie> {
                 Objects.equals(name, movie.name);
     }
 
+    @Nullable
     public String getPosterUrl() {
         return posterUrl;
     }
@@ -121,12 +127,12 @@ public final class Movie implements Comparable<Movie>, Jsonify<Movie> {
         return getName().compareTo(o.getName());
     }
 
-    public void merge(Movie movie) {
+    /*public void merge(Movie movie) {
         tvdbId = tvdbId == -1 ? movie.getTvdbId() : -1;
-        imdbId = imdbId == null ? movie.getImdbId() : null;
-        collection = collection == null ? movie.getCollection() : null;
-        posterUrl = posterUrl == null ? movie.getPosterUrl() : null;
-    }
+        imdbId = StringUtils.isBlank(imdbId)  ? movie.getImdbId() : null;
+        collection = StringUtils.isBlank(collection) ? movie.getCollection() : null;
+        posterUrl = StringUtils.isBlank(posterUrl) ? movie.getPosterUrl() : null;
+    }*/
 
     @Override
     public JSONObject toJSON() {
