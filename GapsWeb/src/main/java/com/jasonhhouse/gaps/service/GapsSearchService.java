@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -79,6 +78,10 @@ import static com.jasonhhouse.gaps.controller.RSSController.RSS_FEED_JSON_FILE;
 
 @Service
 public class GapsSearchService implements GapsSearch {
+
+    public static final String ID_IDX_START = "://";
+
+    public static final String ID_IDX_END = "?";
 
     private final Logger logger = LoggerFactory.getLogger(GapsSearchService.class);
 
@@ -607,14 +610,11 @@ public class GapsSearchService implements GapsSearch {
                             movie = everyMovie.get(indexOfMovie);
                         } else {
                             if (guid.contains("com.plexapp.agents.themoviedb")) {
-                                guid = guid.replace("com.plexapp.agents.themoviedb://", "");
-                                guid = guid.replace("?lang=en", "");
-
+                                guid = guid.substring(guid.indexOf(ID_IDX_START) + ID_IDX_START.length(), guid.indexOf(ID_IDX_END));
                                 movie = new Movie(Integer.parseInt(guid), title, year, "");
-                            } else if (guid.contains("com.plexapp.agents.imdb://")) {
-                                guid = guid.replace("com.plexapp.agents.imdb://", "");
-                                guid = guid.replace("?lang=en", "");
 
+                            } else if (guid.contains("com.plexapp.agents.imdb://")) {
+                                guid = guid.substring(guid.indexOf(ID_IDX_START) + ID_IDX_START.length(), guid.indexOf(ID_IDX_END));
                                 movie = new Movie(guid, title, year, "");
                             } else {
                                 logger.warn("Cannot handle guid value of " + guid);
@@ -987,5 +987,4 @@ public class GapsSearchService implements GapsSearch {
         }
 
     }
-
 }
