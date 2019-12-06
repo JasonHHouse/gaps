@@ -3,17 +3,15 @@ package com.jasonhhouse.gaps.controller;
 import com.jasonhhouse.gaps.Gaps;
 import com.jasonhhouse.gaps.GapsSearch;
 import com.jasonhhouse.gaps.Movie;
-import java.util.Set;
-import java.util.concurrent.Future;
+import com.jasonhhouse.gaps.service.IOService;
+import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,9 +26,12 @@ public class TmdbController {
 
     private final GapsSearch gapsSearch;
 
+    private final IOService ioService;
+
     @Autowired
-    TmdbController(GapsSearch gapsSearch) {
+    TmdbController(GapsSearch gapsSearch, IOService ioService) {
         this.gapsSearch = gapsSearch;
+        this.ioService = ioService;
     }
 
     /**
@@ -42,8 +43,10 @@ public class TmdbController {
     @RequestMapping(value = "submit", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
     @SuppressWarnings("unchecked")
-    public Future<ResponseEntity<Set<Movie>>> submit(@RequestBody Gaps gaps) {
+    public void submit(@RequestBody Gaps gaps) {
         logger.info("submit()");
+
+        ioService.migrateJsonSeedFileIfNeeded();
 
         //Error checking
         if (StringUtils.isEmpty(gaps.getMovieDbApiKey())) {
@@ -97,6 +100,16 @@ public class TmdbController {
             gaps.setReadTimeout(180);
         }
 
-        return gapsSearch.run(gaps);
+        //populate read movies
+        List<Movie> everyMovie = ioService.readMovieIdsFromFile();
+        gapsSearch.run(gaps, everyMovie);
+
+        if (gaps.getWriteToFile()) {
+            ioService.writeToFile(gapsSearch.getRecommendedMovies());
+        }
+
+        //Always write to log
+        ioService.printRecommended(gapsSearch.getRecommendedMovies());
+        ioService.writeMovieIdsToFile(gapsSearch.getEveryMovie());
     }
 }

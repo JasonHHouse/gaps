@@ -4,6 +4,8 @@ EXPOSE 32400
 
 RUN mkdir -p /usr/data
 
+COPY movieIds.json /tmp
+
 RUN mkdir -p /usr/app
 
 WORKDIR /usr/app

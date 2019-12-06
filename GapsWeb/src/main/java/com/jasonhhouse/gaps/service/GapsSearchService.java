@@ -17,12 +17,8 @@ import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.SearchCancelledException;
 import com.jasonhhouse.gaps.SearchResults;
 import com.jasonhhouse.gaps.UrlGenerator;
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -69,7 +65,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -86,8 +81,6 @@ import static com.jasonhhouse.gaps.controller.RSSController.RSS_FEED_JSON_FILE;
 public class GapsSearchService implements GapsSearch {
 
     private final Logger logger = LoggerFactory.getLogger(GapsSearchService.class);
-
-    private final Set<Movie> readMovies;
 
     private final List<Movie> everyMovie;
 
@@ -113,7 +106,6 @@ public class GapsSearchService implements GapsSearch {
     public GapsSearchService(@Qualifier("real") UrlGenerator urlGenerator, SimpMessagingTemplate template) {
         this.template = template;
         this.ownedMovies = new HashSet<>();
-        this.readMovies = new HashSet<>();
         this.searched = new HashSet<>();
         this.recommended = new ArrayList<>();
         this.everyMovie = new ArrayList<>();
@@ -125,14 +117,13 @@ public class GapsSearchService implements GapsSearch {
         cancelSearch = new AtomicBoolean(true);
     }
 
-    @NotNull
     @Override
-    public CompletableFuture<ResponseEntity> run(@NotNull Gaps gaps) {
+    public void run(@NotNull Gaps gaps, @NotNull List<Movie> everyMovie) {
         searched.clear();
         ownedMovies.clear();
-        readMovies.clear();
         recommended.clear();
-        everyMovie.clear();
+        this.everyMovie.clear();
+        this.everyMovie.addAll(everyMovie);
         totalMovieCount.set(0);
         searchedMovieCount.set(0);
         cancelSearch.set(false);
@@ -145,9 +136,6 @@ public class GapsSearchService implements GapsSearch {
         }
 
         defaultValues(gaps);
-
-        //populate read movies
-        readMovieIdsFromFile();
 
         try {
             String sessionId = null;
@@ -175,27 +163,16 @@ public class GapsSearchService implements GapsSearch {
             System.out.println("Time Elapsed: " + TimeUnit.MILLISECONDS.toSeconds(watch.getTime()) + " seconds.");
             System.out.println("Times used TVDB ID: " + tempTvdbCounter);
 
-            if (gaps.getWriteToFile()) {
-                writeToFile();
-            }
-
-            //Always write to log
-            printRecommended();
-            writeMovieIdsToFile();
-
             if (StringUtils.isNotEmpty(gaps.getMovieDbListId())) {
                 createTmdbList(gaps, sessionId);
             }
 
-            return CompletableFuture.supplyAsync(() -> new ResponseEntity<>(recommended, HttpStatus.OK));
         } catch (SearchCancelledException e) {
             String reason = "Search cancelled";
             logger.error(reason, e);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
         } finally {
             cancelSearch.set(true);
-
-
         }
     }
 
@@ -333,6 +310,11 @@ public class GapsSearchService implements GapsSearch {
         logger.info(plexLibraries.size() + " Plex libraries found");
 
         return plexLibraries;
+    }
+
+    @Override
+    public @NotNull List<Movie> getEveryMovie() {
+        return everyMovie;
     }
 
 
@@ -621,7 +603,7 @@ public class GapsSearchService implements GapsSearch {
                         Movie searchMovie = new Movie(title, year);
                         int indexOfMovie = everyMovie.indexOf(searchMovie);
                         if (indexOfMovie != -1) {
-                            logger.info("Using existing movie information");
+                            logger.debug("Using existing movie information");
                             movie = everyMovie.get(indexOfMovie);
                         } else {
                             if (guid.contains("com.plexapp.agents.themoviedb")) {
@@ -704,15 +686,15 @@ public class GapsSearchService implements GapsSearch {
                 //If IMDB is available use find
                 //Otherwise fall back to movie title and year search
                 if (movie.getTvdbId() != -1) {
-                    logger.info("Used TVDB ID to get " + movie.getName());
+                    logger.debug("Used TVDB ID to get " + movie.getName());
                     tempTvdbCounter.incrementAndGet();
                     searchMovieDetails(gaps, movie, client);
                     continue;
                 } else if (StringUtils.isNotBlank(movie.getImdbId())) {
-                    logger.info("Used 'find' to search for " + movie.getName());
+                    logger.debug("Used 'find' to search for " + movie.getName());
                     searchMovieUrl = urlGenerator.generateFindMovieUrl(gaps.getMovieDbApiKey(), URLEncoder.encode(movie.getImdbId(), "UTF-8"));
                 } else {
-                    logger.info("Used 'search' to search for " + movie.getName());
+                    logger.debug("Used 'search' to search for " + movie.getName());
                     searchMovieUrl = urlGenerator.generateSearchMovieUrl(gaps.getMovieDbApiKey(), URLEncoder.encode(movie.getName(), "UTF-8"), String.valueOf(movie.getYear()));
                 }
 
@@ -929,8 +911,8 @@ public class GapsSearchService implements GapsSearch {
                 }
             }
 
-        } catch (IOException e) {
-            logger.error("Error getting collections " + movie, e);
+        } catch (JSONException | IOException e) {
+            logger.error("Error getting collections " + movie + ". " + e.getMessage());
         }
 
         searched.add(movie);
@@ -979,134 +961,6 @@ public class GapsSearchService implements GapsSearch {
         template.convertAndSend("/topic/newMovieFound", searchResults);
     }
 
-    /**
-     * Prints out all recommended files to the terminal or command line
-     */
-    private void printRecommended() {
-        System.out.println(recommended.size() + " Recommended Movies");
-        for (Movie movie : recommended) {
-            System.out.println(movie.toString());
-        }
-    }
-
-    /**
-     * Prints out all recommended files to a text file called gaps_recommended_movies.txt
-     */
-    private void writeMovieIdsToFile() {
-        final String fileName = "/usr/data/movieIds.json";
-        File file = new File(fileName);
-        if (file.exists()) {
-            boolean deleted = file.delete();
-            if (!deleted) {
-                logger.error("Can't delete existing file " + fileName);
-                return;
-            }
-        }
-
-        try {
-            boolean created = file.createNewFile();
-            if (!created) {
-                logger.error("Can't create file " + fileName);
-                return;
-            }
-        } catch (IOException e) {
-            logger.error("Can't create file " + fileName, e);
-            return;
-        }
-
-        try (FileOutputStream outputStream = new FileOutputStream(fileName)) {
-            JSONArray movies = new JSONArray();
-            for (Movie movie : everyMovie) {
-                movies.put(movie.toJSON());
-            }
-            outputStream.write(movies.toString().getBytes());
-        } catch (FileNotFoundException e) {
-            logger.error("Can't find file " + fileName, e);
-        } catch (IOException e) {
-            logger.error("Can't write to file " + fileName, e);
-        }
-    }
-
-    /**
-     * Prints out all recommended files to a text file called gaps_recommended_movies.txt
-     */
-    private void readMovieIdsFromFile() {
-        final String fileName = "/usr/data/movieIds.json";
-        File file = new File(fileName);
-        if (!file.exists()) {
-            logger.warn("Can't find json file '" + fileName + "'. Most likely first run.");
-            return;
-        }
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            StringBuilder fullFile = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {
-                fullFile.append(line);
-            }
-
-            logger.debug(fullFile.toString());
-
-            JSONArray movies = new JSONArray(fullFile.toString());
-            for (int i = 0; i < movies.length(); i++) {
-                Movie movie = jsonToMovie(movies.getJSONObject(i));
-                everyMovie.add(movie);
-            }
-
-            logger.debug("everyMovie.size():" + everyMovie.size());
-
-        } catch (FileNotFoundException e) {
-            logger.error("Can't find file " + fileName);
-        } catch (IOException e) {
-            logger.error("Can't write to file " + fileName);
-        } catch (JSONException e) {
-            logger.error("Error parsing JSON file " + fileName);
-        }
-    }
-
-    private Movie jsonToMovie(JSONObject jsonMovie) throws JSONException {
-        int tvdbId = jsonMovie.getInt(Movie.TVDB_ID);
-        String imdbId = jsonMovie.optString(Movie.IMDB_ID);
-        String name = jsonMovie.getString(Movie.NAME);
-        int year = jsonMovie.getInt(Movie.YEAR);
-
-        return new Movie(tvdbId, imdbId, name, year);
-    }
-
-    /**
-     * Prints out all recommended files to a text file called gaps_recommended_movies.txt
-     */
-    private void writeToFile() {
-        File file = new File("gaps_recommended_movies.txt");
-        if (file.exists()) {
-            boolean deleted = file.delete();
-            if (!deleted) {
-                logger.error("Can't delete existing file gaps_recommended_movies.txt");
-                return;
-            }
-        }
-
-        try {
-            boolean created = file.createNewFile();
-            if (!created) {
-                logger.error("Can't create file gaps_recommended_movies.txt");
-                return;
-            }
-        } catch (IOException e) {
-            logger.error("Can't create file gaps_recommended_movies.txt", e);
-            return;
-        }
-
-        try (FileOutputStream outputStream = new FileOutputStream("gaps_recommended_movies.txt")) {
-            for (Movie movie : recommended) {
-                String output = movie.toString() + System.lineSeparator();
-                outputStream.write(output.getBytes());
-            }
-        } catch (FileNotFoundException e) {
-            logger.error("Can't find file gaps_recommended_movies.txt", e);
-        } catch (IOException e) {
-            logger.error("Can't write to file gaps_recommended_movies.txt", e);
-        }
-    }
 
     public static class UserInputThreadCountdown implements Runnable {
 
