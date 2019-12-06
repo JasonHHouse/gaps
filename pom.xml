@@ -15,7 +15,7 @@
     </parent>
     <groupId>com.jasonhhouse</groupId>
     <artifactId>Gaps</artifactId>
-    <version>0.0.6-SNAPSHOT</version>
+    <version>0.0.6</version>
     <name>Gaps</name>
     <description>Demo project for Spring Boot</description>
 
