@@ -127,7 +127,7 @@ public class IOService {
         } catch (IOException e) {
             logger.error("Can't write to file " + fileName);
         } catch (JSONException e) {
-            logger.error("Error parsing JSON file " + fileName);
+            logger.error("Error parsing JSON file " + fileName, e);
         }
 
         return everyMovie;
@@ -138,8 +138,18 @@ public class IOService {
         String imdbId = jsonMovie.optString(Movie.IMDB_ID);
         String name = jsonMovie.getString(Movie.NAME);
         int year = jsonMovie.getInt(Movie.YEAR);
+        int collectionId = jsonMovie.getInt(Movie.COLLECTION_ID);
+        String collection = jsonMovie.optString(Movie.COLLECTION);
+        String posterUrl = jsonMovie.optString(Movie.POSTER);
 
-        return new Movie(tvdbId, imdbId, name, year);
+        Movie.Builder builder = new Movie.Builder(name, year)
+                .setTvdbId(tvdbId)
+                .setImdbId(imdbId)
+                .setCollectionId(collectionId)
+                .setCollection(collection)
+                .setPosterUrl(posterUrl);
+
+        return builder.build();
     }
 
     /**
