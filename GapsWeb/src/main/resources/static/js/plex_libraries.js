@@ -14,7 +14,7 @@ let allLibraries;
 
 function onStart() {
     $("#back").click(function () {
-        location.assign("plex_configuration.html");
+        location.assign("plexConfiguration.html");
     });
 
     $("#search").click(function () {

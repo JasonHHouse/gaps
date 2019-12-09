@@ -15,101 +15,61 @@
     <meta name="theme-color" content="#3f51b5"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="shortcut icon" href="image/gaps.ico"/>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" >
-    <link type="text/css" rel="stylesheet" href="css/links.min.css"/>
-    <link type="text/css" rel="stylesheet" href="css/body.min.css"/>
-    <link type="text/css" rel="stylesheet" href="css/input.min.css"/>
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/input.min.css">
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 
-<body class="black" onload="onStart()">
-<main>
+<body onload="onStart()">
+<nav aria-label="breadcrumb bg-primary">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" aria-current="page">Gaps</li>
+        <li class="breadcrumb-item active" disabled>Plex</li>
+        <li class="breadcrumb-item active" disabled>Libraries</li>
+        <li class="breadcrumb-item active" disabled>Movies</li>
+    </ol>
+</nav>
 
-    <nav>
-        <div class="nav-wrapper indigo darken-1">
-            <div class="brand-logo center white-text">Gaps - Find your missing movies</div>
+<div class="container">
+
+    <h2 class="top-margin">Welcome to Gaps v0.1.0</h2>
+
+    <p>Gaps searches through your Plex Server. It then queries
+        for known
+        movies in the same
+        collection using The MovieDB, which you will need to get. Don't worry, we'll walk you through
+        those
+        steps. Anyway, if those movies don't exist in your library, Gaps will recommend getting those
+        movies, legally of course.</p>
+
+    <p>An example would be owning 'Alien (1979)' and Gaps
+        recommending
+        'Aliens (1986)' and
+        'Alien³ (1992)' to be added to your collection.</p>
+
+    <p>To use Gaps, you'll need a MovieDB api key. Navigate
+        over to <a
+                href="https://www.themoviedb.org/settings/api" target="_blank" rel="noopener">The Movie DB</a>, create
+        an
+        account, and make an API Key. Copy that key and paste it below.</p>
+
+    <form class="needs-validation" action="/plexConfiguration" novalidate>
+        <div class="form-group">
+            <label for="movie_db_api_key">Movie Database Api Key</label>
+            <input type="text" class="form-control" id="movie_db_api_key" required>
         </div>
-    </nav>
 
-    <br>
+        <button id="folder" class="btn btn-secondary" disabled>Folder</button>
+        <button id="plex" class="btn btn-primary">Plex</button>
+    </form>
 
-    <div class="container">
-        <div class="row grey darken-4">
-            <form class="col s12">
-                <div class="row indigo darken-1 white-text">
-                    <h5 class="col s12">Welcome to Gaps</h5>
+</div>
 
-                    <p class="col s12 grey-text text-lighten-4">Gaps searches through your Plex Server. It then queries
-                        for known
-                        movies in the same
-                        collection using The MovieDB, which you will need to get. Don't worry, we'll walk you through
-                        those
-                        steps. Anyway, if those movies don't exist in your library, Gaps will recommend getting those
-                        movies, legally of course.</p>
-
-                    <p class="col s12 grey-text text-lighten-4">An example would be owning 'Alien (1979)' and Gaps
-                        recommending
-                        'Aliens (1986)' and
-                        'Alien³ (1992)' to be added to your collection.</p>
-
-                    <p class="col s12 grey-text text-lighten-4">To use Gaps, you'll need a MovieDB api key. Navigate
-                        over to <a
-                                href="https://www.themoviedb.org/settings/api" target="_blank" rel="noopener">The Movie DB</a>, create
-                        an
-                        account, and make an API Key. Copy that key and paste it below.</p>
-                </div>
-
-                <div class="row grey-text text-lighten-4">
-                    <div class="input-field col s6">
-                        <input placeholder="Api Key" id="movie_db_api_key" type="text" class="validate grey-text text-lighten-4">
-                        <label for="movie_db_api_key">Movie Database Api Key*</label>
-                    </div>
-                </div>
-
-                <div class="row grey-text text-lighten-4">
-                    <div class="col s2">
-                        Search via
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col s2">
-                        <a class="waves-effect waves-light btn disabled" id="folder">Folder</a>
-                    </div>
-                    <div class="col s1">
-                        <a class="waves-effect waves-light btn black-text" id="plex">Plex</a>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</main>
-<footer class="page-footer indigo">
-    <div class="container">
-        <div class="row">
-            <div class="col l6 s12">
-                <h5 class="white-text">Gaps v0.0.6</h5>
-                <p class="grey-text text-lighten-4"><i>Note: Searching through a folder is coming soon.</i></p>
-            </div>
-        </div>
-    </div>
-    <div class="footer-copyright">
-        <div class="container">
-            <div class="row">
-                <div class="col s12">
-                    © 2019 Gaps
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
-
-<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="js/materialize.min.js"></script>
-<script type="text/javascript" src="js/js.cookie.min.js"></script>
-<script type="text/javascript" src="js/index.min.js"></script>
+<script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/js/js.cookie.min.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
 </body>
 </html>

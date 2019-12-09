@@ -11,24 +11,7 @@
 "use strict";
 
 function onStart() {
-    $("#back").click(function () {
-        location.assign("index.html");
-    });
-
-    $("#next").click(function () {
-        if (validateInput()) {
-            Cookies.set('address', $("#address").val());
-            Cookies.set('port', $("#port").val());
-            Cookies.set('plex_token', $("#plex_token").val());
-
-            location.assign("plex_libraries.html");
-        }
-    });
-
     populateCookieValues();
-
-    M.AutoInit();
-    M.updateTextFields();
 }
 
 function populateCookieValues() {
@@ -49,21 +32,14 @@ function populateCookieValues() {
     }
 }
 
-function validateInput() {
-    if (!$('#address').val()) {
-        M.toast({html: "Plex IP address must not be empty"});
-        return false;
-    }
+function back() {
+    location.assign("index.html");
+}
 
-    if (!$("#port").val()) {
-        M.toast({html: "Plex port must not be empty"});
-        return false;
-    }
+function next() {
+    Cookies.set('address', $("#address").val());
+    Cookies.set('port', $("#port").val());
+    Cookies.set('plex_token', $("#plex_token").val());
 
-    if (!$("#plex_token").val()) {
-        M.toast({html: "Plex Token must not be empty"});
-        return false;
-    }
-
-    return true;
+    location.assign("plexLibraries.html");
 }
