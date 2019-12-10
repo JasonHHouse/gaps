@@ -30,3 +30,5 @@ package-lock.json
 node_modules
 Core/target
 GapsWeb/target
+
+/rssFeed.json
