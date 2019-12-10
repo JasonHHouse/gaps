@@ -1,11 +1,15 @@
-FROM openjdk:11.0.3-jre-slim
+FROM openjdk:11.0.5-jre-slim
 
 EXPOSE 32400
 
-RUN mkdir -p /usr/src/app
+RUN mkdir -p /usr/data
 
-WORKDIR /usr/src/app
+COPY movieIds.json /tmp
 
-COPY GapsWeb/target/GapsWeb-0.0.5.jar /usr/src/app/
+RUN mkdir -p /usr/app
 
-ENTRYPOINT ["java", "-jar", "GapsWeb-0.0.5.jar"]
+WORKDIR /usr/app
+
+COPY GapsWeb/target/GapsWeb-0.0.6.jar /usr/app/
+
+ENTRYPOINT ["java", "-jar", "GapsWeb-0.0.6.jar"]

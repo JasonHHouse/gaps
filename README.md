@@ -22,8 +22,8 @@ You now have the Gaps image and you need to do a little configuration. The comma
 
     docker run -d -p 8484:8484 --name mygaps --expose 32400 housewrecker/gaps:latest
     
-For unraid see the wiki: https://github.com/JasonHHouse/Gaps/wiki
-
+* For Unraid see the wiki: https://github.com/JasonHHouse/Gaps/wiki
+* For Radarr list import, see https://github.com/JasonHHouse/Gaps/wiki/Radarr-List
 ### Important Notes
 
 1. -p or publish exposes maps ports from the container to the outside world. Docker has a great write up [here](https://docs.docker.com/config/containers/container-networking/). 

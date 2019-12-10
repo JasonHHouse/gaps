@@ -8,6 +8,7 @@ package com.jasonhhouse.gaps;/*
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import java.util.List;
 import okhttp3.HttpUrl;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,7 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public interface GapsSearch {
 
-    @NotNull CompletableFuture run(@NotNull Gaps gaps);
+    void run(@NotNull Gaps gaps, @NotNull List<Movie> everyMovie);
 
     @NotNull Integer getTotalMovieCount();
 
@@ -26,6 +27,8 @@ public interface GapsSearch {
     @NotNull CopyOnWriteArrayList<Movie> getRecommendedMovies();
 
     @NotNull Set<PlexLibrary> getPlexLibraries(@NotNull HttpUrl url);
+
+    @NotNull List<Movie> getEveryMovie();
 
     void cancelSearch();
 

@@ -11,6 +11,10 @@
 package com.jasonhhouse.gaps;
 
 import com.jasonhhouse.gaps.service.GapsSearchService;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.Future;
 import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.Assertions;
@@ -19,11 +23,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.Future;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -65,20 +64,17 @@ class GapsSearchServiceTest {
     @Test
     void emptyGapsProperty() {
         Assertions.assertThrows(ResponseStatusException.class, () -> {
-            gapsSearch.run(gaps);
+            gapsSearch.run(gaps, new ArrayList<>());
         }, "Should throw exception when not searching from folder and Plex");
     }
 
     @Test
     void searchPlexGapsEmptyOtherwise() throws Exception {
         gaps.setSearchFromPlex(true);
-        Future<ResponseEntity> completedFuture = gapsSearch.run(gaps);
+        gapsSearch.run(gaps, new ArrayList<>());
 
-        ResponseEntity response = completedFuture.get();
-        if (response.getBody() instanceof List) {
-            List recommended = (List) response.getBody();
-            Assertions.assertEquals(recommended.size(), 0, "Shouldn't have found any movies");
-        }
+        List<Movie> recommended = gapsSearch.getRecommendedMovies();
+        Assertions.assertEquals(recommended.size(), 0, "Shouldn't have found any movies");
     }
 
     @Test
@@ -136,7 +132,7 @@ class GapsSearchServiceTest {
         gaps.setMovieUrls(movieUrls);
         gaps.setSearchFromPlex(true);
 
-        Assertions.assertThrows(ResponseStatusException.class, () -> gapsSearch.run(gaps), "Should throw exception that the body was empty");
+        Assertions.assertThrows(ResponseStatusException.class, () -> gapsSearch.run(gaps, new ArrayList<>()), "Should throw exception that the body was empty");
     }
 
     @Test
@@ -149,13 +145,10 @@ class GapsSearchServiceTest {
         gaps.setMovieUrls(movieUrls);
         gaps.setSearchFromPlex(true);
 
-        Future<ResponseEntity> completedFuture = gapsSearch.run(gaps);
+        gapsSearch.run(gaps, new ArrayList<>());
 
-        ResponseEntity ResponseEntity = completedFuture.get();
-        if (ResponseEntity.getBody() instanceof List) {
-            List recommended = (List) ResponseEntity.getBody();
-            Assertions.assertEquals(recommended.size(), 0, "Shouldn't have found any movies");
-        }
+        List<Movie> recommended = gapsSearch.getRecommendedMovies();
+        Assertions.assertEquals(recommended.size(), 0, "Shouldn't have found any movies");
     }
 
     @Test
@@ -168,7 +161,7 @@ class GapsSearchServiceTest {
         gaps.setMovieUrls(movieUrls);
         gaps.setSearchFromPlex(true);
 
-        Assertions.assertThrows(ResponseStatusException.class, () -> gapsSearch.run(gaps), "Should throw exception that the title was missing from the video element");
+        Assertions.assertThrows(ResponseStatusException.class, () -> gapsSearch.run(gaps, new ArrayList<>()), "Should throw exception that the title was missing from the video element");
     }
 
 
@@ -182,9 +175,7 @@ class GapsSearchServiceTest {
         gaps.setMovieUrls(movieUrls);
         gaps.setSearchFromPlex(true);
 
-        Future<ResponseEntity> completedFuture = gapsSearch.run(gaps);
-
-        completedFuture.get();
+        gapsSearch.run(gaps, new ArrayList<>());
         assertEquals(gapsSearch.getTotalMovieCount(), 1, "Should have found exactly one movie");
     }
 
@@ -198,9 +189,7 @@ class GapsSearchServiceTest {
         gaps.setMovieUrls(movieUrls);
         gaps.setSearchFromPlex(true);
 
-        Future<ResponseEntity> completedFuture = gapsSearch.run(gaps);
-
-        completedFuture.get();
+        gapsSearch.run(gaps, new ArrayList<>());
         assertEquals(gapsSearch.getTotalMovieCount(), 1, "Should have found exactly one movie");
     }
 
@@ -215,9 +204,7 @@ class GapsSearchServiceTest {
         gaps.setSearchFromPlex(true);
         gaps.setMovieDbApiKey("fake_id");
 
-        Future<ResponseEntity> completedFuture = gapsSearch.run(gaps);
-
-        completedFuture.get();
+        gapsSearch.run(gaps, new ArrayList<>());
         assertEquals(gapsSearch.getRecommendedMovies().size(), 3, "Should have found exactly three movies recommended");
     }
 

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class GapsUrlGenerator implements UrlGenerator {
 
     @Override
-    public @NotNull HttpUrl generateSearchMovieUrl(String movieDbKey, String query, String year) {
+    public @NotNull HttpUrl generateSearchMovieUrl(@NotNull String movieDbKey, @NotNull String query, @NotNull String year) {
         return new HttpUrl.Builder()
                 .scheme("https")
                 .host("api.themoviedb.org")
@@ -25,7 +25,7 @@ public class GapsUrlGenerator implements UrlGenerator {
     }
 
     @Override
-    public @NotNull HttpUrl generateFindMovieUrl(String movieDbKey, String imdbId) {
+    public @NotNull HttpUrl generateFindMovieUrl(@NotNull String movieDbKey, @NotNull String imdbId) {
         return new HttpUrl.Builder()
                 .scheme("https")
                 .host("api.themoviedb.org")
@@ -39,7 +39,7 @@ public class GapsUrlGenerator implements UrlGenerator {
     }
 
     @Override
-    public @NotNull HttpUrl generateMovieDetailUrl(String movieDbKey, String movieId) {
+    public @NotNull HttpUrl generateMovieDetailUrl(@NotNull String movieDbKey, @NotNull String movieId) {
         return new HttpUrl.Builder()
                 .scheme("https")
                 .host("api.themoviedb.org")
@@ -52,7 +52,7 @@ public class GapsUrlGenerator implements UrlGenerator {
     }
 
     @Override
-    public @NotNull HttpUrl generateCollectionUrl(String movieDbKey, String collectionId) {
+    public @NotNull HttpUrl generateCollectionUrl(@NotNull String movieDbKey, @NotNull String collectionId) {
         return new HttpUrl.Builder()
                 .scheme("https")
                 .host("api.themoviedb.org")
@@ -65,7 +65,7 @@ public class GapsUrlGenerator implements UrlGenerator {
     }
 
     @Override
-    public @NotNull HttpUrl generatePlexUrl(String plexUrl) {
+    public @NotNull HttpUrl generatePlexUrl(@NotNull String plexUrl) {
         return HttpUrl.parse(plexUrl);
     }
 }
