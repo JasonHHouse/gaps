@@ -1,5 +1,6 @@
 package com.jasonhhouse.gaps.controller;
 
+import com.jasonhhouse.gaps.PlexSearch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -17,9 +18,14 @@ public class PlexConfigurationController {
     @RequestMapping(method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView postPlexConfiguration(String movie_db_api_key) {
-        logger.info("postPlexConfiguration( " + movie_db_api_key + " )");
-        return new ModelAndView("plexConfiguration");
+    public ModelAndView postPlexConfiguration(String movieDbApiKey) {
+        logger.info("postPlexConfiguration( " + movieDbApiKey + " )");
+
+        PlexSearch plexSearch = new PlexSearch();
+        plexSearch.setMovieDbApiKey(movieDbApiKey);
+        ModelAndView modelAndView = new ModelAndView("plexConfiguration");
+        modelAndView.addObject("plexSearch", plexSearch);
+        return modelAndView;
     }
 
     @RequestMapping(method = RequestMethod.GET,
