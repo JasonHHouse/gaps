@@ -10,12 +10,16 @@
 
 package com.jasonhhouse.gaps;
 
+import com.jasonhhouse.gaps.service.GapsServiceImpl;
 import java.util.concurrent.Executor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
@@ -41,6 +45,13 @@ public class GapsApplication {
     public void run(String... args) throws Exception {
         logger.info("Using environment: " + myConfig.getEnvironment());
         logger.info("Name: " + myConfig.getName());
+    }
+
+    @Bean
+    @Primary
+    @Scope("singleton")
+    public GapsService getGapsService() {
+        return new GapsServiceImpl();
     }
 
     @Bean

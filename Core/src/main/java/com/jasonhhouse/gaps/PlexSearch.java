@@ -1,40 +1,68 @@
 package com.jasonhhouse.gaps;
 
-public class PlexSearch {
-    private String movieDbApiKey;
-    private String plexToken;
-    private String address;
-    private String port;
+import java.util.HashMap;
+import java.util.Map;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-    public String getMovieDbApiKey() {
+public final class PlexSearch {
+
+    @Nullable
+    private String movieDbApiKey;
+
+    @Nullable
+    private String plexToken;
+
+    @Nullable
+    private String address;
+
+    @Nullable
+    private int port;
+
+    @NotNull
+    private final Map<String, Boolean> libraries;
+
+    public PlexSearch() {
+        libraries = new HashMap<>();
+    }
+
+    public void setLibrary(@NotNull String library, @NotNull Boolean selected) {
+        libraries.put(library, selected);
+    }
+
+    public @NotNull Map<String, Boolean> getLibraries() {
+        return libraries;
+    }
+
+    public @Nullable String getMovieDbApiKey() {
         return movieDbApiKey;
     }
 
-    public void setMovieDbApiKey(String movieDbApiKey) {
+    public void setMovieDbApiKey(@NotNull String movieDbApiKey) {
         this.movieDbApiKey = movieDbApiKey;
     }
 
-    public String getPlexToken() {
+    public @Nullable String getPlexToken() {
         return plexToken;
     }
 
-    public void setPlexToken(String plexToken) {
+    public void setPlexToken(@NotNull String plexToken) {
         this.plexToken = plexToken;
     }
 
-    public String getAddress() {
+    public @Nullable String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(@NotNull String address) {
         this.address = address;
     }
 
-    public String getPort() {
+    public int getPort() {
         return port;
     }
 
-    public void setPort(String port) {
+    public void setPort(int port) {
         this.port = port;
     }
 

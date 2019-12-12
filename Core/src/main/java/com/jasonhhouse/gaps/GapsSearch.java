@@ -26,8 +26,6 @@ public interface GapsSearch {
 
     @NotNull CopyOnWriteArrayList<Movie> getRecommendedMovies();
 
-    @NotNull Set<PlexLibrary> getPlexLibraries(@NotNull HttpUrl url);
-
     @NotNull List<Movie> getEveryMovie();
 
     void cancelSearch();
