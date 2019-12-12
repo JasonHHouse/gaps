@@ -21,9 +21,6 @@ let searchDescription;
 let movieCounter;
 
 document.addEventListener('DOMContentLoaded', function () {
-    const elements = document.querySelectorAll('.modal');
-    M.Modal.init(elements);
-
     backButton = $('#cancel');
     copyToClipboard = $('#copyToClipboard');
     searchResults = $('#searchResults');
@@ -31,10 +28,10 @@ document.addEventListener('DOMContentLoaded', function () {
     progressContainer = $('#progressContainer');
     searchTitle = $('#searchTitle');
     searchDescription = $('#searchDescription');
-
+/*
     backButton.click(function () {
         $('#warningModal').modal('open');
-    });
+    });*/
 
     setCopyToClipboardEnabled(false);
     copyToClipboard.click(function () {
@@ -77,7 +74,7 @@ function search() {
 
     progressContainer.show();
     searchResults.html("");
-    searchTitle.text("Searching for Movies...");
+    searchTitle.text("Searching for Movies");
     searchDescription.text("Gaps is looking through your Plex libraries. This could take a while so just sit tight and we'll find all the missing movies for you.");
 
     const libraries = JSON.parse(Cookies.get('libraries'));

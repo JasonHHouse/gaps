@@ -16,7 +16,7 @@ function onStart() {
     $("#back").click(function () {
         location.assign("plexConfiguration.html");
     });
-
+/*
     $("#search").click(function () {
         if (Cookies.get('dialogDontShowAgain')) {
             if (validateInput()) {
@@ -26,94 +26,13 @@ function onStart() {
         } else {
             if (validateInput()) {
                 updatedSelectedLibraries();
-                location.assign("plex_movie_list.html");
+                location.assign("plexMovieList.html");
             }
         }
-    });
+    });*/
 
-    $("#agree").click(function () {
-        if (validateInput()) {
-            Cookies.set('dialogDontShowAgain', $("#dialogDontShowAgain").is(":checked"));
-            updatedSelectedLibraries();
-            location.assign("plex_movie_list.html");
-        }
-    });
-
-    setPreloaderVisibility(true);
-
-    getLibraries();
-
-    M.AutoInit();
-    M.updateTextFields();
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const elements = document.querySelectorAll(".modal");
-        M.Modal.init(elements);
-    });
 }
-
-function setPreloaderVisibility(bool) {
-    $("#progressBar").toggle(bool);
-}
-
-function setSearchEnabled(bool) {
-    if (bool) {
-        $("#search").removeClass("disabled");
-    } else {
-        $("#search").addClass("disabled");
-    }
-}
-
-function clearLibrariesAndErrors() {
-    $("#libraryException").html("");
-    $("#libraryCheckboxes").html("");
-}
-
-function getLibraries() {
-    setSearchEnabled(false);
-    clearLibrariesAndErrors();
-
-    const address = Cookies.get('address');
-    const port = Cookies.get('port');
-    const plexToken = Cookies.get('plex_token');
-
-    if (!plexToken || !port || !address) {
-        console.warn("Could not find plex token, port, or address in cookies");
-        M.toast({html: "Could not find plex token, port, or address in cookies"});
-        return;
-    }
-
-    let data = {
-        token: plexToken,
-        port: port,
-        address: address
-    };
-
-    $.ajax({
-        type: "GET",
-        url: "getPlexLibraries?" + encodeQueryData(data),
-        contentType: "application/json",
-        success: function (data) {
-            allLibraries = data;
-            setPreloaderVisibility(false);
-            setSearchEnabled(true);
-            generateLibrariesCheckbox(data);
-        }, error: function () {
-            setPreloaderVisibility(false);
-            setSearchEnabled(false);
-            setErrorMessage();
-        }
-    });
-}
-
-function encodeQueryData(data) {
-    const ret = [];
-    for (const d in data) {
-        ret.push(encodeURIComponent(d) + "=" + encodeURIComponent(data[d]));
-    }
-    return ret.join("&");
-}
-
+/*
 function validateInput() {
     let selectedLibraries = findSelectedLibraries();
 
@@ -122,31 +41,6 @@ function validateInput() {
         return false;
     }
     return true;
-}
-
-function setErrorMessage() {
-    $("#libraryCheckboxes").html("<p>Something went wrong. Please make sure your connection to Plex is correct. You can navigate back to make changes and then retry connecting. Check the browser and Docker logs for more information.</p>");
-}
-
-function generateLibrariesCheckbox() {
-    const selectedLibraries = Cookies.get('libraries') || [];
-
-    let row = "";
-    for (const library of allLibraries) {
-        const ifChecked = findIfChecked(selectedLibraries, library.key) ? " checked='checked'" : "";
-        row += `<div class='row'><p class='col s5'><label><input onclick='updatedSelectedLibraries()' id='${library.key}' type='checkbox' class='filled-in grey-text text-lighten-4' ${ifChecked} /><span>${library.title}</span></label></p></div>`;
-    }
-
-    $("#libraryCheckboxes").html(row);
-}
-
-function findIfChecked(selectedLibraries, key) {
-    for (let i = 0; i < selectedLibraries.length; i++) {
-        if (selectedLibraries[i].key === key) {
-            return true;
-        }
-    }
-    return false;
 }
 
 function updatedSelectedLibraries() {
@@ -162,4 +56,4 @@ function findSelectedLibraries() {
     }
 
     return selectedLibraries;
-}
+}*/

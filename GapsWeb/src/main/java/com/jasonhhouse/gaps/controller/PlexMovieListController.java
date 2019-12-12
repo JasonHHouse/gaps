@@ -12,20 +12,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(value = "/plexLibraries")
-public class PlexLibrariesController {
-    private final Logger logger = LoggerFactory.getLogger(PlexLibrariesController.class);
+@RequestMapping(value = "/plexMovieList")
+public class PlexMovieListController {
+    private final Logger logger = LoggerFactory.getLogger(PlexMovieListController.class);
 
     private final BindingErrorsService bindingErrorsService;
 
-    public PlexLibrariesController(BindingErrorsService bindingErrorsService) {
+    public PlexMovieListController(BindingErrorsService bindingErrorsService) {
         this.bindingErrorsService = bindingErrorsService;
     }
 
     @RequestMapping(method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView postPlexLibraries(PlexSearch plexSearch, BindingResult bindingResult) {
+    public ModelAndView postPlexMovieList(PlexSearch plexSearch, BindingResult bindingResult) {
         logger.info("postPlexLibraries( " + plexSearch + " )");
 
         if (bindingErrorsService.hasBindingErrors(bindingResult)) {
@@ -35,15 +35,15 @@ public class PlexLibrariesController {
         //ToDo
         //Make the search for plex libs and copy that in here
 
-        ModelAndView modelAndView = new ModelAndView("plexLibraries");
+        ModelAndView modelAndView = new ModelAndView("plexMovieList");
         modelAndView.addObject("plexSearch", plexSearch);
         return modelAndView;
     }
 
     @RequestMapping(method = RequestMethod.GET,
             produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView getPlexLibraries() {
-        logger.info("getPlexLibraries(  )");
+    public ModelAndView postPlexMovieList() {
+        logger.info("getPlexLibraries()");
         return new ModelAndView("plexLibraries");
     }
 }
