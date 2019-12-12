@@ -1,5 +1,7 @@
 FROM openjdk:11.0.5-jre-slim
 
+MAINTAINER jh5975@gmail.com
+
 EXPOSE 32400
 
 RUN mkdir -p /usr/data
@@ -12,4 +14,4 @@ WORKDIR /usr/app
 
 COPY GapsWeb/target/GapsWeb-0.1.0.jar /usr/app/
 
-ENTRYPOINT ["java", "-jar", "GapsWeb-0.1.0.jar"]
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=ssl", "GapsWeb-0.1.0.jar"]

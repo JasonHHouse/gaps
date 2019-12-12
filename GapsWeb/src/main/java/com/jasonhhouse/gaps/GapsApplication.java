@@ -11,6 +11,8 @@
 package com.jasonhhouse.gaps;
 
 import java.util.concurrent.Executor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -24,8 +26,21 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @EnableAsync
 public class GapsApplication {
 
+    private final Logger logger = LoggerFactory.getLogger(GapsApplication.class);
+
+    private final YamlConfig myConfig;
+
+    public GapsApplication(YamlConfig myConfig) {
+        this.myConfig = myConfig;
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(GapsApplication.class, args);
+    }
+
+    public void run(String... args) throws Exception {
+        logger.info("Using environment: " + myConfig.getEnvironment());
+        logger.info("Name: " + myConfig.getName());
     }
 
     @Bean

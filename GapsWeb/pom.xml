@@ -14,6 +14,26 @@
     <properties>
         <start-class>com.jasonhhouse.gaps.GapsApplication</start-class>
     </properties>
+<!--
+
+    <profiles>
+        <profile>
+            <id>ssl</id>
+            <properties>
+                <activatedProperties>ssl</activatedProperties>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>no-ssl</id>
+            <properties>
+                <activatedProperties>no-ssl</activatedProperties>
+            </properties>
+        </profile>
+    </profiles>
+-->
 
     <dependencies>
         <dependency>

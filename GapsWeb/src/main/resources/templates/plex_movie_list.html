@@ -17,24 +17,25 @@
     <link rel="shortcut icon" href="../static/image/gaps.ico"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="../static/css/links.min.css"/>
-    <link type="text/css" rel="stylesheet" href="../static/css/body.min.css"/>
-    <link type="text/css" rel="stylesheet" href="../static/css/input.min.css"/>
+    <!--    <link type="text/css" rel="stylesheet" href="css/body.min.css"/>-->
     <link type="text/css" rel="stylesheet" href="../static/css/materialize.min.css" media="screen,projection"/>
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 
-<body class="black" onload="onStart()">
+<body class="black">
 <main>
 
     <nav>
-        <div onclick="onClickBanner()" class="nav-wrapper indigo darken-1">
+        <div class="nav-wrapper indigo darken-1">
             <div class="brand-logo center white-text">
                 <a href="index.html">Gaps</a>
                 <span>&nbsp;>&nbsp;</span>
                 <a href="plexConfiguration.html">Plex</a>
-                <span>&nbsp;>&nbsp;Libraries</span>
+                <span>&nbsp;>&nbsp;</span>
+                <a href="plexLibraries.html">Libraries</a>
+                <span>&nbsp;>&nbsp;Missing Movies</span>
             </div>
         </div>
     </nav>
@@ -45,69 +46,56 @@
         <div class="row grey darken-4">
             <form class="col s12">
                 <div class="row indigo white-text">
-                    <h5 class="col s12">Plex Movie Libraries</h5>
+                    <h5 id="searchTitle" class="col s12">Searching for Movies...</h5>
 
-                    <p class="col s12 grey-text text-lighten-4">These are the movie libraries we found in your Plex
-                        Server. Select any and all you would like to look for gaps in.</p>
+                    <p id="searchDescription" class="col s12 grey-text text-lighten-4"></p>
                 </div>
 
-                <div class="row" id="progressBar">
-                    <div class="col s4">
-                        <div class="preloader-wrapper big active">
-                            <div class="spinner-layer spinner-blue">
-                                <div class="circle-clipper left">
-                                    <div class="circle"></div>
-                                </div>
-                                <div class="gap-patch">
-                                    <div class="circle"></div>
-                                </div>
-                                <div class="circle-clipper right">
-                                    <div class="circle"></div>
-                                </div>
-                            </div>
+                <div class="row">
+                    <div class="col s2">
+                        <a class="waves-effect waves-light btn white black-text" id="cancel">Cancel</a>
+                    </div>
+                    <!--<div class="col s2">
+                        <a class="waves-effect waves-light btn disabled black-text" id="rss">View RSS</a>
+                    </div>-->
+                    <div class="col s3">
+                        <a class="waves-effect waves-light btn disabled black-text" id="copyToClipboard">Copy to
+                            clipboard</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div id="searchPosition" class="col s12 grey-text text-lighten-4"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12">
+                        <div id="progressContainer" class="progress">
+                            <div class="indeterminate"></div>
                         </div>
                     </div>
                 </div>
 
-                <div id="libraryCheckboxes" class="grey-text text-lighten-4"></div>
-
-                <div id="libraryException" class="div class='row' grey-text text-lighten-4"></div>
-
                 <div class="row">
-                    <div class="col s2">
-                        <a class="waves-effect waves-light btn white black-text" id="back">Back</a>
-                    </div>
-                    <div class="col s2">
-                        <a class="waves-effect waves-light btn disabled black-text" id="search">Search</a>
-                    </div>
+                    <div id="searchResults" class="col s12 grey-text text-lighten-4"></div>
                 </div>
 
             </form>
         </div>
-    </div>
 
-    <!-- Modal Structure -->
-    <div id="warningModal" class="modal">
-        <div class="modal-content">
-            <h4 id="searchModelTitle">Before you start searching...</h4>
-            <div id="body">
-                <p>Searching for all movies missing from your libraries could take a very long time. Be sure to
-                    make sure your connection won't go down while searching and go make yourself some coffee.
-                </p>
-                <p>
-                    <label>
-                        <input id="dialogDontShowAgain" type="checkbox" class="filled-in"/>
-                        <span>Don't show this dialog again</span>
-                    </label>
-                </p>
+        <!-- Modal Structure -->
+        <div id="warningModal" class="modal">
+            <div class="modal-content">
+                <h4 id="searchModelTitle">Cancel Search</h4>
+                <div id="body">
+                    <p>Are you sure you want to cancel searching?</p>
+                </div>
             </div>
-
+            <div class="modal-footer">
+                <a id="agree" href="#!" class="modal-close waves-effect waves-green btn-flat teal-text">Cancel
+                    Search</a>
+            </div>
         </div>
-        <div class="modal-footer">
-            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
-            <a id="agree" href="#!" class="modal-close waves-effect waves-green btn-flat teal-text">Agree</a>
-        </div>
-    </div>
 
     </div>
 </main>
@@ -130,10 +118,11 @@
     </div>
 </footer>
 
-
 <script type="text/javascript" src="../static/js/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="../static/js/materialize.min.js"></script>
 <script type="text/javascript" src="../static/js/js.cookie.min.js"></script>
-<script type="text/javascript" src="../static/js/plex_libraries.min.js"></script>
+<script type="text/javascript" src="../static/js/sockjs-1.4.0.min.js"></script>
+<script type="text/javascript" src="../static/js/stomp-2.3.3.min.js"></script>
+<script type="text/javascript" src="../static/js/plex_movie_list.js"></script>
 </body>
 </html>
