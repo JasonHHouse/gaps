@@ -10,4 +10,6 @@ public interface GapsService {
     Set<PlexLibrary> getPlexLibraries();
 
     void copyInLibraries(@NotNull Set<PlexLibrary> plexLibraries);
+
+    void updatePlexSearch(PlexSearch plexSearch);
 }

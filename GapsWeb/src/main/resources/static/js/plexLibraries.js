@@ -10,50 +10,8 @@
 
 "use strict";
 
-let allLibraries;
-
 function onStart() {
     $("#back").click(function () {
         location.assign("plexConfiguration.html");
     });
-/*
-    $("#search").click(function () {
-        if (Cookies.get('dialogDontShowAgain')) {
-            if (validateInput()) {
-                $("#warningModal").modal("open");
-
-            }
-        } else {
-            if (validateInput()) {
-                updatedSelectedLibraries();
-                location.assign("plexMovieList.html");
-            }
-        }
-    });*/
-
 }
-/*
-function validateInput() {
-    let selectedLibraries = findSelectedLibraries();
-
-    if (selectedLibraries === undefined || selectedLibraries.length === 0) {
-        M.toast({html: "Must select at least one library"});
-        return false;
-    }
-    return true;
-}
-
-function updatedSelectedLibraries() {
-    Cookies.set('libraries', JSON.stringify(findSelectedLibraries()));
-}
-
-function findSelectedLibraries() {
-    let selectedLibraries = [];
-    for (let library of allLibraries) {
-        if ($("#" + library.key).is(":checked")) {
-            selectedLibraries.push(library);
-        }
-    }
-
-    return selectedLibraries;
-}*/

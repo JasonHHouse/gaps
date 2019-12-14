@@ -8,7 +8,7 @@
 - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>Gaps</title>
@@ -40,14 +40,14 @@
 
     <form id="plexMovieList" class="needs-validation" method="POST" action="/plexMovieList" novalidate
           th:object="${plexSearch}">
-        <div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Movies HD</label>
+
+        <div th:each="library : *{libraries.keySet()}" th:remove="tag">
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" th:field="${library}">
+                <label class="form-check-label" th:for="${library}" th:text="${library}"></label>
+            </div>
         </div>
-        <div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck2">
-            <label class="form-check-label" for="exampleCheck2">Movies SD</label>
-        </div>
+
         <button class="btn btn-secondary" onclick="back()">Back</button>
         <button type="submit" class="btn btn-primary">Next</button>
     </form>
@@ -60,6 +60,6 @@
 <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="js/js.cookie.min.js"></script>
-<script type="text/javascript" src="../static/js/plex_libraries.min.js"></script>
+<script type="text/javascript" src="../static/js/plexLibraries.min.js"></script>
 </body>
 </html>

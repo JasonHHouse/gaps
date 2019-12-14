@@ -35,14 +35,14 @@ public class PlexMovieListController {
     @RequestMapping(method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView postPlexMovieList(PlexSearch plexSearch, BindingResult bindingResult) {
+    public ModelAndView postPlexMovieList(String plexSearch, BindingResult bindingResult) {
         logger.info("postPlexLibraries( " + plexSearch + " )");
 
         if (bindingErrorsService.hasBindingErrors(bindingResult)) {
             return bindingErrorsService.getErrorPage();
         }
 
-        Set<PlexLibrary> plexLibraries = plexService.getPlexLibraries(plexSearch);
+        Set<PlexLibrary> plexLibraries = plexService.getPlexLibraries(gapsService.getPlexSearch());
         gapsService.copyInLibraries(plexLibraries);
 
         //ToDo

@@ -8,7 +8,7 @@
 - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>Gaps</title>
@@ -36,37 +36,36 @@
     <h2 class="top-margin">Searching for Movies</h2>
 
 
-                <p id="searchDescription" class="col s12 grey-text text-lighten-4"></p>
+    <p id="searchDescription" class="col s12 grey-text text-lighten-4"></p>
     <button class="btn btn-secondary" id="cancel">Cancel</button>
     <button class="btn btn-secondary" id="viewRss">View RSS</button>
     <button class="btn btn-secondary" id="copyToClipboard">Copy to clipboard</button>
 
 
+    <div id="searchPosition" class="col s12 grey-text text-lighten-4"></div>
 
-                <div id="searchPosition" class="col s12 grey-text text-lighten-4"></div>
-
-                    <div id="progressContainer" class="progress">
-                        <div class="indeterminate"></div>
-                    </div>
-
-
-                <div id="searchResults" class="col s12 grey-text text-lighten-4"></div>
-            <!--
+    <div id="progressContainer" class="progress">
+        <div class="indeterminate"></div>
+    </div>
 
 
-    &lt;!&ndash; Modal Structure &ndash;&gt;
-    <div id="warningModal" class="modal">
-        <div class="modal-content">
-            <h4 id="searchModelTitle">Cancel Search</h4>
-            <div id="body">
-                <p>Are you sure you want to cancel searching?</p>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <a id="agree" href="#!" class="modal-close waves-effect waves-green btn-flat teal-text">Cancel
-                Search</a>
-        </div>
-    </div>-->
+    <div id="searchResults" class="col s12 grey-text text-lighten-4"></div>
+    <!--
+
+
+&lt;!&ndash; Modal Structure &ndash;&gt;
+<div id="warningModal" class="modal">
+<div class="modal-content">
+    <h4 id="searchModelTitle">Cancel Search</h4>
+    <div id="body">
+        <p>Are you sure you want to cancel searching?</p>
+    </div>
+</div>
+<div class="modal-footer">
+    <a id="agree" href="#!" class="modal-close waves-effect waves-green btn-flat teal-text">Cancel
+        Search</a>
+</div>
+</div>-->
 
 </div>
 
@@ -76,6 +75,6 @@
 <script type="text/javascript" src="../static/js/js.cookie.min.js"></script>
 <script type="text/javascript" src="../static/js/sockjs-1.4.0.min.js"></script>
 <script type="text/javascript" src="../static/js/stomp-2.3.3.min.js"></script>
-<script type="text/javascript" src="../static/js/plex_movie_list.js"></script>
+<script type="text/javascript" src="../static/js/plexMovieList.js"></script>
 </body>
 </html>

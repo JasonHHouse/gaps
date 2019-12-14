@@ -2,67 +2,60 @@ package com.jasonhhouse.gaps;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public final class PlexSearch {
 
-    @Nullable
     private String movieDbApiKey;
 
-    @Nullable
     private String plexToken;
 
-    @Nullable
     private String address;
 
-    @Nullable
-    private int port;
+    private Integer port;
 
-    @NotNull
     private final Map<String, Boolean> libraries;
 
     public PlexSearch() {
         libraries = new HashMap<>();
     }
 
-    public void setLibrary(@NotNull String library, @NotNull Boolean selected) {
+    public void setLibrary(String library, Boolean selected) {
         libraries.put(library, selected);
     }
 
-    public @NotNull Map<String, Boolean> getLibraries() {
+    public Map<String, Boolean> getLibraries() {
         return libraries;
     }
 
-    public @Nullable String getMovieDbApiKey() {
+    public String getMovieDbApiKey() {
         return movieDbApiKey;
     }
 
-    public void setMovieDbApiKey(@NotNull String movieDbApiKey) {
+    public void setMovieDbApiKey(String movieDbApiKey) {
         this.movieDbApiKey = movieDbApiKey;
     }
 
-    public @Nullable String getPlexToken() {
+    public String getPlexToken() {
         return plexToken;
     }
 
-    public void setPlexToken(@NotNull String plexToken) {
+    public void setPlexToken(String plexToken) {
         this.plexToken = plexToken;
     }
 
-    public @Nullable String getAddress() {
+    public String getAddress() {
         return address;
     }
 
-    public void setAddress(@NotNull String address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
-    public int getPort() {
+    public Integer getPort() {
         return port;
     }
 
-    public void setPort(int port) {
+    public void setPort(Integer port) {
         this.port = port;
     }
 
@@ -72,7 +65,8 @@ public final class PlexSearch {
                 "movieDbApiKey='" + movieDbApiKey + '\'' +
                 ", plexToken='" + plexToken + '\'' +
                 ", address='" + address + '\'' +
-                ", port='" + port + '\'' +
+                ", port=" + port +
+                ", libraries=" + libraries +
                 '}';
     }
 }
