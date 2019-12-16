@@ -49,6 +49,8 @@ public class PlexConfigurationController {
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getPlexConfiguration() {
         logger.info("getPlexConfiguration()");
-        return new ModelAndView("plexConfiguration");
+        ModelAndView modelAndView = new ModelAndView("plexConfiguration");
+        modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
+        return modelAndView;
     }
 }

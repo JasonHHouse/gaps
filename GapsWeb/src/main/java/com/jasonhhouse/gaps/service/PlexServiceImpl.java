@@ -38,8 +38,8 @@ public class PlexServiceImpl implements PlexService {
     private final Logger logger = LoggerFactory.getLogger(PlexServiceImpl.class);
 
     @Override
-    public @NotNull Set<PlexLibrary> getPlexLibraries(@NotNull PlexSearch plexSearch) {
-        logger.info("getPlexLibraries()");
+    public @NotNull Set<PlexLibrary> queryPlexLibraries(@NotNull PlexSearch plexSearch) {
+        logger.info("queryPlexLibraries()");
 
         HttpUrl url = new HttpUrl.Builder()
                 .scheme("http")

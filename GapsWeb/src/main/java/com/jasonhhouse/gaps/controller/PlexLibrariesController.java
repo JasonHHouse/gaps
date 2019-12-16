@@ -44,10 +44,10 @@ public class PlexLibrariesController {
 
         gapsService.updatePlexSearch(plexSearch);
 
-        Set<PlexLibrary> plexLibraries = plexService.getPlexLibraries(plexSearch);
+        Set<PlexLibrary> plexLibraries = plexService.queryPlexLibraries(plexSearch);
         gapsService.copyInLibraries(plexLibraries);
 
-        logger.info(plexSearch.toString());
+        logger.info(gapsService.getPlexSearch().toString());
 
         ModelAndView modelAndView = new ModelAndView("plexLibraries");
         modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
@@ -57,7 +57,9 @@ public class PlexLibrariesController {
     @RequestMapping(method = RequestMethod.GET,
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getPlexLibraries() {
-        logger.info("getPlexLibraries(  )");
-        return new ModelAndView("plexLibraries");
+        logger.info("getPlexLibraries()");
+        ModelAndView modelAndView = new ModelAndView("plexLibraries");
+        modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
+        return modelAndView;
     }
 }

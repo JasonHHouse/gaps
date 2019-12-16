@@ -49,7 +49,7 @@ public class GapsServiceImpl implements GapsService {
 
     @Override
     public void updatePlexSearch(PlexSearch plexSearch) {
-        if (StringUtils.isEmpty(plexSearch.getAddress())) {
+        if (StringUtils.isNotEmpty(plexSearch.getAddress())) {
             this.plexSearch.setAddress(plexSearch.getAddress());
         }
 
@@ -57,11 +57,11 @@ public class GapsServiceImpl implements GapsService {
             this.plexSearch.setPort(plexSearch.getPort());
         }
 
-        if (StringUtils.isEmpty(plexSearch.getPlexToken())) {
+        if (StringUtils.isNotEmpty(plexSearch.getPlexToken())) {
             this.plexSearch.setPlexToken(plexSearch.getPlexToken());
         }
 
-        if (StringUtils.isEmpty(plexSearch.getMovieDbApiKey())) {
+        if (StringUtils.isNotEmpty(plexSearch.getMovieDbApiKey())) {
             this.plexSearch.setMovieDbApiKey(plexSearch.getMovieDbApiKey());
         }
     }

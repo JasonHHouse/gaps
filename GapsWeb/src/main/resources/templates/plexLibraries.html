@@ -41,10 +41,10 @@
     <form id="plexMovieList" class="needs-validation" method="POST" action="/plexMovieList" novalidate
           th:object="${plexSearch}">
 
-        <div th:each="library : *{libraries.keySet()}" th:remove="tag">
+        <div th:each="library : *{libraries}" th:remove="tag">
             <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" th:field="${library}">
-                <label class="form-check-label" th:for="${library}" th:text="${library}"></label>
+                <input type="checkbox" th:id="${library.key}" class="form-check-input">
+                <label class="form-check-label" th:for="${library.key}" th:text="${library.key}"></label>
             </div>
         </div>
 

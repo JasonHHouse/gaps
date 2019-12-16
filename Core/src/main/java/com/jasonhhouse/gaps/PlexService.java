@@ -5,6 +5,6 @@ import org.jetbrains.annotations.NotNull;
 
 public interface PlexService {
 
-    @NotNull Set<PlexLibrary> getPlexLibraries(@NotNull PlexSearch plexSearch);
+    @NotNull Set<PlexLibrary> queryPlexLibraries(@NotNull PlexSearch plexSearch);
 
 }
