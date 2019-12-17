@@ -24,9 +24,12 @@
 </head>
 
 <body>
-<nav aria-label="breadcrumb bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand">Gaps - Find your missing movies</a>
+</nav>
+<nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/">Gaps</a></li>
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
         <li class="breadcrumb-item active"><a href="/plexConfiguration">Plex</a></li>
         <li class="breadcrumb-item active"><a href="/plexLibraries">Libraries</a></li>
         <li class="breadcrumb-item active" aria-current="page">Movies</li>
@@ -36,20 +39,35 @@
 <div class="container">
     <h2 class="top-margin">Searching for Movies</h2>
 
-    <table id="movies" class="display" style="width:100%">
-        <thead>
-        <tr>
-            <th>Title</th>
-            <th>Year</th>
-            <th>Collection</th>
-        </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+    <div class="top-margin">
+        <p id="searchPosition">Finding all movies in Plex</p>
+    </div>
 
-    <button class="btn btn-secondary" id="cancel">Cancel</button>
-    <button class="btn btn-secondary" id="viewRss">View RSS</button>
+    <div id="progressContainer" class="top-margin">
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75"
+                 aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+        </div>
+    </div>
+
+    <h3 class="top-margin">Missing Movies</h3>
+
+    <div class="top-margin">
+        <table id="movies" class="display" style="width:100%">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Year</th>
+                <th>Collection</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <button class="btn btn-warning" id="cancel">Cancel</button>
+    <button class="btn btn-primary" id="viewRss">View RSS</button>
     <button class="btn btn-secondary" id="copyToClipboard">Copy to Clipboard</button>
 
     <input id="plexSearch" name="plexSearch" th:value="${{plexSearch}}" type="hidden"/>

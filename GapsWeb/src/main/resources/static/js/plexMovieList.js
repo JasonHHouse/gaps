@@ -123,7 +123,7 @@ function search() {
             searchDescription.text("Below is everything Gaps found that is missing from your movie collections.");
             progressContainer.hide();
             searchPosition.html('');
-            backButton.text('restart');
+            backButton.text('Restart');
             setCopyToClipboardEnabled(true);
             disconnect();
         },
@@ -164,11 +164,11 @@ function connect() {
             showSearchStatus(obj);
 
             if(obj.nextMovie) {
-                moviesTable.row.add({
-                    "title": obj.nextMovie.name,
-                    "year": obj.nextMovie.year,
-                    "collection": obj.nextMovie.collection,
-                }).draw();
+                moviesTable.row.add([
+                    obj.nextMovie.name,
+                    obj.nextMovie.year,
+                    obj.nextMovie.collection
+                ]).draw();
             }
         });
     });
@@ -186,7 +186,7 @@ function showSearchStatus(obj) {
         searchResults.html("");
     } else {
         let percentage = Math.trunc(obj.searchedMovieCount / obj.totalMovieCount * 100);
-        searchPosition.html(`<h5>${obj.searchedMovieCount} of ${obj.totalMovieCount} movies searched. ${percentage}% complete.</h5>`);
+        searchPosition.html(`${obj.searchedMovieCount} of ${obj.totalMovieCount} movies searched. ${percentage}% complete.`);
 
         // if(obj.nextMovie) {
         //     movieCounter++;
