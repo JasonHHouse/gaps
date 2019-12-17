@@ -1,14 +1,21 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsService;
+import com.jasonhhouse.gaps.PlexSearchEditor;
+import com.jasonhhouse.gaps.PlexSearchFormatter;
+import com.jasonhhouse.gaps.PlexSearchValidator;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.service.BindingErrorsService;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,7 +38,7 @@ public class PlexConfigurationController {
     @RequestMapping(method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView postPlexConfiguration(PlexSearch plexSearch, BindingResult bindingResult) {
+    public ModelAndView postPlexConfiguration(@Valid @ModelAttribute("plexSearch") PlexSearch plexSearch, BindingResult bindingResult) {
         logger.info("postPlexConfiguration( " + plexSearch + " )");
 
         if (bindingErrorsService.hasBindingErrors(bindingResult)) {
@@ -39,6 +46,9 @@ public class PlexConfigurationController {
         }
 
         gapsService.updatePlexSearch(plexSearch);
+        gapsService.getPlexSearch().setPort(32400);
+        gapsService.getPlexSearch().setAddress("192.168.1.8");
+        gapsService.getPlexSearch().setPlexToken("1Zm488Lwzszzs6f5APpb");
 
         ModelAndView modelAndView = new ModelAndView("plexConfiguration");
         modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
@@ -52,5 +62,11 @@ public class PlexConfigurationController {
         ModelAndView modelAndView = new ModelAndView("plexConfiguration");
         modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
         return modelAndView;
+    }
+
+    @InitBinder("plexSearch")
+    public void initBinder(WebDataBinder binder) {
+        logger.info("initBinder()");
+        binder.addCustomFormatter(new PlexSearchFormatter(), "plexSearch");
     }
 }

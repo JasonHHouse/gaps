@@ -6,6 +6,8 @@ import com.jasonhhouse.gaps.PlexService;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.xml.parsers.DocumentBuilder;
@@ -38,7 +40,7 @@ public class PlexServiceImpl implements PlexService {
     private final Logger logger = LoggerFactory.getLogger(PlexServiceImpl.class);
 
     @Override
-    public @NotNull Set<PlexLibrary> queryPlexLibraries(@NotNull PlexSearch plexSearch) {
+    public @NotNull List<PlexLibrary> queryPlexLibraries(@NotNull PlexSearch plexSearch) {
         logger.info("queryPlexLibraries()");
 
         HttpUrl url = new HttpUrl.Builder()
@@ -55,7 +57,7 @@ public class PlexServiceImpl implements PlexService {
         OkHttpClient client = new OkHttpClient.Builder()
                 .build();
 
-        Set<PlexLibrary> plexLibraries = new TreeSet<>();
+        List<PlexLibrary> plexLibraries = new ArrayList<>();
 
         try {
             Request request = new Request.Builder()
@@ -117,7 +119,7 @@ public class PlexServiceImpl implements PlexService {
                         String title = titleNode.getNodeValue().replaceAll(":", "");
                         Integer key = Integer.valueOf(keyNode.getNodeValue().trim());
 
-                        PlexLibrary plexLibrary = new PlexLibrary(key, title);
+                        PlexLibrary plexLibrary = new PlexLibrary(key, title, false);
                         plexLibraries.add(plexLibrary);
                     }
                 }

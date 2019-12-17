@@ -9,9 +9,6 @@
  */
 
 "use strict";
-
-function onStart() {
-    $("#back").click(function () {
-        location.assign("plexConfiguration.html");
-    });
+function back() {
+    location.assign("plexConfiguration.html");
 }

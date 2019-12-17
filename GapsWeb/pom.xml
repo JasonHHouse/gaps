@@ -14,26 +14,6 @@
     <properties>
         <start-class>com.jasonhhouse.gaps.GapsApplication</start-class>
     </properties>
-<!--
-
-    <profiles>
-        <profile>
-            <id>ssl</id>
-            <properties>
-                <activatedProperties>ssl</activatedProperties>
-            </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-        <profile>
-            <id>no-ssl</id>
-            <properties>
-                <activatedProperties>no-ssl</activatedProperties>
-            </properties>
-        </profile>
-    </profiles>
--->
 
     <dependencies>
         <dependency>
@@ -106,12 +86,6 @@
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
             <version>4.2.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20190722</version>
         </dependency>
 
         <dependency>

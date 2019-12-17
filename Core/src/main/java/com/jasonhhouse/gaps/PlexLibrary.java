@@ -15,13 +15,15 @@ import java.util.Objects;
 public class PlexLibrary implements Comparable<PlexLibrary> {
     private Integer key;
     private String title;
+    private Boolean selected;
 
     public PlexLibrary() {
     }
 
-    public PlexLibrary(Integer key, String title) {
+    public PlexLibrary(Integer key, String title, Boolean selected) {
         this.key = key;
         this.title = title;
+        this.selected = selected;
     }
 
     public Integer getKey() {
@@ -38,6 +40,14 @@ public class PlexLibrary implements Comparable<PlexLibrary> {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Boolean getSelected() {
+        return selected;
+    }
+
+    public void setSelected(Boolean selected) {
+        this.selected = selected;
     }
 
     @Override
@@ -58,6 +68,7 @@ public class PlexLibrary implements Comparable<PlexLibrary> {
         return "PlexLibrary{" +
                 "key=" + key +
                 ", title='" + title + '\'' +
+                ", selected=" + selected +
                 '}';
     }
 

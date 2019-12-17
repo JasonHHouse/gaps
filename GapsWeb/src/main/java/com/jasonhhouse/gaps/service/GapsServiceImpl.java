@@ -3,8 +3,7 @@ package com.jasonhhouse.gaps.service;
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexSearch;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -15,12 +14,8 @@ public class GapsServiceImpl implements GapsService {
     @NotNull
     private final PlexSearch plexSearch;
 
-    @NotNull
-    private final Set<PlexLibrary> plexLibraries;
-
     public GapsServiceImpl() {
         this.plexSearch = new PlexSearch();
-        this.plexLibraries = new HashSet<>();
     }
 
     @Override
@@ -29,22 +24,16 @@ public class GapsServiceImpl implements GapsService {
     }
 
     @Override
-    public @NotNull Set<PlexLibrary> getPlexLibraries() {
-        return plexLibraries;
+    public void updateLibrarySelections(@NotNull List<PlexLibrary> plexLibraries) {
+        getPlexSearch().getLibraries().clear();
+        getPlexSearch().getLibraries().addAll(plexLibraries);
     }
 
     @Override
     public String toString() {
         return "GapsServiceImpl{" +
                 "plexSearch=" + plexSearch +
-                ", plexLibraries=" + plexLibraries +
                 '}';
-    }
-
-    @Override
-    public void copyInLibraries(@NotNull Set<PlexLibrary> plexLibraries) {
-        plexLibraries.forEach(plexLibrary -> plexSearch.setLibrary(plexLibrary.getTitle(), false));
-        this.plexLibraries.addAll(plexLibraries);
     }
 
     @Override

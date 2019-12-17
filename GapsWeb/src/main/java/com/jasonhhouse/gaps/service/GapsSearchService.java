@@ -124,6 +124,8 @@ public class GapsSearchService implements GapsSearch {
 
     @Override
     public void run(@NotNull Gaps gaps, @NotNull List<Movie> everyMovie) {
+        logger.info("run( " + gaps + " )");
+
         searched.clear();
         ownedMovies.clear();
         recommended.clear();
@@ -435,7 +437,7 @@ public class GapsSearchService implements GapsSearch {
      * user has.
      */
     private void findAllPlexMovies(@NotNull Gaps gaps) throws SearchCancelledException {
-        logger.info("Searching for Plex Movies...");
+        logger.info("findAllPlexMovies( " + gaps + " )");
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(gaps.getConnectTimeout(), TimeUnit.SECONDS)
                 .writeTimeout(gaps.getWriteTimeout(), TimeUnit.SECONDS)

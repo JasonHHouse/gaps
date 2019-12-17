@@ -1,13 +1,15 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsService;
+import com.jasonhhouse.gaps.PlexSearchEditor;
 import com.jasonhhouse.gaps.PlexSearch;
-import java.io.IOException;
+import com.jasonhhouse.gaps.PlexSearchFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,8 +33,14 @@ public class GapsController {
     public ModelAndView getIndex() {
         logger.info("getIndex()");
         ModelAndView modelAndView = new ModelAndView("index");
+        gapsService.getPlexSearch().setMovieDbApiKey("723b4c763114904392ca441909aa0375");
         modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
         return modelAndView;
     }
 
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        logger.info("initBinder()");
+        binder.addCustomFormatter(new PlexSearchFormatter(), "plexSearch");
+    }
 }

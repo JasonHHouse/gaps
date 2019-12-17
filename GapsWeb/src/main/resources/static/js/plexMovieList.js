@@ -19,6 +19,11 @@ let progressContainer;
 let searchTitle;
 let searchDescription;
 let movieCounter;
+let moviesTable;
+
+$(document).ready(function () {
+    moviesTable = $('#movies').DataTable();
+});
 
 document.addEventListener('DOMContentLoaded', function () {
     backButton = $('#cancel');
@@ -28,10 +33,10 @@ document.addEventListener('DOMContentLoaded', function () {
     progressContainer = $('#progressContainer');
     searchTitle = $('#searchTitle');
     searchDescription = $('#searchDescription');
-/*
-    backButton.click(function () {
-        $('#warningModal').modal('open');
-    });*/
+    /*
+        backButton.click(function () {
+            $('#warningModal').modal('open');
+        });*/
 
     setCopyToClipboardEnabled(false);
     copyToClipboard.click(function () {
@@ -77,25 +82,31 @@ function search() {
     searchTitle.text("Searching for Movies");
     searchDescription.text("Gaps is looking through your Plex libraries. This could take a while so just sit tight and we'll find all the missing movies for you.");
 
-    const libraries = JSON.parse(Cookies.get('libraries'));
-    const address = Cookies.get('address');
-    const port = Cookies.get('port');
-    const plexToken = Cookies.get('plex_token');
-    const movieDbApiKey = Cookies.get('movie_db_api_key');
+    const plexSearch = JSON.parse($('#plexSearch').val());
 
     let plexMovieUrls = [];
 
-    for (const library of libraries) {
+    plexSearch.libraries.forEach(function (library) {
         let data = {
-            'X-Plex-Token': plexToken
+            'X-Plex-Token': plexSearch.plexToken
         };
 
-        let plexMovieUrl = "http://" + address + ":" + port + "/library/sections/" + library.key + "/all/?" + encodeQueryData(data);
+        let encoded = encodeQueryData(data);
+        let plexMovieUrl = `http://${plexSearch.address}:${plexSearch.port}/library/sections/${library.key}/all/?${encoded}`;
         plexMovieUrls.push(plexMovieUrl);
-    }
+    });
+
+    /*for (const library of plexSearch.libraries) {
+        let data = {
+            'X-Plex-Token': plexSearch.plexToken
+        };
+
+        let plexMovieUrl = "http://" + plexSearch.address + ":" + plexSearch.port + "/library/sections/" + library.key + "/all/?" + encodeQueryData(data);
+        plexMovieUrls.push(plexMovieUrl);
+    }*/
 
     const gaps = {
-        movieDbApiKey: movieDbApiKey,
+        movieDbApiKey: plexSearch.movieDbApiKey,
         writeToFile: true,
         searchFromPlex: true,
         movieUrls: plexMovieUrls
@@ -135,14 +146,14 @@ function search() {
 
     showSearchStatus();
 }
-
+/*
 function buildMovieDiv(movie) {
     return '<div>' + buildMovie(movie) + '</div>';
 }
 
 function buildMovie(movie) {
     return `${movie.name} (${movie.year}) from '${movie.collection}'`;
-}
+}*/
 
 function connect() {
     const socket = new SockJS('/gs-guide-websocket');
@@ -151,6 +162,14 @@ function connect() {
         stompClient.subscribe('/topic/newMovieFound', function (status) {
             const obj = JSON.parse(status.body);
             showSearchStatus(obj);
+
+            if(obj.nextMovie) {
+                moviesTable.row.add({
+                    "title": obj.nextMovie.name,
+                    "year": obj.nextMovie.year,
+                    "collection": obj.nextMovie.collection,
+                }).draw();
+            }
         });
     });
 }
@@ -169,10 +188,10 @@ function showSearchStatus(obj) {
         let percentage = Math.trunc(obj.searchedMovieCount / obj.totalMovieCount * 100);
         searchPosition.html(`<h5>${obj.searchedMovieCount} of ${obj.totalMovieCount} movies searched. ${percentage}% complete.</h5>`);
 
-        if(obj.nextMovie) {
-            movieCounter++;
-            searchResults.append(buildMovieDiv(obj.nextMovie));
-        }
+        // if(obj.nextMovie) {
+        //     movieCounter++;
+        //     searchResults.append(buildMovieDiv(obj.nextMovie));
+        // }
     }
 }
 

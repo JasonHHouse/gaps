@@ -12,7 +12,6 @@
 
 <head>
     <title>Gaps</title>
-    <meta name="theme-color" content="#3f51b5"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="shortcut icon" href="image/gaps.ico"/>
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
@@ -22,20 +21,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 
-<body onload="onStart()">
+<body>
 
 <nav aria-label="breadcrumb bg-primary">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/">Gaps</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Plex</li>
-        <li class="breadcrumb-item">Libraries</li>
-        <li class="breadcrumb-item">Movies</li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="/plexConfiguration">Plex</a></li>
     </ol>
 </nav>
 
-<h2 class="top-margin">Plex Configuration</h2>
-
 <div class="container">
+    <h2 class="top-margin">Plex Configuration</h2>
+
     <form id="plexLibraries" class="needs-validation" method="POST" action="/plexLibraries" novalidate th:object="${plexSearch}">
         <div class="form-group">
             <label for="address">Plex IP Address</label>
@@ -54,10 +51,9 @@
         <div class="form-group">
             <label for="plexToken">Plex Token</label>
             <input type="text" class="form-control" id="plexToken" required aria-describedby="tokenHelp" th:field="*{plexToken}">
-            <small id="tokenHelp" class="form-text text-muted">If you do not know already it's easy to find. Plex has
-                a great write up
+            <small id="tokenHelp" class="form-text text-muted">You can learn how to find your Plex Token
                 <a href="https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/">here</a>
-                about how to find your token.</small>
+                .</small>
         </div>
 
         <button class="btn btn-secondary" onclick="back()">Back</button>
@@ -67,7 +63,6 @@
 
 <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="js/js.cookie.min.js"></script>
 <script type="text/javascript" src="js/plexConfiguration.js"></script>
 </body>
 </html>

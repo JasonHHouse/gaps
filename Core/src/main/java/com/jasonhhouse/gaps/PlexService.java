@@ -1,10 +1,10 @@
 package com.jasonhhouse.gaps;
 
-import java.util.Set;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 public interface PlexService {
 
-    @NotNull Set<PlexLibrary> queryPlexLibraries(@NotNull PlexSearch plexSearch);
+    @NotNull List<PlexLibrary> queryPlexLibraries(@NotNull PlexSearch plexSearch);
 
 }

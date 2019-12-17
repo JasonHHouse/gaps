@@ -12,7 +12,6 @@
 
 <head>
     <title>Gaps</title>
-    <meta name="theme-color" content="#3f51b5"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="shortcut icon" href="/image/gaps.ico"/>
     <link rel="stylesheet" href="/css/bootstrap.min.css"/>
@@ -22,13 +21,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 
-<body onload="onStart()">
+<body>
 <nav aria-label="breadcrumb bg-primary">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item">Gaps</li>
-        <li class="breadcrumb-item active">Plex</li>
-        <li class="breadcrumb-item active" aria-current="page">Libraries</li>
-        <li class="breadcrumb-item active" disabled>Movies</li>
+        <li class="breadcrumb-item"><a href="/">Home</li>
+        <li class="breadcrumb-item active"><a href="/plexConfiguration">Plex</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="/plexLibraries">Libraries</a></li>
     </ol>
 </nav>
 
@@ -44,7 +42,7 @@
         <div th:each="library : *{libraries}" th:remove="tag">
             <div class="form-group form-check">
                 <input type="checkbox" th:id="${library.key}" class="form-check-input">
-                <label class="form-check-label" th:for="${library.key}" th:text="${library.key}"></label>
+                <label class="form-check-label" th:for="${library.key}" th:text="${library.title}"></label>
             </div>
         </div>
 
@@ -56,10 +54,8 @@
         changes and then retry connecting. Check the browser and Docker logs for more information.</p>
 </div>
 
-
 <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="js/js.cookie.min.js"></script>
-<script type="text/javascript" src="../static/js/plexLibraries.min.js"></script>
+<script type="text/javascript" src="js/plexLibraries.js"></script>
 </body>
 </html>

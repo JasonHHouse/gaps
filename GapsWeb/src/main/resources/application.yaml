@@ -31,6 +31,9 @@ server:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
     min-response-size: 1024
+  error:
+    whitelabel:
+      enabled: false
   http2:
     enabled: true
   ssl:
@@ -69,8 +72,12 @@ server:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
     min-response-size: 1024
+  error:
+    whitelabel:
+      enabled: false
 info:
   app:
     name: Gaps
     description: Gaps searches through your Plex Server or local folders for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.
     version: 0.1.0
+

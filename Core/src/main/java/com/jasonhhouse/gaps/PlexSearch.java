@@ -1,7 +1,7 @@
 package com.jasonhhouse.gaps;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class PlexSearch {
 
@@ -13,17 +13,17 @@ public final class PlexSearch {
 
     private Integer port;
 
-    private final Map<String, Boolean> libraries;
+    private final List<PlexLibrary> libraries;
 
     public PlexSearch() {
-        libraries = new HashMap<>();
+        libraries = new ArrayList<>();
     }
 
-    public void setLibrary(String library, Boolean selected) {
-        libraries.put(library, selected);
+    public void setLibrarySelected(PlexLibrary plexLibrary) {
+        libraries.get(libraries.indexOf(plexLibrary)).setSelected(true);
     }
 
-    public Map<String, Boolean> getLibraries() {
+    public List<PlexLibrary> getLibraries() {
         return libraries;
     }
 
