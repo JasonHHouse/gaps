@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping(value = "cancelSearch")
 public class CancelController {
 
-    private final Logger logger = LoggerFactory.getLogger(CancelController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CancelController.class);
 
     private final GapsSearch gapsSearch;
 
@@ -30,7 +30,7 @@ public class CancelController {
      */
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<String> cancelSearch() {
-        logger.info("cancelSearch()");
+        LOGGER.info("cancelSearch()");
         gapsSearch.cancelSearch();
         return new ResponseEntity<>("Canceled Search", HttpStatus.OK);
     }

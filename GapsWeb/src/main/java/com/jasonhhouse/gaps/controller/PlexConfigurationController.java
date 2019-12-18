@@ -24,7 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/plexConfiguration")
 public class PlexConfigurationController {
 
-    private final Logger logger = LoggerFactory.getLogger(PlexConfigurationController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PlexConfigurationController.class);
 
     private final BindingErrorsService bindingErrorsService;
     private final GapsService gapsService;
@@ -39,7 +39,7 @@ public class PlexConfigurationController {
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView postPlexConfiguration(@Valid @ModelAttribute("plexSearch") PlexSearch plexSearch, BindingResult bindingResult) {
-        logger.info("postPlexConfiguration( " + plexSearch + " )");
+        LOGGER.info("postPlexConfiguration( " + plexSearch + " )");
 
         if (bindingErrorsService.hasBindingErrors(bindingResult)) {
             return bindingErrorsService.getErrorPage();
@@ -58,7 +58,7 @@ public class PlexConfigurationController {
     @RequestMapping(method = RequestMethod.GET,
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getPlexConfiguration() {
-        logger.info("getPlexConfiguration()");
+        LOGGER.info("getPlexConfiguration()");
         ModelAndView modelAndView = new ModelAndView("plexConfiguration");
         modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
         return modelAndView;
@@ -66,7 +66,7 @@ public class PlexConfigurationController {
 
     @InitBinder("plexSearch")
     public void initBinder(WebDataBinder binder) {
-        logger.info("initBinder()");
+        LOGGER.info("initBinder()");
         binder.addCustomFormatter(new PlexSearchFormatter(), "plexSearch");
     }
 }

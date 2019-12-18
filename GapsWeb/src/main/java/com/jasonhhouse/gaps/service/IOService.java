@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class IOService {
 
-    private final Logger logger = LoggerFactory.getLogger(IOService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(IOService.class);
 
     private static final String STORAGE_FOLDER = "/usr/data/";
 
@@ -33,16 +33,16 @@ public class IOService {
     public void migrateJsonSeedFileIfNeeded() {
         final File seedFile = new File(STORAGE_FOLDER + STORAGE);
         if (seedFile.exists()) {
-            logger.info("Seed file exists, not copying over");
+            LOGGER.info("Seed file exists, not copying over");
             return;
         }
 
         final File tempSeed = new File(TEMP_STORAGE_FOLDER + STORAGE);
         try {
             Files.move(tempSeed.toPath(), seedFile.toPath());
-            logger.info("Seed file doesn't exist, copying over");
+            LOGGER.info("Seed file doesn't exist, copying over");
         } catch (IOException e) {
-            logger.error("Failed to copy seed file over", e);
+            LOGGER.error("Failed to copy seed file over", e);
         }
     }
 
@@ -50,9 +50,9 @@ public class IOService {
      * Prints out all recommended files to the terminal or command line
      */
     public void printRecommended(List<Movie> recommended) {
-        System.out.println(recommended.size() + " Recommended Movies");
+        LOGGER.info(recommended.size() + " Recommended Movies");
         for (Movie movie : recommended) {
-            System.out.println(movie.toString());
+            LOGGER.info(movie.toString());
         }
     }
 
@@ -65,7 +65,7 @@ public class IOService {
         if (file.exists()) {
             boolean deleted = file.delete();
             if (!deleted) {
-                logger.error("Can't delete existing file " + fileName);
+                LOGGER.error("Can't delete existing file " + fileName);
                 return;
             }
         }
@@ -73,11 +73,11 @@ public class IOService {
         try {
             boolean created = file.createNewFile();
             if (!created) {
-                logger.error("Can't create file " + fileName);
+                LOGGER.error("Can't create file " + fileName);
                 return;
             }
         } catch (IOException e) {
-            logger.error("Can't create file " + fileName, e);
+            LOGGER.error("Can't create file " + fileName, e);
             return;
         }
 
@@ -88,9 +88,9 @@ public class IOService {
             }
             outputStream.write(movies.toString().getBytes());
         } catch (FileNotFoundException e) {
-            logger.error("Can't find file " + fileName, e);
+            LOGGER.error("Can't find file " + fileName, e);
         } catch (IOException e) {
-            logger.error("Can't write to file " + fileName, e);
+            LOGGER.error("Can't write to file " + fileName, e);
         }
     }
 
@@ -102,7 +102,7 @@ public class IOService {
         final String fileName = STORAGE_FOLDER + STORAGE;
         File file = new File(fileName);
         if (!file.exists()) {
-            logger.warn("Can't find json file '" + fileName + "'. Most likely first run.");
+            LOGGER.warn("Can't find json file '" + fileName + "'. Most likely first run.");
             return everyMovie;
         }
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
@@ -112,7 +112,7 @@ public class IOService {
                 fullFile.append(line);
             }
 
-            logger.debug(fullFile.toString());
+            LOGGER.debug(fullFile.toString());
 
             JSONArray movies = new JSONArray(fullFile.toString());
             for (int i = 0; i < movies.length(); i++) {
@@ -120,14 +120,14 @@ public class IOService {
                 everyMovie.add(movie);
             }
 
-            logger.debug("everyMovie.size():" + everyMovie.size());
+            LOGGER.debug("everyMovie.size():" + everyMovie.size());
 
         } catch (FileNotFoundException e) {
-            logger.error("Can't find file " + fileName);
+            LOGGER.error("Can't find file " + fileName);
         } catch (IOException e) {
-            logger.error("Can't write to file " + fileName);
+            LOGGER.error("Can't write to file " + fileName);
         } catch (JSONException e) {
-            logger.error("Error parsing JSON file " + fileName, e);
+            LOGGER.error("Error parsing JSON file " + fileName, e);
         }
 
         return everyMovie;
@@ -160,7 +160,7 @@ public class IOService {
         if (file.exists()) {
             boolean deleted = file.delete();
             if (!deleted) {
-                logger.error("Can't delete existing file " + RECOMMENDED_MOVIES);
+                LOGGER.error("Can't delete existing file " + RECOMMENDED_MOVIES);
                 return;
             }
         }
@@ -168,11 +168,11 @@ public class IOService {
         try {
             boolean created = file.createNewFile();
             if (!created) {
-                logger.error("Can't create file " + RECOMMENDED_MOVIES);
+                LOGGER.error("Can't create file " + RECOMMENDED_MOVIES);
                 return;
             }
         } catch (IOException e) {
-            logger.error("Can't create file " + RECOMMENDED_MOVIES, e);
+            LOGGER.error("Can't create file " + RECOMMENDED_MOVIES, e);
             return;
         }
 
@@ -182,9 +182,9 @@ public class IOService {
                 outputStream.write(output.getBytes());
             }
         } catch (FileNotFoundException e) {
-            logger.error("Can't find file " + RECOMMENDED_MOVIES, e);
+            LOGGER.error("Can't find file " + RECOMMENDED_MOVIES, e);
         } catch (IOException e) {
-            logger.error("Can't write to file " + RECOMMENDED_MOVIES, e);
+            LOGGER.error("Can't write to file " + RECOMMENDED_MOVIES, e);
         }
     }
 }

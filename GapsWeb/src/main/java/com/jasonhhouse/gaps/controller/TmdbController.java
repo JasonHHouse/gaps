@@ -22,7 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 @Controller
 public class TmdbController {
 
-    private final Logger logger = LoggerFactory.getLogger(TmdbController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TmdbController.class);
 
     private final GapsSearch gapsSearch;
 
@@ -44,14 +44,14 @@ public class TmdbController {
     @ResponseStatus(value = HttpStatus.OK)
     @SuppressWarnings("unchecked")
     public void submit(@RequestBody Gaps gaps) {
-        logger.info("submit()");
+        LOGGER.info("submit()");
 
         ioService.migrateJsonSeedFileIfNeeded();
 
         //Error checking
         if (StringUtils.isEmpty(gaps.getMovieDbApiKey())) {
             String reason = "Missing Movie DB Api Key. This field is required for Gaps.";
-            logger.error(reason);
+            LOGGER.error(reason);
 
             Exception e = new IllegalArgumentException();
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason, e);
@@ -59,7 +59,7 @@ public class TmdbController {
 
         if (BooleanUtils.isNotTrue(gaps.getSearchFromPlex()) && BooleanUtils.isNotTrue(gaps.getSearchFromFolder())) {
             String reason = "Must search from Plex and/or folders. One or both of these fields is required for Gaps.";
-            logger.error(reason);
+            LOGGER.error(reason);
 
             Exception e = new IllegalArgumentException();
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason, e);
@@ -68,7 +68,7 @@ public class TmdbController {
         if (BooleanUtils.isNotFalse(gaps.getSearchFromPlex())) {
             if (CollectionUtils.isEmpty(gaps.getMovieUrls())) {
                 String reason = "Missing Plex movie collection urls. This field is required to search from Plex.";
-                logger.error(reason);
+                LOGGER.error(reason);
 
                 Exception e = new IllegalArgumentException();
                 throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason, e);
@@ -76,7 +76,7 @@ public class TmdbController {
                 for (String url : gaps.getMovieUrls()) {
                     if (url == null) {
                         String reason = "Found null Plex movie collection url. This field is required to search from Plex.";
-                        logger.error(reason);
+                        LOGGER.error(reason);
                         Exception e = new IllegalArgumentException();
                         throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason, e);
                     }
@@ -86,17 +86,17 @@ public class TmdbController {
 
         //Fill in default values if missing
         if (gaps.getWriteTimeout() == null) {
-            logger.info("Missing write timeout. Setting default to 180 seconds.");
+            LOGGER.info("Missing write timeout. Setting default to 180 seconds.");
             gaps.setWriteTimeout(180);
         }
 
         if (gaps.getConnectTimeout() == null) {
-            logger.info("Missing connect timeout. Setting default to 180 seconds.");
+            LOGGER.info("Missing connect timeout. Setting default to 180 seconds.");
             gaps.setConnectTimeout(180);
         }
 
         if (gaps.getReadTimeout() == null) {
-            logger.info("Missing read timeout. Setting default to 180 seconds.");
+            LOGGER.info("Missing read timeout. Setting default to 180 seconds.");
             gaps.setReadTimeout(180);
         }
 

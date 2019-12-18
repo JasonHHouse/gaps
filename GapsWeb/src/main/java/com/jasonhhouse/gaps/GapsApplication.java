@@ -34,7 +34,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableAsync
 public class GapsApplication {
 
-    private final Logger logger = LoggerFactory.getLogger(GapsApplication.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GapsApplication.class);
 
     private final YamlConfig myConfig;
 
@@ -47,8 +47,8 @@ public class GapsApplication {
     }
 
     public void run(String... args) throws Exception {
-        logger.info("Using environment: " + myConfig.getEnvironment());
-        logger.info("Name: " + myConfig.getName());
+        LOGGER.info("Using environment: " + myConfig.getEnvironment());
+        LOGGER.info("Name: " + myConfig.getName());
     }
 
     @Bean

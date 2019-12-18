@@ -25,7 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping(value = "/plexLibraries")
 public class PlexLibrariesController {
-    private final Logger logger = LoggerFactory.getLogger(PlexLibrariesController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PlexLibrariesController.class);
 
     private final BindingErrorsService bindingErrorsService;
     private final PlexService plexService;
@@ -42,7 +42,7 @@ public class PlexLibrariesController {
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView postPlexLibraries(@Valid @ModelAttribute("plexSearch") PlexSearch plexSearch, BindingResult bindingResult) {
-        logger.info("postPlexLibraries( " + plexSearch + " )");
+        LOGGER.info("postPlexLibraries( " + plexSearch + " )");
 
         if (bindingErrorsService.hasBindingErrors(bindingResult)) {
             return bindingErrorsService.getErrorPage();
@@ -53,7 +53,7 @@ public class PlexLibrariesController {
         List<PlexLibrary> plexLibraries = plexService.queryPlexLibraries(plexSearch);
         gapsService.getPlexSearch().getLibraries().addAll(plexLibraries);
 
-        logger.info(gapsService.getPlexSearch().toString());
+        LOGGER.info(gapsService.getPlexSearch().toString());
 
         ModelAndView modelAndView = new ModelAndView("plexLibraries");
         modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
@@ -63,7 +63,7 @@ public class PlexLibrariesController {
     @RequestMapping(method = RequestMethod.GET,
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getPlexLibraries() {
-        logger.info("getPlexLibraries()");
+        LOGGER.info("getPlexLibraries()");
         ModelAndView modelAndView = new ModelAndView("plexLibraries");
         modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
         return modelAndView;
@@ -71,7 +71,7 @@ public class PlexLibrariesController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        logger.info("initBinder()");
+        LOGGER.info("initBinder()");
         binder.addCustomFormatter(new PlexSearchFormatter(), "plexSearch");
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.format.Formatter;
 
 public class PlexSearchFormatter implements Formatter<PlexSearch> {
 
-    private final Logger logger = LoggerFactory.getLogger(PlexSearchFormatter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PlexSearchFormatter.class);
 
     @NotNull
     @Override
@@ -20,7 +20,7 @@ public class PlexSearchFormatter implements Formatter<PlexSearch> {
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.readValue(text, PlexSearch.class);
         } catch (JsonProcessingException e) {
-            logger.error("Error parsing player.", e);
+            LOGGER.error("Error parsing player.", e);
             throw new ParseException("Error parsing player.", 0);
         }
     }
@@ -33,7 +33,7 @@ public class PlexSearchFormatter implements Formatter<PlexSearch> {
         try {
             return mapper.writeValueAsString(plexSearch);
         } catch (JsonProcessingException e) {
-            logger.error("Error converting room id and issue id to JSON", e);
+            LOGGER.error("Error converting room id and issue id to JSON", e);
             return "";
         }
     }

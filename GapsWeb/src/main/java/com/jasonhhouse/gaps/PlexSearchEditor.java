@@ -8,11 +8,11 @@ import org.slf4j.LoggerFactory;
 
 public class PlexSearchEditor extends PropertyEditorSupport {
 
-    private final Logger logger = LoggerFactory.getLogger(PropertyEditorSupport.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PropertyEditorSupport.class);
 
     @Override
     public String getAsText() {
-        logger.debug("getAsText()");
+        LOGGER.debug("getAsText()");
 
         PlexSearch plexSearch = (PlexSearch) getValue();
 
@@ -21,7 +21,7 @@ public class PlexSearchEditor extends PropertyEditorSupport {
         try {
             return mapper.writeValueAsString(plexSearch);
         } catch (JsonProcessingException e) {
-            logger.error("Error converting room id and issue id to JSON", e);
+            LOGGER.error("Error converting room id and issue id to JSON", e);
         }
 
         return super.getAsText();
@@ -29,14 +29,14 @@ public class PlexSearchEditor extends PropertyEditorSupport {
 
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
-        logger.debug("setAsText( " + text + " )");
+        LOGGER.debug("setAsText( " + text + " )");
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             PlexSearch plexSearch = objectMapper.readValue(text, PlexSearch.class);
             setValue(plexSearch);
         } catch (JsonProcessingException e) {
-            logger.error("Error parsing player.", e);
+            LOGGER.error("Error parsing player.", e);
             super.setAsText(text);
         }
     }

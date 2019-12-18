@@ -37,11 +37,11 @@ import org.xml.sax.SAXException;
 @Service
 public class PlexServiceImpl implements PlexService {
 
-    private final Logger logger = LoggerFactory.getLogger(PlexServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PlexServiceImpl.class);
 
     @Override
     public @NotNull List<PlexLibrary> queryPlexLibraries(@NotNull PlexSearch plexSearch) {
-        logger.info("queryPlexLibraries()");
+        LOGGER.info("queryPlexLibraries()");
 
         HttpUrl url = new HttpUrl.Builder()
                 .scheme("http")
@@ -69,7 +69,7 @@ public class PlexServiceImpl implements PlexService {
 
                 if (StringUtils.isBlank(body)) {
                     String reason = "Body returned null from Plex. Url: " + url;
-                    logger.error(reason);
+                    LOGGER.error(reason);
                     throw new IllegalStateException(reason);
                 }
 
@@ -83,7 +83,7 @@ public class PlexServiceImpl implements PlexService {
 
                 if (nodeList.getLength() == 0) {
                     String reason = "No libraries found in url: " + url;
-                    logger.warn(reason);
+                    LOGGER.warn(reason);
                 }
 
                 for (int i = 0; i < nodeList.getLength(); i++) {
@@ -93,7 +93,7 @@ public class PlexServiceImpl implements PlexService {
                     Node namedItem = map.getNamedItem("type");
                     if (namedItem == null) {
                         String reason = "Error finding 'type' inside /MediaContainer/Directory";
-                        logger.error(reason);
+                        LOGGER.error(reason);
                         throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason);
                     }
 
@@ -106,13 +106,13 @@ public class PlexServiceImpl implements PlexService {
 
                         if (titleNode == null) {
                             String reason = "Error finding 'title' inside /MediaContainer/Directory";
-                            logger.error(reason);
+                            LOGGER.error(reason);
                             throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason);
                         }
 
                         if (keyNode == null) {
                             String reason = "Error finding 'key' inside /MediaContainer/Directory";
-                            logger.error(reason);
+                            LOGGER.error(reason);
                             throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason);
                         }
 
@@ -126,20 +126,20 @@ public class PlexServiceImpl implements PlexService {
 
             } catch (IOException e) {
                 String reason = "Error connecting to Plex to get library list: " + url;
-                logger.error(reason, e);
+                LOGGER.error(reason, e);
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason, e);
             } catch (ParserConfigurationException | XPathExpressionException | SAXException e) {
                 String reason = "Error parsing XML from Plex: " + url;
-                logger.error(reason, e);
+                LOGGER.error(reason, e);
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
             }
         } catch (IllegalArgumentException e) {
             String reason = "Error with plex Url: " + url;
-            logger.error(reason, e);
+            LOGGER.error(reason, e);
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason, e);
         }
 
-        logger.info(plexLibraries.size() + " Plex libraries found");
+        LOGGER.info(plexLibraries.size() + " Plex libraries found");
 
         return plexLibraries;
     }

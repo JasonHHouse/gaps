@@ -13,7 +13,7 @@ public class BindingErrorsService {
 
     private final MessageSource messageSource;
 
-    private final Logger logger = LoggerFactory.getLogger(BindingErrorsService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BindingErrorsService.class);
 
     public BindingErrorsService(MessageSource messageSource) {
         this.messageSource = messageSource;
@@ -25,7 +25,7 @@ public class BindingErrorsService {
                 if (object instanceof FieldError) {
                     FieldError fieldError = (FieldError) object;
                     String message = messageSource.getMessage(fieldError, null);
-                    logger.error(message);
+                    LOGGER.error(message);
                 }
             }
             return true;

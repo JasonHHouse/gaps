@@ -4,6 +4,7 @@ import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.PlexSearchEditor;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexSearchFormatter;
+import com.jasonhhouse.gaps.PlexSearchValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/")
 public class GapsController {
 
-    private final Logger logger = LoggerFactory.getLogger(GapsController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GapsController.class);
 
     private final GapsService gapsService;
 
@@ -31,7 +32,7 @@ public class GapsController {
     @RequestMapping(method = RequestMethod.GET,
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getIndex() {
-        logger.info("getIndex()");
+        LOGGER.info("getIndex()");
         ModelAndView modelAndView = new ModelAndView("index");
         gapsService.getPlexSearch().setMovieDbApiKey("723b4c763114904392ca441909aa0375");
         modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
@@ -40,7 +41,7 @@ public class GapsController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        logger.info("initBinder()");
-        binder.addCustomFormatter(new PlexSearchFormatter(), "plexSearch");
+        LOGGER.info("initBinder()");
+        binder.setValidator(new PlexSearchValidator());
     }
 }

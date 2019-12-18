@@ -24,7 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping(value = "/plexMovieList")
 public class PlexMovieListController {
-    private final Logger logger = LoggerFactory.getLogger(PlexMovieListController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PlexMovieListController.class);
 
     private final BindingErrorsService bindingErrorsService;
     private final PlexService plexService;
@@ -41,7 +41,7 @@ public class PlexMovieListController {
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView postPlexMovieList(@Valid @ModelAttribute("plexSearch") PlexSearch plexSearch, BindingResult bindingResult) {
-        logger.info("postPlexMovieList( " + plexSearch + " )");
+        LOGGER.info("postPlexMovieList( " + plexSearch + " )");
 
         if (bindingErrorsService.hasBindingErrors(bindingResult)) {
             return bindingErrorsService.getErrorPage();
@@ -52,7 +52,7 @@ public class PlexMovieListController {
         gapsService.updatePlexSearch(plexSearch);
 
         ModelAndView modelAndView = new ModelAndView("plexMovieList");
-        logger.info(gapsService.getPlexSearch().toString());
+        LOGGER.info(gapsService.getPlexSearch().toString());
         modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
         return modelAndView;
     }
@@ -60,13 +60,8 @@ public class PlexMovieListController {
     @RequestMapping(method = RequestMethod.GET,
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getPlexMovieList() {
-        logger.info("getPlexMovieList()");
+        LOGGER.info("getPlexMovieList()");
         return new ModelAndView("plexMovieList");
     }
-/*
-    @InitBinder("plexSearch")
-    public void initBinder(WebDataBinder binder) {
-        logger.info("initBinder()");
-        binder.addCustomFormatter(new PlexSearchFormatter(), String.class);
-    }*/
+
 }
