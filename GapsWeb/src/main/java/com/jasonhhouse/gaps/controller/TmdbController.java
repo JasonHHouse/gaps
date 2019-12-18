@@ -3,7 +3,7 @@ package com.jasonhhouse.gaps.controller;
 import com.jasonhhouse.gaps.Gaps;
 import com.jasonhhouse.gaps.GapsSearch;
 import com.jasonhhouse.gaps.Movie;
-import com.jasonhhouse.gaps.service.IOService;
+import com.jasonhhouse.gaps.service.IoService;
 import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
@@ -26,10 +26,10 @@ public class TmdbController {
 
     private final GapsSearch gapsSearch;
 
-    private final IOService ioService;
+    private final IoService ioService;
 
     @Autowired
-    TmdbController(GapsSearch gapsSearch, IOService ioService) {
+    TmdbController(GapsSearch gapsSearch, IoService ioService) {
         this.gapsSearch = gapsSearch;
         this.ioService = ioService;
     }

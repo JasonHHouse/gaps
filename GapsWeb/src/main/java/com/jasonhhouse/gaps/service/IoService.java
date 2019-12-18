@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,9 +19,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class IOService {
+public class IoService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(IOService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(IoService.class);
 
     private static final String STORAGE_FOLDER = "/usr/data/";
 
@@ -29,6 +30,21 @@ public class IOService {
     private static final String STORAGE = "movieIds.json";
 
     private static final String RECOMMENDED_MOVIES = "gaps_recommended_movies.txt";
+
+    public static final String RSS_FEED_JSON_FILE = "rssFeed.json";
+
+    public boolean doesRssFileExist() {
+        return new File(RSS_FEED_JSON_FILE).exists();
+    }
+
+    public @NotNull String getRssFile() {
+        try {
+            return new String(Files.readAllBytes(new File(RSS_FEED_JSON_FILE).toPath()));
+        } catch (IOException e) {
+            LOGGER.error("Check for RSS file next time", e);
+            return "";
+        }
+    }
 
     public void migrateJsonSeedFileIfNeeded() {
         final File seedFile = new File(STORAGE_FOLDER + STORAGE);

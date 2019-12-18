@@ -13,7 +13,6 @@ package com.jasonhhouse.gaps.service;
 import com.jasonhhouse.gaps.Gaps;
 import com.jasonhhouse.gaps.GapsSearch;
 import com.jasonhhouse.gaps.Movie;
-import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.SearchCancelledException;
 import com.jasonhhouse.gaps.SearchResults;
 import com.jasonhhouse.gaps.UrlGenerator;
@@ -33,7 +32,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -69,12 +67,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ResponseStatusException;
 import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import static com.jasonhhouse.gaps.controller.RSSController.RSS_FEED_JSON_FILE;
+import static com.jasonhhouse.gaps.service.IoService.RSS_FEED_JSON_FILE;
 
 @Service
 public class GapsSearchService implements GapsSearch {
@@ -860,7 +857,7 @@ public class GapsSearchService implements GapsSearch {
                             continue;
                         }
 
-                        if(collection.has("name")) {
+                        if (collection.has("name")) {
                             movie.setCollection(collection.getString("name"));
                             movieFromCollection.setCollection(collection.getString("name"));
                         }
