@@ -15,11 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Future;
+
+import com.jasonhhouse.gaps.service.IoService;
 import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.server.ResponseStatusException;
@@ -32,11 +35,14 @@ class GapsSearchServiceTest {
     private GapsUrlGeneratorTest gapsUrlGeneratorTest;
     private GapsSearchService gapsSearch;
 
+    @MockBean
+    private IoService ioService;
+
     @BeforeEach
     void setup() throws Exception {
         gapsUrlGeneratorTest = new GapsUrlGeneratorTest();
         SimpMessagingTemplate template = new SimpMessagingTemplate((message, l) -> true);
-        gapsSearch = new GapsSearchService(gapsUrlGeneratorTest, template);
+        gapsSearch = new GapsSearchService(gapsUrlGeneratorTest, template, ioService);
 
         // Create a MockWebServer. These are lean enough that you can create a new
         // instance for every unit test.

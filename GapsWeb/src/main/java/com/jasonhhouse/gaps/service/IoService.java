@@ -1,12 +1,8 @@
 package com.jasonhhouse.gaps.service;
 
 import com.jasonhhouse.gaps.Movie;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
+
+import java.io.*;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,15 +30,51 @@ public class IoService {
     public static final String RSS_FEED_JSON_FILE = "rssFeed.json";
 
     public boolean doesRssFileExist() {
-        return new File(RSS_FEED_JSON_FILE).exists();
+        return new File(STORAGE_FOLDER + RSS_FEED_JSON_FILE).exists();
     }
 
     public @NotNull String getRssFile() {
         try {
-            return new String(Files.readAllBytes(new File(RSS_FEED_JSON_FILE).toPath()));
+            return new String(Files.readAllBytes(new File(STORAGE_FOLDER + RSS_FEED_JSON_FILE).toPath()));
         } catch (IOException e) {
             LOGGER.error("Check for RSS file next time", e);
             return "";
+        }
+    }
+
+    /**
+     * Write the recommended movie list to the RSS file for endpoint to display.
+     *
+     * @param recommended The recommended movies. (IMDB ID is required.)
+     */
+    public void writeRssFile(List<Movie> recommended) {
+        JSONArray jsonRecommended = new JSONArray();
+
+        File file = new File(STORAGE_FOLDER + RSS_FEED_JSON_FILE);
+
+        // Create writer that java will close for us.
+        try (FileWriter writer = new FileWriter(file)) {
+
+            // Creat the json file for writing to/endpoint access.
+            file.createNewFile();
+
+            for (Movie mov : recommended) {
+                // Create movie JSONObject for adding to Json Array
+                JSONObject obj = new JSONObject();
+                obj.put("imdb_id", mov.getImdbId());
+                obj.put("tvdb_id", mov.getTvdbId());
+                obj.put("title", mov.getName());
+                obj.put("release_date", mov.getYear());
+                obj.put("poster_path", mov.getPosterUrl());
+                jsonRecommended.put(obj);
+            }
+
+            // Write the JSONArray of recommended movies to the file.
+            jsonRecommended.write(writer);
+            writer.flush();
+
+        } catch (Exception e) {
+            LOGGER.warn(e.getMessage());
         }
     }
 

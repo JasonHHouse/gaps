@@ -104,14 +104,17 @@ public class GapsSearchService implements GapsSearch {
 
     private final AtomicInteger tempTvdbCounter;
 
+    private final IoService ioService;
+
     @Autowired
-    public GapsSearchService(@Qualifier("real") UrlGenerator urlGenerator, SimpMessagingTemplate template) {
+    public GapsSearchService(@Qualifier("real") UrlGenerator urlGenerator, SimpMessagingTemplate template, IoService ioService) {
         this.template = template;
         this.ownedMovies = new HashSet<>();
         this.searched = new HashSet<>();
         this.recommended = new ArrayList<>();
         this.everyMovie = new ArrayList<>();
         this.urlGenerator = urlGenerator;
+        this.ioService = ioService;
 
         totalMovieCount = new AtomicInteger();
         tempTvdbCounter = new AtomicInteger();
@@ -872,7 +875,7 @@ public class GapsSearchService implements GapsSearch {
                         recommended.add(recommendedMovie);
 
                         // Write current list of recommended movies to file.
-                        writeRssFile(recommended);
+                        ioService.writeRssFile(recommended);
 
                         LOGGER.debug(movieFromCollection.toString());
 
@@ -893,42 +896,6 @@ public class GapsSearchService implements GapsSearch {
         }
 
         searched.add(movie);
-    }
-
-    /**
-     * Write the recommended movie list to the RSS file for endpoint to display.
-     *
-     * @param recommended The recommended movies. (IMDB ID is required.)
-     */
-    private void writeRssFile(List<Movie> recommended) {
-        JSONArray jsonRecommended = new JSONArray();
-
-        File file = new File(RSS_FEED_JSON_FILE);
-
-        // Create writer that java will close for us.
-        try (FileWriter writer = new FileWriter(file)) {
-
-            // Creat the json file for writing to/endpoint access.
-            file.createNewFile();
-
-            for (Movie mov : recommended) {
-                // Create movie JSONObject for adding to Json Array
-                JSONObject obj = new JSONObject();
-                obj.put("imdb_id", mov.getImdbId());
-                obj.put("tvdb_id", mov.getTvdbId());
-                obj.put("title", mov.getName());
-                obj.put("release_date", mov.getYear());
-                obj.put("poster_path", mov.getPosterUrl());
-                jsonRecommended.put(obj);
-            }
-
-            // Write the JSONArray of recommended movies to the file.
-            jsonRecommended.write(writer);
-            writer.flush();
-
-        } catch (Exception e) {
-            LOGGER.warn(e.getMessage());
-        }
     }
 
     private void sendEmptySearchUpdate() {
