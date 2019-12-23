@@ -3,8 +3,7 @@ package com.jasonhhouse.gaps.controller;
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexSearch;
-import com.jasonhhouse.gaps.PlexSearchFormatter;
-import com.jasonhhouse.gaps.PlexService;
+import com.jasonhhouse.gaps.PlexQuery;
 import com.jasonhhouse.gaps.service.BindingErrorsService;
 import java.util.List;
 import javax.validation.Valid;
@@ -14,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,13 +24,13 @@ public class PlexMovieListController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PlexMovieListController.class);
 
     private final BindingErrorsService bindingErrorsService;
-    private final PlexService plexService;
+    private final PlexQuery plexQuery;
     private final GapsService gapsService;
 
     @Autowired
-    public PlexMovieListController(BindingErrorsService bindingErrorsService, PlexService plexService, GapsService gapsService) {
+    public PlexMovieListController(BindingErrorsService bindingErrorsService, PlexQuery plexQuery, GapsService gapsService) {
         this.bindingErrorsService = bindingErrorsService;
-        this.plexService = plexService;
+        this.plexQuery = plexQuery;
         this.gapsService = gapsService;
     }
 
@@ -47,7 +44,7 @@ public class PlexMovieListController {
             return bindingErrorsService.getErrorPage();
         }
 
-        List<PlexLibrary> plexLibraries = plexService.queryPlexLibraries(gapsService.getPlexSearch());
+        List<PlexLibrary> plexLibraries = plexQuery.getLibraries(gapsService.getPlexSearch());
         gapsService.updateLibrarySelections(plexLibraries);
         gapsService.updatePlexSearch(plexSearch);
 

@@ -26,6 +26,16 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <a class="navbar-brand">Gaps - Find your missing movies</a>
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/recommended">Recommended</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/rss">RSS</a>
+            </li>
+        </ul>
+    </div>
 </nav>
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -37,7 +47,15 @@
 </nav>
 
 <div class="container">
-    <h2 class="top-margin">Searching for Movies</h2>
+
+    <div id="copiedToClipboard" class="alert alert-primary alert-dismissible fade show gaps-hide" role="alert">
+        Copied to Clipboard
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <h2 id="searchTitle" class="top-margin">Searching for Movies</h2>
 
     <div class="top-margin">
         <p id="searchPosition">Finding all movies in Plex</p>
@@ -67,7 +85,7 @@
         </table>
     </div>
 
-    <button class="btn btn-warning" id="cancel">Cancel</button>
+    <button class="btn btn-warning" onclick="cancel()" id="cancel">Cancel</button>
     <button class="btn btn-primary" id="viewRss">View RSS</button>
     <button class="btn btn-secondary" id="copyToClipboard">Copy to Clipboard</button>
 

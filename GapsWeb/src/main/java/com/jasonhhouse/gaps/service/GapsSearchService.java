@@ -63,6 +63,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ResponseStatusException;
@@ -123,6 +124,7 @@ public class GapsSearchService implements GapsSearch {
     }
 
     @Override
+    @Async
     public void run(@NotNull Gaps gaps, @NotNull List<Movie> everyMovie) {
         LOGGER.info("run( " + gaps + " )");
 
@@ -177,10 +179,21 @@ public class GapsSearchService implements GapsSearch {
         } catch (SearchCancelledException e) {
             String reason = "Search cancelled";
             LOGGER.error(reason, e);
+            template.convertAndSend("/finishedSearching", false);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
         } finally {
             cancelSearch.set(true);
         }
+
+        if (gaps.getWriteToFile()) {
+            ioService.writeToFile(recommended);
+        }
+
+        //Always write to log
+        ioService.printRecommended(recommended);
+        ioService.writeMovieIdsToFile(everyMovie);
+
+        template.convertAndSend("/finishedSearching", true);
     }
 
     private boolean isGapsPropertyValid(Gaps gaps) {
@@ -881,7 +894,7 @@ public class GapsSearchService implements GapsSearch {
 
                         //Send message over websocket
                         SearchResults searchResults = new SearchResults(getSearchedMovieCount(), getTotalMovieCount(), movieFromCollection);
-                        template.convertAndSend("/topic/newMovieFound", searchResults);
+                        template.convertAndSend("/newMovieFound", searchResults);
                     } catch (Exception e) {
                         LOGGER.warn(e.getMessage());
                     }
@@ -902,7 +915,7 @@ public class GapsSearchService implements GapsSearch {
         //Send message over websocket
         //No new movie, just updated counts
         SearchResults searchResults = new SearchResults(getSearchedMovieCount(), getTotalMovieCount(), null);
-        template.convertAndSend("/topic/newMovieFound", searchResults);
+        template.convertAndSend("/newMovieFound", searchResults);
     }
 
 

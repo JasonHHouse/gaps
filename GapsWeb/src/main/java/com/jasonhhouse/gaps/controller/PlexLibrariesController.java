@@ -2,10 +2,9 @@ package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.PlexLibrary;
-import com.jasonhhouse.gaps.PlexSearchEditor;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexSearchFormatter;
-import com.jasonhhouse.gaps.PlexService;
+import com.jasonhhouse.gaps.PlexQuery;
 import com.jasonhhouse.gaps.service.BindingErrorsService;
 import java.util.List;
 import javax.validation.Valid;
@@ -28,13 +27,13 @@ public class PlexLibrariesController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PlexLibrariesController.class);
 
     private final BindingErrorsService bindingErrorsService;
-    private final PlexService plexService;
+    private final PlexQuery plexQuery;
     private final GapsService gapsService;
 
     @Autowired
-    public PlexLibrariesController(BindingErrorsService bindingErrorsService, PlexService plexService, GapsService gapsService) {
+    public PlexLibrariesController(BindingErrorsService bindingErrorsService, PlexQuery plexQuery, GapsService gapsService) {
         this.bindingErrorsService = bindingErrorsService;
-        this.plexService = plexService;
+        this.plexQuery = plexQuery;
         this.gapsService = gapsService;
     }
 
@@ -50,7 +49,7 @@ public class PlexLibrariesController {
 
         gapsService.updatePlexSearch(plexSearch);
 
-        List<PlexLibrary> plexLibraries = plexService.queryPlexLibraries(plexSearch);
+        List<PlexLibrary> plexLibraries = plexQuery.getLibraries(plexSearch);
         gapsService.getPlexSearch().getLibraries().addAll(plexLibraries);
 
         LOGGER.info(gapsService.getPlexSearch().toString());

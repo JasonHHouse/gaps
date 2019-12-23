@@ -33,32 +33,75 @@ document.addEventListener('DOMContentLoaded', function () {
     progressContainer = $('#progressContainer');
     searchTitle = $('#searchTitle');
     searchDescription = $('#searchDescription');
-    /*
-        backButton.click(function () {
-            $('#warningModal').modal('open');
-        });*/
 
     setCopyToClipboardEnabled(false);
     copyToClipboard.click(function () {
         CopyToClipboard('searchResults');
-        M.toast({html: 'Copied to Clipboard'});
+        $('#copiedToClipboard').show();
     });
 
-    $('#agree').click(function () {
-        //Cancel Search
-        $.ajax({
-            type: "PUT",
-            url: "cancelSearch",
-            contentType: "application/json",
+    const socket = new SockJS('/gs-guide-websocket');
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, function () {
+        stompClient.subscribe( '/finishedSearching', function (successful) {
+            progressContainer.hide();
+            backButton.text('Restart');
+            disconnect();
+            if(successful) {
+                searchTitle.text(`Search Complete`);
+                searchPosition.text(`${movieCounter} movies to add to complete your collections. Below is everything Gaps found that is missing from your movie collections.`);
+                setCopyToClipboardEnabled(true);
+            } else {
+                searchTitle.text("Search Failed");
+                searchPosition.text("Unknown error. Check docker Gaps log file.");
+                setCopyToClipboardEnabled(false);
+            }
         });
 
-        //Navigate Home
-        location.assign("index.html");
+        stompClient.subscribe('/newMovieFound', function (status) {
+            const obj = JSON.parse(status.body);
+            showSearchStatus(obj);
+
+            function buildUrl(nextMovie) {
+                if (nextMovie.tvdbId) {
+                    return `https://www.themoviedb.org/movie/${nextMovie.tvdbId}`;
+                }
+
+                if (nextMovie.imdbId) {
+                    return `https://www.imdb.com/title/${nextMovie.imdbId}/`
+                }
+
+                return undefined;
+            }
+
+            if (obj.nextMovie) {
+                const url = buildUrl(obj.nextMovie);
+                let link;
+                if (url) {
+                    link = `<a target="_blank" href="${url}">Details</a>`;
+                } else {
+                    link = "No URL found";
+                }
+
+                moviesTable.row.add([
+                    obj.nextMovie.name,
+                    obj.nextMovie.year,
+                    obj.nextMovie.collection,
+                    link
+                ]).draw();
+            }
+        });
     });
 
-    connect();
     search();
 });
+
+function cancel() {
+    stompClient.send("/cancelSearching");
+
+    //Navigate Home
+    location.assign("index.html");
+}
 
 window.onbeforeunload = function () {
     disconnect();
@@ -96,15 +139,6 @@ function search() {
         plexMovieUrls.push(plexMovieUrl);
     });
 
-    /*for (const library of plexSearch.libraries) {
-        let data = {
-            'X-Plex-Token': plexSearch.plexToken
-        };
-
-        let plexMovieUrl = "http://" + plexSearch.address + ":" + plexSearch.port + "/library/sections/" + library.key + "/all/?" + encodeQueryData(data);
-        plexMovieUrls.push(plexMovieUrl);
-    }*/
-
     const gaps = {
         movieDbApiKey: plexSearch.movieDbApiKey,
         writeToFile: true,
@@ -114,77 +148,12 @@ function search() {
 
     $.ajax({
         type: "POST",
-        url: "submit",
+        url: "startSearching",
         data: JSON.stringify(gaps),
-        contentType: "application/json",
-        timeout: 0,
-        success: function () {
-            searchTitle.text(`${movieCounter} movies to add to complete your collections`);
-            searchDescription.text("Below is everything Gaps found that is missing from your movie collections.");
-            progressContainer.hide();
-            searchPosition.html('');
-            backButton.text('Restart');
-            setCopyToClipboardEnabled(true);
-            disconnect();
-        },
-        error: function (err) {
-            disconnect();
-            let message = "Unknown error. Check docker Gaps log file.";
-            if (err) {
-                message = JSON.parse(err.responseText).message;
-                console.error(message);
-            }
-
-            searchTitle.text("An error occurred...");
-            searchDescription.text("");
-            searchPosition.html('');
-            progressContainer.hide();
-            backButton.text('restart');
-            setCopyToClipboardEnabled(false);
-        }
+        contentType: "application/json"
     });
 
     showSearchStatus();
-}
-
-function connect() {
-    const socket = new SockJS('/gs-guide-websocket');
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, function () {
-        stompClient.subscribe('/topic/newMovieFound', function (status) {
-            const obj = JSON.parse(status.body);
-            showSearchStatus(obj);
-
-            function buildUrl(nextMovie) {
-                if (nextMovie.tvdbId) {
-                    return `https://www.themoviedb.org/movie/${nextMovie.tvdbId}`;
-                }
-
-                if (nextMovie.imdbId) {
-                    return `https://www.imdb.com/title/${nextMovie.imdbId}/`
-                }
-
-                return undefined;
-            }
-
-            if (obj.nextMovie) {
-                const url = buildUrl(obj.nextMovie);
-                let link;
-                if (url) {
-                    link = `<a target="_blank" href="${url}">Details</a>`;
-                } else {
-                    link = "No URL found";
-                }
-
-                moviesTable.row.add([
-                    obj.nextMovie.name,
-                    obj.nextMovie.year,
-                    obj.nextMovie.collection,
-                    link
-                ]).draw();
-            }
-        });
-    });
 }
 
 function disconnect() {
