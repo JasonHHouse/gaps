@@ -11,31 +11,29 @@
 package com.jasonhhouse.gaps;
 
 import com.jasonhhouse.gaps.service.GapsSearchService;
+import com.jasonhhouse.gaps.service.IoService;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.Future;
-
-import com.jasonhhouse.gaps.service.IoService;
-import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.ResponseEntity;
+import org.mockito.Mock;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+
+@SpringBootTest(classes = GapsApplication.class)
 class GapsSearchServiceTest {
 
     private final Gaps gaps = new Gaps();
     private GapsUrlGeneratorTest gapsUrlGeneratorTest;
     private GapsSearchService gapsSearch;
 
-    @MockBean
+    @Mock
     private IoService ioService;
 
     @BeforeEach
@@ -137,6 +135,7 @@ class GapsSearchServiceTest {
 
         gaps.setMovieUrls(movieUrls);
         gaps.setSearchFromPlex(true);
+        gaps.setWriteToFile(false);
 
         Assertions.assertThrows(ResponseStatusException.class, () -> gapsSearch.run(gaps, new ArrayList<>()), "Should throw exception that the body was empty");
     }
@@ -150,6 +149,7 @@ class GapsSearchServiceTest {
 
         gaps.setMovieUrls(movieUrls);
         gaps.setSearchFromPlex(true);
+        gaps.setWriteToFile(false);
 
         gapsSearch.run(gaps, new ArrayList<>());
 
@@ -166,6 +166,7 @@ class GapsSearchServiceTest {
 
         gaps.setMovieUrls(movieUrls);
         gaps.setSearchFromPlex(true);
+        gaps.setWriteToFile(false);
 
         Assertions.assertThrows(ResponseStatusException.class, () -> gapsSearch.run(gaps, new ArrayList<>()), "Should throw exception that the title was missing from the video element");
     }
@@ -180,6 +181,7 @@ class GapsSearchServiceTest {
 
         gaps.setMovieUrls(movieUrls);
         gaps.setSearchFromPlex(true);
+        gaps.setWriteToFile(false);
 
         gapsSearch.run(gaps, new ArrayList<>());
         assertEquals(gapsSearch.getTotalMovieCount(), 1, "Should have found exactly one movie");
@@ -194,6 +196,7 @@ class GapsSearchServiceTest {
 
         gaps.setMovieUrls(movieUrls);
         gaps.setSearchFromPlex(true);
+        gaps.setWriteToFile(false);
 
         gapsSearch.run(gaps, new ArrayList<>());
         assertEquals(gapsSearch.getTotalMovieCount(), 1, "Should have found exactly one movie");
@@ -209,6 +212,7 @@ class GapsSearchServiceTest {
         gaps.setMovieUrls(movieUrls);
         gaps.setSearchFromPlex(true);
         gaps.setMovieDbApiKey("fake_id");
+        gaps.setWriteToFile(false);
 
         gapsSearch.run(gaps, new ArrayList<>());
         assertEquals(gapsSearch.getRecommendedMovies().size(), 3, "Should have found exactly three movies recommended");
