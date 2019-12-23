@@ -146,14 +146,6 @@ function search() {
 
     showSearchStatus();
 }
-/*
-function buildMovieDiv(movie) {
-    return '<div>' + buildMovie(movie) + '</div>';
-}
-
-function buildMovie(movie) {
-    return `${movie.name} (${movie.year}) from '${movie.collection}'`;
-}*/
 
 function connect() {
     const socket = new SockJS('/gs-guide-websocket');
@@ -163,11 +155,32 @@ function connect() {
             const obj = JSON.parse(status.body);
             showSearchStatus(obj);
 
-            if(obj.nextMovie) {
+            function buildUrl(nextMovie) {
+                if (nextMovie.tvdbId) {
+                    return `https://www.themoviedb.org/movie/${nextMovie.tvdbId}`;
+                }
+
+                if (nextMovie.imdbId) {
+                    return `https://www.imdb.com/title/${nextMovie.imdbId}/`
+                }
+
+                return undefined;
+            }
+
+            if (obj.nextMovie) {
+                const url = buildUrl(obj.nextMovie);
+                let link;
+                if (url) {
+                    link = `<a target="_blank" href="${url}">Details</a>`;
+                } else {
+                    link = "No URL found";
+                }
+
                 moviesTable.row.add([
                     obj.nextMovie.name,
                     obj.nextMovie.year,
-                    obj.nextMovie.collection
+                    obj.nextMovie.collection,
+                    link
                 ]).draw();
             }
         });
@@ -187,11 +200,6 @@ function showSearchStatus(obj) {
     } else {
         let percentage = Math.trunc(obj.searchedMovieCount / obj.totalMovieCount * 100);
         searchPosition.html(`${obj.searchedMovieCount} of ${obj.totalMovieCount} movies searched. ${percentage}% complete.`);
-
-        // if(obj.nextMovie) {
-        //     movieCounter++;
-        //     searchResults.append(buildMovieDiv(obj.nextMovie));
-        // }
     }
 }
 
