@@ -1,9 +1,11 @@
 package com.jasonhhouse.gaps.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.Movie;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +37,10 @@ public class IoService {
 
     public @NotNull String getRssFile() {
         try {
-            return new String(Files.readAllBytes(new File(STORAGE_FOLDER + RSS_FEED_JSON_FILE).toPath()));
+            Path path = new File(STORAGE_FOLDER + RSS_FEED_JSON_FILE).toPath();
+            String json = new String(Files.readAllBytes(path));
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
         } catch (IOException e) {
             LOGGER.error("Check for RSS file next time", e);
             return "";
