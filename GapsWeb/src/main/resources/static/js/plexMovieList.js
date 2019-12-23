@@ -14,7 +14,6 @@ let stompClient;
 let backButton;
 let copyToClipboard;
 let searchResults;
-let searchPosition;
 let progressContainer;
 let searchTitle;
 let searchDescription;
@@ -28,15 +27,14 @@ $(document).ready(function () {
 document.addEventListener('DOMContentLoaded', function () {
     backButton = $('#cancel');
     copyToClipboard = $('#copyToClipboard');
-    searchResults = $('#searchResults');
-    searchPosition = $('#searchPosition');
+    searchResults = [];
     progressContainer = $('#progressContainer');
     searchTitle = $('#searchTitle');
     searchDescription = $('#searchDescription');
 
     setCopyToClipboardEnabled(false);
     copyToClipboard.click(function () {
-        CopyToClipboard('searchResults');
+        copy();
         $('#copiedToClipboard').show();
     });
 
@@ -49,11 +47,11 @@ document.addEventListener('DOMContentLoaded', function () {
             disconnect();
             if(successful) {
                 searchTitle.text(`Search Complete`);
-                searchPosition.text(`${movieCounter} movies to add to complete your collections. Below is everything Gaps found that is missing from your movie collections.`);
+                searchDescription.text(`${movieCounter} movies to add to complete your collections. Below is everything Gaps found that is missing from your movie collections.`);
                 setCopyToClipboardEnabled(true);
             } else {
                 searchTitle.text("Search Failed");
-                searchPosition.text("Unknown error. Check docker Gaps log file.");
+                searchDescription.text("Unknown error. Check docker Gaps log file.");
                 setCopyToClipboardEnabled(false);
             }
         });
@@ -89,6 +87,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     obj.nextMovie.collection,
                     link
                 ]).draw();
+
+                searchResults.push(`${obj.nextMovie.name} (${obj.nextMovie.year}) in collection '${obj.nextMovie.collection}'`)
             }
         });
     });
@@ -116,14 +116,11 @@ function setCopyToClipboardEnabled(bool) {
 }
 
 function search() {
-
     //reset movie counter;
     movieCounter = 0;
-
     progressContainer.show();
-    searchResults.html("");
     searchTitle.text("Searching for Movies");
-    searchDescription.text("Gaps is looking through your Plex libraries. This could take a while so just sit tight and we'll find all the missing movies for you.");
+    searchDescription.text("Gaps is looking through your Plex libraries. This could take a while so just sit tight, and we'll find all the missing movies for you.");
 
     const plexSearch = JSON.parse($('#plexSearch').val());
 
@@ -168,7 +165,7 @@ function showSearchStatus(obj) {
         searchResults.html("");
     } else {
         let percentage = Math.trunc(obj.searchedMovieCount / obj.totalMovieCount * 100);
-        searchPosition.html(`${obj.searchedMovieCount} of ${obj.totalMovieCount} movies searched. ${percentage}% complete.`);
+        searchResults.html(`${obj.searchedMovieCount} of ${obj.totalMovieCount} movies searched. ${percentage}% complete.`);
     }
 }
 
@@ -180,18 +177,8 @@ function encodeQueryData(data) {
     return ret.join('&');
 }
 
-function CopyToClipboard(containerId) {
-    let range;
-    if (document.selection) {
-        range = document.body.createTextRange();
-        range.moveToElementText(document.getElementById(containerId));
-        range.select().createTextRange();
-        document.execCommand("copy");
-
-    } else if (window.getSelection) {
-        range = document.createRange();
-        range.selectNode(document.getElementById(containerId));
-        window.getSelection().addRange(range);
-        document.execCommand("copy");
-    }
+function copy() {
+    const stringified = searchResults.join('\r\n');
+    $('<input>').val(stringified).appendTo('body').select();
+    document.execCommand('copy');
 }
