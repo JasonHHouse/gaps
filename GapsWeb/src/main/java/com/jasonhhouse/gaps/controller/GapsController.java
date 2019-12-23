@@ -1,7 +1,6 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsService;
-import com.jasonhhouse.gaps.PlexSearchValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,11 @@ public class GapsController {
     public ModelAndView getIndex() {
         LOGGER.info("getIndex()");
         ModelAndView modelAndView = new ModelAndView("index");
+
+        //ToDo
+        //Remove for testing
         gapsService.getPlexSearch().setMovieDbApiKey("723b4c763114904392ca441909aa0375");
+
         modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
         return modelAndView;
     }
@@ -39,6 +42,5 @@ public class GapsController {
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         LOGGER.info("initBinder()");
-        binder.setValidator(new PlexSearchValidator());
     }
 }

@@ -3,6 +3,7 @@ package com.jasonhhouse.gaps.controller;
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexSearchFormatter;
+import com.jasonhhouse.gaps.validator.TmdbKeyValidator;
 import com.jasonhhouse.gaps.service.BindingErrorsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,9 @@ public class PlexConfigurationController {
         }
 
         gapsService.updatePlexSearch(plexSearch);
+
+        //ToDo
+        //Remove for testing
         gapsService.getPlexSearch().setPort(32400);
         gapsService.getPlexSearch().setAddress("192.168.1.8");
         gapsService.getPlexSearch().setPlexToken("1Zm488Lwzszzs6f5APpb");
@@ -67,5 +71,6 @@ public class PlexConfigurationController {
     public void initBinder(WebDataBinder binder) {
         LOGGER.info("initBinder()");
         binder.addCustomFormatter(new PlexSearchFormatter(), "plexSearch");
+        binder.setValidator(new TmdbKeyValidator());
     }
 }

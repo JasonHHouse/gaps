@@ -2,6 +2,8 @@ package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.*;
 import com.jasonhhouse.gaps.service.BindingErrorsService;
+import com.jasonhhouse.gaps.validator.PlexPropertiesValidator;
+import com.jasonhhouse.gaps.validator.TmdbKeyValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,5 +71,6 @@ public class PlexLibrariesController {
     public void initBinder(WebDataBinder binder) {
         LOGGER.info("initBinder()");
         binder.addCustomFormatter(new PlexSearchFormatter(), "plexSearch");
+        binder.setValidator(new PlexPropertiesValidator());
     }
 }
