@@ -1,7 +1,8 @@
 package com.jasonhhouse.gaps;
 
-import java.util.List;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public interface PlexQuery {
 

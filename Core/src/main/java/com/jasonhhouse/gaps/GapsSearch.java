@@ -8,12 +8,9 @@ package com.jasonhhouse.gaps;/*
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import java.util.List;
-import okhttp3.HttpUrl;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public interface GapsSearch {

@@ -2,12 +2,13 @@ package com.jasonhhouse.gaps;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.text.ParseException;
-import java.util.Locale;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.Formatter;
+
+import java.text.ParseException;
+import java.util.Locale;
 
 public class PlexSearchFormatter implements Formatter<PlexSearch> {
 

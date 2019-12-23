@@ -1,9 +1,6 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsService;
-import com.jasonhhouse.gaps.PlexSearchEditor;
-import com.jasonhhouse.gaps.PlexSearch;
-import com.jasonhhouse.gaps.PlexSearchFormatter;
 import com.jasonhhouse.gaps.PlexSearchValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
