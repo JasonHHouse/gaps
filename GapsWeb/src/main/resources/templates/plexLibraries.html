@@ -49,8 +49,7 @@
     <p>These are the movie libraries we found in your Plex
         Server. Select any and all you would like to look for gaps in.</p>
 
-    <form id="plexMovieList" class="needs-validation" method="POST" action="/plexMovieList" novalidate
-          th:object="${plexSearch}">
+    <form class="needs-validation" method="POST" action="/plexMovieList" novalidate th:object="${plexSearch}">
 
         <div th:each="library : *{libraries}" th:remove="tag">
             <div class="form-group form-check">

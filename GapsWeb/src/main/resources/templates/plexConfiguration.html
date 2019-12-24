@@ -45,10 +45,11 @@
 <div class="container">
     <h2 class="top-margin">Plex Configuration</h2>
 
-    <form id="plexLibraries" class="needs-validation" method="POST" action="/plexLibraries" novalidate th:object="${plexSearch}">
+    <form class="needs-validation" method="POST" action="/plexLibraries" novalidate th:object="${plexSearch}">
         <div class="form-group">
             <label for="address">Plex IP Address</label>
-            <input type="text" class="form-control" id="address" required aria-describedby="addressHelp" th:field="*{address}">
+            <input type="text" class="form-control" id="address" required aria-describedby="addressHelp"
+                   th:field="*{address}">
             <small id="addressHelp" class="form-text text-muted">Use your network IP address. localhost and
                 127.0.0.1 will not work for Plex and Gaps in Docker. Use ifconfig/ipconfig to find that in a
                 terminal or command window.</small>
@@ -62,7 +63,8 @@
 
         <div class="form-group">
             <label for="plexToken">Plex Token</label>
-            <input type="text" class="form-control" id="plexToken" required aria-describedby="tokenHelp" th:field="*{plexToken}">
+            <input type="text" class="form-control" id="plexToken" required aria-describedby="tokenHelp"
+                   th:field="*{plexToken}">
             <small id="tokenHelp" class="form-text text-muted">You can learn how to find your Plex Token
                 <a href="https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/">here</a>
                 .</small>

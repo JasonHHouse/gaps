@@ -13,6 +13,3 @@ function back() {
     location.assign("index.html");
 }
 
-function next() {
-    location.assign("plexLibraries.html");
-}

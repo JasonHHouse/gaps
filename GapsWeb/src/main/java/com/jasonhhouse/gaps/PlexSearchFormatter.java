@@ -17,6 +17,7 @@ public class PlexSearchFormatter implements Formatter<PlexSearch> {
     @NotNull
     @Override
     public PlexSearch parse(@NotNull String text, @NotNull Locale locale) throws ParseException {
+        LOGGER.info("parse( " + text + ", " + locale + " )");
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.readValue(text, PlexSearch.class);
@@ -29,6 +30,7 @@ public class PlexSearchFormatter implements Formatter<PlexSearch> {
     @NotNull
     @Override
     public String print(@NotNull PlexSearch plexSearch, @NotNull Locale locale) {
+        LOGGER.info("print( " + plexSearch + ", " + locale + " )");
         ObjectMapper mapper = new ObjectMapper();
 
         try {
