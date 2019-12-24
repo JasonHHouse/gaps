@@ -12,16 +12,18 @@
 
 <head>
     <title>Gaps</title>
+    <meta name="theme-color" content="#3f51b5"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="shortcut icon" href="/image/gaps.ico"/>
-    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/css/input.min.css">
+    <link rel="shortcut icon" href="image/gaps.ico"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/input.min.css">
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 
-<body>
+<body onload="onStart()">
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <a class="navbar-brand">Gaps</a>
     <div class="collapse navbar-collapse" id="navbarColor01">
@@ -38,37 +40,25 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/">Home</a></li>
-        <li class="breadcrumb-item active"><a href="/plexConfiguration">Plex</a></li>
-        <li class="breadcrumb-item active" aria-current="page"><a href="/plexLibraries">Libraries</a></li>
     </ol>
 </nav>
 
 <div class="container">
-
-    <h2 class="top-margin">Plex Movie Libraries</h2>
-    <p>These are the movie libraries we found in your Plex
-        Server. Select any and all you would like to look for gaps in.</p>
-
-    <form id="plexMovieList" class="needs-validation" method="POST" action="/plexMovieList" novalidate
-          th:object="${plexSearch}">
-
-        <div th:each="library : *{libraries}" th:remove="tag">
-            <div class="form-group form-check">
-                <input type="checkbox" th:id="${library.key}" class="form-check-input">
-                <label class="form-check-label" th:for="${library.key}" th:text="${library.title}"></label>
+    <div class="top-margin">
+        <div class="card mx-auto" style="width: 24rem;">
+            <img src="/image/dead_end.png" class="card-img-top all-padding" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">You're lost</h5>
+                <p class="card-text">Let's head back to the landing page and try again.</p>
+                <a href="/" class="btn btn-primary">Back</a>
             </div>
         </div>
-
-        <button class="btn btn-secondary" onclick="back()">Back</button>
-        <button type="submit" class="btn btn-primary">Next</button>
-    </form>
-
-    <p hidden>Something went wrong. Please make sure your connection to Plex is correct. You can navigate back to make
-        changes and then retry connecting. Check the browser and Docker logs for more information.</p>
+    </div>
 </div>
+
 
 <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="js/plexLibraries.js"></script>
+<script type="text/javascript" src="js/js.cookie.min.js"></script>
 </body>
 </html>

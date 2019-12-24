@@ -1,5 +1,6 @@
 package com.jasonhhouse.gaps.service;
 
+import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -24,7 +25,7 @@ public class BindingErrorsService {
             for (Object object : bindingResult.getAllErrors()) {
                 if (object instanceof FieldError) {
                     FieldError fieldError = (FieldError) object;
-                    String message = messageSource.getMessage(fieldError, null);
+                    String message = messageSource.getMessage(fieldError, Locale.ENGLISH);
                     LOGGER.error(message);
                 }
             }
