@@ -3,11 +3,10 @@ package com.jasonhhouse.gaps.service;
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexSearch;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class GapsServiceImpl implements GapsService {

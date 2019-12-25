@@ -1,6 +1,5 @@
 package com.jasonhhouse.gaps.validator;
 
-import com.google.common.net.InetAddresses;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.controller.GapsController;
 import org.apache.commons.collections4.CollectionUtils;
@@ -8,7 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -30,21 +28,21 @@ public class PlexLibrariesValidator implements Validator {
         position = 0;
 
         PlexSearch plexSearch = (PlexSearch) obj;
-        if(CollectionUtils.isEmpty(plexSearch.getLibraries())) {
+        if (CollectionUtils.isEmpty(plexSearch.getLibraries())) {
             errors.rejectValue("libraries", "libraries.empty");
             return;
         }
 
         plexSearch.getLibraries().forEach(plexLibrary -> {
-            if(StringUtils.isNotEmpty(plexLibrary.getTitle())) {
+            if (StringUtils.isNotEmpty(plexLibrary.getTitle())) {
                 errors.rejectValue("plexLibraries[" + position + "].getTitle()", "plexLibrary.getTitle().empty");
             }
 
-            if(plexLibrary.getKey() == null) {
+            if (plexLibrary.getKey() == null) {
                 errors.rejectValue("plexLibraries[" + position + "].getKey()", "plexLibrary.getKey().empty");
             }
 
-            if(plexLibrary.getSelected() == null) {
+            if (plexLibrary.getSelected() == null) {
                 errors.rejectValue("plexLibraries[" + position + "].selected()", "plexLibrary.selected().empty");
             }
 

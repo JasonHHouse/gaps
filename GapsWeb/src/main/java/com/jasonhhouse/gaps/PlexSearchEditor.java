@@ -2,10 +2,9 @@ package com.jasonhhouse.gaps;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.beans.PropertyEditorSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.beans.PropertyEditorSupport;
 
 public class PlexSearchEditor extends PropertyEditorSupport {
 
