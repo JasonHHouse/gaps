@@ -7,6 +7,9 @@ import com.jasonhhouse.gaps.Movie;
 import java.io.IOException;
 
 public class MovieSerializer extends StdSerializer<Movie> {
+    public MovieSerializer() {
+        this(null);
+    }
 
     protected MovieSerializer(Class<Movie> t) {
         super(t);

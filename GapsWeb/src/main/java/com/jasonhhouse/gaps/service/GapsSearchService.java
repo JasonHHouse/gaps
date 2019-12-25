@@ -10,9 +10,7 @@
 
 package com.jasonhhouse.gaps.service;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -798,14 +796,14 @@ public class GapsSearchService implements GapsSearch {
             }
 
             ArrayNode parts = (ArrayNode) collection.get("parts");
-            for(JsonNode part : parts) {
+            for (JsonNode part : parts) {
                 int tvdbId = part.get("id").asInt();
                 //Files can't have : so need to remove to find matches correctly
                 String title = part.get("title").asText().replaceAll(":", "");
                 int year;
                 String releaseDate = null;
                 try {
-                    if (part.has("release_date")) {
+                    if (part.has("release_date") && part.get("release_date").isInt()) {
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
                         LocalDate date = LocalDate.parse(part.get("release_date").asText(), formatter);
                         year = date.getYear();
@@ -919,11 +917,11 @@ public class GapsSearchService implements GapsSearch {
         searched.add(movie);
     }
 
-    private void sendEmptySearchUpdate() {
+    private void sendEmptySearchUpdate() throws JsonProcessingException {
         //Send message over websocket
         //No new movie, just updated counts
         SearchResults searchResults = new SearchResults(getSearchedMovieCount(), getTotalMovieCount(), null);
-        template.convertAndSend("/newMovieFound", searchResults);
+        template.convertAndSend("/newMovieFound", objectMapper.writeValueAsString(searchResults));
     }
 
 

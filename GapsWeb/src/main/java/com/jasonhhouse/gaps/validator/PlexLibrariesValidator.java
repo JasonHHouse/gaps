@@ -1,8 +1,10 @@
 package com.jasonhhouse.gaps.validator;
 
+import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.controller.GapsController;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -14,8 +16,6 @@ public class PlexLibrariesValidator implements Validator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GapsController.class);
 
-    private int position;
-
     @Override
     public boolean supports(@NotNull Class<?> clazz) {
         return PlexSearch.class.equals(clazz);
@@ -25,7 +25,7 @@ public class PlexLibrariesValidator implements Validator {
     public void validate(@NotNull Object obj, @NotNull Errors errors) {
         LOGGER.info("validate( " + obj + ", " + errors + " )");
 
-        position = 0;
+        int position = 0;
 
         PlexSearch plexSearch = (PlexSearch) obj;
         if (CollectionUtils.isEmpty(plexSearch.getLibraries())) {
@@ -33,7 +33,7 @@ public class PlexLibrariesValidator implements Validator {
             return;
         }
 
-        plexSearch.getLibraries().forEach(plexLibrary -> {
+        for (PlexLibrary plexLibrary : plexSearch.getLibraries()) {
             if (StringUtils.isNotEmpty(plexLibrary.getTitle())) {
                 errors.rejectValue("plexLibraries[" + position + "].getTitle()", "plexLibrary.getTitle().empty");
             }
@@ -47,7 +47,7 @@ public class PlexLibrariesValidator implements Validator {
             }
 
             position++;
-        });
+        }
     }
 }
 

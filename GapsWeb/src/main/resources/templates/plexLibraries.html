@@ -13,7 +13,7 @@
 <head>
     <title>Gaps</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="shortcut icon" href="/image/gaps.ico"/>
+    <link rel="shortcut icon" href="/images/gaps.ico"/>
     <link rel="stylesheet" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/css/input.min.css">
 
@@ -50,12 +50,9 @@
         Server. Select any and all you would like to look for gaps in.</p>
 
     <form class="needs-validation" method="POST" action="/plexMovieList" novalidate th:object="${plexSearch}">
-
-        <div th:each="library : *{libraries}" th:remove="tag">
-            <div class="form-group form-check">
-                <input type="checkbox" th:id="${library.key}" class="form-check-input">
-                <label class="form-check-label" th:for="${library.key}" th:text="${library.title}"></label>
-            </div>
+        <div th:each="library,status : *{libraries}" class="form-group form-check">
+            <input type="checkbox" class="form-check-input" th:field="*{libraries[__${status.index}__].selected}" th:value="*{libraries[__${status.index}__].key}">
+            <label class="form-check-label" th:for="${library}" th:text="${library.title}"></label>
         </div>
 
         <button class="btn btn-secondary" onclick="back()">Back</button>

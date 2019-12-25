@@ -13,7 +13,7 @@
 <head>
     <title>Gaps</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="shortcut icon" href="/image/gaps.ico"/>
+    <link rel="shortcut icon" href="/images/gaps.ico"/>
     <link rel="stylesheet" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="/css/datatables.min.css"/>
     <link rel="stylesheet" type="text/css" href="/css/dataTables.bootstrap4.min.css"/>
@@ -58,7 +58,7 @@
     <h2 id="searchTitle" class="top-margin">Searching for Movies</h2>
 
     <div class="top-margin">
-        <p id="searchPosition">Finding all movies in Plex</p>
+        <p id="searchDescription">Finding all movies in Plex</p>
     </div>
 
     <div id="progressContainer" class="top-margin">
@@ -86,7 +86,7 @@
     </div>
 
     <button class="btn btn-warning" onclick="cancel()" id="cancel">Cancel</button>
-    <button class="btn btn-primary" id="viewRss">View RSS</button>
+    <button class="btn btn-primary" onclick="viewRss()">View RSS</button>
     <button class="btn btn-secondary" id="copyToClipboard">Copy to Clipboard</button>
 
     <input id="plexSearch" name="plexSearch" th:value="${{plexSearch}}" type="hidden"/>

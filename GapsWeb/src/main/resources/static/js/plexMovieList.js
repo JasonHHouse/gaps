@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     setCopyToClipboardEnabled(false);
     copyToClipboard.click(function () {
-        copy();
+        copy(searchResults);
         $('#copiedToClipboard').show();
     });
 
@@ -100,7 +100,11 @@ function cancel() {
     stompClient.send("/cancelSearching");
 
     //Navigate Home
-    location.assign("index.html");
+    location.assign("/");
+}
+
+function viewRss(){
+    location.assign("rss");
 }
 
 window.onbeforeunload = function () {
@@ -162,10 +166,10 @@ function disconnect() {
 
 function showSearchStatus(obj) {
     if (!obj) {
-        searchResults.html("");
+        searchDescription.html("");
     } else {
         let percentage = Math.trunc(obj.searchedMovieCount / obj.totalMovieCount * 100);
-        searchResults.html(`${obj.searchedMovieCount} of ${obj.totalMovieCount} movies searched. ${percentage}% complete.`);
+        searchDescription.html(`${obj.searchedMovieCount} of ${obj.totalMovieCount} movies searched. ${percentage}% complete.`);
     }
 }
 
@@ -177,8 +181,8 @@ function encodeQueryData(data) {
     return ret.join('&');
 }
 
-function copy() {
-    const stringified = searchResults.join('\r\n');
+function copy(arr) {
+    const stringified = arr.join('\r\n');
     $('<input>').val(stringified).appendTo('body').select();
     document.execCommand('copy');
 }

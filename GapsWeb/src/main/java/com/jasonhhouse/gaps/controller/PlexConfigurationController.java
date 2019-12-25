@@ -5,6 +5,7 @@ import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexSearchFormatter;
 import com.jasonhhouse.gaps.service.BindingErrorsService;
 import com.jasonhhouse.gaps.validator.TmdbKeyValidator;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class PlexConfigurationController {
     @RequestMapping(method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView postPlexConfiguration(PlexSearch plexSearch, BindingResult bindingResult) {
+    public ModelAndView postPlexConfiguration(@Valid PlexSearch plexSearch, BindingResult bindingResult) {
         LOGGER.info("postPlexConfiguration( " + plexSearch + " )");
 
         if (bindingErrorsService.hasBindingErrors(bindingResult)) {
@@ -47,8 +48,8 @@ public class PlexConfigurationController {
         //ToDo
         //Remove for testing
         gapsService.getPlexSearch().setPort(32400);
-        gapsService.getPlexSearch().setAddress("192.168.1.8");
-        gapsService.getPlexSearch().setPlexToken("1Zm488Lwzszzs6f5APpb");
+        gapsService.getPlexSearch().setAddress("174.58.64.67");
+        gapsService.getPlexSearch().setPlexToken("xPUCxLh4cTz8pcgorQQs");
 
         ModelAndView modelAndView = new ModelAndView("plexConfiguration");
         modelAndView.addObject("plexSearch", gapsService.getPlexSearch());

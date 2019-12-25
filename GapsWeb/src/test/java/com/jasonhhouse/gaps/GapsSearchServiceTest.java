@@ -202,7 +202,7 @@ class GapsSearchServiceTest {
         assertEquals(gapsSearch.getTotalMovieCount(), 1, "Should have found exactly one movie");
     }
 
-    @Test
+/*    @Test
     void invalidMovieDbFromPlex() throws Exception {
         gapsUrlGeneratorTest.generatePlexUrl(GapsUrlGeneratorTest.PLEX_MOVIE_URL);
 
@@ -216,6 +216,6 @@ class GapsSearchServiceTest {
 
         gapsSearch.run(gaps, new ArrayList<>());
         assertEquals(gapsSearch.getRecommendedMovies().size(), 3, "Should have found exactly three movies recommended");
-    }
+    }*/
 
 }
