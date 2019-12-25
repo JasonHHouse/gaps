@@ -1,16 +1,21 @@
 package com.jasonhhouse.gaps.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.Movie;
-import java.io.*;
+import com.jasonhhouse.gaps.Rss;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -30,6 +35,8 @@ public class IoService {
 
     public static final String RSS_FEED_JSON_FILE = "rssFeed.json";
 
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
     public boolean doesRssFileExist() {
         return new File(STORAGE_FOLDER + RSS_FEED_JSON_FILE).exists();
     }
@@ -37,9 +44,7 @@ public class IoService {
     public @NotNull String getRssFile() {
         try {
             Path path = new File(STORAGE_FOLDER + RSS_FEED_JSON_FILE).toPath();
-            String json = new String(Files.readAllBytes(path));
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
+            return new String(Files.readAllBytes(path));
         } catch (IOException e) {
             LOGGER.error("Check for RSS file next time", e);
             return "";
@@ -52,33 +57,36 @@ public class IoService {
      * @param recommended The recommended movies. (IMDB ID is required.)
      */
     public void writeRssFile(List<Movie> recommended) {
-        JSONArray jsonRecommended = new JSONArray();
-
         File file = new File(STORAGE_FOLDER + RSS_FEED_JSON_FILE);
 
-        // Create writer that java will close for us.
-        try (FileWriter writer = new FileWriter(file)) {
-
-            // Creat the json file for writing to/endpoint access.
-            file.createNewFile();
-
-            for (Movie mov : recommended) {
-                // Create movie JSONObject for adding to Json Array
-                JSONObject obj = new JSONObject();
-                obj.put("imdb_id", mov.getImdbId());
-                obj.put("tvdb_id", mov.getTvdbId());
-                obj.put("title", mov.getName());
-                obj.put("release_date", mov.getYear());
-                obj.put("poster_path", mov.getPosterUrl());
-                jsonRecommended.put(obj);
+        if (file.exists()) {
+            boolean deleted = file.delete();
+            if (!deleted) {
+                LOGGER.error("Can't delete existing file " + STORAGE_FOLDER + RSS_FEED_JSON_FILE);
+                return;
             }
+        }
 
-            // Write the JSONArray of recommended movies to the file.
-            jsonRecommended.write(writer);
-            writer.flush();
+        try {
+            boolean created = file.createNewFile();
+            if (!created) {
+                LOGGER.error("Can't create file " + STORAGE_FOLDER + RSS_FEED_JSON_FILE);
+                return;
+            }
+        } catch (IOException e) {
+            LOGGER.error("Can't create file " + STORAGE_FOLDER + RSS_FEED_JSON_FILE, e);
+            return;
+        }
 
-        } catch (Exception e) {
-            LOGGER.warn(e.getMessage());
+        // Create writer that java will close for us.
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
+            List<Rss> rssList = recommended.stream().map(movie -> new Rss(movie.getImdbId(), movie.getYear(), movie.getTvdbId(), movie.getName(), movie.getPosterUrl())).collect(Collectors.toList());
+            byte[] output = objectMapper.writeValueAsBytes(rssList);
+            outputStream.write(output);
+        } catch (FileNotFoundException e) {
+            LOGGER.error("Can't find file " + RECOMMENDED_MOVIES, e);
+        } catch (IOException e) {
+            LOGGER.error("Can't write to file " + RECOMMENDED_MOVIES, e);
         }
     }
 
@@ -134,11 +142,8 @@ public class IoService {
         }
 
         try (FileOutputStream outputStream = new FileOutputStream(fileName)) {
-            JSONArray movies = new JSONArray();
-            for (Movie movie : everyMovie) {
-                movies.put(movie.toJSON());
-            }
-            outputStream.write(movies.toString().getBytes());
+            byte[] output = objectMapper.writeValueAsBytes(everyMovie);
+            outputStream.write(output);
         } catch (FileNotFoundException e) {
             LOGGER.error("Can't find file " + fileName, e);
         } catch (IOException e) {
@@ -150,7 +155,7 @@ public class IoService {
      * Prints out all recommended files to a text file called gaps_recommended_movies.txt
      */
     public List<Movie> readMovieIdsFromFile() {
-        List<Movie> everyMovie = new ArrayList<>();
+        List<Movie> everyMovie = Collections.emptyList();
         final String fileName = STORAGE_FOLDER + STORAGE;
         File file = new File(fileName);
         if (!file.exists()) {
@@ -165,43 +170,16 @@ public class IoService {
             }
 
             LOGGER.debug(fullFile.toString());
-
-            JSONArray movies = new JSONArray(fullFile.toString());
-            for (int i = 0; i < movies.length(); i++) {
-                Movie movie = jsonToMovie(movies.getJSONObject(i));
-                everyMovie.add(movie);
-            }
-
+            everyMovie = objectMapper.readValue(fullFile.toString(), new TypeReference<List<Movie>>() {
+            });
             LOGGER.debug("everyMovie.size():" + everyMovie.size());
-
         } catch (FileNotFoundException e) {
             LOGGER.error("Can't find file " + fileName);
         } catch (IOException e) {
             LOGGER.error("Can't write to file " + fileName);
-        } catch (JSONException e) {
-            LOGGER.error("Error parsing JSON file " + fileName, e);
         }
 
         return everyMovie;
-    }
-
-    private Movie jsonToMovie(JSONObject jsonMovie) throws JSONException {
-        int tvdbId = jsonMovie.getInt(Movie.TVDB_ID);
-        String imdbId = jsonMovie.optString(Movie.IMDB_ID);
-        String name = jsonMovie.getString(Movie.NAME);
-        int year = jsonMovie.getInt(Movie.YEAR);
-        int collectionId = jsonMovie.getInt(Movie.COLLECTION_ID);
-        String collection = jsonMovie.optString(Movie.COLLECTION);
-        String posterUrl = jsonMovie.optString(Movie.POSTER);
-
-        Movie.Builder builder = new Movie.Builder(name, year)
-                .setTvdbId(tvdbId)
-                .setImdbId(imdbId)
-                .setCollectionId(collectionId)
-                .setCollection(collection)
-                .setPosterUrl(posterUrl);
-
-        return builder.build();
     }
 
     /**

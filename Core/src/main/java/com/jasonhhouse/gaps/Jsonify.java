@@ -1,9 +1,9 @@
 package com.jasonhhouse.gaps;
 
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public interface Jsonify<T> {
 
-    JSONObject toJSON();
+    ObjectNode toJSON();
 
 }
