@@ -46,7 +46,7 @@ public class GapsApplication {
         SpringApplication.run(GapsApplication.class, args);
     }
 
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         LOGGER.info("Using environment: " + myConfig.getEnvironment());
         LOGGER.info("Name: " + myConfig.getName());
     }
