@@ -50,10 +50,12 @@
         Server. Select any and all you would like to look for gaps in.</p>
 
     <form class="needs-validation" method="POST" action="/plexMovieList" novalidate th:object="${plexSearch}">
-        <div th:each="library,status : *{libraries}" class="form-group form-check">
+        <fieldset th:each="library,status : *{libraries}" class="form-group form-check">
             <input type="checkbox" class="form-check-input" th:field="*{libraries[__${status.index}__].selected}" th:value="*{libraries[__${status.index}__].key}">
             <label class="form-check-label" th:for="${library}" th:text="${library.title}"></label>
-        </div>
+            <input id="key" name="plexSearch" th:field="*{libraries[__${status.index}__].key}" type="hidden"/>
+            <input id="title" name="plexSearch" th:field="*{libraries[__${status.index}__].title}" type="hidden"/>
+        </fieldset>
 
         <button class="btn btn-secondary" onclick="back()">Back</button>
         <button type="submit" class="btn btn-primary">Next</button>

@@ -25,8 +25,6 @@ public class PlexLibrariesValidator implements Validator {
     public void validate(@NotNull Object obj, @NotNull Errors errors) {
         LOGGER.info("validate( " + obj + ", " + errors + " )");
 
-        int position = 0;
-
         PlexSearch plexSearch = (PlexSearch) obj;
         if (CollectionUtils.isEmpty(plexSearch.getLibraries())) {
             errors.rejectValue("libraries", "libraries.empty");
@@ -34,20 +32,19 @@ public class PlexLibrariesValidator implements Validator {
         }
 
         for (PlexLibrary plexLibrary : plexSearch.getLibraries()) {
-            if (StringUtils.isNotEmpty(plexLibrary.getTitle())) {
-                errors.rejectValue("plexLibraries[" + position + "].getTitle()", "plexLibrary.getTitle().empty");
+            if (StringUtils.isEmpty(plexLibrary.getTitle())) {
+                errors.rejectValue("libraries", "plexLibrary.getTitle().empty");
             }
 
             if (plexLibrary.getKey() == null) {
-                errors.rejectValue("plexLibraries[" + position + "].getKey()", "plexLibrary.getKey().empty");
+                errors.rejectValue("libraries", "plexLibrary.getKey().empty");
             }
 
             if (plexLibrary.getSelected() == null) {
-                errors.rejectValue("plexLibraries[" + position + "].selected()", "plexLibrary.selected().empty");
+                errors.rejectValue("libraries", "plexLibrary.selected().empty");
             }
-
-            position++;
         }
+
     }
 }
 
