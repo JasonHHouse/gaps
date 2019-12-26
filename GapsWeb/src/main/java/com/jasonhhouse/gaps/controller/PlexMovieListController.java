@@ -30,13 +30,11 @@ public class PlexMovieListController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PlexMovieListController.class);
 
     private final BindingErrorsService bindingErrorsService;
-    private final PlexQuery plexQuery;
     private final GapsService gapsService;
 
     @Autowired
-    public PlexMovieListController(BindingErrorsService bindingErrorsService, PlexQuery plexQuery, GapsService gapsService) {
+    public PlexMovieListController(BindingErrorsService bindingErrorsService, GapsService gapsService) {
         this.bindingErrorsService = bindingErrorsService;
-        this.plexQuery = plexQuery;
         this.gapsService = gapsService;
     }
 

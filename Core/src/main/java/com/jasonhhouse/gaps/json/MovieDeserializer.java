@@ -8,12 +8,16 @@ import com.jasonhhouse.gaps.Movie;
 import java.io.IOException;
 
 public class MovieDeserializer extends StdDeserializer<Movie> {
+    public MovieDeserializer() {
+        this(null);
+    }
+
     protected MovieDeserializer(Class<?> vc) {
         super(vc);
     }
 
     @Override
-    public Movie deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
+    public Movie deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
         int tvdbId = (Integer) node.get(Movie.TVDB_ID).numberValue();
         String imdbId = node.get(Movie.IMDB_ID).asText();
@@ -21,7 +25,11 @@ public class MovieDeserializer extends StdDeserializer<Movie> {
         int year = (Integer) node.get(Movie.YEAR).numberValue();
         int collectionId = (Integer) node.get(Movie.COLLECTION_ID).numberValue();
         String collection = node.get(Movie.COLLECTION).asText();
-        String posterUrl = node.get(Movie.POSTER).asText();
+
+        String posterUrl = null;
+        if (node.has(Movie.POSTER)) {
+            posterUrl = node.get(Movie.POSTER).asText();
+        }
 
         Movie.Builder builder = new Movie.Builder(name, year)
                 .setTvdbId(tvdbId)

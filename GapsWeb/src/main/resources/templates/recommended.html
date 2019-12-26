@@ -52,11 +52,11 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="element : ${rss}">
-                <td th:text="${element.title}"></td>
-                <td th:text="${element.releaseDate}"></td>
-                <td></td>
-                <td></td>
+            <tr th:each="movie, status : ${recommended}">
+                <td th:text="${movie.name}"></td>
+                <td th:text="${movie.year}"></td>
+                <td th:text="${movie.collection}"></td>
+                <td><a target="_blank" th:href="${urls.get(status.index)}">Details</a></td>
             </tr>
             </tbody>
         </table>

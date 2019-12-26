@@ -58,7 +58,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         stompClient.subscribe('/newMovieFound', function (status) {
-            console.log("/newMovieFound");
             const obj = JSON.parse(status.body);
             showSearchStatus(obj);
 
@@ -75,6 +74,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             if (obj.nextMovie) {
+                movieCounter++;
+
                 const url = buildUrl(obj.nextMovie);
                 let link;
                 if (url) {

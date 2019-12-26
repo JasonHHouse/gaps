@@ -2,9 +2,12 @@ package com.jasonhhouse.gaps.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jasonhhouse.gaps.Rss;
+import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.service.BindingErrorsService;
 import com.jasonhhouse.gaps.service.IoService;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,25 +35,26 @@ public class RecommendedController {
             path = "/recommended")
     public ModelAndView getRecommended() {
         LOGGER.info("getRecommended()");
-        String rss = null;
-        if (ioService.doesRssFileExist()) {
-            rss = ioService.getRssFile();
+        String recommended = null;
+        if (ioService.doesRecommendedFileExist()) {
+            recommended = ioService.getRecommendedMovies();
         }
 
-        if (StringUtils.isEmpty(rss)) {
+        if (StringUtils.isEmpty(recommended)) {
             //Show empty page
             return new ModelAndView("emptyState");
         } else {
             ObjectMapper objectMapper = new ObjectMapper();
             try {
-                Rss[] rssFeed = objectMapper.readValue(rss, Rss[].class);
-                LOGGER.info("rssFeed.length:" + rssFeed.length);
+                Movie[] recommendedMovies = objectMapper.readValue(recommended, Movie[].class);
+                LOGGER.info("recommended.length:" + recommendedMovies.length);
 
                 ModelAndView modelAndView = new ModelAndView("recommended");
-                modelAndView.addObject("rss", rssFeed);
+                modelAndView.addObject("recommended", recommendedMovies);
+                modelAndView.addObject("urls", buildUrls(recommendedMovies));
                 return modelAndView;
             } catch (JsonProcessingException e) {
-                LOGGER.error("Could not parse RSS JSON", e);
+                LOGGER.error("Could not parse Recommended JSON", e);
                 return bindingErrorsService.getErrorPage();
             }
 
@@ -58,4 +62,23 @@ public class RecommendedController {
         }
     }
 
+    private List<String> buildUrls(Movie[] movies) {
+        LOGGER.info("buildUrls( " + Arrays.toString(movies) + " ) ");
+        List<String> urls = new ArrayList<>();
+        for (Movie movie : movies) {
+            if (movie.getTvdbId() != -1) {
+                urls.add("https://www.themoviedb.org/movie/" + movie.getTvdbId());
+                continue;
+            }
+
+            if (StringUtils.isNotEmpty(movie.getImdbId())) {
+                urls.add("https://www.imdb.com/title/" + movie.getImdbId() + "/");
+                continue;
+            }
+
+            urls.add(null);
+        }
+
+        return urls;
+    }
 }

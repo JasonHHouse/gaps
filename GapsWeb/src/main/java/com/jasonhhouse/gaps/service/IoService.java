@@ -31,11 +31,25 @@ public class IoService {
 
     private static final String STORAGE = "movieIds.json";
 
-    private static final String RECOMMENDED_MOVIES = "gaps_recommended_movies.txt";
+    private static final String RECOMMENDED_MOVIES = "recommendedMovies.json";
 
     public static final String RSS_FEED_JSON_FILE = "rssFeed.json";
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    public boolean doesRecommendedFileExist() {
+        return new File(STORAGE_FOLDER + RECOMMENDED_MOVIES).exists();
+    }
+
+    public @NotNull String getRecommendedMovies() {
+        try {
+            Path path = new File(STORAGE_FOLDER + RECOMMENDED_MOVIES).toPath();
+            return new String(Files.readAllBytes(path));
+        } catch (IOException e) {
+            LOGGER.error("Check for the recommended file next time", e);
+            return "";
+        }
+    }
 
     public boolean doesRssFileExist() {
         return new File(STORAGE_FOLDER + RSS_FEED_JSON_FILE).exists();
@@ -107,25 +121,30 @@ public class IoService {
     }
 
     /**
-     * Prints out all recommended files to the terminal or command line
+     * Prints out all recommended movies to recommendedMovies.json
      */
-    public void printRecommended(List<Movie> recommended) {
-        LOGGER.info(recommended.size() + " Recommended Movies");
-        for (Movie movie : recommended) {
-            LOGGER.info(movie.toString());
-        }
+    public void writeRecommendedToFile(List<Movie> recommended) {
+        LOGGER.info("writeRecommendedToFile()");
+        final String fileName = STORAGE_FOLDER + RECOMMENDED_MOVIES;
+        File file = new File(fileName);
+        writeMovieIdsToFile(recommended, file);
     }
 
     /**
-     * Prints out all recommended files to a text file called gaps_recommended_movies.txt
+     * Prints out all movies to a text file movieIds.json
      */
     public void writeMovieIdsToFile(List<Movie> everyMovie) {
+        LOGGER.info("writeMovieIdsToFile()");
         final String fileName = STORAGE_FOLDER + STORAGE;
         File file = new File(fileName);
+        writeMovieIdsToFile(everyMovie, file);
+    }
+
+    public void writeMovieIdsToFile(List<Movie> everyMovie, File file) {
         if (file.exists()) {
             boolean deleted = file.delete();
             if (!deleted) {
-                LOGGER.error("Can't delete existing file " + fileName);
+                LOGGER.error("Can't delete existing file " + file.getName());
                 return;
             }
         }
@@ -133,21 +152,21 @@ public class IoService {
         try {
             boolean created = file.createNewFile();
             if (!created) {
-                LOGGER.error("Can't create file " + fileName);
+                LOGGER.error("Can't create file " + file.getAbsolutePath());
                 return;
             }
         } catch (IOException e) {
-            LOGGER.error("Can't create file " + fileName, e);
+            LOGGER.error("Can't create file " + file.getAbsolutePath(), e);
             return;
         }
 
-        try (FileOutputStream outputStream = new FileOutputStream(fileName)) {
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
             byte[] output = objectMapper.writeValueAsBytes(everyMovie);
             outputStream.write(output);
         } catch (FileNotFoundException e) {
-            LOGGER.error("Can't find file " + fileName, e);
+            LOGGER.error("Can't find file " + file.getAbsolutePath(), e);
         } catch (IOException e) {
-            LOGGER.error("Can't write to file " + fileName, e);
+            LOGGER.error("Can't write to file " + file.getAbsolutePath(), e);
         }
     }
 

@@ -191,7 +191,7 @@ public class GapsSearchService implements GapsSearch {
         }
 
         //Always write to log
-        ioService.printRecommended(recommended);
+        ioService.writeRecommendedToFile(recommended);
         ioService.writeMovieIdsToFile(everyMovie);
 
         template.convertAndSend("/finishedSearching", true);
@@ -861,8 +861,6 @@ public class GapsSearchService implements GapsSearch {
                         }
 
                         JsonNode movieDet = objectMapper.readTree(movieDetailJson);
-                        //JSONObject movieDet = new JSONObject(movieDetailJson);
-                        //releaseDate = movieDet.("release_date");
 
                         // Get the release year from movie release date
                         if (movieDet.has("release_date")) {
@@ -904,11 +902,6 @@ public class GapsSearchService implements GapsSearch {
                     sendEmptySearchUpdate();
                 }
             }
-/*
-            for (int i = 0; i < parts.size(); i++) {
-                JsonNode part = parts.get(i);
-
-            }*/
 
         } catch (IOException e) {
             LOGGER.error("Error getting collections " + movie + ". " + e.getMessage());
