@@ -5,6 +5,14 @@ import java.util.List;
 
 public final class PlexSearch {
 
+    public static final String MOVIE_DB_API_KEY = "movieDbApiKey";
+
+    public static final String PLEX_TOKEN = "plexToken";
+
+    public static final String ADDRESS = "address";
+
+    public static final String PORT = "port";
+
     private String movieDbApiKey;
 
     private String plexToken;

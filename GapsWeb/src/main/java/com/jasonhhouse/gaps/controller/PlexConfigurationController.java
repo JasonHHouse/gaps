@@ -4,7 +4,9 @@ import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexSearchFormatter;
 import com.jasonhhouse.gaps.service.BindingErrorsService;
+import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.validator.TmdbKeyValidator;
+import java.io.IOException;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,11 +27,13 @@ public class PlexConfigurationController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PlexConfigurationController.class);
 
     private final BindingErrorsService bindingErrorsService;
+    private final IoService ioService;
     private final GapsService gapsService;
 
     @Autowired
-    public PlexConfigurationController(BindingErrorsService bindingErrorsService, GapsService gapsService) {
+    public PlexConfigurationController(BindingErrorsService bindingErrorsService, IoService ioService, GapsService gapsService) {
         this.bindingErrorsService = bindingErrorsService;
+        this.ioService = ioService;
         this.gapsService = gapsService;
     }
 
@@ -45,11 +49,11 @@ public class PlexConfigurationController {
 
         gapsService.updatePlexSearch(plexSearch);
 
-        //ToDo
-        //Remove for testing
-        gapsService.getPlexSearch().setPort(32400);
-        gapsService.getPlexSearch().setAddress("174.58.64.67");
-        gapsService.getPlexSearch().setPlexToken("xPUCxLh4cTz8pcgorQQs");
+        try {
+            ioService.writeProperties(gapsService.getPlexSearch());
+        } catch (IOException e) {
+            LOGGER.warn("Could not write gaps properties.", e);
+        }
 
         ModelAndView modelAndView = new ModelAndView("plexConfiguration");
         modelAndView.addObject("plexSearch", gapsService.getPlexSearch());

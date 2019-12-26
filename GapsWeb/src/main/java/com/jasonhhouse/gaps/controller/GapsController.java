@@ -1,6 +1,9 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsService;
+import com.jasonhhouse.gaps.PlexSearch;
+import com.jasonhhouse.gaps.service.IoService;
+import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +21,12 @@ public class GapsController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GapsController.class);
 
+    private final IoService ioService;
     private final GapsService gapsService;
 
     @Autowired
-    public GapsController(GapsService gapsService) {
+    public GapsController(IoService ioService, GapsService gapsService) {
+        this.ioService = ioService;
         this.gapsService = gapsService;
     }
 
@@ -31,9 +36,12 @@ public class GapsController {
         LOGGER.info("getIndex()");
         ModelAndView modelAndView = new ModelAndView("index");
 
-        //ToDo
-        //Remove for testing
-        gapsService.getPlexSearch().setMovieDbApiKey("723b4c763114904392ca441909aa0375");
+        try {
+            PlexSearch plexSearch = ioService.readProperties();
+            gapsService.updatePlexSearch(plexSearch);
+        } catch (IOException e) {
+            LOGGER.warn("Failed to read gaps properties.", e);
+        }
 
         modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
         return modelAndView;

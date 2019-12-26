@@ -3,18 +3,23 @@ package com.jasonhhouse.gaps.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.Movie;
+import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.Rss;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +39,8 @@ public class IoService {
     private static final String RECOMMENDED_MOVIES = "recommendedMovies.json";
 
     public static final String RSS_FEED_JSON_FILE = "rssFeed.json";
+
+    public static final String PROPERTIES = "gaps.properties";
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -235,5 +242,48 @@ public class IoService {
         } catch (IOException e) {
             LOGGER.error("Can't write to file " + RECOMMENDED_MOVIES, e);
         }
+    }
+
+    public void writeProperties(PlexSearch plexSearch) throws IOException {
+        Properties properties = new Properties();
+
+        if(StringUtils.isNotEmpty(plexSearch.getMovieDbApiKey())) {
+            properties.setProperty(PlexSearch.MOVIE_DB_API_KEY, plexSearch.getMovieDbApiKey());
+        }
+
+        if(StringUtils.isNotEmpty(plexSearch.getAddress())) {
+            properties.setProperty(PlexSearch.ADDRESS, plexSearch.getAddress());
+        }
+
+        if(plexSearch.getPort() != null) {
+            properties.setProperty(PlexSearch.PORT, Integer.toString(plexSearch.getPort()));
+        }
+
+        if(StringUtils.isNotEmpty(plexSearch.getPlexToken())) {
+            properties.setProperty(PlexSearch.PLEX_TOKEN, plexSearch.getPlexToken());
+        }
+
+        properties.store(new FileWriter(new File(STORAGE_FOLDER + PROPERTIES)), "");
+    }
+
+    public PlexSearch readProperties() throws IOException {
+        Properties properties = new Properties();
+        properties.load(new FileReader(new File(STORAGE_FOLDER + PROPERTIES)));
+
+        PlexSearch plexSearch = new PlexSearch();
+
+        String movieDbApiKey = properties.getProperty(PlexSearch.MOVIE_DB_API_KEY);
+        plexSearch.setMovieDbApiKey(movieDbApiKey);
+
+        String address = properties.getProperty(PlexSearch.ADDRESS);
+        plexSearch.setAddress(address);
+
+        String port = properties.getProperty(PlexSearch.PORT);
+        plexSearch.setPort(Integer.parseInt(port));
+
+        String plexToken = properties.getProperty(PlexSearch.PLEX_TOKEN);
+        plexSearch.setPlexToken(plexToken);
+
+        return plexSearch;
     }
 }
