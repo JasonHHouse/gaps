@@ -803,7 +803,7 @@ public class GapsSearchService implements GapsSearch {
                 int year;
                 String releaseDate = null;
                 try {
-                    if (part.has("release_date") && part.get("release_date").isInt()) {
+                    if (part.has("release_date")) {
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
                         LocalDate date = LocalDate.parse(part.get("release_date").asText(), formatter);
                         year = date.getYear();
@@ -891,11 +891,11 @@ public class GapsSearchService implements GapsSearch {
                         // Write current list of recommended movies to file.
                         ioService.writeRssFile(recommended);
 
-                        LOGGER.debug(movieFromCollection.toString());
+                        LOGGER.info("/newMovieFound:" + movieFromCollection.toString());
 
                         //Send message over websocket
                         SearchResults searchResults = new SearchResults(getSearchedMovieCount(), getTotalMovieCount(), movieFromCollection);
-                        template.convertAndSend("/newMovieFound", searchResults);
+                        template.convertAndSend("/newMovieFound", objectMapper.writeValueAsString(searchResults));
                     } catch (Exception e) {
                         LOGGER.warn(e.getMessage());
                     }
@@ -904,11 +904,11 @@ public class GapsSearchService implements GapsSearch {
                     sendEmptySearchUpdate();
                 }
             }
-
+/*
             for (int i = 0; i < parts.size(); i++) {
                 JsonNode part = parts.get(i);
 
-            }
+            }*/
 
         } catch (IOException e) {
             LOGGER.error("Error getting collections " + movie + ". " + e.getMessage());
@@ -918,6 +918,7 @@ public class GapsSearchService implements GapsSearch {
     }
 
     private void sendEmptySearchUpdate() throws JsonProcessingException {
+        LOGGER.info("sendEmptySearchUpdate()");
         //Send message over websocket
         //No new movie, just updated counts
         SearchResults searchResults = new SearchResults(getSearchedMovieCount(), getTotalMovieCount(), null);

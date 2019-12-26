@@ -41,11 +41,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const socket = new SockJS('/gs-guide-websocket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function () {
-        stompClient.subscribe( '/finishedSearching', function (successful) {
+
+        stompClient.subscribe('/finishedSearching', function (successful) {
             progressContainer.hide();
             backButton.text('Restart');
             disconnect();
-            if(successful) {
+            if (successful) {
                 searchTitle.text(`Search Complete`);
                 searchDescription.text(`${movieCounter} movies to add to complete your collections. Below is everything Gaps found that is missing from your movie collections.`);
                 setCopyToClipboardEnabled(true);
@@ -57,6 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         stompClient.subscribe('/newMovieFound', function (status) {
+            console.log("/newMovieFound");
             const obj = JSON.parse(status.body);
             showSearchStatus(obj);
 
@@ -103,7 +105,7 @@ function cancel() {
     location.assign("/");
 }
 
-function viewRss(){
+function viewRss() {
     location.assign("rss");
 }
 

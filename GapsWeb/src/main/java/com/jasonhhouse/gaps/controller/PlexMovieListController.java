@@ -50,8 +50,7 @@ public class PlexMovieListController {
             return bindingErrorsService.getErrorPage();
         }
 
-        List<PlexLibrary> plexLibraries = plexQuery.getLibraries(gapsService.getPlexSearch());
-        gapsService.updateLibrarySelections(plexLibraries);
+        gapsService.updateLibrarySelections(plexSearch.getLibraries());
         gapsService.updatePlexSearch(plexSearch);
 
         ModelAndView modelAndView = new ModelAndView("plexMovieList");
@@ -70,7 +69,7 @@ public class PlexMovieListController {
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         LOGGER.info("initBinder()");
-        //binder.addCustomFormatter(new PlexSearchFormatter(), "plexSearch");
+        binder.addCustomFormatter(new PlexSearchFormatter(), "plexSearch");
         binder.setValidator(new PlexLibrariesValidator());
     }
 }
