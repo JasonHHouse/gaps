@@ -702,7 +702,7 @@ public class GapsSearchService implements GapsSearch {
             } finally {
                 try {
                     //can't have too many connections to the movie database in a specific time, have to wait
-                    Thread.sleep(200);
+                    Thread.sleep(350);
                 } catch (InterruptedException e) {
                     LOGGER.error("Error sleeping", e);
                     e.printStackTrace();
@@ -781,10 +781,15 @@ public class GapsSearchService implements GapsSearch {
             JsonNode collection = objectMapper.readTree(collectionJson);
 
             int indexOfMovie = everyMovie.indexOf(movie);
-            if (indexOfMovie != -1) {
-                LOGGER.debug("Merging movie data");
-                everyMovie.get(indexOfMovie).setCollectionId(collection.get("id").asInt());
-                everyMovie.get(indexOfMovie).setCollection(collection.get("name").asText());
+
+            if (collection.has("status_code") && collection.get("status_code").asInt() == 34) {
+                LOGGER.warn(collection.get("status_message").asText());
+                return;
+            } else if (indexOfMovie != -1) {
+                int id = collection.get("id").asInt();
+                everyMovie.get(indexOfMovie).setCollectionId(id);
+                String name = collection.get("name").asText();
+                everyMovie.get(indexOfMovie).setCollection(name);
             } else {
                 Movie newMovie = new Movie.Builder(movie.getName(), movie.getYear())
                         .setTvdbId(movie.getTvdbId())
@@ -801,18 +806,17 @@ public class GapsSearchService implements GapsSearch {
                 //Files can't have : so need to remove to find matches correctly
                 String title = part.get("title").asText().replaceAll(":", "");
                 int year;
-                String releaseDate = null;
                 try {
-                    if (part.has("release_date")) {
+                    if (part.has("release_date") && StringUtils.isNotEmpty(part.get("release_date").asText())) {
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
                         LocalDate date = LocalDate.parse(part.get("release_date").asText(), formatter);
                         year = date.getYear();
                     } else {
-                        LOGGER.warn("No year found for " + title + ". Value returned was '" + releaseDate + "'. Not adding the movie to recommended list.");
+                        LOGGER.warn("No year found for " + title + ". Value returned was empty. Not adding the movie to recommended list.");
                         continue;
                     }
                 } catch (StringIndexOutOfBoundsException | NumberFormatException e) {
-                    LOGGER.warn("No year found for " + title + ". Value returned was '" + releaseDate + "'. Not adding the movie to recommended list.");
+                    LOGGER.warn("No year found for " + title + ". Value returned was empty. Not adding the movie to recommended list.");
                     continue;
                 }
 
@@ -820,7 +824,7 @@ public class GapsSearchService implements GapsSearch {
                 try {
                     posterUrl = part.get("poster_url").asText();
                 } catch (Exception e) {
-                    LOGGER.warn("No poster found for" + title + ".");
+                    LOGGER.debug("No poster found for" + title + ".");
                 }
 
                 Movie movieFromCollection = new Movie.Builder(title, year).setTvdbId(tvdbId)
@@ -911,7 +915,6 @@ public class GapsSearchService implements GapsSearch {
     }
 
     private void sendEmptySearchUpdate() throws JsonProcessingException {
-        LOGGER.info("sendEmptySearchUpdate()");
         //Send message over websocket
         //No new movie, just updated counts
         SearchResults searchResults = new SearchResults(getSearchedMovieCount(), getTotalMovieCount(), null);
