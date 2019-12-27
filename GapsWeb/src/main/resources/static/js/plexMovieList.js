@@ -107,7 +107,7 @@ function cancel() {
 }
 
 function viewRss() {
-    location.assign("rss");
+    location.assign("rssCheck");
 }
 
 window.onbeforeunload = function () {

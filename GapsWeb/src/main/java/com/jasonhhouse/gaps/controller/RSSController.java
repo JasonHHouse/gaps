@@ -24,8 +24,26 @@ public class RSSController {
 
     @RequestMapping(method = RequestMethod.GET,
             path = "/rss")
-    public ModelAndView getRss() {
+    public String getRss() {
         LOGGER.info("getRss()");
+        String rss = null;
+        if (ioService.doesRssFileExist()) {
+            rss = ioService.getRssFile();
+        }
+
+        if (StringUtils.isEmpty(rss)) {
+            //Show empty page
+            LOGGER.error("No RSS Found, didn't call from redirect");
+            return null;
+        } else {
+            return rss;
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET,
+            path = "/rssCheck")
+    public ModelAndView getRssCheck() {
+        LOGGER.info("getRssCheck()");
         String rss = null;
         if (ioService.doesRssFileExist()) {
             rss = ioService.getRssFile();
@@ -35,9 +53,7 @@ public class RSSController {
             //Show empty page
             return new ModelAndView("emptyState");
         } else {
-            ModelAndView modelAndView = new ModelAndView("rss");
-            modelAndView.addObject("rss", rss);
-            return modelAndView;
+            return new ModelAndView("rss");
         }
     }
 
