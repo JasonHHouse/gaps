@@ -1,7 +1,9 @@
 package com.jasonhhouse.gaps;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import org.apache.commons.collections4.list.SetUniqueList;
 
 public final class PlexSearch {
 
@@ -21,10 +23,10 @@ public final class PlexSearch {
 
     private Integer port;
 
-    private final List<PlexLibrary> libraries;
+    private final SetUniqueList<PlexLibrary> libraries;
 
     public PlexSearch() {
-        libraries = new ArrayList<>();
+        libraries = SetUniqueList.setUniqueList(new ArrayList<>());
     }
 
     public void setLibrarySelected(PlexLibrary plexLibrary) {

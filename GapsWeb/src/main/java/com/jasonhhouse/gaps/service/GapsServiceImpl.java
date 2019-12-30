@@ -33,7 +33,6 @@ public class GapsServiceImpl implements GapsService {
     @Override
     public void updateLibrarySelections(@NotNull List<PlexLibrary> plexLibraries) {
         LOGGER.info("updateLibrarySelections( " + plexLibraries + " )");
-        getPlexSearch().getLibraries().clear();
         getPlexSearch().getLibraries().addAll(plexLibraries.stream().filter(PlexLibrary::getSelected).collect(Collectors.toList()));
     }
 
