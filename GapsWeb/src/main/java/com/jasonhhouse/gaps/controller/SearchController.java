@@ -106,8 +106,6 @@ public class SearchController {
             gaps.setReadTimeout(180);
         }
 
-        //populate read movies
-        List<Movie> everyMovie = ioService.readMovieIdsFromFile();
-        gapsSearch.run(gaps, everyMovie);
+        gapsSearch.run(gaps);
     }
 }

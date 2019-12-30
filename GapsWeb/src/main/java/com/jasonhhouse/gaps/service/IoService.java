@@ -17,6 +17,7 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -77,7 +78,7 @@ public class IoService {
      *
      * @param recommended The recommended movies. (IMDB ID is required.)
      */
-    public void writeRssFile(List<Movie> recommended) {
+    public void writeRssFile(Set<Movie> recommended) {
         File file = new File(STORAGE_FOLDER + RSS_FEED_JSON_FILE);
 
         if (file.exists()) {
@@ -130,7 +131,7 @@ public class IoService {
     /**
      * Prints out all recommended movies to recommendedMovies.json
      */
-    public void writeRecommendedToFile(List<Movie> recommended) {
+    public void writeRecommendedToFile(Set<Movie> recommended) {
         LOGGER.info("writeRecommendedToFile()");
         final String fileName = STORAGE_FOLDER + RECOMMENDED_MOVIES;
         File file = new File(fileName);
@@ -140,14 +141,14 @@ public class IoService {
     /**
      * Prints out all movies to a text file movieIds.json
      */
-    public void writeMovieIdsToFile(List<Movie> everyMovie) {
+    public void writeMovieIdsToFile(Set<Movie> everyMovie) {
         LOGGER.info("writeMovieIdsToFile()");
         final String fileName = STORAGE_FOLDER + STORAGE;
         File file = new File(fileName);
         writeMovieIdsToFile(everyMovie, file);
     }
 
-    public void writeMovieIdsToFile(List<Movie> everyMovie, File file) {
+    public void writeMovieIdsToFile(Set<Movie> everyMovie, File file) {
         if (file.exists()) {
             boolean deleted = file.delete();
             if (!deleted) {
@@ -180,8 +181,8 @@ public class IoService {
     /**
      * Prints out all recommended files to a text file called gaps_recommended_movies.txt
      */
-    public List<Movie> readMovieIdsFromFile() {
-        List<Movie> everyMovie = Collections.emptyList();
+    public Set<Movie> readMovieIdsFromFile() {
+        Set<Movie> everyMovie = Collections.emptySet();
         final String fileName = STORAGE_FOLDER + STORAGE;
         File file = new File(fileName);
         if (!file.exists()) {
@@ -196,7 +197,7 @@ public class IoService {
             }
 
             LOGGER.debug(fullFile.toString());
-            everyMovie = objectMapper.readValue(fullFile.toString(), new TypeReference<List<Movie>>() {
+            everyMovie = objectMapper.readValue(fullFile.toString(), new TypeReference<Set<Movie>>() {
             });
             LOGGER.debug("everyMovie.size():" + everyMovie.size());
         } catch (FileNotFoundException e) {
@@ -211,7 +212,7 @@ public class IoService {
     /**
      * Prints out all recommended files to a text file called gaps_recommended_movies.txt
      */
-    public void writeToFile(List<Movie> recommended) {
+    public void writeToFile(Set<Movie> recommended) {
         File file = new File(RECOMMENDED_MOVIES);
         if (file.exists()) {
             boolean deleted = file.delete();

@@ -90,7 +90,7 @@ public class GapsSearchService implements GapsSearch {
 
     private final Set<Movie> searched;
 
-    private final List<Movie> recommended;
+    private final Set<Movie> recommended;
 
     private final Set<Movie> ownedMovies;
 
@@ -113,7 +113,7 @@ public class GapsSearchService implements GapsSearch {
         this.template = template;
         this.ownedMovies = new HashSet<>();
         this.searched = new HashSet<>();
-        this.recommended = new ArrayList<>();
+        this.recommended = new HashSet<>();
         this.everyMovie = new ArrayList<>();
         this.urlGenerator = urlGenerator;
         this.ioService = ioService;
@@ -126,18 +126,17 @@ public class GapsSearchService implements GapsSearch {
 
     @Override
     @Async
-    public void run(@NotNull Gaps gaps, @NotNull List<Movie> everyMovie) {
+    public void run(@NotNull Gaps gaps) {
         LOGGER.info("run( " + gaps + " )");
 
         searched.clear();
         ownedMovies.clear();
         recommended.clear();
-        this.everyMovie.clear();
-        this.everyMovie.addAll(everyMovie);
+        everyMovie.clear();
+        everyMovie.addAll(ioService.readMovieIdsFromFile());
         totalMovieCount.set(0);
         searchedMovieCount.set(0);
         cancelSearch.set(false);
-
 
         if (isGapsPropertyValid(gaps)) {
             String reason = "No search property defined. Must search from at least one type: Folder or Plex";
@@ -192,7 +191,7 @@ public class GapsSearchService implements GapsSearch {
 
         //Always write to log
         ioService.writeRecommendedToFile(recommended);
-        ioService.writeMovieIdsToFile(everyMovie);
+        ioService.writeMovieIdsToFile(new HashSet<>(everyMovie));
 
         template.convertAndSend("/finishedSearching", true);
     }
@@ -235,13 +234,6 @@ public class GapsSearchService implements GapsSearch {
     public @NotNull CopyOnWriteArrayList<Movie> getRecommendedMovies() {
         return new CopyOnWriteArrayList<>(recommended);
     }
-
-
-    @Override
-    public @NotNull List<Movie> getEveryMovie() {
-        return everyMovie;
-    }
-
 
     @Override
     public void cancelSearch() {

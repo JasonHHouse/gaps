@@ -68,14 +68,14 @@ class GapsSearchServiceTest {
     @Test
     void emptyGapsProperty() {
         Assertions.assertThrows(ResponseStatusException.class, () -> {
-            gapsSearch.run(gaps, new ArrayList<>());
+            gapsSearch.run(gaps);
         }, "Should throw exception when not searching from folder and Plex");
     }
 
     @Test
     void searchPlexGapsEmptyOtherwise() throws Exception {
         gaps.setSearchFromPlex(true);
-        gapsSearch.run(gaps, new ArrayList<>());
+        gapsSearch.run(gaps);
 
         List<Movie> recommended = gapsSearch.getRecommendedMovies();
         Assertions.assertEquals(recommended.size(), 0, "Shouldn't have found any movies");
@@ -137,11 +137,11 @@ class GapsSearchServiceTest {
         gaps.setSearchFromPlex(true);
         gaps.setWriteToFile(false);
 
-        Assertions.assertThrows(ResponseStatusException.class, () -> gapsSearch.run(gaps, new ArrayList<>()), "Should throw exception that the body was empty");
+        Assertions.assertThrows(ResponseStatusException.class, () -> gapsSearch.run(gaps), "Should throw exception that the body was empty");
     }
 
     @Test
-    void emptyBodyMovieXmlFromPlex() throws Exception {
+    void emptyBodyMovieXmlFromPlex() {
         gapsUrlGeneratorTest.generatePlexUrl(GapsUrlGeneratorTest.NO_MOVIE_PLEX_URL);
 
         List<String> movieUrls = new ArrayList<>();
@@ -151,7 +151,7 @@ class GapsSearchServiceTest {
         gaps.setSearchFromPlex(true);
         gaps.setWriteToFile(false);
 
-        gapsSearch.run(gaps, new ArrayList<>());
+        gapsSearch.run(gaps);
 
         List<Movie> recommended = gapsSearch.getRecommendedMovies();
         Assertions.assertEquals(recommended.size(), 0, "Shouldn't have found any movies");
@@ -168,7 +168,7 @@ class GapsSearchServiceTest {
         gaps.setSearchFromPlex(true);
         gaps.setWriteToFile(false);
 
-        Assertions.assertThrows(ResponseStatusException.class, () -> gapsSearch.run(gaps, new ArrayList<>()), "Should throw exception that the title was missing from the video element");
+        Assertions.assertThrows(ResponseStatusException.class, () -> gapsSearch.run(gaps), "Should throw exception that the title was missing from the video element");
     }
 
 
@@ -183,7 +183,7 @@ class GapsSearchServiceTest {
         gaps.setSearchFromPlex(true);
         gaps.setWriteToFile(false);
 
-        gapsSearch.run(gaps, new ArrayList<>());
+        gapsSearch.run(gaps);
         assertEquals(gapsSearch.getTotalMovieCount(), 1, "Should have found exactly one movie");
     }
 
@@ -198,7 +198,7 @@ class GapsSearchServiceTest {
         gaps.setSearchFromPlex(true);
         gaps.setWriteToFile(false);
 
-        gapsSearch.run(gaps, new ArrayList<>());
+        gapsSearch.run(gaps);
         assertEquals(gapsSearch.getTotalMovieCount(), 1, "Should have found exactly one movie");
     }
 

@@ -9,20 +9,19 @@ package com.jasonhhouse.gaps;/*
  */
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import org.jetbrains.annotations.NotNull;
 
 public interface GapsSearch {
 
-    void run(@NotNull Gaps gaps, @NotNull List<Movie> everyMovie);
+    void run(@NotNull Gaps gaps);
 
     @NotNull Integer getTotalMovieCount();
 
     @NotNull Integer getSearchedMovieCount();
 
     @NotNull CopyOnWriteArrayList<Movie> getRecommendedMovies();
-
-    @NotNull List<Movie> getEveryMovie();
 
     void cancelSearch();
 
