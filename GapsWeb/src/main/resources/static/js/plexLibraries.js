@@ -10,5 +10,5 @@
 
 "use strict";
 function back() {
-    location.assign("plexConfiguration.html");
+    location.assign("/plexConfiguration");
 }

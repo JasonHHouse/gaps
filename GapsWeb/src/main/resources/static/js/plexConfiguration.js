@@ -10,6 +10,6 @@
 
 "use strict";
 function back() {
-    location.assign("index.html");
+    location.assign("/");
 }
 
