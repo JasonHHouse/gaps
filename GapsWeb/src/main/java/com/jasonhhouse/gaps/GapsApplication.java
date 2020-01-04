@@ -10,12 +10,22 @@
 
 package com.jasonhhouse.gaps;
 
+import com.jasonhhouse.gaps.service.GapsServiceImpl;
 import java.util.concurrent.Executor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * Search for all missing movies in your plex collection by MovieDB collection.
@@ -24,8 +34,28 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @EnableAsync
 public class GapsApplication {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GapsApplication.class);
+
+    private final YamlConfig myConfig;
+
+    public GapsApplication(YamlConfig myConfig) {
+        this.myConfig = myConfig;
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(GapsApplication.class, args);
+    }
+
+    public void run(String... args) {
+        LOGGER.info("Using environment: " + myConfig.getEnvironment());
+        LOGGER.info("Name: " + myConfig.getName());
+    }
+
+    @Bean
+    @Primary
+    @Scope("singleton")
+    public GapsService getGapsService() {
+        return new GapsServiceImpl();
     }
 
     @Bean
@@ -39,4 +69,19 @@ public class GapsApplication {
         return executor;
     }
 
+    @Bean
+    public MessageSource messageSource() {
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.setBasename("classpath:messages");
+        messageSource.setDefaultEncoding("UTF-8");
+        return messageSource;
+    }
+
+    @Configuration
+    static class MyConfig implements WebMvcConfigurer {
+        @Override
+        public void addFormatters(FormatterRegistry registry) {
+            registry.addFormatter(new PlexSearchFormatter());
+        }
+    }
 }

@@ -54,14 +54,12 @@ Or
 
 You should be presented with this screen
 
-![Home Page](gifs/gaps_login.gif)
+![Home Page](images/gaps.png)
 
 
 ### Landing Page
 
 On this screen, you need to enter your Movie Database Api Key. The page has information on getting the key. The basics are that you'll need navigate over to [The Movie DB](https://www.themoviedb.org/settings/api), create an account, and make an API Key. Then you would copy that key into the Api Key field.
-
-![Plex Connection](gifs/gaps_movie_db_key.gif)
 
 *Note: Right now only searching via Plex is working. In time, I'll add back in searching by folder.*
 
@@ -71,7 +69,7 @@ Click the *Search via Plex* button and move on to the next page.
 
 With your Movie DB key added, now we need to configure the information to connect to Plex.
 
-![Plex Connection](gifs/gaps_plex_movie_list.gif)
+![Plex Connection](images/plex_configuration.png)
 
 On this page, you'll need to configure how you connect to Plex. This includes three main things: the host/ip address of Plex, the port Plex uses, and your personal Plex Token.
 
@@ -106,8 +104,12 @@ Select any or all of the movie libraries you want to search. You must select at 
 ### Results
 Once you've started searching, the movies will start populating on the final page.
 
+![Plex Movie Libraries](images/results.png) 
 
-![Plex Movie Libraries](gifs/gaps_missing_movies.gif) 
+### Recommended and RSS
+Once you've completed at least one search of your plex libraries, you can then view the history. Recommended is a user friendly version and RSS is for machine RSS feeds. 
+
+![Plex Recommended Movies](images/recommended.png) 
 
 ## License
 Copyright 2019 Jason H House

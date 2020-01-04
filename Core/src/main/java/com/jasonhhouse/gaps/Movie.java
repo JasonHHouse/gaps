@@ -1,5 +1,5 @@
-package com.jasonhhouse.gaps;/*
- * Copyright 2019 Jason H House
+/*
+ * Copyright 2020 Jason H House
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *
@@ -7,14 +7,19 @@ package com.jasonhhouse.gaps;/*
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+package com.jasonhhouse.gaps;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.jasonhhouse.gaps.json.MovieDeserializer;
+import com.jasonhhouse.gaps.json.MovieSerializer;
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.json.JSONObject;
 
-public final class Movie implements Comparable<Movie>, Jsonify<Movie> {
+@JsonSerialize(using = MovieSerializer.class)
+@JsonDeserialize(using = MovieDeserializer.class)
+public final class Movie implements Comparable<Movie> {
 
     public static final String TVDB_ID = "tvdbId";
 
@@ -121,18 +126,6 @@ public final class Movie implements Comparable<Movie>, Jsonify<Movie> {
 
     public int compareTo(Movie o) {
         return getName().compareTo(o.getName());
-    }
-
-    @Override
-    public JSONObject toJSON() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put(TVDB_ID, tvdbId);
-        jsonObject.put(IMDB_ID, imdbId);
-        jsonObject.put(NAME, name);
-        jsonObject.put(YEAR, year);
-        jsonObject.put(COLLECTION_ID, collectionId);
-        jsonObject.put(COLLECTION, collection);
-        return jsonObject;
     }
 
     public static class Builder {
