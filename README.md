@@ -2,6 +2,11 @@
 Gaps searches through your Plex Server or local folders for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.
 
 ## Setup
+### Plex
+For Gaps to communicate with Plex you may need to adjust your network settings.
+
+    Network Settings | Secure connections set to Preferred
+
 ### Docker
 
 Gaps runs in [Docker](https://www.docker.com/), so you'll need a basic ability to download and run a container. If you already have Docker, skip to installing and running.
