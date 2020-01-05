@@ -61,7 +61,7 @@ Or
 
 You should be presented with this screen
 
-![Home Page](images/gaps.png)
+![Home Page](images/gaps-main.png)
 
 
 ### Landing Page
