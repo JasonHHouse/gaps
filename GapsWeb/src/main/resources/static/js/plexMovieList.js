@@ -129,31 +129,9 @@ function search() {
     searchTitle.text("Searching for Movies");
     searchDescription.text("Gaps is looking through your Plex libraries. This could take a while so just sit tight, and we'll find all the missing movies for you.");
 
-    const plexSearch = JSON.parse($('#plexSearch').val());
-
-    let plexMovieUrls = [];
-
-    plexSearch.libraries.forEach(function (library) {
-        let data = {
-            'X-Plex-Token': plexSearch.plexToken
-        };
-
-        let encoded = encodeQueryData(data);
-        let plexMovieUrl = `http://${plexSearch.address}:${plexSearch.port}/library/sections/${library.key}/all/?${encoded}`;
-        plexMovieUrls.push(plexMovieUrl);
-    });
-
-    const gaps = {
-        movieDbApiKey: plexSearch.movieDbApiKey,
-        writeToFile: true,
-        searchFromPlex: true,
-        movieUrls: plexMovieUrls
-    };
-
     $.ajax({
         type: "POST",
         url: "startSearching",
-        data: JSON.stringify(gaps),
         contentType: "application/json"
     });
 

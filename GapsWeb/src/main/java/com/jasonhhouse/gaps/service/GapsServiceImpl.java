@@ -13,8 +13,6 @@ package com.jasonhhouse.gaps.service;
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexSearch;
-import com.jasonhhouse.gaps.controller.PlexMovieListController;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
@@ -43,7 +41,18 @@ public class GapsServiceImpl implements GapsService {
     @Override
     public void updateLibrarySelections(@NotNull List<PlexLibrary> plexLibraries) {
         LOGGER.info("updateLibrarySelections( " + plexLibraries + " )");
-        getPlexSearch().getLibraries().addAll(plexLibraries.stream().filter(PlexLibrary::getSelected).collect(Collectors.toList()));
+        LOGGER.info("BEFORE:" + getPlexSearch().getLibraries().toString());
+        for (PlexLibrary plexLibrary : plexLibraries) {
+            int index = getPlexSearch().getLibraries().indexOf(plexLibrary);
+            LOGGER.info("Index of plexLibrary: " + index + " - " + plexLibrary);
+            if (index == -1) {
+                getPlexSearch().getLibraries().add(plexLibrary);
+            } else {
+                getPlexSearch().getLibraries().get(index).setSelected(plexLibrary.getSelected());
+            }
+
+        }
+        LOGGER.info("AFTER:" + getPlexSearch().getLibraries().toString());
     }
 
     @Override
