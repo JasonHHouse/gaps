@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 public interface GapsSearch {
 
-    void run(@NotNull Gaps gaps);
+    void run();
 
     @NotNull Integer getTotalMovieCount();
 

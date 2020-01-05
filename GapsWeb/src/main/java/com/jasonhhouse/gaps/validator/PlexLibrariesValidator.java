@@ -51,7 +51,7 @@ public class PlexLibrariesValidator implements Validator {
             }
 
             if (plexLibrary.getSelected() == null) {
-                errors.rejectValue("libraries", "plexLibrary.selected().empty");
+                plexLibrary.setSelected(false);
             }
         }
 

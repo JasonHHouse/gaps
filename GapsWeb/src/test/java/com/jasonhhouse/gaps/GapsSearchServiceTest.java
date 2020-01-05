@@ -29,9 +29,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(classes = GapsApplication.class)
 class GapsSearchServiceTest {
 
-    private final Gaps gaps = new Gaps();
     private GapsUrlGeneratorTest gapsUrlGeneratorTest;
     private GapsSearchService gapsSearch;
+
+    @Mock
+    private GapsService gapsService;
 
     @Mock
     private IoService ioService;
@@ -40,7 +42,7 @@ class GapsSearchServiceTest {
     void setup() throws Exception {
         gapsUrlGeneratorTest = new GapsUrlGeneratorTest();
         SimpMessagingTemplate template = new SimpMessagingTemplate((message, l) -> true);
-        gapsSearch = new GapsSearchService(gapsUrlGeneratorTest, template, ioService);
+        gapsSearch = new GapsSearchService(gapsUrlGeneratorTest, template, ioService, gapsService);
 
         // Create a MockWebServer. These are lean enough that you can create a new
         // instance for every unit test.
@@ -68,14 +70,13 @@ class GapsSearchServiceTest {
     @Test
     void emptyGapsProperty() {
         Assertions.assertThrows(ResponseStatusException.class, () -> {
-            gapsSearch.run(gaps);
+            gapsSearch.run();
         }, "Should throw exception when not searching from folder and Plex");
     }
 
     @Test
     void searchPlexGapsEmptyOtherwise() throws Exception {
-        gaps.setSearchFromPlex(true);
-        gapsSearch.run(gaps);
+        gapsSearch.run();
 
         List<Movie> recommended = gapsSearch.getRecommendedMovies();
         Assertions.assertEquals(recommended.size(), 0, "Shouldn't have found any movies");
@@ -133,11 +134,7 @@ class GapsSearchServiceTest {
         List<String> movieUrls = new ArrayList<>();
         movieUrls.add(GapsUrlGeneratorTest.PLEX_EMPTY_URL);
 
-        gaps.setMovieUrls(movieUrls);
-        gaps.setSearchFromPlex(true);
-        gaps.setWriteToFile(false);
-
-        Assertions.assertThrows(ResponseStatusException.class, () -> gapsSearch.run(gaps), "Should throw exception that the body was empty");
+        Assertions.assertThrows(ResponseStatusException.class, () -> gapsSearch.run(), "Should throw exception that the body was empty");
     }
 
     @Test
@@ -147,11 +144,7 @@ class GapsSearchServiceTest {
         List<String> movieUrls = new ArrayList<>();
         movieUrls.add(GapsUrlGeneratorTest.NO_MOVIE_PLEX_URL);
 
-        gaps.setMovieUrls(movieUrls);
-        gaps.setSearchFromPlex(true);
-        gaps.setWriteToFile(false);
-
-        gapsSearch.run(gaps);
+        gapsSearch.run();
 
         List<Movie> recommended = gapsSearch.getRecommendedMovies();
         Assertions.assertEquals(recommended.size(), 0, "Shouldn't have found any movies");
@@ -164,11 +157,7 @@ class GapsSearchServiceTest {
         List<String> movieUrls = new ArrayList<>();
         movieUrls.add(GapsUrlGeneratorTest.EMPTY_MOVIE_PLEX_URL);
 
-        gaps.setMovieUrls(movieUrls);
-        gaps.setSearchFromPlex(true);
-        gaps.setWriteToFile(false);
-
-        Assertions.assertThrows(ResponseStatusException.class, () -> gapsSearch.run(gaps), "Should throw exception that the title was missing from the video element");
+        Assertions.assertThrows(ResponseStatusException.class, () -> gapsSearch.run(), "Should throw exception that the title was missing from the video element");
     }
 
 
@@ -179,11 +168,7 @@ class GapsSearchServiceTest {
         List<String> movieUrls = new ArrayList<>();
         movieUrls.add(GapsUrlGeneratorTest.PLEX_WITH_GUID_URL);
 
-        gaps.setMovieUrls(movieUrls);
-        gaps.setSearchFromPlex(true);
-        gaps.setWriteToFile(false);
-
-        gapsSearch.run(gaps);
+        gapsSearch.run();
         assertEquals(gapsSearch.getTotalMovieCount(), 1, "Should have found exactly one movie");
     }
 
@@ -193,12 +178,7 @@ class GapsSearchServiceTest {
 
         List<String> movieUrls = new ArrayList<>();
         movieUrls.add(GapsUrlGeneratorTest.PLEX_MOVIE_URL);
-
-        gaps.setMovieUrls(movieUrls);
-        gaps.setSearchFromPlex(true);
-        gaps.setWriteToFile(false);
-
-        gapsSearch.run(gaps);
+        gapsSearch.run();
         assertEquals(gapsSearch.getTotalMovieCount(), 1, "Should have found exactly one movie");
     }
 
