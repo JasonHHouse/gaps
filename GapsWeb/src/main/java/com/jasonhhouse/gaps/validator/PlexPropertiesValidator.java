@@ -39,9 +39,7 @@ public class PlexPropertiesValidator implements Validator {
 
         if (plexSearch.getPort() == null) {
             errors.rejectValue("port", "port.empty");
-        }
-
-        if (plexSearch.getPort() < 0) {
+        } else if (plexSearch.getPort() < 0) {
             errors.rejectValue("port", "port.belowRange");
         }
 
