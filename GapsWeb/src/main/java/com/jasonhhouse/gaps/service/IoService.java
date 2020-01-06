@@ -15,13 +15,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.Rss;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
@@ -29,6 +26,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.jetbrains.annotations.NotNull;
@@ -41,9 +39,9 @@ public class IoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IoService.class);
 
-    private static final String STORAGE_FOLDER = "/usr/data/";
+    private final String STORAGE_FOLDER;
 
-    private static final String TEMP_STORAGE_FOLDER = "/tmp/";
+    private final String TEMP_STORAGE_FOLDER;
 
     private static final String STORAGE = "movieIds.json";
 
@@ -54,6 +52,27 @@ public class IoService {
     public static final String PROPERTIES = "gaps.properties";
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    public IoService() {
+        //Look for properties file for file locations
+        String os = System.getProperty("os.name");
+        if (os.contains("Windows")) {
+            //Default to the same folder as the jar
+            String decodedPath = "";
+            try {
+                String path = new File(new File(new File(IoService.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParent()).getParent()).getParent();
+                decodedPath = URLDecoder.decode(path, "UTF-8");
+                decodedPath = decodedPath.substring("file:\\".length());
+            } catch (UnsupportedEncodingException e) {
+                //Do nothing
+            }
+            STORAGE_FOLDER = decodedPath + "\\";
+            TEMP_STORAGE_FOLDER = decodedPath + "\\temp\\";
+        } else {
+            STORAGE_FOLDER = "/usr/data/";
+            TEMP_STORAGE_FOLDER ="/tmp/";
+        }
+    }
 
     public boolean doesRecommendedFileExist() {
         return new File(STORAGE_FOLDER + RECOMMENDED_MOVIES).exists();
@@ -258,19 +277,19 @@ public class IoService {
     public void writeProperties(PlexSearch plexSearch) throws IOException {
         Properties properties = new Properties();
 
-        if(StringUtils.isNotEmpty(plexSearch.getMovieDbApiKey())) {
+        if (StringUtils.isNotEmpty(plexSearch.getMovieDbApiKey())) {
             properties.setProperty(PlexSearch.MOVIE_DB_API_KEY, plexSearch.getMovieDbApiKey());
         }
 
-        if(StringUtils.isNotEmpty(plexSearch.getAddress())) {
+        if (StringUtils.isNotEmpty(plexSearch.getAddress())) {
             properties.setProperty(PlexSearch.ADDRESS, plexSearch.getAddress());
         }
 
-        if(plexSearch.getPort() != null) {
+        if (plexSearch.getPort() != null) {
             properties.setProperty(PlexSearch.PORT, Integer.toString(plexSearch.getPort()));
         }
 
-        if(StringUtils.isNotEmpty(plexSearch.getPlexToken())) {
+        if (StringUtils.isNotEmpty(plexSearch.getPlexToken())) {
             properties.setProperty(PlexSearch.PLEX_TOKEN, plexSearch.getPlexToken());
         }
 
@@ -278,22 +297,36 @@ public class IoService {
     }
 
     public PlexSearch readProperties() throws IOException {
-        Properties properties = new Properties();
-        properties.load(new FileReader(new File(STORAGE_FOLDER + PROPERTIES)));
-
+        File file = new File(STORAGE_FOLDER + PROPERTIES);
         PlexSearch plexSearch = new PlexSearch();
 
-        String movieDbApiKey = properties.getProperty(PlexSearch.MOVIE_DB_API_KEY);
-        plexSearch.setMovieDbApiKey(movieDbApiKey);
+        if(!file.exists()) {
+            LOGGER.warn(file + " does not exist");
+            return plexSearch;
+        }
 
-        String address = properties.getProperty(PlexSearch.ADDRESS);
-        plexSearch.setAddress(address);
+        Properties properties = new Properties();
+        properties.load(new FileReader(file));
 
-        String port = properties.getProperty(PlexSearch.PORT);
-        plexSearch.setPort(Integer.parseInt(port));
+        if(properties.containsKey(PlexSearch.MOVIE_DB_API_KEY)) {
+            String movieDbApiKey = properties.getProperty(PlexSearch.MOVIE_DB_API_KEY);
+            plexSearch.setMovieDbApiKey(movieDbApiKey);
+        }
 
-        String plexToken = properties.getProperty(PlexSearch.PLEX_TOKEN);
-        plexSearch.setPlexToken(plexToken);
+        if(properties.containsKey(PlexSearch.ADDRESS)) {
+            String address = properties.getProperty(PlexSearch.ADDRESS);
+            plexSearch.setAddress(address);
+        }
+
+        if(properties.containsKey(PlexSearch.PORT)) {
+            String port = properties.getProperty(PlexSearch.PORT);
+            plexSearch.setPort(Integer.parseInt(port));
+        }
+
+        if(properties.containsKey(PlexSearch.PLEX_TOKEN)) {
+            String plexToken = properties.getProperty(PlexSearch.PLEX_TOKEN);
+            plexSearch.setPlexToken(plexToken);
+        }
 
         return plexSearch;
     }
