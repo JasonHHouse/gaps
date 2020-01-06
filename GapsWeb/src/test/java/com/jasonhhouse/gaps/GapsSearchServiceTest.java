@@ -33,15 +33,15 @@ class GapsSearchServiceTest {
     private GapsSearchService gapsSearch;
 
     @Mock
-    private GapsService gapsService;
-
-    @Mock
     private IoService ioService;
 
     @BeforeEach
     void setup() throws Exception {
         gapsUrlGeneratorTest = new GapsUrlGeneratorTest();
         SimpMessagingTemplate template = new SimpMessagingTemplate((message, l) -> true);
+
+        GapsService gapsService = new GapsServiceTest();
+
         gapsSearch = new GapsSearchService(gapsUrlGeneratorTest, template, ioService, gapsService);
 
         // Create a MockWebServer. These are lean enough that you can create a new
@@ -75,127 +75,15 @@ class GapsSearchServiceTest {
     }
 
     @Test
-    void searchPlexGapsEmptyOtherwise() throws Exception {
-        gapsSearch.run();
-
-        List<Movie> recommended = gapsSearch.getRecommendedMovies();
-        Assertions.assertEquals(recommended.size(), 0, "Shouldn't have found any movies");
-    }
-
-  /*  @Test
-    void emptyLibraryXmlFromPlex() {
-        HttpUrl baseUrl = gapsUrlGeneratorTest.generatePlexUrl(GapsUrlGeneratorTest.PLEX_EMPTY_URL);
-
-        Assertions.assertThrows(IllegalStateException.class, () -> gapsSearch.getPlexLibraries(baseUrl), "Should throw exception with for an empty body");
-    }*/
-
-    /*@Test
-    void validLibraryXmlFromPlex() {
-        HttpUrl baseUrl = gapsUrlGeneratorTest.generatePlexUrl(GapsUrlGeneratorTest.FULL_PLEX_XML_URL);
-
-        Set<PlexLibrary> plexLibraries = gapsSearch.getPlexLibraries(baseUrl);
-        Assertions.assertEquals(plexLibraries.size(), 2, "Should have found exactly two libraries");
-    }*/
-
-    /*@Test
-    void badLibraryXmlFromPlex() {
-        HttpUrl baseUrl = gapsUrlGeneratorTest.generatePlexUrl(GapsUrlGeneratorTest.MISSING_TYPE_PLEX_URL);
-
-        Assertions.assertThrows(ResponseStatusException.class, () -> gapsSearch.getPlexLibraries(baseUrl), "Should throw exception for missing 'type' node inside /MediaContainer/Directory element");
-    }*/
-
-   /* @Test
-    void missingTitleFromPlex() {
-        HttpUrl baseUrl = gapsUrlGeneratorTest.generatePlexUrl(GapsUrlGeneratorTest.MISSING_TITLE_PLEX_URL);
-
-        Assertions.assertThrows(ResponseStatusException.class, () -> gapsSearch.getPlexLibraries(baseUrl), "Should throw exception for missing 'title' node inside /MediaContainer/Directory element");
-    }*/
-
-  /*  @Test
-    void missingKeyFromPlex() {
-        HttpUrl baseUrl = gapsUrlGeneratorTest.generatePlexUrl(GapsUrlGeneratorTest.MISSING_KEY_PLEX_URL);
-
-        Assertions.assertThrows(ResponseStatusException.class, () -> {
-            gapsSearch.getPlexLibraries(baseUrl);
-        }, "Should throw exception for missing 'key' node inside /MediaContainer/Directory element");
-    }*/
-
-   /* @Test
-    void nonNumberKeyFromPlex() {
-        HttpUrl baseUrl = gapsUrlGeneratorTest.generatePlexUrl(GapsUrlGeneratorTest.NON_NUMBER_KEY_FROM_PLEX_URL);
-
-        Assertions.assertThrows(ResponseStatusException.class, () -> gapsSearch.getPlexLibraries(baseUrl), "Should throw exception for 'key' node not being a number inside /MediaContainer/Directory element");
-    }*/
-
-    @Test
     void noBodyMovieXmlFromPlex() {
         gapsUrlGeneratorTest.generatePlexUrl(GapsUrlGeneratorTest.PLEX_EMPTY_URL);
-
-        List<String> movieUrls = new ArrayList<>();
-        movieUrls.add(GapsUrlGeneratorTest.PLEX_EMPTY_URL);
-
         Assertions.assertThrows(ResponseStatusException.class, () -> gapsSearch.run(), "Should throw exception that the body was empty");
-    }
-
-    @Test
-    void emptyBodyMovieXmlFromPlex() {
-        gapsUrlGeneratorTest.generatePlexUrl(GapsUrlGeneratorTest.NO_MOVIE_PLEX_URL);
-
-        List<String> movieUrls = new ArrayList<>();
-        movieUrls.add(GapsUrlGeneratorTest.NO_MOVIE_PLEX_URL);
-
-        gapsSearch.run();
-
-        List<Movie> recommended = gapsSearch.getRecommendedMovies();
-        Assertions.assertEquals(recommended.size(), 0, "Shouldn't have found any movies");
     }
 
     @Test
     void emptyMovieXmlFromPlex() {
         gapsUrlGeneratorTest.generatePlexUrl(GapsUrlGeneratorTest.EMPTY_MOVIE_PLEX_URL);
-
-        List<String> movieUrls = new ArrayList<>();
-        movieUrls.add(GapsUrlGeneratorTest.EMPTY_MOVIE_PLEX_URL);
-
         Assertions.assertThrows(ResponseStatusException.class, () -> gapsSearch.run(), "Should throw exception that the title was missing from the video element");
     }
-
-
-    @Test
-    void validGuidFromPlex() throws Exception {
-        gapsUrlGeneratorTest.generatePlexUrl(GapsUrlGeneratorTest.PLEX_WITH_GUID_URL);
-
-        List<String> movieUrls = new ArrayList<>();
-        movieUrls.add(GapsUrlGeneratorTest.PLEX_WITH_GUID_URL);
-
-        gapsSearch.run();
-        assertEquals(gapsSearch.getTotalMovieCount(), 1, "Should have found exactly one movie");
-    }
-
-    @Test
-    void validYearXmlFromPlex() throws Exception {
-        gapsUrlGeneratorTest.generatePlexUrl(GapsUrlGeneratorTest.PLEX_MOVIE_URL);
-
-        List<String> movieUrls = new ArrayList<>();
-        movieUrls.add(GapsUrlGeneratorTest.PLEX_MOVIE_URL);
-        gapsSearch.run();
-        assertEquals(gapsSearch.getTotalMovieCount(), 1, "Should have found exactly one movie");
-    }
-
-/*    @Test
-    void invalidMovieDbFromPlex() throws Exception {
-        gapsUrlGeneratorTest.generatePlexUrl(GapsUrlGeneratorTest.PLEX_MOVIE_URL);
-
-        List<String> movieUrls = new ArrayList<>();
-        movieUrls.add(GapsUrlGeneratorTest.PLEX_MOVIE_URL);
-
-        gaps.setMovieUrls(movieUrls);
-        gaps.setSearchFromPlex(true);
-        gaps.setMovieDbApiKey("fake_id");
-        gaps.setWriteToFile(false);
-
-        gapsSearch.run(gaps, new ArrayList<>());
-        assertEquals(gapsSearch.getRecommendedMovies().size(), 3, "Should have found exactly three movies recommended");
-    }*/
 
 }
