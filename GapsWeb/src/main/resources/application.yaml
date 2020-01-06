@@ -26,7 +26,7 @@ logging:
   level:
     root: INFO
 server:
-  port: 8443
+  port: 8484
   compression:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
