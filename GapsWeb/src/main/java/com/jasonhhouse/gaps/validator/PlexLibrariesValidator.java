@@ -24,7 +24,7 @@ import org.springframework.validation.Validator;
 
 public class PlexLibrariesValidator implements Validator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GapsController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PlexLibrariesValidator.class);
 
     @Override
     public boolean supports(@NotNull Class<?> clazz) {

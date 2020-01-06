@@ -58,6 +58,10 @@ public class PlexConfigurationController {
         }
 
         gapsService.updatePlexSearch(plexSearch);
+        if (gapsService.getPlexSearch().getPort() == null) {
+            //Default plex port to 32400
+            gapsService.getPlexSearch().setPort(32400);
+        }
 
         try {
             ioService.writeProperties(gapsService.getPlexSearch());
