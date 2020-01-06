@@ -13,8 +13,15 @@ package com.jasonhhouse.gaps;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Interface to handle connecting to a Plex instance and returning the known movie libraries
+ */
 public interface PlexQuery {
 
+    /**
+     * @param plexSearch Needs to have the IP Address, port, and plex token to connect
+     * @return The list of libraries that are of type movie for that Plex server
+     */
     @NotNull List<PlexLibrary> getLibraries(@NotNull PlexSearch plexSearch);
 
 }

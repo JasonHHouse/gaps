@@ -13,17 +13,38 @@ package com.jasonhhouse.gaps;
 import java.util.concurrent.CopyOnWriteArrayList;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Handles the process of searching, movies, counts, and canceling
+ */
 public interface GapsSearch {
 
+    /**
+     * Kicks of searching for all missing movies
+     */
     void run();
 
+    /**
+     * @return The total count of movies to be searched
+     */
     @NotNull Integer getTotalMovieCount();
 
+    /**
+     * @return The current count of movies searched
+     */
     @NotNull Integer getSearchedMovieCount();
 
+    /**
+     * @return The movies that are missing from collections
+     */
     @NotNull CopyOnWriteArrayList<Movie> getRecommendedMovies();
 
+    /**
+     * Cancel the current search
+     */
     void cancelSearch();
 
+    /**
+     * @return Returns true if currently searching
+     */
     boolean isSearching();
 }
