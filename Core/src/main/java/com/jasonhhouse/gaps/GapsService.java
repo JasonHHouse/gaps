@@ -13,11 +13,27 @@ package com.jasonhhouse.gaps;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Blackboard service interface for storing the PlexSearch object controllers
+ */
 public interface GapsService {
 
+    /**
+     * @return Returns the PlexSearch instance as a singleton
+     */
     PlexSearch getPlexSearch();
 
+    /**
+     * Updates PlexLibrary's to add them if not added and set them selected or unselected if added
+     *
+     * @param plexLibraries The libraries to add or update
+     */
     void updateLibrarySelections(@NotNull List<PlexLibrary> plexLibraries);
 
+    /**
+     * Updates the plex search object itself to the singleton object
+     *
+     * @param plexSearch The object to copy into the plex search singleton
+     */
     void updatePlexSearch(PlexSearch plexSearch);
 }

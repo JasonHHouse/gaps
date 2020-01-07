@@ -218,7 +218,7 @@ public class GapsSearchService implements GapsSearch {
     /**
      * Using TMDB api (V3), get access to user list and add recommended movies to
      */
-    private @Nullable String getTmdbAuthorization() {
+  /*  private @Nullable String getTmdbAuthorization() {
         // Create the request_token request
         OkHttpClient client = new OkHttpClient();
 
@@ -286,7 +286,7 @@ public class GapsSearchService implements GapsSearch {
             LOGGER.error("Unable to create session id: " + e.getMessage());
             return null;
         }
-    }
+    }*/
 
     /**
      * Using TMDB api (V3), get access to user list and add recommended movies to
@@ -336,7 +336,7 @@ public class GapsSearchService implements GapsSearch {
     }*/
 
     /**
-     * Connect to plex via the URL and parse all of the movies from the returned XML creating a HashSet of movies the
+     * Connect to plex via the URL and parse all the movies from the returned XML creating a HashSet of movies the
      * user has.
      */
     private void findAllPlexMovies() throws SearchCancelledException {
@@ -358,7 +358,7 @@ public class GapsSearchService implements GapsSearch {
         for (String url : urls) {
             //Cancel search if needed
             if (cancelSearch.get()) {
-                throw new SearchCancelledException("Search was cancelled");
+                throw new SearchCancelledException("Search cancelled");
             }
 
             try {
@@ -813,7 +813,7 @@ public class GapsSearchService implements GapsSearch {
     }
 
 
-    public static class UserInputThreadCountdown implements Runnable {
+   /* public static class UserInputThreadCountdown implements Runnable {
 
         int time_limit = 60;
 
@@ -837,7 +837,7 @@ public class GapsSearchService implements GapsSearch {
             System.in.close();
         }
 
-    }
+    }*/
 
     private List<String> generatePlexUrls() {
         LOGGER.info(gapsService.getPlexSearch().getLibraries().toString());
