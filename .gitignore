@@ -32,5 +32,5 @@ Core/target
 GapsWeb/target
 
 /rssFeed.json
-GapsWeb-0.1.2.jar
-Gaps-0.1.2.zip
+GapsOnWindows/*.jar
+*.zip
