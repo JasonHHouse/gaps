@@ -32,6 +32,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="/rssCheck">RSS</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/configuration">Configuration</a>
+            </li>
         </ul>
     </div>
 </nav>
@@ -41,26 +44,20 @@
     <h2 class="top-margin">Welcome to Gaps</h2>
     <h4 class="top-margin">v0.1.3</h4>
 
-    <p>Gaps searches through your Plex Server. It then queries
-        for known
-        movies in the same
+    <p>Gaps searches through your Plex Server. It then queries for known movies in the same
         collection using The MovieDB, which you will need to get. Don't worry, we'll walk you through
-        those
-        steps. Anyway, if those movies don't exist in your library, Gaps will recommend getting those
+        those steps. Anyway, if those movies don't exist in your library, Gaps will recommend getting those
         movies, legally of course.</p>
 
     <p>An example would be having a copy of 'Alien (1979)' and Gaps
-        recommending
-        'Aliens (1986)' and
-        'Alien³ (1992)' to be added to your collection.</p>
+        recommending 'Aliens (1986)' and 'Alien³ (1992)' to be added to your collection.</p>
 
     <p>To use Gaps, you'll need a MovieDB api key. Navigate
-        over to <a
-                href="https://www.themoviedb.org/settings/api" target="_blank" rel="noopener">The Movie DB</a>, create
-        an
-        account, and make an API Key. Copy that key and paste it below.</p>
+        over to <a href="https://www.themoviedb.org/settings/api" target="_blank" rel="noopener">The Movie DB</a>,
+        create an account, and make an API Key. Copy that key and paste it below.</p>
 
-    <form id="plexConfiguration" class="needs-validation" method="POST" action="/plexConfiguration" novalidate th:object="${plexSearch}">
+    <form id="plexConfiguration" class="needs-validation" method="POST" action="/plexConfiguration" novalidate
+          th:object="${plexSearch}">
         <div class="form-group">
             <label for="movieDbApiKey">Movie Database Api Key</label>
             <input type="text" class="form-control" id="movieDbApiKey" th:field="*{movieDbApiKey}" required>

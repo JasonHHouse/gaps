@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -63,6 +64,9 @@ public class PlexQueryImpl implements PlexQuery {
         //ToDo
         //Need to control time out here, using gaps object
         OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(180, TimeUnit.SECONDS)
+                .writeTimeout(180, TimeUnit.SECONDS)
+                .readTimeout(180, TimeUnit.SECONDS)
                 .build();
 
         List<PlexLibrary> plexLibraries = new ArrayList<>();
