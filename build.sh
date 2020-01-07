@@ -1,14 +1,14 @@
 #!/bin/bash
 VERSION=0.1.3
-DOCKER_SSL_VERSION="housewrecker/gaps:v$VERSION"
-DOCKER_NO_SSL_VERSION="housewrecker/gaps:v$VERSION-no-ssl"
+DOCKER_SSL_LATEST="housewrecker/gaps:latest"
+DOCKER_NO_SSL_LATEST="housewrecker/gaps:latest-no-ssl"
 JAR_VERSION="GapsWeb/target/GapsWeb-$VERSION.jar"
 ZIP_VERSION="Gaps-$VERSION.zip"
 mvn clean install
-docker build -f Dockerfile.ssl -t $DOCKER_SSL_VERSION .
-docker push $DOCKER_SSL_VERSION
-docker build -f Dockerfile.no-ssl -t $DOCKER_NO_SSL_VERSION .
-docker push $DOCKER_NO_SSL_VERSION
+docker build -f Dockerfile.ssl -t $DOCKER_SSL_LATEST .
+docker push $DOCKER_SSL_LATEST
+docker build -f Dockerfile.no-ssl -t $DOCKER_NO_SSL_LATEST .
+docker push $DOCKER_NO_SSL_LATEST
 mkdir -p GapsOnWindows
 rm $ZIP_VERSION
 rm GapsOnWindows/*.jar
