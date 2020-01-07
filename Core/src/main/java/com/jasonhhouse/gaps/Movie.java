@@ -102,21 +102,38 @@ public final class Movie implements Comparable<Movie> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Movie movie = (Movie) o;
-        return year == movie.year &&
-                Objects.equals(name, movie.name);
-    }
 
-    @Nullable
-    public String getPosterUrl() {
-        return posterUrl;
+        //Compare tvdb id first
+        if(tvdbId != -1 && movie.tvdbId != -1) {
+            return tvdbId == movie.tvdbId;
+        }
+
+        //Compare imdb id next
+        if(StringUtils.isNotEmpty(imdbId) &&
+            StringUtils.isNotEmpty(movie.imdbId)) {
+            return Objects.equals(imdbId, movie.imdbId);
+        }
+
+        //Fallback is year and title
+        return year == movie.year &&
+                name.equals(movie.name);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(name, year);
+    }
+
+    @Nullable
+    public String getPosterUrl() {
+        return posterUrl;
     }
 
     @Override
