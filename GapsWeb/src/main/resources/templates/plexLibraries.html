@@ -49,12 +49,10 @@
     <p>These are the movie libraries we found in your Plex
         Server. Select any and all you would like to look for gaps in.</p>
 
-    <form class="needs-validation" method="POST" action="/plexMovieList" novalidate th:object="${plexSearch}">
-        <fieldset th:each="library,status : *{libraries}" class="form-group form-check">
-            <input type="checkbox" class="form-check-input" th:field="*{libraries[__${status.index}__].selected}" th:value="*{libraries[__${status.index}__].key}">
-            <label class="form-check-label" th:for="${library}" th:text="${library.title}"></label>
-            <input id="key" name="plexSearch" th:field="*{libraries[__${status.index}__].key}" type="hidden"/>
-            <input id="title" name="plexSearch" th:field="*{libraries[__${status.index}__].title}" type="hidden"/>
+    <form class="needs-validation" method="POST" action="/plexMovieList" novalidate enctype="multipart/form-data">
+        <fieldset th:each="library,status : *{plexSearch.libraries}" class="form-group form-check">
+            <input type="checkbox" name="selectedLibraries" class="form-check-input" th:value="*{plexSearch.libraries[__${status.index}__].key}" />
+            <label class="form-check-label" th:text="${library.title}"></label>
         </fieldset>
 
         <button type="button" class="btn btn-secondary" onclick="back()">Back</button>

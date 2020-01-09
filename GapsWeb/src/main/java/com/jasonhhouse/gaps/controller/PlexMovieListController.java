@@ -17,8 +17,10 @@ import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexSearchFormatter;
 import com.jasonhhouse.gaps.service.BindingErrorsService;
 import com.jasonhhouse.gaps.validator.PlexLibrariesValidator;
+import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,17 +51,15 @@ public class PlexMovieListController {
     }
 
     @RequestMapping(method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView postPlexMovieList(@Valid PlexSearch plexSearch, BindingResult bindingResult) {
-        LOGGER.info("postPlexMovieList( " + plexSearch + " )");
+    public ModelAndView postPlexMovieList(@RequestParam ArrayList<String> selectedLibraries) {
+        LOGGER.info("postPlexMovieList( " + selectedLibraries + " )");
 
-        if (bindingErrorsService.hasBindingErrors(bindingResult)) {
+        if(CollectionUtils.isEmpty(selectedLibraries)) {
             return bindingErrorsService.getErrorPage();
         }
 
-        gapsService.updateLibrarySelections(plexSearch.getLibraries());
-        gapsService.updatePlexSearch(plexSearch);
+        gapsService.updateLibrarySelections(selectedLibraries);
 
         ModelAndView modelAndView = new ModelAndView("plexMovieList");
         LOGGER.info(gapsService.getPlexSearch().toString());

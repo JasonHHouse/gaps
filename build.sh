@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=0.1.3
+VERSION=0.1.4
 DOCKER_SSL_LATEST="housewrecker/gaps:latest"
 DOCKER_NO_SSL_LATEST="housewrecker/gaps:latest-no-ssl"
 JAR_VERSION="GapsWeb/target/GapsWeb-$VERSION.jar"
