@@ -2,8 +2,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>console</headerType>
-  <jar>C:\Users\jh597\Code\Gaps\GapsWeb\target\GapsWeb-0.1.3.jar</jar>
-  <outfile>C:\Users\jh597\Desktop\Gaps-v0.1.3.exe</outfile>
+  <jar>/Users/jhouse/Code/Gaps/GapsWeb/target/GapsWeb-0.1.4.jar</jar>
+  <outfile>/Users/jhouse/Desktop/Gaps-v0.1.4.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
@@ -13,13 +13,13 @@
   <stayAlive>false</stayAlive>
   <restartOnCrash>false</restartOnCrash>
   <manifest></manifest>
-  <icon>C:\Users\jh597\Code\Gaps\GapsWeb\src\main\resources\static\images\gaps.ico</icon>
+  <icon>/Users/jhouse/Code/Gaps/GapsWeb/src/main/resources/static/images/gaps.ico</icon>
   <singleInstance>
     <mutexName>Gaps</mutexName>
     <windowTitle>Gaps</windowTitle>
   </singleInstance>
   <jre>
-    <path>C:\Program Files (x86)\Java\jre1.8.0_231\bin\java.exe</path>
+    <path>/Users/jhouse/Downloads/bin/java.exe</path>
     <bundledJre64Bit>true</bundledJre64Bit>
     <bundledJreAsFallback>false</bundledJreAsFallback>
     <minVersion>8</minVersion>
@@ -28,16 +28,16 @@
     <runtimeBits>64/32</runtimeBits>
   </jre>
   <versionInfo>
-    <fileVersion>0.1.3.0</fileVersion>
+    <fileVersion>0.1.4.0</fileVersion>
     <txtFileVersion>Free Form</txtFileVersion>
     <fileDescription>Gaps</fileDescription>
     <copyright>2019</copyright>
-    <productVersion>0.1.3.0</productVersion>
+    <productVersion>0.1.4.0</productVersion>
     <txtProductVersion>Free Form</txtProductVersion>
     <productName>Gaps</productName>
     <companyName></companyName>
     <internalName>Gaps</internalName>
-    <originalFilename>Gaps-v0.1.3.exe</originalFilename>
+    <originalFilename>Gaps-v0.1.4.exe</originalFilename>
     <trademarks></trademarks>
     <language>ENGLISH_US</language>
   </versionInfo>
