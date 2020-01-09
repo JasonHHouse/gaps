@@ -26,9 +26,9 @@ public interface GapsService {
     /**
      * Updates PlexLibrary's to add them if not added and set them selected or unselected if added
      *
-     * @param plexLibraries The libraries to add or update
+     * @param selectedLibraries The libraries to update
      */
-    void updateLibrarySelections(@NotNull List<PlexLibrary> plexLibraries);
+    void updateLibrarySelections(@NotNull List<String> selectedLibraries);
 
     /**
      * Updates the plex search object itself to the singleton object

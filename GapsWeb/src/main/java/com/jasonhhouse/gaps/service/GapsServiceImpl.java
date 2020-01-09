@@ -14,6 +14,7 @@ import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexSearch;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -39,16 +40,17 @@ public class GapsServiceImpl implements GapsService {
     }
 
     @Override
-    public void updateLibrarySelections(@NotNull List<PlexLibrary> plexLibraries) {
-        LOGGER.info("updateLibrarySelections( " + plexLibraries + " )");
+    public void updateLibrarySelections(@NotNull List<String> selectedLibraries) {
+        LOGGER.info("updateLibrarySelections( " + selectedLibraries + " )");
         LOGGER.info("BEFORE:" + getPlexSearch().getLibraries().toString());
-        for (PlexLibrary plexLibrary : plexLibraries) {
-            int index = getPlexSearch().getLibraries().indexOf(plexLibrary);
-            LOGGER.info("Index of plexLibrary: " + index + " - " + plexLibrary);
-            if (index == -1) {
-                getPlexSearch().getLibraries().add(plexLibrary);
+        for (String selectedLibrary : selectedLibraries) {
+
+            Optional<PlexLibrary> library = getPlexSearch().getLibraries().stream().filter(plexLibrary -> plexLibrary.getKey().equals(Integer.valueOf(selectedLibrary))).findFirst();
+
+            if (!library.isPresent()) {
+                LOGGER.warn("Can't find library");
             } else {
-                getPlexSearch().getLibraries().get(index).setSelected(plexLibrary.getSelected());
+                library.get().setSelected(true);
             }
 
         }

@@ -20,6 +20,7 @@ import com.jasonhhouse.gaps.validator.PlexLibrariesValidator;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,21 +52,18 @@ public class PlexMovieListController {
 
     @RequestMapping(method = RequestMethod.POST,
             produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView postPlexMovieList(
-            @ModelAttribute PlexSearch plexSearch,
-            @ModelAttribute ArrayList<Long> libraries, BindingResult bindingResult , Model model) {
-        LOGGER.info("postPlexMovieList( " + plexSearch + ", " + libraries + " )");
-/*
-        if (bindingErrorsService.hasBindingErrors(bindingResult)) {
+    public ModelAndView postPlexMovieList(@RequestParam ArrayList<String> selectedLibraries) {
+        LOGGER.info("postPlexMovieList( " + selectedLibraries + " )");
+
+        if(CollectionUtils.isEmpty(selectedLibraries)) {
             return bindingErrorsService.getErrorPage();
         }
 
-        gapsService.updateLibrarySelections(plexSearch.getLibraries());
-        gapsService.updatePlexSearch(plexSearch);*/
+        gapsService.updateLibrarySelections(selectedLibraries);
 
         ModelAndView modelAndView = new ModelAndView("plexMovieList");
-        /*LOGGER.info(gapsService.getPlexSearch().toString());
-        modelAndView.addObject("plexSearch", gapsService.getPlexSearch());*/
+        LOGGER.info(gapsService.getPlexSearch().toString());
+        modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
         return modelAndView;
     }
 
@@ -80,6 +78,6 @@ public class PlexMovieListController {
     public void initBinder(WebDataBinder binder) {
         LOGGER.info("initBinder()");
         binder.addCustomFormatter(new PlexSearchFormatter(), "plexSearch");
-        //binder.setValidator(new PlexLibrariesValidator());
+        binder.setValidator(new PlexLibrariesValidator());
     }
 }

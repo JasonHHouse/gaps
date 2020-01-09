@@ -29,7 +29,7 @@ public class GapsServiceTest implements GapsService {
     }
 
     @Override
-    public void updateLibrarySelections(@NotNull List<PlexLibrary> plexLibraries) {
+    public void updateLibrarySelections(@NotNull List<String> plexLibraries) {
 
     }
 

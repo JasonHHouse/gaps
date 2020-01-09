@@ -73,9 +73,8 @@ public class PlexLibrariesController {
             LOGGER.warn("Could not write gaps properties.", e);
         }
 
-        setPlexSearch();
-        //List<PlexLibrary> plexLibraries = plexQuery.getLibraries(plexSearch);
-        //gapsService.getPlexSearch().getLibraries().addAll(plexLibraries);
+        List<PlexLibrary> plexLibraries = plexQuery.getLibraries(plexSearch);
+        gapsService.getPlexSearch().getLibraries().addAll(plexLibraries);
 
         ModelAndView modelAndView = new ModelAndView("plexLibraries");
         modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
