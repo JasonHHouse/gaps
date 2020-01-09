@@ -15,7 +15,6 @@ import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexSearch;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;

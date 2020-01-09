@@ -12,8 +12,6 @@ package com.jasonhhouse.gaps;
 
 import com.jasonhhouse.gaps.service.GapsSearchService;
 import com.jasonhhouse.gaps.service.IoService;
-import java.util.ArrayList;
-import java.util.List;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,11 +58,6 @@ class GapsSearchServiceTest {
     @Test
     void defaultSearchedMovieCount() {
         assertEquals(0, gapsSearch.getSearchedMovieCount(), "Should be zero by default");
-    }
-
-    @Test
-    void defaultRecommendedMovieCount() {
-        assertEquals(0, gapsSearch.getRecommendedMovies().size(), "Should be zero by default");
     }
 
     @Test

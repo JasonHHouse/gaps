@@ -26,15 +26,7 @@ public class YamlConfig {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getEnvironment() {
         return environment;
-    }
-
-    public void setEnvironment(String environment) {
-        this.environment = environment;
     }
 }

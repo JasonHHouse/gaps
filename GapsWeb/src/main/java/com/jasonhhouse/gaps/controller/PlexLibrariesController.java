@@ -10,8 +10,6 @@
 
 package com.jasonhhouse.gaps.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexQuery;
@@ -21,8 +19,6 @@ import com.jasonhhouse.gaps.service.BindingErrorsService;
 import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.validator.PlexPropertiesValidator;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.validation.Valid;
 import org.slf4j.Logger;
@@ -97,78 +93,4 @@ public class PlexLibrariesController {
         binder.setValidator(new PlexPropertiesValidator());
     }
 
-    private void setPlexSearch() {
-        String json = "[\n" +
-                "  {\n" +
-                "    \"key\": 23,\n" +
-                "    \"title\": \"BM\",\n" +
-                "    \"selected\": false\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"key\": 22,\n" +
-                "    \"title\": \"Family Videos\",\n" +
-                "    \"selected\": false\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"key\": 13,\n" +
-                "    \"title\": \"Grandad Movies\",\n" +
-                "    \"selected\": false\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"key\": 2,\n" +
-                "    \"title\": \"Movies\",\n" +
-                "    \"selected\": false\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"key\": 14,\n" +
-                "    \"title\": \"Movies - 3D\",\n" +
-                "    \"selected\": false\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"key\": 11,\n" +
-                "    \"title\": \"Movies - 4K\",\n" +
-                "    \"selected\": false\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"key\": 16,\n" +
-                "    \"title\": \"Stand Up Comedy\",\n" +
-                "    \"selected\": false\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"key\": 6,\n" +
-                "    \"title\": \"Workout Videos\",\n" +
-                "    \"selected\": false\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"key\": 9,\n" +
-                "    \"title\": \"Bassnectar\",\n" +
-                "    \"selected\": false\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"key\": 10,\n" +
-                "    \"title\": \"Halloween\",\n" +
-                "    \"selected\": false\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"key\": 20,\n" +
-                "    \"title\": \"Home Theater Demos\",\n" +
-                "    \"selected\": false\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"key\": 19,\n" +
-                "    \"title\": \"Pre-Rolls\",\n" +
-                "    \"selected\": false\n" +
-                "  }\n" +
-                "]";
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<PlexLibrary> plexLibraries;
-        try {
-            plexLibraries = Arrays.asList(objectMapper.readValue(json, PlexLibrary[].class));
-            gapsService.getPlexSearch().getLibraries().addAll(plexLibraries);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-    }
 }

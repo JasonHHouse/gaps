@@ -40,7 +40,7 @@ public final class Movie implements Comparable<Movie> {
     private final int year;
 
     @Nullable
-    private String posterUrl;
+    private final String posterUrl;
 
     @Nullable
     private String collection;
@@ -50,7 +50,7 @@ public final class Movie implements Comparable<Movie> {
     private int tvdbId;
 
     @Nullable
-    private String imdbId;
+    private final String imdbId;
 
     private Movie(String name, int year, @Nullable String posterUrl, @Nullable String collection, int collectionId, int tvdbId, @Nullable String imdbId) {
         this.name = name;
@@ -62,7 +62,7 @@ public final class Movie implements Comparable<Movie> {
         this.imdbId = imdbId;
     }
 
-    public void setCollection(String collection) {
+    public void setCollection(@Nullable String collection) {
         this.collection = collection;
     }
 
@@ -111,13 +111,13 @@ public final class Movie implements Comparable<Movie> {
         Movie movie = (Movie) o;
 
         //Compare tvdb id first
-        if(tvdbId != -1 && movie.tvdbId != -1) {
+        if (tvdbId != -1 && movie.tvdbId != -1) {
             return tvdbId == movie.tvdbId;
         }
 
         //Compare imdb id next
-        if(StringUtils.isNotEmpty(imdbId) &&
-            StringUtils.isNotEmpty(movie.imdbId)) {
+        if (StringUtils.isNotEmpty(imdbId) &&
+                StringUtils.isNotEmpty(movie.imdbId)) {
             return Objects.equals(imdbId, movie.imdbId);
         }
 

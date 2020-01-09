@@ -9,6 +9,7 @@
  */
 
 "use strict";
+
 function savePlex() {
     const address = $('#address').val();
     const finalVote = $('#finalVote').val();

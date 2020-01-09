@@ -31,16 +31,8 @@ public class PlexLibrary implements Comparable<PlexLibrary> {
         return key;
     }
 
-    public void setKey(Integer key) {
-        this.key = key;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public Boolean getSelected() {

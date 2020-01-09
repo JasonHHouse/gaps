@@ -23,18 +23,6 @@ public final class SearchResults {
         this.nextMovie = nextMovie;
     }
 
-    public int getSearchedMovieCount() {
-        return searchedMovieCount;
-    }
-
-    public int getTotalMovieCount() {
-        return totalMovieCount;
-    }
-
-    public Movie getNextMovie() {
-        return nextMovie;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

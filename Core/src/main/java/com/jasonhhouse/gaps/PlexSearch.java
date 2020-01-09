@@ -38,10 +38,6 @@ public final class PlexSearch {
         libraries = SetUniqueList.setUniqueList(new ArrayList<>());
     }
 
-    public void setLibrarySelected(PlexLibrary plexLibrary) {
-        libraries.get(libraries.indexOf(plexLibrary)).setSelected(true);
-    }
-
     public List<PlexLibrary> getLibraries() {
         return libraries;
     }

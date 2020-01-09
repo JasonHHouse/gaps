@@ -10,7 +10,6 @@
 
 package com.jasonhhouse.gaps;
 
-import java.util.concurrent.CopyOnWriteArrayList;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -32,11 +31,6 @@ public interface GapsSearch {
      * @return The current count of movies searched
      */
     @NotNull Integer getSearchedMovieCount();
-
-    /**
-     * @return The movies that are missing from collections
-     */
-    @NotNull CopyOnWriteArrayList<Movie> getRecommendedMovies();
 
     /**
      * Cancel the current search

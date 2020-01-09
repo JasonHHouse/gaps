@@ -35,7 +35,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -187,11 +186,6 @@ public class GapsSearchService implements GapsSearch {
     @Override
     public Integer getSearchedMovieCount() {
         return searchedMovieCount.get();
-    }
-
-    @Override
-    public @NotNull CopyOnWriteArrayList<Movie> getRecommendedMovies() {
-        return new CopyOnWriteArrayList<>(recommended);
     }
 
     @Override
