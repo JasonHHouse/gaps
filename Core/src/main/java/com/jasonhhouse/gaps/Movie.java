@@ -111,19 +111,19 @@ public final class Movie implements Comparable<Movie> {
         Movie movie = (Movie) o;
 
         //Compare tvdb id first
-        if(tvdbId != -1 && movie.tvdbId != -1) {
-            return tvdbId == movie.tvdbId;
+        if (tvdbId != -1 && tvdbId == movie.tvdbId) {
+            //System.out.println("Movie - tvdbId equals() true: " + tvdbId);
+            return true;
         }
 
         //Compare imdb id next
-        if(StringUtils.isNotEmpty(imdbId) &&
-            StringUtils.isNotEmpty(movie.imdbId)) {
-            return Objects.equals(imdbId, movie.imdbId);
+        if (StringUtils.isNotEmpty(imdbId) && imdbId.equals(movie.imdbId)) {
+            //System.out.println("Movie - imdbId equals() true: " + imdbId);
+            return true;
         }
 
         //Fallback is year and title
-        return year == movie.year &&
-                name.equals(movie.name);
+        return year == movie.year && name.equals(movie.name);
     }
 
     @Override
@@ -138,7 +138,15 @@ public final class Movie implements Comparable<Movie> {
 
     @Override
     public String toString() {
-        return name + " (" + year + ")" + (StringUtils.isNotEmpty(collection) ? "  ---  collection='" + collection + '\'' : "");
+        return "Movie{" +
+                "name='" + name + '\'' +
+                ", year=" + year +
+                ", posterUrl='" + posterUrl + '\'' +
+                ", collection='" + collection + '\'' +
+                ", collectionId=" + collectionId +
+                ", tvdbId=" + tvdbId +
+                ", imdbId='" + imdbId + '\'' +
+                '}';
     }
 
     public int compareTo(Movie o) {
