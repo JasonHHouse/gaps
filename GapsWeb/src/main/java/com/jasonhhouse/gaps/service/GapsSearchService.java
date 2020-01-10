@@ -86,7 +86,7 @@ public class GapsSearchService implements GapsSearch {
 
     private final Set<Movie> searched;
 
-    private final Set<Movie> recommended;
+    private final HashSet<Movie> recommended;
 
     private final Set<Movie> ownedMovies;
 
@@ -175,6 +175,16 @@ public class GapsSearchService implements GapsSearch {
         ioService.writeMovieIdsToFile(new HashSet<>(everyMovie));
 
         template.convertAndSend("/finishedSearching", true);
+
+        LOGGER.info("OWNED");
+        for (Movie movie : ownedMovies) {
+            System.out.println(movie.toString());
+        }
+
+        LOGGER.info("RESULTS");
+        for (Movie movie : recommended) {
+            System.out.println(movie.toString());
+        }
     }
 
     @NotNull
@@ -713,7 +723,8 @@ public class GapsSearchService implements GapsSearch {
                     LOGGER.debug("No poster found for" + title + ".");
                 }
 
-                Movie movieFromCollection = new Movie.Builder(title, year).setTvdbId(tvdbId)
+                Movie movieFromCollection = new Movie.Builder(title, year)
+                        .setTvdbId(tvdbId)
                         .setCollectionId(movie.getCollectionId())
                         .setCollection(movie.getCollection())
                         .setPosterUrl(posterUrl)
@@ -774,16 +785,17 @@ public class GapsSearchService implements GapsSearch {
                                 .setCollectionId(movie.getCollectionId())
                                 .setCollection(movie.getCollection())
                                 .build();
-                        recommended.add(recommendedMovie);
 
-                        // Write current list of recommended movies to file.
-                        ioService.writeRssFile(recommended);
+                        if (recommended.add(recommendedMovie)) {
+                            // Write current list of recommended movies to file.
+                            ioService.writeRssFile(recommended);
 
-                        LOGGER.info("/newMovieFound:" + movieFromCollection.toString());
+                            LOGGER.info("/newMovieFound:" + movieFromCollection.toString());
 
-                        //Send message over websocket
-                        SearchResults searchResults = new SearchResults(getSearchedMovieCount(), getTotalMovieCount(), movieFromCollection);
-                        template.convertAndSend("/newMovieFound", objectMapper.writeValueAsString(searchResults));
+                            //Send message over websocket
+                            SearchResults searchResults = new SearchResults(getSearchedMovieCount(), getTotalMovieCount(), movieFromCollection);
+                            template.convertAndSend("/newMovieFound", objectMapper.writeValueAsString(searchResults));
+                        }
                     } catch (Exception e) {
                         LOGGER.warn(e.getMessage());
                     }
