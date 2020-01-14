@@ -15,20 +15,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.Rss;
-
-import java.io.*;
-import java.net.URISyntaxException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,7 +76,7 @@ public class IoService {
             TEMP_STORAGE_FOLDER = decodedPath + "\\temp\\";
         } else {
             STORAGE_FOLDER = "/usr/data/";
-            TEMP_STORAGE_FOLDER ="/tmp/";
+            TEMP_STORAGE_FOLDER = "/tmp/";
         }
     }
 
@@ -101,6 +105,21 @@ public class IoService {
         } catch (IOException e) {
             LOGGER.error("Check for RSS file next time", e);
             return "";
+        }
+    }
+
+    public boolean doesOwnedMoviesFileExist() {
+        return new File(STORAGE_FOLDER + OWNED_MOVIES).exists();
+    }
+
+    public @NotNull List<Movie> getOwnedMovies() {
+        try {
+            File file = new File(STORAGE_FOLDER + OWNED_MOVIES);
+            Movie[] recommendedMovies = objectMapper.readValue(file, Movie[].class);
+            return Arrays.asList(recommendedMovies);
+        } catch (IOException e) {
+            LOGGER.error("Check for Owned Movies file next time", e);
+            return Collections.emptyList();
         }
     }
 
@@ -312,7 +331,7 @@ public class IoService {
         File file = new File(STORAGE_FOLDER + PROPERTIES);
         PlexSearch plexSearch = new PlexSearch();
 
-        if(!file.exists()) {
+        if (!file.exists()) {
             LOGGER.warn(file + " does not exist");
             return plexSearch;
         }
@@ -320,22 +339,22 @@ public class IoService {
         Properties properties = new Properties();
         properties.load(new FileReader(file));
 
-        if(properties.containsKey(PlexSearch.MOVIE_DB_API_KEY)) {
+        if (properties.containsKey(PlexSearch.MOVIE_DB_API_KEY)) {
             String movieDbApiKey = properties.getProperty(PlexSearch.MOVIE_DB_API_KEY);
             plexSearch.setMovieDbApiKey(movieDbApiKey);
         }
 
-        if(properties.containsKey(PlexSearch.ADDRESS)) {
+        if (properties.containsKey(PlexSearch.ADDRESS)) {
             String address = properties.getProperty(PlexSearch.ADDRESS);
             plexSearch.setAddress(address);
         }
 
-        if(properties.containsKey(PlexSearch.PORT)) {
+        if (properties.containsKey(PlexSearch.PORT)) {
             String port = properties.getProperty(PlexSearch.PORT);
             plexSearch.setPort(Integer.parseInt(port));
         }
 
-        if(properties.containsKey(PlexSearch.PLEX_TOKEN)) {
+        if (properties.containsKey(PlexSearch.PLEX_TOKEN)) {
             String plexToken = properties.getProperty(PlexSearch.PLEX_TOKEN);
             plexSearch.setPlexToken(plexToken);
         }

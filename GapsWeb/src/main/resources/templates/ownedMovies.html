@@ -28,10 +28,10 @@
     <a class="navbar-brand" href="/">Gaps</a>
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
+            <li class="nav-item" aria-current="page">
                 <a class="nav-link" href="/ownedMovies">Owned Movies</a>
             </li>
-            <li class="nav-item" aria-current="page">
+            <li class="nav-item">
                 <a class="nav-link" href="/recommended">Recommended</a>
             </li>
             <li class="nav-item">
@@ -42,35 +42,40 @@
 </nav>
 
 <div class="container">
-    <h3 class="top-margin">Owned Movies</h3>
+    <h3 class="top-margin">Missing Movies</h3>
 
     <div class="top-margin">
         <table id="movies" class="display" style="width:100%">
             <thead>
             <tr>
+                <th>Poster</th>
                 <th>Title</th>
                 <th>Year</th>
-                <th>Collection</th>
                 <th>Link</th>
+                <th>Find Missing</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="movie, status : ${recommended}">
+            <tr th:each="movie, status : ${ownedMovies}">
+                <td></td>
                 <td th:text="${movie.name}"></td>
                 <td th:text="${movie.year}"></td>
-                <td th:text="${movie.collection}"></td>
                 <td><a target="_blank" th:href="${urls.get(status.index)}">Details</a></td>
+                <td></td>
             </tr>
             </tbody>
         </table>
     </div>
 </div>
 
+<input id="plexSearch" name="plexSearch" th:value="${{plexSearch}}" type="hidden"/>
+
 <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="/js/datatables.min.js"></script>
 <script type="text/javascript" src="/js/sockjs-1.4.0.min.js"></script>
 <script type="text/javascript" src="/js/stomp-2.3.3.min.js"></script>
-<script type="text/javascript" src="/js/recommended.js"></script>
+<script src="https://www.lactame.com/lib/image-js/0.21.2/image.min.js"></script>
+<script type="text/javascript" src="/js/ownedMovies.js"></script>
 </body>
 </html>

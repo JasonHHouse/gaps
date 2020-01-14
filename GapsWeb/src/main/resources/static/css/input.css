@@ -20,3 +20,8 @@
 .gaps-hide {
     display: none;
 }
+
+.thumbnail {
+    max-width: 64px;
+    height: auto;
+}
