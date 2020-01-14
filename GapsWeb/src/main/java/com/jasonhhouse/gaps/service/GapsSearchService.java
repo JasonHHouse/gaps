@@ -31,10 +31,9 @@ import java.time.LocalDate;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -84,11 +83,11 @@ public class GapsSearchService implements GapsSearch {
 
     private final List<Movie> everyMovie;
 
-    private final Set<Movie> searched;
+    private final TreeSet<Movie> searched;
 
-    private final HashSet<Movie> recommended;
+    private final TreeSet<Movie> recommended;
 
-    private final Set<Movie> ownedMovies;
+    private final TreeSet<Movie> ownedMovies;
 
     private final AtomicInteger totalMovieCount;
 
@@ -110,9 +109,9 @@ public class GapsSearchService implements GapsSearch {
     public GapsSearchService(@Qualifier("real") UrlGenerator urlGenerator, SimpMessagingTemplate template, IoService ioService, GapsService gapsService) {
         this.template = template;
         this.gapsService = gapsService;
-        this.ownedMovies = new HashSet<>();
-        this.searched = new HashSet<>();
-        this.recommended = new HashSet<>();
+        this.ownedMovies = new TreeSet<>();
+        this.searched = new TreeSet<>();
+        this.recommended = new TreeSet<>();
         this.everyMovie = new ArrayList<>();
         this.urlGenerator = urlGenerator;
         this.ioService = ioService;
@@ -172,7 +171,7 @@ public class GapsSearchService implements GapsSearch {
 
         //Always write to log
         ioService.writeRecommendedToFile(recommended);
-        ioService.writeMovieIdsToFile(new HashSet<>(everyMovie));
+        ioService.writeMovieIdsToFile(new TreeSet<>(everyMovie));
 
         template.convertAndSend("/finishedSearching", true);
 

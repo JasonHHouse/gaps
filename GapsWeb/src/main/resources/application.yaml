@@ -20,8 +20,6 @@ spring:
         max-age: 120
         must-revalidate: true
         cache-public: true
-name: Gaps with SSL
-environment: prod
 logging:
   level:
     root: INFO
@@ -47,7 +45,7 @@ info:
   app:
     name: Gaps
     description: Gaps searches through your Plex Server or local folders for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.
-    version: 0.1.5
+    version: 0.1.6
 
 ---
 spring:
@@ -61,8 +59,6 @@ spring:
         max-age: 120
         must-revalidate: true
         cache-public: true
-name: Gaps without SSL
-environment: prod
 logging:
   level:
     root: INFO
@@ -79,5 +75,5 @@ info:
   app:
     name: Gaps
     description: Gaps searches through your Plex Server or local folders for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.
-    version: 0.1.5
+    version: 0.1.6
 
