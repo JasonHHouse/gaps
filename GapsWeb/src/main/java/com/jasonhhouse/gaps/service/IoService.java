@@ -45,6 +45,8 @@ public class IoService {
 
     private static final String STORAGE = "movieIds.json";
 
+    private static final String OWNED_MOVIES = "ownedMovies.json";
+
     private static final String RECOMMENDED_MOVIES = "recommendedMovies.json";
 
     public static final String RSS_FEED_JSON_FILE = "rssFeed.json";
@@ -165,6 +167,16 @@ public class IoService {
         final String fileName = STORAGE_FOLDER + RECOMMENDED_MOVIES;
         File file = new File(fileName);
         writeMovieIdsToFile(recommended, file);
+    }
+
+    /**
+     * Prints out all recommended movies to recommendedMovies.json
+     */
+    public void writeOwnedMoviesToFile(Set<Movie> ownedMovies) {
+        LOGGER.info("writeOwnedMoviesToFile()");
+        final String fileName = STORAGE_FOLDER + OWNED_MOVIES;
+        File file = new File(fileName);
+        writeMovieIdsToFile(ownedMovies, file);
     }
 
     /**

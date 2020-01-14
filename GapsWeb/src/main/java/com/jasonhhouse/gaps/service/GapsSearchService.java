@@ -172,6 +172,7 @@ public class GapsSearchService implements GapsSearch {
         //Always write to log
         ioService.writeRecommendedToFile(recommended);
         ioService.writeMovieIdsToFile(new TreeSet<>(everyMovie));
+        ioService.writeOwnedMoviesToFile(ownedMovies);
 
         template.convertAndSend("/finishedSearching", true);
 
