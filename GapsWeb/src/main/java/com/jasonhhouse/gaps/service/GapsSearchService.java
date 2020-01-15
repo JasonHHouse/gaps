@@ -485,6 +485,11 @@ public class GapsSearchService implements GapsSearch {
 
         for (OwnedMovie ownedMovie : ownedMovies) {
 
+            String languageCode = "en";
+            if (ownedMovie.getLanguage() != null) {
+                languageCode = new Locale(ownedMovie.getLanguage(), "").getLanguage();
+            }
+
             Movie movie = new Movie.Builder(ownedMovie.getName(), ownedMovie.getYear()).setImdbId(ownedMovie.getImdbId()).setTvdbId(ownedMovie.getTvdbId()).build();
 
             //Cancel search if needed
@@ -510,19 +515,19 @@ public class GapsSearchService implements GapsSearch {
                 if (movie.getTvdbId() != -1 && movie.getCollectionId() != -1) {
                     LOGGER.debug("Used Collection ID to get " + movie.getName());
                     tempTvdbCounter.incrementAndGet();
-                    handleCollection(movie, client);
+                    handleCollection(movie, client, languageCode);
                     continue;
                 } else if (movie.getTvdbId() != -1) {
                     LOGGER.debug("Used TVDB ID to get " + movie.getName());
                     tempTvdbCounter.incrementAndGet();
-                    searchMovieDetails(movie, client);
+                    searchMovieDetails(movie, client, languageCode);
                     continue;
                 } else if (StringUtils.isNotBlank(movie.getImdbId())) {
                     LOGGER.debug("Used 'find' to search for " + movie.getName());
-                    searchMovieUrl = urlGenerator.generateFindMovieUrl(gapsService.getPlexSearch().getMovieDbApiKey(), URLEncoder.encode(movie.getImdbId(), "UTF-8"));
+                    searchMovieUrl = urlGenerator.generateFindMovieUrl(gapsService.getPlexSearch().getMovieDbApiKey(), URLEncoder.encode(movie.getImdbId(), "UTF-8"), languageCode);
                 } else {
                     LOGGER.debug("Used 'search' to search for " + movie.getName());
-                    searchMovieUrl = urlGenerator.generateSearchMovieUrl(gapsService.getPlexSearch().getMovieDbApiKey(), URLEncoder.encode(movie.getName(), "UTF-8"), String.valueOf(movie.getYear()));
+                    searchMovieUrl = urlGenerator.generateSearchMovieUrl(gapsService.getPlexSearch().getMovieDbApiKey(), URLEncoder.encode(movie.getName(), "UTF-8"), String.valueOf(movie.getYear()), languageCode);
                 }
 
                 Request request = new Request.Builder()
@@ -579,7 +584,7 @@ public class GapsSearchService implements GapsSearch {
                         everyMovie.add(newMovie);
                     }
 
-                    searchMovieDetails(movie, client);
+                    searchMovieDetails(movie, client, languageCode);
                 } catch (JsonProcessingException e) {
                     LOGGER.error("Error parsing movie " + movie + ". " + e.getMessage());
                     LOGGER.error("URL: " + searchMovieUrl);
@@ -612,8 +617,8 @@ public class GapsSearchService implements GapsSearch {
         }
     }
 
-    private void searchMovieDetails(Movie movie, OkHttpClient client) {
-        HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(gapsService.getPlexSearch().getMovieDbApiKey(), String.valueOf(movie.getImdbId()));
+    private void searchMovieDetails(Movie movie, OkHttpClient client, String languageCode) {
+        HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(gapsService.getPlexSearch().getMovieDbApiKey(), String.valueOf(movie.getImdbId()), languageCode);
 
         Request request = new Request.Builder()
                 .url(movieDetailUrl)
@@ -657,15 +662,15 @@ public class GapsSearchService implements GapsSearch {
                 everyMovie.add(newMovie);
             }
 
-            handleCollection(movie, client);
+            handleCollection(movie, client, languageCode);
 
         } catch (IOException e) {
             LOGGER.error("Error getting movie details " + movie, e);
         }
     }
 
-    private void handleCollection(Movie movie, OkHttpClient client) {
-        HttpUrl collectionUrl = urlGenerator.generateCollectionUrl(gapsService.getPlexSearch().getMovieDbApiKey(), String.valueOf(movie.getCollectionId()));
+    private void handleCollection(Movie movie, OkHttpClient client, String languageCode) {
+        HttpUrl collectionUrl = urlGenerator.generateCollectionUrl(gapsService.getPlexSearch().getMovieDbApiKey(), String.valueOf(movie.getCollectionId()), languageCode);
 
         Request request = new Request.Builder()
                 .url(collectionUrl)
@@ -751,7 +756,7 @@ public class GapsSearchService implements GapsSearch {
                     sendEmptySearchUpdate();
                 } else if (!searched.contains(movieFromCollection) && year != 0 && year < Year.now().getValue()) {
                     // Get recommended Movie details from MovieDB API
-                    HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(gapsService.getPlexSearch().getMovieDbApiKey(), String.valueOf(movieFromCollection.getTvdbId()));
+                    HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(gapsService.getPlexSearch().getMovieDbApiKey(), String.valueOf(movieFromCollection.getTvdbId()), languageCode);
 
                     Request newReq = new Request.Builder()
                             .url(movieDetailUrl)
