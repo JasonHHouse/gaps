@@ -1,4 +1,5 @@
 #!/bin/bash
+read -n 1 -s -r -p "Are the ports set correctly?"
 VERSION="0.2.0"
 DOCKER_SSL_VERSION="housewrecker/gaps:v$VERSION"
 DOCKER_NO_SSL_VERSION="housewrecker/gaps:v$VERSION-no-ssl"
