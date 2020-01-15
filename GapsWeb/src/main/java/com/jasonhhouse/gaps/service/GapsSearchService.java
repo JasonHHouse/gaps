@@ -427,6 +427,7 @@ public class GapsSearchService implements GapsSearch {
                         }
 
                         OwnedMovie ownedMovie;
+                        String language = null;
                         //Movie searchMovie = new Movie.Builder(title, year).build();
                         /*int indexOfMovie = everyMovie.indexOf(searchMovie);
                         if (indexOfMovie != -1) {
@@ -434,14 +435,19 @@ public class GapsSearchService implements GapsSearch {
                             movie = everyMovie.get(indexOfMovie);
                         } else {*/
                         if (guid.contains("com.plexapp.agents.themoviedb")) {
+                            //ToDo
+                            //Find out what it looks like in TMDB
+                            //language = ??
                             guid = guid.substring(guid.indexOf(ID_IDX_START) + ID_IDX_START.length(), guid.indexOf(ID_IDX_END));
-                            ownedMovie = new OwnedMovie(title, year, thumbnail, Integer.parseInt(guid), null);
+                            ownedMovie = new OwnedMovie(title, year, thumbnail, Integer.parseInt(guid), null, language);
                         } else if (guid.contains("com.plexapp.agents.imdb://")) {
+                            language = guid.substring(guid.indexOf("?lang=") + "?lang=".length());
+                            LOGGER.info("language:" + language);
                             guid = guid.substring(guid.indexOf(ID_IDX_START) + ID_IDX_START.length(), guid.indexOf(ID_IDX_END));
-                            ownedMovie = new OwnedMovie(title, year, thumbnail, -1, guid);
+                            ownedMovie = new OwnedMovie(title, year, thumbnail, -1, guid, language);
                         } else {
                             LOGGER.warn("Cannot handle guid value of " + guid);
-                            ownedMovie = new OwnedMovie(title, year, thumbnail, -1, null);
+                            ownedMovie = new OwnedMovie(title, year, thumbnail, -1, null, language);
                         }
                         /*}*/
 
@@ -738,7 +744,7 @@ public class GapsSearchService implements GapsSearch {
                         .setPosterUrl(posterUrl)
                         .build();
 
-                OwnedMovie ownedMovieFromCollection = new OwnedMovie(title, year, null, tvdbId, null);
+                OwnedMovie ownedMovieFromCollection = new OwnedMovie(title, year, null, tvdbId, null, null);
 
                 indexOfMovie = everyMovie.indexOf(new Movie.Builder(title, year).build());
                 if (indexOfMovie == -1) {

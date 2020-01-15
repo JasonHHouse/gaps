@@ -51,6 +51,7 @@
                 <th>Poster</th>
                 <th>Title</th>
                 <th>Year</th>
+                <th>Language</th>
                 <th>Link</th>
                 <th>Find Missing</th>
             </tr>
@@ -60,6 +61,7 @@
                 <td th:text="${movie.thumbnail}"></td>
                 <td th:text="${movie.name}"></td>
                 <td th:text="${movie.year}"></td>
+                <td th:text="${movie.language}"></td>
                 <td><a target="_blank" th:href="${urls.get(status.index)}">Details</a></td>
                 <td></td>
             </tr>
@@ -75,7 +77,6 @@
 <script type="text/javascript" src="/js/datatables.min.js"></script>
 <script type="text/javascript" src="/js/sockjs-1.4.0.min.js"></script>
 <script type="text/javascript" src="/js/stomp-2.3.3.min.js"></script>
-<script src="https://www.lactame.com/lib/image-js/0.21.2/image.min.js"></script>
 <script type="text/javascript" src="/js/ownedMovies.js"></script>
 </body>
 </html>

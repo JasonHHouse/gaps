@@ -16,7 +16,7 @@ $(document).ready(function () {
             {
                 data: "poster",
                 render: function (data, type, row) {
-                    if (type === 'display') {
+                    if (type === 'display' && row.poster) {
                         const url = `http://${plexSearch.address}:${plexSearch.port}${row.poster}/?X-Plex-Token=${plexSearch.plexToken}`;
                         return `<img class="thumbnail" src="${url}" alt="poster">`;
                     }
@@ -26,6 +26,7 @@ $(document).ready(function () {
             },
             {data: "title"},
             {data: "year"},
+            {data: "language"},
             {data: "link"},
             {
                 data: "find_missing",

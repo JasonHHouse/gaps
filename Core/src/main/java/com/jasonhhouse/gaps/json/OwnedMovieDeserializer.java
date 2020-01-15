@@ -14,7 +14,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.OwnedMovie;
 import java.io.IOException;
 
@@ -33,9 +32,16 @@ public class OwnedMovieDeserializer extends StdDeserializer<OwnedMovie> {
         int tvdbId = (Integer) node.get(OwnedMovie.TVDB_ID).numberValue();
         String imdbId = node.get(OwnedMovie.IMDB_ID).asText();
         String name = node.get(OwnedMovie.NAME).asText();
-        String thumbnail = node.get(OwnedMovie.THUMBNAIL).asText();
+        String thumbnail = null;
+        if (node.has(OwnedMovie.THUMBNAIL)) {
+            thumbnail = node.get(OwnedMovie.THUMBNAIL).asText();
+        }
         int year = (Integer) node.get(OwnedMovie.YEAR).numberValue();
+        String language = null;
+        if (node.has(OwnedMovie.LANGUAGE)) {
+            language = node.get(OwnedMovie.LANGUAGE).asText();
+        }
 
-        return new OwnedMovie(name, year, thumbnail, tvdbId, imdbId);
+        return new OwnedMovie(name, year, thumbnail, tvdbId, imdbId, language);
     }
 }
