@@ -44,4 +44,34 @@ public class MovieSerializerTest {
         Movie movie1 = movieDeserializer.deserialize(jsonParser, deserializationContext);
         assertEquals(movie1, movie, "Failed to serialize then deserialize a movie");
     }
+
+    @Test
+    void serializeAndDeserialize_NullPoster() throws Exception {
+        MovieSerializer movieSerializer = new MovieSerializer();
+        MovieDeserializer movieDeserializer = new MovieDeserializer();
+
+        Movie movie = new Movie.Builder("Alien", 1979)
+                .setTvdbId(1345)
+                .setCollection("Aliens Collection")
+                .setCollectionId(5423)
+                .setImdbId("IMDB ID")
+                .setPosterUrl(null)
+                .build();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Writer jsonWriter = new StringWriter();
+        JsonFactory factory = new JsonFactory();
+        JsonGenerator jsonGenerator = factory.createGenerator(jsonWriter);
+        SerializerProvider serializerProvider = objectMapper.getSerializerProvider();
+
+        movieSerializer.serialize(movie, jsonGenerator, serializerProvider);
+        jsonGenerator.flush();
+
+        JsonParser jsonParser = factory.createParser(jsonWriter.toString());
+        DeserializationContext deserializationContext = objectMapper.getDeserializationContext();
+        jsonParser.setCodec(objectMapper);
+
+        Movie movie1 = movieDeserializer.deserialize(jsonParser, deserializationContext);
+        assertEquals(movie1, movie, "Failed to serialize then deserialize a movie with null poster url");
+    }
 }

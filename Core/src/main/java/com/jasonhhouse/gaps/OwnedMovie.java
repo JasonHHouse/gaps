@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jasonhhouse.gaps.json.OwnedMovieDeserializer;
 import com.jasonhhouse.gaps.json.OwnedMovieSerializer;
+import java.util.Objects;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -83,6 +85,37 @@ public class OwnedMovie implements Comparable<OwnedMovie>, MovieMetadata {
     @Override
     public int compareTo(@NotNull OwnedMovie o) {
         return getName().compareTo(o.getName());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        OwnedMovie movie = (OwnedMovie) o;
+
+        //Compare tvdb id first
+        if (tvdbId != -1 && tvdbId == movie.tvdbId) {
+            //System.out.println("Movie - tvdbId equals() true: " + tvdbId);
+            return true;
+        }
+
+        //Compare imdb id next
+        if (StringUtils.isNotEmpty(imdbId) && imdbId.equals(movie.imdbId)) {
+            //System.out.println("Movie - imdbId equals() true: " + imdbId);
+            return true;
+        }
+
+        //Fallback is year and title
+        return year == movie.year && name.equals(movie.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, year);
     }
 
     @Override
