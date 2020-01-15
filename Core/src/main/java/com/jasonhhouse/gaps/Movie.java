@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 @JsonSerialize(using = MovieSerializer.class)
 @JsonDeserialize(using = MovieDeserializer.class)
-public final class Movie implements Comparable<Movie> {
+public final class Movie implements Comparable<Movie>, MovieMetadata {
 
     public static final String TVDB_ID = "tvdbId";
 
@@ -74,18 +74,22 @@ public final class Movie implements Comparable<Movie> {
         this.collectionId = collectionId;
     }
 
+    @Override
     public int getTvdbId() {
         return tvdbId;
     }
 
+    @Override
     public void setTvdbId(int tvdbId) {
         this.tvdbId = tvdbId;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public int getYear() {
         return year;
     }
@@ -96,6 +100,7 @@ public final class Movie implements Comparable<Movie> {
     }
 
     @Nullable
+    @Override
     public String getImdbId() {
         return imdbId;
     }

@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.jasonhhouse.gaps.GapsSearch;
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Movie;
+import com.jasonhhouse.gaps.OwnedMovie;
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.SearchCancelledException;
 import com.jasonhhouse.gaps.SearchResults;
@@ -87,7 +88,7 @@ public class GapsSearchService implements GapsSearch {
 
     private final TreeSet<Movie> recommended;
 
-    private final TreeSet<Movie> ownedMovies;
+    private final TreeSet<OwnedMovie> ownedMovies;
 
     private final AtomicInteger totalMovieCount;
 
@@ -177,8 +178,8 @@ public class GapsSearchService implements GapsSearch {
         template.convertAndSend("/finishedSearching", true);
 
         LOGGER.info("OWNED");
-        for (Movie movie : ownedMovies) {
-            System.out.println(movie.toString());
+        for (OwnedMovie ownedMovie : ownedMovies) {
+            System.out.println(ownedMovie.toString());
         }
 
         LOGGER.info("RESULTS");
@@ -420,28 +421,33 @@ public class GapsSearchService implements GapsSearch {
                             guid = node.getAttributes().getNamedItem("guid").getNodeValue();
                         }
 
-                        Movie movie;
-                        Movie searchMovie = new Movie.Builder(title, year).build();
-                        int indexOfMovie = everyMovie.indexOf(searchMovie);
+                        String thumbnail = "";
+                        if (node.getAttributes().getNamedItem("thumb") != null) {
+                            thumbnail = node.getAttributes().getNamedItem("thumb").getNodeValue();
+                        }
+
+                        OwnedMovie ownedMovie;
+                        //Movie searchMovie = new Movie.Builder(title, year).build();
+                        /*int indexOfMovie = everyMovie.indexOf(searchMovie);
                         if (indexOfMovie != -1) {
                             LOGGER.debug("Using existing movie information");
                             movie = everyMovie.get(indexOfMovie);
+                        } else {*/
+                        if (guid.contains("com.plexapp.agents.themoviedb")) {
+                            guid = guid.substring(guid.indexOf(ID_IDX_START) + ID_IDX_START.length(), guid.indexOf(ID_IDX_END));
+                            ownedMovie = new OwnedMovie(title, year, thumbnail, Integer.parseInt(guid), null);
+                        } else if (guid.contains("com.plexapp.agents.imdb://")) {
+                            guid = guid.substring(guid.indexOf(ID_IDX_START) + ID_IDX_START.length(), guid.indexOf(ID_IDX_END));
+                            ownedMovie = new OwnedMovie(title, year, thumbnail, -1, guid);
                         } else {
-                            if (guid.contains("com.plexapp.agents.themoviedb")) {
-                                guid = guid.substring(guid.indexOf(ID_IDX_START) + ID_IDX_START.length(), guid.indexOf(ID_IDX_END));
-                                movie = new Movie.Builder(title, year).setTvdbId(Integer.parseInt(guid)).build();
-                            } else if (guid.contains("com.plexapp.agents.imdb://")) {
-                                guid = guid.substring(guid.indexOf(ID_IDX_START) + ID_IDX_START.length(), guid.indexOf(ID_IDX_END));
-                                movie = new Movie.Builder(title, year).setImdbId(guid).build();
-                            } else {
-                                LOGGER.warn("Cannot handle guid value of " + guid);
-                                movie = new Movie.Builder(title, year).build();
-                            }
+                            LOGGER.warn("Cannot handle guid value of " + guid);
+                            ownedMovie = new OwnedMovie(title, year, thumbnail, -1, null);
                         }
+                        /*}*/
 
                         LOGGER.debug("guid:" + guid);
 
-                        ownedMovies.add(movie);
+                        ownedMovies.add(ownedMovie);
                         totalMovieCount.incrementAndGet();
                     }
                     LOGGER.debug(ownedMovies.size() + " movies found in plex");
@@ -480,7 +486,9 @@ public class GapsSearchService implements GapsSearch {
             return;
         }
 
-        for (Movie movie : ownedMovies) {
+        for (OwnedMovie ownedMovie : ownedMovies) {
+
+            Movie movie = new Movie.Builder(ownedMovie.getName(), ownedMovie.getYear()).setImdbId(ownedMovie.getImdbId()).setTvdbId(ownedMovie.getTvdbId()).build();
 
             //Cancel search if needed
             if (cancelSearch.get()) {
@@ -730,6 +738,8 @@ public class GapsSearchService implements GapsSearch {
                         .setPosterUrl(posterUrl)
                         .build();
 
+                OwnedMovie ownedMovieFromCollection = new OwnedMovie(title, year, null, tvdbId, null);
+
                 indexOfMovie = everyMovie.indexOf(new Movie.Builder(title, year).build());
                 if (indexOfMovie == -1) {
                     LOGGER.debug("Adding collection movie");
@@ -739,7 +749,7 @@ public class GapsSearchService implements GapsSearch {
                     everyMovie.get(indexOfMovie).setTvdbId(tvdbId);
                 }
 
-                if (ownedMovies.contains(movieFromCollection)) {
+                if (ownedMovies.contains(ownedMovieFromCollection)) {
                     searched.add(movieFromCollection);
                     sendEmptySearchUpdate();
                 } else if (!searched.contains(movieFromCollection) && year != 0 && year < Year.now().getValue()) {

@@ -2,6 +2,7 @@ package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Movie;
+import com.jasonhhouse.gaps.OwnedMovie;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.service.BindingErrorsService;
 import com.jasonhhouse.gaps.service.IoService;
@@ -43,7 +44,7 @@ public class OwnedMovieController {
             //Show empty page
             return new ModelAndView("emptyState");
         } else {
-            List<Movie> ownedMovies = ioService.getOwnedMovies();
+            List<OwnedMovie> ownedMovies = ioService.getOwnedMovies();
             LOGGER.info("ownedMovies.size():" + ownedMovies.size());
 
             if (CollectionUtils.isEmpty(ownedMovies)) {
@@ -66,10 +67,10 @@ public class OwnedMovieController {
         }
     }
 
-    private List<String> buildUrls(List<Movie> movies) {
+    private List<String> buildUrls(List<OwnedMovie> movies) {
         LOGGER.info("buildUrls( " + movies + " ) ");
         List<String> urls = new ArrayList<>();
-        for (Movie movie : movies) {
+        for (OwnedMovie movie : movies) {
             if (movie.getTvdbId() != -1) {
                 urls.add("https://www.themoviedb.org/movie/" + movie.getTvdbId());
                 continue;

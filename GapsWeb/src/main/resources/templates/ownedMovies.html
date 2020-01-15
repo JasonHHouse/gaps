@@ -57,7 +57,7 @@
             </thead>
             <tbody>
             <tr th:each="movie, status : ${ownedMovies}">
-                <td></td>
+                <td th:text="${movie.thumbnail}"></td>
                 <td th:text="${movie.name}"></td>
                 <td th:text="${movie.year}"></td>
                 <td><a target="_blank" th:href="${urls.get(status.index)}">Details</a></td>

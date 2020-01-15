@@ -13,6 +13,7 @@ package com.jasonhhouse.gaps.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.Movie;
+import com.jasonhhouse.gaps.OwnedMovie;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.Rss;
 import java.io.BufferedReader;
@@ -112,11 +113,11 @@ public class IoService {
         return new File(STORAGE_FOLDER + OWNED_MOVIES).exists();
     }
 
-    public @NotNull List<Movie> getOwnedMovies() {
+    public @NotNull List<OwnedMovie> getOwnedMovies() {
         try {
             File file = new File(STORAGE_FOLDER + OWNED_MOVIES);
-            Movie[] recommendedMovies = objectMapper.readValue(file, Movie[].class);
-            return Arrays.asList(recommendedMovies);
+            OwnedMovie[] ownedMovies = objectMapper.readValue(file, OwnedMovie[].class);
+            return Arrays.asList(ownedMovies);
         } catch (IOException e) {
             LOGGER.error("Check for Owned Movies file next time", e);
             return Collections.emptyList();
@@ -191,11 +192,11 @@ public class IoService {
     /**
      * Prints out all recommended movies to recommendedMovies.json
      */
-    public void writeOwnedMoviesToFile(Set<Movie> ownedMovies) {
+    public void writeOwnedMoviesToFile(Set<OwnedMovie> ownedMovies) {
         LOGGER.info("writeOwnedMoviesToFile()");
         final String fileName = STORAGE_FOLDER + OWNED_MOVIES;
         File file = new File(fileName);
-        writeMovieIdsToFile(ownedMovies, file);
+        writeOwnedMoviesToFile(ownedMovies, file);
     }
 
     /**
@@ -206,6 +207,36 @@ public class IoService {
         final String fileName = STORAGE_FOLDER + STORAGE;
         File file = new File(fileName);
         writeMovieIdsToFile(everyMovie, file);
+    }
+
+    public void writeOwnedMoviesToFile(Set<OwnedMovie> movies, File file) {
+        if (file.exists()) {
+            boolean deleted = file.delete();
+            if (!deleted) {
+                LOGGER.error("Can't delete existing file " + file.getName());
+                return;
+            }
+        }
+
+        try {
+            boolean created = file.createNewFile();
+            if (!created) {
+                LOGGER.error("Can't create file " + file.getAbsolutePath());
+                return;
+            }
+        } catch (IOException e) {
+            LOGGER.error("Can't create file " + file.getAbsolutePath(), e);
+            return;
+        }
+
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
+            byte[] output = objectMapper.writeValueAsBytes(movies);
+            outputStream.write(output);
+        } catch (FileNotFoundException e) {
+            LOGGER.error("Can't find file " + file.getAbsolutePath(), e);
+        } catch (IOException e) {
+            LOGGER.error("Can't write to file " + file.getAbsolutePath(), e);
+        }
     }
 
     public void writeMovieIdsToFile(Set<Movie> everyMovie, File file) {

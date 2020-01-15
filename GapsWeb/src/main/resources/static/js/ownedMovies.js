@@ -17,7 +17,7 @@ $(document).ready(function () {
                 data: "poster",
                 render: function (data, type, row) {
                     if (type === 'display') {
-                        const url = `http://${plexSearch.address}:${plexSearch.port}/library/metadata/2379/thumb/1570562840/?X-Plex-Token=${plexSearch.plexToken}`;
+                        const url = `http://${plexSearch.address}:${plexSearch.port}${row.poster}/?X-Plex-Token=${plexSearch.plexToken}`;
                         return `<img class="thumbnail" src="${url}" alt="poster">`;
                     }
                     return data;
