@@ -43,6 +43,7 @@ public class OwnedMovie implements Comparable<OwnedMovie>, MovieMetadata {
         this.thumbnail = thumbnail;
         this.tvdbId = tvdbId;
         this.imdbId = imdbId;
+        this.language = language;
     }
 
     @Override

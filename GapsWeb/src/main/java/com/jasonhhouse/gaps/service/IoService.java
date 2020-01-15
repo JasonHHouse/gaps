@@ -210,6 +210,8 @@ public class IoService {
     }
 
     public void writeOwnedMoviesToFile(Set<OwnedMovie> movies, File file) {
+       LOGGER.info("movies: " + movies);
+
         if (file.exists()) {
             boolean deleted = file.delete();
             if (!deleted) {
