@@ -152,8 +152,8 @@ public class GapsSearchService implements GapsSearch {
             watch.start();
             searchForMovies();
             watch.stop();
-            System.out.println("Time Elapsed: " + TimeUnit.MILLISECONDS.toSeconds(watch.getTime()) + " seconds.");
-            System.out.println("Times used TVDB ID: " + tempTvdbCounter);
+            LOGGER.info("Time Elapsed: " + TimeUnit.MILLISECONDS.toSeconds(watch.getTime()) + " seconds.");
+            LOGGER.info("Times used TVDB ID: " + tempTvdbCounter);
 
             /*if (StringUtils.isNotEmpty(gaps.getMovieDbListId())) {
                 createTmdbList(sessionId);
@@ -177,14 +177,14 @@ public class GapsSearchService implements GapsSearch {
 
         template.convertAndSend("/finishedSearching", true);
 
-        LOGGER.info("OWNED");
+        LOGGER.info("Owned");
         for (OwnedMovie ownedMovie : ownedMovies) {
-            System.out.println(ownedMovie.toString());
+            LOGGER.info(ownedMovie.toString());;
         }
 
-        LOGGER.info("RESULTS");
+        LOGGER.info("Recommended");
         for (Movie movie : recommended) {
-            System.out.println(movie.toString());
+            LOGGER.info(movie.toString());
         }
     }
 

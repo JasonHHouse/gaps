@@ -4,24 +4,24 @@
   "name": "Gaps",
   "url": "https://localhost:8443",
   "tests": [{
-    "id": "1594f19c-c2ed-47db-91dd-278ea476e75d",
-    "name": "Gaps - Greg Movies",
+    "id": "23bb1956-3519-4666-abbb-0b913893354c",
+    "name": "Gaps - Greg Disney",
     "commands": [{
-      "id": "0a8fceaf-89de-4a99-9088-9d3fd59c370f",
+      "id": "a5e165e8-a2ef-4fe8-a966-55c1a95b8152",
       "comment": "",
       "command": "open",
       "target": "/",
       "targets": [],
       "value": ""
     }, {
-      "id": "67d00276-f594-4ae1-a4a8-ab547c93840d",
+      "id": "f4466b74-de5e-4cff-94e7-65c62ad7a450",
       "comment": "",
       "command": "setWindowSize",
       "target": "1680x1027",
       "targets": [],
       "value": ""
     }, {
-      "id": "37c880ed-8d93-4ca1-9a41-94c1d105e0f1",
+      "id": "4e050040-8480-42a1-8956-fc2f6d89e71c",
       "comment": "",
       "command": "click",
       "target": "id=plex",
@@ -35,7 +35,7 @@
       ],
       "value": ""
     }, {
-      "id": "c5c7e7bb-00d6-486b-9815-5e628560b4d4",
+      "id": "7a8d2995-0aac-4bf2-bd19-07c7f72ce312",
       "comment": "",
       "command": "click",
       "target": "css=.btn-primary",
@@ -47,7 +47,7 @@
       ],
       "value": ""
     }, {
-      "id": "f1c82627-8ad7-46e5-9a02-d4045e02164a",
+      "id": "32c01a97-8465-4a4a-b04a-17798d2d99cd",
       "comment": "",
       "command": "click",
       "target": "name=selectedLibraries",
@@ -59,7 +59,7 @@
       ],
       "value": ""
     }, {
-      "id": "8ea37f7f-2a8e-4930-91f0-e764b35acfc1",
+      "id": "f108b09e-8757-49a5-883d-27e68ed017d0",
       "comment": "",
       "command": "click",
       "target": "css=.btn-primary",
@@ -70,6 +70,182 @@
         ["xpath=//button[contains(.,'Next')]", "xpath:innerText"]
       ],
       "value": ""
+    }, {
+      "id": "871957a6-8587-4c94-88ee-b8d9d638a2ce",
+      "comment": "",
+      "command": "waitForElementNotVisible",
+      "target": "id=progressContainer",
+      "targets": [],
+      "value": "100000"
+    }, {
+      "id": "41526ef6-e151-4725-aae9-dd17ebdc5cc6",
+      "comment": "Must show movies are found",
+      "command": "verifyText",
+      "target": "id=searchDescription",
+      "targets": [],
+      "value": "15 movies to add to complete your collections. Below is everything Gaps found that is missing from your movie collections."
+    }]
+  }, {
+    "id": "a2928b49-cc10-4348-9893-121a045a9de7",
+    "name": "Gaps - Greg RSS",
+    "commands": [{
+      "id": "71942413-a9b3-4641-ab74-686f84d0776c",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e9c8939d-46c1-476f-9d35-4b6d9005431d",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1680x1027",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e00edd4c-70ad-4f23-9bb3-fa5b905886f9",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [
+        ["css=body", "css:finder"],
+        ["xpath=//body", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "341aaa0a-0fff-4fa0-b376-5ac51570ffd4",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=RSS",
+      "targets": [
+        ["linkText=RSS", "linkText"],
+        ["css=.nav-item:nth-child(3) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'RSS')]", "xpath:link"],
+        ["xpath=//div[@id='navbarColor01']/ul/li[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/rssCheck')]", "xpath:href"],
+        ["xpath=//li[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'RSS')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "6ccf744f-e7bd-495a-9fa9-c9e914ea9b0f",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [
+        ["css=body", "css:finder"],
+        ["xpath=//body", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "dd2a72ca-a34c-4d02-8bf8-fd24d3cbb182",
+      "comment": "",
+      "command": "verifyText",
+      "target": "css=body",
+      "targets": [
+        ["css=body", "css:finder"],
+        ["xpath=//body", "xpath:position"]
+      ],
+      "value": "[{\"imdb_id\":\"tt0113198\",\"release_date\":1995,\"tvdb_id\":15789,\"title\":\"A Goofy Movie\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0118692\",\"release_date\":1997,\"tvdb_id\":13313,\"title\":\"Beauty and the Beast: The Enchanted Christmas\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0167038\",\"release_date\":1998,\"tvdb_id\":20235,\"title\":\"Belle's Magical World\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0401398\",\"release_date\":2005,\"tvdb_id\":13417,\"title\":\"Kronk's New Groove\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0486761\",\"release_date\":2006,\"tvdb_id\":21316,\"title\":\"Leroy & Stitch\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0457993\",\"release_date\":2005,\"tvdb_id\":20760,\"title\":\"Lilo & Stitch 2: Stitch Has a Glitch\",\"poster_path\":\"\"},{\"imdb_id\":\"tt5028340\",\"release_date\":2018,\"tvdb_id\":400650,\"title\":\"Mary Poppins Returns\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0279967\",\"release_date\":2004,\"tvdb_id\":12242,\"title\":\"Mulan II\",\"poster_path\":\"\"},{\"imdb_id\":\"tt1623205\",\"release_date\":2013,\"tvdb_id\":68728,\"title\":\"Oz the Great and Powerful\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0348124\",\"release_date\":2003,\"tvdb_id\":15567,\"title\":\"Stitch! The Movie\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0313680\",\"release_date\":2002,\"tvdb_id\":13683,\"title\":\"Tarzan & Jane\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0257778\",\"release_date\":2002,\"tvdb_id\":12448,\"title\":\"The Hunchback of Notre Dame II\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0120131\",\"release_date\":1998,\"tvdb_id\":9732,\"title\":\"The Lion King II: Simba's Pride\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0969647\",\"release_date\":2008,\"tvdb_id\":13676,\"title\":\"The Little Mermaid: Ariel's Beginning\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0032138\",\"release_date\":1939,\"tvdb_id\":630,\"title\":\"The Wizard of Oz\",\"poster_path\":\"\"}]"
+    }]
+  }, {
+    "id": "550365ec-4dc1-4917-9647-904d29a15aac",
+    "name": "Gaps - Greg Recommended",
+    "commands": [{
+      "id": "d4511a68-6480-40a2-bf4f-6e535757109d",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d5c067cf-2478-4b3e-bb84-73da4726beeb",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1680x1027",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b84dcd48-1748-4286-b1d2-0632b1bc2a7d",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Recommended",
+      "targets": [
+        ["linkText=Recommended", "linkText"],
+        ["css=.nav-item:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Recommended')]", "xpath:link"],
+        ["xpath=//div[@id='navbarColor01']/ul/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/recommended')]", "xpath:href"],
+        ["xpath=//li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Recommended')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "05cac5f3-a8d5-402a-84ba-d84aa93ac14f",
+      "comment": "",
+      "command": "verifyText",
+      "target": "id=movies_info",
+      "targets": [
+        ["id=movies_info", "id"],
+        ["css=#movies_info", "css:finder"],
+        ["xpath=//div[@id='movies_info']", "xpath:attributes"],
+        ["xpath=//div[@id='movies_wrapper']/div[3]", "xpath:idRelative"],
+        ["xpath=//div/div[3]", "xpath:position"]
+      ],
+      "value": "Showing 1 to 10 of 15 entries"
+    }]
+  }, {
+    "id": "1fd9abe4-7137-4073-8fc2-96dfdba28a0f",
+    "name": "Gaps - Greg Owned",
+    "commands": [{
+      "id": "c6aaa539-be7a-4e8d-9955-d64f103a2878",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b83717ee-c0ff-4f20-ac92-e1ea905a1d60",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1680x1027",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b1a90c70-d01c-4791-9f0c-3a776be3fe62",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Owned Movies",
+      "targets": [
+        ["linkText=Owned Movies", "linkText"],
+        ["css=.nav-item:nth-child(1) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Owned Movies')]", "xpath:link"],
+        ["xpath=//div[@id='navbarColor01']/ul/li/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/ownedMovies')]", "xpath:href"],
+        ["xpath=//li/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Owned Movies')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "332dd5e6-5b94-408e-a392-7f1901719395",
+      "comment": "",
+      "command": "pause",
+      "target": "",
+      "targets": [],
+      "value": "10"
+    }, {
+      "id": "88f5a347-b7cb-41cc-8320-8fb73f3f80ce",
+      "comment": "Should show entries 1 through 10",
+      "command": "verifyText",
+      "target": "id=movies_info",
+      "targets": [
+        ["id=movies_info", "id"],
+        ["css=#movies_info", "css:finder"],
+        ["xpath=//div[@id='movies_info']", "xpath:attributes"],
+        ["xpath=//div[@id='movies_wrapper']/div[3]", "xpath:idRelative"],
+        ["xpath=//div/div[3]", "xpath:position"]
+      ],
+      "value": "Showing 1 to 10 of 80 entries"
     }]
   }],
   "suites": [{

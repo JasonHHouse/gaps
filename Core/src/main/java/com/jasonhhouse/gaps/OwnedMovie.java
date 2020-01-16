@@ -99,13 +99,13 @@ public class OwnedMovie implements Comparable<OwnedMovie>, MovieMetadata {
 
         //Compare tvdb id first
         if (tvdbId != -1 && tvdbId == movie.tvdbId) {
-            //System.out.println("Movie - tvdbId equals() true: " + tvdbId);
+            //LOGGER.info("Movie - tvdbId equals() true: " + tvdbId);
             return true;
         }
 
         //Compare imdb id next
         if (StringUtils.isNotEmpty(imdbId) && imdbId.equals(movie.imdbId)) {
-            //System.out.println("Movie - imdbId equals() true: " + imdbId);
+            //LOGGER.info("Movie - imdbId equals() true: " + imdbId);
             return true;
         }
 

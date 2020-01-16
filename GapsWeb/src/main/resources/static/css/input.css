@@ -25,3 +25,7 @@
     max-width: 96px;
     height: auto;
 }
+
+.bottom-margin {
+    margin-top: 16px;
+}
