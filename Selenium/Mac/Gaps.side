@@ -1,0 +1,85 @@
+{
+  "id": "c2b08596-ce35-43d8-a65a-711db6b9f885",
+  "version": "2.0",
+  "name": "Gaps",
+  "url": "https://localhost:8443",
+  "tests": [{
+    "id": "1594f19c-c2ed-47db-91dd-278ea476e75d",
+    "name": "Gaps - Greg Movies",
+    "commands": [{
+      "id": "0a8fceaf-89de-4a99-9088-9d3fd59c370f",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "67d00276-f594-4ae1-a4a8-ab547c93840d",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1680x1027",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "37c880ed-8d93-4ca1-9a41-94c1d105e0f1",
+      "comment": "",
+      "command": "click",
+      "target": "id=plex",
+      "targets": [
+        ["id=plex", "id"],
+        ["css=#plex", "css:finder"],
+        ["xpath=//button[@id='plex']", "xpath:attributes"],
+        ["xpath=//form[@id='plexConfiguration']/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Plex')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c5c7e7bb-00d6-486b-9815-5e628560b4d4",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Next')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f1c82627-8ad7-46e5-9a02-d4045e02164a",
+      "comment": "",
+      "command": "click",
+      "target": "name=selectedLibraries",
+      "targets": [
+        ["name=selectedLibraries", "name"],
+        ["css=.form-group:nth-child(1) > .form-check-input", "css:finder"],
+        ["xpath=//input[@name='selectedLibraries']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8ea37f7f-2a8e-4930-91f0-e764b35acfc1",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Next')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "0e338d31-a0f7-4a54-a7c4-6b91df808494",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": []
+  }],
+  "urls": ["https://localhost:8443/"],
+  "plugins": []
+}
