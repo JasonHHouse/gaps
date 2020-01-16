@@ -29,3 +29,7 @@
 .bottom-margin {
     margin-top: 16px;
 }
+
+.word-break {
+    word-break: break-all;
+}

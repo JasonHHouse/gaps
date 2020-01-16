@@ -42,7 +42,7 @@
 </nav>
 
 <div class="container">
-    <h3 class="top-margin">Owned Movies</h3>
+    <h3 class="top-margin">Recommended Movies</h3>
 
     <div class="top-margin">
         <table id="movies" class="display" style="width:100%">
@@ -56,9 +56,9 @@
             </thead>
             <tbody>
             <tr th:each="movie, status : ${recommended}">
-                <td th:text="${movie.name}"></td>
+                <td th:text="${movie.name}" class="word-break"></td>
                 <td th:text="${movie.year}"></td>
-                <td th:text="${movie.collection}"></td>
+                <td th:text="${movie.collection}" class="word-break"></td>
                 <td><a target="_blank" th:href="${urls.get(status.index)}">Details</a></td>
             </tr>
             </tbody>

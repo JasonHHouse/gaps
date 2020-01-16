@@ -42,7 +42,7 @@
 </nav>
 
 <div class="container">
-    <h3 class="top-margin">Missing Movies</h3>
+    <h3 class="top-margin">Owned Movies</h3>
 
     <div class="top-margin">
         <table id="movies" class="display" style="width:100%">
@@ -59,9 +59,9 @@
             <tbody>
             <tr th:each="movie, status : ${ownedMovies}">
                 <td th:text="${movie.thumbnail}"></td>
-                <td th:text="${movie.name}"></td>
+                <td th:text="${movie.name}" class="word-break"></td>
                 <td th:text="${movie.year}"></td>
-                <td th:text="${movie.language}"></td>
+                <td th:text="${movie.language}" class="word-break"></td>
                 <td><a target="_blank" th:href="${urls.get(status.index)}">Details</a></td>
                 <td></td>
             </tr>
