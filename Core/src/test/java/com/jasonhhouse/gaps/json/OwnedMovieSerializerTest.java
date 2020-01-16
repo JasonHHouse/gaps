@@ -6,7 +6,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.OwnedMovie;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -21,7 +20,7 @@ public class OwnedMovieSerializerTest {
         OwnedMovieSerializer movieSerializer = new OwnedMovieSerializer();
         OwnedMovieDeserializer movieDeserializer = new OwnedMovieDeserializer();
 
-        OwnedMovie ownedMovie = new OwnedMovie("Alien", 1979,"THUMBNAIL",1235, "TVDB_ID", "ENGLISH");
+        OwnedMovie ownedMovie = new OwnedMovie("Alien", 1979, "THUMBNAIL", 1235, "TVDB_ID", "ENGLISH");
 
         ObjectMapper objectMapper = new ObjectMapper();
         Writer jsonWriter = new StringWriter();
@@ -45,7 +44,7 @@ public class OwnedMovieSerializerTest {
         OwnedMovieSerializer movieSerializer = new OwnedMovieSerializer();
         OwnedMovieDeserializer movieDeserializer = new OwnedMovieDeserializer();
 
-        OwnedMovie ownedMovie = new OwnedMovie("Alien", 1979,null,1235, "TVDB_ID", "ENGLISH");
+        OwnedMovie ownedMovie = new OwnedMovie("Alien", 1979, null, 1235, "TVDB_ID", "ENGLISH");
 
         ObjectMapper objectMapper = new ObjectMapper();
         Writer jsonWriter = new StringWriter();
@@ -69,7 +68,7 @@ public class OwnedMovieSerializerTest {
         OwnedMovieSerializer movieSerializer = new OwnedMovieSerializer();
         OwnedMovieDeserializer movieDeserializer = new OwnedMovieDeserializer();
 
-        OwnedMovie ownedMovie = new OwnedMovie("Alien", 1979,"THUMBNAIL",1235, "TVDB_ID", null);
+        OwnedMovie ownedMovie = new OwnedMovie("Alien", 1979, "THUMBNAIL", 1235, "TVDB_ID", null);
 
         ObjectMapper objectMapper = new ObjectMapper();
         Writer jsonWriter = new StringWriter();

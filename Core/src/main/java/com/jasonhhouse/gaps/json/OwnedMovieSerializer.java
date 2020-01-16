@@ -13,7 +13,6 @@ package com.jasonhhouse.gaps.json;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.OwnedMovie;
 import java.io.IOException;
 
