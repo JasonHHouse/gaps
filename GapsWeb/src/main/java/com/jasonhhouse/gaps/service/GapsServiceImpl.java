@@ -15,7 +15,6 @@ import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexSearch;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
@@ -50,7 +49,7 @@ public class GapsServiceImpl implements GapsService {
 
         for (String selectedLibrary : selectedLibraries) {
             Integer key = Integer.valueOf(selectedLibrary);
-            if(map.containsKey(key)) {
+            if (map.containsKey(key)) {
                 map.get(key).setSelected(true);
             } else {
                 LOGGER.warn("Can't find library");

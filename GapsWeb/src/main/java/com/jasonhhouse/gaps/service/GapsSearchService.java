@@ -179,7 +179,7 @@ public class GapsSearchService implements GapsSearch {
 
         LOGGER.info("Owned");
         for (OwnedMovie ownedMovie : ownedMovies) {
-            LOGGER.info(ownedMovie.toString());;
+            LOGGER.info(ownedMovie.toString());
         }
 
         LOGGER.info("Recommended");

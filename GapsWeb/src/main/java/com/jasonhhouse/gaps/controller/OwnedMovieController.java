@@ -1,7 +1,6 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsService;
-import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.OwnedMovie;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.service.BindingErrorsService;
