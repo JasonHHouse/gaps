@@ -1,0 +1,504 @@
+{
+  "id": "c2b08596-ce35-43d8-a65a-711db6b9f885",
+  "version": "2.0",
+  "name": "Gaps",
+  "url": "https://localhost:8443",
+  "tests": [{
+    "id": "a2928b49-cc10-4348-9893-121a045a9de7",
+    "name": "Gaps - Greg RSS",
+    "commands": [{
+      "id": "71942413-a9b3-4641-ab74-686f84d0776c",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e9c8939d-46c1-476f-9d35-4b6d9005431d",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1680x1027",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e00edd4c-70ad-4f23-9bb3-fa5b905886f9",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [
+        ["css=body", "css:finder"],
+        ["xpath=//body", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "341aaa0a-0fff-4fa0-b376-5ac51570ffd4",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=RSS",
+      "targets": [
+        ["linkText=RSS", "linkText"],
+        ["css=.nav-item:nth-child(3) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'RSS')]", "xpath:link"],
+        ["xpath=//div[@id='navbarColor01']/ul/li[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/rssCheck')]", "xpath:href"],
+        ["xpath=//li[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'RSS')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "6ccf744f-e7bd-495a-9fa9-c9e914ea9b0f",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [
+        ["css=body", "css:finder"],
+        ["xpath=//body", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "dd2a72ca-a34c-4d02-8bf8-fd24d3cbb182",
+      "comment": "",
+      "command": "verifyText",
+      "target": "css=body",
+      "targets": [
+        ["css=body", "css:finder"],
+        ["xpath=//body", "xpath:position"]
+      ],
+      "value": "[{\"imdb_id\":\"tt0113198\",\"release_date\":1995,\"tvdb_id\":15789,\"title\":\"A Goofy Movie\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0118692\",\"release_date\":1997,\"tvdb_id\":13313,\"title\":\"Beauty and the Beast: The Enchanted Christmas\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0167038\",\"release_date\":1998,\"tvdb_id\":20235,\"title\":\"Belle's Magical World\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0401398\",\"release_date\":2005,\"tvdb_id\":13417,\"title\":\"Kronk's New Groove\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0486761\",\"release_date\":2006,\"tvdb_id\":21316,\"title\":\"Leroy & Stitch\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0457993\",\"release_date\":2005,\"tvdb_id\":20760,\"title\":\"Lilo & Stitch 2: Stitch Has a Glitch\",\"poster_path\":\"\"},{\"imdb_id\":\"tt5028340\",\"release_date\":2018,\"tvdb_id\":400650,\"title\":\"Mary Poppins Returns\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0279967\",\"release_date\":2004,\"tvdb_id\":12242,\"title\":\"Mulan II\",\"poster_path\":\"\"},{\"imdb_id\":\"tt1623205\",\"release_date\":2013,\"tvdb_id\":68728,\"title\":\"Oz the Great and Powerful\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0348124\",\"release_date\":2003,\"tvdb_id\":15567,\"title\":\"Stitch! The Movie\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0313680\",\"release_date\":2002,\"tvdb_id\":13683,\"title\":\"Tarzan & Jane\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0257778\",\"release_date\":2002,\"tvdb_id\":12448,\"title\":\"The Hunchback of Notre Dame II\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0120131\",\"release_date\":1998,\"tvdb_id\":9732,\"title\":\"The Lion King II: Simba's Pride\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0969647\",\"release_date\":2008,\"tvdb_id\":13676,\"title\":\"The Little Mermaid: Ariel's Beginning\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0032138\",\"release_date\":1939,\"tvdb_id\":630,\"title\":\"The Wizard of Oz\",\"poster_path\":\"\"}]"
+    }]
+  }, {
+    "id": "550365ec-4dc1-4917-9647-904d29a15aac",
+    "name": "Gaps - Greg Recommended",
+    "commands": [{
+      "id": "d4511a68-6480-40a2-bf4f-6e535757109d",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d5c067cf-2478-4b3e-bb84-73da4726beeb",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1680x1027",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b84dcd48-1748-4286-b1d2-0632b1bc2a7d",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Recommended",
+      "targets": [
+        ["linkText=Recommended", "linkText"],
+        ["css=.nav-item:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Recommended')]", "xpath:link"],
+        ["xpath=//div[@id='navbarColor01']/ul/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/recommended')]", "xpath:href"],
+        ["xpath=//li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Recommended')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "05cac5f3-a8d5-402a-84ba-d84aa93ac14f",
+      "comment": "",
+      "command": "verifyText",
+      "target": "id=movies_info",
+      "targets": [
+        ["id=movies_info", "id"],
+        ["css=#movies_info", "css:finder"],
+        ["xpath=//div[@id='movies_info']", "xpath:attributes"],
+        ["xpath=//div[@id='movies_wrapper']/div[3]", "xpath:idRelative"],
+        ["xpath=//div/div[3]", "xpath:position"]
+      ],
+      "value": "Showing 1 to 10 of 15 entries"
+    }]
+  }, {
+    "id": "1fd9abe4-7137-4073-8fc2-96dfdba28a0f",
+    "name": "Gaps - Greg Owned",
+    "commands": [{
+      "id": "c6aaa539-be7a-4e8d-9955-d64f103a2878",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b83717ee-c0ff-4f20-ac92-e1ea905a1d60",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1680x1027",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b1a90c70-d01c-4791-9f0c-3a776be3fe62",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Owned Movies",
+      "targets": [
+        ["linkText=Owned Movies", "linkText"],
+        ["css=.nav-item:nth-child(1) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Owned Movies')]", "xpath:link"],
+        ["xpath=//div[@id='navbarColor01']/ul/li/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/ownedMovies')]", "xpath:href"],
+        ["xpath=//li/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Owned Movies')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "332dd5e6-5b94-408e-a392-7f1901719395",
+      "comment": "",
+      "command": "pause",
+      "target": "",
+      "targets": [],
+      "value": "10"
+    }, {
+      "id": "88f5a347-b7cb-41cc-8320-8fb73f3f80ce",
+      "comment": "Should show entries 1 through 10",
+      "command": "verifyText",
+      "target": "id=movies_info",
+      "targets": [
+        ["id=movies_info", "id"],
+        ["css=#movies_info", "css:finder"],
+        ["xpath=//div[@id='movies_info']", "xpath:attributes"],
+        ["xpath=//div[@id='movies_wrapper']/div[3]", "xpath:idRelative"],
+        ["xpath=//div/div[3]", "xpath:position"]
+      ],
+      "value": "Showing 1 to 10 of 80 entries"
+    }]
+  }, {
+    "id": "8f048f0d-6cbc-4965-a3c5-306b46a6368d",
+    "name": "Gaps - Complete Disney",
+    "commands": [{
+      "id": "59e4dd0b-dab7-49ff-b709-aa60b66d5084",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "8b85e189-ebe4-452b-8d17-7493e242ddbe",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1680x1027",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "1586cb4c-22cc-40d6-8794-912627a182e2",
+      "comment": "",
+      "command": "click",
+      "target": "id=movieDbApiKey",
+      "targets": [
+        ["id=movieDbApiKey", "id"],
+        ["name=movieDbApiKey", "name"],
+        ["css=#movieDbApiKey", "css:finder"],
+        ["xpath=//input[@id='movieDbApiKey']", "xpath:attributes"],
+        ["xpath=//form[@id='plexConfiguration']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4b8a13b1-9d2b-4029-ba6c-a2857882fcca",
+      "comment": "",
+      "command": "click",
+      "target": "id=movieDbApiKey",
+      "targets": [
+        ["id=movieDbApiKey", "id"],
+        ["name=movieDbApiKey", "name"],
+        ["css=#movieDbApiKey", "css:finder"],
+        ["xpath=//input[@id='movieDbApiKey']", "xpath:attributes"],
+        ["xpath=//form[@id='plexConfiguration']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0fe99cb8-043a-4da7-8b63-84bc23ae621e",
+      "comment": "",
+      "command": "type",
+      "target": "id=movieDbApiKey",
+      "targets": [],
+      "value": "723b4c763114904392ca441909aa0375"
+    }, {
+      "id": "1f056327-6fc5-4b0a-9229-64e0dc265aee",
+      "comment": "",
+      "command": "click",
+      "target": "css=html",
+      "targets": [
+        ["css=html", "css:finder"],
+        ["xpath=//html", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "14df9982-c131-4b6d-bd4c-978be743821f",
+      "comment": "",
+      "command": "click",
+      "target": "id=plex",
+      "targets": [
+        ["id=plex", "id"],
+        ["css=#plex", "css:finder"],
+        ["xpath=//button[@id='plex']", "xpath:attributes"],
+        ["xpath=//form[@id='plexConfiguration']/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Plex')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "9a8ad208-8293-4790-978c-42dddc36e753",
+      "comment": "",
+      "command": "click",
+      "target": "id=address",
+      "targets": [
+        ["id=address", "id"],
+        ["name=address", "name"],
+        ["css=#address", "css:finder"],
+        ["xpath=//input[@id='address']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "dbca6002-dc24-4fbd-b066-5965133802e6",
+      "comment": "",
+      "command": "type",
+      "target": "id=address",
+      "targets": [
+        ["id=address", "id"],
+        ["name=address", "name"],
+        ["css=#address", "css:finder"],
+        ["xpath=//input[@id='address']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "174.58.64.67"
+    }, {
+      "id": "d93d7b3f-e4da-4561-bd0f-f45546e4792a",
+      "comment": "",
+      "command": "click",
+      "target": "id=plexToken",
+      "targets": [
+        ["id=plexToken", "id"],
+        ["name=plexToken", "name"],
+        ["css=#plexToken", "css:finder"],
+        ["xpath=//input[@id='plexToken']", "xpath:attributes"],
+        ["xpath=//div[3]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "049f8b67-b708-4cd2-91e8-626d897a1a1a",
+      "comment": "",
+      "command": "type",
+      "target": "id=plexToken",
+      "targets": [
+        ["id=plexToken", "id"],
+        ["name=plexToken", "name"],
+        ["css=#plexToken", "css:finder"],
+        ["xpath=//input[@id='plexToken']", "xpath:attributes"],
+        ["xpath=//div[3]/input", "xpath:position"]
+      ],
+      "value": "xPUCxLh4cTz8pcgorQQs"
+    }, {
+      "id": "2f08b2f8-7c7e-4589-a8dd-0d8682dfc181",
+      "comment": "",
+      "command": "click",
+      "target": "css=html",
+      "targets": [
+        ["css=html", "css:finder"],
+        ["xpath=//html", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8721a158-46a0-406f-8929-c6c80f672cc8",
+      "comment": "",
+      "command": "click",
+      "target": "css=html",
+      "targets": [
+        ["css=html", "css:finder"],
+        ["xpath=//html", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "69b1fdc4-79aa-4e2e-98e4-79a780572694",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Next')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "4fab01bd-80ac-465c-9f06-8029897bcf89",
+      "comment": "",
+      "command": "click",
+      "target": "css=.form-group:nth-child(1)",
+      "targets": [
+        ["css=.form-group:nth-child(1)", "css:finder"],
+        ["xpath=//fieldset", "xpath:position"],
+        ["xpath=//fieldset[contains(.,'Disney Classic Movies')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "7f93965f-d7cb-49da-96c7-c48bcbeee6fb",
+      "comment": "",
+      "command": "click",
+      "target": "name=selectedLibraries",
+      "targets": [
+        ["name=selectedLibraries", "name"],
+        ["css=.form-group:nth-child(1) > .form-check-input", "css:finder"],
+        ["xpath=//input[@name='selectedLibraries']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d5c6d039-ff86-4dbb-bed5-02722af680e8",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Next')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "9b183845-3675-4a7c-9d7c-eaa96c7eb151",
+      "comment": "",
+      "command": "click",
+      "target": "id=movieDbApiKey",
+      "targets": [
+        ["id=movieDbApiKey", "id"],
+        ["name=movieDbApiKey", "name"],
+        ["css=#movieDbApiKey", "css:finder"],
+        ["xpath=//input[@id='movieDbApiKey']", "xpath:attributes"],
+        ["xpath=//form[@id='plexConfiguration']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c6f89fc1-1d53-4f94-aa34-caf0d0617875",
+      "comment": "",
+      "command": "click",
+      "target": "css=html",
+      "targets": [
+        ["css=html", "css:finder"],
+        ["xpath=//html", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c7a414b8-6ccc-4626-8ab9-578c6300f9cb",
+      "comment": "",
+      "command": "click",
+      "target": "id=movies_wrapper",
+      "targets": [
+        ["id=movies_wrapper", "id"],
+        ["css=#movies_wrapper", "css:finder"],
+        ["xpath=//div[@id='movies_wrapper']", "xpath:attributes"],
+        ["xpath=//div[4]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6b21248c-5bd1-4de2-959e-9d4b8ca36d19",
+      "comment": "",
+      "command": "click",
+      "target": "id=movies_wrapper",
+      "targets": [
+        ["id=movies_wrapper", "id"],
+        ["css=#movies_wrapper", "css:finder"],
+        ["xpath=//div[@id='movies_wrapper']", "xpath:attributes"],
+        ["xpath=//div[4]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "713787cf-ed86-412e-8e22-67c5e764427f",
+      "comment": "",
+      "command": "mouseDownAt",
+      "target": "id=movies_wrapper",
+      "targets": [
+        ["id=movies_wrapper", "id"],
+        ["css=#movies_wrapper", "css:finder"],
+        ["xpath=//div[@id='movies_wrapper']", "xpath:attributes"],
+        ["xpath=//div[4]/div", "xpath:position"]
+      ],
+      "value": "193,514.625"
+    }, {
+      "id": "112ab29f-bd36-4388-9aab-ee0d3bf47ced",
+      "comment": "",
+      "command": "mouseMoveAt",
+      "target": "id=movies_wrapper",
+      "targets": [
+        ["id=movies_wrapper", "id"],
+        ["css=#movies_wrapper", "css:finder"],
+        ["xpath=//div[@id='movies_wrapper']", "xpath:attributes"],
+        ["xpath=//div[4]/div", "xpath:position"]
+      ],
+      "value": "193,514.625"
+    }, {
+      "id": "c97249c0-90f2-49bf-9de3-d309af9f767c",
+      "comment": "",
+      "command": "mouseUpAt",
+      "target": "id=movies_wrapper",
+      "targets": [
+        ["id=movies_wrapper", "id"],
+        ["css=#movies_wrapper", "css:finder"],
+        ["xpath=//div[@id='movies_wrapper']", "xpath:attributes"],
+        ["xpath=//div[4]/div", "xpath:position"]
+      ],
+      "value": "193,514.625"
+    }, {
+      "id": "53872ba9-1407-4e1e-b5e5-0e312481cd88",
+      "comment": "",
+      "command": "click",
+      "target": "id=movies_wrapper",
+      "targets": [
+        ["id=movies_wrapper", "id"],
+        ["css=#movies_wrapper", "css:finder"],
+        ["xpath=//div[@id='movies_wrapper']", "xpath:attributes"],
+        ["xpath=//div[4]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "18d44f66-8a3e-46be-a1b1-5084006eae23",
+      "comment": "",
+      "command": "click",
+      "target": "id=movies_info",
+      "targets": [
+        ["id=movies_info", "id"],
+        ["css=#movies_info", "css:finder"],
+        ["xpath=//div[@id='movies_info']", "xpath:attributes"],
+        ["xpath=//div[@id='movies_wrapper']/div[3]", "xpath:idRelative"],
+        ["xpath=//div[4]/div/div[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0ff4bff0-4145-47e7-97d7-5bf0411d76a5",
+      "comment": "",
+      "command": "waitForElementNotVisible",
+      "target": "id=progressContainer",
+      "targets": [],
+      "value": "100000"
+    }, {
+      "id": "c37aba17-b6f7-43e3-8d9b-d56fbc1bc37d",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=movies_info",
+      "targets": [
+        ["id=movies_info", "id"],
+        ["css=#movies_info", "css:finder"],
+        ["xpath=//div[@id='movies_info']", "xpath:attributes"],
+        ["xpath=//div[@id='movies_wrapper']/div[3]", "xpath:idRelative"],
+        ["xpath=//div[4]/div/div[3]", "xpath:position"]
+      ],
+      "value": "Showing 1 to 10 of 15 entries"
+    }]
+  }],
+  "suites": [{
+    "id": "0e338d31-a0f7-4a54-a7c4-6b91df808494",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": []
+  }],
+  "urls": ["https://localhost:8443/"],
+  "plugins": []
+}
