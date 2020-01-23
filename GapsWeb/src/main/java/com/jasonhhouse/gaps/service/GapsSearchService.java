@@ -569,6 +569,7 @@ public class GapsSearchService implements GapsSearch {
                     JsonNode result = results.get(0);
                     int id = result.get("id").asInt();
                     movie.setTvdbId(id);
+                    ownedMovie.setTvdbId(id);
 
                     int indexOfMovie = everyMovie.indexOf(movie);
                     if (indexOfMovie != -1) {
