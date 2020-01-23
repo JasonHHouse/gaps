@@ -2,7 +2,7 @@
   "id": "c2b08596-ce35-43d8-a65a-711db6b9f885",
   "version": "2.0",
   "name": "Gaps",
-  "url": "https://localhost:8443",
+  "url": "http://localhost:8484",
   "tests": [{
     "id": "a2928b49-cc10-4348-9893-121a045a9de7",
     "name": "Gaps - Greg RSS",
@@ -65,6 +65,13 @@
         ["xpath=//body", "xpath:position"]
       ],
       "value": "[{\"imdb_id\":\"tt0113198\",\"release_date\":1995,\"tvdb_id\":15789,\"title\":\"A Goofy Movie\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0118692\",\"release_date\":1997,\"tvdb_id\":13313,\"title\":\"Beauty and the Beast: The Enchanted Christmas\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0167038\",\"release_date\":1998,\"tvdb_id\":20235,\"title\":\"Belle's Magical World\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0401398\",\"release_date\":2005,\"tvdb_id\":13417,\"title\":\"Kronk's New Groove\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0486761\",\"release_date\":2006,\"tvdb_id\":21316,\"title\":\"Leroy & Stitch\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0457993\",\"release_date\":2005,\"tvdb_id\":20760,\"title\":\"Lilo & Stitch 2: Stitch Has a Glitch\",\"poster_path\":\"\"},{\"imdb_id\":\"tt5028340\",\"release_date\":2018,\"tvdb_id\":400650,\"title\":\"Mary Poppins Returns\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0279967\",\"release_date\":2004,\"tvdb_id\":12242,\"title\":\"Mulan II\",\"poster_path\":\"\"},{\"imdb_id\":\"tt1623205\",\"release_date\":2013,\"tvdb_id\":68728,\"title\":\"Oz the Great and Powerful\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0348124\",\"release_date\":2003,\"tvdb_id\":15567,\"title\":\"Stitch! The Movie\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0313680\",\"release_date\":2002,\"tvdb_id\":13683,\"title\":\"Tarzan & Jane\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0257778\",\"release_date\":2002,\"tvdb_id\":12448,\"title\":\"The Hunchback of Notre Dame II\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0120131\",\"release_date\":1998,\"tvdb_id\":9732,\"title\":\"The Lion King II: Simba's Pride\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0969647\",\"release_date\":2008,\"tvdb_id\":13676,\"title\":\"The Little Mermaid: Ariel's Beginning\",\"poster_path\":\"\"},{\"imdb_id\":\"tt0032138\",\"release_date\":1939,\"tvdb_id\":630,\"title\":\"The Wizard of Oz\",\"poster_path\":\"\"}]"
+    }, {
+      "id": "942a2d83-9162-4e16-818f-3a2b4bd16593",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }, {
     "id": "550365ec-4dc1-4917-9647-904d29a15aac",
@@ -111,6 +118,13 @@
         ["xpath=//div/div[3]", "xpath:position"]
       ],
       "value": "Showing 1 to 10 of 15 entries"
+    }, {
+      "id": "b74dfc12-ec80-4c77-843c-f85099038726",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }, {
     "id": "1fd9abe4-7137-4073-8fc2-96dfdba28a0f",
@@ -164,6 +178,13 @@
         ["xpath=//div/div[3]", "xpath:position"]
       ],
       "value": "Showing 1 to 10 of 80 entries"
+    }, {
+      "id": "85a5c036-7df7-410c-9241-05a91ef8ac7d",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }, {
     "id": "8f048f0d-6cbc-4965-a3c5-306b46a6368d",
@@ -489,6 +510,13 @@
         ["xpath=//div[4]/div/div[3]", "xpath:position"]
       ],
       "value": "Showing 1 to 10 of 15 entries"
+    }, {
+      "id": "5dabbecf-035f-480a-b78e-fba46244981c",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{
@@ -499,6 +527,6 @@
     "timeout": 300,
     "tests": []
   }],
-  "urls": ["https://localhost:8443/"],
+  "urls": ["http://localhost:8484/"],
   "plugins": []
 }
