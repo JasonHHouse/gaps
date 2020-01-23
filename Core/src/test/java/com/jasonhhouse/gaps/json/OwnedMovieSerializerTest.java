@@ -20,7 +20,7 @@ public class OwnedMovieSerializerTest {
         OwnedMovieSerializer movieSerializer = new OwnedMovieSerializer();
         OwnedMovieDeserializer movieDeserializer = new OwnedMovieDeserializer();
 
-        OwnedMovie ownedMovie = new OwnedMovie("Alien", 1979, "THUMBNAIL", 1235, "TVDB_ID", "ENGLISH");
+        OwnedMovie ownedMovie = new OwnedMovie("Alien", 1979, "THUMBNAIL", 1235, "TVDB_ID", "ENGLISH", 1234);
 
         ObjectMapper objectMapper = new ObjectMapper();
         Writer jsonWriter = new StringWriter();
@@ -44,7 +44,7 @@ public class OwnedMovieSerializerTest {
         OwnedMovieSerializer movieSerializer = new OwnedMovieSerializer();
         OwnedMovieDeserializer movieDeserializer = new OwnedMovieDeserializer();
 
-        OwnedMovie ownedMovie = new OwnedMovie("Alien", 1979, null, 1235, "TVDB_ID", "ENGLISH");
+        OwnedMovie ownedMovie = new OwnedMovie("Alien", 1979, null, 1235, "TVDB_ID", "ENGLISH", 134);
 
         ObjectMapper objectMapper = new ObjectMapper();
         Writer jsonWriter = new StringWriter();
@@ -68,7 +68,7 @@ public class OwnedMovieSerializerTest {
         OwnedMovieSerializer movieSerializer = new OwnedMovieSerializer();
         OwnedMovieDeserializer movieDeserializer = new OwnedMovieDeserializer();
 
-        OwnedMovie ownedMovie = new OwnedMovie("Alien", 1979, "THUMBNAIL", 1235, "TVDB_ID", null);
+        OwnedMovie ownedMovie = new OwnedMovie("Alien", 1979, "THUMBNAIL", 1235, "TVDB_ID", null, -1);
 
         ObjectMapper objectMapper = new ObjectMapper();
         Writer jsonWriter = new StringWriter();

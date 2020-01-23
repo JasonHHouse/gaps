@@ -25,6 +25,8 @@ public class OwnedMovie implements Comparable<OwnedMovie>, MovieMetadata {
 
     public static final String LANGUAGE = "language";
 
+    public static final String COLLECTION = "collection";
+
     private final String name;
 
     private final int year;
@@ -39,13 +41,16 @@ public class OwnedMovie implements Comparable<OwnedMovie>, MovieMetadata {
     @Nullable
     private String language;
 
-    public OwnedMovie(String name, int year, String thumbnail, int tvdbId, @Nullable String imdbId, String language) {
+    private int collection;
+
+    public OwnedMovie(String name, int year, String thumbnail, int tvdbId, @Nullable String imdbId, @Nullable String language, int collection) {
         this.name = name;
         this.year = year;
         this.thumbnail = thumbnail;
         this.tvdbId = tvdbId;
         this.imdbId = imdbId;
         this.language = language;
+        this.collection = collection;
     }
 
     @Override
@@ -80,6 +85,14 @@ public class OwnedMovie implements Comparable<OwnedMovie>, MovieMetadata {
     @Nullable
     public String getLanguage() {
         return language;
+    }
+
+    public int getCollection() {
+        return collection;
+    }
+
+    public void setCollection(int collection) {
+        this.collection = collection;
     }
 
     @Override
@@ -127,6 +140,7 @@ public class OwnedMovie implements Comparable<OwnedMovie>, MovieMetadata {
                 ", tvdbId=" + tvdbId +
                 ", imdbId='" + imdbId + '\'' +
                 ", language='" + language + '\'' +
+                ", collection='" + collection + '\'' +
                 '}';
     }
 }

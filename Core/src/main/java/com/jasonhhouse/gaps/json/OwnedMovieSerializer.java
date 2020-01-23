@@ -34,6 +34,7 @@ public class OwnedMovieSerializer extends StdSerializer<OwnedMovie> {
         jsonGenerator.writeNumberField(OwnedMovie.YEAR, movie.getYear());
         jsonGenerator.writeStringField(OwnedMovie.THUMBNAIL, movie.getThumbnail());
         jsonGenerator.writeStringField(OwnedMovie.LANGUAGE, movie.getLanguage());
+        jsonGenerator.writeNumberField(OwnedMovie.COLLECTION, movie.getCollection());
         jsonGenerator.writeEndObject();
     }
 }

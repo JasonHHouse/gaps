@@ -32,16 +32,23 @@ public class OwnedMovieDeserializer extends StdDeserializer<OwnedMovie> {
         int tvdbId = (Integer) node.get(OwnedMovie.TVDB_ID).numberValue();
         String imdbId = node.get(OwnedMovie.IMDB_ID).asText();
         String name = node.get(OwnedMovie.NAME).asText();
+        int year = (Integer) node.get(OwnedMovie.YEAR).numberValue();
+
         String thumbnail = null;
         if (node.has(OwnedMovie.THUMBNAIL)) {
             thumbnail = node.get(OwnedMovie.THUMBNAIL).asText();
         }
-        int year = (Integer) node.get(OwnedMovie.YEAR).numberValue();
+
         String language = null;
         if (node.has(OwnedMovie.LANGUAGE)) {
             language = node.get(OwnedMovie.LANGUAGE).asText();
         }
 
-        return new OwnedMovie(name, year, thumbnail, tvdbId, imdbId, language);
+        int collection = -1;
+        if (node.has(OwnedMovie.COLLECTION)) {
+            collection = node.get(OwnedMovie.COLLECTION).asInt();
+        }
+
+        return new OwnedMovie(name, year, thumbnail, tvdbId, imdbId, language, collection);
     }
 }
