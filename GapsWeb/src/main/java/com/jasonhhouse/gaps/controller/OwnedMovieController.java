@@ -7,6 +7,7 @@ import com.jasonhhouse.gaps.service.BindingErrorsService;
 import com.jasonhhouse.gaps.service.IoService;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -43,7 +44,10 @@ public class OwnedMovieController {
             //Show empty page
             return new ModelAndView("emptyState");
         } else {
-            List<OwnedMovie> ownedMovies = ioService.getOwnedMovies();
+            //ToDo
+            //Need to write a way to get all movies or break up the UI per library (Maybe just show the library the movie came from in the table)
+            List<OwnedMovie> ownedMovies = Collections.emptyList();
+            //List<OwnedMovie> ownedMovies = ioService.getOwnedMovies();
             LOGGER.info("ownedMovies.size():" + ownedMovies.size());
 
             if (CollectionUtils.isEmpty(ownedMovies)) {

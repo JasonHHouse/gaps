@@ -53,8 +53,8 @@
         Server. Select any and all you would like to look for gaps in.</p>
 
     <form class="needs-validation" method="POST" action="/plexMovieList" novalidate enctype="multipart/form-data">
-        <fieldset th:each="library,status : *{plexSearch.libraries}" class="form-group form-check">
-            <input type="checkbox" name="selectedLibraries" class="form-check-input" th:value="*{plexSearch.libraries[__${status.index}__].key}" />
+        <fieldset th:each="library,status : *{plexSearch.plexServer.plexLibraries}" class="form-group form-check">
+            <input type="checkbox" name="selectedLibraries" class="form-check-input" th:value="*{plexSearch.plexServer.plexLibraries[__${status.index}__].key}" />
             <label class="form-check-label" th:text="${library.title}"></label>
         </fieldset>
 

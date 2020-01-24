@@ -24,4 +24,11 @@ public interface PlexQuery {
      */
     @NotNull List<PlexLibrary> getLibraries(@NotNull PlexSearch plexSearch);
 
+    /**
+     * Find the plex server name, key, and libraries based on the given PlexSearch parameters
+     *
+     * @param plexSearch the search parameters
+     * @return A PlexServer instance
+     */
+    @NotNull PlexServer getPlexServer(@NotNull PlexSearch plexSearch);
 }

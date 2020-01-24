@@ -20,7 +20,7 @@ public class GapsServiceTest implements GapsService {
         List<PlexLibrary> plexLibraries = new ArrayList<>();
         plexLibraries.add(plexLibrary);
         plexLibraries.add(plexLibrary1);
-        plexSearch.getLibraries().addAll(plexLibraries);
+        plexSearch.getPlexServer().getPlexLibraries().addAll(plexLibraries);
     }
 
     @Override

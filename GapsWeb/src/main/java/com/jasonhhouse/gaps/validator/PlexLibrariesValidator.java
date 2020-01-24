@@ -34,12 +34,12 @@ public class PlexLibrariesValidator implements Validator {
         LOGGER.info("validate( " + obj + ", " + errors + " )");
 
         PlexSearch plexSearch = (PlexSearch) obj;
-        if (CollectionUtils.isEmpty(plexSearch.getLibraries())) {
+        if (CollectionUtils.isEmpty(plexSearch.getPlexServer().getPlexLibraries())) {
             errors.rejectValue("libraries", "libraries.empty");
             return;
         }
 
-        for (PlexLibrary plexLibrary : plexSearch.getLibraries()) {
+        for (PlexLibrary plexLibrary : plexSearch.getPlexServer().getPlexLibraries()) {
             if (StringUtils.isEmpty(plexLibrary.getTitle())) {
                 errors.rejectValue("libraries", "plexLibrary.getTitle().empty");
             }

@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.OwnedMovie;
 import com.jasonhhouse.gaps.PlexSearch;
+import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.Rss;
 import java.io.BufferedReader;
 import java.io.File;
@@ -113,9 +114,9 @@ public class IoService {
         return new File(STORAGE_FOLDER + OWNED_MOVIES).exists();
     }
 
-    public @NotNull List<OwnedMovie> getOwnedMovies() {
+    public @NotNull List<OwnedMovie> getOwnedMovies(PlexServer plexServer, int key) {
         try {
-            File file = new File(STORAGE_FOLDER + OWNED_MOVIES);
+            File file = new File(STORAGE_FOLDER + plexServer.getMachineIdentifier() + File.separator + key + File.separator + OWNED_MOVIES);
             OwnedMovie[] ownedMovies = objectMapper.readValue(file, OwnedMovie[].class);
             return Arrays.asList(ownedMovies);
         } catch (IOException e) {
@@ -192,9 +193,15 @@ public class IoService {
     /**
      * Prints out all recommended movies to recommendedMovies.json
      */
-    public void writeOwnedMoviesToFile(Set<OwnedMovie> ownedMovies) {
+    public void writeOwnedMoviesToFile(PlexServer plexServer, int key, Set<OwnedMovie> ownedMovies) {
         LOGGER.info("writeOwnedMoviesToFile()");
-        final String fileName = STORAGE_FOLDER + OWNED_MOVIES;
+        final String fileName = STORAGE_FOLDER + plexServer.getMachineIdentifier() + File.separator + key + File.separator + OWNED_MOVIES;
+
+        File folder = new File(STORAGE_FOLDER + plexServer.getMachineIdentifier() + File.separator + key);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+
         File file = new File(fileName);
         writeOwnedMoviesToFile(ownedMovies, file);
     }

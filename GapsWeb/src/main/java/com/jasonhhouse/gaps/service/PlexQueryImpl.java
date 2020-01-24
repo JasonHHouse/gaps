@@ -13,6 +13,8 @@ package com.jasonhhouse.gaps.service;
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexQuery;
 import com.jasonhhouse.gaps.PlexSearch;
+import com.jasonhhouse.gaps.PlexServer;
+import com.sun.org.apache.xml.internal.dtm.ref.DTMNodeList;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -73,21 +75,7 @@ public class PlexQueryImpl implements PlexQuery {
                     .build();
 
             try (Response response = client.newCall(request).execute()) {
-                String body = response.body() != null ? response.body().string() : null;
-
-                if (StringUtils.isBlank(body)) {
-                    String reason = "Body returned null from Plex. Url: " + url;
-                    LOGGER.error(reason);
-                    throw new IllegalStateException(reason);
-                }
-
-                InputStream fileIS = new ByteArrayInputStream(body.getBytes());
-                DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder builder = builderFactory.newDocumentBuilder();
-                Document xmlDocument = builder.parse(fileIS);
-                XPath xPath = XPathFactory.newInstance().newXPath();
-                String expression = "/MediaContainer/Directory";
-                NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
+                NodeList nodeList = parseXml(response, url, "/MediaContainer/Directory");
 
                 if (nodeList.getLength() == 0) {
                     String reason = "No libraries found in url: " + url;
@@ -150,6 +138,92 @@ public class PlexQueryImpl implements PlexQuery {
         LOGGER.info(plexLibraries.size() + " Plex libraries found");
 
         return plexLibraries;
+    }
+
+    @Override
+    public @NotNull PlexServer getPlexServer(@NotNull PlexSearch plexSearch) {
+        LOGGER.info("queryPlexLibraries()");
+
+        HttpUrl url = new HttpUrl.Builder()
+                .scheme("http")
+                .host(plexSearch.getAddress())
+                .port(plexSearch.getPort())
+                .addQueryParameter("X-Plex-Token", plexSearch.getPlexToken())
+                .build();
+
+        //ToDo
+        //Need to control time out here, using gaps object
+        OkHttpClient client = new OkHttpClient.Builder()
+                .build();
+
+        try {
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            try (Response response = client.newCall(request).execute()) {
+                DTMNodeList dtmNodeList = parseXml(response, url, "/MediaContainer");
+                Node node = dtmNodeList.item(0);
+
+                if (node == null) {
+                    String reason = "No Plex server found at url: " + url;
+                    LOGGER.error(reason);
+                    throw new IllegalStateException(reason);
+                }
+
+                NamedNodeMap map = node.getAttributes();
+                Node friendlyNameNode = map.getNamedItem("friendlyName");
+                if (friendlyNameNode == null) {
+                    String reason = "Error finding 'friendlyName' inside /";
+                    LOGGER.error(reason);
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason);
+                }
+
+                String friendlyName = friendlyNameNode.getNodeValue().trim();
+                LOGGER.info("friendlyName:" + friendlyName);
+
+                Node machineIdentifierNode = map.getNamedItem("machineIdentifier");
+                if (machineIdentifierNode == null) {
+                    String reason = "Error finding 'machineIdentifier' inside /";
+                    LOGGER.error(reason);
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason);
+                }
+
+                String machineIdentifier = machineIdentifierNode.getNodeValue().trim();
+                LOGGER.info("machineIdentifier:" + machineIdentifier);
+
+                return new PlexServer(friendlyName, machineIdentifier);
+            } catch (IOException e) {
+                String reason = "Error connecting to Plex to get library list: " + url;
+                LOGGER.error(reason, e);
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason, e);
+            } catch (ParserConfigurationException | XPathExpressionException | SAXException e) {
+                String reason = "Error parsing XML from Plex: " + url;
+                LOGGER.error(reason, e);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
+            }
+        } catch (IllegalArgumentException e) {
+            String reason = "Error with plex Url: " + url;
+            LOGGER.error(reason, e);
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason, e);
+        }
+    }
+
+    private <T> T parseXml(Response response, HttpUrl url, String expression) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
+        String body = response.body() != null ? response.body().string() : null;
+
+        if (StringUtils.isBlank(body)) {
+            String reason = "Body returned null from Plex. Url: " + url;
+            LOGGER.error(reason);
+            throw new IllegalStateException(reason);
+        }
+
+        InputStream fileIS = new ByteArrayInputStream(body.getBytes());
+        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = builderFactory.newDocumentBuilder();
+        Document xmlDocument = builder.parse(fileIS);
+        XPath xPath = XPathFactory.newInstance().newXPath();
+        return (T) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
     }
 
 }

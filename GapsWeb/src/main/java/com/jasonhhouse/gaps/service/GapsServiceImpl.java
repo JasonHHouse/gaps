@@ -43,9 +43,9 @@ public class GapsServiceImpl implements GapsService {
     @Override
     public void updateLibrarySelections(@NotNull List<String> selectedLibraries) {
         LOGGER.info("updateLibrarySelections( " + selectedLibraries + " )");
-        LOGGER.info("BEFORE:" + getPlexSearch().getLibraries().toString());
+        LOGGER.info("BEFORE:" + getPlexSearch().getPlexServer().getPlexLibraries().toString());
 
-        Map<Integer, PlexLibrary> map = getPlexSearch().getLibraries().stream().collect(Collectors.toMap(PlexLibrary::getKey, Function.identity()));
+        Map<Integer, PlexLibrary> map = getPlexSearch().getPlexServer().getPlexLibraries().stream().collect(Collectors.toMap(PlexLibrary::getKey, Function.identity()));
 
         for (String selectedLibrary : selectedLibraries) {
             Integer key = Integer.valueOf(selectedLibrary);
@@ -55,7 +55,7 @@ public class GapsServiceImpl implements GapsService {
                 LOGGER.warn("Can't find library");
             }
         }
-        LOGGER.info("AFTER:" + getPlexSearch().getLibraries().toString());
+        LOGGER.info("AFTER:" + getPlexSearch().getPlexServer().getPlexLibraries().toString());
     }
 
     @Override

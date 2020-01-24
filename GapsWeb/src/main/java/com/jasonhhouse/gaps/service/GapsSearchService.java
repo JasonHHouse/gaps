@@ -32,6 +32,7 @@ import java.time.LocalDate;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -40,7 +41,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -148,10 +148,27 @@ public class GapsSearchService implements GapsSearch {
             //    sessionId = getTmdbAuthorization(gaps);
             //}
 
-            Map<Movie, OwnedMovie> previousMovies = ioService
-                    .getOwnedMovies()
+            Map<Movie, OwnedMovie> previousMovies = new HashMap<>();
+
+            gapsService
+                    .getPlexSearch()
+                    .getPlexServer()
+                    .getPlexLibraries()
                     .stream()
-                    .collect(Collectors.toMap(ownedMovie -> new Movie.Builder(ownedMovie.getName(), ownedMovie.getYear()).build(), Function.identity()));
+                    .filter(PlexLibrary::getSelected)
+                    .forEach(plexLibrary -> {
+                        ioService.getOwnedMovies(gapsService.getPlexSearch().getPlexServer(), plexLibrary.getKey())
+                                .forEach(ownedMovie -> {
+                                    previousMovies.put(new Movie.Builder(ownedMovie.getName(), ownedMovie.getYear()).build(), ownedMovie);
+                                });
+                    });
+
+            //ToDo
+            //Only handling a single key
+            /*Map<Movie, OwnedMovie> previousMovies = ioService
+                    .getOwnedMovies(gapsService.getPlexSearch().getPlexServer(), keys.get(0))
+                    .stream()
+                    .collect(Collectors.toMap(ownedMovie -> new Movie.Builder(ownedMovie.getName(), ownedMovie.getYear()).build(), Function.identity()));*/
             findAllPlexMovies(previousMovies);
 
             StopWatch watch = new StopWatch();
@@ -179,7 +196,15 @@ public class GapsSearchService implements GapsSearch {
         //Always write to log
         ioService.writeRecommendedToFile(recommended);
         ioService.writeMovieIdsToFile(new TreeSet<>(everyMovie));
-        ioService.writeOwnedMoviesToFile(ownedMovies);
+
+        gapsService.getPlexSearch()
+                .getPlexServer()
+                .getPlexLibraries()
+                .stream()
+                .filter(PlexLibrary::getSelected)
+                .forEach(plexLibrary -> {
+                    ioService.writeOwnedMoviesToFile(gapsService.getPlexSearch().getPlexServer(), plexLibrary.getKey(), ownedMovies);
+                });
 
         template.convertAndSend("/finishedSearching", true);
 
@@ -898,9 +923,10 @@ public class GapsSearchService implements GapsSearch {
 
     private List<String> generatePlexUrls() {
         LOGGER.info("generatePlexUrls()");
-        LOGGER.info(gapsService.getPlexSearch().getLibraries().toString());
+        LOGGER.info(gapsService.getPlexSearch().getPlexServer().getPlexLibraries().toString());
         List<String> urls = gapsService.getPlexSearch()
-                .getLibraries()
+                .getPlexServer()
+                .getPlexLibraries()
                 .stream()
                 .filter(PlexLibrary::getSelected)
                 .map(plexLibrary -> "http://" + gapsService.getPlexSearch().getAddress() + ":" + gapsService.getPlexSearch().getPort() + "/library/sections/" + plexLibrary.getKey() + "/all/?X-Plex-Token=" + gapsService.getPlexSearch().getPlexToken())

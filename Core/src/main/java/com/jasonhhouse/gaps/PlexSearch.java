@@ -10,10 +10,6 @@
 
 package com.jasonhhouse.gaps;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.apache.commons.collections4.list.SetUniqueList;
-
 public final class PlexSearch {
 
     public static final String MOVIE_DB_API_KEY = "movieDbApiKey";
@@ -32,18 +28,18 @@ public final class PlexSearch {
 
     private Integer port;
 
-    private final SetUniqueList<PlexLibrary> libraries;
+    private PlexServer plexServer;
 
     public PlexSearch() {
-        libraries = SetUniqueList.setUniqueList(new ArrayList<>());
+
     }
 
-    public void setLibrarySelected(PlexLibrary plexLibrary) {
-        libraries.get(libraries.indexOf(plexLibrary)).setSelected(true);
+    public void setPlexServer(PlexServer plexServer) {
+        this.plexServer = plexServer;
     }
 
-    public List<PlexLibrary> getLibraries() {
-        return libraries;
+    public PlexServer getPlexServer() {
+        return plexServer;
     }
 
     public String getMovieDbApiKey() {
@@ -85,7 +81,7 @@ public final class PlexSearch {
                 ", plexToken='" + plexToken + '\'' +
                 ", address='" + address + '\'' +
                 ", port=" + port +
-                ", libraries=" + libraries +
+                ", plexServer=" + plexServer +
                 '}';
     }
 }
