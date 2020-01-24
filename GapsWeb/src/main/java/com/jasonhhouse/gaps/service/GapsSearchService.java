@@ -494,7 +494,7 @@ public class GapsSearchService implements GapsSearch {
 
             //Cancel search if needed
             if (cancelSearch.get()) {
-                throw new SearchCancelledException("Search was cancelled");
+                throw new SearchCancelledException("Search cancelled");
             }
 
             //Print the count first to handle the continue if block or the regular searching case
@@ -511,22 +511,22 @@ public class GapsSearchService implements GapsSearch {
             try {
                 //If TMDB is available, skip the search
                 //If IMDB is available use find
-                //Otherwise fall back to movie title and year search
+                //Otherwise, fall back to movie title and year search
                 if (movie.getTvdbId() != -1 && movie.getCollectionId() != -1) {
-                    LOGGER.debug("Used Collection ID to get " + movie.getName());
+                    LOGGER.info("Used Collection ID to get " + movie.getName());
                     tempTvdbCounter.incrementAndGet();
                     handleCollection(movie, ownedMovie, client, languageCode);
                     continue;
                 } else if (movie.getTvdbId() != -1) {
-                    LOGGER.debug("Used TVDB ID to get " + movie.getName());
+                    LOGGER.info("Used TVDB ID to get " + movie.getName());
                     tempTvdbCounter.incrementAndGet();
                     searchMovieDetails(movie, ownedMovie, client, languageCode);
                     continue;
                 } else if (StringUtils.isNotBlank(movie.getImdbId())) {
-                    LOGGER.debug("Used 'find' to search for " + movie.getName());
+                    LOGGER.info("Used 'find' to search for " + movie.getName());
                     searchMovieUrl = urlGenerator.generateFindMovieUrl(gapsService.getPlexSearch().getMovieDbApiKey(), URLEncoder.encode(movie.getImdbId(), "UTF-8"), languageCode);
                 } else {
-                    LOGGER.debug("Used 'search' to search for " + movie.getName());
+                    LOGGER.info("Used 'search' to search for " + movie.getName());
                     searchMovieUrl = urlGenerator.generateSearchMovieUrl(gapsService.getPlexSearch().getMovieDbApiKey(), URLEncoder.encode(movie.getName(), "UTF-8"), String.valueOf(movie.getYear()), languageCode);
                 }
 
