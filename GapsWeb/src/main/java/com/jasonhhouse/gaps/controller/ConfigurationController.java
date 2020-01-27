@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,12 +27,14 @@ public class ConfigurationController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationController.class);
 
     private final BindingErrorsService bindingErrorsService;
+    private final SimpMessagingTemplate template;
     private final PlexQueryImpl plexQuery;
     private final GapsService gapsService;
     private final IoService ioService;
 
-    public ConfigurationController(BindingErrorsService bindingErrorsService, PlexQueryImpl plexQuery, GapsService gapsService, IoService ioService) {
+    public ConfigurationController(BindingErrorsService bindingErrorsService, SimpMessagingTemplate template, PlexQueryImpl plexQuery, GapsService gapsService, IoService ioService) {
         this.bindingErrorsService = bindingErrorsService;
+        this.template = template;
         this.plexQuery = plexQuery;
         this.gapsService = gapsService;
         this.ioService = ioService;
@@ -73,5 +76,7 @@ public class ConfigurationController {
         plexQuery.getLibraries(plexServer);
         gapsService.getPlexSearch().addPlexServer(plexServer);
         ioService.writePlexConfiguration(plexServer);
+
+        template.convertAndSend("/configuration/plex/complete", plexServer);
     }
 }
