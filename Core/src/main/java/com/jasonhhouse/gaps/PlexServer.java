@@ -7,8 +7,8 @@ import org.apache.commons.collections4.list.SetUniqueList;
 
 public class PlexServer {
 
-    private final String friendlyName;
-    private final String machineIdentifier;
+    private String friendlyName;
+    private String machineIdentifier;
     private final String plexToken;
     private final String address;
     private final Integer port;
@@ -21,6 +21,14 @@ public class PlexServer {
         this.address = address;
         this.port = port;
         plexLibraries = SetUniqueList.setUniqueList(new ArrayList<>());
+    }
+
+    public void setFriendlyName(String friendlyName) {
+        this.friendlyName = friendlyName;
+    }
+
+    public void setMachineIdentifier(String machineIdentifier) {
+        this.machineIdentifier = machineIdentifier;
     }
 
     public String getFriendlyName() {

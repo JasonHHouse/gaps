@@ -20,15 +20,13 @@ public interface PlexQuery {
 
     /**
      * @param plexServer Needs to have the IP Address, port, and plex token to connect
-     * @return The list of libraries that are of type movie for that Plex server
      */
-    @NotNull List<PlexLibrary> getLibraries(@NotNull PlexServer plexServer);
+    void getLibraries(@NotNull PlexServer plexServer);
 
     /**
      * Find the plex server name, key, and libraries based on the given PlexSearch parameters
      *
      * @param plexServer the search parameters
-     * @return A PlexServer instance
      */
-    @NotNull PlexServer queryPlexServer(@NotNull PlexServer plexServer);
+    void queryPlexServer(@NotNull PlexServer plexServer);
 }

@@ -69,9 +69,9 @@ public class ConfigurationController {
             LOGGER.error("Error binding PlexServer object: " + plexServer);
         }
 */
-        final PlexServer plexServerInformation = plexQuery.queryPlexServer(plexServer);
-        plexServerInformation.getPlexLibraries().addAll(plexQuery.getLibraries(plexServerInformation));
-        gapsService.getPlexSearch().addPlexServer(plexServerInformation);
-        ioService.writePlexConfiguration(plexServerInformation);
+        plexQuery.queryPlexServer(plexServer);
+        plexQuery.getLibraries(plexServer);
+        gapsService.getPlexSearch().addPlexServer(plexServer);
+        ioService.writePlexConfiguration(plexServer);
     }
 }

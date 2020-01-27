@@ -49,7 +49,7 @@ public class PlexQueryImpl implements PlexQuery {
     private static final Logger LOGGER = LoggerFactory.getLogger(PlexQueryImpl.class);
 
     @Override
-    public @NotNull List<PlexLibrary> getLibraries(@NotNull PlexServer plexServer) {
+    public void getLibraries(@NotNull PlexServer plexServer) {
         LOGGER.info("queryPlexLibraries()");
 
         HttpUrl url = new HttpUrl.Builder()
@@ -135,12 +135,11 @@ public class PlexQueryImpl implements PlexQuery {
         }
 
         LOGGER.info(plexLibraries.size() + " Plex libraries found");
-
-        return plexLibraries;
+        plexServer.getPlexLibraries().addAll(plexLibraries);
     }
 
     @Override
-    public @NotNull PlexServer queryPlexServer(@NotNull PlexServer plexServer) {
+    public void queryPlexServer(@NotNull PlexServer plexServer) {
         LOGGER.info("queryPlexLibraries()");
 
         HttpUrl url = new HttpUrl.Builder()
@@ -191,7 +190,8 @@ public class PlexQueryImpl implements PlexQuery {
                 String machineIdentifier = machineIdentifierNode.getNodeValue().trim();
                 LOGGER.info("machineIdentifier:" + machineIdentifier);
 
-                return new PlexServer(friendlyName, machineIdentifier, plexServer.getPlexToken(), plexServer.getAddress(), plexServer.getPort());
+                plexServer.setFriendlyName(friendlyName);
+                plexServer.setMachineIdentifier(machineIdentifier);
             } catch (IOException e) {
                 String reason = "Error connecting to Plex to get library list: " + url;
                 LOGGER.error(reason, e);
