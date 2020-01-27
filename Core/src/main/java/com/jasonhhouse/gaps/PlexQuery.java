@@ -19,16 +19,16 @@ import org.jetbrains.annotations.NotNull;
 public interface PlexQuery {
 
     /**
-     * @param plexSearch Needs to have the IP Address, port, and plex token to connect
+     * @param plexServer Needs to have the IP Address, port, and plex token to connect
      * @return The list of libraries that are of type movie for that Plex server
      */
-    @NotNull List<PlexLibrary> getLibraries(@NotNull PlexSearch plexSearch);
+    @NotNull List<PlexLibrary> getLibraries(@NotNull PlexServer plexServer);
 
     /**
      * Find the plex server name, key, and libraries based on the given PlexSearch parameters
      *
-     * @param plexSearch the search parameters
+     * @param plexServer the search parameters
      * @return A PlexServer instance
      */
-    @NotNull PlexServer getPlexServer(@NotNull PlexSearch plexSearch);
+    @NotNull PlexServer queryPlexServer(@NotNull PlexServer plexServer);
 }

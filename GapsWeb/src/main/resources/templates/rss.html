@@ -7,19 +7,65 @@
 -
 - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
-<!DOCTYPE html>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
     <title>Gaps</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="shortcut icon" href="/images/gaps.ico"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/dataTables.bootstrap4.min.css"/>
+    <link rel="stylesheet" href="/css/input.min.css">
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 
-<body onload="location.assign('rss');">
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="/">Gaps</a>
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/configuration">Configuration</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/libraries">Libraries</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/recommended">Recommended</a>
+            </li>
+            <li class="nav-item" aria-current="page">
+                <a class="nav-link" href="/rssCheck">RSS</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <h3 class="top-margin">RSS</h3>
+
+    <form class="top-margin" action="/rss">
+        <div class="row">
+            <button type="submit" class="btn btn-primary">All</button>
+        </div>
+        <div class="row">
+            <button type="submit" class="btn btn-primary">KnoxServer - Disney Classic Movies</button>
+        </div>
+        <div class="row">
+            <button type="submit" class="btn btn-primary">KnoxServer - Movies</button>
+        </div>
+        <div class="row">
+            <button type="submit" class="btn btn-primary">Joker - 4k Movies</button>
+        </div>
+        <div class="row">
+            <button type="submit" class="btn btn-primary">Joker - Movies</button>
+        </div>
+    </form>
+
+</div>
 
 </body>
 </html>

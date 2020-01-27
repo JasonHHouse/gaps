@@ -13,6 +13,7 @@ package com.jasonhhouse.gaps.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.Movie;
+import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.Rss;
@@ -27,14 +28,17 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -55,6 +59,8 @@ public class IoService {
     private static final String RECOMMENDED_MOVIES = "recommendedMovies.json";
 
     public static final String RSS_FEED_JSON_FILE = "rssFeed.json";
+
+    public static final String PLEX_CONFIGURATION = "plexConfiguration.json";
 
     public static final String PROPERTIES = "gaps.properties";
 
@@ -107,10 +113,6 @@ public class IoService {
             LOGGER.error("Check for RSS file next time", e);
             return "";
         }
-    }
-
-    public boolean doesOwnedMoviesFileExist() {
-        return new File(STORAGE_FOLDER + OWNED_MOVIES).exists();
     }
 
     /**
@@ -194,6 +196,67 @@ public class IoService {
         writeMovieIdsToFile(ownedMovies, file);
     }
 
+    public boolean doOwnedMoviesFilesExist(List<PlexServer> plexServers) {
+        LOGGER.info("doOwnedMoviesFilesExist()");
+
+        for (PlexServer plexServer : plexServers) {
+            for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
+                final File ownedMovieFile = new File(STORAGE_FOLDER + plexServer.getMachineIdentifier() + File.separator + plexLibrary.getKey() + File.separator + OWNED_MOVIES);
+
+                if (ownedMovieFile.exists()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Prints out all recommended movies to recommendedMovies.json
+     */
+    public Map<PlexLibrary, Movie> readAllOwnedMovies(List<PlexServer> plexServers) {
+        LOGGER.info("readAllOwnedMovies()");
+
+        Map<PlexLibrary, Movie> ownedMovieMap = new HashMap<>();
+
+        for (PlexServer plexServer : plexServers) {
+            for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
+                final File ownedMovieFile = new File(STORAGE_FOLDER + plexServer.getMachineIdentifier() + File.separator + plexLibrary.getKey() + File.separator + OWNED_MOVIES);
+
+                if (!ownedMovieFile.exists()) {
+                    LOGGER.warn(ownedMovieFile + " does not exist");
+                    continue;
+                }
+
+                readMovieIdsFromFile();
+
+                try (BufferedReader br = new BufferedReader(new FileReader(ownedMovieFile))) {
+                    StringBuilder fullFile = new StringBuilder();
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        fullFile.append(line);
+                    }
+
+                    LOGGER.info(fullFile.toString());
+                    Set<Movie> ownedMovies = objectMapper.readValue(fullFile.toString(), new TypeReference<Set<Movie>>() {
+                    });
+                    LOGGER.info("everyMovie.size():" + ownedMovies.size());
+
+                    for (Movie movie : ownedMovies) {
+                        ownedMovieMap.put(plexLibrary, movie);
+                    }
+                } catch (FileNotFoundException e) {
+                    LOGGER.error("Can't find file " + ownedMovieFile);
+                } catch (IOException e) {
+                    LOGGER.error("Can't write to file " + ownedMovieFile);
+                }
+            }
+        }
+
+        return ownedMovieMap;
+    }
+
     /**
      * Prints out all movies to a text file movieIds.json
      */
@@ -203,38 +266,6 @@ public class IoService {
         File file = new File(fileName);
         writeMovieIdsToFile(everyMovie, file);
     }
-
-   /* public void writeOwnedMoviesToFile(Set<Movie> movies, File file) {
-        LOGGER.info("movies: " + movies);
-
-        if (file.exists()) {
-            boolean deleted = file.delete();
-            if (!deleted) {
-                LOGGER.error("Can't delete existing file " + file.getName());
-                return;
-            }
-        }
-
-        try {
-            boolean created = file.createNewFile();
-            if (!created) {
-                LOGGER.error("Can't create file " + file.getAbsolutePath());
-                return;
-            }
-        } catch (IOException e) {
-            LOGGER.error("Can't create file " + file.getAbsolutePath(), e);
-            return;
-        }
-
-        try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            byte[] output = objectMapper.writeValueAsBytes(movies);
-            outputStream.write(output);
-        } catch (FileNotFoundException e) {
-            LOGGER.error("Can't find file " + file.getAbsolutePath(), e);
-        } catch (IOException e) {
-            LOGGER.error("Can't write to file " + file.getAbsolutePath(), e);
-        }
-    }*/
 
     public void writeMovieIdsToFile(Set<Movie> everyMovie, File file) {
         if (file.exists()) {
@@ -266,6 +297,66 @@ public class IoService {
         }
     }
 
+    public void writePlexConfiguration(PlexServer plexServer) {
+        final String fileName = STORAGE_FOLDER + PLEX_CONFIGURATION;
+        File file = new File(fileName);
+        if (file.exists()) {
+            boolean deleted = file.delete();
+            if (!deleted) {
+                LOGGER.error("Can't delete existing file " + file.getName());
+                return;
+            }
+        }
+
+        try {
+            boolean created = file.createNewFile();
+            if (!created) {
+                LOGGER.error("Can't create file " + file.getAbsolutePath());
+                return;
+            }
+        } catch (IOException e) {
+            LOGGER.error("Can't create file " + file.getAbsolutePath(), e);
+            return;
+        }
+
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
+            byte[] output = objectMapper.writeValueAsBytes(plexServer);
+            outputStream.write(output);
+        } catch (FileNotFoundException e) {
+            LOGGER.error("Can't find file " + file.getAbsolutePath(), e);
+        } catch (IOException e) {
+            LOGGER.error("Can't write to file " + file.getAbsolutePath(), e);
+        }
+    }
+
+    public @NotNull List<PlexServer> readPlexConfiguration() {
+        final String fileName = STORAGE_FOLDER + PLEX_CONFIGURATION;
+        File file = new File(fileName);
+        List<PlexServer> plexServers = new ArrayList<>();
+        if (!file.exists()) {
+            LOGGER.warn("Can't find json file '" + fileName + "'. Most likely first run.");
+            return plexServers;
+        }
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            StringBuilder fullFile = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                fullFile.append(line);
+            }
+
+            LOGGER.info(fullFile.toString());
+            plexServers = objectMapper.readValue(fullFile.toString(), new TypeReference<List<PlexServer>>() {
+            });
+            LOGGER.info(plexServers.toString());
+        } catch (FileNotFoundException e) {
+            LOGGER.error("Can't find file " + fileName);
+        } catch (IOException e) {
+            LOGGER.error("Can't write to file " + fileName);
+        }
+
+        return plexServers;
+    }
+
     /**
      * Prints out all recommended files to a text file called gaps_recommended_movies.txt
      */
@@ -284,10 +375,10 @@ public class IoService {
                 fullFile.append(line);
             }
 
-            LOGGER.debug(fullFile.toString());
+            LOGGER.info(fullFile.toString());
             everyMovie = objectMapper.readValue(fullFile.toString(), new TypeReference<Set<Movie>>() {
             });
-            LOGGER.debug("everyMovie.size():" + everyMovie.size());
+            LOGGER.info("everyMovie.size():" + everyMovie.size());
         } catch (FileNotFoundException e) {
             LOGGER.error("Can't find file " + fileName);
         } catch (IOException e) {
@@ -297,42 +388,6 @@ public class IoService {
         return everyMovie;
     }
 
-    /**
-     * Prints out all recommended files to a text file called gaps_recommended_movies.txt
-     */
-    public void writeToFile(Set<Movie> recommended) {
-        File file = new File(RECOMMENDED_MOVIES);
-        if (file.exists()) {
-            boolean deleted = file.delete();
-            if (!deleted) {
-                LOGGER.error("Can't delete existing file " + RECOMMENDED_MOVIES);
-                return;
-            }
-        }
-
-        try {
-            boolean created = file.createNewFile();
-            if (!created) {
-                LOGGER.error("Can't create file " + RECOMMENDED_MOVIES);
-                return;
-            }
-        } catch (IOException e) {
-            LOGGER.error("Can't create file " + RECOMMENDED_MOVIES, e);
-            return;
-        }
-
-        try (FileOutputStream outputStream = new FileOutputStream(RECOMMENDED_MOVIES)) {
-            for (Movie movie : recommended) {
-                String output = movie.toString() + System.lineSeparator();
-                outputStream.write(output.getBytes());
-            }
-        } catch (FileNotFoundException e) {
-            LOGGER.error("Can't find file " + RECOMMENDED_MOVIES, e);
-        } catch (IOException e) {
-            LOGGER.error("Can't write to file " + RECOMMENDED_MOVIES, e);
-        }
-    }
-
     public void writeProperties(PlexSearch plexSearch) throws IOException {
         Properties properties = new Properties();
 
@@ -340,17 +395,7 @@ public class IoService {
             properties.setProperty(PlexSearch.MOVIE_DB_API_KEY, plexSearch.getMovieDbApiKey());
         }
 
-        if (StringUtils.isNotEmpty(plexSearch.getAddress())) {
-            properties.setProperty(PlexSearch.ADDRESS, plexSearch.getAddress());
-        }
-
-        if (plexSearch.getPort() != null) {
-            properties.setProperty(PlexSearch.PORT, Integer.toString(plexSearch.getPort()));
-        }
-
-        if (StringUtils.isNotEmpty(plexSearch.getPlexToken())) {
-            properties.setProperty(PlexSearch.PLEX_TOKEN, plexSearch.getPlexToken());
-        }
+        properties.setProperty("version", "v0.2.1");
 
         properties.store(new FileWriter(new File(STORAGE_FOLDER + PROPERTIES)), "");
     }
@@ -370,21 +415,6 @@ public class IoService {
         if (properties.containsKey(PlexSearch.MOVIE_DB_API_KEY)) {
             String movieDbApiKey = properties.getProperty(PlexSearch.MOVIE_DB_API_KEY);
             plexSearch.setMovieDbApiKey(movieDbApiKey);
-        }
-
-        if (properties.containsKey(PlexSearch.ADDRESS)) {
-            String address = properties.getProperty(PlexSearch.ADDRESS);
-            plexSearch.setAddress(address);
-        }
-
-        if (properties.containsKey(PlexSearch.PORT)) {
-            String port = properties.getProperty(PlexSearch.PORT);
-            plexSearch.setPort(Integer.parseInt(port));
-        }
-
-        if (properties.containsKey(PlexSearch.PLEX_TOKEN)) {
-            String plexToken = properties.getProperty(PlexSearch.PLEX_TOKEN);
-            plexSearch.setPlexToken(plexToken);
         }
 
         return plexSearch;

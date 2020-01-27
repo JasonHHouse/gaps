@@ -13,10 +13,9 @@ package com.jasonhhouse.gaps.service;
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexSearch;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -43,19 +42,21 @@ public class GapsServiceImpl implements GapsService {
     @Override
     public void updateLibrarySelections(@NotNull List<String> selectedLibraries) {
         LOGGER.info("updateLibrarySelections( " + selectedLibraries + " )");
-        LOGGER.info("BEFORE:" + getPlexSearch().getPlexServer().getPlexLibraries().toString());
 
-        Map<Integer, PlexLibrary> map = getPlexSearch().getPlexServer().getPlexLibraries().stream().collect(Collectors.toMap(PlexLibrary::getKey, Function.identity()));
+        Map<String, PlexLibrary> map = new HashMap<>();
+        getPlexSearch()
+                .getPlexServers()
+                .forEach(plexServer -> plexServer
+                        .getPlexLibraries()
+                        .forEach(plexLibrary -> map.put(plexServer.getMachineIdentifier() + plexLibrary.getKey(), plexLibrary)));
 
         for (String selectedLibrary : selectedLibraries) {
-            Integer key = Integer.valueOf(selectedLibrary);
-            if (map.containsKey(key)) {
-                map.get(key).setSelected(true);
+            if (map.containsKey(selectedLibrary)) {
+                map.get(selectedLibrary).setSelected(true);
             } else {
                 LOGGER.warn("Can't find library");
             }
         }
-        LOGGER.info("AFTER:" + getPlexSearch().getPlexServer().getPlexLibraries().toString());
     }
 
     @Override
@@ -68,18 +69,6 @@ public class GapsServiceImpl implements GapsService {
     @Override
     public void updatePlexSearch(PlexSearch plexSearch) {
         LOGGER.info("updatePlexSearch( " + plexSearch + " )");
-        if (StringUtils.isNotEmpty(plexSearch.getAddress())) {
-            this.plexSearch.setAddress(plexSearch.getAddress());
-        }
-
-        if (plexSearch.getPort() != null) {
-            this.plexSearch.setPort(plexSearch.getPort());
-        }
-
-        if (StringUtils.isNotEmpty(plexSearch.getPlexToken())) {
-            this.plexSearch.setPlexToken(plexSearch.getPlexToken());
-        }
-
         if (StringUtils.isNotEmpty(plexSearch.getMovieDbApiKey())) {
             this.plexSearch.setMovieDbApiKey(plexSearch.getMovieDbApiKey());
         }

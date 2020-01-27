@@ -152,16 +152,17 @@ public class GapsSearchService implements GapsSearch {
 
             gapsService
                     .getPlexSearch()
-                    .getPlexServer()
-                    .getPlexLibraries()
-                    .stream()
-                    .filter(PlexLibrary::getSelected)
-                    .forEach(plexLibrary -> {
-                        everyMovie
-                                .forEach(movie -> {
-                                    previousMovies.put(new MoviePair(movie.getName(), movie.getYear()), movie);
-                                });
-                    });
+                    .getPlexServers()
+                    .forEach(plexServer -> plexServer
+                            .getPlexLibraries()
+                            .stream()
+                            .filter(PlexLibrary::getSelected)
+                            .forEach(plexLibrary -> {
+                                everyMovie
+                                        .forEach(movie -> {
+                                            previousMovies.put(new MoviePair(movie.getName(), movie.getYear()), movie);
+                                        });
+                            }));
 
             findAllPlexMovies(previousMovies);
 
@@ -185,20 +186,19 @@ public class GapsSearchService implements GapsSearch {
             cancelSearch.set(true);
         }
 
-        ioService.writeToFile(recommended);
-
         //Always write to log
         ioService.writeRecommendedToFile(recommended);
         ioService.writeMovieIdsToFile(new TreeSet<>(everyMovie));
 
         gapsService.getPlexSearch()
-                .getPlexServer()
-                .getPlexLibraries()
-                .stream()
-                .filter(PlexLibrary::getSelected)
-                .forEach(plexLibrary -> {
-                    ioService.writeOwnedMoviesToFile(gapsService.getPlexSearch().getPlexServer(), plexLibrary.getKey(), ownedMovies);
-                });
+                .getPlexServers()
+                .forEach(plexServer -> plexServer
+                        .getPlexLibraries()
+                        .stream()
+                        .filter(PlexLibrary::getSelected)
+                        .forEach(plexLibrary -> {
+                            ioService.writeOwnedMoviesToFile(plexServer, plexLibrary.getKey(), ownedMovies);
+                        }));
 
         template.convertAndSend("/finishedSearching", true);
 
@@ -378,7 +378,6 @@ public class GapsSearchService implements GapsSearch {
                 .writeTimeout(180, TimeUnit.SECONDS)
                 .readTimeout(180, TimeUnit.SECONDS)
                 .build();
-
 
         List<String> urls = generatePlexUrls();
 
@@ -914,14 +913,16 @@ public class GapsSearchService implements GapsSearch {
 
     private List<String> generatePlexUrls() {
         LOGGER.info("generatePlexUrls()");
-        LOGGER.info(gapsService.getPlexSearch().getPlexServer().getPlexLibraries().toString());
-        List<String> urls = gapsService.getPlexSearch()
-                .getPlexServer()
-                .getPlexLibraries()
-                .stream()
-                .filter(PlexLibrary::getSelected)
-                .map(plexLibrary -> "http://" + gapsService.getPlexSearch().getAddress() + ":" + gapsService.getPlexSearch().getPort() + "/library/sections/" + plexLibrary.getKey() + "/all/?X-Plex-Token=" + gapsService.getPlexSearch().getPlexToken())
-                .collect(Collectors.toList());
+        List<String> urls = new ArrayList<>();
+        gapsService.getPlexSearch()
+                .getPlexServers()
+                .forEach(plexServer -> urls
+                        .addAll(plexServer
+                                .getPlexLibraries()
+                                .stream()
+                                .filter(PlexLibrary::getSelected)
+                                .map(plexLibrary -> "http://" + plexServer.getAddress() + ":" + plexServer.getPort() + "/library/sections/" + plexLibrary.getKey() + "/all/?X-Plex-Token=" + plexServer.getPlexToken())
+                                .collect(Collectors.toList())));
         LOGGER.info("URLS: " + urls.size());
         return urls;
     }

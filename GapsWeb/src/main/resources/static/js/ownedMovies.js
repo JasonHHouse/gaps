@@ -27,7 +27,7 @@ $(document).ready(function () {
             {data: "title"},
             {data: "year"},
             {data: "language"},
-            {data: "link"},
+            {data: "link"}/*,
             {
                 data: "find_missing",
                 render: function (data, type, row) {
@@ -37,7 +37,7 @@ $(document).ready(function () {
                     return data;
                 },
                 className: "dt-body-center"
-            }
+            }*/
         ],
         select: {
             style: 'os',

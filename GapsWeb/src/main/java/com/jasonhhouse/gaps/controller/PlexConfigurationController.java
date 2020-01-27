@@ -47,7 +47,7 @@ public class PlexConfigurationController {
         this.gapsService = gapsService;
     }
 
-    @RequestMapping(method = RequestMethod.POST,
+    /*@RequestMapping(method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView postPlexConfiguration(@Valid PlexSearch plexSearch, BindingResult bindingResult) {
@@ -72,7 +72,7 @@ public class PlexConfigurationController {
         ModelAndView modelAndView = new ModelAndView("plexConfiguration");
         modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
         return modelAndView;
-    }
+    }*/
 
     @RequestMapping(method = RequestMethod.GET,
             produces = MediaType.TEXT_HTML_VALUE)

@@ -13,7 +13,6 @@ package com.jasonhhouse.gaps.controller;
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.PlexSearchFormatter;
 import com.jasonhhouse.gaps.service.BindingErrorsService;
-import com.jasonhhouse.gaps.validator.PlexLibrariesValidator;
 import java.util.ArrayList;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -70,6 +69,6 @@ public class PlexMovieListController {
     public void initBinder(WebDataBinder binder) {
         LOGGER.info("initBinder()");
         binder.addCustomFormatter(new PlexSearchFormatter(), "plexSearch");
-        binder.setValidator(new PlexLibrariesValidator());
+        //binder.setValidator(new PlexLibrariesValidator());
     }
 }

@@ -12,7 +12,6 @@ package com.jasonhhouse.gaps.service;
 
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexQuery;
-import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexServer;
 import com.sun.org.apache.xml.internal.dtm.ref.DTMNodeList;
 import java.io.ByteArrayInputStream;
@@ -50,16 +49,16 @@ public class PlexQueryImpl implements PlexQuery {
     private static final Logger LOGGER = LoggerFactory.getLogger(PlexQueryImpl.class);
 
     @Override
-    public @NotNull List<PlexLibrary> getLibraries(@NotNull PlexSearch plexSearch) {
+    public @NotNull List<PlexLibrary> getLibraries(@NotNull PlexServer plexServer) {
         LOGGER.info("queryPlexLibraries()");
 
         HttpUrl url = new HttpUrl.Builder()
                 .scheme("http")
-                .host(plexSearch.getAddress())
-                .port(plexSearch.getPort())
+                .host(plexServer.getAddress())
+                .port(plexServer.getPort())
                 .addPathSegment("library")
                 .addPathSegment("sections")
-                .addQueryParameter("X-Plex-Token", plexSearch.getPlexToken())
+                .addQueryParameter("X-Plex-Token", plexServer.getPlexToken())
                 .build();
 
         //ToDo
@@ -141,14 +140,14 @@ public class PlexQueryImpl implements PlexQuery {
     }
 
     @Override
-    public @NotNull PlexServer getPlexServer(@NotNull PlexSearch plexSearch) {
+    public @NotNull PlexServer queryPlexServer(@NotNull PlexServer plexServer) {
         LOGGER.info("queryPlexLibraries()");
 
         HttpUrl url = new HttpUrl.Builder()
                 .scheme("http")
-                .host(plexSearch.getAddress())
-                .port(plexSearch.getPort())
-                .addQueryParameter("X-Plex-Token", plexSearch.getPlexToken())
+                .host(plexServer.getAddress())
+                .port(plexServer.getPort())
+                .addQueryParameter("X-Plex-Token", plexServer.getPlexToken())
                 .build();
 
         //ToDo
@@ -192,7 +191,7 @@ public class PlexQueryImpl implements PlexQuery {
                 String machineIdentifier = machineIdentifierNode.getNodeValue().trim();
                 LOGGER.info("machineIdentifier:" + machineIdentifier);
 
-                return new PlexServer(friendlyName, machineIdentifier);
+                return new PlexServer(friendlyName, machineIdentifier, plexServer.getPlexToken(), plexServer.getAddress(), plexServer.getPort());
             } catch (IOException e) {
                 String reason = "Error connecting to Plex to get library list: " + url;
                 LOGGER.error(reason, e);

@@ -4,8 +4,6 @@ MAINTAINER jh5975@gmail.com
 
 EXPOSE 32400
 
-EXPOSE 8000
-
 RUN mkdir -p /usr/data
 
 COPY movieIds.json /tmp
@@ -15,7 +13,5 @@ RUN mkdir -p /usr/app
 WORKDIR /usr/app
 
 COPY GapsWeb/target/GapsWeb-0.2.1.jar /usr/app/
-
-ENV JAVA_TOOL_OPTIONS -agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n
 
 ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=no-ssl", "GapsWeb-0.2.1.jar"]

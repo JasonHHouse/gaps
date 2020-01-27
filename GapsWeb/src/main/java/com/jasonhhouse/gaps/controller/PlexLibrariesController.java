@@ -18,7 +18,7 @@ import com.jasonhhouse.gaps.PlexSearchFormatter;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.service.BindingErrorsService;
 import com.jasonhhouse.gaps.service.IoService;
-import com.jasonhhouse.gaps.validator.PlexPropertiesValidator;
+import com.jasonhhouse.gaps.validator.PlexServerValidator;
 import java.io.IOException;
 import java.util.List;
 import javax.validation.Valid;
@@ -52,7 +52,7 @@ public class PlexLibrariesController {
         this.gapsService = gapsService;
     }
 
-    @RequestMapping(method = RequestMethod.POST,
+   /* @RequestMapping(method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView postPlexLibraries(@Valid PlexSearch plexSearch, BindingResult bindingResult) {
@@ -78,7 +78,7 @@ public class PlexLibrariesController {
         ModelAndView modelAndView = new ModelAndView("plexLibraries");
         modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
         return modelAndView;
-    }
+    }*/
 
     @RequestMapping(method = RequestMethod.GET,
             produces = MediaType.TEXT_HTML_VALUE)
@@ -93,6 +93,6 @@ public class PlexLibrariesController {
     public void initBinder(WebDataBinder binder) {
         LOGGER.info("initBinder()");
         binder.addCustomFormatter(new PlexSearchFormatter(), "plexSearch");
-        binder.setValidator(new PlexPropertiesValidator());
+        binder.setValidator(new PlexServerValidator());
     }
 }

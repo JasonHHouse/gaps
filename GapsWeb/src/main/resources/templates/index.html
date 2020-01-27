@@ -8,7 +8,7 @@
 - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
     <title>Gaps</title>
@@ -27,7 +27,10 @@
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="/ownedMovies">Owned Movies</a>
+                <a class="nav-link" href="/configuration">Configuration</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/libraries">Libraries</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/recommended">Recommended</a>
@@ -57,21 +60,8 @@
         'Aliens (1986)' and
         'Alien³ (1992)' to be added to your collection.</p>
 
-    <p>To use Gaps, you'll need a MovieDB api key. Navigate
-        over to <a
-                href="https://www.themoviedb.org/settings/api" target="_blank" rel="noopener">The Movie DB</a>, create
-        an
-        account, and make an API Key. Copy that key and paste it below.</p>
-
-    <form id="plexConfiguration" class="needs-validation" method="POST" action="/plexConfiguration" novalidate th:object="${plexSearch}">
-        <div class="form-group">
-            <label for="movieDbApiKey">Movie Database Api Key</label>
-            <input type="text" class="form-control" id="movieDbApiKey" th:field="*{movieDbApiKey}" required>
-        </div>
-
-        <button id="folder" class="btn btn-secondary" disabled>Folder</button>
-        <button type="submit" id="plex" class="btn btn-primary">Plex</button>
-    </form>
+    <p>To get started, head to <a href="/configuration">configuration</a> and enter your TVDB ID and Plex Server
+        information.</p>
 
 </div>
 
