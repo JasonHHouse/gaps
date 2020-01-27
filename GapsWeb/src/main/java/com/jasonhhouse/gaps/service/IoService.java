@@ -395,7 +395,7 @@ public class IoService {
             properties.setProperty(PlexSearch.MOVIE_DB_API_KEY, plexSearch.getMovieDbApiKey());
         }
 
-        properties.setProperty("version", "v0.2.1");
+        properties.setProperty("version", "v0.2.2");
 
         properties.store(new FileWriter(new File(STORAGE_FOLDER + PROPERTIES)), "");
     }
