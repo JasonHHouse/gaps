@@ -14,6 +14,7 @@ public class GapsServiceTest implements GapsService {
         plexSearch.setPort(1);
         plexSearch.setAddress("abc");
         plexSearch.setMovieDbApiKey("key");
+        plexSearch.setPlexServer(new PlexServer("Joker", "asdf1q1w34asldka"));
 
         PlexLibrary plexLibrary = new PlexLibrary(1, "Movies", true);
         PlexLibrary plexLibrary1 = new PlexLibrary(2, "Movies HD", false);

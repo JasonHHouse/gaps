@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 @JsonSerialize(using = MovieSerializer.class)
 @JsonDeserialize(using = MovieDeserializer.class)
-public final class Movie implements Comparable<Movie>, MovieMetadata {
+public final class Movie implements Comparable<Movie> {
 
     public static final String TVDB_ID = "tvdbId";
 
@@ -34,6 +34,8 @@ public final class Movie implements Comparable<Movie>, MovieMetadata {
     public static final String COLLECTION_ID = "collectionId";
 
     public static final String COLLECTION = "collection";
+
+    public static final String LANGUAGE = "language";
 
     private final String name;
 
@@ -52,7 +54,10 @@ public final class Movie implements Comparable<Movie>, MovieMetadata {
     @Nullable
     private String imdbId;
 
-    private Movie(String name, int year, @Nullable String posterUrl, @Nullable String collection, int collectionId, int tvdbId, @Nullable String imdbId) {
+    @Nullable
+    private String language;
+
+    private Movie(String name, int year, @Nullable String posterUrl, @Nullable String collection, int collectionId, int tvdbId, @Nullable String imdbId, @Nullable String language) {
         this.name = name;
         this.year = year;
         this.posterUrl = posterUrl;
@@ -60,9 +65,10 @@ public final class Movie implements Comparable<Movie>, MovieMetadata {
         this.collectionId = collectionId;
         this.tvdbId = tvdbId;
         this.imdbId = imdbId;
+        this.language = language;
     }
 
-    public void setCollection(String collection) {
+    public void setCollection(@Nullable String collection) {
         this.collection = collection;
     }
 
@@ -74,22 +80,18 @@ public final class Movie implements Comparable<Movie>, MovieMetadata {
         this.collectionId = collectionId;
     }
 
-    @Override
     public int getTvdbId() {
         return tvdbId;
     }
 
-    @Override
     public void setTvdbId(int tvdbId) {
         this.tvdbId = tvdbId;
     }
 
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
     public int getYear() {
         return year;
     }
@@ -100,9 +102,13 @@ public final class Movie implements Comparable<Movie>, MovieMetadata {
     }
 
     @Nullable
-    @Override
     public String getImdbId() {
         return imdbId;
+    }
+
+    @Nullable
+    public String getLanguage() {
+        return language;
     }
 
     @Override
@@ -174,6 +180,8 @@ public final class Movie implements Comparable<Movie>, MovieMetadata {
 
         private String imdbId;
 
+        private String language;
+
         public Builder(String name, int year) {
             this.name = name;
             this.year = year;
@@ -182,10 +190,11 @@ public final class Movie implements Comparable<Movie>, MovieMetadata {
             this.collection = "";
             this.posterUrl = "";
             this.collectionId = -1;
+            this.language = "en";
         }
 
         public Movie build() {
-            return new Movie(name, year, posterUrl, collection, collectionId, tvdbId, imdbId);
+            return new Movie(name, year, posterUrl, collection, collectionId, tvdbId, imdbId, language);
         }
 
         public Builder setPosterUrl(String posterUrl) {
@@ -210,6 +219,11 @@ public final class Movie implements Comparable<Movie>, MovieMetadata {
 
         public Builder setImdbId(String imdbId) {
             this.imdbId = imdbId;
+            return this;
+        }
+
+        public Builder setLanguage(String language) {
+            this.language = language;
             return this;
         }
     }

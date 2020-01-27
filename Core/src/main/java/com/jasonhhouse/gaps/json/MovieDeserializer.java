@@ -41,12 +41,18 @@ public class MovieDeserializer extends StdDeserializer<Movie> {
             posterUrl = node.get(Movie.POSTER).asText();
         }
 
+        String language = null;
+        if (node.has(Movie.LANGUAGE)) {
+            language = node.get(Movie.LANGUAGE).asText();
+        }
+
         Movie.Builder builder = new Movie.Builder(name, year)
                 .setTvdbId(tvdbId)
                 .setImdbId(imdbId)
                 .setCollectionId(collectionId)
                 .setCollection(collection)
-                .setPosterUrl(posterUrl);
+                .setPosterUrl(posterUrl)
+                .setLanguage(language);
 
         return builder.build();
     }

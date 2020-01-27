@@ -13,7 +13,6 @@ package com.jasonhhouse.gaps.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.Movie;
-import com.jasonhhouse.gaps.OwnedMovie;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.Rss;
@@ -114,17 +113,6 @@ public class IoService {
         return new File(STORAGE_FOLDER + OWNED_MOVIES).exists();
     }
 
-    public @NotNull List<OwnedMovie> getOwnedMovies(PlexServer plexServer, int key) {
-        try {
-            File file = new File(STORAGE_FOLDER + plexServer.getMachineIdentifier() + File.separator + key + File.separator + OWNED_MOVIES);
-            OwnedMovie[] ownedMovies = objectMapper.readValue(file, OwnedMovie[].class);
-            return Arrays.asList(ownedMovies);
-        } catch (IOException e) {
-            LOGGER.error("Check for Owned Movies file next time", e);
-            return Collections.emptyList();
-        }
-    }
-
     /**
      * Write the recommended movie list to the RSS file for endpoint to display.
      *
@@ -193,7 +181,7 @@ public class IoService {
     /**
      * Prints out all recommended movies to recommendedMovies.json
      */
-    public void writeOwnedMoviesToFile(PlexServer plexServer, int key, Set<OwnedMovie> ownedMovies) {
+    public void writeOwnedMoviesToFile(PlexServer plexServer, int key, Set<Movie> ownedMovies) {
         LOGGER.info("writeOwnedMoviesToFile()");
         final String fileName = STORAGE_FOLDER + plexServer.getMachineIdentifier() + File.separator + key + File.separator + OWNED_MOVIES;
 
@@ -203,7 +191,7 @@ public class IoService {
         }
 
         File file = new File(fileName);
-        writeOwnedMoviesToFile(ownedMovies, file);
+        writeMovieIdsToFile(ownedMovies, file);
     }
 
     /**
@@ -216,7 +204,7 @@ public class IoService {
         writeMovieIdsToFile(everyMovie, file);
     }
 
-    public void writeOwnedMoviesToFile(Set<OwnedMovie> movies, File file) {
+   /* public void writeOwnedMoviesToFile(Set<Movie> movies, File file) {
         LOGGER.info("movies: " + movies);
 
         if (file.exists()) {
@@ -246,7 +234,7 @@ public class IoService {
         } catch (IOException e) {
             LOGGER.error("Can't write to file " + file.getAbsolutePath(), e);
         }
-    }
+    }*/
 
     public void writeMovieIdsToFile(Set<Movie> everyMovie, File file) {
         if (file.exists()) {

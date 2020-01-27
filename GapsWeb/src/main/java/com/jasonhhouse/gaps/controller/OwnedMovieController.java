@@ -1,7 +1,7 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsService;
-import com.jasonhhouse.gaps.OwnedMovie;
+import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.service.BindingErrorsService;
 import com.jasonhhouse.gaps.service.IoService;
@@ -46,7 +46,7 @@ public class OwnedMovieController {
         } else {
             //ToDo
             //Need to write a way to get all movies or break up the UI per library (Maybe just show the library the movie came from in the table)
-            List<OwnedMovie> ownedMovies = Collections.emptyList();
+            List<Movie> ownedMovies = Collections.emptyList();
             //List<OwnedMovie> ownedMovies = ioService.getOwnedMovies();
             LOGGER.info("ownedMovies.size():" + ownedMovies.size());
 
@@ -70,10 +70,10 @@ public class OwnedMovieController {
         }
     }
 
-    private List<String> buildUrls(List<OwnedMovie> movies) {
+    private List<String> buildUrls(List<Movie> movies) {
         LOGGER.info("buildUrls( " + movies + " ) ");
         List<String> urls = new ArrayList<>();
-        for (OwnedMovie movie : movies) {
+        for (Movie movie : movies) {
             if (movie.getTvdbId() != -1) {
                 urls.add("https://www.themoviedb.org/movie/" + movie.getTvdbId());
                 continue;

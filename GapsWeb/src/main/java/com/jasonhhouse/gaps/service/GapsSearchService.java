@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.jasonhhouse.gaps.GapsSearch;
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Movie;
-import com.jasonhhouse.gaps.OwnedMovie;
+import com.jasonhhouse.gaps.MoviePair;
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.SearchCancelledException;
 import com.jasonhhouse.gaps.SearchResults;
@@ -90,7 +90,7 @@ public class GapsSearchService implements GapsSearch {
 
     private final TreeSet<Movie> recommended;
 
-    private final TreeSet<OwnedMovie> ownedMovies;
+    private final TreeSet<Movie> ownedMovies;
 
     private final AtomicInteger totalMovieCount;
 
@@ -148,7 +148,7 @@ public class GapsSearchService implements GapsSearch {
             //    sessionId = getTmdbAuthorization(gaps);
             //}
 
-            Map<Movie, OwnedMovie> previousMovies = new HashMap<>();
+            Map<MoviePair, Movie> previousMovies = new HashMap<>();
 
             gapsService
                     .getPlexSearch()
@@ -157,18 +157,12 @@ public class GapsSearchService implements GapsSearch {
                     .stream()
                     .filter(PlexLibrary::getSelected)
                     .forEach(plexLibrary -> {
-                        ioService.getOwnedMovies(gapsService.getPlexSearch().getPlexServer(), plexLibrary.getKey())
-                                .forEach(ownedMovie -> {
-                                    previousMovies.put(new Movie.Builder(ownedMovie.getName(), ownedMovie.getYear()).build(), ownedMovie);
+                        everyMovie
+                                .forEach(movie -> {
+                                    previousMovies.put(new MoviePair(movie.getName(), movie.getYear()), movie);
                                 });
                     });
 
-            //ToDo
-            //Only handling a single key
-            /*Map<Movie, OwnedMovie> previousMovies = ioService
-                    .getOwnedMovies(gapsService.getPlexSearch().getPlexServer(), keys.get(0))
-                    .stream()
-                    .collect(Collectors.toMap(ownedMovie -> new Movie.Builder(ownedMovie.getName(), ownedMovie.getYear()).build(), Function.identity()));*/
             findAllPlexMovies(previousMovies);
 
             StopWatch watch = new StopWatch();
@@ -209,8 +203,8 @@ public class GapsSearchService implements GapsSearch {
         template.convertAndSend("/finishedSearching", true);
 
         LOGGER.info("Owned");
-        for (OwnedMovie ownedMovie : ownedMovies) {
-            LOGGER.info(ownedMovie.toString());
+        for (Movie movie : ownedMovies) {
+            LOGGER.info(movie.toString());
         }
 
         LOGGER.info("Recommended");
@@ -377,7 +371,7 @@ public class GapsSearchService implements GapsSearch {
      * Connect to plex via the URL and parse all the movies from the returned XML creating a HashSet of movies the
      * user has.
      */
-    private void findAllPlexMovies(Map<Movie, OwnedMovie> previousMovies) throws SearchCancelledException {
+    private void findAllPlexMovies(Map<MoviePair, Movie> previousMovies) throws SearchCancelledException {
         LOGGER.info("findAllPlexMovies()");
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(180, TimeUnit.SECONDS)
@@ -458,24 +452,24 @@ public class GapsSearchService implements GapsSearch {
                             thumbnail = node.getAttributes().getNamedItem("thumb").getNodeValue();
                         }
 
-                        OwnedMovie ownedMovie;
+                        Movie movie;
                         if (guid.contains("com.plexapp.agents.themoviedb")) {
                             //ToDo
                             //Find out what it looks like in TMDB
                             //language = ??
                             guid = guid.substring(guid.indexOf(ID_IDX_START) + ID_IDX_START.length(), guid.indexOf(ID_IDX_END));
-                            ownedMovie = getOrCreateOwnedMovie(previousMovies, title, year, thumbnail, Integer.parseInt(guid), null, null, -1);
+                            movie = getOrCreateOwnedMovie(previousMovies, title, year, thumbnail, Integer.parseInt(guid), null, null, -1, null);
                         } else if (guid.contains("com.plexapp.agents.imdb://")) {
                             String language = guid.substring(guid.indexOf("?lang=") + "?lang=".length());
                             language = new Locale(language, "").getDisplayLanguage();
                             guid = guid.substring(guid.indexOf(ID_IDX_START) + ID_IDX_START.length(), guid.indexOf(ID_IDX_END));
-                            ownedMovie = getOrCreateOwnedMovie(previousMovies, title, year, thumbnail, -1, guid, language, -1);
+                            movie = getOrCreateOwnedMovie(previousMovies, title, year, thumbnail, -1, guid, language, -1, null);
                         } else {
                             LOGGER.warn("Cannot handle guid value of " + guid);
-                            ownedMovie = getOrCreateOwnedMovie(previousMovies, title, year, thumbnail, -1, null, null, -1);
+                            movie = getOrCreateOwnedMovie(previousMovies, title, year, thumbnail, -1, null, null, -1, null);
                         }
 
-                        ownedMovies.add(ownedMovie);
+                        ownedMovies.add(movie);
                         totalMovieCount.incrementAndGet();
                     }
                     LOGGER.debug(ownedMovies.size() + " movies found in plex");
@@ -497,12 +491,19 @@ public class GapsSearchService implements GapsSearch {
         }
     }
 
-    private OwnedMovie getOrCreateOwnedMovie(Map<Movie, OwnedMovie> previousMovies, String title, int year, String thumbnail, int tvdbId, String imdbId, String language, int collection) {
-        Movie movie = new Movie.Builder(title, year).build();
-        if (previousMovies.containsKey(movie)) {
-            return previousMovies.get(movie);
+    private Movie getOrCreateOwnedMovie(Map<MoviePair, Movie> previousMovies, String title, int year, String thumbnail, int tvdbId, String imdbId, String language, int collection, String collectionName) {
+        MoviePair moviePair = new MoviePair(title, year);
+        if (previousMovies.containsKey(moviePair)) {
+            return previousMovies.get(moviePair);
         } else {
-            return new OwnedMovie(title, year, thumbnail, tvdbId, imdbId, language, collection);
+            return new Movie.Builder(title, year)
+                    .setPosterUrl(thumbnail)
+                    .setTvdbId(tvdbId)
+                    .setImdbId(imdbId)
+                    .setLanguage(language)
+                    .setCollectionId(collection)
+                    .setCollection(collectionName)
+                    .build();
         }
     }
 
@@ -523,19 +524,12 @@ public class GapsSearchService implements GapsSearch {
             return;
         }
 
-        for (OwnedMovie ownedMovie : ownedMovies) {
+        for (Movie movie : ownedMovies) {
 
             String languageCode = "en";
-            if (ownedMovie.getLanguage() != null) {
-                languageCode = new Locale(ownedMovie.getLanguage(), "").getLanguage();
+            if (movie.getLanguage() != null) {
+                languageCode = new Locale(movie.getLanguage(), "").getLanguage();
             }
-
-            Movie movie = new Movie.Builder(ownedMovie.getName(), ownedMovie.getYear())
-                    .setImdbId(ownedMovie.getImdbId())
-                    .setTvdbId(ownedMovie.getTvdbId())
-                    .setCollectionId(ownedMovie.getCollection())
-                    .setPosterUrl(ownedMovie.getThumbnail())
-                    .build();
 
             //Cancel search if needed
             if (cancelSearch.get()) {
@@ -561,12 +555,12 @@ public class GapsSearchService implements GapsSearch {
                 if (movie.getTvdbId() != -1 && movie.getCollectionId() != -1) {
                     LOGGER.info("Used Collection ID to get " + movie.getName());
                     tempTvdbCounter.incrementAndGet();
-                    handleCollection(movie, ownedMovie, client, languageCode);
+                    handleCollection(movie, client, languageCode);
                     continue;
                 } else if (movie.getTvdbId() != -1) {
                     LOGGER.info("Used TVDB ID to get " + movie.getName());
                     tempTvdbCounter.incrementAndGet();
-                    searchMovieDetails(movie, ownedMovie, client, languageCode);
+                    searchMovieDetails(movie, client, languageCode);
                     continue;
                 } else if (StringUtils.isNotBlank(movie.getImdbId())) {
                     LOGGER.info("Used 'find' to search for " + movie.getName());
@@ -620,7 +614,6 @@ public class GapsSearchService implements GapsSearch {
                     JsonNode result = results.get(0);
                     int id = result.get("id").asInt();
                     movie.setTvdbId(id);
-                    ownedMovie.setTvdbId(id);
 
                     int indexOfMovie = everyMovie.indexOf(movie);
                     if (indexOfMovie != -1) {
@@ -636,7 +629,7 @@ public class GapsSearchService implements GapsSearch {
                         everyMovie.add(newMovie);
                     }
 
-                    searchMovieDetails(movie, ownedMovie, client, languageCode);
+                    searchMovieDetails(movie, client, languageCode);
                 } catch (JsonProcessingException e) {
                     LOGGER.error("Error parsing movie " + movie + ". " + e.getMessage());
                     LOGGER.error("URL: " + searchMovieUrl);
@@ -669,7 +662,7 @@ public class GapsSearchService implements GapsSearch {
         }
     }
 
-    private void searchMovieDetails(Movie movie, OwnedMovie ownedMovie, OkHttpClient client, String languageCode) {
+    private void searchMovieDetails(Movie movie, OkHttpClient client, String languageCode) {
         LOGGER.info("searchMovieDetails()");
         HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(gapsService.getPlexSearch().getMovieDbApiKey(), String.valueOf(movie.getImdbId()), languageCode);
 
@@ -715,14 +708,14 @@ public class GapsSearchService implements GapsSearch {
                 everyMovie.add(newMovie);
             }
 
-            handleCollection(movie, ownedMovie, client, languageCode);
+            handleCollection(movie, client, languageCode);
 
         } catch (IOException e) {
             LOGGER.error("Error getting movie details " + movie, e);
         }
     }
 
-    private void handleCollection(Movie movie, OwnedMovie ownedMovie, OkHttpClient client, String languageCode) {
+    private void handleCollection(Movie movie, OkHttpClient client, String languageCode) {
         LOGGER.info("handleCollection()");
         HttpUrl collectionUrl = urlGenerator.generateCollectionUrl(gapsService.getPlexSearch().getMovieDbApiKey(), String.valueOf(movie.getCollectionId()), languageCode);
 
@@ -752,7 +745,6 @@ public class GapsSearchService implements GapsSearch {
                 everyMovie.get(indexOfMovie).setCollection(name);
                 movie.setCollection(name);
                 movie.setCollectionId(id);
-                ownedMovie.setCollection(id);
             } else {
                 int id = collection.get("id").asInt();
                 String name = collection.get("name").asText();
@@ -766,7 +758,6 @@ public class GapsSearchService implements GapsSearch {
 
                 movie.setCollection(name);
                 movie.setCollectionId(id);
-                ownedMovie.setCollection(id);
             }
 
             ArrayNode parts = (ArrayNode) collection.get("parts");
@@ -803,7 +794,7 @@ public class GapsSearchService implements GapsSearch {
                         .setPosterUrl(posterUrl)
                         .build();
 
-                OwnedMovie ownedMovieFromCollection = new OwnedMovie(title, year, null, tvdbId, null, null, -1);
+                Movie ownedMovieFromCollection = new Movie.Builder(title, year).build();
 
                 indexOfMovie = everyMovie.indexOf(new Movie.Builder(title, year).build());
                 if (indexOfMovie == -1) {
