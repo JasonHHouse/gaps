@@ -114,7 +114,7 @@ public class PlexQueryImpl implements PlexQuery {
                         String title = titleNode.getNodeValue().replaceAll(":", "");
                         Integer key = Integer.valueOf(keyNode.getNodeValue().trim());
 
-                        PlexLibrary plexLibrary = new PlexLibrary(key, title, false);
+                        PlexLibrary plexLibrary = new PlexLibrary(key, title, plexServer.getMachineIdentifier(), false);
                         plexLibraries.add(plexLibrary);
                     }
                 }

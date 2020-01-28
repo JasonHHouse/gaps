@@ -215,10 +215,10 @@ public class IoService {
     /**
      * Prints out all recommended movies to recommendedMovies.json
      */
-    public Map<PlexLibrary, Movie> readAllOwnedMovies(List<PlexServer> plexServers) {
+    public Map<PlexLibrary, List<Movie>> readAllOwnedMovies(List<PlexServer> plexServers) {
         LOGGER.info("readAllOwnedMovies()");
 
-        Map<PlexLibrary, Movie> ownedMovieMap = new HashMap<>();
+        Map<PlexLibrary, List<Movie>> ownedMovieMap = new HashMap<>();
 
         for (PlexServer plexServer : plexServers) {
             for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
@@ -239,17 +239,14 @@ public class IoService {
                     }
 
                     LOGGER.info(fullFile.toString());
-                    Set<Movie> ownedMovies = objectMapper.readValue(fullFile.toString(), new TypeReference<Set<Movie>>() {
+                    List<Movie> ownedMovies = objectMapper.readValue(fullFile.toString(), new TypeReference<List<Movie>>() {
                     });
                     LOGGER.info("everyMovie.size():" + ownedMovies.size());
-
-                    for (Movie movie : ownedMovies) {
-                        ownedMovieMap.put(plexLibrary, movie);
-                    }
+                    ownedMovieMap.put(plexLibrary, ownedMovies);
                 } catch (FileNotFoundException e) {
-                    LOGGER.error("Can't find file " + ownedMovieFile);
+                    LOGGER.error("Can't find file " + ownedMovieFile, e);
                 } catch (IOException e) {
-                    LOGGER.error("Can't write to file " + ownedMovieFile);
+                    LOGGER.error("Can't read the file " + ownedMovieFile, e);
                 }
             }
         }
@@ -297,7 +294,7 @@ public class IoService {
         }
     }
 
-    public void writePlexConfiguration(PlexServer plexServer) {
+    public void writePlexConfiguration(List<PlexServer> plexServers) {
         final String fileName = STORAGE_FOLDER + PLEX_CONFIGURATION;
         File file = new File(fileName);
         if (file.exists()) {
@@ -320,7 +317,7 @@ public class IoService {
         }
 
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            byte[] output = objectMapper.writeValueAsBytes(plexServer);
+            byte[] output = objectMapper.writeValueAsBytes(plexServers);
             outputStream.write(output);
         } catch (FileNotFoundException e) {
             LOGGER.error("Can't find file " + file.getAbsolutePath(), e);
@@ -349,9 +346,9 @@ public class IoService {
             });
             LOGGER.info(plexServers.toString());
         } catch (FileNotFoundException e) {
-            LOGGER.error("Can't find file " + fileName);
+            LOGGER.error("Can't find file " + fileName, e);
         } catch (IOException e) {
-            LOGGER.error("Can't write to file " + fileName);
+            LOGGER.error("Can't read file " + fileName, e);
         }
 
         return plexServers;
@@ -380,9 +377,9 @@ public class IoService {
             });
             LOGGER.info("everyMovie.size():" + everyMovie.size());
         } catch (FileNotFoundException e) {
-            LOGGER.error("Can't find file " + fileName);
+            LOGGER.error("Can't find file " + fileName, e);
         } catch (IOException e) {
-            LOGGER.error("Can't write to file " + fileName);
+            LOGGER.error("Can't write to file " + fileName, e);
         }
 
         return everyMovie;
@@ -395,7 +392,7 @@ public class IoService {
             properties.setProperty(PlexSearch.MOVIE_DB_API_KEY, plexSearch.getMovieDbApiKey());
         }
 
-        properties.setProperty("version", "v0.2.2");
+        properties.setProperty("version", "v0.2.1");
 
         properties.store(new FileWriter(new File(STORAGE_FOLDER + PROPERTIES)), "");
     }

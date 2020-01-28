@@ -8,13 +8,11 @@ import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.service.BindingErrorsService;
 import com.jasonhhouse.gaps.service.IoService;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.collections4.CollectionUtils;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,13 +42,18 @@ public class LibraryController {
     public ModelAndView getLibraries() {
         LOGGER.info("getLibraries()");
 
+        List<PlexServer> plexServers = ioService.readPlexConfiguration();
+        gapsService.getPlexSearch().getPlexServers().addAll(plexServers);
+
         if (!ioService.doOwnedMoviesFilesExist(gapsService.getPlexSearch().getPlexServers())) {
             //Show empty page
             return new ModelAndView("emptyState");
         } else {
             //ToDo
             //Need to write a way to get all movies or break up the UI per library (Maybe just show the library the movie came from in the table)
-            Map<PlexLibrary, Movie> ownedMovies = ioService.readAllOwnedMovies(gapsService.getPlexSearch().getPlexServers());
+            Map<PlexLibrary, List<Movie>> ownedMovies = ioService.readAllOwnedMovies(gapsService.getPlexSearch().getPlexServers());
+            Map<String, PlexServer> plexServerMap = gapsService.getPlexSearch().getPlexServers().stream().collect(Collectors.toMap(PlexServer::getMachineIdentifier, Function.identity()));
+
             //LOGGER.info("ownedMovies.size():" + ownedMovies.size());
 
             if (MapUtils.isEmpty(ownedMovies)) {
@@ -67,7 +70,7 @@ public class LibraryController {
 
             ModelAndView modelAndView = new ModelAndView("libraries");
             modelAndView.addObject("movies", ownedMovies);
-            /*modelAndView.addObject("urls", buildUrls(ownedMovies));*/
+            modelAndView.addObject("plexServers", plexServerMap);
             modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
             return modelAndView;
         }

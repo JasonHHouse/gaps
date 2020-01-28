@@ -33,8 +33,17 @@ public class MovieDeserializer extends StdDeserializer<Movie> {
         String imdbId = node.get(Movie.IMDB_ID).asText();
         String name = node.get(Movie.NAME).asText();
         int year = (Integer) node.get(Movie.YEAR).numberValue();
-        int collectionId = (Integer) node.get(Movie.COLLECTION_ID).numberValue();
-        String collection = node.get(Movie.COLLECTION).asText();
+
+
+        int collectionId = -1;
+        if (node.has(Movie.COLLECTION_ID)) {
+            collectionId = (Integer) node.get(Movie.COLLECTION_ID).numberValue();
+        }
+
+        String collection = null;
+        if (node.has(Movie.COLLECTION)) {
+            collection = node.get(Movie.COLLECTION).asText();
+        }
 
         String posterUrl = null;
         if (node.has(Movie.POSTER)) {

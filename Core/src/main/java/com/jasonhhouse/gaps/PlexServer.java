@@ -1,18 +1,21 @@
 package com.jasonhhouse.gaps;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import org.apache.commons.collections4.list.SetUniqueList;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class PlexServer {
 
     private String friendlyName;
     private String machineIdentifier;
-    private final String plexToken;
-    private final String address;
-    private final Integer port;
-    private final SetUniqueList<PlexLibrary> plexLibraries;
+    private String plexToken;
+    private String address;
+    private Integer port;
+    private Set<PlexLibrary> plexLibraries;
+
+    public PlexServer() {
+    }
 
     public PlexServer(String friendlyName, String machineIdentifier, String plexToken, String address, Integer port) {
         this.friendlyName = friendlyName;
@@ -20,7 +23,7 @@ public class PlexServer {
         this.plexToken = plexToken;
         this.address = address;
         this.port = port;
-        plexLibraries = SetUniqueList.setUniqueList(new ArrayList<>());
+        plexLibraries = new TreeSet<>();
     }
 
     public void setFriendlyName(String friendlyName) {
@@ -39,7 +42,7 @@ public class PlexServer {
         return machineIdentifier;
     }
 
-    public List<PlexLibrary> getPlexLibraries() {
+    public Set<PlexLibrary> getPlexLibraries() {
         return plexLibraries;
     }
 

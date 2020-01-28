@@ -13,8 +13,8 @@ public class GapsServiceTest implements GapsService {
         plexSearch.setMovieDbApiKey("key");
         plexSearch.addPlexServer(new PlexServer("Joker", "asdf1q1w34asldka", "token", "address", 1));
 
-        PlexLibrary plexLibrary = new PlexLibrary(1, "Movies", true);
-        PlexLibrary plexLibrary1 = new PlexLibrary(2, "Movies HD", false);
+        PlexLibrary plexLibrary = new PlexLibrary(1, "Movies", "asdf1q1w34asldka", true);
+        PlexLibrary plexLibrary1 = new PlexLibrary(2, "Movies HD", "asdf1q1w34asldka", false);
         List<PlexLibrary> plexLibraries = new ArrayList<>();
         plexLibraries.add(plexLibrary);
         plexLibraries.add(plexLibrary1);

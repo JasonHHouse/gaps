@@ -32,6 +32,7 @@ public class MovieSerializer extends StdSerializer<Movie> {
         jsonGenerator.writeStringField(Movie.IMDB_ID, movie.getImdbId());
         jsonGenerator.writeStringField(Movie.NAME, movie.getName());
         jsonGenerator.writeNumberField(Movie.YEAR, movie.getYear());
+        jsonGenerator.writeStringField(Movie.POSTER, movie.getPosterUrl());
         jsonGenerator.writeNumberField(Movie.COLLECTION_ID, movie.getCollectionId());
         jsonGenerator.writeStringField(Movie.COLLECTION, movie.getCollection());
         jsonGenerator.writeStringField(Movie.LANGUAGE, movie.getLanguage());

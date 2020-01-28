@@ -16,14 +16,16 @@ import org.jetbrains.annotations.NotNull;
 public class PlexLibrary implements Comparable<PlexLibrary> {
     private Integer key;
     private String title;
+    private String machineIdentifier;
     private Boolean selected;
 
     public PlexLibrary() {
     }
 
-    public PlexLibrary(Integer key, String title, Boolean selected) {
+    public PlexLibrary(Integer key, String title, String machineIdentifier, Boolean selected) {
         this.key = key;
         this.title = title;
+        this.machineIdentifier = machineIdentifier;
         this.selected = selected;
     }
 
@@ -33,6 +35,14 @@ public class PlexLibrary implements Comparable<PlexLibrary> {
 
     public void setKey(Integer key) {
         this.key = key;
+    }
+
+    public String getMachineIdentifier() {
+        return machineIdentifier;
+    }
+
+    public void setMachineIdentifier(String machineIdentifier) {
+        this.machineIdentifier = machineIdentifier;
     }
 
     public String getTitle() {
@@ -57,12 +67,13 @@ public class PlexLibrary implements Comparable<PlexLibrary> {
         if (o == null || getClass() != o.getClass()) return false;
         PlexLibrary that = (PlexLibrary) o;
         return Objects.equals(key, that.key) &&
-                Objects.equals(title, that.title);
+                Objects.equals(title, that.title) &&
+                Objects.equals(machineIdentifier, that.machineIdentifier);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(key, title);
+        return Objects.hash(key, title, machineIdentifier);
     }
 
     @Override
@@ -70,6 +81,7 @@ public class PlexLibrary implements Comparable<PlexLibrary> {
         return "PlexLibrary{" +
                 "key=" + key +
                 ", title='" + title + '\'' +
+                ", machineIdentifier='" + machineIdentifier + '\'' +
                 ", selected=" + selected +
                 '}';
     }

@@ -13,21 +13,13 @@ $(document).ready(function () {
 
     moviesTable = $('#movies').DataTable({
         columns: [
-            {
-                data: "poster",
-                render: function (data, type, row) {
-                    if (type === 'display' && row.poster) {
-                        const url = `http://${plexSearch.address}:${plexSearch.port}${row.poster}/?X-Plex-Token=${plexSearch.plexToken}`;
-                        return `<img class="thumbnail" src="${url}" alt="poster">`;
-                    }
-                    return data;
-                },
-                className: "dt-body-center"
-            },
+            {data: "poster"},
             {data: "title"},
             {data: "year"},
             {data: "language"},
-            {data: "link"}/*,
+            {data: "collection"},
+            {data: "library"},
+            /*{data: "link"},*/
             {
                 data: "find_missing",
                 render: function (data, type, row) {
@@ -37,7 +29,7 @@ $(document).ready(function () {
                     return data;
                 },
                 className: "dt-body-center"
-            }*/
+            }
         ],
         select: {
             style: 'os',

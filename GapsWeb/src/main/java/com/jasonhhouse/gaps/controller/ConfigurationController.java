@@ -75,7 +75,7 @@ public class ConfigurationController {
         plexQuery.queryPlexServer(plexServer);
         plexQuery.getLibraries(plexServer);
         gapsService.getPlexSearch().addPlexServer(plexServer);
-        ioService.writePlexConfiguration(plexServer);
+        ioService.writePlexConfiguration(gapsService.getPlexSearch().getPlexServers());
 
         template.convertAndSend("/configuration/plex/complete", plexServer);
     }
