@@ -21,7 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 
-<body onload="connect()">
+<body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <a class="navbar-brand" href="/">Gaps</a>
     <div class="collapse navbar-collapse" id="navbarColor01">
@@ -70,8 +70,22 @@
                     <input type="text" class="form-control" id="movieDbApiKey" th:field="*{movieDbApiKey}" required>
                 </div>
 
-                <button type="button" class="btn btn-primary">Update</button>
+                <button type="button" onclick="testTmdbKey()" class="btn btn-info">Test</button>
+                <button type="button" onclick="updateTmdbKey()" class="btn btn-primary">Update</button>
             </form>
+
+            <div id="tmdbError" class="alert alert-dismissible alert-danger gaps-hide top-margin">
+                <button type="button" class="close" data-hide="alert">&times;</button>
+                <h4 class="alert-heading">Error!</h4>
+                <p class="mb-0">Could not connect to The MovieDB. Check the key and logs and try again.</p>
+            </div>
+
+            <div id="tmdbSuccess" class="alert alert-dismissible alert-success gaps-hide top-margin">
+                <button type="button" class="close" data-hide="alert">&times;</button>
+                <h4 class="alert-heading">Success!</h4>
+                <p class="mb-0">Your MovieDB key is valid.</p>
+            </div>
+
         </div>
         <div class="tab-pane fade top-margin" id="plex">
             <form class="needs-validation" method="POST" action="/plexLibraries" novalidate>

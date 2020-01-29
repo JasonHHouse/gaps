@@ -6,6 +6,7 @@ import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.service.BindingErrorsService;
 import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.service.PlexQueryImpl;
+import com.jasonhhouse.gaps.service.TmdbService;
 import java.io.IOException;
 import java.util.List;
 import javax.validation.Valid;
@@ -13,11 +14,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,13 +31,15 @@ public class ConfigurationController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationController.class);
 
     private final BindingErrorsService bindingErrorsService;
+    private final TmdbService tmdbService;
     private final SimpMessagingTemplate template;
     private final PlexQueryImpl plexQuery;
     private final GapsService gapsService;
     private final IoService ioService;
 
-    public ConfigurationController(BindingErrorsService bindingErrorsService, SimpMessagingTemplate template, PlexQueryImpl plexQuery, GapsService gapsService, IoService ioService) {
+    public ConfigurationController(BindingErrorsService bindingErrorsService, TmdbService tmdbService, SimpMessagingTemplate template, PlexQueryImpl plexQuery, GapsService gapsService, IoService ioService) {
         this.bindingErrorsService = bindingErrorsService;
+        this.tmdbService = tmdbService;
         this.template = template;
         this.plexQuery = plexQuery;
         this.gapsService = gapsService;
@@ -78,5 +84,17 @@ public class ConfigurationController {
         ioService.writePlexConfiguration(gapsService.getPlexSearch().getPlexServers());
 
         template.convertAndSend("/configuration/plex/complete", plexServer);
+    }
+
+    @RequestMapping(value = "/testTmdbKey/{tmdbKey}",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<String> postTestTmdbKey(@PathVariable("tmdbKey") final String tmdbKey) {
+        LOGGER.info("postTestTmdbKey( " + tmdbKey + " )");
+
+        String tmdbResponse = tmdbService.testTmdbKey(tmdbKey);
+        return ResponseEntity.ok().body(tmdbResponse);
     }
 }

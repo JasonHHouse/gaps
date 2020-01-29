@@ -37,3 +37,35 @@ function addPlexServer() {
         dataType: 'application/json'
     });
 }
+
+function testTmdbKey() {
+    const movieDbApiKey = $('#movieDbApiKey').val();
+
+    $.ajax({
+        type: "POST",
+        url: `/configuration/testTmdbKey/${movieDbApiKey}`,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+            if (result && result.success) {
+                $('#tmdbSuccess').show();
+            } else {
+                $('#tmdbError').show();
+            }
+        }, error: function () {
+            $('#tmdbError').show();
+        }
+    });
+}
+
+function updateTmdbKey() {
+
+}
+
+$(function(){
+    $("[data-hide]").on("click", function(){
+        //$("." + $(this).attr("data-hide")).hide();
+        // -or-, see below
+        $(this).closest("." + $(this).attr("data-hide")).hide();
+    });
+});
