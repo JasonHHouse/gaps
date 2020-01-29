@@ -1,5 +1,7 @@
 package com.jasonhhouse.gaps.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexServer;
@@ -96,5 +98,28 @@ public class ConfigurationController {
 
         String tmdbResponse = tmdbService.testTmdbKey(tmdbKey);
         return ResponseEntity.ok().body(tmdbResponse);
+    }
+
+    @RequestMapping(value = "/saveTmdbKey/{tmdbKey}",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<String> postSaveTmdbKey(@PathVariable("tmdbKey") final String tmdbKey) {
+        LOGGER.info("postSaveTmdbKey( " + tmdbKey + " )");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode objectNode = objectMapper.createObjectNode();
+
+        gapsService.getPlexSearch().setMovieDbApiKey(tmdbKey);
+        try {
+            ioService.writeProperties(gapsService.getPlexSearch());
+            objectNode.put("success", true);
+        } catch (IOException e) {
+            objectNode.put("success", false);
+            LOGGER.warn("Could not save PlexSearch properties");
+        }
+
+        return ResponseEntity.ok().body(objectNode.toString());
     }
 }

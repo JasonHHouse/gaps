@@ -40,11 +40,11 @@ function addPlexServer() {
 
 function testTmdbKey() {
     const tmdbSpinner = $('#tmdbSpinner');
-    const tmdbSuccess = $('#tmdbSuccess');
-    const tmdbError = $('#tmdbError');
+    const tmdbTestSuccess = $('#tmdbTestSuccess');
+    const tmdbTestError = $('#tmdbTestError');
 
-    tmdbSuccess.hide();
-    tmdbError.hide();
+    tmdbTestSuccess.hide();
+    tmdbTestError.hide();
     tmdbSpinner.show();
 
     $.ajax({
@@ -55,19 +55,43 @@ function testTmdbKey() {
         success: function (result) {
             tmdbSpinner.hide();
             if (result && result.success) {
-                tmdbSuccess.show();
+                tmdbTestSuccess.show();
             } else {
-                tmdbError.show();
+                tmdbTestError.show();
             }
         }, error: function () {
             tmdbSpinner.hide();
-            tmdbError.show();
+            tmdbTestError.show();
         }
     });
 }
 
 function saveTmdbKey() {
+    const tmdbSpinner = $('#tmdbSpinner');
+    const tmdbSaveSuccess = $('#tmdbSaveSuccess');
+    const tmdbSaveError = $('#tmdbSaveError');
 
+    tmdbSaveSuccess.hide();
+    tmdbSaveError.hide();
+    tmdbSpinner.show();
+
+    $.ajax({
+        type: "POST",
+        url: `/configuration/saveTmdbKey/${$('#movieDbApiKey').val()}`,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+            tmdbSpinner.hide();
+            if (result && result.success) {
+                tmdbSaveSuccess.show();
+            } else {
+                tmdbSaveError.show();
+            }
+        }, error: function () {
+            tmdbSpinner.hide();
+            tmdbSaveError.show();
+        }
+    });
 }
 
 $(function(){
