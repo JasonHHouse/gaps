@@ -31,6 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/configuration")
 public class ConfigurationController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationController.class);
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private final BindingErrorsService bindingErrorsService;
     private final TmdbService tmdbService;
@@ -68,12 +69,12 @@ public class ConfigurationController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/plex",
+    @RequestMapping(value = "/add/plex",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public void postPlexServer(@Valid final PlexServer plexServer, BindingResult bindingResult) {
-        LOGGER.info("postPlexLibraries( " + plexServer + " )");
+    public void postAddPlexServer(@Valid final PlexServer plexServer, BindingResult bindingResult) {
+        LOGGER.info("postAddPlexServer( " + plexServer + " )");
 
 /*
         if (bindingErrorsService.hasBindingErrors(bindingResult)) {
@@ -88,9 +89,32 @@ public class ConfigurationController {
         template.convertAndSend("/configuration/plex/complete", plexServer);
     }
 
-    @RequestMapping(value = "/testTmdbKey/{tmdbKey}",
+    @RequestMapping(value = "/test/plex",
             method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<String> postTestPlexServer(@Valid final PlexServer plexServer, BindingResult bindingResult) {
+        LOGGER.info("postTestPlexServer( " + plexServer + " )");
+
+        /*if (bindingErrorsService.hasBindingErrors(bindingResult)) {
+            LOGGER.error("Error binding PlexServer object: " + plexServer);
+        }*/
+
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        try {
+            plexQuery.queryPlexServer(plexServer);
+            objectNode.put("success", true);
+        } catch (Exception e) {
+            objectNode.put("success", false);
+        }
+
+        return ResponseEntity.ok().body(objectNode.toString());
+    }
+
+    @RequestMapping(value = "/test/tmdbKey/{tmdbKey}",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<String> postTestTmdbKey(@PathVariable("tmdbKey") final String tmdbKey) {
@@ -100,7 +124,7 @@ public class ConfigurationController {
         return ResponseEntity.ok().body(tmdbResponse);
     }
 
-    @RequestMapping(value = "/saveTmdbKey/{tmdbKey}",
+    @RequestMapping(value = "/save/tmdbKey/{tmdbKey}",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -108,7 +132,6 @@ public class ConfigurationController {
     public ResponseEntity<String> postSaveTmdbKey(@PathVariable("tmdbKey") final String tmdbKey) {
         LOGGER.info("postSaveTmdbKey( " + tmdbKey + " )");
 
-        ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode objectNode = objectMapper.createObjectNode();
 
         gapsService.getPlexSearch().setMovieDbApiKey(tmdbKey);

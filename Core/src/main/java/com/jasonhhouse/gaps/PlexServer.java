@@ -26,6 +26,18 @@ public class PlexServer {
         plexLibraries = new TreeSet<>();
     }
 
+    public void setPlexToken(String plexToken) {
+        this.plexToken = plexToken;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
+    }
+
     public void setFriendlyName(String friendlyName) {
         this.friendlyName = friendlyName;
     }

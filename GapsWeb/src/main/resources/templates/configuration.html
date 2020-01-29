@@ -101,7 +101,6 @@
                 <h4 class="alert-heading">Success!</h4>
                 <p class="mb-0">Your MovieDB key saved successfully.</p>
             </div>
-
         </div>
         <div class="tab-pane fade top-margin" id="plex">
             <form class="needs-validation" method="POST" action="/plexLibraries" novalidate>
@@ -130,7 +129,36 @@
                         .</small>
                 </div>
 
+                <button type="button" onclick="testPlexServer()" class="btn btn-info">Test</button>
                 <button type="button" onclick="addPlexServer()" class="btn btn-primary">Add</button>
+
+                <div id="plexSpinner" class="spinner-border text-primary gaps-hide top-margin" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+
+                <div id="plexTestError" class="alert alert-dismissible alert-danger gaps-hide top-margin">
+                    <button type="button" class="close" data-hide="alert">&times;</button>
+                    <h4 class="alert-heading">Error!</h4>
+                    <p class="mb-0">Could not connect to Plex. Check the key and logs and try again.</p>
+                </div>
+
+                <div id="plexTestSuccess" class="alert alert-dismissible alert-success gaps-hide top-margin">
+                    <button type="button" class="close" data-hide="alert">&times;</button>
+                    <h4 class="alert-heading">Success!</h4>
+                    <p class="mb-0">Your plex configuration is valid.</p>
+                </div>
+
+                <div id="plexSaveError" class="alert alert-dismissible alert-danger gaps-hide top-margin">
+                    <button type="button" class="close" data-hide="alert">&times;</button>
+                    <h4 class="alert-heading">Error!</h4>
+                    <p class="mb-0">Could not save your Plex configuration. Check the logs and try again.</p>
+                </div>
+
+                <div id="plexSaveSuccess" class="alert alert-dismissible alert-success gaps-hide top-margin">
+                    <button type="button" class="close" data-hide="alert">&times;</button>
+                    <h4 class="alert-heading">Success!</h4>
+                    <p class="mb-0">Your Plex configuration saved successfully.</p>
+                </div>
             </form>
 
             <h3 class="top-margin">Servers</h3>

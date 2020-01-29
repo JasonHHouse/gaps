@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function addPlexServer() {
     $.ajax({
         type: "POST",
-        url: '/configuration/plex',
+        url: '/configuration/add/plex',
         data: {
             'plexToken': $('#plexToken').val(),
             'address': $('#address').val(),
@@ -49,7 +49,7 @@ function testTmdbKey() {
 
     $.ajax({
         type: "POST",
-        url: `/configuration/testTmdbKey/${$('#movieDbApiKey').val()}`,
+        url: `/configuration/test/tmdbKey/${$('#movieDbApiKey').val()}`,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (result) {
@@ -77,7 +77,7 @@ function saveTmdbKey() {
 
     $.ajax({
         type: "POST",
-        url: `/configuration/saveTmdbKey/${$('#movieDbApiKey').val()}`,
+        url: `/configuration/save/tmdbKey/${$('#movieDbApiKey').val()}`,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (result) {
@@ -90,6 +90,38 @@ function saveTmdbKey() {
         }, error: function () {
             tmdbSpinner.hide();
             tmdbSaveError.show();
+        }
+    });
+}
+
+function testPlexServer() {
+    const plexSpinner = $('#plexSpinner');
+    const plexTestSuccess = $('#plexTestSuccess');
+    const plexTestError = $('#plexTestError');
+
+    plexTestSuccess.hide();
+    plexTestError.hide();
+    plexSpinner.show();
+
+    $.ajax({
+        type: "POST",
+        url: '/configuration/test/plex',
+        data: {
+            'plexToken': $('#plexToken').val(),
+            'address': $('#address').val(),
+            'port': $('#port').val()
+        },
+        dataType: "json",
+        success: function (result) {
+            plexSpinner.hide();
+            if (result && result.success) {
+                plexTestSuccess.show();
+            } else {
+                plexTestError.show();
+            }
+        }, error: function () {
+            plexSpinner.hide();
+            plexTestError.show();
         }
     });
 }
