@@ -173,8 +173,8 @@
                                     th:text="${plexLibrary.getTitle()}"></li>
                             </ul>
                             <div class="card-body">
-                                <a href="#test" class="card-link" data-ol-has-click-handler="">Test</a>
-                                <a href="#remove" class="card-link" data-ol-has-click-handler="">Remove</a>
+                                <a href="javascript:void(0)" th:data-machineIdentifier="*{plexServer.machineIdentifier}" th:onclick="testExistingPlexServer('data-machineIdentifier')" class="card-link" data-ol-has-click-handler="">Test</a>
+                                <a href="javascript:void(0)" th:data-machineIdentifier="*{plexServer.machineIdentifier}" th:onclick="removePlexServer('data-machineIdentifier')" class="card-link" data-ol-has-click-handler="">Remove</a>
                             </div>
                             <div class="card-footer text-muted"
                                  th:text="'http://' + ${plexServer.getAddress()} + ':' + ${plexServer.getPort()}"></div>
@@ -201,8 +201,8 @@
                     {{/each}}
                 </ul>
                 <div class="card-body">
-                    <a href="#test" class="card-link" data-ol-has-click-handler="">Test</a>
-                    <a href="#remove" class="card-link" data-ol-has-click-handler="">Remove</a>
+                    <a href="javascript:void(0)" onclick="testExistingPlexServer('{{machineIdentifier}}')" class="card-link" data-ol-has-click-handler="">Test</a>
+                    <a href="javascript:void(0)" onclick="removePlexServer('{{machineIdentifier}}')" class="card-link" data-ol-has-click-handler="">Remove</a>
                 </div>
                 <div class="card-footer text-muted">http://{{address}}:{{port}}</div>
             </div>

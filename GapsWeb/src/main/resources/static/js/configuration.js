@@ -169,6 +169,14 @@ function addPlexServer() {
     });
 }
 
+function testExistingPlexServer(machineIdentifier) {
+    console.log("testExistingPlexServer( " + machineIdentifier + " )");
+}
+
+function removePlexServer(machineIdentifier) {
+    console.log("removePlexServer( " + machineIdentifier + " )");
+}
+
 $(function () {
     $("[data-hide]").on("click", function () {
         //$("." + $(this).attr("data-hide")).hide();
