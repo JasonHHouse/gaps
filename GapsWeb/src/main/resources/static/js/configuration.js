@@ -15,36 +15,43 @@ document.addEventListener('DOMContentLoaded', function () {
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
         stompClient.subscribe(`/configuration/plex/complete`, function (message) {
-            const plexServer = JSON.parse(message.body);
+            const plexSpinner = $('#plexSpinner');
+            const plexSaveSuccess = $('#plexSaveSuccess');
+            const plexSaveError = $('#plexSaveError');
 
-            const plexServerCard = $("#plexServerCard").html();
-            const theTemplate = Handlebars.compile(plexServerCard);
-            const theCompiledHtml = theTemplate(plexServer);
-            $('#plexServers').append(theCompiledHtml);
+            const body = message.body;
+
+            plexSpinner.hide();
+            if (body) {
+                const response = JSON.parse(body);
+                if (response.failed) {
+                    plexSaveError.show();
+                } else {
+                    plexSaveSuccess.show();
+
+                    const plexServerCard = $("#plexServerCard").html();
+                    const theTemplate = Handlebars.compile(plexServerCard);
+                    const theCompiledHtml = theTemplate(response);
+                    $('#plexServers').append(theCompiledHtml);
+                }
+            } else {
+                plexSaveError.show();
+            }
         });
     });
 });
 
-function addPlexServer() {
-    $.ajax({
-        type: "POST",
-        url: '/configuration/add/plex',
-        data: {
-            'plexToken': $('#plexToken').val(),
-            'address': $('#address').val(),
-            'port': $('#port').val()
-        },
-        dataType: 'application/json'
-    });
-}
-
 function testTmdbKey() {
     const tmdbSpinner = $('#tmdbSpinner');
+    const tmdbSaveSuccess = $('#tmdbSaveSuccess');
+    const tmdbSaveError = $('#tmdbSaveError');
     const tmdbTestSuccess = $('#tmdbTestSuccess');
     const tmdbTestError = $('#tmdbTestError');
 
     tmdbTestSuccess.hide();
     tmdbTestError.hide();
+    tmdbSaveSuccess.hide();
+    tmdbSaveError.hide();
     tmdbSpinner.show();
 
     $.ajax({
@@ -70,7 +77,11 @@ function saveTmdbKey() {
     const tmdbSpinner = $('#tmdbSpinner');
     const tmdbSaveSuccess = $('#tmdbSaveSuccess');
     const tmdbSaveError = $('#tmdbSaveError');
+    const tmdbTestSuccess = $('#tmdbTestSuccess');
+    const tmdbTestError = $('#tmdbTestError');
 
+    tmdbTestSuccess.hide();
+    tmdbTestError.hide();
     tmdbSaveSuccess.hide();
     tmdbSaveError.hide();
     tmdbSpinner.show();
@@ -96,11 +107,15 @@ function saveTmdbKey() {
 
 function testPlexServer() {
     const plexSpinner = $('#plexSpinner');
+    const plexSaveSuccess = $('#plexSaveSuccess');
+    const plexSaveError = $('#plexSaveError');
     const plexTestSuccess = $('#plexTestSuccess');
     const plexTestError = $('#plexTestError');
 
     plexTestSuccess.hide();
     plexTestError.hide();
+    plexSaveSuccess.hide();
+    plexSaveError.hide();
     plexSpinner.show();
 
     $.ajax({
@@ -126,8 +141,36 @@ function testPlexServer() {
     });
 }
 
-$(function(){
-    $("[data-hide]").on("click", function(){
+function addPlexServer() {
+    const plexSpinner = $('#plexSpinner');
+    const plexSaveSuccess = $('#plexSaveSuccess');
+    const plexSaveError = $('#plexSaveError');
+    const plexTestSuccess = $('#plexTestSuccess');
+    const plexTestError = $('#plexTestError');
+
+    plexTestSuccess.hide();
+    plexTestError.hide();
+    plexSaveSuccess.hide();
+    plexSaveError.hide();
+    plexSpinner.show();
+
+    $.ajax({
+        type: "POST",
+        url: '/configuration/add/plex',
+        data: {
+            'plexToken': $('#plexToken').val(),
+            'address': $('#address').val(),
+            'port': $('#port').val()
+        },
+        error: function () {
+            plexSpinner.hide();
+            plexSaveError.show();
+        }
+    });
+}
+
+$(function () {
+    $("[data-hide]").on("click", function () {
         //$("." + $(this).attr("data-hide")).hide();
         // -or-, see below
         $(this).closest("." + $(this).attr("data-hide")).hide();

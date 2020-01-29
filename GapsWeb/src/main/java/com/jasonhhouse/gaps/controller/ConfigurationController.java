@@ -81,12 +81,20 @@ public class ConfigurationController {
             LOGGER.error("Error binding PlexServer object: " + plexServer);
         }
 */
-        plexQuery.queryPlexServer(plexServer);
-        plexQuery.getLibraries(plexServer);
-        gapsService.getPlexSearch().addPlexServer(plexServer);
-        ioService.writePlexConfiguration(gapsService.getPlexSearch().getPlexServers());
+        ObjectNode objectNode = objectMapper.createObjectNode();
 
-        template.convertAndSend("/configuration/plex/complete", plexServer);
+        try {
+            plexQuery.queryPlexServer(plexServer);
+            plexQuery.getLibraries(plexServer);
+            gapsService.getPlexSearch().addPlexServer(plexServer);
+            ioService.writePlexConfiguration(gapsService.getPlexSearch().getPlexServers());
+
+            template.convertAndSend("/configuration/plex/complete", plexServer);
+        } catch (Exception e) {
+            LOGGER.error("Could not add plex server", e);
+            objectNode.put("failed", true);
+            template.convertAndSend("/configuration/plex/complete", objectNode.toString());
+        }
     }
 
     @RequestMapping(value = "/test/plex",
@@ -125,7 +133,6 @@ public class ConfigurationController {
 
     @RequestMapping(value = "/save/tmdbKey/{tmdbKey}",
             method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<String> postSaveTmdbKey(@PathVariable("tmdbKey") final String tmdbKey) {

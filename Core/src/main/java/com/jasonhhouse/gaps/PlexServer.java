@@ -1,6 +1,5 @@
 package com.jasonhhouse.gaps;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
@@ -15,6 +14,7 @@ public class PlexServer {
     private Set<PlexLibrary> plexLibraries;
 
     public PlexServer() {
+        plexLibraries = new TreeSet<>();
     }
 
     public PlexServer(String friendlyName, String machineIdentifier, String plexToken, String address, Integer port) {
