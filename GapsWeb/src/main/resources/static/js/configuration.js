@@ -175,6 +175,22 @@ function testExistingPlexServer(machineIdentifier) {
 
 function removePlexServer(machineIdentifier) {
     console.log("removePlexServer( " + machineIdentifier + " )");
+
+    $.ajax({
+        type: "DELETE",
+        url: `/configuration/delete/plex/${machineIdentifier}`,
+        success: function (result) {
+            if (result && result.success) {
+                $('#' + machineIdentifier).remove();
+                //Remove alert
+            } else {
+                //error alert
+            }
+        },
+        error: function () {
+            //Error alert
+        }
+    });
 }
 
 $(function () {

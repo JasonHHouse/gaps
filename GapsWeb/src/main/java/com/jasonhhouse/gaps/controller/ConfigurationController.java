@@ -12,6 +12,7 @@ import com.jasonhhouse.gaps.service.TmdbService;
 import java.io.IOException;
 import java.util.List;
 import javax.validation.Valid;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -115,6 +116,26 @@ public class ConfigurationController {
             objectNode.put("success", true);
         } catch (Exception e) {
             objectNode.put("success", false);
+        }
+
+        return ResponseEntity.ok().body(objectNode.toString());
+    }
+
+    @RequestMapping(value = "/delete/plex/{machineIdentifier}",
+            method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<String> deletePlexServer(@PathVariable("machineIdentifier") final String machineIdentifier) {
+        LOGGER.info("deletePlexServer( " + machineIdentifier + " )");
+
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        PlexServer returnedPlexServer = gapsService.getPlexSearch().getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
+        if (StringUtils.isEmpty(returnedPlexServer.getMachineIdentifier())) {
+            //Failed to find and delete
+            objectNode.put("success", false);
+        } else {
+            gapsService.getPlexSearch().getPlexServers().remove(returnedPlexServer);
+            objectNode.put("success", true);
         }
 
         return ResponseEntity.ok().body(objectNode.toString());

@@ -164,7 +164,8 @@
             <h3 class="top-margin">Servers</h3>
 
             <div id="plexServers" class="row top-margin">
-                <div class="col-lg-4" th:each="plexServer,status : *{plexSearch.plexServers}">
+                <div th:id="*{plexServer.machineIdentifier}" class="col-lg-4"
+                     th:each="plexServer,status : *{plexSearch.plexServers}">
                     <div class="top-margin">
                         <div class="card border-info mb-3" style="max-width: 20rem;">
                             <div class="card-header" th:text="${plexServer.getFriendlyName()}"></div>
@@ -173,8 +174,12 @@
                                     th:text="${plexLibrary.getTitle()}"></li>
                             </ul>
                             <div class="card-body">
-                                <a href="javascript:void(0)" th:data-machineIdentifier="*{plexServer.machineIdentifier}" th:onclick="testExistingPlexServer('data-machineIdentifier')" class="card-link" data-ol-has-click-handler="">Test</a>
-                                <a href="javascript:void(0)" th:data-machineIdentifier="*{plexServer.machineIdentifier}" th:onclick="removePlexServer('data-machineIdentifier')" class="card-link" data-ol-has-click-handler="">Remove</a>
+                                <a href="javascript:void(0)" th:data-machineIdentifier="*{plexServer.machineIdentifier}"
+                                   th:onclick="testExistingPlexServer('data-machineIdentifier')" class="card-link"
+                                   data-ol-has-click-handler="">Test</a>
+                                <a href="javascript:void(0)" th:data-machineIdentifier="*{plexServer.machineIdentifier}"
+                                   th:onclick="removePlexServer('data-machineIdentifier')" class="card-link"
+                                   data-ol-has-click-handler="">Remove</a>
                             </div>
                             <div class="card-footer text-muted"
                                  th:text="'http://' + ${plexServer.getAddress()} + ':' + ${plexServer.getPort()}"></div>
@@ -191,7 +196,7 @@
 </div>
 
 <script id="plexServerCard" type="text/x-handlebars-template">
-    <div class="col-lg-4">
+    <div id="{{machineIdentifier}}" class="col-lg-4">
         <div class="top-margin">
             <div class="card border-info mb-3" style="max-width: 20rem;">
                 <div class="card-header">{{friendlyName}}</div>
@@ -201,8 +206,10 @@
                     {{/each}}
                 </ul>
                 <div class="card-body">
-                    <a href="javascript:void(0)" onclick="testExistingPlexServer('{{machineIdentifier}}')" class="card-link" data-ol-has-click-handler="">Test</a>
-                    <a href="javascript:void(0)" onclick="removePlexServer('{{machineIdentifier}}')" class="card-link" data-ol-has-click-handler="">Remove</a>
+                    <a href="javascript:void(0)" onclick="testExistingPlexServer('{{machineIdentifier}}')"
+                       class="card-link" data-ol-has-click-handler="">Test</a>
+                    <a href="javascript:void(0)" onclick="removePlexServer('{{machineIdentifier}}')" class="card-link"
+                       data-ol-has-click-handler="">Remove</a>
                 </div>
                 <div class="card-footer text-muted">http://{{address}}:{{port}}</div>
             </div>
