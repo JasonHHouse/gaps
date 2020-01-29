@@ -48,9 +48,9 @@ function testTmdbKey() {
     tmdbSpinner.show();
 
     $.ajax({
-        type: "POST",
+        type: "PUT",
         url: `/configuration/test/tmdbKey/${$('#movieDbApiKey').val()}`,
-        contentType: "application/json; charset=utf-8",
+        contentType: "application/json",
         dataType: "json",
         success: function (result) {
             tmdbSpinner.hide();
@@ -104,7 +104,7 @@ function testPlexServer() {
     plexSpinner.show();
 
     $.ajax({
-        type: "POST",
+        type: "PUT",
         url: '/configuration/test/plex',
         data: {
             'plexToken': $('#plexToken').val(),
