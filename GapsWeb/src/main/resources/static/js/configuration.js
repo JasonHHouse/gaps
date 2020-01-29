@@ -39,26 +39,34 @@ function addPlexServer() {
 }
 
 function testTmdbKey() {
-    const movieDbApiKey = $('#movieDbApiKey').val();
+    const tmdbSpinner = $('#tmdbSpinner');
+    const tmdbSuccess = $('#tmdbSuccess');
+    const tmdbError = $('#tmdbError');
+
+    tmdbSuccess.hide();
+    tmdbError.hide();
+    tmdbSpinner.show();
 
     $.ajax({
         type: "POST",
-        url: `/configuration/testTmdbKey/${movieDbApiKey}`,
+        url: `/configuration/testTmdbKey/${$('#movieDbApiKey').val()}`,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (result) {
+            tmdbSpinner.hide();
             if (result && result.success) {
-                $('#tmdbSuccess').show();
+                tmdbSuccess.show();
             } else {
-                $('#tmdbError').show();
+                tmdbError.show();
             }
         }, error: function () {
-            $('#tmdbError').show();
+            tmdbSpinner.hide();
+            tmdbError.show();
         }
     });
 }
 
-function updateTmdbKey() {
+function saveTmdbKey() {
 
 }
 

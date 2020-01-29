@@ -71,8 +71,12 @@
                 </div>
 
                 <button type="button" onclick="testTmdbKey()" class="btn btn-info">Test</button>
-                <button type="button" onclick="updateTmdbKey()" class="btn btn-primary">Update</button>
+                <button type="button" onclick="saveTmdbKey()" class="btn btn-primary">Save</button>
             </form>
+
+            <div id="tmdbSpinner" class="spinner-border text-primary gaps-hide top-margin" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
 
             <div id="tmdbError" class="alert alert-dismissible alert-danger gaps-hide top-margin">
                 <button type="button" class="close" data-hide="alert">&times;</button>
@@ -99,8 +103,10 @@
 
                 <div class="form-group">
                     <label for="port">Plex Port</label>
-                    <input type="text" class="form-control" id="port" required aria-describedby="portHelp" value="32400">
-                    <small id="portHelp" class="form-text text-muted">Plex defaults to 32400. Update only if your Plex Server uses something
+                    <input type="text" class="form-control" id="port" required aria-describedby="portHelp"
+                           value="32400">
+                    <small id="portHelp" class="form-text text-muted">Plex defaults to 32400. Update only if your Plex
+                        Server uses something
                         else.</small>
                 </div>
 
