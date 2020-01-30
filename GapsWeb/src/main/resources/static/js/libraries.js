@@ -39,3 +39,7 @@ $(document).ready(function () {
         }
     });
 });
+
+function switchPlexLibrary(plexLibrary) {
+    console.log(`${plexLibrary}`);
+}

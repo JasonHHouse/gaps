@@ -55,10 +55,29 @@
         </a>
 
         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <a class="dropdown-item" href="#">KnoxServer - Disney Classic Movies</a>
-            <a class="dropdown-item" href="#">KnoxServer - Movies</a>
-            <a class="dropdown-item" href="#">Joker - 4k Movies</a>
-            <a class="dropdown-item" href="#">Joker - Movies</a>
+            <div th:each="instance : ${plexServers}" th:remove="tag">
+                <!--<a th:onclick="${'switchPlexLibrary(' + instance.value.machineIdentifier + ','+ plexLibrary.key + ');'}"
+                   class="dropdown-item" href="javascript:void(0)"
+                   th:each="plexLibrary : *{instance.value.plexLibraries}"
+                   th:text="(*{instance.value.friendlyName} + ' - ' + *{plexLibrary.title})"></a>-->
+
+                <a href="javascript:void(0)" th:data-machineIdentifier="*{instance.value.machineIdentifier}"
+                   th:onclick="switchPlexLibrary('data-machineIdentifier')" class="dropdown-item"
+                   th:each="plexLibrary : *{instance.value.plexLibraries}"
+                   data-ol-has-click-handler=""
+                   th:text="(*{instance.value.friendlyName} + ' - ' + *{plexLibrary.title})"></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="top-margin">
+        <div class="card mx-auto" style="width: 24rem;">
+            <img src="/images/mind_the_gap.png" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Your movies are really missing</h5>
+                <p class="card-text">You need to run Gaps at least once to have found the missing movies.</p>
+                <a href="javascript:void(0)" class="btn btn-primary">Search</a>
+            </div>
         </div>
     </div>
 
@@ -110,39 +129,6 @@
             </tbody>
         </table>
     </div>
-    <!--
-    <div class="top-margin">
-        <table id="movies" class="display" style="width:100%">
-            <thead>
-            <tr>
-                <th>Poster</th>
-                <th>Title</th>
-                <th>Year</th>
-                <th>Language</th>
-                <th>Collection</th>
-                <th>Library</th>
-                &lt;!&ndash;<th>Link</th>&ndash;&gt;
-                <th>Find Missing</th>
-            </tr>
-            </thead>
-            <tbody>
-                <tr th:each="movie : ${movies}">
-                    <td>
-                        &lt;!&ndash;<img class="thumbnail" th:src="'http://' + ${plexServers.get(instance.key.machineIdentifier).getAddress()}
-                        + ':' + ${plexServers.get(instance.key.machineIdentifier).getPort()} + ${movie.posterUrl} + '/?X-Plex-Token='
-                        + ${plexServers.get(instance.key.machineIdentifier).getPlexToken()}" alt="poster">&ndash;&gt;
-                    </td>
-                    <td th:text="${movie.name}" class="word-break"></td>
-                    <td th:text="${movie.year}"></td>
-                    <td th:text="${movie.language}" class="word-break"></td>
-                    <td th:text="${movie.collection}" class="word-break"></td>
-                    <td &lt;!&ndash;th:text="${instance.key.getTitle()}"&ndash;&gt; class="word-break"></td>
-                    &lt;!&ndash;<td><a target="_blank" th:href="${urls.get(status.index)}">Details</a></td>&ndash;&gt;
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>-->
 </div>
 
 <input id="plexSearch" name="plexSearch" th:value="${{plexSearch}}" type="hidden"/>
