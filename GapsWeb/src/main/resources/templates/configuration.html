@@ -179,8 +179,7 @@
             <h3 class="top-margin">Servers</h3>
 
             <div id="plexServers" class="row top-margin">
-                <div th:id="*{plexServer.machineIdentifier}" class="col-lg-4"
-                     th:each="plexServer,status : *{plexSearch.plexServers}">
+                <div th:id="*{plexServer.machineIdentifier}" class="col-lg-4" th:each="plexServer,status : *{plexSearch.plexServers}">
                     <div class="top-margin">
                         <div class="card border-secondary mb-3" style="max-width: 20rem;">
                             <div class="card-header" th:text="${plexServer.getFriendlyName()}"></div>

@@ -60,7 +60,7 @@ public class ConfigurationController {
             gapsService.updatePlexSearch(plexSearch);
 
             List<PlexServer> plexServers = ioService.readPlexConfiguration();
-            plexSearch.getPlexServers().addAll(plexServers);
+            gapsService.getPlexSearch().getPlexServers().addAll(plexServers);
         } catch (IOException e) {
             LOGGER.warn("Failed to read gaps properties.", e);
         }
