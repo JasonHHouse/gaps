@@ -30,15 +30,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -75,7 +72,7 @@ public class IoService {
             try {
                 String path = new File(new File(new File(IoService.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParent()).getParent()).getParent();
                 decodedPath = URLDecoder.decode(path, "UTF-8");
-                decodedPath = decodedPath.substring("file:\\".length());
+                decodedPath = decodedPath.substring("file:\\" .length());
             } catch (UnsupportedEncodingException e) {
                 //Do nothing
             }
@@ -212,46 +209,32 @@ public class IoService {
         return false;
     }
 
-    /**
-     * Prints out all recommended movies to recommendedMovies.json
-     */
-    public Map<PlexLibrary, List<Movie>> readAllOwnedMovies(List<PlexServer> plexServers) {
-        LOGGER.info("readAllOwnedMovies()");
+    public List<Movie> readOwnedMovies(PlexServer plexServer, PlexLibrary plexLibrary) {
+        LOGGER.info("readOwnedMovies( " + plexServer + " )");
 
-        Map<PlexLibrary, List<Movie>> ownedMovieMap = new HashMap<>();
+        final File ownedMovieFile = new File(STORAGE_FOLDER + plexServer.getMachineIdentifier() + File.separator + plexLibrary.getKey() + File.separator + OWNED_MOVIES);
 
-        for (PlexServer plexServer : plexServers) {
-            for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
-                final File ownedMovieFile = new File(STORAGE_FOLDER + plexServer.getMachineIdentifier() + File.separator + plexLibrary.getKey() + File.separator + OWNED_MOVIES);
-
-                if (!ownedMovieFile.exists()) {
-                    LOGGER.warn(ownedMovieFile + " does not exist");
-                    continue;
-                }
-
-                readMovieIdsFromFile();
-
-                try (BufferedReader br = new BufferedReader(new FileReader(ownedMovieFile))) {
-                    StringBuilder fullFile = new StringBuilder();
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        fullFile.append(line);
-                    }
-
-                    LOGGER.info(fullFile.toString());
-                    List<Movie> ownedMovies = objectMapper.readValue(fullFile.toString(), new TypeReference<List<Movie>>() {
-                    });
-                    LOGGER.info("everyMovie.size():" + ownedMovies.size());
-                    ownedMovieMap.put(plexLibrary, ownedMovies);
-                } catch (FileNotFoundException e) {
-                    LOGGER.error("Can't find file " + ownedMovieFile, e);
-                } catch (IOException e) {
-                    LOGGER.error("Can't read the file " + ownedMovieFile, e);
-                }
-            }
+        if (!ownedMovieFile.exists()) {
+            LOGGER.warn(ownedMovieFile + " does not exist");
+            return Collections.emptyList();
         }
 
-        return ownedMovieMap;
+        try (BufferedReader br = new BufferedReader(new FileReader(ownedMovieFile))) {
+            StringBuilder fullFile = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                fullFile.append(line);
+            }
+
+            return objectMapper.readValue(fullFile.toString(), new TypeReference<List<Movie>>() {
+            });
+        } catch (FileNotFoundException e) {
+            LOGGER.error("Can't find file " + ownedMovieFile, e);
+        } catch (IOException e) {
+            LOGGER.error("Can't read the file " + ownedMovieFile, e);
+        }
+
+        return Collections.emptyList();
     }
 
     /**
@@ -372,7 +355,6 @@ public class IoService {
                 fullFile.append(line);
             }
 
-            LOGGER.info(fullFile.toString());
             everyMovie = objectMapper.readValue(fullFile.toString(), new TypeReference<Set<Movie>>() {
             });
             LOGGER.info("everyMovie.size():" + everyMovie.size());

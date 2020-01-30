@@ -46,22 +46,71 @@
 
 <div class="container">
     <h3 class="top-margin">Owned Movies</h3>
+    <h4 class="top-margin" th:text="${plexServer.friendlyName} + ' - ' + ${plexLibrary.title}"></h4>
 
-    <div class="btn-group top-margin" role="group" aria-label="Libraries to select">
-        <div class="btn-group" role="group">
-            <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                Libraries
-            </button>
-            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                <a class="dropdown-item" href="#">KnoxServer - Disney Classic Movies</a>
-                <a class="dropdown-item" href="#">KnoxServer - Movies</a>
-                <a class="dropdown-item" href="#">Joker - 4k Movies</a>
-                <a class="dropdown-item" href="#">Joker - Movies</a>
-            </div>
+    <div class="dropdown show">
+        <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">
+            Libraries
+        </a>
+
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a class="dropdown-item" href="#">KnoxServer - Disney Classic Movies</a>
+            <a class="dropdown-item" href="#">KnoxServer - Movies</a>
+            <a class="dropdown-item" href="#">Joker - 4k Movies</a>
+            <a class="dropdown-item" href="#">Joker - Movies</a>
         </div>
     </div>
 
+    <div class="top-margin">
+        <table id="movies" class="display" style="width:100%">
+            <thead>
+            <tr>
+                <th>Movie</th>
+                <th hidden>Title</th>
+                <th hidden>Year</th>
+                <th hidden>Language</th>
+                <th hidden>Collection</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="movie, status : ${movies}">
+                <td>
+
+                    <div class="card mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-2">
+                                <img style="height: 100%; width: 150px; display: block;"
+                                     th:src="'http://' + ${plexServer.address}+ ':' + ${plexServer.port} + ${movie.posterUrl} + '/?X-Plex-Token='+ ${plexServer.plexToken}"
+                                     class="card-img" alt="Plex Poster">
+                            </div>
+                            <div class="col-md-10">
+                                <div class="card-body">
+                                    <h5 class="card-title" th:text="${movie.name} + ' (' + ${movie.year} + ')'"></h5>
+                                    <p class="card-text" th:text="${movie.collection}"></p>
+                                    <p class="card-text">Though Goofy always means well, his amiable cluelessness and
+                                        klutzy pratfalls regularly embarrass his awkward adolescent son, Max. When Max's
+                                        lighthearted prank on his high-school principal finally gets his longtime crush,
+                                        Roxanne, to notice him, he asks her on a date. Max's trouble at school convinces
+                                        Goofy that he and the boy need to bond over a cross-country fishing trip like
+                                        the one he took with his dad when he was Max's age, which throws a kink in his
+                                        son's plans to impress Roxanne.</p>
+                                    <p class="card-text"><small class="text-muted">English</small></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </td>
+                <td th:text="${movie.name}" class="word-break" hidden></td>
+                <td th:text="${movie.year}" hidden></td>
+                <td th:text="${movie.language}" class="word-break" hidden></td>
+                <td th:text="${movie.collection}" class="word-break" hidden></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--
     <div class="top-margin">
         <table id="movies" class="display" style="width:100%">
             <thead>
@@ -72,30 +121,28 @@
                 <th>Language</th>
                 <th>Collection</th>
                 <th>Library</th>
-                <!--<th>Link</th>-->
+                &lt;!&ndash;<th>Link</th>&ndash;&gt;
                 <th>Find Missing</th>
             </tr>
             </thead>
             <tbody>
-            <div th:each="instance : ${movies}" th:remove="tag">
-                <tr th:each="movie : ${instance.value}">
+                <tr th:each="movie : ${movies}">
                     <td>
-                        <img class="thumbnail" th:src="'http://' + ${plexServers.get(instance.key.machineIdentifier).getAddress()}
+                        &lt;!&ndash;<img class="thumbnail" th:src="'http://' + ${plexServers.get(instance.key.machineIdentifier).getAddress()}
                         + ':' + ${plexServers.get(instance.key.machineIdentifier).getPort()} + ${movie.posterUrl} + '/?X-Plex-Token='
-                        + ${plexServers.get(instance.key.machineIdentifier).getPlexToken()}" alt="poster">
+                        + ${plexServers.get(instance.key.machineIdentifier).getPlexToken()}" alt="poster">&ndash;&gt;
                     </td>
                     <td th:text="${movie.name}" class="word-break"></td>
                     <td th:text="${movie.year}"></td>
                     <td th:text="${movie.language}" class="word-break"></td>
                     <td th:text="${movie.collection}" class="word-break"></td>
-                    <td th:text="${instance.key.getTitle()}" class="word-break"></td>
-                    <!--<td><a target="_blank" th:href="${urls.get(status.index)}">Details</a></td>-->
+                    <td &lt;!&ndash;th:text="${instance.key.getTitle()}"&ndash;&gt; class="word-break"></td>
+                    &lt;!&ndash;<td><a target="_blank" th:href="${urls.get(status.index)}">Details</a></td>&ndash;&gt;
                     <td></td>
                 </tr>
-            </div>
             </tbody>
         </table>
-    </div>
+    </div>-->
 </div>
 
 <input id="plexSearch" name="plexSearch" th:value="${{plexSearch}}" type="hidden"/>

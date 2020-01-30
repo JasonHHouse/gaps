@@ -9,7 +9,7 @@
  */
 
 $(document).ready(function () {
-    const plexSearch = JSON.parse($('#plexSearch').val());
+    //const plexSearch = JSON.parse($('#plexSearch').val());
 
     moviesTable = $('#movies').DataTable({
         columns: [
@@ -18,9 +18,7 @@ $(document).ready(function () {
             {data: "year"},
             {data: "language"},
             {data: "collection"},
-            {data: "library"},
-            /*{data: "link"},*/
-            {
+            /*{
                 data: "find_missing",
                 render: function (data, type, row) {
                     if (type === 'display') {
@@ -29,7 +27,7 @@ $(document).ready(function () {
                     return data;
                 },
                 className: "dt-body-center"
-            }
+            }*/
         ],
         select: {
             style: 'os',
