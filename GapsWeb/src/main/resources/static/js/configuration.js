@@ -8,7 +8,24 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+let plexSpinner, plexSaveSuccess, plexSaveError, plexTestSuccess, plexTestError, plexDeleteSuccess, plexDeleteError;
+let tmdbSpinner, tmdbSaveSuccess, tmdbSaveError, tmdbTestSuccess, tmdbTestError;
+
+
 document.addEventListener('DOMContentLoaded', function () {
+
+    plexSpinner = $('#plexSpinner');
+    plexSaveSuccess = $('#plexSaveSuccess');
+    plexSaveError = $('#plexSaveError');
+    plexTestSuccess = $('#plexTestSuccess');
+    plexTestError = $('#plexTestError');
+    plexDeleteSuccess = $('#plexDeleteSuccess');
+    plexDeleteError = $('#plexDeleteError');
+    tmdbSpinner = $('#tmdbSpinner');
+    tmdbSaveSuccess = $('#tmdbSaveSuccess');
+    tmdbSaveError = $('#tmdbSaveError');
+    tmdbTestSuccess = $('#tmdbTestSuccess');
+    tmdbTestError = $('#tmdbTestError');
 
     const socket = new SockJS('/gs-guide-websocket');
     stompClient = Stomp.over(socket);
@@ -42,16 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function testTmdbKey() {
-    const tmdbSpinner = $('#tmdbSpinner');
-    const tmdbSaveSuccess = $('#tmdbSaveSuccess');
-    const tmdbSaveError = $('#tmdbSaveError');
-    const tmdbTestSuccess = $('#tmdbTestSuccess');
-    const tmdbTestError = $('#tmdbTestError');
-
-    tmdbTestSuccess.hide();
-    tmdbTestError.hide();
-    tmdbSaveSuccess.hide();
-    tmdbSaveError.hide();
+    hideAllAlerts();
     tmdbSpinner.show();
 
     $.ajax({
@@ -74,16 +82,7 @@ function testTmdbKey() {
 }
 
 function saveTmdbKey() {
-    const tmdbSpinner = $('#tmdbSpinner');
-    const tmdbSaveSuccess = $('#tmdbSaveSuccess');
-    const tmdbSaveError = $('#tmdbSaveError');
-    const tmdbTestSuccess = $('#tmdbTestSuccess');
-    const tmdbTestError = $('#tmdbTestError');
-
-    tmdbTestSuccess.hide();
-    tmdbTestError.hide();
-    tmdbSaveSuccess.hide();
-    tmdbSaveError.hide();
+    hideAllAlerts();
     tmdbSpinner.show();
 
     $.ajax({
@@ -106,16 +105,7 @@ function saveTmdbKey() {
 }
 
 function testPlexServer() {
-    const plexSpinner = $('#plexSpinner');
-    const plexSaveSuccess = $('#plexSaveSuccess');
-    const plexSaveError = $('#plexSaveError');
-    const plexTestSuccess = $('#plexTestSuccess');
-    const plexTestError = $('#plexTestError');
-
-    plexTestSuccess.hide();
-    plexTestError.hide();
-    plexSaveSuccess.hide();
-    plexSaveError.hide();
+    hideAllAlerts();
     plexSpinner.show();
 
     $.ajax({
@@ -142,16 +132,9 @@ function testPlexServer() {
 }
 
 function addPlexServer() {
-    const plexSpinner = $('#plexSpinner');
-    const plexSaveSuccess = $('#plexSaveSuccess');
-    const plexSaveError = $('#plexSaveError');
-    const plexTestSuccess = $('#plexTestSuccess');
-    const plexTestError = $('#plexTestError');
+    console.log("addPlexServer()");
 
-    plexTestSuccess.hide();
-    plexTestError.hide();
-    plexSaveSuccess.hide();
-    plexSaveError.hide();
+    hideAllAlerts();
     plexSpinner.show();
 
     $.ajax({
@@ -171,26 +154,67 @@ function addPlexServer() {
 
 function testExistingPlexServer(machineIdentifier) {
     console.log("testExistingPlexServer( " + machineIdentifier + " )");
+
+    hideAllAlerts();
+    plexSpinner.show();
+
+    $.ajax({
+        type: "PUT",
+        url: `/configuration/test/plex/${machineIdentifier}`,
+        dataType: "json",
+        success: function (result) {
+            plexSpinner.hide();
+            if (result && result.success) {
+                plexTestSuccess.show();
+            } else {
+                plexTestError.show();
+            }
+        }, error: function () {
+            plexSpinner.hide();
+            plexTestError.show();
+        }
+    });
 }
 
 function removePlexServer(machineIdentifier) {
     console.log("removePlexServer( " + machineIdentifier + " )");
 
+    hideAllAlerts();
+    plexSpinner.show();
+
     $.ajax({
         type: "DELETE",
         url: `/configuration/delete/plex/${machineIdentifier}`,
         success: function (result) {
+            plexSpinner.hide();
             if (result && result.success) {
                 $('#' + machineIdentifier).remove();
-                //Remove alert
+                plexDeleteSuccess.show();
             } else {
-                //error alert
+                plexDeleteError.show();
             }
         },
         error: function () {
-            //Error alert
+            plexSpinner.hide();
+            plexDeleteError.show();
         }
     });
+}
+
+function hideAllAlerts() {
+    //Plex Alerts
+    plexTestSuccess.hide();
+    plexTestError.hide();
+    plexSaveSuccess.hide();
+    plexSaveError.hide();
+    plexDeleteSuccess.hide();
+    plexDeleteError.hide();
+
+    //TMDB Alerts
+    tmdbTestSuccess.hide();
+    tmdbTestError.hide();
+    tmdbSaveSuccess.hide();
+    tmdbSaveError.hide();
 }
 
 $(function () {

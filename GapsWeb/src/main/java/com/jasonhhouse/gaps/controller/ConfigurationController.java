@@ -103,8 +103,8 @@ public class ConfigurationController {
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<String> postTestPlexServer(@Valid final PlexServer plexServer, BindingResult bindingResult) {
-        LOGGER.info("postTestPlexServer( " + plexServer + " )");
+    public ResponseEntity<String> putTestPlexServer(@Valid final PlexServer plexServer, BindingResult bindingResult) {
+        LOGGER.info("putTestPlexServer( " + plexServer + " )");
 
         /*if (bindingErrorsService.hasBindingErrors(bindingResult)) {
             LOGGER.error("Error binding PlexServer object: " + plexServer);
@@ -116,6 +116,27 @@ public class ConfigurationController {
             objectNode.put("success", true);
         } catch (Exception e) {
             objectNode.put("success", false);
+        }
+
+        return ResponseEntity.ok().body(objectNode.toString());
+    }
+
+    @RequestMapping(value = "/test/plex/{machineIdentifier}",
+            method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<String> putTestPlexServerByMachineId(@PathVariable("machineIdentifier") final String machineIdentifier) {
+        LOGGER.info("putTestPlexServerByMachineId( " + machineIdentifier + " )");
+
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        PlexServer returnedPlexServer = gapsService.getPlexSearch().getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
+
+        if (StringUtils.isEmpty(returnedPlexServer.getMachineIdentifier())) {
+            //Failed to find and delete
+            objectNode.put("success", false);
+        } else {
+            plexQuery.queryPlexServer(returnedPlexServer);
+            objectNode.put("success", true);
         }
 
         return ResponseEntity.ok().body(objectNode.toString());

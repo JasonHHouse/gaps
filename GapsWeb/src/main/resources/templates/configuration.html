@@ -38,6 +38,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="/rssCheck">RSS</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+            </li>
         </ul>
     </div>
 </nav>
@@ -159,6 +162,18 @@
                     <h4 class="alert-heading">Success!</h4>
                     <p class="mb-0">Your Plex configuration saved successfully.</p>
                 </div>
+
+                <div id="plexDeleteError" class="alert alert-dismissible alert-danger gaps-hide top-margin">
+                    <button type="button" class="close" data-hide="alert">&times;</button>
+                    <h4 class="alert-heading">Error!</h4>
+                    <p class="mb-0">Could not delete your Plex configuration. Check the logs and try again.</p>
+                </div>
+
+                <div id="plexDeleteSuccess" class="alert alert-dismissible alert-success gaps-hide top-margin">
+                    <button type="button" class="close" data-hide="alert">&times;</button>
+                    <h4 class="alert-heading">Success!</h4>
+                    <p class="mb-0">Your Plex configuration deleted successfully.</p>
+                </div>
             </form>
 
             <h3 class="top-margin">Servers</h3>
@@ -167,7 +182,7 @@
                 <div th:id="*{plexServer.machineIdentifier}" class="col-lg-4"
                      th:each="plexServer,status : *{plexSearch.plexServers}">
                     <div class="top-margin">
-                        <div class="card border-info mb-3" style="max-width: 20rem;">
+                        <div class="card border-secondary mb-3" style="max-width: 20rem;">
                             <div class="card-header" th:text="${plexServer.getFriendlyName()}"></div>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item" th:each="plexLibrary,status : *{plexServer.plexLibraries}"
@@ -198,7 +213,7 @@
 <script id="plexServerCard" type="text/x-handlebars-template">
     <div id="{{machineIdentifier}}" class="col-lg-4">
         <div class="top-margin">
-            <div class="card border-info mb-3" style="max-width: 20rem;">
+            <div class="card border-secondary mb-3" style="max-width: 20rem;">
                 <div class="card-header">{{friendlyName}}</div>
                 <ul class="list-group list-group-flush">
                     {{#each plexLibraries}}
