@@ -7,6 +7,7 @@ import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.service.IoService;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -52,8 +53,8 @@ public class LibraryController {
         PlexLibrary plexLibrary;
         if (CollectionUtils.isNotEmpty(gapsService.getPlexSearch().getPlexServers())) {
             //Read first plex servers movies
-            plexServer = gapsService.getPlexSearch().getPlexServers().get(0);
-            plexLibrary = (PlexLibrary) plexServer.getPlexLibraries().toArray()[0];
+            plexServer = gapsService.getPlexSearch().getPlexServers().stream().findFirst().orElse(new PlexServer());
+            plexLibrary = plexServer.getPlexLibraries().stream().findFirst().orElse(new PlexLibrary());
             movies = ioService.readOwnedMovies(plexServer, plexLibrary);
         } else {
             plexServer = new PlexServer();

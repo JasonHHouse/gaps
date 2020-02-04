@@ -277,7 +277,7 @@ public class IoService {
         }
     }
 
-    public void writePlexConfiguration(List<PlexServer> plexServers) {
+    public void writePlexConfiguration(Set<PlexServer> plexServers) {
         final String fileName = STORAGE_FOLDER + PLEX_CONFIGURATION;
         File file = new File(fileName);
         if (file.exists()) {

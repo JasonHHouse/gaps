@@ -87,10 +87,15 @@ public class ConfigurationController {
         try {
             plexQuery.queryPlexServer(plexServer);
             plexQuery.getLibraries(plexServer);
-            gapsService.getPlexSearch().addPlexServer(plexServer);
-            ioService.writePlexConfiguration(gapsService.getPlexSearch().getPlexServers());
 
-            template.convertAndSend("/configuration/plex/complete", plexServer);
+            int initialCount = gapsService.getPlexSearch().getPlexServers().size();
+            gapsService.getPlexSearch().addPlexServer(plexServer);
+            if (gapsService.getPlexSearch().getPlexServers().size() == initialCount) {
+                template.convertAndSend("/configuration/plex/duplicate", "{}");
+            } else {
+                ioService.writePlexConfiguration(gapsService.getPlexSearch().getPlexServers());
+                template.convertAndSend("/configuration/plex/complete", plexServer);
+            }
         } catch (Exception e) {
             LOGGER.error("Could not add plex server", e);
             objectNode.put("failed", true);

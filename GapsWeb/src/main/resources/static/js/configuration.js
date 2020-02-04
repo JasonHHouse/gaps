@@ -8,7 +8,7 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-let plexSpinner, plexSaveSuccess, plexSaveError, plexTestSuccess, plexTestError, plexDeleteSuccess, plexDeleteError;
+let plexSpinner, plexSaveSuccess, plexSaveError, plexTestSuccess, plexTestError, plexDeleteSuccess, plexDeleteError, plexDuplicateError;
 let tmdbSpinner, tmdbSaveSuccess, tmdbSaveError, tmdbTestSuccess, tmdbTestError;
 
 
@@ -26,16 +26,13 @@ document.addEventListener('DOMContentLoaded', function () {
     tmdbSaveError = $('#tmdbSaveError');
     tmdbTestSuccess = $('#tmdbTestSuccess');
     tmdbTestError = $('#tmdbTestError');
+    plexDuplicateError = $('#plexDuplicateError');
 
     const socket = new SockJS('/gs-guide-websocket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
         stompClient.subscribe(`/configuration/plex/complete`, function (message) {
-            const plexSpinner = $('#plexSpinner');
-            const plexSaveSuccess = $('#plexSaveSuccess');
-            const plexSaveError = $('#plexSaveError');
-
             const body = message.body;
 
             plexSpinner.hide();
@@ -58,6 +55,10 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 plexSaveError.show();
             }
+        });
+        stompClient.subscribe(`/configuration/plex/duplicate`, function () {
+            plexSpinner.hide();
+            plexDuplicateError.show();
         });
     });
 });

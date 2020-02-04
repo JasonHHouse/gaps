@@ -10,8 +10,8 @@
 
 package com.jasonhhouse.gaps;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public final class PlexSearch {
 
@@ -19,17 +19,17 @@ public final class PlexSearch {
 
     private String movieDbApiKey;
 
-    private final List<PlexServer> plexServers;
+    private final Set<PlexServer> plexServers;
 
     public PlexSearch() {
-        plexServers = new ArrayList<>();
+        plexServers = new HashSet<>();
     }
 
     public void addPlexServer(PlexServer plexServer) {
         this.plexServers.add(plexServer);
     }
 
-    public List<PlexServer> getPlexServers() {
+    public Set<PlexServer> getPlexServers() {
         return plexServers;
     }
 
