@@ -9,6 +9,7 @@
  */
 package com.jasonhhouse.gaps;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jasonhhouse.gaps.json.MovieDeserializer;
@@ -42,6 +43,7 @@ public final class Movie implements Comparable<Movie> {
     private final int year;
 
     @Nullable
+    @JsonProperty("poster_url")
     private String posterUrl;
 
     @Nullable
@@ -94,6 +96,10 @@ public final class Movie implements Comparable<Movie> {
 
     public int getYear() {
         return year;
+    }
+
+    public void setPosterUrl(String posterUrl) {
+        this.posterUrl = posterUrl;
     }
 
     @Nullable

@@ -46,7 +46,7 @@
 
 <div class="container">
     <h3 class="top-margin">Owned Movies</h3>
-    <h4 class="top-margin" th:text="${plexServer.friendlyName} + ' - ' + ${plexLibrary.title}"></h4>
+    <h4 class="top-margin" id="libraryTitle" th:text="${plexServer.friendlyName} + ' - ' + ${plexLibrary.title}"></h4>
 
     <div class="dropdown show">
         <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
@@ -61,8 +61,11 @@
                    th:each="plexLibrary : *{instance.value.plexLibraries}"
                    th:text="(*{instance.value.friendlyName} + ' - ' + *{plexLibrary.title})"></a>-->
 
-                <a href="javascript:void(0)" th:data-machineIdentifier="*{instance.value.machineIdentifier}"
-                   th:onclick="switchPlexLibrary(this.getAttribute('data-machineIdentifier'))" class="dropdown-item"
+                <a href="javascript:void(0)"
+                   th:data-machineIdentifier="*{instance.value.machineIdentifier}"
+                   th:data-key="*{plexLibrary.key}"
+                   th:onclick="switchPlexLibrary(this.getAttribute('data-machineIdentifier'), this.getAttribute('data-key'))"
+                   class="dropdown-item"
                    th:each="plexLibrary : *{instance.value.plexLibraries}"
                    data-ol-has-click-handler=""
                    th:text="(*{instance.value.friendlyName} + ' - ' + *{plexLibrary.title})"></a>
@@ -93,51 +96,58 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="movie, status : ${movies}">
-                <td>
-
-                    <div class="card mb-3">
-                        <div class="row no-gutters">
-                            <div class="col-md-2">
-                                <img style="height: 100%; width: 150px; display: block;"
-                                     th:src="'http://' + ${plexServer.address}+ ':' + ${plexServer.port} + ${movie.posterUrl} + '/?X-Plex-Token='+ ${plexServer.plexToken}"
-                                     class="card-img" alt="Plex Poster">
-                            </div>
-                            <div class="col-md-10">
-                                <div class="card-body">
-                                    <h5 class="card-title" th:text="${movie.name} + ' (' + ${movie.year} + ')'"></h5>
-                                    <p class="card-text" th:text="${movie.collection}"></p>
-                                    <p class="card-text">Though Goofy always means well, his amiable cluelessness and
-                                        klutzy pratfalls regularly embarrass his awkward adolescent son, Max. When Max's
-                                        lighthearted prank on his high-school principal finally gets his longtime crush,
-                                        Roxanne, to notice him, he asks her on a date. Max's trouble at school convinces
-                                        Goofy that he and the boy need to bond over a cross-country fishing trip like
-                                        the one he took with his dad when he was Max's age, which throws a kink in his
-                                        son's plans to impress Roxanne.</p>
-                                    <p class="card-text"><small class="text-muted">English</small></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </td>
-                <td th:text="${movie.name}" class="word-break" hidden></td>
-                <td th:text="${movie.year}" hidden></td>
-                <td th:text="${movie.language}" class="word-break" hidden></td>
-                <td th:text="${movie.collection}" class="word-break" hidden></td>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>
             </tbody>
         </table>
     </div>
+
 </div>
 
+<script id="movieCard" type="text/x-handlebars-template">
+    <div>{{json movie}}</div>
+
+    <div class="card mb-3">
+        <div class="row no-gutters">
+            <div class="col-md-2">
+                <img style="height: 100%; width: 150px; display: block;"
+                     src="http://{{address}}:{{port}}{{poster_url}}/?X-Plex-Token={{plexToken}}"
+                     class="card-img" alt="Plex Poster">
+            </div>
+            <div class="col-md-10">
+                <div class="card-body">
+                    <h5 class="card-title">{{name}} ({{year}})</h5>
+                    <p class="card-text">{{collection}}</p>
+                    <p class="card-text">Though Goofy always means well, his amiable cluelessness and
+                        klutzy pratfalls regularly embarrass his awkward adolescent son, Max. When Max's
+                        lighthearted prank on his high-school principal finally gets his longtime crush,
+                        Roxanne, to notice him, he asks her on a date. Max's trouble at school convinces
+                        Goofy that he and the boy need to bond over a cross-country fishing trip like
+                        the one he took with his dad when he was Max's age, which throws a kink in his
+                        son's plans to impress Roxanne.</p>
+                    <p class="card-text"><small class="text-muted">English</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<input id="plexServers" name="plexServers" th:value="${{plexServers}}" type="hidden"/>
+<input id="plexServer" name="plexServer" th:value="${{plexServer}}" type="hidden"/>
 <input id="plexSearch" name="plexSearch" th:value="${{plexSearch}}" type="hidden"/>
+<input id="key" name="key" th:value="${{plexLibrary.key}}" type="hidden"/>
 
 <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="/js/datatables.min.js"></script>
 <script type="text/javascript" src="/js/sockjs-1.4.0.min.js"></script>
 <script type="text/javascript" src="/js/stomp-2.3.3.min.js"></script>
+<script type="text/javascript" src="/js/handlebars.js"></script>
 <script type="text/javascript" src="/js/libraries.js"></script>
 </body>
 </html>

@@ -199,4 +199,5 @@ public class ConfigurationController {
 
         return ResponseEntity.ok().body(objectNode.toString());
     }
+
 }

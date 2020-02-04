@@ -72,7 +72,7 @@ public class IoService {
             try {
                 String path = new File(new File(new File(IoService.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParent()).getParent()).getParent();
                 decodedPath = URLDecoder.decode(path, "UTF-8");
-                decodedPath = decodedPath.substring("file:\\" .length());
+                decodedPath = decodedPath.substring("file:\\".length());
             } catch (UnsupportedEncodingException e) {
                 //Do nothing
             }
@@ -209,10 +209,10 @@ public class IoService {
         return false;
     }
 
-    public List<Movie> readOwnedMovies(PlexServer plexServer, PlexLibrary plexLibrary) {
-        LOGGER.info("readOwnedMovies( " + plexServer + " )");
+    public List<Movie> readOwnedMovies(String machineIdentifier, Integer key) {
+        LOGGER.info("readOwnedMovies( " + machineIdentifier + ", " + key + " )");
 
-        final File ownedMovieFile = new File(STORAGE_FOLDER + plexServer.getMachineIdentifier() + File.separator + plexLibrary.getKey() + File.separator + OWNED_MOVIES);
+        final File ownedMovieFile = new File(STORAGE_FOLDER + machineIdentifier + File.separator + key + File.separator + OWNED_MOVIES);
 
         if (!ownedMovieFile.exists()) {
             LOGGER.warn(ownedMovieFile + " does not exist");

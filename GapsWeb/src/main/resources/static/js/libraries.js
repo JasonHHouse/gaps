@@ -8,16 +8,106 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$(document).ready(function () {
+let libraryTitle;
+let plexServers;
+let plexServer;
+let moviesTable;
+let key;
+
+jQuery(function ($) {
     //const plexSearch = JSON.parse($('#plexSearch').val());
 
+    Handlebars.registerHelper('json', function (context) {
+        return JSON.stringify(context);
+    });
+
+    libraryTitle = $('#libraryTitle');
+    plexServers = JSON.parse($('#plexServers').val());
+    plexServer = JSON.parse($('#plexServer').val());
+    key = $('#key').val();
+
     moviesTable = $('#movies').DataTable({
+        serverSide: true,
+        ordering: false,
+        ajax: function (data, callback, settings) {
+            $.ajax({
+                type: "GET",
+                url: `/libraries/${plexServer.machineIdentifier}/${key}`,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    callback({
+                        draw: data.draw,
+                        data: JSON.parse(result.movies),
+                    });
+                }, error: function () {
+                    //Show error
+                    moviesTable.rows().invalidate().draw();
+                }
+            });
+        },
         columns: [
-            {data: "poster"},
-            {data: "title"},
-            {data: "year"},
-            {data: "language"},
-            {data: "collection"},
+            {
+                data: "card",
+                render: function (data, type, row) {
+                    if (type === 'display') {
+                        const obj = {
+                            name: row.name,
+                            year: row.year,
+                            collection: row.collection,
+                            poster_url: row.poster_url,
+                            address: plexServer.address,
+                            port: plexServer.port,
+                            plexToken: plexServer.plexToken
+                        };
+
+                        const plexServerCard = $("#movieCard").html();
+                        const theTemplate = Handlebars.compile(plexServerCard);
+                        return theTemplate(obj);
+                    }
+                    return data;
+                }
+            },
+            {
+                data: "title",
+                visible: false,
+                render: function (data, type, row) {
+                    if (type === 'display') {
+                        return row.name;
+                    }
+                    return data;
+                }
+            },
+            {
+                data: "year",
+                visible: false,
+                render: function (data, type, row) {
+                    if (type === 'display') {
+                        return row.year;
+                    }
+                    return data;
+                }
+            },
+            {
+                data: "language",
+                visible: false,
+                render: function (data, type, row) {
+                    if (type === 'display') {
+                        return row.language;
+                    }
+                    return data;
+                }
+            },
+            {
+                data: "collection",
+                visible: false,
+                render: function (data, type, row) {
+                    if (type === 'display') {
+                        return row.collection;
+                    }
+                    return data;
+                }
+            },
             /*{
                 data: "find_missing",
                 render: function (data, type, row) {
@@ -40,6 +130,27 @@ $(document).ready(function () {
     });
 });
 
-function switchPlexLibrary(plexLibrary) {
-    console.log(`${plexLibrary}`);
+function switchPlexLibrary(machineIdentifier, key) {
+    window.key = key;
+    plexServer = plexServers[machineIdentifier];
+    const plexLibrary = plexServer.plexLibraries.find(plexServer => plexServer.key === parseInt(key));
+    libraryTitle.text(`${plexServer.friendlyName} - ${plexLibrary.title}`);
+
+    moviesTable.data().clear();
+    moviesTable.rows().invalidate().draw();
+
+    $.ajax({
+        type: "GET",
+        url: `/libraries/${machineIdentifier}/${key}`,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+            //need to check result for valid output or not searched yet
+
+            moviesTable.rows.add(JSON.parse(result.movies)).draw();
+        }, error: function () {
+            //Show error
+            moviesTable.rows().invalidate().draw();
+        }
+    });
 }
