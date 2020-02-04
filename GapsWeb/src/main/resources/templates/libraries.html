@@ -62,7 +62,7 @@
                    th:text="(*{instance.value.friendlyName} + ' - ' + *{plexLibrary.title})"></a>-->
 
                 <a href="javascript:void(0)" th:data-machineIdentifier="*{instance.value.machineIdentifier}"
-                   th:onclick="switchPlexLibrary('data-machineIdentifier')" class="dropdown-item"
+                   th:onclick="switchPlexLibrary(this.getAttribute('data-machineIdentifier'))" class="dropdown-item"
                    th:each="plexLibrary : *{instance.value.plexLibraries}"
                    data-ol-has-click-handler=""
                    th:text="(*{instance.value.friendlyName} + ' - ' + *{plexLibrary.title})"></a>

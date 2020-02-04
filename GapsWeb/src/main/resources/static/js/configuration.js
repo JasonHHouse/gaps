@@ -46,6 +46,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else {
                     plexSaveSuccess.show();
 
+                    $('#plexToken').val('');
+                    $('#address').val('');
+                    $('#port').val('32400');
+
                     const plexServerCard = $("#plexServerCard").html();
                     const theTemplate = Handlebars.compile(plexServerCard);
                     const theCompiledHtml = theTemplate(response);

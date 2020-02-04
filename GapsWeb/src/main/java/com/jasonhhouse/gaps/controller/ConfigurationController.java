@@ -156,6 +156,7 @@ public class ConfigurationController {
             objectNode.put("success", false);
         } else {
             gapsService.getPlexSearch().getPlexServers().remove(returnedPlexServer);
+            ioService.writePlexConfiguration(gapsService.getPlexSearch().getPlexServers());
             objectNode.put("success", true);
         }
 

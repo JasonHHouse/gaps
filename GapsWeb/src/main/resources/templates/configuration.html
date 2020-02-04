@@ -189,10 +189,10 @@
                             </ul>
                             <div class="card-body">
                                 <a href="javascript:void(0)" th:data-machineIdentifier="*{plexServer.machineIdentifier}"
-                                   th:onclick="testExistingPlexServer('data-machineIdentifier')" class="card-link"
+                                   th:onclick="testExistingPlexServer(this.getAttribute('data-machineIdentifier'))" class="card-link"
                                    data-ol-has-click-handler="">Test</a>
                                 <a href="javascript:void(0)" th:data-machineIdentifier="*{plexServer.machineIdentifier}"
-                                   th:onclick="removePlexServer('data-machineIdentifier')" class="card-link"
+                                   th:onclick="removePlexServer(this.getAttribute('data-machineIdentifier'))" class="card-link"
                                    data-ol-has-click-handler="">Remove</a>
                             </div>
                             <div class="card-footer text-muted"
@@ -235,7 +235,7 @@
 <script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="/js/sockjs-1.4.0.min.js"></script>
 <script type="text/javascript" src="/js/stomp-2.3.3.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+<script type="text/javascript" src="/js/handlebars.js"></script>
 <script type="text/javascript" src="js/configuration.js"></script>
 </body>
 </html>
