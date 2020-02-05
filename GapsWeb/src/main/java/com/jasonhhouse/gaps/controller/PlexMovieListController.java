@@ -11,64 +11,98 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsService;
-import com.jasonhhouse.gaps.PlexSearchFormatter;
-import com.jasonhhouse.gaps.service.BindingErrorsService;
-import java.util.ArrayList;
+import com.jasonhhouse.gaps.Movie;
+import com.jasonhhouse.gaps.MoviePair;
+import com.jasonhhouse.gaps.PlexLibrary;
+import com.jasonhhouse.gaps.PlexQuery;
+import com.jasonhhouse.gaps.service.IoService;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping(value = "/plexMovieList")
+@RequestMapping(value = "/plex")
 public class PlexMovieListController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PlexMovieListController.class);
 
-    private final BindingErrorsService bindingErrorsService;
+    private final IoService ioService;
     private final GapsService gapsService;
+    private final PlexQuery plexQuery;
 
     @Autowired
-    public PlexMovieListController(BindingErrorsService bindingErrorsService, GapsService gapsService) {
-        this.bindingErrorsService = bindingErrorsService;
+    public PlexMovieListController(IoService ioService, GapsService gapsService, PlexQuery plexQuery) {
+        this.ioService = ioService;
         this.gapsService = gapsService;
-    }
-
-    @RequestMapping(method = RequestMethod.POST,
-            produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView postPlexMovieList(@RequestParam ArrayList<String> selectedLibraries) {
-        LOGGER.info("postPlexMovieList( " + selectedLibraries + " )");
-
-        if (CollectionUtils.isEmpty(selectedLibraries)) {
-            return bindingErrorsService.getErrorPage();
-        }
-
-        gapsService.updateLibrarySelections(selectedLibraries);
-
-        ModelAndView modelAndView = new ModelAndView("plexMovieList");
-        LOGGER.info(gapsService.getPlexSearch().toString());
-        modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
-        return modelAndView;
+        this.plexQuery = plexQuery;
     }
 
     @RequestMapping(method = RequestMethod.GET,
-            produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView getPlexMovieList() {
-        LOGGER.info("getPlexMovieList()");
-        return new ModelAndView("plexMovieList");
+            value = "/movies/{machineIdentifier}/{key}")
+    @ResponseBody
+    public ResponseEntity<List<Movie>> getPlexMovies(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
+        LOGGER.info("getPlexMovies( " + machineIdentifier + ", " + key + " )");
+
+        List<Movie> ownedMovies = ioService.readOwnedMovies(machineIdentifier, key);
+
+        if (CollectionUtils.isNotEmpty(ownedMovies)) {
+            ioService.writeOwnedMoviesToFile(ownedMovies, machineIdentifier, key);
+            return ResponseEntity.ok().body(ownedMovies);
+        }
+
+        Set<Movie> everyMovie = ioService.readMovieIdsFromFile();
+        Map<MoviePair, Movie> previousMovies = generateOwnedMovieMap(everyMovie);
+        String url = generatePlexUrl(machineIdentifier, key);
+        ownedMovies = plexQuery.findAllPlexMovies(previousMovies, url);
+        ioService.writeOwnedMoviesToFile(ownedMovies, machineIdentifier, key);
+        return ResponseEntity.ok().body(ownedMovies);
     }
 
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        LOGGER.info("initBinder()");
-        binder.addCustomFormatter(new PlexSearchFormatter(), "plexSearch");
-        //binder.setValidator(new PlexLibrariesValidator());
+    private Map<MoviePair, Movie> generateOwnedMovieMap(Set<Movie> everyMovie) {
+        Map<MoviePair, Movie> previousMovies = new HashMap<>();
+
+        gapsService
+                .getPlexSearch()
+                .getPlexServers()
+                .forEach(plexServer -> plexServer
+                        .getPlexLibraries()
+                        .stream()
+                        .filter(PlexLibrary::getSelected)
+                        .forEach(plexLibrary -> {
+                            everyMovie
+                                    .forEach(movie -> {
+                                        previousMovies.put(new MoviePair(movie.getName(), movie.getYear()), movie);
+                                    });
+                        }));
+
+        return previousMovies;
     }
+
+    private String generatePlexUrl(String machineIdentifier, Integer key) {
+        LOGGER.info("generatePlexUrl( " + machineIdentifier + ", " + key + " )");
+        return gapsService
+                .getPlexSearch()
+                .getPlexServers()
+                .stream()
+                .filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier))
+                .map(plexServer -> plexServer
+                        .getPlexLibraries()
+                        .stream()
+                        .filter(plexLibrary -> plexLibrary.getKey().equals(key))
+                        .map(plexLibrary -> "http://" + plexServer.getAddress() + ":" + plexServer.getPort() + "/library/sections/" + plexLibrary.getKey() + "/all/?X-Plex-Token=" + plexServer.getPlexToken())
+                        .findFirst().orElse(null))
+                .findFirst()
+                .orElse("");
+    }
+
 }

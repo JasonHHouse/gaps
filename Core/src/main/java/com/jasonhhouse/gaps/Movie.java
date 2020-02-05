@@ -38,6 +38,8 @@ public final class Movie implements Comparable<Movie> {
 
     public static final String LANGUAGE = "language";
 
+    public static final String OVERVIEW = "overview";
+
     private final String name;
 
     private final int year;
@@ -59,7 +61,11 @@ public final class Movie implements Comparable<Movie> {
     @Nullable
     private String language;
 
-    private Movie(String name, int year, @Nullable String posterUrl, @Nullable String collection, int collectionId, int tvdbId, @Nullable String imdbId, @Nullable String language) {
+    @Nullable
+    private String overview;
+
+    private Movie(String name, int year, @Nullable String posterUrl, @Nullable String collection, int collectionId, int tvdbId,
+                  @Nullable String imdbId, @Nullable String language, @Nullable String overview) {
         this.name = name;
         this.year = year;
         this.posterUrl = posterUrl;
@@ -68,6 +74,7 @@ public final class Movie implements Comparable<Movie> {
         this.tvdbId = tvdbId;
         this.imdbId = imdbId;
         this.language = language;
+        this.overview = overview;
     }
 
     public void setCollection(@Nullable String collection) {
@@ -117,6 +124,11 @@ public final class Movie implements Comparable<Movie> {
         return language;
     }
 
+    @Nullable
+    public String getOverview() {
+        return overview;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -163,6 +175,8 @@ public final class Movie implements Comparable<Movie> {
                 ", collectionId=" + collectionId +
                 ", tvdbId=" + tvdbId +
                 ", imdbId='" + imdbId + '\'' +
+                ", language='" + language + '\'' +
+                ", overview='" + overview + '\'' +
                 '}';
     }
 
@@ -188,6 +202,8 @@ public final class Movie implements Comparable<Movie> {
 
         private String language;
 
+        private String overview;
+
         public Builder(String name, int year) {
             this.name = name;
             this.year = year;
@@ -197,10 +213,11 @@ public final class Movie implements Comparable<Movie> {
             this.posterUrl = "";
             this.collectionId = -1;
             this.language = "en";
+            this.overview = "";
         }
 
         public Movie build() {
-            return new Movie(name, year, posterUrl, collection, collectionId, tvdbId, imdbId, language);
+            return new Movie(name, year, posterUrl, collection, collectionId, tvdbId, imdbId, language, overview);
         }
 
         public Builder setPosterUrl(String posterUrl) {
@@ -230,6 +247,11 @@ public final class Movie implements Comparable<Movie> {
 
         public Builder setLanguage(String language) {
             this.language = language;
+            return this;
+        }
+
+        public Builder setOverview(String overview) {
+            this.overview = overview;
             return this;
         }
     }

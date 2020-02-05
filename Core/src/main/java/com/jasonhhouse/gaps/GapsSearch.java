@@ -21,7 +21,13 @@ public interface GapsSearch {
     /**
      * Kicks of searching for all missing movies
      */
+    @Deprecated
     void run();
+
+    /**
+     * Kicks of searching for all missing movies
+     */
+    void run(String machineIdentifier, Integer key);
 
     /**
      * @return The total count of movies to be searched

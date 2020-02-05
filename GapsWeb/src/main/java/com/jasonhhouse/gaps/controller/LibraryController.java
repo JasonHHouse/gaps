@@ -3,6 +3,7 @@ package com.jasonhhouse.gaps.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.jasonhhouse.gaps.GapsSearch;
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.PlexLibrary;
@@ -20,11 +21,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -36,11 +40,13 @@ public class LibraryController {
 
     private final IoService ioService;
     private final GapsService gapsService;
+    private final GapsSearch gapsSearch;
 
     @Autowired
-    public LibraryController(IoService ioService, GapsService gapsService) {
+    public LibraryController(IoService ioService, GapsService gapsService, GapsSearch gapsSearch) {
         this.ioService = ioService;
         this.gapsService = gapsService;
+        this.gapsSearch = gapsSearch;
 
         if (CollectionUtils.isEmpty(gapsService.getPlexSearch().getPlexServers())) {
             //Only add if empty, otherwise the server information should be correct
@@ -134,7 +140,7 @@ public class LibraryController {
 
         ObjectNode objectNode = objectMapper.createObjectNode();
 
-        if (movies == null) {
+        if (CollectionUtils.isEmpty(movies)) {
             objectNode.put("success", false);
             LOGGER.warn("Could not save PlexLibrary");
         } else {
@@ -154,31 +160,25 @@ public class LibraryController {
         return ResponseEntity.ok().body(objectNode.toString());
     }
 
+    @MessageMapping("/search/cancel")
+    public void cancelSearching() {
+        LOGGER.info("cancelSearching()");
+        gapsSearch.cancelSearch();
+    }
 
-  /*  private List<String> buildUrls(List<Movie> movies) {
-        LOGGER.info("buildUrls( " + movies + " ) ");
-        List<String> urls = new ArrayList<>();
-        for (Movie movie : movies) {
-            if (movie.getTvdbId() != -1) {
-                urls.add("https://www.themoviedb.org/movie/" + movie.getTvdbId());
-                continue;
-            }
+    /**
+     * Main REST call to start Gaps searching for missing movies
+     *
+     * @param gaps Needs the gaps object to get started with Plex information and TMDB key
+     */
+    @RequestMapping(value = "search/start/{machineIdentifier}/{key}",
+            method = RequestMethod.PUT)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void postStartSearching(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
+        LOGGER.info("postStartSearching( " + machineIdentifier + ", " + key + " )");
 
-            if (StringUtils.isNotEmpty(movie.getImdbId())) {
-                urls.add("https://www.imdb.com/title/" + movie.getImdbId() + "/");
-                continue;
-            }
+        ioService.migrateJsonSeedFileIfNeeded();
+        gapsSearch.run(machineIdentifier, key);
+    }
 
-            urls.add(null);
-        }
-
-        return urls;
-    }*/
-/*
-
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        LOGGER.info("initBinder()");
-        binder.addCustomFormatter(new PlexServersFormatter());
-    }*/
 }

@@ -127,8 +127,14 @@ public class GapsSearchService implements GapsSearch {
 
     @Override
     @Async
+    @Deprecated
     public void run() {
-        LOGGER.info("run()");
+        throw new IllegalStateException("Do not run this anymore");
+    }
+
+    @Override
+    public void run(String machineIdentifier, Integer key) {
+        LOGGER.info("run( " + machineIdentifier + ", " + key + " )");
 
         searched.clear();
         ownedMovies.clear();
@@ -140,14 +146,6 @@ public class GapsSearchService implements GapsSearch {
         cancelSearch.set(false);
 
         try {
-            //ToDo
-            String sessionId = null;
-//            // Get TMDB Authorization from user,
-//            // requires user input so needs to be done early before user walks away
-            //if (StringUtils.isNotEmpty(gaps.getMovieDbListId())) {
-            //    sessionId = getTmdbAuthorization(gaps);
-            //}
-
             Map<MoviePair, Movie> previousMovies = new HashMap<>();
 
             gapsService
@@ -164,7 +162,8 @@ public class GapsSearchService implements GapsSearch {
                                         });
                             }));
 
-            findAllPlexMovies(previousMovies);
+            List<String> urls = generatePlexUrls(machineIdentifier, key);
+            findAllPlexMovies(previousMovies, urls);
 
             StopWatch watch = new StopWatch();
             watch.start();
@@ -172,11 +171,6 @@ public class GapsSearchService implements GapsSearch {
             watch.stop();
             LOGGER.info("Time Elapsed: " + TimeUnit.MILLISECONDS.toSeconds(watch.getTime()) + " seconds.");
             LOGGER.info("Times used TVDB ID: " + tempTvdbCounter);
-
-            /*if (StringUtils.isNotEmpty(gaps.getMovieDbListId())) {
-                createTmdbList(sessionId);
-            }*/
-
         } catch (SearchCancelledException e) {
             String reason = "Search cancelled";
             LOGGER.error(reason, e);
@@ -187,18 +181,9 @@ public class GapsSearchService implements GapsSearch {
         }
 
         //Always write to log
-        ioService.writeRecommendedToFile(recommended);
+        ioService.writeRecommendedToFile(recommended, machineIdentifier, key);
         ioService.writeMovieIdsToFile(new TreeSet<>(everyMovie));
-
-        gapsService.getPlexSearch()
-                .getPlexServers()
-                .forEach(plexServer -> plexServer
-                        .getPlexLibraries()
-                        .stream()
-                        .filter(PlexLibrary::getSelected)
-                        .forEach(plexLibrary -> {
-                            ioService.writeOwnedMoviesToFile(plexServer, plexLibrary.getKey(), ownedMovies);
-                        }));
+        ioService.writeOwnedMoviesToFile(ownedMovies, machineIdentifier, key);
 
         template.convertAndSend("/finishedSearching", true);
 
@@ -371,15 +356,13 @@ public class GapsSearchService implements GapsSearch {
      * Connect to plex via the URL and parse all the movies from the returned XML creating a HashSet of movies the
      * user has.
      */
-    private void findAllPlexMovies(Map<MoviePair, Movie> previousMovies) throws SearchCancelledException {
+    private void findAllPlexMovies(Map<MoviePair, Movie> previousMovies, List<String> urls) throws SearchCancelledException {
         LOGGER.info("findAllPlexMovies()");
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(180, TimeUnit.SECONDS)
                 .writeTimeout(180, TimeUnit.SECONDS)
                 .readTimeout(180, TimeUnit.SECONDS)
                 .build();
-
-        List<String> urls = generatePlexUrls();
 
         if (CollectionUtils.isEmpty(urls)) {
             LOGGER.info("No URLs added to plexMovieUrls. Check your application.yaml file if needed.");
@@ -819,7 +802,7 @@ public class GapsSearchService implements GapsSearch {
 
                         String movieDetailJson = movieDetailResponse.body() != null ? movieDetailResponse.body().string() : null;
 
-                        LOGGER.debug(movieDetailJson);
+                        LOGGER.info(movieDetailJson);
 
                         if (movieDetailJson == null) {
                             LOGGER.error("Body returned null from TheMovieDB for details on " + movie.getName());
@@ -849,16 +832,18 @@ public class GapsSearchService implements GapsSearch {
                                 .setImdbId(movieDet.get("imdb_id").asText())
                                 .setCollectionId(movie.getCollectionId())
                                 .setCollection(movie.getCollection())
+                                .setPosterUrl("https://image.tmdb.org/t/p/w185/" + movieDet.get("poster_path").asText())
+                                .setOverview(movieDet.get("overview").asText())
                                 .build();
 
                         if (recommended.add(recommendedMovie)) {
                             // Write current list of recommended movies to file.
                             ioService.writeRssFile(recommended);
 
-                            LOGGER.info("/newMovieFound:" + movieFromCollection.toString());
+                            LOGGER.info("/newMovieFound:" + recommendedMovie.toString());
 
                             //Send message over websocket
-                            SearchResults searchResults = new SearchResults(getSearchedMovieCount(), getTotalMovieCount(), movieFromCollection);
+                            SearchResults searchResults = new SearchResults(getSearchedMovieCount(), getTotalMovieCount(), recommendedMovie);
                             template.convertAndSend("/newMovieFound", objectMapper.writeValueAsString(searchResults));
                         }
                     } catch (Exception e) {
@@ -925,5 +910,21 @@ public class GapsSearchService implements GapsSearch {
                                 .collect(Collectors.toList())));
         LOGGER.info("URLS: " + urls.size());
         return urls;
+    }
+
+    private List<String> generatePlexUrls(String machineIdentifier, Integer key) {
+        LOGGER.info("generatePlexUrls( " + machineIdentifier + ", " + key + " )");
+        return gapsService
+                .getPlexSearch()
+                .getPlexServers()
+                .stream()
+                .filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier))
+                .map(plexServer -> plexServer
+                        .getPlexLibraries()
+                        .stream()
+                        .filter(plexLibrary -> plexLibrary.getKey().equals(key))
+                        .map(plexLibrary -> "http://" + plexServer.getAddress() + ":" + plexServer.getPort() + "/library/sections/" + plexLibrary.getKey() + "/all/?X-Plex-Token=" + plexServer.getPlexToken())
+                        .findFirst().orElse(null))
+                .collect(Collectors.toList());
     }
 }

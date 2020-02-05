@@ -30,6 +30,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -170,9 +171,12 @@ public class IoService {
     /**
      * Prints out all recommended movies to recommendedMovies.json
      */
-    public void writeRecommendedToFile(Set<Movie> recommended) {
+    public void writeRecommendedToFile(Set<Movie> recommended, String machineIdentifier, Integer key) {
         LOGGER.info("writeRecommendedToFile()");
-        final String fileName = STORAGE_FOLDER + RECOMMENDED_MOVIES;
+        final String fileName = STORAGE_FOLDER + machineIdentifier + File.separator + key + File.separator + RECOMMENDED_MOVIES;
+
+        makeFolder(machineIdentifier, key);
+
         File file = new File(fileName);
         writeMovieIdsToFile(recommended, file);
     }
@@ -180,17 +184,35 @@ public class IoService {
     /**
      * Prints out all recommended movies to recommendedMovies.json
      */
-    public void writeOwnedMoviesToFile(PlexServer plexServer, int key, Set<Movie> ownedMovies) {
+    public void writeOwnedMoviesToFile(Set<Movie> ownedMovies, String machineIdentifier, int key) {
         LOGGER.info("writeOwnedMoviesToFile()");
-        final String fileName = STORAGE_FOLDER + plexServer.getMachineIdentifier() + File.separator + key + File.separator + OWNED_MOVIES;
+        final String fileName = STORAGE_FOLDER + machineIdentifier + File.separator + key + File.separator + OWNED_MOVIES;
 
-        File folder = new File(STORAGE_FOLDER + plexServer.getMachineIdentifier() + File.separator + key);
+        makeFolder(machineIdentifier, key);
+
+        File file = new File(fileName);
+        writeMovieIdsToFile(ownedMovies, file);
+    }
+
+    /**
+     * Prints out all recommended movies to recommendedMovies.json
+     */
+    public void writeOwnedMoviesToFile(List<Movie> ownedMovies, String machineIdentifier, int key) {
+        LOGGER.info("writeOwnedMoviesToFile()");
+        final String fileName = STORAGE_FOLDER + machineIdentifier + File.separator + key + File.separator + OWNED_MOVIES;
+
+        makeFolder(machineIdentifier, key);
+
+        File file = new File(fileName);
+        writeMovieIdsToFile( new HashSet<>(ownedMovies), file);
+    }
+
+    private void makeFolder(String machineIdentifier, int key) {
+        File folder = new File(STORAGE_FOLDER + machineIdentifier + File.separator + key);
         if (!folder.exists()) {
             folder.mkdirs();
         }
 
-        File file = new File(fileName);
-        writeMovieIdsToFile(ownedMovies, file);
     }
 
     public boolean doOwnedMoviesFilesExist(List<PlexServer> plexServers) {

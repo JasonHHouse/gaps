@@ -67,23 +67,4 @@ class GapsSearchServiceTest {
         assertEquals(0, gapsSearch.getRecommendedMovies().size(), "Should be zero by default");
     }
 
-    @Test
-    void emptyGapsProperty() {
-        Assertions.assertThrows(ResponseStatusException.class, () -> {
-            gapsSearch.run();
-        }, "Should throw exception when not searching from folder and Plex");
-    }
-
-    @Test
-    void noBodyMovieXmlFromPlex() {
-        gapsUrlGeneratorTest.generatePlexUrl(GapsUrlGeneratorTest.PLEX_EMPTY_URL);
-        Assertions.assertThrows(ResponseStatusException.class, () -> gapsSearch.run(), "Should throw exception that the body was empty");
-    }
-
-    @Test
-    void emptyMovieXmlFromPlex() {
-        gapsUrlGeneratorTest.generatePlexUrl(GapsUrlGeneratorTest.EMPTY_MOVIE_PLEX_URL);
-        Assertions.assertThrows(ResponseStatusException.class, () -> gapsSearch.run(), "Should throw exception that the title was missing from the video element");
-    }
-
 }

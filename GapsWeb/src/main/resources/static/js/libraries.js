@@ -8,66 +8,50 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-let libraryTitle;
+let libraryTitle, noMovieContainer, movieContainer;
 let plexServers;
 let plexServer;
 let moviesTable;
-let key;
+let libraryKey;
+
 
 jQuery(function ($) {
-    //const plexSearch = JSON.parse($('#plexSearch').val());
-
     Handlebars.registerHelper('json', function (context) {
         return JSON.stringify(context);
     });
 
     libraryTitle = $('#libraryTitle');
+    noMovieContainer = $('#noMovieContainer');
+    movieContainer = $('#movieContainer');
     plexServers = JSON.parse($('#plexServers').val());
     plexServer = JSON.parse($('#plexServer').val());
-    key = $('#key').val();
+    libraryKey = $('#libraryKey').val();
 
     moviesTable = $('#movies').DataTable({
-        "initComplete": function (settings, json) {
-            $.ajax({
-                type: "GET",
-                url: `/libraries/${plexServer.machineIdentifier}/${key}`,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (result) {
-                    //need to check result for valid output or not searched yet
-                    console.log(JSON.parse(result.movies));
-                    moviesTable.rows.add(JSON.parse(result.movies)).draw();
-                }, error: function () {
-                    //Show error
-                    moviesTable.rows().invalidate().draw();
-                }
-            });
+        initComplete: function () {
+            getMoviesForTable(`/libraries/${plexServer.machineIdentifier}/${libraryKey}`);
         },
-        ordering: false,
+        deferRender: true,
+        search: true,
         columns: [
             {
                 data: "card",
                 render: function (data, type, row) {
                     if (type === 'display') {
-                        const obj = {
-                            name: row.name,
-                            year: row.year,
-                            collection: row.collection,
-                            poster_url: row.poster_url,
-                            address: plexServer.address,
-                            port: plexServer.port,
-                            plexToken: plexServer.plexToken
-                        };
+                        row.address = plexServer.address;
+                        row.port = plexServer.port;
+                        row.plexToken = plexServer.plexToken;
 
                         const plexServerCard = $("#movieCard").html();
                         const theTemplate = Handlebars.compile(plexServerCard);
-                        return theTemplate(obj);
+                        return theTemplate(row);
                     }
                     return "";
                 }
             },
             {
                 data: "title",
+                searchable: true,
                 visible: false,
                 render: function (data, type, row) {
                     if (type === 'display' && row.name) {
@@ -78,6 +62,7 @@ jQuery(function ($) {
             },
             {
                 data: "year",
+                searchable: true,
                 visible: false,
                 render: function (data, type, row) {
                     if (type === 'display' && row.year) {
@@ -88,6 +73,7 @@ jQuery(function ($) {
             },
             {
                 data: "language",
+                searchable: true,
                 visible: false,
                 render: function (data, type, row) {
                     if (type === 'display' && row.language) {
@@ -97,30 +83,23 @@ jQuery(function ($) {
                 }
             },
             {
-                data: "collection",
+                data: "summary",
+                searchable: true,
                 visible: false,
                 render: function (data, type, row) {
-                    if (type === 'display' && row.collection) {
-                        return row.collection;
+                    if (type === 'display' && row.overview) {
+                        return row.overview;
                     }
                     return "";
                 }
             },
-        ],
-        select: {
-            style: 'os',
-            selector: 'td:not(:last-child)' // no row selection on last column
-        },
-        rowCallback: function (row, data) {
-            // Set the checked state of the checkbox in the table
-            $('input.editor-active', row).prop('checked', data.active == 1);
-        }
+        ]
     });
 
 });
 
 function switchPlexLibrary(machineIdentifier, key) {
-    window.key = key;
+    libraryKey = key;
     plexServer = plexServers[machineIdentifier];
     const plexLibrary = plexServer.plexLibraries.find(plexServer => plexServer.key === parseInt(key));
     libraryTitle.text(`${plexServer.friendlyName} - ${plexLibrary.title}`);
@@ -128,18 +107,42 @@ function switchPlexLibrary(machineIdentifier, key) {
     moviesTable.data().clear();
     moviesTable.rows().invalidate().draw();
 
+    getMoviesForTable(`/libraries/${machineIdentifier}/${libraryKey}`);
+}
+
+function getMoviesForTable(url) {
     $.ajax({
         type: "GET",
-        url: `/libraries/${machineIdentifier}/${key}`,
+        url: url,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (result) {
-            //need to check result for valid output or not searched yet
-            console.log(JSON.parse(result.movies));
-            moviesTable.rows.add(JSON.parse(result.movies)).draw();
+            if (result.success) {
+                movieContainer.show(100);
+                noMovieContainer.css({'display': 'none'});
+                moviesTable.rows.add(JSON.parse(result.movies)).draw();
+            } else {
+                movieContainer.css({'display': 'none'});
+                noMovieContainer.show(100);
+            }
         }, error: function () {
-            //Show error
-            moviesTable.rows().invalidate().draw();
+            movieContainer.css({'display': 'none'});
+            noMovieContainer.show(100);
+            //Show error + error
+        }
+    });
+}
+
+function searchForMovies() {
+    movieContainer.show(100);
+    noMovieContainer.css({'display': 'none'});
+
+    $.ajax({
+        type: "GET",
+        url: `/plex/movies/${plexServer.machineIdentifier}/${libraryKey}`,
+        contentType: "application/json",
+        success: function (data) {
+            moviesTable.rows.add(data).draw();
         }
     });
 }
