@@ -27,25 +27,23 @@ jQuery(function ($) {
     key = $('#key').val();
 
     moviesTable = $('#movies').DataTable({
-        serverSide: true,
-        ordering: false,
-        ajax: function (data, callback, settings) {
+        "initComplete": function (settings, json) {
             $.ajax({
                 type: "GET",
                 url: `/libraries/${plexServer.machineIdentifier}/${key}`,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (result) {
-                    callback({
-                        draw: data.draw,
-                        data: JSON.parse(result.movies),
-                    });
+                    //need to check result for valid output or not searched yet
+                    console.log(JSON.parse(result.movies));
+                    moviesTable.rows.add(JSON.parse(result.movies)).draw();
                 }, error: function () {
                     //Show error
                     moviesTable.rows().invalidate().draw();
                 }
             });
         },
+        ordering: false,
         columns: [
             {
                 data: "card",
@@ -65,59 +63,49 @@ jQuery(function ($) {
                         const theTemplate = Handlebars.compile(plexServerCard);
                         return theTemplate(obj);
                     }
-                    return data;
+                    return "";
                 }
             },
             {
                 data: "title",
                 visible: false,
                 render: function (data, type, row) {
-                    if (type === 'display') {
+                    if (type === 'display' && row.name) {
                         return row.name;
                     }
-                    return data;
+                    return "";
                 }
             },
             {
                 data: "year",
                 visible: false,
                 render: function (data, type, row) {
-                    if (type === 'display') {
+                    if (type === 'display' && row.year) {
                         return row.year;
                     }
-                    return data;
+                    return "";
                 }
             },
             {
                 data: "language",
                 visible: false,
                 render: function (data, type, row) {
-                    if (type === 'display') {
+                    if (type === 'display' && row.language) {
                         return row.language;
                     }
-                    return data;
+                    return "";
                 }
             },
             {
                 data: "collection",
                 visible: false,
                 render: function (data, type, row) {
-                    if (type === 'display') {
+                    if (type === 'display' && row.collection) {
                         return row.collection;
                     }
-                    return data;
+                    return "";
                 }
             },
-            /*{
-                data: "find_missing",
-                render: function (data, type, row) {
-                    if (type === 'display') {
-                        return '<input type="checkbox" class="editor-active">';
-                    }
-                    return data;
-                },
-                className: "dt-body-center"
-            }*/
         ],
         select: {
             style: 'os',
@@ -128,6 +116,7 @@ jQuery(function ($) {
             $('input.editor-active', row).prop('checked', data.active == 1);
         }
     });
+
 });
 
 function switchPlexLibrary(machineIdentifier, key) {
@@ -146,7 +135,7 @@ function switchPlexLibrary(machineIdentifier, key) {
         dataType: "json",
         success: function (result) {
             //need to check result for valid output or not searched yet
-
+            console.log(JSON.parse(result.movies));
             moviesTable.rows.add(JSON.parse(result.movies)).draw();
         }, error: function () {
             //Show error
