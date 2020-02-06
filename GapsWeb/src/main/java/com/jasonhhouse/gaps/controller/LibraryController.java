@@ -59,13 +59,8 @@ public class LibraryController {
             path = "/libraries")
     public ModelAndView getLibraries() {
         LOGGER.info("getLibraries()");
-/*
-        if (CollectionUtils.isEmpty(gapsService.getPlexSearch().getPlexServers())) {
-            //Only add if empty, otherwise the server information should be correct
-            List<PlexServer> plexServers = ioService.readPlexConfiguration();
-            gapsService.getPlexSearch().getPlexServers().addAll(plexServers);
-        }*/
 
+        boolean plexServersFound;
         List<Movie> movies;
         PlexServer plexServer;
         PlexLibrary plexLibrary;
@@ -74,21 +69,15 @@ public class LibraryController {
             plexServer = gapsService.getPlexSearch().getPlexServers().stream().findFirst().orElse(new PlexServer());
             plexLibrary = plexServer.getPlexLibraries().stream().findFirst().orElse(new PlexLibrary());
             movies = ioService.readOwnedMovies(plexServer.getMachineIdentifier(), plexLibrary.getKey());
+            plexServersFound = true;
         } else {
             plexServer = new PlexServer();
             plexLibrary = new PlexLibrary();
             movies = Collections.emptyList();
+            plexServersFound = false;
         }
 
-        /*if (!ioService.doOwnedMoviesFilesExist(gapsService.getPlexSearch().getPlexServers())) {
-            //Show empty page
-            return new ModelAndView("emptyState");
-        } else {*/
-        //ToDo
-        //Need to write a way to get all movies or break up the UI per library (Maybe just show the library the movie came from in the table)
         Map<String, PlexServer> plexServerMap = gapsService.getPlexSearch().getPlexServers().stream().collect(Collectors.toMap(PlexServer::getMachineIdentifier, Function.identity()));
-
-        //LOGGER.info("ownedMovies.size():" + ownedMovies.size());
 
         if (CollectionUtils.isEmpty(movies)) {
             LOGGER.info("No owned movies found.");
@@ -115,6 +104,7 @@ public class LibraryController {
         modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
         modelAndView.addObject("plexServer", plexServer);
         modelAndView.addObject("plexLibrary", plexLibrary);
+        modelAndView.addObject("plexServersFound", plexServersFound);
         return modelAndView;
         //}
     }
@@ -125,18 +115,7 @@ public class LibraryController {
     public ResponseEntity<String> getLibraries(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("getLibraries( " + machineIdentifier + ", " + key + " )");
 
-        List<Movie> movies = ioService
-                .readOwnedMovies(machineIdentifier, key);
-                /*.stream()
-                .map(movie -> {
-                    String[] output = new String[5];
-                    output[0] = movie.getPosterUrl();
-                    output[1] = movie.getName();
-                    output[2] = String.valueOf(movie.getYear());
-                    output[3] = movie.getLanguage();
-                    output[4] = movie.getCollection();
-                    return output;
-                }).collect(Collectors.toList());*/
+        List<Movie> movies = ioService.readOwnedMovies(machineIdentifier, key);
 
         ObjectNode objectNode = objectMapper.createObjectNode();
 
