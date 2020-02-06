@@ -21,28 +21,7 @@ public interface GapsSearch {
     /**
      * Kicks of searching for all missing movies
      */
-    @Deprecated
-    void run();
-
-    /**
-     * Kicks of searching for all missing movies
-     */
     void run(String machineIdentifier, Integer key);
-
-    /**
-     * @return The total count of movies to be searched
-     */
-    @NotNull Integer getTotalMovieCount();
-
-    /**
-     * @return The current count of movies searched
-     */
-    @NotNull Integer getSearchedMovieCount();
-
-    /**
-     * @return The movies that are missing from collections
-     */
-    @NotNull CopyOnWriteArrayList<Movie> getRecommendedMovies();
 
     /**
      * Cancel the current search

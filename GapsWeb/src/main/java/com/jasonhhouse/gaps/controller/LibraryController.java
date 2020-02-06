@@ -40,13 +40,11 @@ public class LibraryController {
 
     private final IoService ioService;
     private final GapsService gapsService;
-    private final GapsSearch gapsSearch;
 
     @Autowired
-    public LibraryController(IoService ioService, GapsService gapsService, GapsSearch gapsSearch) {
+    public LibraryController(IoService ioService, GapsService gapsService) {
         this.ioService = ioService;
         this.gapsService = gapsService;
-        this.gapsSearch = gapsSearch;
 
         if (CollectionUtils.isEmpty(gapsService.getPlexSearch().getPlexServers())) {
             //Only add if empty, otherwise the server information should be correct
@@ -61,27 +59,20 @@ public class LibraryController {
         LOGGER.info("getLibraries()");
 
         boolean plexServersFound;
-        List<Movie> movies;
         PlexServer plexServer;
         PlexLibrary plexLibrary;
         if (CollectionUtils.isNotEmpty(gapsService.getPlexSearch().getPlexServers())) {
             //Read first plex servers movies
             plexServer = gapsService.getPlexSearch().getPlexServers().stream().findFirst().orElse(new PlexServer());
             plexLibrary = plexServer.getPlexLibraries().stream().findFirst().orElse(new PlexLibrary());
-            movies = ioService.readOwnedMovies(plexServer.getMachineIdentifier(), plexLibrary.getKey());
             plexServersFound = true;
         } else {
             plexServer = new PlexServer();
             plexLibrary = new PlexLibrary();
-            movies = Collections.emptyList();
             plexServersFound = false;
         }
 
         Map<String, PlexServer> plexServerMap = gapsService.getPlexSearch().getPlexServers().stream().collect(Collectors.toMap(PlexServer::getMachineIdentifier, Function.identity()));
-
-        if (CollectionUtils.isEmpty(movies)) {
-            LOGGER.info("No owned movies found.");
-        }
 
         if (StringUtils.isEmpty(gapsService.getPlexSearch().getMovieDbApiKey())) {
             try {
@@ -99,14 +90,12 @@ public class LibraryController {
         }
 
         ModelAndView modelAndView = new ModelAndView("libraries");
-        modelAndView.addObject("movies", movies);
         modelAndView.addObject("plexServers", plexServerMap);
         modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
         modelAndView.addObject("plexServer", plexServer);
         modelAndView.addObject("plexLibrary", plexLibrary);
         modelAndView.addObject("plexServersFound", plexServersFound);
         return modelAndView;
-        //}
     }
 
     @RequestMapping(method = RequestMethod.GET,
@@ -121,7 +110,7 @@ public class LibraryController {
 
         if (CollectionUtils.isEmpty(movies)) {
             objectNode.put("success", false);
-            LOGGER.warn("Could not save PlexLibrary");
+            LOGGER.warn("Could not find Plex Library movies");
         } else {
 
             String output;
@@ -137,27 +126,6 @@ public class LibraryController {
         }
 
         return ResponseEntity.ok().body(objectNode.toString());
-    }
-
-    @MessageMapping("/search/cancel")
-    public void cancelSearching() {
-        LOGGER.info("cancelSearching()");
-        gapsSearch.cancelSearch();
-    }
-
-    /**
-     * Main REST call to start Gaps searching for missing movies
-     *
-     * @param gaps Needs the gaps object to get started with Plex information and TMDB key
-     */
-    @RequestMapping(value = "search/start/{machineIdentifier}/{key}",
-            method = RequestMethod.PUT)
-    @ResponseStatus(value = HttpStatus.OK)
-    public void postStartSearching(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
-        LOGGER.info("postStartSearching( " + machineIdentifier + ", " + key + " )");
-
-        ioService.migrateJsonSeedFileIfNeeded();
-        gapsSearch.run(machineIdentifier, key);
     }
 
 }

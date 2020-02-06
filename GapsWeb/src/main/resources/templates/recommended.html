@@ -47,33 +47,129 @@
 <div class="container">
     <h3 class="top-margin">Recommended Movies</h3>
 
-    <div class="top-margin">
-        <table id="movies" class="display" style="width:100%">
+    <h4 class="top-margin" id="libraryTitle"
+        th:text="${plexServer.friendlyName} + ' - ' + ${plexLibrary.title}"></h4>
+
+    <div class="dropdown show">
+        <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+           data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">
+            Recommended
+        </a>
+
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <div th:each="instance : ${plexServers}" th:remove="tag">
+                <a href="javascript:void(0)"
+                   th:data-machineIdentifier="*{instance.value.machineIdentifier}"
+                   th:data-key="*{plexLibrary.key}"
+                   th:onclick="switchPlexLibrary(this.getAttribute('data-machineIdentifier'), this.getAttribute('data-key'))"
+                   class="dropdown-item"
+                   th:each="plexLibrary : *{instance.value.plexLibraries}"
+                   data-ol-has-click-handler=""
+                   th:text="(*{instance.value.friendlyName} + ' - ' + *{plexLibrary.title})"></a>
+            </div>
+        </div>
+    </div>
+
+    <div id="notSearchedYetContainer" class="top-margin bottom-margin" style="display: none;">
+        <div class="card mx-auto" style="width: 24rem;">
+            <img src="/images/mind_the_gap.png" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Your movies are really missing</h5>
+                <p class="card-text">You need to run Gaps at least once to have found the missing movies.</p>
+                <a href="javascript:void(0)" onclick="searchForMovies()" class="btn btn-primary">Search</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="noMovieContainer" class="top-margin bottom-margin" style="display: none;">
+        <div class="card mx-auto" style="width: 24rem;">
+            <img src="/images/mind_the_gap.png" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Your movies are really missing</h5>
+                <p class="card-text">You need to find your owned movies first.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="movieContainer" class="top-margin bottom-margin" style="display: none;">
+
+        <div id="searchContainer" style="display: none;">
+            <div id="copiedToClipboard" class="alert alert-primary alert-dismissible fade show gaps-hide" role="alert">
+                Copied to Clipboard
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <h2 id="searchTitle" class="top-margin">Searching for Movies</h2>
+
+            <div id="searchDescription" class="top-margin">
+                <p>Finding all movies in Plex</p>
+            </div>
+
+            <div id="progressContainer" class="progress top-margin">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                     aria-valuenow="75"
+                     aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+            </div>
+        </div>
+
+        <table id="movies" class="display top-margin" style="width:100%">
             <thead>
             <tr>
-                <th>Title</th>
-                <th>Year</th>
-                <th>Collection</th>
-                <th>Link</th>
+                <th>Movie</th>
+                <th hidden>Title</th>
+                <th hidden>Year</th>
+                <th hidden>Language</th>
+                <th hidden>Summary</th>
             </tr>
             </thead>
-            <tbody>
-            <tr th:each="movie, status : ${recommended}">
-                <td th:text="${movie.name}" class="word-break"></td>
-                <td th:text="${movie.year}"></td>
-                <td th:text="${movie.collection}" class="word-break"></td>
-                <td><a target="_blank" th:href="${urls.get(status.index)}">Details</a></td>
-            </tr>
-            </tbody>
         </table>
+
+        <button type="button" class="btn btn-secondary" onclick="copyToClipboard()">Copy</button>
+        <button type="button" class="btn btn-secondary" onclick="searchForMovies()">Re-Search</button>
+        <button type="button" class="btn btn-warning" onclick="cancel()">Cancel</button>
     </div>
+
 </div>
+
+<script id="movieCard" type="text/x-handlebars-template">
+    <div>{{json movie}}</div>
+
+    <div class="card mb-3">
+        <div class="row no-gutters">
+            <div class="col-md-2">
+                <img style="height: 225px; width: 150px; display: block;"
+                     src="{{poster_url}}"
+                     class="card-img" alt="Plex Poster">
+            </div>
+            <div class="col-md-10">
+                <div class="card-body">
+                    <h5 class="card-title">{{name}} ({{year}})</h5>
+                    <p class="card-text text-muted">{{overview}}</p>
+                    <p class="card-text"><small class="text-info">English</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="updateSearchDescription" type="text/x-handlebars-template">
+    <p class="card-text">{{searchedMovieCount}} of {{totalMovieCount}} movies searched. {{percentage}}% complete.</p>
+</script>
+
+<input id="plexServers" name="plexServers" th:value="${{plexServers}}" type="hidden"/>
+<input id="plexServer" name="plexServer" th:value="${{plexServer}}" type="hidden"/>
+<input id="plexSearch" name="plexSearch" th:value="${{plexSearch}}" type="hidden"/>
+<input id="libraryKey" name="libraryKey" th:value="${{plexLibrary.key}}" type="hidden"/>
 
 <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="/js/datatables.min.js"></script>
 <script type="text/javascript" src="/js/sockjs-1.4.0.min.js"></script>
 <script type="text/javascript" src="/js/stomp-2.3.3.min.js"></script>
+<script type="text/javascript" src="/js/handlebars.js"></script>
 <script type="text/javascript" src="/js/recommended.js"></script>
 </body>
 </html>

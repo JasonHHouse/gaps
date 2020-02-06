@@ -44,8 +44,6 @@ public class SearchController {
 
     /**
      * Main REST call to start Gaps searching for missing movies
-     *
-     * @param gaps Needs the gaps object to get started with Plex information and TMDB key
      */
     @RequestMapping(value = "startSearching", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
@@ -54,6 +52,7 @@ public class SearchController {
 
         ioService.migrateJsonSeedFileIfNeeded();
 
-        gapsSearch.run();
+        throw new IllegalStateException("Need to pass in machineIdentifier and plex key");
+        //gapsSearch.run();
     }
 }

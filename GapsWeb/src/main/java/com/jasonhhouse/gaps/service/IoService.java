@@ -89,14 +89,32 @@ public class IoService {
         return new File(STORAGE_FOLDER + RECOMMENDED_MOVIES).exists();
     }
 
-    public @NotNull String getRecommendedMovies() {
-        try {
-            Path path = new File(STORAGE_FOLDER + RECOMMENDED_MOVIES).toPath();
-            return new String(Files.readAllBytes(path));
-        } catch (IOException e) {
-            LOGGER.error("Check for the recommended file next time", e);
-            return "";
+    public @NotNull List<Movie> readRecommendedMovies(String machineIdentifier, int key) {
+        LOGGER.info("readRecommendedMovies( " + machineIdentifier + ", " + key + " )");
+
+        final File ownedMovieFile = new File(STORAGE_FOLDER + machineIdentifier + File.separator + key + File.separator + RECOMMENDED_MOVIES);
+
+        if (!ownedMovieFile.exists()) {
+            LOGGER.warn(ownedMovieFile + " does not exist");
+            return Collections.emptyList();
         }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(ownedMovieFile))) {
+            StringBuilder fullFile = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                fullFile.append(line);
+            }
+
+            return objectMapper.readValue(fullFile.toString(), new TypeReference<List<Movie>>() {
+            });
+        } catch (FileNotFoundException e) {
+            LOGGER.error("Can't find file " + ownedMovieFile, e);
+        } catch (IOException e) {
+            LOGGER.error("Can't read the file " + ownedMovieFile, e);
+        }
+
+        return Collections.emptyList();
     }
 
     public boolean doesRssFileExist() {
