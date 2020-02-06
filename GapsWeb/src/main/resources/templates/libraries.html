@@ -48,10 +48,12 @@
     <h3 class="top-margin">Owned Movies</h3>
 
     <div th:if="${plexServersFound}" th:remove="tag">
-        <h4 class="top-margin" id="libraryTitle" th:text="${plexServer.friendlyName} + ' - ' + ${plexLibrary.title}"></h4>
+        <h4 class="top-margin" id="libraryTitle"
+            th:text="${plexServer.friendlyName} + ' - ' + ${plexLibrary.title}"></h4>
 
         <div class="dropdown show">
-            <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+            <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+               data-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">
                 Libraries
             </a>
@@ -67,6 +69,17 @@
                        data-ol-has-click-handler=""
                        th:text="(*{instance.value.friendlyName} + ' - ' + *{plexLibrary.title})"></a>
                 </div>
+            </div>
+        </div>
+
+        <div id="movieSearchingContainer" class="top-margin bottom-margin" style="display: none;">
+            <div class="d-flex justify-content-center top-margin ">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Searching Plex for Movies</span>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center top-margin">
+                <p class="card-text">Searching Plex for Movies</p>
             </div>
         </div>
 
@@ -103,7 +116,8 @@
                 <img src="/images/mind_the_gap.png" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">Your movies are really missing</h5>
-                    <p class="card-text">You need to configure Gaps before you can search for missing movies. Check out the <a href="https://github.com/JasonHHouse/Gaps/blob/master/README.md">README</a> file.</p>
+                    <p class="card-text">You need to configure Gaps before you can search for missing movies. Check out
+                        the <a href="https://github.com/JasonHHouse/Gaps/blob/master/README.md">README</a> file.</p>
                 </div>
             </div>
         </div>
