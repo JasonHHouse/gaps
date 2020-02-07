@@ -16,10 +16,8 @@ import java.util.Set;
 public final class PlexSearch {
 
     public static final String MOVIE_DB_API_KEY = "movieDbApiKey";
-
-    private String movieDbApiKey;
-
     private final Set<PlexServer> plexServers;
+    private String movieDbApiKey;
 
     public PlexSearch() {
         plexServers = new HashSet<>();

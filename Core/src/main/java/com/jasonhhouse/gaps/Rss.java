@@ -40,44 +40,44 @@ public class Rss {
         this.posterPath = posterPath;
     }
 
-    public void setImdbId(String imdbId) {
-        this.imdbId = imdbId;
-    }
-
-    public void setReleaseDate(Integer releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
-    public void setTvdbId(Integer tvdbId) {
-        this.tvdbId = tvdbId;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setPosterPath(String posterPath) {
-        this.posterPath = posterPath;
-    }
-
     public String getImdbId() {
         return imdbId;
+    }
+
+    public void setImdbId(String imdbId) {
+        this.imdbId = imdbId;
     }
 
     public Integer getReleaseDate() {
         return releaseDate;
     }
 
+    public void setReleaseDate(Integer releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
     public Integer getTvdbId() {
         return tvdbId;
+    }
+
+    public void setTvdbId(Integer tvdbId) {
+        this.tvdbId = tvdbId;
     }
 
     public String getTitle() {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getPosterPath() {
         return posterPath;
+    }
+
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
     }
 
     @Override

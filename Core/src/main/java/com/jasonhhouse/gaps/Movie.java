@@ -77,10 +77,6 @@ public final class Movie implements Comparable<Movie> {
         this.overview = overview;
     }
 
-    public void setCollection(@Nullable String collection) {
-        this.collection = collection;
-    }
-
     public int getCollectionId() {
         return collectionId;
     }
@@ -105,13 +101,13 @@ public final class Movie implements Comparable<Movie> {
         return year;
     }
 
-    public void setPosterUrl(String posterUrl) {
-        this.posterUrl = posterUrl;
-    }
-
     @Nullable
     public String getCollection() {
         return collection;
+    }
+
+    public void setCollection(@Nullable String collection) {
+        this.collection = collection;
     }
 
     @Nullable
@@ -163,6 +159,10 @@ public final class Movie implements Comparable<Movie> {
     @Nullable
     public String getPosterUrl() {
         return posterUrl;
+    }
+
+    public void setPosterUrl(String posterUrl) {
+        this.posterUrl = posterUrl;
     }
 
     @Override

@@ -26,32 +26,20 @@ public class PlexServer {
         plexLibraries = new TreeSet<>();
     }
 
-    public void setPlexToken(String plexToken) {
-        this.plexToken = plexToken;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setPort(Integer port) {
-        this.port = port;
+    public String getFriendlyName() {
+        return friendlyName;
     }
 
     public void setFriendlyName(String friendlyName) {
         this.friendlyName = friendlyName;
     }
 
-    public void setMachineIdentifier(String machineIdentifier) {
-        this.machineIdentifier = machineIdentifier;
-    }
-
-    public String getFriendlyName() {
-        return friendlyName;
-    }
-
     public String getMachineIdentifier() {
         return machineIdentifier;
+    }
+
+    public void setMachineIdentifier(String machineIdentifier) {
+        this.machineIdentifier = machineIdentifier;
     }
 
     public Set<PlexLibrary> getPlexLibraries() {
@@ -62,12 +50,24 @@ public class PlexServer {
         return plexToken;
     }
 
+    public void setPlexToken(String plexToken) {
+        this.plexToken = plexToken;
+    }
+
     public String getAddress() {
         return address;
     }
 
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public Integer getPort() {
         return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
     }
 
     @Override

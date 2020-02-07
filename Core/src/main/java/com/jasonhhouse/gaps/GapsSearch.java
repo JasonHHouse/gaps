@@ -10,9 +10,6 @@
 
 package com.jasonhhouse.gaps;
 
-import java.util.concurrent.CopyOnWriteArrayList;
-import org.jetbrains.annotations.NotNull;
-
 /**
  * Handles the process of searching, movies, counts, and canceling
  */
