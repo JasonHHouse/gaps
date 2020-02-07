@@ -213,6 +213,15 @@ describe('Hooks', function () {
             .should('not.be.visible');
 
         //Define card here
+        cy.get('.card-header')
+            .should('have.text', 'KnoxServer');
+
+        cy.get('.list-group > :nth-child(1)')
+            .should('have.text', 'Disney Classic Movies');
+
+        cy.get('.list-group > :nth-child(2)')
+            .should('have.text', 'Movies');
+
     });
 });
 

@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
         stompClient.subscribe(`/configuration/plex/complete`, function (message) {
             const payload = JSON.parse(message.body);
 
-            plexSpinner.hide();
+            hideAllAlertsAndSpinners();
 
             if(payload && payload.code === 13) {
                 //Success
@@ -89,14 +89,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }*/
         });
         stompClient.subscribe(`/configuration/plex/duplicate`, function () {
-            plexSpinner.hide();
+            hideAllAlertsAndSpinners();
             plexDuplicateError.show();
         });
     });
 });
 
 function testTmdbKey() {
-    hideAllAlerts();
+    hideAllAlertsAndSpinners();
 
     if (!$('#tmdbConfiguration')[0].checkValidity()) {
         return false;
@@ -110,14 +110,14 @@ function testTmdbKey() {
         contentType: "application/json",
         dataType: "json",
         success: function (result) {
-            tmdbSpinner.hide();
+            hideAllAlertsAndSpinners();
             if (result && result.code === 20) {
                 tmdbTestSuccess.show();
             } else {
                 tmdbTestError.show();
             }
         }, error: function () {
-            tmdbSpinner.hide();
+            hideAllAlertsAndSpinners();
             tmdbTestError.show();
         }
     });
@@ -125,7 +125,7 @@ function testTmdbKey() {
 
 
 function saveTmdbKey() {
-    hideAllAlerts();
+    hideAllAlertsAndSpinners();
 
     if (!$('#tmdbConfiguration')[0].checkValidity()) {
         return false;
@@ -138,21 +138,21 @@ function saveTmdbKey() {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (result) {
-            tmdbSpinner.hide();
+            hideAllAlertsAndSpinners();
             if (result && result.code === 23) {
                 tmdbSaveSuccess.show();
             } else {
                 tmdbSaveError.show();
             }
         }, error: function () {
-            tmdbSpinner.hide();
+            hideAllAlertsAndSpinners();
             tmdbSaveError.show();
         }
     });
 }
 
 function testPlexServer() {
-    hideAllAlerts();
+    hideAllAlertsAndSpinners();
 
     if (!$('#plexConfiguration')[0].checkValidity()) {
         return false;
@@ -170,21 +170,21 @@ function testPlexServer() {
         },
         dataType: "json",
         success: function (result) {
-            plexSpinner.hide();
+            hideAllAlertsAndSpinners();
             if (result && result.code === 10) {
                 plexTestSuccess.show();
             } else {
                 plexTestError.show();
             }
         }, error: function () {
-            plexSpinner.hide();
+            hideAllAlertsAndSpinners();
             plexTestError.show();
         }
     });
 }
 
 function addPlexServer() {
-    hideAllAlerts();
+    hideAllAlertsAndSpinners();
 
     if (!$('#plexConfiguration')[0].checkValidity()) {
         return false;
@@ -201,14 +201,14 @@ function addPlexServer() {
             'port': $('#port').val()
         },
         error: function () {
-            plexSpinner.hide();
+            hideAllAlertsAndSpinners();
             plexSaveError.show();
         }
     });
 }
 
 function testExistingPlexServer(machineIdentifier) {
-    hideAllAlerts();
+    hideAllAlertsAndSpinners();
     plexSpinner.show();
 
     $.ajax({
@@ -216,28 +216,28 @@ function testExistingPlexServer(machineIdentifier) {
         url: `/configuration/test/plex/${machineIdentifier}`,
         dataType: "json",
         success: function (result) {
-            plexSpinner.hide();
+            hideAllAlertsAndSpinners();
             if (result && result.success) {
                 plexTestSuccess.show();
             } else {
                 plexTestError.show();
             }
         }, error: function () {
-            plexSpinner.hide();
+            hideAllAlertsAndSpinners();
             plexTestError.show();
         }
     });
 }
 
 function removePlexServer(machineIdentifier) {
-    hideAllAlerts();
+    hideAllAlertsAndSpinners();
     plexSpinner.show();
 
     $.ajax({
         type: "DELETE",
         url: `/configuration/delete/plex/${machineIdentifier}`,
         success: function (result) {
-            plexSpinner.hide();
+            hideAllAlertsAndSpinners();
             if (result && result.success) {
                 $('#' + machineIdentifier).remove();
                 plexDeleteSuccess.show();
@@ -246,13 +246,13 @@ function removePlexServer(machineIdentifier) {
             }
         },
         error: function () {
-            plexSpinner.hide();
+            hideAllAlertsAndSpinners();
             plexDeleteError.show();
         }
     });
 }
 
-function hideAllAlerts() {
+function hideAllAlertsAndSpinners() {
     //Spinners
     plexSpinner.hide();
     tmdbSpinner.hide();
