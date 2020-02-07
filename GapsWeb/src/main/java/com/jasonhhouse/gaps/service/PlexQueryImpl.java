@@ -12,6 +12,7 @@ package com.jasonhhouse.gaps.service;
 
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.MoviePair;
+import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexQuery;
 import com.jasonhhouse.gaps.PlexServer;
@@ -21,7 +22,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -159,7 +159,7 @@ public class PlexQueryImpl implements PlexQuery {
     }
 
     @Override
-    public void queryPlexServer(@NotNull PlexServer plexServer) {
+    public @NotNull Payload queryPlexServer(@NotNull PlexServer plexServer) throws ResponseStatusException {
         LOGGER.info("queryPlexLibraries()");
 
         HttpUrl url = new HttpUrl.Builder()
@@ -172,6 +172,9 @@ public class PlexQueryImpl implements PlexQuery {
         //ToDo
         //Need to control time out here, using gaps object
         OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(2500, TimeUnit.MILLISECONDS)
+                .readTimeout(2500, TimeUnit.MILLISECONDS)
+                .writeTimeout(2500, TimeUnit.MILLISECONDS)
                 .build();
 
         try {
@@ -212,19 +215,21 @@ public class PlexQueryImpl implements PlexQuery {
 
                 plexServer.setFriendlyName(friendlyName);
                 plexServer.setMachineIdentifier(machineIdentifier);
+
+                return Payload.PLEX_CONNECTION_SUCCEEDED.setExtras("url:" + url);
             } catch (IOException e) {
                 String reason = "Error connecting to Plex to get library list: " + url;
                 LOGGER.error(reason, e);
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason, e);
+                return Payload.PLEX_CONNECTION_FAILED.setExtras("url:" + url);
             } catch (ParserConfigurationException | XPathExpressionException | SAXException e) {
                 String reason = "Error parsing XML from Plex: " + url;
                 LOGGER.error(reason, e);
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
+                return Payload.PARSING_PLEX_FAILED.setExtras("url:" + url);
             }
         } catch (IllegalArgumentException e) {
             String reason = "Error with plex Url: " + url;
             LOGGER.error(reason, e);
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason, e);
+            return Payload.PLEX_URL_ERROR.setExtras("url:" + url);
         }
     }
 

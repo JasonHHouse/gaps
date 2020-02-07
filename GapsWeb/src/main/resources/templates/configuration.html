@@ -110,10 +110,15 @@
             </div>
         </div>
         <div class="tab-pane fade top-margin" id="plex">
-            <form class="needs-validation" method="POST" action="/plexLibraries" novalidate>
+            <form id="plexConfiguration" class="needs-validation" novalidate>
                 <div class="form-group">
                     <label for="address">Plex IP Address</label>
-                    <input type="text" class="form-control" id="address" required aria-describedby="addressHelp">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="address" required aria-describedby="addressHelp">
+                        <div id="emptyPlexAddressLabel" class="invalid-feedback">
+                            Please enter a network address for Plex.
+                        </div>
+                    </div>
                     <small id="addressHelp" class="form-text text-muted">Use your network IP address. localhost and
                         127.0.0.1 will not work for Plex and Gaps in Docker. Use ifconfig/ipconfig to find that in a
                         terminal or command window.</small>
@@ -121,23 +126,36 @@
 
                 <div class="form-group">
                     <label for="port">Plex Port</label>
-                    <input type="text" class="form-control" id="port" required aria-describedby="portHelp"
-                           value="32400">
-                    <small id="portHelp" class="form-text text-muted">Plex defaults to 32400. Update only if your Plex
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="port" required aria-describedby="portHelp"
+                               value="32400">
+                        <div id="emptyPlexPortLabel" class="invalid-feedback">
+                            Please enter a port for Plex.
+                        </div>
+                    </div>
+                    <small id="portHelp" class="form-text text-muted">Plex defaults to 32400. Update only if your
+                        Plex
                         Server uses something
                         else.</small>
                 </div>
 
                 <div class="form-group">
                     <label for="plexToken">Plex Token</label>
-                    <input type="text" class="form-control" id="plexToken" required aria-describedby="tokenHelp">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="plexToken" required aria-describedby="tokenHelp">
+                        <div id="emptyPlexTokenLabel" class="invalid-feedback">
+                            Please enter a Plex token.
+                        </div>
+                    </div>
                     <small id="tokenHelp" class="form-text text-muted">You can learn how to find your Plex Token
                         <a href="https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/">here</a>
                         .</small>
                 </div>
 
-                <button type="button" onclick="testPlexServer()" class="btn btn-info">Test</button>
-                <button type="button" onclick="addPlexServer()" class="btn btn-primary">Add</button>
+                <a id="testPlexServer" href="javascript:void(0)" type="button" onclick="testPlexServer()"
+                   class="btn btn-info">Test</a>
+                <a id="addPlexServer" href="javascript:void(0)" type="button" onclick="addPlexServer()"
+                   class="btn btn-primary">Add</a>
 
                 <div id="plexSpinner" class="spinner-border text-primary gaps-hide top-margin" role="status">
                     <span class="sr-only">Loading...</span>

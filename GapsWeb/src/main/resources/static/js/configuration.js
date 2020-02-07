@@ -94,7 +94,7 @@ function testTmdbKey() {
         dataType: "json",
         success: function (result) {
             tmdbSpinner.hide();
-            if (result && result.success) {
+            if (result && result.code === 20) {
                 tmdbTestSuccess.show();
             } else {
                 tmdbTestError.show();
@@ -122,7 +122,7 @@ function saveTmdbKey() {
         dataType: "json",
         success: function (result) {
             tmdbSpinner.hide();
-            if (result && result.success) {
+            if (result && result.code === 23) {
                 tmdbSaveSuccess.show();
             } else {
                 tmdbSaveError.show();
@@ -136,6 +136,11 @@ function saveTmdbKey() {
 
 function testPlexServer() {
     hideAllAlerts();
+
+    if (!$('#plexConfiguration')[0].checkValidity()) {
+        return false;
+    }
+
     plexSpinner.show();
 
     $.ajax({
@@ -149,7 +154,7 @@ function testPlexServer() {
         dataType: "json",
         success: function (result) {
             plexSpinner.hide();
-            if (result && result.success) {
+            if (result && result.code === 10) {
                 plexTestSuccess.show();
             } else {
                 plexTestError.show();
@@ -162,9 +167,12 @@ function testPlexServer() {
 }
 
 function addPlexServer() {
-    console.log("addPlexServer()");
-
     hideAllAlerts();
+
+    if (!$('#plexConfiguration')[0].checkValidity()) {
+        return false;
+    }
+
     plexSpinner.show();
 
     $.ajax({
@@ -183,8 +191,6 @@ function addPlexServer() {
 }
 
 function testExistingPlexServer(machineIdentifier) {
-    console.log("testExistingPlexServer( " + machineIdentifier + " )");
-
     hideAllAlerts();
     plexSpinner.show();
 
@@ -207,8 +213,6 @@ function testExistingPlexServer(machineIdentifier) {
 }
 
 function removePlexServer(machineIdentifier) {
-    console.log("removePlexServer( " + machineIdentifier + " )");
-
     hideAllAlerts();
     plexSpinner.show();
 
@@ -232,6 +236,10 @@ function removePlexServer(machineIdentifier) {
 }
 
 function hideAllAlerts() {
+    //Spinners
+    plexSpinner.hide();
+    tmdbSpinner.hide();
+
     //Plex Alerts
     plexTestSuccess.hide();
     plexTestError.hide();

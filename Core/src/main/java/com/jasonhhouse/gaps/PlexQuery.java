@@ -29,7 +29,7 @@ public interface PlexQuery {
      *
      * @param plexServer the search parameters
      */
-    void queryPlexServer(@NotNull PlexServer plexServer);
+    @NotNull Payload queryPlexServer(@NotNull PlexServer plexServer);
 
     /**
      * Connect to plex via the URL and parse all the movies from the returned XML creating a HashSet of movies the

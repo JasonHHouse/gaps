@@ -2,6 +2,7 @@ package com.jasonhhouse.gaps.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jasonhhouse.gaps.Payload;
 import java.io.IOException;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -17,7 +18,7 @@ public class TmdbService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TmdbService.class);
 
-    public @NotNull String testTmdbKey(String key) {
+    public @NotNull Payload testTmdbKey(String key) {
         LOGGER.info("testTmdbKey( " + key + " )");
 
         HttpUrl url = new HttpUrl.Builder()
@@ -47,16 +48,18 @@ public class TmdbService {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseJson = objectMapper.readTree(jsonBody);
             boolean success = responseJson.get("success").asBoolean();
+            Payload payload;
             if (success) {
-                LOGGER.info("TMDB Key valid " + key);
+                payload = Payload.TMDB_KEY_VALID.setExtras(key);
             } else {
                 LOGGER.warn("TMDB Key invalid " + key);
+                payload = Payload.TMDB_KEY_INVALID.setExtras(key);
             }
 
-            return jsonBody;
+            return payload;
         } catch (IOException e) {
             LOGGER.error("Error connecting to TMDB with url " + url);
-            return "{}";
+            return Payload.TMDB_KEY_VALID.setExtras(key + System.lineSeparator() + url);
         }
     }
 }

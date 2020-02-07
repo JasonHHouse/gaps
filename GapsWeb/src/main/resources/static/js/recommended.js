@@ -121,7 +121,7 @@ jQuery(function ($) {
 
             backButton.text('Restart');
             disconnect();
-            if (payload && payload.code === 3) {
+            if (payload && payload.code === 0) {
                 searchTitle.text(`Search Complete`);
                 searchDescription.text(`${movieCounter} movies to add to complete your collections. Below is everything Gaps found that is missing from your movie collections.`);
                 setCopyToClipboardEnabled(true);

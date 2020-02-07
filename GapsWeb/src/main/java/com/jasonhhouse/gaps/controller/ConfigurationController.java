@@ -3,6 +3,7 @@ package com.jasonhhouse.gaps.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.jasonhhouse.gaps.GapsService;
+import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.service.BindingErrorsService;
@@ -108,22 +109,21 @@ public class ConfigurationController {
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<String> putTestPlexServer(@Valid final PlexServer plexServer, BindingResult bindingResult) {
+    public ResponseEntity<Payload> putTestPlexServer(@Valid final PlexServer plexServer, BindingResult bindingResult) {
         LOGGER.info("putTestPlexServer( " + plexServer + " )");
 
         /*if (bindingErrorsService.hasBindingErrors(bindingResult)) {
             LOGGER.error("Error binding PlexServer object: " + plexServer);
         }*/
 
-        ObjectNode objectNode = objectMapper.createObjectNode();
+        Payload payload;
         try {
-            plexQuery.queryPlexServer(plexServer);
-            objectNode.put("success", true);
+            payload = plexQuery.queryPlexServer(plexServer);
         } catch (Exception e) {
-            objectNode.put("success", false);
+            payload = Payload.UNKNOWN_ERROR;
         }
 
-        return ResponseEntity.ok().body(objectNode.toString());
+        return ResponseEntity.ok().body(payload);
     }
 
     @RequestMapping(value = "/test/plex/{machineIdentifier}",
@@ -172,32 +172,31 @@ public class ConfigurationController {
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<String> postTestTmdbKey(@PathVariable("tmdbKey") final String tmdbKey) {
+    public ResponseEntity<Payload> postTestTmdbKey(@PathVariable("tmdbKey") final String tmdbKey) {
         LOGGER.info("postTestTmdbKey( " + tmdbKey + " )");
 
-        String tmdbResponse = tmdbService.testTmdbKey(tmdbKey);
-        return ResponseEntity.ok().body(tmdbResponse);
+        Payload payload = tmdbService.testTmdbKey(tmdbKey).setExtras("tmdbKey:" + tmdbKey);;
+        return ResponseEntity.ok().body(payload);
     }
 
     @RequestMapping(value = "/save/tmdbKey/{tmdbKey}",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<String> postSaveTmdbKey(@PathVariable("tmdbKey") final String tmdbKey) {
+    public ResponseEntity<Payload> postSaveTmdbKey(@PathVariable("tmdbKey") final String tmdbKey) {
         LOGGER.info("postSaveTmdbKey( " + tmdbKey + " )");
 
-        ObjectNode objectNode = objectMapper.createObjectNode();
-
         gapsService.getPlexSearch().setMovieDbApiKey(tmdbKey);
+        Payload payload;
         try {
             ioService.writeProperties(gapsService.getPlexSearch());
-            objectNode.put("success", true);
+            payload = Payload.TMDB_KEY_SAVE_SUCCESSFUL.setExtras("tmdbKey:" + tmdbKey);
         } catch (IOException e) {
-            objectNode.put("success", false);
-            LOGGER.warn("Could not save PlexSearch properties");
+            payload = Payload.TMDB_KEY_SAVE_UNSUCCESSFUL.setExtras("tmdbKey:" + tmdbKey);
+            LOGGER.warn("Could not save TMDB key");
         }
 
-        return ResponseEntity.ok().body(objectNode.toString());
+        return ResponseEntity.ok().body(payload);
     }
 
 }
