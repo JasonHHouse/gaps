@@ -8,9 +8,24 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-let plexSpinner, plexSaveSuccess, plexSaveError, plexTestSuccess, plexTestError, plexDeleteSuccess, plexDeleteError, plexDuplicateError;
+let plexSpinner, plexSaveSuccess, plexSaveError, plexTestSuccess, plexTestError, plexDeleteSuccess, plexDeleteError,
+    plexDuplicateError;
 let tmdbSpinner, tmdbSaveSuccess, tmdbSaveError, tmdbTestSuccess, tmdbTestError;
 
+window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('click', function(event) {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+    });
+}, false);
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -65,6 +80,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function testTmdbKey() {
     hideAllAlerts();
+
+    if (!$('#tmdbConfiguration')[0].checkValidity()) {
+        return false;
+    }
+
     tmdbSpinner.show();
 
     $.ajax({
@@ -86,10 +106,15 @@ function testTmdbKey() {
     });
 }
 
+
 function saveTmdbKey() {
     hideAllAlerts();
-    tmdbSpinner.show();
 
+    if (!$('#tmdbConfiguration')[0].checkValidity()) {
+        return false;
+    }
+
+    tmdbSpinner.show();
     $.ajax({
         type: "POST",
         url: `/configuration/save/tmdbKey/${$('#movieDbApiKey').val()}`,

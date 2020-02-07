@@ -30,7 +30,7 @@
                 <a id="configurationTab" class="nav-link" href="/configuration">Configuration</a>
             </li>
             <li class="nav-item">
-                <a id="librariesTab"  class="nav-link" href="/libraries">Libraries</a>
+                <a id="librariesTab" class="nav-link" href="/libraries">Libraries</a>
             </li>
             <li class="nav-item">
                 <a id="recommendedTab" class="nav-link" href="/recommended">Recommended</a>
@@ -65,14 +65,16 @@
                     href="https://www.themoviedb.org/settings/api" target="_blank" rel="noopener">The Movie DB</a>,
                 create an account, and make an API Key. Copy that key and paste it below.</p>
 
-            <form id="plexConfiguration" class="needs-validation" method="POST" action="/plexConfiguration"
-                  novalidate
-                  th:object="${plexSearch}">
+            <form id="tmdbConfiguration" class="needs-validation" novalidate th:object="${plexSearch}">
                 <div class="form-group">
                     <label for="movieDbApiKey">Movie Database Api Key</label>
-                    <input type="text" class="form-control" id="movieDbApiKey" th:field="*{movieDbApiKey}" required>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="movieDbApiKey" th:field="*{movieDbApiKey}" required>
+                        <div id="emptyTmdbKeyLabel" class="invalid-feedback">
+                            Please enter a Movie Database Key.
+                        </div>
+                    </div>
                 </div>
-
                 <a id="testTmdbKey" href="javascript:void(0)" type="button" onclick="testTmdbKey();"
                    class="btn btn-info">Test</a>
                 <a id="saveTmdbKey" href="javascript:void(0)" type="button" onclick="saveTmdbKey();"
