@@ -33,7 +33,7 @@ describe('Hooks', function () {
         });
     });
 
-    it('Test invalid Plex Server', () => {
+    it('Test invalid new Plex Server', () => {
         cy.get('#address')
             .clear()
             .type('111.222.121.212')
@@ -77,7 +77,7 @@ describe('Hooks', function () {
             .should('not.be.visible');
     });
 
-    it('Test valid Plex Server', () => {
+    it('Test valid new Plex Server', () => {
         cy.get('#address')
             .clear()
             .type('174.58.64.67')
@@ -222,6 +222,64 @@ describe('Hooks', function () {
         cy.get('.list-group > :nth-child(2)')
             .should('have.text', 'Movies');
 
+    });
+
+    it('Test valid existing Plex Server', () => {
+        cy.get('#testExisting')
+            .click();
+
+        cy.get('#plexSpinner')
+            .should('not.be.visible');
+
+        cy.get('#plexTestError')
+            .should('not.be.visible');
+
+        cy.get('#plexTestSuccess')
+            .should('be.visible');
+
+        cy.get('#plexSaveError')
+            .should('not.be.visible');
+
+        cy.get('#plexSaveSuccess')
+            .should('not.be.visible');
+
+        cy.get('#plexDeleteError')
+            .should('not.be.visible');
+
+        cy.get('#plexDeleteSuccess')
+            .should('not.be.visible');
+
+        cy.get('#plexDuplicateError')
+            .should('not.be.visible');
+    });
+
+    it('Remove valid existing Plex Server', () => {
+        cy.get('#removeExisting')
+            .click();
+
+        cy.get('#plexSpinner')
+            .should('not.be.visible');
+
+        cy.get('#plexTestError')
+            .should('not.be.visible');
+
+        cy.get('#plexTestSuccess')
+            .should('not.be.visible');
+
+        cy.get('#plexSaveError')
+            .should('not.be.visible');
+
+        cy.get('#plexSaveSuccess')
+            .should('not.be.visible');
+
+        cy.get('#plexDeleteError')
+            .should('not.be.visible');
+
+        cy.get('#plexDeleteSuccess')
+            .should('be.visible');
+
+        cy.get('#plexDuplicateError')
+            .should('not.be.visible');
     });
 });
 
