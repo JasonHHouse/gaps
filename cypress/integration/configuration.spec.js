@@ -18,11 +18,39 @@ function spyOnAddEventListener(win) {
 it('Clean configuration page load', () => {
     cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
 
-    cy.get('#tmdbTab').should('have.class', 'active');
+    cy.get('#configurationTab')
+        .should('have.attr', 'href', '/configuration')
+        .parent()
+        .should('have.attr', 'aria-current', 'page');
 
-    cy.get('#plexTab').should('not.have.class', 'active');
+    cy.get('#librariesTab')
+        .should('have.attr', 'href', '/libraries')
+        .parent()
+        .should('not.have.attr', 'aria-current', 'page');
 
-    cy.get('#folderTab').should('have.class', 'disabled');
+    cy.get('#recommendedTab')
+        .should('have.attr', 'href', '/recommended')
+        .parent()
+        .should('not.have.attr', 'aria-current', 'page');
+
+    cy.get('#rssTab')
+        .should('have.attr', 'href', '/rssCheck')
+        .parent()
+        .should('not.have.attr', 'aria-current', 'page');
+
+    cy.get('#aboutTab')
+        .should('have.attr', 'href', '/about')
+        .parent()
+        .should('not.have.attr', 'aria-current', 'page');
+
+    cy.get('#tmdbTab')
+        .should('have.class', 'active');
+
+    cy.get('#plexTab')
+        .should('not.have.class', 'active');
+
+    cy.get('#folderTab')
+        .should('have.class', 'disabled');
 
     cy.get('#tmdbTestError')
         .should('not.be.visible');
