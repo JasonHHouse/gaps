@@ -15,7 +15,7 @@ function spyOnAddEventListener(win) {
     }
 }
 
-describe('Hooks', function () {
+describe('TMDB Configuration Tests', function () {
     before(function () {
         cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
     });

@@ -15,52 +15,54 @@ function spyOnAddEventListener(win) {
     }
 }
 
-it('Clean configuration page load', () => {
-    cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
+describe('Configuration Tests', function () {
+    it('Clean configuration page load', () => {
+        cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
 
-    cy.get('#configurationTab')
-        .should('have.attr', 'href', '/configuration')
-        .parent()
-        .should('have.attr', 'aria-current', 'page');
+        cy.get('#configurationTab')
+            .should('have.attr', 'href', '/configuration')
+            .parent()
+            .should('have.attr', 'aria-current', 'page');
 
-    cy.get('#librariesTab')
-        .should('have.attr', 'href', '/libraries')
-        .parent()
-        .should('not.have.attr', 'aria-current', 'page');
+        cy.get('#librariesTab')
+            .should('have.attr', 'href', '/libraries')
+            .parent()
+            .should('not.have.attr', 'aria-current', 'page');
 
-    cy.get('#recommendedTab')
-        .should('have.attr', 'href', '/recommended')
-        .parent()
-        .should('not.have.attr', 'aria-current', 'page');
+        cy.get('#recommendedTab')
+            .should('have.attr', 'href', '/recommended')
+            .parent()
+            .should('not.have.attr', 'aria-current', 'page');
 
-    cy.get('#rssTab')
-        .should('have.attr', 'href', '/rssCheck')
-        .parent()
-        .should('not.have.attr', 'aria-current', 'page');
+        cy.get('#rssTab')
+            .should('have.attr', 'href', '/rssCheck')
+            .parent()
+            .should('not.have.attr', 'aria-current', 'page');
 
-    cy.get('#aboutTab')
-        .should('have.attr', 'href', '/about')
-        .parent()
-        .should('not.have.attr', 'aria-current', 'page');
+        cy.get('#aboutTab')
+            .should('have.attr', 'href', '/about')
+            .parent()
+            .should('not.have.attr', 'aria-current', 'page');
 
-    cy.get('#tmdbTab')
-        .should('have.class', 'active');
+        cy.get('#tmdbTab')
+            .should('have.class', 'active');
 
-    cy.get('#plexTab')
-        .should('not.have.class', 'active');
+        cy.get('#plexTab')
+            .should('not.have.class', 'active');
 
-    cy.get('#folderTab')
-        .should('have.class', 'disabled');
+        cy.get('#folderTab')
+            .should('have.class', 'disabled');
 
-    cy.get('#tmdbTestError')
-        .should('not.be.visible');
+        cy.get('#tmdbTestError')
+            .should('not.be.visible');
 
-    cy.get('#tmdbTestSuccess')
-        .should('not.be.visible');
+        cy.get('#tmdbTestSuccess')
+            .should('not.be.visible');
 
-    cy.get('#tmdbSaveError')
-        .should('not.be.visible');
+        cy.get('#tmdbSaveError')
+            .should('not.be.visible');
 
-    cy.get('#tmdbSaveSuccess')
-        .should('not.be.visible');
+        cy.get('#tmdbSaveSuccess')
+            .should('not.be.visible');
+    });
 });

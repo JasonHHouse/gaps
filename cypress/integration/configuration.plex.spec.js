@@ -15,7 +15,7 @@ function spyOnAddEventListener(win) {
     }
 }
 
-describe('Hooks', function () {
+describe('Plex Configuration Tests', function () {
     before(function () {
         cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
 
@@ -142,7 +142,7 @@ describe('Hooks', function () {
             .click();
 
         //Wait for timeout from plex
-        cy.wait(1000);
+        cy.wait(5000);
 
         cy.get('#plexSpinner')
             .should('not.be.visible');
