@@ -97,7 +97,7 @@ public class GapsSearchService implements GapsSearch {
         final Set<Movie> ownedMovies = new TreeSet<>(ioService.readOwnedMovies(machineIdentifier, key));
         final AtomicInteger searchedMovieCount = new AtomicInteger(0);
 
-        if(CollectionUtils.isEmpty(ownedMovies)) {
+        if (CollectionUtils.isEmpty(ownedMovies)) {
             String reason = "Owned movies cannot be empty";
             LOGGER.error(reason);
             template.convertAndSend("/finishedSearching", Payload.OWNED_MOVIES_CANNOT_BE_EMPTY);

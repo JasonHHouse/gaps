@@ -22,9 +22,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Service
 public class BindingErrorsService {
 
-    private final MessageSource messageSource;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(BindingErrorsService.class);
+    private final MessageSource messageSource;
 
     public BindingErrorsService(MessageSource messageSource) {
         this.messageSource = messageSource;

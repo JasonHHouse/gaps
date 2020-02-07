@@ -12,15 +12,15 @@
 
 <head>
     <title>Gaps</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="shortcut icon" href="/images/gaps.ico"/>
-    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/datatables.min.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/dataTables.bootstrap4.min.css"/>
-    <link rel="stylesheet" href="/css/input.min.css">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link href="/images/gaps.ico" rel="shortcut icon"/>
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/datatables.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/input.min.css" rel="stylesheet">
 
     <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 </head>
 
 <body>
@@ -34,7 +34,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="/libraries">Libraries</a>
             </li>
-            <li class="nav-item" aria-current="page">
+            <li aria-current="page" class="nav-item">
                 <a class="nav-link" href="/recommended">Recommended</a>
             </li>
             <li class="nav-item">
@@ -51,40 +51,40 @@
         th:text="${plexServer.friendlyName} + ' - ' + ${plexLibrary.title}"></h4>
 
     <div class="dropdown show">
-        <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-           data-toggle="dropdown"
-           aria-haspopup="true" aria-expanded="false">
+        <a aria-expanded="false" aria-haspopup="true" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+           href="#"
+           id="dropdownMenuLink" role="button">
             Recommended
         </a>
 
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <div aria-labelledby="dropdownMenuLink" class="dropdown-menu">
             <div th:each="instance : ${plexServers}" th:remove="tag">
-                <a href="javascript:void(0)"
-                   th:data-machineIdentifier="*{instance.value.machineIdentifier}"
-                   th:data-key="*{plexLibrary.key}"
-                   th:onclick="switchPlexLibrary(this.getAttribute('data-machineIdentifier'), this.getAttribute('data-key'))"
-                   class="dropdown-item"
-                   th:each="plexLibrary : *{instance.value.plexLibraries}"
+                <a class="dropdown-item"
                    data-ol-has-click-handler=""
+                   href="javascript:void(0)"
+                   th:data-key="*{plexLibrary.key}"
+                   th:data-machineIdentifier="*{instance.value.machineIdentifier}"
+                   th:each="plexLibrary : *{instance.value.plexLibraries}"
+                   th:onclick="switchPlexLibrary(this.getAttribute('data-machineIdentifier'), this.getAttribute('data-key'))"
                    th:text="(*{instance.value.friendlyName} + ' - ' + *{plexLibrary.title})"></a>
             </div>
         </div>
     </div>
 
-    <div id="notSearchedYetContainer" class="top-margin bottom-margin" style="display: none;">
+    <div class="top-margin bottom-margin" id="notSearchedYetContainer" style="display: none;">
         <div class="card mx-auto" style="width: 24rem;">
-            <img src="/images/mind_the_gap.png" class="card-img-top" alt="...">
+            <img alt="..." class="card-img-top" src="/images/mind_the_gap.png">
             <div class="card-body">
                 <h5 class="card-title">Your movies are really missing</h5>
                 <p class="card-text">You need to run Gaps at least once to have found the missing movies.</p>
-                <a href="javascript:void(0)" onclick="searchForMovies()" class="btn btn-primary">Search</a>
+                <a class="btn btn-primary" href="javascript:void(0)" onclick="searchForMovies()">Search</a>
             </div>
         </div>
     </div>
 
-    <div id="noMovieContainer" class="top-margin bottom-margin" style="display: none;">
+    <div class="top-margin bottom-margin" id="noMovieContainer" style="display: none;">
         <div class="card mx-auto" style="width: 24rem;">
-            <img src="/images/mind_the_gap.png" class="card-img-top" alt="...">
+            <img alt="..." class="card-img-top" src="/images/mind_the_gap.png">
             <div class="card-body">
                 <h5 class="card-title">Your movies are really missing</h5>
                 <p class="card-text">You need to find your owned movies first.</p>
@@ -92,30 +92,30 @@
         </div>
     </div>
 
-    <div id="movieContainer" class="top-margin bottom-margin" style="display: none;">
+    <div class="top-margin bottom-margin" id="movieContainer" style="display: none;">
 
         <div id="searchContainer" style="display: none;">
-            <div id="copiedToClipboard" class="alert alert-primary alert-dismissible fade show gaps-hide" role="alert">
+            <div class="alert alert-primary alert-dismissible fade show gaps-hide" id="copiedToClipboard" role="alert">
                 Copied to Clipboard
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <button aria-label="Close" class="close" data-dismiss="alert" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
-            <h2 id="searchTitle" class="top-margin">Searching for Movies</h2>
+            <h2 class="top-margin" id="searchTitle">Searching for Movies</h2>
 
-            <div id="searchDescription" class="top-margin">
+            <div class="top-margin" id="searchDescription">
                 <p>Finding all movies in Plex</p>
             </div>
 
-            <div id="progressContainer" class="progress top-margin">
-                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+            <div class="progress top-margin" id="progressContainer">
+                <div aria-valuemax="100" aria-valuemin="0"
                      aria-valuenow="75"
-                     aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                     class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
             </div>
         </div>
 
-        <table id="movies" class="display top-margin" style="width:100%">
+        <table class="display top-margin" id="movies" style="width:100%">
             <thead>
             <tr>
                 <th>Movie</th>
@@ -127,9 +127,9 @@
             </thead>
         </table>
 
-        <button type="button" class="btn btn-secondary" onclick="copyToClipboard()">Copy</button>
-        <button type="button" class="btn btn-secondary" onclick="searchForMovies()">Re-Search</button>
-        <button type="button" class="btn btn-warning" onclick="cancel()">Cancel</button>
+        <button class="btn btn-secondary" onclick="copyToClipboard()" type="button">Copy</button>
+        <button class="btn btn-secondary" onclick="searchForMovies()" type="button">Re-Search</button>
+        <button class="btn btn-warning" onclick="cancel()" type="button">Cancel</button>
     </div>
 
 </div>
@@ -164,12 +164,12 @@
 <input id="plexSearch" name="plexSearch" th:value="${{plexSearch}}" type="hidden"/>
 <input id="libraryKey" name="libraryKey" th:value="${{plexLibrary.key}}" type="hidden"/>
 
-<script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="/js/datatables.min.js"></script>
-<script type="text/javascript" src="/js/sockjs-1.4.0.min.js"></script>
-<script type="text/javascript" src="/js/stomp-2.3.3.min.js"></script>
-<script type="text/javascript" src="/js/handlebars.js"></script>
-<script type="text/javascript" src="/js/recommended.js"></script>
+<script src="/js/jquery-3.4.1.min.js" type="text/javascript"></script>
+<script src="/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+<script src="/js/datatables.min.js" type="text/javascript"></script>
+<script src="/js/sockjs-1.4.0.min.js" type="text/javascript"></script>
+<script src="/js/stomp-2.3.3.min.js" type="text/javascript"></script>
+<script src="/js/handlebars.js" type="text/javascript"></script>
+<script src="/js/recommended.js" type="text/javascript"></script>
 </body>
 </html>

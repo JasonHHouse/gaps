@@ -10,9 +10,7 @@
 
 package com.jasonhhouse.gaps.validator;
 
-import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexServer;
-import com.jasonhhouse.gaps.controller.GapsController;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;

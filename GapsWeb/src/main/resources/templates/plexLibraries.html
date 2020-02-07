@@ -12,13 +12,13 @@
 
 <head>
     <title>Gaps</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="shortcut icon" href="/images/gaps.ico"/>
-    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/css/input.min.css">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link href="/images/gaps.ico" rel="shortcut icon"/>
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/input.min.css" rel="stylesheet">
 
     <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 </head>
 
 <body>
@@ -45,7 +45,7 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/">Home</a></li>
         <li class="breadcrumb-item active"><a href="/plexConfiguration">Plex</a></li>
-        <li class="breadcrumb-item active" aria-current="page"><a href="/plexLibraries">Libraries</a></li>
+        <li aria-current="page" class="breadcrumb-item active"><a href="/plexLibraries">Libraries</a></li>
     </ol>
 </nav>
 
@@ -55,22 +55,23 @@
     <p>These are the movie libraries we found in your Plex
         Server. Select any and all you would like to look for gaps in.</p>
 
-    <form class="needs-validation" method="POST" action="/plexMovieList" novalidate enctype="multipart/form-data">
-        <fieldset th:each="library,status : *{plexSearch.plexServer.plexLibraries}" class="form-group form-check">
-            <input type="checkbox" name="selectedLibraries" class="form-check-input" th:value="*{plexSearch.plexServer.plexLibraries[__${status.index}__].key}" />
+    <form action="/plexMovieList" class="needs-validation" enctype="multipart/form-data" method="POST" novalidate>
+        <fieldset class="form-group form-check" th:each="library,status : *{plexSearch.plexServer.plexLibraries}">
+            <input class="form-check-input" name="selectedLibraries" th:value="*{plexSearch.plexServer.plexLibraries[__${status.index}__].key}"
+                   type="checkbox"/>
             <label class="form-check-label" th:text="${library.title}"></label>
         </fieldset>
 
-        <button type="button" class="btn btn-secondary" onclick="back()">Back</button>
-        <button type="submit" class="btn btn-primary">Next</button>
+        <button class="btn btn-secondary" onclick="back()" type="button">Back</button>
+        <button class="btn btn-primary" type="submit">Next</button>
     </form>
 
     <p hidden>Something went wrong. Please make sure your connection to Plex is correct. You can navigate back to make
         changes and then retry connecting. Check the browser and Docker logs for more information.</p>
 </div>
 
-<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="js/plexLibraries.js"></script>
+<script src="js/jquery-3.4.1.min.js" type="text/javascript"></script>
+<script src="js/bootstrap.bundle.min.js" type="text/javascript"></script>
+<script src="js/plexLibraries.js" type="text/javascript"></script>
 </body>
 </html>

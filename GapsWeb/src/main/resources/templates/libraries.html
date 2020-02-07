@@ -12,15 +12,15 @@
 
 <head>
     <title>Gaps</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="shortcut icon" href="/images/gaps.ico"/>
-    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/datatables.min.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/dataTables.bootstrap4.min.css"/>
-    <link rel="stylesheet" href="/css/input.min.css">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link href="/images/gaps.ico" rel="shortcut icon"/>
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/datatables.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/input.min.css" rel="stylesheet">
 
     <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 </head>
 
 <body>
@@ -31,7 +31,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="/configuration">Configuration</a>
             </li>
-            <li class="nav-item" aria-current="page">
+            <li aria-current="page" class="nav-item">
                 <a class="nav-link" href="/libraries">Libraries</a>
             </li>
             <li class="nav-item">
@@ -52,27 +52,27 @@
             th:text="${plexServer.friendlyName} + ' - ' + ${plexLibrary.title}"></h4>
 
         <div class="dropdown show">
-            <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-               data-toggle="dropdown"
-               aria-haspopup="true" aria-expanded="false">
+            <a aria-expanded="false" aria-haspopup="true" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+               href="#"
+               id="dropdownMenuLink" role="button">
                 Libraries
             </a>
 
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <div aria-labelledby="dropdownMenuLink" class="dropdown-menu">
                 <div th:each="instance : ${plexServers}" th:remove="tag">
-                    <a href="javascript:void(0)"
-                       th:data-machineIdentifier="*{instance.value.machineIdentifier}"
-                       th:data-key="*{plexLibrary.key}"
-                       th:onclick="switchPlexLibrary(this.getAttribute('data-machineIdentifier'), this.getAttribute('data-key'))"
-                       class="dropdown-item"
-                       th:each="plexLibrary : *{instance.value.plexLibraries}"
+                    <a class="dropdown-item"
                        data-ol-has-click-handler=""
+                       href="javascript:void(0)"
+                       th:data-key="*{plexLibrary.key}"
+                       th:data-machineIdentifier="*{instance.value.machineIdentifier}"
+                       th:each="plexLibrary : *{instance.value.plexLibraries}"
+                       th:onclick="switchPlexLibrary(this.getAttribute('data-machineIdentifier'), this.getAttribute('data-key'))"
                        th:text="(*{instance.value.friendlyName} + ' - ' + *{plexLibrary.title})"></a>
                 </div>
             </div>
         </div>
 
-        <div id="movieSearchingContainer" class="top-margin bottom-margin" style="display: none;">
+        <div class="top-margin bottom-margin" id="movieSearchingContainer" style="display: none;">
             <div class="d-flex justify-content-center top-margin ">
                 <div class="spinner-border text-primary" role="status">
                     <span class="sr-only">Searching Plex for Movies</span>
@@ -83,19 +83,19 @@
             </div>
         </div>
 
-        <div id="noMovieContainer" class="top-margin bottom-margin" style="display: none;">
+        <div class="top-margin bottom-margin" id="noMovieContainer" style="display: none;">
             <div class="card mx-auto" style="width: 24rem;">
-                <img src="/images/mind_the_gap.png" class="card-img-top" alt="...">
+                <img alt="..." class="card-img-top" src="/images/mind_the_gap.png">
                 <div class="card-body">
                     <h5 class="card-title">Your movies are really missing</h5>
                     <p class="card-text">You need to run Gaps at least once to have found the missing movies.</p>
-                    <a href="javascript:void(0)" onclick="searchForMovies()" class="btn btn-primary">Search</a>
+                    <a class="btn btn-primary" href="javascript:void(0)" onclick="searchForMovies()">Search</a>
                 </div>
             </div>
         </div>
 
-        <div id="movieContainer" class="top-margin bottom-margin" style="display: none;">
-            <table id="movies" class="display" style="width:100%">
+        <div class="top-margin bottom-margin" id="movieContainer" style="display: none;">
+            <table class="display" id="movies" style="width:100%">
                 <thead>
                 <tr>
                     <th>Movie</th>
@@ -107,13 +107,13 @@
                 </thead>
             </table>
 
-            <a href="javascript:void(0)" onclick="searchForMovies()" class="top-margin btn btn-primary">Search</a>
+            <a class="top-margin btn btn-primary" href="javascript:void(0)" onclick="searchForMovies()">Search</a>
         </div>
     </div>
-    <div th:unless="${plexServersFound}" th:remove="tag">
+    <div th:remove="tag" th:unless="${plexServersFound}">
         <div class="top-margin bottom-margin">
             <div class="card mx-auto" style="width: 24rem;">
-                <img src="/images/mind_the_gap.png" class="card-img-top" alt="...">
+                <img alt="..." class="card-img-top" src="/images/mind_the_gap.png">
                 <div class="card-body">
                     <h5 class="card-title">Your movies are really missing</h5>
                     <p class="card-text">You need to configure Gaps before you can search for missing movies. Check out
@@ -151,10 +151,10 @@
 <input id="plexSearch" name="plexSearch" th:value="${{plexSearch}}" type="hidden"/>
 <input id="libraryKey" name="libraryKey" th:value="${{plexLibrary.key}}" type="hidden"/>
 
-<script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="/js/datatables.min.js"></script>
-<script type="text/javascript" src="/js/handlebars.js"></script>
-<script type="text/javascript" src="/js/libraries.js"></script>
+<script src="/js/jquery-3.4.1.min.js" type="text/javascript"></script>
+<script src="/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+<script src="/js/datatables.min.js" type="text/javascript"></script>
+<script src="/js/handlebars.js" type="text/javascript"></script>
+<script src="/js/libraries.js" type="text/javascript"></script>
 </body>
 </html>

@@ -9,16 +9,16 @@
 -->
 
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Gaps</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="shortcut icon" href="../static/images/gaps.ico"/>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link href="../static/images/gaps.ico" rel="shortcut icon"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="../static/css/materialize.min.css" media="screen,projection"/>
+    <link href="../static/css/materialize.min.css" media="screen,projection" rel="stylesheet" type="text/css"/>
 
     <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 </head>
 <body class="grey lighten-4">
 <main>
@@ -51,16 +51,16 @@
                     <p class="col s12">Sets address for Gaps backend. Only change if the container doesn't run in
                         localhost.</p>
                     <div class="input-field col s2">
-                        <input placeholder="8080" type="text"
-                               id="address" type="text" class="validate" value="localhost">
+                        <input class="validate" id="address"
+                               placeholder="8080" type="text" type="text" value="localhost">
                         <label for="address">Address*</label>
                     </div>
 
                     <p class="col s12">Sets port for Gaps backend. Only change if 8080 was already taken. Make sure to
                         update docker to expose the same port.</p>
                     <div class="input-field col s2">
-                        <input placeholder="8080" type="number"
-                               id="port" type="text" class="validate" value="8080">
+                        <input class="validate" id="port"
+                               placeholder="8080" type="text" type="number" value="8080">
                         <label for="port">Port*</label>
                     </div>
 
@@ -69,14 +69,14 @@
                         for Gaps https://www.themoviedb.org/list/{id_number} <br>Enter the {id_number} below if you want
                         Gaps to populate the list</p>
                     <div class="input-field col s6">
-                        <input placeholder="List Id"
-                               id="movie_db_list_id" type="text" class="validate">
+                        <input class="validate"
+                               id="movie_db_list_id" placeholder="List Id" type="text">
                         <label for="movie_db_list_id">Movie Database List Id</label>
                     </div>
 
                     <div class="col s12">
                         <label>
-                            <input id="write_to_file" type="checkbox" class="filled-in" checked="checked"/>
+                            <input checked="checked" class="filled-in" id="write_to_file" type="checkbox"/>
                             <span>Write To File</span>
                         </label>
                     </div>
@@ -90,8 +90,8 @@
                     <h5 class="col s12">Plex</h5>
                     <p class="col s12">Search using Plex Movie Urls</p>
                     <label class="col s12">
-                        <input id="search_plex" type="checkbox" class="filled-in" checked="checked"
-                               onclick="searchPlexChanged(this);"/>
+                        <input checked="checked" class="filled-in" id="search_plex" onclick="searchPlexChanged(this);"
+                               type="checkbox"/>
                         <span class="grey-text text-darken-3">Search Plex</span>
                     </label>
                     <p class="col s12"></p>
@@ -101,8 +101,8 @@
 
                     <div class="input-field col s12">
                         <textarea
-                                placeholder="Gaps supports a single movie Url or multiple. Put each Url on a new line."
-                                id="plex_movie_urls" class="materialize-textarea"></textarea>
+                                class="materialize-textarea"
+                                id="plex_movie_urls" placeholder="Gaps supports a single movie Url or multiple. Put each Url on a new line."></textarea>
                         <label for="plex_movie_urls">Plex Movie Urls*</label>
                     </div>
 
@@ -110,8 +110,8 @@
                         timeout,
                         otherwise values must be between 1 and Integer.MAX_VALUE when converted to milliseconds.</p>
                     <div class="input-field col s2">
-                        <input value="180" placeholder="Api Key" type="number"
-                               id="connect_timeout" type="text" class="validate">
+                        <input class="validate" id="connect_timeout" placeholder="Api Key"
+                               type="text" type="number" value="180">
                         <label for="connect_timeout">Connect Timeout*</label>
                     </div>
 
@@ -119,16 +119,16 @@
                         timeout,
                         otherwise values must be between 1 and Integer.MAX_VALUE when converted to milliseconds.</p>
                     <div class="input-field col s2">
-                        <input value="180" placeholder="Api Key" type="number"
-                               id="write_timeout" type="text" class="validate">
+                        <input class="validate" id="write_timeout" placeholder="Api Key"
+                               type="text" type="number" value="180">
                         <label for="write_timeout">Write Timeout*</label>
                     </div>
 
                     <p class="col s12">Sets the default read timeout for new connections. A value of 0 means no timeout,
                         otherwise values must be between 1 and Integer.MAX_VALUE when converted to milliseconds.</p>
                     <div class="input-field col s2">
-                        <input value="180" placeholder="Api Key" type="number"
-                               id="read_timeout" type="text" class="validate">
+                        <input class="validate" id="read_timeout" placeholder="Api Key"
+                               type="text" type="number" value="180">
                         <label for="read_timeout">Read Timeout*</label>
                     </div>
                 </div>
@@ -136,16 +136,16 @@
         </div>
 
         <!-- Modal Structure -->
-        <div id="searchModal" class="modal">
+        <div class="modal" id="searchModal">
             <div class="modal-content">
                 <h4 id="searchModelTitle">Searching</h4>
                 <div id="searchingBody"></div>
-                <div id="progressContainer" class="progress">
-                    <div id="progressBar" class="determinate" style="width: 0%"></div>
+                <div class="progress" id="progressContainer">
+                    <div class="determinate" id="progressBar" style="width: 0%"></div>
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+                <a class="modal-close waves-effect waves-green btn-flat" href="#!">Cancel</a>
             </div>
         </div>
 
@@ -167,9 +167,9 @@
 </footer>
 
 
-<script type="text/javascript" src="../static/js/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="../static/js/sockjs-1.4.0.min.js"></script>
-<script type="text/javascript" src="../static/js/stomp-2.3.3.min.js"></script>
-<script type="text/javascript" src="js/folder.js"></script>
+<script src="../static/js/jquery-3.4.1.min.js" type="text/javascript"></script>
+<script src="../static/js/sockjs-1.4.0.min.js" type="text/javascript"></script>
+<script src="../static/js/stomp-2.3.3.min.js" type="text/javascript"></script>
+<script src="js/folder.js" type="text/javascript"></script>
 </body>
 </html>

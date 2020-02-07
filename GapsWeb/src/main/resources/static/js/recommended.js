@@ -250,7 +250,7 @@ function showSearchStatus(obj) {
         searchDescription.html("");
     } else {
         obj.percentage = Math.trunc(obj.searchedMovieCount / obj.totalMovieCount * 100);
-      
+
         const plexServerCard = $("#updateSearchDescription").html();
         const theTemplate = Handlebars.compile(plexServerCard);
         searchDescription.html(theTemplate(obj));

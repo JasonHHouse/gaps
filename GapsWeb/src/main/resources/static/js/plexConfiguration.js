@@ -9,6 +9,7 @@
  */
 
 "use strict";
+
 function back() {
     location.assign("/");
 }

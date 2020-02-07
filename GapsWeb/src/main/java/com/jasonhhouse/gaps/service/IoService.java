@@ -44,25 +44,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class IoService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(IoService.class);
-
-    private final String STORAGE_FOLDER;
-
-    private final String TEMP_STORAGE_FOLDER;
-
-    private static final String STORAGE = "movieIds.json";
-
-    private static final String OWNED_MOVIES = "ownedMovies.json";
-
-    private static final String RECOMMENDED_MOVIES = "recommendedMovies.json";
-
     public static final String RSS_FEED_JSON_FILE = "rssFeed.json";
-
     public static final String PLEX_CONFIGURATION = "plexConfiguration.json";
-
     public static final String PROPERTIES = "gaps.properties";
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(IoService.class);
+    private static final String STORAGE = "movieIds.json";
+    private static final String OWNED_MOVIES = "ownedMovies.json";
+    private static final String RECOMMENDED_MOVIES = "recommendedMovies.json";
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    private final String STORAGE_FOLDER;
+    private final String TEMP_STORAGE_FOLDER;
 
     public IoService() {
         //Look for properties file for file locations
@@ -222,7 +213,7 @@ public class IoService {
         makeFolder(machineIdentifier, key);
 
         File file = new File(fileName);
-        writeMovieIdsToFile( new HashSet<>(ownedMovies), file);
+        writeMovieIdsToFile(new HashSet<>(ownedMovies), file);
     }
 
     private void makeFolder(String machineIdentifier, int key) {
