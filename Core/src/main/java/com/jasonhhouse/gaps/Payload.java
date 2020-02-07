@@ -13,6 +13,8 @@ public enum Payload {
     PLEX_CONNECTION_FAILED(11, "Connection to Plex failed."),
     PARSING_PLEX_FAILED(12, "Failed to parse Plex XML."),
     PLEX_URL_ERROR(13, "Error with plex Url"),
+    PLEX_LIBRARIES_FOUND(13, "Plex Libraries found."),
+    DUPLICATE_PLEX_LIBRARY(14, "Attempted to add duplicate Plex library"),
     TMDB_KEY_VALID(20, "TMDB Key valid."),
     TMDB_KEY_INVALID(21, "TMDB Key invalid"),
     TMDB_CONNECTION_ERROR(22, "Error connecting to TMDB with url"),
@@ -21,18 +23,18 @@ public enum Payload {
 
     final private int code;
     final private String reason;
-    private String extras;
+    private Object extras;
 
     Payload(int code, String reason) {
         this.code = code;
         this.reason = reason;
     }
 
-    public String getExtras() {
+    public Object getExtras() {
         return extras;
     }
 
-    public Payload setExtras(String extras) {
+    public Payload setExtras(Object extras) {
         this.extras = extras;
         return this;
     }

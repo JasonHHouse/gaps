@@ -55,6 +55,8 @@ import org.xml.sax.SAXException;
 @Service
 public class PlexQueryImpl implements PlexQuery {
 
+    private static final long TIMEOUT = 2500;
+
     public static final String ID_IDX_START = "://";
 
     public static final String ID_IDX_END = "?";
@@ -69,7 +71,7 @@ public class PlexQueryImpl implements PlexQuery {
     }
 
     @Override
-    public void getLibraries(@NotNull PlexServer plexServer) {
+    public @NotNull Payload getLibraries(@NotNull PlexServer plexServer) {
         LOGGER.info("queryPlexLibraries()");
 
         HttpUrl url = new HttpUrl.Builder()
@@ -82,8 +84,11 @@ public class PlexQueryImpl implements PlexQuery {
                 .build();
 
         //ToDo
-        //Need to control time out here, using gaps object
+        //Need to control time out here, using web configuration
         OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
+                .readTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
+                .writeTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
                 .build();
 
         List<PlexLibrary> plexLibraries = new ArrayList<>();
@@ -142,20 +147,21 @@ public class PlexQueryImpl implements PlexQuery {
             } catch (IOException e) {
                 String reason = "Error connecting to Plex to get library list: " + url;
                 LOGGER.error(reason, e);
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason, e);
+                return Payload.PLEX_CONNECTION_FAILED.setExtras("url:" + url);
             } catch (ParserConfigurationException | XPathExpressionException | SAXException e) {
                 String reason = "Error parsing XML from Plex: " + url;
                 LOGGER.error(reason, e);
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
+                return Payload.PARSING_PLEX_FAILED.setExtras("url:" + url);
             }
         } catch (IllegalArgumentException e) {
             String reason = "Error with plex Url: " + url;
             LOGGER.error(reason, e);
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason, e);
+            return Payload.PLEX_URL_ERROR.setExtras("url:" + url);
         }
 
         LOGGER.info(plexLibraries.size() + " Plex libraries found");
         plexServer.getPlexLibraries().addAll(plexLibraries);
+        return Payload.PLEX_LIBRARIES_FOUND.setExtras("size():" + plexLibraries.size());
     }
 
     @Override
@@ -172,9 +178,9 @@ public class PlexQueryImpl implements PlexQuery {
         //ToDo
         //Need to control time out here, using gaps object
         OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(2500, TimeUnit.MILLISECONDS)
-                .readTimeout(2500, TimeUnit.MILLISECONDS)
-                .writeTimeout(2500, TimeUnit.MILLISECONDS)
+                .connectTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
+                .readTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
+                .writeTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
                 .build();
 
         try {

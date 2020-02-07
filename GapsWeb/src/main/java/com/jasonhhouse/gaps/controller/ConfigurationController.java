@@ -83,24 +83,25 @@ public class ConfigurationController {
             LOGGER.error("Error binding PlexServer object: " + plexServer);
         }
 */
-        ObjectNode objectNode = objectMapper.createObjectNode();
-
         try {
             plexQuery.queryPlexServer(plexServer);
-            plexQuery.getLibraries(plexServer);
+            Payload payload = plexQuery.getLibraries(plexServer);
 
-            int initialCount = gapsService.getPlexSearch().getPlexServers().size();
-            gapsService.getPlexSearch().addPlexServer(plexServer);
-            if (gapsService.getPlexSearch().getPlexServers().size() == initialCount) {
-                template.convertAndSend("/configuration/plex/duplicate", "{}");
+            if (payload.getCode() == Payload.PLEX_LIBRARIES_FOUND.getCode()) {
+                int initialCount = gapsService.getPlexSearch().getPlexServers().size();
+                gapsService.getPlexSearch().addPlexServer(plexServer);
+                if (gapsService.getPlexSearch().getPlexServers().size() == initialCount) {
+                    template.convertAndSend("/configuration/plex/duplicate", Payload.DUPLICATE_PLEX_LIBRARY);
+                } else {
+                    ioService.writePlexConfiguration(gapsService.getPlexSearch().getPlexServers());
+                    template.convertAndSend("/configuration/plex/complete", payload.setExtras(plexServer));
+                }
             } else {
-                ioService.writePlexConfiguration(gapsService.getPlexSearch().getPlexServers());
-                template.convertAndSend("/configuration/plex/complete", plexServer);
+                template.convertAndSend("/configuration/plex/complete", payload);
             }
         } catch (Exception e) {
             LOGGER.error("Could not add plex server", e);
-            objectNode.put("failed", true);
-            template.convertAndSend("/configuration/plex/complete", objectNode.toString());
+            template.convertAndSend("/configuration/plex/complete", Payload.UNKNOWN_ERROR);
         }
     }
 
@@ -175,7 +176,8 @@ public class ConfigurationController {
     public ResponseEntity<Payload> postTestTmdbKey(@PathVariable("tmdbKey") final String tmdbKey) {
         LOGGER.info("postTestTmdbKey( " + tmdbKey + " )");
 
-        Payload payload = tmdbService.testTmdbKey(tmdbKey).setExtras("tmdbKey:" + tmdbKey);;
+        Payload payload = tmdbService.testTmdbKey(tmdbKey).setExtras("tmdbKey:" + tmdbKey);
+        ;
         return ResponseEntity.ok().body(payload);
     }
 

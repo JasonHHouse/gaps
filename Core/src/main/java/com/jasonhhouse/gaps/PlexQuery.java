@@ -22,7 +22,7 @@ public interface PlexQuery {
     /**
      * @param plexServer Needs to have the IP Address, port, and plex token to connect
      */
-    void getLibraries(@NotNull PlexServer plexServer);
+    @NotNull Payload getLibraries(@NotNull PlexServer plexServer);
 
     /**
      * Find the plex server name, key, and libraries based on the given PlexSearch parameters

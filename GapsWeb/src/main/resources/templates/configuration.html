@@ -152,9 +152,9 @@
                         .</small>
                 </div>
 
-                <a id="testPlexServer" href="javascript:void(0)" type="button" onclick="testPlexServer()"
+                <a id="testPlexServer" href="javascript:void(0)" type="button" onclick="testPlexServer();"
                    class="btn btn-info">Test</a>
-                <a id="addPlexServer" href="javascript:void(0)" type="button" onclick="addPlexServer()"
+                <a id="addPlexServer" href="javascript:void(0)" type="button" onclick="addPlexServer();"
                    class="btn btn-primary">Add</a>
 
                 <div id="plexSpinner" class="spinner-border text-primary gaps-hide top-margin" role="status">
@@ -251,9 +251,9 @@
                     {{/each}}
                 </ul>
                 <div class="card-body">
-                    <a href="javascript:void(0)" onclick="testExistingPlexServer('{{machineIdentifier}}')"
+                    <a id="testExisting" href="javascript:void(0)" onclick="testExistingPlexServer('{{machineIdentifier}}')"
                        class="card-link" data-ol-has-click-handler="">Test</a>
-                    <a href="javascript:void(0)" onclick="removePlexServer('{{machineIdentifier}}')" class="card-link"
+                    <a id="removeExisting" href="javascript:void(0)" onclick="removePlexServer('{{machineIdentifier}}')" class="card-link"
                        data-ol-has-click-handler="">Remove</a>
                 </div>
                 <div class="card-footer text-muted">http://{{address}}:{{port}}</div>

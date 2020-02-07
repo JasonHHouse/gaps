@@ -15,101 +15,209 @@ function spyOnAddEventListener(win) {
     }
 }
 
-it('Enter invalid Plex Server', () => {
-    cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
+describe('Hooks', function () {
+    before(function () {
+        cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
 
-    cy.get('#plexTab')
-        .click();
+        cy.get('#plexTab')
+            .click();
 
-    cy.get('#address')
-        .clear()
-        .type('111.222.121.212')
-        .should('have.value', '111.222.121.212');
+        //Remove existing server before each test
+        cy.get("body").then($body => {
+            if ($body.find("[onclick=\"removePlexServer(this.getAttribute('data-machineIdentifier'))\"]").length > 0) {
+                cy.get("[onclick=\"removePlexServer(this.getAttribute('data-machineIdentifier'))\"]")
+                    .each(($el) => {
+                        cy.wrap($el).click();
+                    });
+            }
+        });
+    });
 
-    cy.get('#port')
-        .clear()
-        .type('11212')
-        .should('have.value', '11212');
+    it('Test invalid Plex Server', () => {
+        cy.get('#address')
+            .clear()
+            .type('111.222.121.212')
+            .should('have.value', '111.222.121.212');
 
-    cy.get('#plexToken')
-        .clear()
-        .type('123qwe')
-        .should('have.value', '123qwe');
+        cy.get('#port')
+            .clear()
+            .type('11212')
+            .should('have.value', '11212');
 
-    cy.get('#testPlexServer')
-        .click();
+        cy.get('#plexToken')
+            .clear()
+            .type('123qwe')
+            .should('have.value', '123qwe');
 
-    cy.get('#plexTestError')
-        .should('be.visible');
+        cy.get('#testPlexServer')
+            .click();
 
-    cy.get('#plexTestSuccess')
-        .should('not.be.visible');
+        cy.get('#plexSpinner')
+            .should('not.be.visible');
 
-    cy.get('#plexSaveError')
-        .should('not.be.visible');
+        cy.get('#plexTestError')
+            .should('be.visible');
 
-    cy.get('#plexSaveSuccess')
-        .should('not.be.visible');
+        cy.get('#plexTestSuccess')
+            .should('not.be.visible');
 
-    cy.get('#plexDeleteError')
-        .should('not.be.visible');
+        cy.get('#plexSaveError')
+            .should('not.be.visible');
 
-    cy.get('#plexDeleteSuccess')
-        .should('not.be.visible');
+        cy.get('#plexSaveSuccess')
+            .should('not.be.visible');
 
-    cy.get('#plexDuplicateError')
-        .should('not.be.visible');
+        cy.get('#plexDeleteError')
+            .should('not.be.visible');
+
+        cy.get('#plexDeleteSuccess')
+            .should('not.be.visible');
+
+        cy.get('#plexDuplicateError')
+            .should('not.be.visible');
+    });
+
+    it('Test valid Plex Server', () => {
+        cy.get('#address')
+            .clear()
+            .type('174.58.64.67')
+            .should('have.value', '174.58.64.67');
+
+        cy.get('#port')
+            .clear()
+            .type('32400')
+            .should('have.value', '32400');
+
+        cy.get('#plexToken')
+            .clear()
+            .type('xPUCxLh4cTz8pcgorQQs')
+            .should('have.value', 'xPUCxLh4cTz8pcgorQQs');
+
+        cy.get('#testPlexServer')
+            .click();
+
+        cy.get('#plexSpinner')
+            .should('not.be.visible');
+
+        cy.get('#plexTestError')
+            .should('not.be.visible');
+
+        cy.get('#plexTestSuccess')
+            .should('be.visible');
+
+        cy.get('#plexSaveError')
+            .should('not.be.visible');
+
+        cy.get('#plexSaveSuccess')
+            .should('not.be.visible');
+
+        cy.get('#plexDeleteError')
+            .should('not.be.visible');
+
+        cy.get('#plexDeleteSuccess')
+            .should('not.be.visible');
+
+        cy.get('#plexDuplicateError')
+            .should('not.be.visible');
+    });
+
+
+    it('Save invalid Plex Server', () => {
+        cy.get('#address')
+            .clear()
+            .type('111.222.121.212')
+            .should('have.value', '111.222.121.212');
+
+        cy.get('#port')
+            .clear()
+            .type('11212')
+            .should('have.value', '11212');
+
+        cy.get('#plexToken')
+            .clear()
+            .type('123qwe')
+            .should('have.value', '123qwe');
+
+        cy.get('#addPlexServer')
+            .click();
+
+        //Wait for timeout from plex
+        cy.wait(1000);
+
+        cy.get('#plexSpinner')
+            .should('not.be.visible');
+
+        cy.get('#plexTestError')
+            .should('not.be.visible');
+
+        cy.get('#plexTestSuccess')
+            .should('not.be.visible');
+
+        cy.get('#plexSaveError')
+            .should('be.visible');
+
+        cy.get('#plexSaveSuccess')
+            .should('not.be.visible');
+
+        cy.get('#plexDeleteError')
+            .should('not.be.visible');
+
+        cy.get('#plexDeleteSuccess')
+            .should('not.be.visible');
+
+        cy.get('#plexDuplicateError')
+            .should('not.be.visible');
+    });
+
+    it('Save valid Plex Server', () => {
+        cy.get('#address')
+            .clear()
+            .type('174.58.64.67')
+            .should('have.value', '174.58.64.67');
+
+        cy.get('#port')
+            .clear()
+            .type('32400')
+            .should('have.value', '32400');
+
+        cy.get('#plexToken')
+            .clear()
+            .type('xPUCxLh4cTz8pcgorQQs')
+            .should('have.value', 'xPUCxLh4cTz8pcgorQQs');
+
+        cy.get('#addPlexServer')
+            .click();
+
+        cy.get('#plexSpinner')
+            .should('not.be.visible');
+
+        cy.get('#plexTestError')
+            .should('not.be.visible');
+
+        cy.get('#plexTestSuccess')
+            .should('not.be.visible');
+
+        cy.get('#plexSaveError')
+            .should('not.be.visible');
+
+        cy.get('#plexSaveSuccess')
+            .should('be.visible');
+
+        cy.get('#plexDeleteError')
+            .should('not.be.visible');
+
+        cy.get('#plexDeleteSuccess')
+            .should('not.be.visible');
+
+        cy.get('#plexDuplicateError')
+            .should('not.be.visible');
+
+        //Define card here
+    });
 });
+
 
 /*
-
-it('Enter invalid TMDB Key', () => {
-    cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
-
-    cy.get('#movieDbApiKey')
-        .clear()
-        .type('ABC123')
-        .should('have.value', 'ABC123');
-
-    cy.get('#testTmdbKey')
-        .click();
-
-    cy.get('#tmdbTestError')
-        .should('be.visible');
-
-    cy.get('#tmdbTestSuccess')
-        .should('not.be.visible');
-
-    cy.get('#tmdbSaveError')
-        .should('not.be.visible');
-
-    cy.get('#tmdbSaveSuccess')
-        .should('not.be.visible');
-});
-
-it('Enter valid TMDB Key', () => {
-    cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
-
-    cy.get('#movieDbApiKey')
-        .clear()
-        .type('723b4c763114904392ca441909aa0375')
-        .should('have.value', '723b4c763114904392ca441909aa0375');
-
-    cy.get('#testTmdbKey')
-        .click();
-
-    cy.get('#tmdbTestError')
-        .should('not.be.visible');
-
-    cy.get('#tmdbTestSuccess')
-        .should('be.visible');
-
-    cy.get('#tmdbSaveError')
-        .should('not.be.visible');
-
-    cy.get('#tmdbSaveSuccess')
-        .should('not.be.visible');
-});
 
 it('Save invalid TMDB Key', () => {
     cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});

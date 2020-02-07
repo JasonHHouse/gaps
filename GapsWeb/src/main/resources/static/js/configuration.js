@@ -48,11 +48,28 @@ document.addEventListener('DOMContentLoaded', function () {
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
         stompClient.subscribe(`/configuration/plex/complete`, function (message) {
-            const body = message.body;
+            const payload = JSON.parse(message.body);
 
             plexSpinner.hide();
-            if (body) {
-                const response = JSON.parse(body);
+
+            if(payload && payload.code === 13) {
+                //Success
+                plexSaveSuccess.show();
+
+                $('#plexToken').val('');
+                $('#address').val('');
+                $('#port').val('32400');
+
+                const plexServerCard = $("#plexServerCard").html();
+                const theTemplate = Handlebars.compile(plexServerCard);
+                const theCompiledHtml = theTemplate(payload.extras);
+                $('#plexServers').append(theCompiledHtml);
+            } else {
+                //Failed
+                plexSaveError.show();
+            }
+
+          /*  if (payload) {
                 if (response.failed) {
                     plexSaveError.show();
                 } else {
@@ -64,12 +81,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     const plexServerCard = $("#plexServerCard").html();
                     const theTemplate = Handlebars.compile(plexServerCard);
-                    const theCompiledHtml = theTemplate(response);
+                    const theCompiledHtml = theTemplate(payload);
                     $('#plexServers').append(theCompiledHtml);
                 }
             } else {
                 plexSaveError.show();
-            }
+            }*/
         });
         stompClient.subscribe(`/configuration/plex/duplicate`, function () {
             plexSpinner.hide();
