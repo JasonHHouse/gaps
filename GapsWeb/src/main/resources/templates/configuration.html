@@ -73,8 +73,10 @@
                     <input type="text" class="form-control" id="movieDbApiKey" th:field="*{movieDbApiKey}" required>
                 </div>
 
-                <button type="button" onclick="testTmdbKey()" class="btn btn-info">Test</button>
-                <button type="button" onclick="saveTmdbKey()" class="btn btn-primary">Save</button>
+                <a id="testTmdbKey" href="javascript:void(0)" type="button" onclick="testTmdbKey();"
+                   class="btn btn-info">Test</a>
+                <a id="saveTmdbKey" href="javascript:void(0)" type="button" onclick="saveTmdbKey();"
+                   class="btn btn-primary">Save</a>
             </form>
 
             <div id="tmdbSpinner" class="spinner-border text-primary gaps-hide top-margin" role="status">
@@ -185,7 +187,8 @@
             <h3 class="top-margin">Servers</h3>
 
             <div id="plexServers" class="row top-margin">
-                <div th:id="*{plexServer.machineIdentifier}" class="col-lg-4" th:each="plexServer,status : *{plexSearch.plexServers}">
+                <div th:id="*{plexServer.machineIdentifier}" class="col-lg-4"
+                     th:each="plexServer,status : *{plexSearch.plexServers}">
                     <div class="top-margin">
                         <div class="card border-secondary mb-3" style="max-width: 20rem;">
                             <div class="card-header" th:text="${plexServer.getFriendlyName()}"></div>
@@ -195,10 +198,12 @@
                             </ul>
                             <div class="card-body">
                                 <a href="javascript:void(0)" th:data-machineIdentifier="*{plexServer.machineIdentifier}"
-                                   th:onclick="testExistingPlexServer(this.getAttribute('data-machineIdentifier'))" class="card-link"
+                                   th:onclick="testExistingPlexServer(this.getAttribute('data-machineIdentifier'))"
+                                   class="card-link"
                                    data-ol-has-click-handler="">Test</a>
                                 <a href="javascript:void(0)" th:data-machineIdentifier="*{plexServer.machineIdentifier}"
-                                   th:onclick="removePlexServer(this.getAttribute('data-machineIdentifier'))" class="card-link"
+                                   th:onclick="removePlexServer(this.getAttribute('data-machineIdentifier'))"
+                                   class="card-link"
                                    data-ol-has-click-handler="">Remove</a>
                             </div>
                             <div class="card-footer text-muted"
