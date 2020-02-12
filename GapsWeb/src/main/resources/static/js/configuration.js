@@ -14,7 +14,7 @@ let tmdbSpinner, tmdbSaveSuccess, tmdbSaveError, tmdbTestSuccess, tmdbTestError;
 
 window.addEventListener('load', function () {
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.getElementsByClassName('needs-validation');
+    const forms = document.getElementsByClassName('needs-validation');
     // Loop over them and prevent submission
     Array.prototype.filter.call(forms, function (form) {
         form.addEventListener('click', function (event) {
@@ -68,25 +68,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 //Failed
                 plexSaveError.show();
             }
-
-            /*  if (payload) {
-                  if (response.failed) {
-                      plexSaveError.show();
-                  } else {
-                      plexSaveSuccess.show();
-
-                      $('#plexToken').val('');
-                      $('#address').val('');
-                      $('#port').val('32400');
-
-                      const plexServerCard = $("#plexServerCard").html();
-                      const theTemplate = Handlebars.compile(plexServerCard);
-                      const theCompiledHtml = theTemplate(payload);
-                      $('#plexServers').append(theCompiledHtml);
-                  }
-              } else {
-                  plexSaveError.show();
-              }*/
         });
         stompClient.subscribe(`/configuration/plex/duplicate`, function () {
             hideAllAlertsAndSpinners();

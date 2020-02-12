@@ -8,12 +8,13 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import {getMoviesForTable} from '/js/common.js';
+
 let libraryTitle, noMovieContainer, movieContainer, movieSearchingContainer;
 let plexServers;
 let plexServer;
 let moviesTable;
 let libraryKey;
-
 
 jQuery(function ($) {
     Handlebars.registerHelper('json', function (context) {
@@ -30,7 +31,7 @@ jQuery(function ($) {
 
     moviesTable = $('#movies').DataTable({
         initComplete: function () {
-            getMoviesForTable(`/libraries/${plexServer.machineIdentifier}/${libraryKey}`);
+            getMoviesForTable(`/libraries/${plexServer.machineIdentifier}/${libraryKey}`, movieContainer, noMovieContainer, moviesTable);
         },
         deferRender: true,
         search: true,
@@ -108,31 +109,9 @@ function switchPlexLibrary(machineIdentifier, key) {
     moviesTable.data().clear();
     moviesTable.rows().invalidate().draw();
 
-    getMoviesForTable(`/libraries/${machineIdentifier}/${libraryKey}`);
+    getMoviesForTable(`/libraries/${machineIdentifier}/${libraryKey}`, movieContainer, noMovieContainer, moviesTable);
 }
 
-function getMoviesForTable(url) {
-    $.ajax({
-        type: "GET",
-        url: url,
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (result) {
-            if (result.success) {
-                movieContainer.show(100);
-                noMovieContainer.css({'display': 'none'});
-                moviesTable.rows.add(JSON.parse(result.movies)).draw();
-            } else {
-                movieContainer.css({'display': 'none'});
-                noMovieContainer.show(100);
-            }
-        }, error: function () {
-            movieContainer.css({'display': 'none'});
-            noMovieContainer.show(100);
-            //Show error + error
-        }
-    });
-}
 
 function searchForMovies() {
     movieSearchingContainer.show();

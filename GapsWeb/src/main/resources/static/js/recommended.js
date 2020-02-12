@@ -8,7 +8,9 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-let libraryTitle, notSearchedYetContainer, movieContainer, searchContainer, noMovieContainer;
+import {getMoviesForTable} from '/js/common.js';
+
+let libraryTitle, notSearchedYetContainer, movieContainer, searchContainer, noMovieContainer, movieSearchingContainer;
 let plexServers;
 let plexServer;
 let moviesTable;
@@ -44,7 +46,7 @@ jQuery(function ($) {
 
     moviesTable = $('#movies').DataTable({
         initComplete: function () {
-            getMoviesForTable(`/recommended/${plexServer.machineIdentifier}/${libraryKey}`);
+            getMoviesForTable(`/recommended/${plexServer.machineIdentifier}/${libraryKey}`, movieContainer, noMovieContainer, moviesTable);
         },
         deferRender: true,
         search: true,
@@ -171,30 +173,7 @@ function switchPlexLibrary(machineIdentifier, key) {
     moviesTable.data().clear();
     moviesTable.rows().invalidate().draw();
 
-    getMoviesForTable(`/recommended/${machineIdentifier}/${libraryKey}`);
-}
-
-function getMoviesForTable(url) {
-    $.ajax({
-        type: "GET",
-        url: url,
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (result) {
-            if (result.success) {
-                movieContainer.show(100);
-                notSearchedYetContainer.css({'display': 'none'});
-                moviesTable.rows.add(JSON.parse(result.movies)).draw();
-            } else {
-                movieContainer.css({'display': 'none'});
-                notSearchedYetContainer.show(100);
-            }
-        }, error: function () {
-            movieContainer.css({'display': 'none'});
-            notSearchedYetContainer.show(100);
-            //Show error + error
-        }
-    });
+    getMoviesForTable(`/recommended/${machineIdentifier}/${libraryKey}`, movieContainer, noMovieContainer, moviesTable);
 }
 
 function cancel() {
