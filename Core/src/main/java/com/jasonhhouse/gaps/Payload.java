@@ -23,7 +23,9 @@ public enum Payload {
     NUKE_SUCCESSFUL(30, "Nuke successful. All files deleted."),
     NUKE_UNSUCCESSFUL(31, "Nuke unsuccessful. Manually delete files."),
     PLEX_LIBRARY_MOVIE_FOUND(40, "Plex's library movies found."),
-    PLEX_LIBRARY_MOVIE_NOT_FOUND(41, "Plex's library movies not found.");
+    PLEX_LIBRARY_MOVIE_NOT_FOUND(41, "Plex's library movies not found."),
+    RECOMMENDED_MOVIES_FOUND(50, "Recommended movies found."),
+    RECOMMENDED_MOVIES_NOT_FOUND(51, "Recommended movies not found.");
 
     final private int code;
     final private String reason;

@@ -1,16 +1,16 @@
 import {libraryBefore, spyOnAddEventListener} from "../common";
 
-describe('Not Searched Yet Library', function () {
+describe('Not Searched Yet Recommended', function () {
     before(libraryBefore);
 
     it('Clean configuration page load', () => {
-        cy.visit('/libraries', {onBeforeLoad: spyOnAddEventListener});
+        cy.visit('/recommended', {onBeforeLoad: spyOnAddEventListener});
 
-        cy.get('#libraryTitle')
-            .contains('KnoxServer');
+        cy.get('#noMovieContainer > .card > .card-img-top')
+            .should('be.visible');
 
         cy.get('#dropdownMenuLink')
-            .should('have.text', 'Libraries');
+            .click();
 
         cy.get('[data-key="1"]')
             .should('have.text', 'KnoxServer - Movies');
@@ -18,7 +18,5 @@ describe('Not Searched Yet Library', function () {
         cy.get('[data-key="2"]')
             .should('have.text', 'KnoxServer - Disney Classic Movies');
 
-        cy.get('.card-img-top')
-            .should('be.visible');
     });
 });

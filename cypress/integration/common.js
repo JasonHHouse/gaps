@@ -24,6 +24,13 @@ export function searchPlexForDisneyMovies(cy) {
 
     cy.get('.card-body > .btn')
         .click();
+
+    cy.get('label > input')
+        .clear()
+        .type('101 Dalmatians');
+
+    cy.get('.col-md-10 > .card-body > .card-title')
+        .should('have.text', '101 Dalmatians II Patch\'s London Adventure (2003)');
 }
 
 export function libraryBefore() {
@@ -90,6 +97,4 @@ export function libraryBefore() {
 
     cy.get('.list-group > :nth-child(2)')
         .should('have.text', 'Movies');
-
-    cy.visit('/libraries', {onBeforeLoad: spyOnAddEventListener});
 }

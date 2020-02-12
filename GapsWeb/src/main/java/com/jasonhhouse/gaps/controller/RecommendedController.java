@@ -9,12 +9,10 @@
  */
 package com.jasonhhouse.gaps.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.jasonhhouse.gaps.GapsSearch;
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Movie;
+import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.service.IoService;
@@ -44,7 +42,6 @@ import org.springframework.web.servlet.ModelAndView;
 public class RecommendedController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RecommendedController.class);
-    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private final IoService ioService;
     private final GapsService gapsService;
@@ -86,31 +83,27 @@ public class RecommendedController {
     @RequestMapping(method = RequestMethod.GET,
             path = "/recommended/{machineIdentifier}/{key}")
     @ResponseBody
-    public ResponseEntity<String> getRecommended(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
+    public ResponseEntity<Payload> getRecommended(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("getRecommended( " + machineIdentifier + ", " + key + " )");
 
-        List<Movie> movies = ioService.readRecommendedMovies(machineIdentifier, key);
+        final List<Movie> ownedMovies = ioService.readOwnedMovies(machineIdentifier, key);
+        Payload payload;
 
-        ObjectNode objectNode = objectMapper.createObjectNode();
-
-        if (CollectionUtils.isEmpty(movies)) {
-            objectNode.put("success", false);
-            LOGGER.warn("Could not find Plex Library recommended movies");
+        if (CollectionUtils.isEmpty(ownedMovies)) {
+            payload = Payload.PLEX_LIBRARY_MOVIE_NOT_FOUND;
+            LOGGER.warn(payload.getReason());
         } else {
-
-            String output;
-            try {
-                output = objectMapper.writeValueAsString(movies);
-                objectNode.put("success", true);
-            } catch (JsonProcessingException e) {
-                LOGGER.error("Failed to turn PlexLibrary Movies to JSON", e);
-                objectNode.put("success", false);
-                output = "";
+            List<Movie> movies = ioService.readRecommendedMovies(machineIdentifier, key);
+            if (CollectionUtils.isEmpty(movies)) {
+                payload = Payload.RECOMMENDED_MOVIES_NOT_FOUND;
+                LOGGER.warn(payload.getReason());
+            } else {
+                payload = Payload.RECOMMENDED_MOVIES_FOUND;
             }
-            objectNode.put("movies", output);
+            payload.setExtras(movies);
         }
 
-        return ResponseEntity.ok().body(objectNode.toString());
+        return ResponseEntity.ok().body(payload);
     }
 
     private List<String> buildUrls(Movie[] movies) {

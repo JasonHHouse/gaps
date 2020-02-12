@@ -1,20 +1,17 @@
-import {libraryBefore, searchPlexForDisneyMovies} from "../common";
+import {libraryBefore, searchPlexForDisneyMovies, spyOnAddEventListener} from "../common";
 
 describe('Find owned movies', function () {
     before(libraryBefore);
 
     it('Find Disney Movies', () => {
+        cy.visit('/libraries', {onBeforeLoad: spyOnAddEventListener});
+
         searchPlexForDisneyMovies(cy);
-
-        cy.get('label > input')
-            .clear()
-            .type('101 Dalmatians');
-
-        cy.get('.col-md-10 > .card-body > .card-title')
-            .should('have.text', '101 Dalmatians II Patch\'s London Adventure (2003)');
     });
 
     it('Refresh Disney Movies', () => {
+        cy.visit('/libraries', {onBeforeLoad: spyOnAddEventListener});
+
         cy.get('#dropdownMenuLink')
             .click();
 
@@ -36,6 +33,8 @@ describe('Find owned movies', function () {
     });
 
     it('Regular Movies Empty', () => {
+        cy.visit('/libraries', {onBeforeLoad: spyOnAddEventListener});
+
         cy.get('#dropdownMenuLink')
             .click();
 

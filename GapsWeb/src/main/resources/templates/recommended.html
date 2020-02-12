@@ -65,7 +65,7 @@
                    th:data-key="*{plexLibrary.key}"
                    th:data-machineIdentifier="*{instance.value.machineIdentifier}"
                    th:each="plexLibrary : *{instance.value.plexLibraries}"
-                   th:onclick="switchPlexLibrary(this.getAttribute('data-machineIdentifier'), this.getAttribute('data-key'))"
+                   onclick="switchPlexLibrary(this.getAttribute('data-machineIdentifier'), this.getAttribute('data-key'))"
                    th:text="(*{instance.value.friendlyName} + ' - ' + *{plexLibrary.title})"></a>
             </div>
         </div>
