@@ -15,7 +15,7 @@ export function getMoviesForTable(url, movieContainer, noMovieContainer, moviesT
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (result) {
-            if (result.code = 40) {
+            if (result.code === 40) {
                 movieContainer.show(100);
                 noMovieContainer.css({'display': 'none'});
                 moviesTable.rows.add(result.extras).draw();
