@@ -1,8 +1,8 @@
 #!/bin/bash
 read -n 1 -s -r -p "Are the ports set correctly?"
-VERSION="0.2.2-alpha"
-DOCKER_SSL_VERSION="housewrecker/gaps:v$VERSION"
-DOCKER_NO_SSL_VERSION="housewrecker/gaps:v$VERSION-no-ssl"
+VERSION="0.2.2"
+DOCKER_SSL_VERSION="housewrecker/gaps:v$VERSION-alpha"
+DOCKER_NO_SSL_VERSION="housewrecker/gaps:v$VERSION-alpha-no-ssl"
 JAR_VERSION="GapsWeb/target/GapsWeb-$VERSION.jar"
 ZIP_VERSION="Gaps-$VERSION.zip"
 mvn clean install
