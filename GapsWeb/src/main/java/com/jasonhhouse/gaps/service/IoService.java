@@ -13,6 +13,7 @@ package com.jasonhhouse.gaps.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.Movie;
+import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexServer;
@@ -428,5 +429,28 @@ public class IoService {
         }
 
         return plexSearch;
+    }
+
+    public Payload nuke() {
+        LOGGER.info("nuke()");
+        File folder = new File(STORAGE_FOLDER);
+        try {
+            nuke(folder);
+            return Payload.NUKE_SUCCESSFUL;
+        } catch (Exception e) {
+            LOGGER.error(Payload.NUKE_UNSUCCESSFUL.getReason(), e);
+            return Payload.NUKE_UNSUCCESSFUL;
+        }
+    }
+
+    private void nuke(File file) {
+        LOGGER.info("nuke( " + file + " )");
+        if (!file.isFile()) {
+            for (File children : file.listFiles()) {
+                nuke(children);
+            }
+        } else {
+            file.delete();
+        }
     }
 }

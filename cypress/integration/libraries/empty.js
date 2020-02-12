@@ -1,9 +1,9 @@
-import {spyOnAddEventListener} from '../common.js';
+import {libraryBefore} from '../common.js';
 
 describe('Not Searched Yet Library Tests', function () {
-    it('Clean configuration page load', () => {
-        cy.visit('/libraries', {onBeforeLoad: spyOnAddEventListener});
+    before(libraryBefore);
 
+    it('Clean configuration page load', () => {
         cy.get('#libraryTitle')
             .contains('KnoxServer');
 

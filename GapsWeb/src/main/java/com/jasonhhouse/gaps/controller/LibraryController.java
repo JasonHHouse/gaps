@@ -1,10 +1,8 @@
 package com.jasonhhouse.gaps.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Movie;
+import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexServer;
@@ -31,7 +29,6 @@ import org.springframework.web.servlet.ModelAndView;
 public class LibraryController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LibraryController.class);
-    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private final IoService ioService;
     private final GapsService gapsService;
@@ -96,31 +93,22 @@ public class LibraryController {
     @RequestMapping(method = RequestMethod.GET,
             path = "/libraries/{machineIdentifier}/{key}")
     @ResponseBody
-    public ResponseEntity<String> getLibraries(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
+    public ResponseEntity<Payload> getLibraries(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("getLibraries( " + machineIdentifier + ", " + key + " )");
 
         List<Movie> movies = ioService.readOwnedMovies(machineIdentifier, key);
-
-        ObjectNode objectNode = objectMapper.createObjectNode();
+        Payload payload;
 
         if (CollectionUtils.isEmpty(movies)) {
-            objectNode.put("success", false);
-            LOGGER.warn("Could not find Plex Library movies");
+            payload = Payload.PLEX_LIBRARY_MOVIE_NOT_FOUND;
+            LOGGER.warn(payload.getReason());
         } else {
-
-            String output;
-            try {
-                output = objectMapper.writeValueAsString(movies);
-                objectNode.put("success", true);
-            } catch (JsonProcessingException e) {
-                LOGGER.error("Failed to turn PlexLibrary Movies to JSON", e);
-                objectNode.put("success", false);
-                output = "";
-            }
-            objectNode.put("movies", output);
+            payload = Payload.PLEX_LIBRARY_MOVIE_FOUND;
         }
 
-        return ResponseEntity.ok().body(objectNode.toString());
+        payload.setExtras(movies);
+
+        return ResponseEntity.ok().body(payload);
     }
 
 }

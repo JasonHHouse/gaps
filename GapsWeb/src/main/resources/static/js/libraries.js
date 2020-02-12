@@ -30,14 +30,20 @@ jQuery(function ($) {
     libraryKey = $('#libraryKey').val();
 
     moviesTable = $('#movies').DataTable({
-        initComplete: function () {
-            getMoviesForTable(`/libraries/${plexServer.machineIdentifier}/${libraryKey}`, movieContainer, noMovieContainer, moviesTable);
-        },
         deferRender: true,
-        search: true,
+        ordering: false,
         columns: [
+            {data: 'imdbId'},
+            {data: 'name'},
+            {data: 'year'},
+            {data: 'language'},
+            {data: 'overview'}
+        ],
+        columnDefs: [
             {
-                data: "card",
+                targets: [0],
+                type: 'html',
+                searchable: false,
                 render: function (data, type, row) {
                     if (type === 'display') {
                         row.address = plexServer.address;
@@ -52,52 +58,17 @@ jQuery(function ($) {
                 }
             },
             {
-                data: "title",
-                searchable: true,
-                visible: false,
-                render: function (data, type, row) {
-                    if (type === 'display' && row.name) {
-                        return row.name;
-                    }
-                    return "";
-                }
-            },
-            {
-                data: "year",
-                searchable: true,
-                visible: false,
-                render: function (data, type, row) {
-                    if (type === 'display' && row.year) {
-                        return row.year;
-                    }
-                    return "";
-                }
-            },
-            {
-                data: "language",
-                searchable: true,
-                visible: false,
-                render: function (data, type, row) {
-                    if (type === 'display' && row.language) {
-                        return row.language;
-                    }
-                    return "";
-                }
-            },
-            {
-                data: "summary",
-                searchable: true,
-                visible: false,
-                render: function (data, type, row) {
-                    if (type === 'display' && row.overview) {
-                        return row.overview;
-                    }
-                    return "";
-                }
-            },
+                targets: [1, 2, 3, 4],
+                visible: false
+            }
         ]
     });
 
+    getMoviesForTable(`/libraries/${plexServer.machineIdentifier}/${libraryKey}`, movieContainer, noMovieContainer, moviesTable);
+
+    //Exposing function for onClick()
+    window.searchForMovies = searchForMovies;
+    window.switchPlexLibrary = switchPlexLibrary;
 });
 
 function switchPlexLibrary(machineIdentifier, key) {
@@ -111,7 +82,6 @@ function switchPlexLibrary(machineIdentifier, key) {
 
     getMoviesForTable(`/libraries/${machineIdentifier}/${libraryKey}`, movieContainer, noMovieContainer, moviesTable);
 }
-
 
 function searchForMovies() {
     movieSearchingContainer.show();

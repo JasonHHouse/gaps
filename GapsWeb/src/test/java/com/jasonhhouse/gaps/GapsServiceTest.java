@@ -35,4 +35,9 @@ public class GapsServiceTest implements GapsService {
     public void updatePlexSearch(PlexSearch plexSearch) {
 
     }
+
+    @Override
+    public void nukePlexSearch() {
+
+    }
 }

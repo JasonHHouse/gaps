@@ -19,7 +19,11 @@ public enum Payload {
     TMDB_KEY_INVALID(21, "TMDB Key invalid"),
     TMDB_CONNECTION_ERROR(22, "Error connecting to TMDB with url"),
     TMDB_KEY_SAVE_SUCCESSFUL(23, "TMDB key saved."),
-    TMDB_KEY_SAVE_UNSUCCESSFUL(24, "TMDB key not saved.");
+    TMDB_KEY_SAVE_UNSUCCESSFUL(24, "TMDB key not saved."),
+    NUKE_SUCCESSFUL(30, "Nuke successful. All files deleted."),
+    NUKE_UNSUCCESSFUL(31, "Nuke unsuccessful. Manually delete files."),
+    PLEX_LIBRARY_MOVIE_FOUND(40, "Plex's library movies found."),
+    PLEX_LIBRARY_MOVIE_NOT_FOUND(41, "Plex's library movies not found.");
 
     final private int code;
     final private String reason;

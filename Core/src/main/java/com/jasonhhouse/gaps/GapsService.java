@@ -36,4 +36,9 @@ public interface GapsService {
      * @param plexSearch The object to copy into the plex search singleton
      */
     void updatePlexSearch(PlexSearch plexSearch);
+
+    /**
+     * Resets the plex search object itself to the singleton object
+     */
+    void nukePlexSearch();
 }

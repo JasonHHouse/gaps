@@ -73,4 +73,10 @@ public class GapsServiceImpl implements GapsService {
             this.plexSearch.setMovieDbApiKey(plexSearch.getMovieDbApiKey());
         }
     }
+
+    @Override
+    public void nukePlexSearch() {
+        plexSearch.setMovieDbApiKey("");
+        plexSearch.getPlexServers().clear();
+    }
 }
