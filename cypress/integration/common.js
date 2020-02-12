@@ -15,6 +15,17 @@ export function spyOnAddEventListener(win) {
     };
 }
 
+export function searchPlexForDisneyMovies(cy) {
+    cy.get('#dropdownMenuLink')
+        .click();
+
+    cy.get('[data-key="2"]')
+        .click();
+
+    cy.get('.card-body > .btn')
+        .click();
+}
+
 export function libraryBefore() {
     cy.request('PUT', '/nuke/jhouse')
         .then((response) => {

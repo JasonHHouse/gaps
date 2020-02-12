@@ -1,17 +1,10 @@
-import {libraryBefore} from '../common.js';
+import {libraryBefore, searchPlexForDisneyMovies} from "../common";
 
 describe('Find owned movies', function () {
     before(libraryBefore);
 
     it('Find Disney Movies', () => {
-        cy.get('#dropdownMenuLink')
-            .click();
-
-        cy.get('[data-key="2"]')
-            .click();
-
-        cy.get('.card-body > .btn')
-            .click();
+        searchPlexForDisneyMovies(cy);
 
         cy.get('label > input')
             .clear()
