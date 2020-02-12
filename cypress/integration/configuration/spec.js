@@ -7,7 +7,7 @@ function spyOnAddEventListener(win) {
         if (name === 'change') {
             // web app added an event listener to the input box -
             // that means the web application has started
-            appHasStarted = true
+            appHasStarted = true;
             // restore the original event listener
             win.EventTarget.prototype.addEventListener = addListener
         }
