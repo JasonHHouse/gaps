@@ -4,7 +4,7 @@ describe('TMDB Configuration Tests', function () {
     before(function () {
         cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
     });
-    it('Enter invalid TMDB Key', () => {
+    it('Test invalid TMDB Key', () => {
         cy.get('#movieDbApiKey')
             .clear()
             .type('ABC123')
@@ -26,7 +26,7 @@ describe('TMDB Configuration Tests', function () {
             .should('not.be.visible');
     });
 
-    it('Enter valid TMDB Key', () => {
+    it('Test valid TMDB Key', () => {
         cy.get('#movieDbApiKey')
             .clear()
             .type('723b4c763114904392ca441909aa0375')

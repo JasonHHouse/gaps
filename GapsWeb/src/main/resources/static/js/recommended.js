@@ -8,7 +8,7 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import {getRecommendedMoviesForTable} from '/js/common.js';
+import {getRecommendedMoviesForTable} from '/js/modules/common.js';
 
 let libraryTitle, notSearchedYetContainer, movieContainer, searchContainer, noMovieContainer, movieSearchingContainer;
 let plexServers;
@@ -79,78 +79,7 @@ jQuery(function ($) {
         ]
     });
 
-    getRecommendedMoviesForTable(`/libraries/${plexServer.machineIdentifier}/${libraryKey}`, movieContainer, noMovieContainer, notSearchedYetContainer, moviesTable);
-
-    /*
-        moviesTable = $('#movies').DataTable({
-            initComplete: function () {
-                getMoviesForTable(`/recommended/${plexServer.machineIdentifier}/${libraryKey}`, movieContainer, noMovieContainer, moviesTable);
-            },
-            deferRender: true,
-            search: true,
-            columns: [
-                {
-                    data: "card",
-                    render: function (data, type, row) {
-                        if (type === 'display') {
-                            row.address = plexServer.address;
-                            row.port = plexServer.port;
-                            row.plexToken = plexServer.plexToken;
-
-                            const plexServerCard = $("#movieCard").html();
-                            const theTemplate = Handlebars.compile(plexServerCard);
-                            return theTemplate(row);
-                        }
-                        return "";
-                    }
-                },
-                {
-                    data: "title",
-                    searchable: true,
-                    visible: false,
-                    render: function (data, type, row) {
-                        if (type === 'display' && row.name) {
-                            return row.name;
-                        }
-                        return "";
-                    }
-                },
-                {
-                    data: "year",
-                    searchable: true,
-                    visible: false,
-                    render: function (data, type, row) {
-                        if (type === 'display' && row.year) {
-                            return row.year;
-                        }
-                        return "";
-                    }
-                },
-                {
-                    data: "language",
-                    searchable: true,
-                    visible: false,
-                    render: function (data, type, row) {
-                        if (type === 'display' && row.language) {
-                            return row.language;
-                        }
-                        return "";
-                    }
-                },
-                {
-                    data: "summary",
-                    searchable: true,
-                    visible: false,
-                    render: function (data, type, row) {
-                        if (type === 'display' && row.overview) {
-                            return row.overview;
-                        }
-                        return "";
-                    }
-                },
-            ]
-        });*/
-
+    getRecommendedMoviesForTable(`/recommended/${plexServer.machineIdentifier}/${libraryKey}`, movieContainer, noMovieContainer, notSearchedYetContainer, moviesTable);
 
     const socket = new SockJS('/gs-guide-websocket');
     stompClient = Stomp.over(socket);

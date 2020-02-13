@@ -8,6 +8,8 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import {Payload} from '/js/modules/payload.js';
+
 let plexSpinner, plexSaveSuccess, plexSaveError, plexTestSuccess, plexTestError, plexDeleteSuccess, plexDeleteError,
     plexDuplicateError;
 let tmdbSpinner, tmdbSaveSuccess, tmdbSaveError, tmdbTestSuccess, tmdbTestError;
@@ -44,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
     plexDuplicateError = $('#plexDuplicateError');
 
     const socket = new SockJS('/gs-guide-websocket');
-    stompClient = Stomp.over(socket);
+    const stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
         stompClient.subscribe(`/configuration/plex/complete`, function (message) {
@@ -52,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             hideAllAlertsAndSpinners();
 
-            if (payload && payload.code === 13) {
+            if (payload && payload.code === Payload.PLEX_LIBRARIES_FOUND) {
                 //Success
                 plexSaveSuccess.show();
 
@@ -74,6 +76,13 @@ document.addEventListener('DOMContentLoaded', function () {
             plexDuplicateError.show();
         });
     });
+
+    window.testTmdbKey = testTmdbKey;
+    window.saveTmdbKey = saveTmdbKey;
+    window.testPlexServer = testPlexServer;
+    window.addPlexServer = addPlexServer;
+    window.testExistingPlexServer = testExistingPlexServer;
+    window.removePlexServer = removePlexServer;
 });
 
 function testTmdbKey() {
@@ -92,7 +101,7 @@ function testTmdbKey() {
         dataType: "json",
         success: function (result) {
             hideAllAlertsAndSpinners();
-            if (result && result.code === 20) {
+            if (result && result.code === Payload.TMDB_KEY_VALID) {
                 tmdbTestSuccess.show();
             } else {
                 tmdbTestError.show();
@@ -120,7 +129,7 @@ function saveTmdbKey() {
         dataType: "json",
         success: function (result) {
             hideAllAlertsAndSpinners();
-            if (result && result.code === 23) {
+            if (result && result.code === Payload.TMDB_KEY_SAVE_SUCCESSFUL) {
                 tmdbSaveSuccess.show();
             } else {
                 tmdbSaveError.show();
@@ -152,7 +161,7 @@ function testPlexServer() {
         dataType: "json",
         success: function (result) {
             hideAllAlertsAndSpinners();
-            if (result && result.code === 10) {
+            if (result && result.code === Payload.PLEX_CONNECTION_SUCCEEDED) {
                 plexTestSuccess.show();
             } else {
                 plexTestError.show();

@@ -163,7 +163,7 @@ public class PlexQueryImpl implements PlexQuery {
 
     @Override
     public @NotNull Payload queryPlexServer(@NotNull PlexServer plexServer) throws ResponseStatusException {
-        LOGGER.info("queryPlexLibraries()");
+        LOGGER.info("queryPlexLibraries( " + plexServer + " )");
 
         HttpUrl url = new HttpUrl.Builder()
                 .scheme("http")
