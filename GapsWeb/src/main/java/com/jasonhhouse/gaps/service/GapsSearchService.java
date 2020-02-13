@@ -71,11 +71,14 @@ public class GapsSearchService implements GapsSearch {
 
     private final IoService ioService;
 
+    private final TmdbService tmdbService;
+
     private final GapsService gapsService;
 
     @Autowired
-    public GapsSearchService(@Qualifier("real") UrlGenerator urlGenerator, SimpMessagingTemplate template, IoService ioService, GapsService gapsService) {
+    public GapsSearchService(@Qualifier("real") UrlGenerator urlGenerator, SimpMessagingTemplate template, IoService ioService, TmdbService tmdbService, GapsService gapsService) {
         this.template = template;
+        this.tmdbService = tmdbService;
         this.gapsService = gapsService;
         this.urlGenerator = urlGenerator;
         this.ioService = ioService;
@@ -88,8 +91,16 @@ public class GapsSearchService implements GapsSearch {
     public void run(String machineIdentifier, Integer key) {
         LOGGER.info("run( " + machineIdentifier + ", " + key + " )");
 
-        cancelSearch.set(false);
+        if (StringUtils.isEmpty(gapsService.getPlexSearch().getMovieDbApiKey())) {
+            Payload payload = tmdbService.testTmdbKey(gapsService.getPlexSearch().getMovieDbApiKey());
+            if (payload != Payload.TMDB_KEY_VALID) {
+                LOGGER.error(payload.getReason());
+                template.convertAndSend("/finishedSearching", payload);
+                return;
+            }
+        }
 
+        cancelSearch.set(false);
 
         final Set<Movie> recommended = new TreeSet<>();
         final Set<Movie> searched = new TreeSet<>();
