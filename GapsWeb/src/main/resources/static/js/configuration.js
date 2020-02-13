@@ -77,6 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    //Exposing function for onClick()
     window.testTmdbKey = testTmdbKey;
     window.saveTmdbKey = saveTmdbKey;
     window.testPlexServer = testPlexServer;

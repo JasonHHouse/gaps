@@ -9,6 +9,7 @@
  */
 
 import {getRecommendedMoviesForTable} from '/js/modules/common.js';
+import {Payload} from '/js/modules/payload.js';
 
 let libraryTitle, notSearchedYetContainer, movieContainer, searchContainer, noMovieContainer, movieSearchingContainer;
 let plexServers;
@@ -90,7 +91,7 @@ jQuery(function ($) {
 
             backButton.text('Restart');
             disconnect();
-            if (payload && payload.code === 0) {
+            if (payload && payload.code === Payload.SEARCH_SUCCESSFUL) {
                 searchTitle.text(`Search Complete`);
                 searchDescription.text(`${movieCounter} movies to add to complete your collections. Below is everything Gaps found that is missing from your movie collections.`);
                 setCopyToClipboardEnabled(true);
