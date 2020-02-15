@@ -1,15 +1,15 @@
-import {libraryBefore, searchPlexForDisneyMovies, spyOnAddEventListener} from "../common";
+import {redLibraryBefore, jokerLibraryBefore, searchPlexForMovies, spyOnAddEventListener} from "../common";
 
 describe('Find owned movies', function () {
-    before(libraryBefore);
+    before(redLibraryBefore);
 
-    it('Find Disney Movies', () => {
+    it('Find Movies', () => {
         cy.visit('/libraries', {onBeforeLoad: spyOnAddEventListener});
 
-        searchPlexForDisneyMovies(cy);
+        searchPlexForMovies(cy);
     });
 
-    it('Refresh Disney Movies', () => {
+    it('Refresh Movies', () => {
         cy.visit('/libraries', {onBeforeLoad: spyOnAddEventListener});
 
         cy.get('#dropdownMenuLink')
@@ -21,24 +21,26 @@ describe('Find owned movies', function () {
         cy.get('#dropdownMenuLink')
             .click();
 
-        cy.get('[data-key="2"]')
+        cy.get('[data-key="1"]')
             .click();
 
         cy.get('label > input')
             .clear()
-            .type('101 Dalmatians');
+            .type('Saw');
 
         cy.get('.col-md-10 > .card-body > .card-title')
-            .should('have.text', '101 Dalmatians II Patch\'s London Adventure (2003)');
+            .should('have.text', 'Saw (2004)');
     });
 
     it('Regular Movies Empty', () => {
+        jokerLibraryBefore();
+
         cy.visit('/libraries', {onBeforeLoad: spyOnAddEventListener});
 
         cy.get('#dropdownMenuLink')
             .click();
 
-        cy.get('[data-key="1"]')
+        cy.get('[data-machineidentifier="9fd02a2820323f4b17b870350eb2b38f7a19b3b8"]')
             .click();
 
         cy.get('.card-body > .btn')

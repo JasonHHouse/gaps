@@ -1,7 +1,7 @@
-import {libraryBefore, spyOnAddEventListener} from "../common";
+import {redLibraryBefore, spyOnAddEventListener} from "../common";
 
 describe('Not Searched Yet Recommended', function () {
-    before(libraryBefore);
+    before(redLibraryBefore);
 
     it('Clean configuration page load', () => {
         cy.visit('/recommended', {onBeforeLoad: spyOnAddEventListener});
@@ -13,10 +13,7 @@ describe('Not Searched Yet Recommended', function () {
             .click();
 
         cy.get('[data-key="1"]')
-            .should('have.text', 'KnoxServer - Movies');
-
-        cy.get('[data-key="2"]')
-            .should('have.text', 'KnoxServer - Disney Classic Movies');
+            .should('have.text', 'Red - Movies');
 
     });
 });

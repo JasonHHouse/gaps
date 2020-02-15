@@ -1,7 +1,7 @@
-import {libraryBefore, searchPlexForDisneyMovies, spyOnAddEventListener} from "../common";
+import {redLibraryBefore, searchPlexForMovies, spyOnAddEventListener} from "../common";
 
 describe('Search for Recommended', function () {
-    before(libraryBefore);
+    before(redLibraryBefore);
 
     it('Clean configuration page load', () => {
         searchDisneyLibrary(cy);
@@ -15,8 +15,7 @@ describe('Search for Recommended', function () {
 function searchDisneyLibrary(cy) {
     cy.visit('/libraries', {onBeforeLoad: spyOnAddEventListener});
 
-    searchPlexForDisneyMovies(cy);
+    searchPlexForMovies(cy);
 
     cy.visit('/recommended', {onBeforeLoad: spyOnAddEventListener});
-
 }

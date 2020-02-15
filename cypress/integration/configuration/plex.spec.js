@@ -65,8 +65,8 @@ describe('Plex Configuration Tests', function () {
     it('Test valid new Plex Server', () => {
         cy.get('#address')
             .clear()
-            .type('174.58.64.67')
-            .should('have.value', '174.58.64.67');
+            .type('192.168.1.9')
+            .should('have.value', '192.168.1.9');
 
         cy.get('#port')
             .clear()
@@ -75,8 +75,8 @@ describe('Plex Configuration Tests', function () {
 
         cy.get('#plexToken')
             .clear()
-            .type('xPUCxLh4cTz8pcgorQQs')
-            .should('have.value', 'xPUCxLh4cTz8pcgorQQs');
+            .type('mQw4uawxTyYEmqNUrvBz')
+            .should('have.value', 'mQw4uawxTyYEmqNUrvBz');
 
         cy.get('#testPlexServer')
             .click();
@@ -157,8 +157,8 @@ describe('Plex Configuration Tests', function () {
     it('Save valid Plex Server', () => {
         cy.get('#address')
             .clear()
-            .type('174.58.64.67')
-            .should('have.value', '174.58.64.67');
+            .type('192.168.1.9')
+            .should('have.value', '192.168.1.9');
 
         cy.get('#port')
             .clear()
@@ -167,8 +167,8 @@ describe('Plex Configuration Tests', function () {
 
         cy.get('#plexToken')
             .clear()
-            .type('xPUCxLh4cTz8pcgorQQs')
-            .should('have.value', 'xPUCxLh4cTz8pcgorQQs');
+            .type('mQw4uawxTyYEmqNUrvBz')
+            .should('have.value', 'mQw4uawxTyYEmqNUrvBz');
 
         cy.get('#addPlexServer')
             .click();
@@ -199,12 +199,9 @@ describe('Plex Configuration Tests', function () {
 
         //Define card here
         cy.get('.card-header')
-            .should('have.text', 'KnoxServer');
+            .should('have.text', 'Red');
 
         cy.get('.list-group > :nth-child(1)')
-            .should('have.text', 'Disney Classic Movies');
-
-        cy.get('.list-group > :nth-child(2)')
             .should('have.text', 'Movies');
 
     });
@@ -270,8 +267,8 @@ describe('Plex Configuration Tests', function () {
     it('Save duplicate valid Plex Server', () => {
         cy.get('#address')
             .clear()
-            .type('174.58.64.67')
-            .should('have.value', '174.58.64.67');
+            .type('192.168.1.9')
+            .should('have.value', '192.168.1.9');
 
         cy.get('#port')
             .clear()
@@ -280,8 +277,8 @@ describe('Plex Configuration Tests', function () {
 
         cy.get('#plexToken')
             .clear()
-            .type('xPUCxLh4cTz8pcgorQQs')
-            .should('have.value', 'xPUCxLh4cTz8pcgorQQs');
+            .type('mQw4uawxTyYEmqNUrvBz')
+            .should('have.value', 'mQw4uawxTyYEmqNUrvBz');
 
         cy.get('#addPlexServer')
             .click();
@@ -312,18 +309,15 @@ describe('Plex Configuration Tests', function () {
 
         //Define card here
         cy.get('.card-header')
-            .should('have.text', 'KnoxServer');
+            .should('have.text', 'Red');
 
         cy.get('.list-group > :nth-child(1)')
-            .should('have.text', 'Disney Classic Movies');
-
-        cy.get('.list-group > :nth-child(2)')
             .should('have.text', 'Movies');
 
         cy.get('#address')
             .clear()
-            .type('174.58.64.67')
-            .should('have.value', '174.58.64.67');
+            .type('192.168.1.9')
+            .should('have.value', '192.168.1.9');
 
         cy.get('#port')
             .clear()
@@ -332,8 +326,8 @@ describe('Plex Configuration Tests', function () {
 
         cy.get('#plexToken')
             .clear()
-            .type('xPUCxLh4cTz8pcgorQQs')
-            .should('have.value', 'xPUCxLh4cTz8pcgorQQs');
+            .type('mQw4uawxTyYEmqNUrvBz')
+            .should('have.value', 'mQw4uawxTyYEmqNUrvBz');
 
         cy.get('#addPlexServer')
             .click();
@@ -364,119 +358,3 @@ describe('Plex Configuration Tests', function () {
 
     });
 });
-
-
-/*
-
-it('Save invalid TMDB Key', () => {
-    cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
-
-    cy.get('#movieDbApiKey')
-        .clear()
-        .type('ABC123')
-        .should('have.value', 'ABC123');
-
-    cy.get('#saveTmdbKey')
-        .click();
-
-    cy.get('#tmdbTestError')
-        .should('not.be.visible');
-
-    cy.get('#tmdbTestSuccess')
-        .should('not.be.visible');
-
-    cy.get('#tmdbSaveError')
-        .should('not.be.visible');
-
-    cy.get('#tmdbSaveSuccess')
-        .should('be.visible');
-
-    cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
-
-    cy.get('#movieDbApiKey')
-        .should('have.value', 'ABC123');
-});
-
-it('Save valid TMDB Key', () => {
-    cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
-
-    cy.get('#movieDbApiKey')
-        .clear()
-        .type('723b4c763114904392ca441909aa0375')
-        .should('have.value', '723b4c763114904392ca441909aa0375');
-
-    cy.get('#saveTmdbKey')
-        .click();
-
-    cy.get('#tmdbTestError')
-        .should('not.be.visible');
-
-    cy.get('#tmdbTestSuccess')
-        .should('not.be.visible');
-
-    cy.get('#tmdbSaveError')
-        .should('not.be.visible');
-
-    cy.get('#tmdbSaveSuccess')
-        .should('be.visible');
-
-    cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
-
-    cy.get('#movieDbApiKey')
-        .should('have.value', '723b4c763114904392ca441909aa0375');
-});
-
-it('Attempt to save empty TMDB Key', () => {
-    cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
-
-    cy.get('#movieDbApiKey')
-        .clear()
-        .should('have.value', '');
-
-    cy.get('#saveTmdbKey')
-        .click();
-
-    cy.get('#emptyTmdbKeyLabel')
-        .should('be.visible');
-
-    cy.get('#tmdbTestError')
-        .should('not.be.visible');
-
-    cy.get('#tmdbTestSuccess')
-        .should('not.be.visible');
-
-    cy.get('#tmdbSaveError')
-        .should('not.be.visible');
-
-    cy.get('#tmdbSaveSuccess')
-        .should('not.be.visible');
-});
-
-
-it('Attempt to test empty TMDB Key', () => {
-    cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
-
-    cy.get('#movieDbApiKey')
-        .clear()
-        .should('have.value', '');
-
-    cy.get('#testTmdbKey')
-        .click();
-
-    cy.get('#emptyTmdbKeyLabel')
-        .should('be.visible');
-
-    cy.get('#tmdbTestError')
-        .should('not.be.visible');
-
-    cy.get('#tmdbTestSuccess')
-        .should('not.be.visible');
-
-    cy.get('#tmdbSaveError')
-        .should('not.be.visible');
-
-    cy.get('#tmdbSaveSuccess')
-        .should('not.be.visible');
-});
-
-*/
