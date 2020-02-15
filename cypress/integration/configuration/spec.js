@@ -1,3 +1,5 @@
+import {nuke} from "../common";
+
 let appHasStarted;
 
 function spyOnAddEventListener(win) {
@@ -17,6 +19,8 @@ function spyOnAddEventListener(win) {
 
 describe('Configuration Tests', function () {
     it('Clean configuration page load', () => {
+        nuke();
+
         cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
 
         cy.get('#configurationTab')

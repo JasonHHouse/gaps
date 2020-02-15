@@ -21,7 +21,7 @@ describe('Find owned movies', function () {
         cy.get('#dropdownMenuLink')
             .click();
 
-        cy.get('[data-key="1"]')
+        cy.get('[data-key="2"]')
             .click();
 
         cy.get('label > input')

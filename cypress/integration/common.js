@@ -19,7 +19,7 @@ export function searchPlexForMovies(cy) {
     cy.get('#dropdownMenuLink')
         .click();
 
-    cy.get('[data-key="1"]')
+    cy.get('[data-key="2"]')
         .click();
 
     cy.get('.card-body > .btn')
@@ -33,12 +33,19 @@ export function searchPlexForMovies(cy) {
         .should('have.text', 'Saw (2004)');
 }
 
-export function redLibraryBefore() {
+export function nuke() {
     cy.request('PUT', '/nuke/jhouse')
         .then((response) => {
             expect(response.body).to.have.property('code', 30);
             expect(response.body).to.have.property('reason', 'Nuke successful. All files deleted.');
         });
+
+    //Wait for timeout from clearing data
+    cy.wait(1000);
+}
+
+export function redLibraryBefore() {
+    nuke();
 
     cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
 
@@ -62,6 +69,9 @@ export function redLibraryBefore() {
 
     cy.get('#addPlexServer')
         .click();
+
+    //Wait for timeout from plex
+    cy.wait(10000);
 
     cy.get('#plexSpinner')
         .should('not.be.visible');
@@ -91,8 +101,8 @@ export function redLibraryBefore() {
     cy.get('.card-header')
         .should('have.text', 'Red');
 
-    cy.get('.list-group > :nth-child(1)')
-        .should('have.text', 'Movies');
+    cy.get('.list-group > :nth-child(2)')
+        .should('have.text', 'Saw');
 }
 
 export function jokerLibraryBefore() {
