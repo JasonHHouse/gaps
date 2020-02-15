@@ -8,7 +8,7 @@
 - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>Gaps</title>
@@ -49,39 +49,16 @@
 
     <p class="top-margin">Select the RSS feed to open.</p>
 
-    <form action="/rss" class="top-margin">
-        <div class="form-check">
-            <input checked class="form-check-input" id="exampleRadios1" name="exampleRadios" type="radio"
-                   value="option1">
-            <label class="form-check-label" for="exampleRadios1">
-                All
-            </label>
+    <form action="/rss" class="top-margin" method="get">
+        <div th:each="plexServer : ${plexServers}" th:remove="tag">
+            <div class="form-check" th:each="plexLibrary : *{plexServer.getPlexLibraries()}">
+                <input class="form-check-input" id="library" name="library" type="radio" th:value="${plexServer.getMachineIdentifier() + '_' + plexLibrary.getKey()}">
+                <label class="form-check-label" for="library"
+                       th:text="${plexServer.getFriendlyName() + ' - ' + plexLibrary.getTitle()}">
+                </label>
+            </div>
         </div>
-        <div class="form-check">
-            <input class="form-check-input" id="exampleRadios2" name="exampleRadios" type="radio" value="option2">
-            <label class="form-check-label" for="exampleRadios2">
-                KnoxServer - Disney Classic Movies
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" id="exampleRadios3" name="exampleRadios" type="radio" value="option4">
-            <label class="form-check-label" for="exampleRadios3">
-                KnoxServer - Movies
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" id="exampleRadios4" name="exampleRadios" type="radio" value="option5">
-            <label class="form-check-label" for="exampleRadios4">
-                Joker - 4k Movies
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" id="exampleRadios5" name="exampleRadios" type="radio" value="option6">
-            <label class="form-check-label" for="exampleRadios5">
-                Joker - Movies
-            </label>
-        </div>
-        <button class="btn btn-primary" type="submit">Open</button>
+        <button class="btn btn-primary top-margin" type="submit">Open</button>
     </form>
 
 </div>

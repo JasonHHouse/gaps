@@ -10,14 +10,13 @@
 
 package com.jasonhhouse.gaps.controller;
 
+import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.service.IoService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
@@ -26,19 +25,25 @@ public class RSSController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RSSController.class);
 
     private final IoService ioService;
+    private final GapsService gapsService;
 
     @Autowired
-    public RSSController(IoService ioService) {
+    public RSSController(IoService ioService, GapsService gapsService) {
         this.ioService = ioService;
+        this.gapsService = gapsService;
     }
 
     @RequestMapping(method = RequestMethod.GET,
             path = "/rss")
-    public String getRss() {
-        LOGGER.info("getRss()");
+    public String getRss(@RequestParam("library") String library) {
+        LOGGER.info("getRss( " + library + " )");
+        String[] keys = library.split("_");
+        String machineIdentifier = keys[0];
+        int libraryKey = Integer.parseInt(keys[1]);
+
         String rss = null;
-        if (ioService.doesRssFileExist()) {
-            rss = ioService.getRssFile();
+        if (ioService.doesRssFileExist(machineIdentifier, libraryKey)) {
+            rss = ioService.getRssFile(machineIdentifier, libraryKey);
         }
 
         LOGGER.info("rss:" + rss);
@@ -56,17 +61,10 @@ public class RSSController {
             path = "/rssCheck")
     public ModelAndView getRssCheck() {
         LOGGER.info("getRssCheck()");
-        String rss = null;
-        if (ioService.doesRssFileExist()) {
-            rss = ioService.getRssFile();
-        }
 
-        if (StringUtils.isEmpty(rss)) {
-            //Show empty page
-            return new ModelAndView("emptyState");
-        } else {
-            return new ModelAndView("rss");
-        }
+        ModelAndView modelAndView = new ModelAndView("rssCheck");
+        modelAndView.addObject("plexServers", gapsService.getPlexSearch().getPlexServers());
+        return modelAndView;
     }
 
 }

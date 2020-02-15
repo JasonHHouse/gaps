@@ -18,6 +18,7 @@ import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.Rss;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,6 +37,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -77,10 +79,6 @@ public class IoService {
         }
     }
 
-    public boolean doesRecommendedFileExist() {
-        return new File(STORAGE_FOLDER + RECOMMENDED_MOVIES).exists();
-    }
-
     public @NotNull List<Movie> readRecommendedMovies(String machineIdentifier, int key) {
         LOGGER.info("readRecommendedMovies( " + machineIdentifier + ", " + key + " )");
 
@@ -109,13 +107,13 @@ public class IoService {
         return Collections.emptyList();
     }
 
-    public boolean doesRssFileExist() {
-        return new File(STORAGE_FOLDER + RSS_FEED_JSON_FILE).exists();
+    public boolean doesRssFileExist(String machineIdentifier, int key) {
+        return new File(STORAGE_FOLDER + machineIdentifier + File.separator + key + File.separator + RSS_FEED_JSON_FILE).exists();
     }
 
-    public @NotNull String getRssFile() {
+    public @NotNull String getRssFile(String machineIdentifier, int key) {
         try {
-            Path path = new File(STORAGE_FOLDER + RSS_FEED_JSON_FILE).toPath();
+            Path path = new File(STORAGE_FOLDER + machineIdentifier + File.separator + key + File.separator + RSS_FEED_JSON_FILE).toPath();
             return new String(Files.readAllBytes(path));
         } catch (IOException e) {
             LOGGER.error("Check for RSS file next time", e);
@@ -128,13 +126,13 @@ public class IoService {
      *
      * @param recommended The recommended movies. (IMDB ID is required.)
      */
-    public void writeRssFile(Set<Movie> recommended) {
-        File file = new File(STORAGE_FOLDER + RSS_FEED_JSON_FILE);
+    public void writeRssFile(String machineIdentifier, int key, Set<Movie> recommended) {
+        File file = new File(STORAGE_FOLDER + machineIdentifier + File.separator + key + File.separator + RSS_FEED_JSON_FILE);
 
         if (file.exists()) {
             boolean deleted = file.delete();
             if (!deleted) {
-                LOGGER.error("Can't delete existing file " + STORAGE_FOLDER + RSS_FEED_JSON_FILE);
+                LOGGER.error("Can't delete existing file " + file.getPath());
                 return;
             }
         }
@@ -142,11 +140,11 @@ public class IoService {
         try {
             boolean created = file.createNewFile();
             if (!created) {
-                LOGGER.error("Can't create file " + STORAGE_FOLDER + RSS_FEED_JSON_FILE);
+                LOGGER.error("Can't create file " + file.getPath());
                 return;
             }
         } catch (IOException e) {
-            LOGGER.error("Can't create file " + STORAGE_FOLDER + RSS_FEED_JSON_FILE, e);
+            LOGGER.error("Can't create file " + file.getPath(), e);
             return;
         }
 
@@ -194,19 +192,6 @@ public class IoService {
     /**
      * Prints out all recommended movies to recommendedMovies.json
      */
-    public void writeOwnedMoviesToFile(Set<Movie> ownedMovies, String machineIdentifier, int key) {
-        LOGGER.info("writeOwnedMoviesToFile()");
-        final String fileName = STORAGE_FOLDER + machineIdentifier + File.separator + key + File.separator + OWNED_MOVIES;
-
-        makeFolder(machineIdentifier, key);
-
-        File file = new File(fileName);
-        writeMovieIdsToFile(ownedMovies, file);
-    }
-
-    /**
-     * Prints out all recommended movies to recommendedMovies.json
-     */
     public void writeOwnedMoviesToFile(List<Movie> ownedMovies, String machineIdentifier, int key) {
         LOGGER.info("writeOwnedMoviesToFile()");
         final String fileName = STORAGE_FOLDER + machineIdentifier + File.separator + key + File.separator + OWNED_MOVIES;
@@ -223,22 +208,6 @@ public class IoService {
             folder.mkdirs();
         }
 
-    }
-
-    public boolean doOwnedMoviesFilesExist(List<PlexServer> plexServers) {
-        LOGGER.info("doOwnedMoviesFilesExist()");
-
-        for (PlexServer plexServer : plexServers) {
-            for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
-                final File ownedMovieFile = new File(STORAGE_FOLDER + plexServer.getMachineIdentifier() + File.separator + plexLibrary.getKey() + File.separator + OWNED_MOVIES);
-
-                if (ownedMovieFile.exists()) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
     public List<Movie> readOwnedMovies(String machineIdentifier, Integer key) {
