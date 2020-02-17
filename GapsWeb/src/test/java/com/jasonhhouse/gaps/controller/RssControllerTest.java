@@ -20,7 +20,7 @@ public class RssControllerTest extends AbstractTest {
 
     @Test
     public void getRss() throws Exception {
-        String uri = "/rss";
+        String uri = "/rssCheck";
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri).accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
         int status = mvcResult.getResponse().getStatus();

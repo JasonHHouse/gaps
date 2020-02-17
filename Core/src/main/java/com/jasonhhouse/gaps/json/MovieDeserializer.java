@@ -40,35 +40,35 @@ public class MovieDeserializer extends StdDeserializer<Movie> {
             collectionId = (Integer) node.get(Movie.COLLECTION_ID).numberValue();
         }
 
-        String collection = null;
+        String collection = "";
         if (node.has(Movie.COLLECTION)) {
             collection = node.get(Movie.COLLECTION).asText();
         }
 
-        String posterUrl = null;
+        String posterUrl = "";
         if (node.has(Movie.POSTER)) {
             posterUrl = node.get(Movie.POSTER).asText();
         }
 
-        String language = null;
+        String language = "";
         if (node.has(Movie.LANGUAGE)) {
             language = node.get(Movie.LANGUAGE).asText();
         }
 
-        String overview = null;
+        String overview = "";
         if (node.has(Movie.OVERVIEW)) {
             overview = node.get(Movie.OVERVIEW).asText();
         }
 
-        Movie.Builder builder = new Movie.Builder(name, year)
-                .setTvdbId(tvdbId)
-                .setImdbId(imdbId)
-                .setCollectionId(collectionId)
-                .setCollection(collection)
-                .setPosterUrl(posterUrl)
-                .setLanguage(language)
-                .setOverview(overview);
+        Movie movie = new Movie(name, year);
+        movie.setTvdbId(tvdbId);
+        movie.setImdbId(imdbId);
+        movie.setCollectionId(collectionId);
+        movie.setCollection(collection);
+        movie.setPosterUrl(posterUrl);
+        movie.setLanguage(language);
+        movie.setOverview(overview);
 
-        return builder.build();
+        return movie;
     }
 }

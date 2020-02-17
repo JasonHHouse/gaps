@@ -361,15 +361,15 @@ public class PlexQueryImpl implements PlexQuery {
         if (previousMovies.containsKey(moviePair)) {
             return previousMovies.get(moviePair);
         } else {
-            return new Movie.Builder(title, year)
-                    .setPosterUrl(thumbnail)
-                    .setTvdbId(tvdbId)
-                    .setImdbId(imdbId)
-                    .setLanguage(language)
-                    .setCollectionId(collection)
-                    .setCollection(collectionName)
-                    .setOverview(summary)
-                    .build();
+            Movie movie = new Movie(title, year);
+            movie.setPosterUrl(thumbnail);
+            movie.setTvdbId(tvdbId);
+            movie.setImdbId(imdbId);
+            movie.setLanguage(language);
+            movie.setCollectionId(collection);
+            movie.setCollection(collectionName);
+            movie.setOverview(summary);
+            return movie;
         }
     }
 

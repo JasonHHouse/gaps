@@ -20,13 +20,12 @@ public class MovieSerializerTest {
         MovieSerializer movieSerializer = new MovieSerializer();
         MovieDeserializer movieDeserializer = new MovieDeserializer();
 
-        Movie movie = new Movie.Builder("Alien", 1979)
-                .setTvdbId(1345)
-                .setCollection("Aliens Collection")
-                .setCollectionId(5423)
-                .setImdbId("IMDB ID")
-                .setPosterUrl("POSTER URL")
-                .build();
+        Movie movie = new Movie("Alien", 1979);
+        movie.setTvdbId(1345);
+        movie.setCollection("Aliens Collection");
+        movie.setCollectionId(5423);
+        movie.setImdbId("IMDB ID");
+        movie.setPosterUrl("POSTER URL");
 
         ObjectMapper objectMapper = new ObjectMapper();
         Writer jsonWriter = new StringWriter();
@@ -50,13 +49,12 @@ public class MovieSerializerTest {
         MovieSerializer movieSerializer = new MovieSerializer();
         MovieDeserializer movieDeserializer = new MovieDeserializer();
 
-        Movie movie = new Movie.Builder("Alien", 1979)
-                .setTvdbId(1345)
-                .setCollection("Aliens Collection")
-                .setCollectionId(5423)
-                .setImdbId("IMDB ID")
-                .setPosterUrl(null)
-                .build();
+        Movie movie = new Movie("Alien", 1979);
+        movie.setTvdbId(1345);
+        movie.setCollection("Aliens Collection");
+        movie.setCollectionId(5423);
+        movie.setImdbId("IMDB ID");
+        movie.setPosterUrl("");
 
         ObjectMapper objectMapper = new ObjectMapper();
         Writer jsonWriter = new StringWriter();

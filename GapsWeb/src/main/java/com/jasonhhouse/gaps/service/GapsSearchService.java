@@ -279,12 +279,11 @@ public class GapsSearchService implements GapsSearch {
                         LOGGER.debug("Merging movie data");
                         everyMovie.get(indexOfMovie).setTvdbId(movie.getTvdbId());
                     } else {
-                        Movie newMovie = new Movie.Builder(movie.getName(), movie.getYear())
-                                .setTvdbId(movie.getTvdbId())
-                                .setImdbId(movie.getImdbId())
-                                .setCollection(movie.getCollection())
-                                .setCollectionId(movie.getCollectionId())
-                                .build();
+                        Movie newMovie = new Movie(movie.getName(), movie.getYear());
+                        newMovie.setTvdbId(movie.getTvdbId());
+                        newMovie.setImdbId(movie.getImdbId());
+                        newMovie.setCollection(movie.getCollection());
+                        newMovie.setCollectionId(movie.getCollectionId());
                         everyMovie.add(newMovie);
                     }
 
@@ -359,12 +358,11 @@ public class GapsSearchService implements GapsSearch {
                 everyMovie.get(indexOfMovie).setCollectionId(movie.getCollectionId());
                 everyMovie.get(indexOfMovie).setCollection(movie.getCollection());
             } else {
-                Movie newMovie = new Movie.Builder(movie.getName(), movie.getYear())
-                        .setTvdbId(movie.getTvdbId())
-                        .setImdbId(movie.getImdbId())
-                        .setCollection(movie.getCollection())
-                        .setCollectionId(movie.getCollectionId())
-                        .build();
+                Movie newMovie = new Movie(movie.getName(), movie.getYear());
+                newMovie.setTvdbId(movie.getTvdbId());
+                newMovie.setImdbId(movie.getImdbId());
+                newMovie.setCollection(movie.getCollection());
+                newMovie.setCollectionId(movie.getCollectionId());
                 everyMovie.add(newMovie);
             }
 
@@ -409,12 +407,11 @@ public class GapsSearchService implements GapsSearch {
             } else {
                 int id = collection.get("id").asInt();
                 String name = collection.get("name").asText();
-                Movie newMovie = new Movie.Builder(movie.getName(), movie.getYear())
-                        .setTvdbId(movie.getTvdbId())
-                        .setImdbId(movie.getImdbId())
-                        .setCollection(name)
-                        .setCollectionId(id)
-                        .build();
+                Movie newMovie = new Movie(movie.getName(), movie.getYear());
+                newMovie.setTvdbId(movie.getTvdbId());
+                newMovie.setImdbId(movie.getImdbId());
+                newMovie.setCollection(name);
+                newMovie.setCollectionId(id);
                 everyMovie.add(newMovie);
 
                 movie.setCollection(name);
@@ -448,16 +445,15 @@ public class GapsSearchService implements GapsSearch {
                     LOGGER.debug("No poster found for" + title + ".");
                 }
 
-                Movie movieFromCollection = new Movie.Builder(title, year)
-                        .setTvdbId(tvdbId)
-                        .setCollectionId(movie.getCollectionId())
-                        .setCollection(movie.getCollection())
-                        .setPosterUrl(posterUrl)
-                        .build();
+                Movie movieFromCollection = new Movie(title, year);
+                movieFromCollection.setTvdbId(tvdbId);
+                movieFromCollection.setCollectionId(movie.getCollectionId());
+                movieFromCollection.setCollection(movie.getCollection());
+                movieFromCollection.setPosterUrl(posterUrl);
 
-                Movie ownedMovieFromCollection = new Movie.Builder(title, year).build();
+                Movie ownedMovieFromCollection = new Movie(title, year);
 
-                indexOfMovie = everyMovie.indexOf(new Movie.Builder(title, year).build());
+                indexOfMovie = everyMovie.indexOf(new Movie(title, year));
                 if (indexOfMovie == -1) {
                     LOGGER.debug("Adding collection movie");
                     everyMovie.add(movieFromCollection);
@@ -506,14 +502,13 @@ public class GapsSearchService implements GapsSearch {
                         }
 
                         // Add movie with imbd_id and other details for RSS to recommended list
-                        Movie recommendedMovie = new Movie.Builder(movieDet.get("title").asText(), year)
-                                .setTvdbId(movieDet.get("id").asInt())
-                                .setImdbId(movieDet.get("imdb_id").asText())
-                                .setCollectionId(movie.getCollectionId())
-                                .setCollection(movie.getCollection())
-                                .setPosterUrl("https://image.tmdb.org/t/p/w185/" + movieDet.get("poster_path").asText())
-                                .setOverview(movieDet.get("overview").asText())
-                                .build();
+                        Movie recommendedMovie = new Movie(movieDet.get("title").asText(), year);
+                        recommendedMovie.setTvdbId(movieDet.get("id").asInt());
+                        recommendedMovie.setImdbId(movieDet.get("imdb_id").asText());
+                        recommendedMovie.setCollectionId(movie.getCollectionId());
+                        recommendedMovie.setCollection(movie.getCollection());
+                        recommendedMovie.setPosterUrl("https://image.tmdb.org/t/p/w185/" + movieDet.get("poster_path").asText());
+                        recommendedMovie.setOverview(movieDet.get("overview").asText());
 
                         if (recommended.add(recommendedMovie)) {
                             // Write current list of recommended movies to file.
