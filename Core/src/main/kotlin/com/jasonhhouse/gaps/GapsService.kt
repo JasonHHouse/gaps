@@ -8,32 +8,34 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.jasonhhouse.gaps;
-
-import java.util.List;
-import java.util.Map;
-import org.jetbrains.annotations.NotNull;
+package com.jasonhhouse.gaps
 
 /**
- * Interface to handle connecting to a Plex instance and returning the known movie libraries
+ * Blackboard service interface for storing the PlexSearch object controllers
  */
-public interface PlexQuery {
+interface GapsService {
 
     /**
-     * @param plexServer Needs to have the IP Address, port, and plex token to connect
+     * @return Returns the PlexSearch instance as a singleton
      */
-    @NotNull Payload getLibraries(@NotNull PlexServer plexServer);
+    fun getPlexSearch(): PlexSearch
 
     /**
-     * Find the plex server name, key, and libraries based on the given PlexSearch parameters
+     * Updates PlexLibrary's to add them if not added and set them selected or unselected if added
      *
-     * @param plexServer the search parameters
+     * @param selectedLibraries The libraries to update. they must come in as a single string added together of the plex server ID and the library key.
      */
-    @NotNull Payload queryPlexServer(@NotNull PlexServer plexServer);
+    fun updateLibrarySelections(selectedLibraries: List<String?>)
 
     /**
-     * Connect to plex via the URL and parse all the movies from the returned XML creating a HashSet of movies the
-     * user has.
+     * Updates the plex search object itself to the singleton object
+     *
+     * @param plexSearch The object to copy into the plex search singleton
      */
-    List<Movie> findAllPlexMovies(Map<MoviePair, Movie> previousMovies, @NotNull String url);
+    fun updatePlexSearch(plexSearch: PlexSearch)
+
+    /**
+     * Resets the plex search object itself to the singleton object
+     */
+    fun nukePlexSearch()
 }

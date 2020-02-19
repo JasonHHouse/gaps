@@ -9,8 +9,7 @@ public class GapsServiceTest implements GapsService {
     private PlexSearch plexSearch;
 
     public GapsServiceTest() {
-        plexSearch = new PlexSearch();
-        plexSearch.setMovieDbApiKey("key");
+        plexSearch = new PlexSearch("key");
         plexSearch.addPlexServer(new PlexServer("Joker", "asdf1q1w34asldka", "token", "address", 1));
 
         PlexLibrary plexLibrary = new PlexLibrary(1, "Movies", "asdf1q1w34asldka", true);
@@ -18,9 +17,10 @@ public class GapsServiceTest implements GapsService {
         List<PlexLibrary> plexLibraries = new ArrayList<>();
         plexLibraries.add(plexLibrary);
         plexLibraries.add(plexLibrary1);
-        plexSearch.getPlexServers().stream().findFirst().orElse(new PlexServer()).getPlexLibraries().addAll(plexLibraries);
+        plexSearch.getPlexServers().stream().anyMatch(plexServer -> plexServer.getPlexLibraries().addAll(plexLibraries));
     }
 
+    @NotNull
     @Override
     public PlexSearch getPlexSearch() {
         return plexSearch;
@@ -32,7 +32,7 @@ public class GapsServiceTest implements GapsService {
     }
 
     @Override
-    public void updatePlexSearch(PlexSearch plexSearch) {
+    public void updatePlexSearch(@NotNull PlexSearch plexSearch) {
 
     }
 

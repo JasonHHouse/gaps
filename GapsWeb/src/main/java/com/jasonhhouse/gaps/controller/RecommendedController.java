@@ -63,10 +63,10 @@ public class RecommendedController {
         if (CollectionUtils.isNotEmpty(gapsService.getPlexSearch().getPlexServers())) {
             //Read first plex servers movies
             plexServer = gapsService.getPlexSearch().getPlexServers().stream().findFirst().orElse(new PlexServer());
-            plexLibrary = plexServer.getPlexLibraries().stream().findFirst().orElse(new PlexLibrary());
+            plexLibrary = plexServer.getPlexLibraries().stream().findFirst().orElse(null);
         } else {
             plexServer = new PlexServer();
-            plexLibrary = new PlexLibrary();
+            plexLibrary = null;
         }
 
         Map<String, PlexServer> plexServerMap = gapsService.getPlexSearch().getPlexServers().stream().collect(Collectors.toMap(PlexServer::getMachineIdentifier, Function.identity()));

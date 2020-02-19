@@ -42,6 +42,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,7 +89,7 @@ public class GapsSearchService implements GapsSearch {
     }
 
     @Override
-    public void run(String machineIdentifier, Integer key) {
+    public void run(@NotNull String machineIdentifier, int key) {
         LOGGER.info("run( " + machineIdentifier + ", " + key + " )");
 
         if (StringUtils.isEmpty(gapsService.getPlexSearch().getMovieDbApiKey())) {

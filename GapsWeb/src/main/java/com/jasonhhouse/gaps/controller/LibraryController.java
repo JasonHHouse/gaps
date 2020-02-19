@@ -56,11 +56,11 @@ public class LibraryController {
         if (CollectionUtils.isNotEmpty(gapsService.getPlexSearch().getPlexServers())) {
             //Read first plex servers movies
             plexServer = gapsService.getPlexSearch().getPlexServers().stream().findFirst().orElse(new PlexServer());
-            plexLibrary = plexServer.getPlexLibraries().stream().findFirst().orElse(new PlexLibrary());
+            plexLibrary = plexServer.getPlexLibraries().stream().findFirst().orElse(null);
             plexServersFound = true;
         } else {
             plexServer = new PlexServer();
-            plexLibrary = new PlexLibrary();
+            plexLibrary = null;
             plexServersFound = false;
         }
 

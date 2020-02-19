@@ -8,25 +8,22 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.jasonhhouse.gaps;
+package com.jasonhhouse.gaps
 
-/**
- * Handles the process of searching, movies, counts, and canceling
- */
-public interface GapsSearch {
+interface GapsSearch {
 
     /**
      * Kicks of searching for all missing movies
      */
-    void run(String machineIdentifier, Integer key);
+    fun run(machineIdentifier: String, key: Int)
 
     /**
      * Cancel the current search
      */
-    void cancelSearch();
+    fun cancelSearch()
 
     /**
      * @return Returns true if currently searching
      */
-    boolean isSearching();
+    fun isSearching(): Boolean
 }

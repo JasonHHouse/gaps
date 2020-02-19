@@ -88,7 +88,7 @@ public class PlexMovieListController {
         return previousMovies;
     }
 
-    private String generatePlexUrl(String machineIdentifier, Integer key) {
+    private String generatePlexUrl(String machineIdentifier, int key) {
         LOGGER.info("generatePlexUrl( " + machineIdentifier + ", " + key + " )");
         return gapsService
                 .getPlexSearch()
@@ -98,7 +98,7 @@ public class PlexMovieListController {
                 .map(plexServer -> plexServer
                         .getPlexLibraries()
                         .stream()
-                        .filter(plexLibrary -> plexLibrary.getKey().equals(key))
+                        .filter(plexLibrary -> plexLibrary.getKey() == key)
                         .map(plexLibrary -> "http://" + plexServer.getAddress() + ":" + plexServer.getPort() + "/library/sections/" + plexLibrary.getKey() + "/all/?X-Plex-Token=" + plexServer.getPlexToken())
                         .findFirst().orElse(null))
                 .findFirst()

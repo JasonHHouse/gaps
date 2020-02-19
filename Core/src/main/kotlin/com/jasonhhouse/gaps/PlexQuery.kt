@@ -1,3 +1,5 @@
+package com.jasonhhouse.gaps
+
 /*
  * Copyright 2020 Jason H House
  *
@@ -8,42 +10,26 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.jasonhhouse.gaps;
+/**
+ * Interface to handle connecting to a Plex instance and returning the known movie libraries
+ */
+interface PlexQuery {
 
-import java.util.HashSet;
-import java.util.Set;
+    /**
+     * @param plexServer Needs to have the IP Address, port, and plex token to connect
+     */
+    fun getLibraries(plexServer: PlexServer): Payload
 
-public final class PlexSearch {
+    /**
+     * Find the plex server name, key, and libraries based on the given PlexSearch parameters
+     *
+     * @param plexServer the search parameters
+     */
+    fun queryPlexServer(plexServer: PlexServer): Payload
 
-    public static final String MOVIE_DB_API_KEY = "movieDbApiKey";
-    private final Set<PlexServer> plexServers;
-    private String movieDbApiKey;
-
-    public PlexSearch() {
-        plexServers = new HashSet<>();
-    }
-
-    public void addPlexServer(PlexServer plexServer) {
-        this.plexServers.add(plexServer);
-    }
-
-    public Set<PlexServer> getPlexServers() {
-        return plexServers;
-    }
-
-    public String getMovieDbApiKey() {
-        return movieDbApiKey;
-    }
-
-    public void setMovieDbApiKey(String movieDbApiKey) {
-        this.movieDbApiKey = movieDbApiKey;
-    }
-
-    @Override
-    public String toString() {
-        return "PlexSearch{" +
-                "movieDbApiKey='" + movieDbApiKey + '\'' +
-                ", plexServers=" + plexServers +
-                '}';
-    }
+    /**
+     * Connect to plex via the URL and parse all the movies from the returned XML creating a HashSet of movies the
+     * user has.
+     */
+    fun findAllPlexMovies(previousMovies: Map<MoviePair, Movie>, url: String): List<Movie>
 }

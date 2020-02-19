@@ -8,37 +8,12 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.jasonhhouse.gaps;
+package com.jasonhhouse.gaps
 
-import java.util.List;
-import org.jetbrains.annotations.NotNull;
+data class PlexLibrary(var key: Int, var title: String, var machineIdentifier: String, var selected: Boolean) : Comparable<PlexLibrary> {
 
-/**
- * Blackboard service interface for storing the PlexSearch object controllers
- */
-public interface GapsService {
+    override fun compareTo(other: PlexLibrary): Int {
+        return this.title.compareTo(other.title)
+    }
 
-    /**
-     * @return Returns the PlexSearch instance as a singleton
-     */
-    PlexSearch getPlexSearch();
-
-    /**
-     * Updates PlexLibrary's to add them if not added and set them selected or unselected if added
-     *
-     * @param selectedLibraries The libraries to update. they must come in as a single string added together of the plex server ID and the library key.
-     */
-    void updateLibrarySelections(@NotNull List<String> selectedLibraries);
-
-    /**
-     * Updates the plex search object itself to the singleton object
-     *
-     * @param plexSearch The object to copy into the plex search singleton
-     */
-    void updatePlexSearch(PlexSearch plexSearch);
-
-    /**
-     * Resets the plex search object itself to the singleton object
-     */
-    void nukePlexSearch();
 }

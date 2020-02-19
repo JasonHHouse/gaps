@@ -39,6 +39,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -379,9 +380,9 @@ public class IoService {
         properties.store(new FileWriter(new File(STORAGE_FOLDER + PROPERTIES)), "");
     }
 
-    public PlexSearch readProperties() throws IOException {
+    public @Nullable PlexSearch readProperties() throws IOException {
         File file = new File(STORAGE_FOLDER + PROPERTIES);
-        PlexSearch plexSearch = new PlexSearch();
+        PlexSearch plexSearch = null;
 
         if (!file.exists()) {
             LOGGER.warn(file + " does not exist");
@@ -393,7 +394,7 @@ public class IoService {
 
         if (properties.containsKey(PlexSearch.MOVIE_DB_API_KEY)) {
             String movieDbApiKey = properties.getProperty(PlexSearch.MOVIE_DB_API_KEY);
-            plexSearch.setMovieDbApiKey(movieDbApiKey);
+             plexSearch = new PlexSearch(movieDbApiKey);
         }
 
         return plexSearch;

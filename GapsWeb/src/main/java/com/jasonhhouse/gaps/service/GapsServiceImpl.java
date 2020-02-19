@@ -31,7 +31,7 @@ public class GapsServiceImpl implements GapsService {
     private final PlexSearch plexSearch;
 
     public GapsServiceImpl() {
-        this.plexSearch = new PlexSearch();
+        this.plexSearch = new PlexSearch(null);
     }
 
     @Override
