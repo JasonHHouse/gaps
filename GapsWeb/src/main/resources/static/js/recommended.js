@@ -86,8 +86,10 @@ jQuery(function ($) {
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function () {
 
-        stompClient.subscribe('/finishedSearching', function (payload) {
+        stompClient.subscribe('/finishedSearching', function (message) {
             searchContainer.css({'display': 'none'});
+
+            const payload = JSON.parse(status.body);
 
             backButton.text('Restart');
             disconnect();
