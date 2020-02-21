@@ -135,9 +135,9 @@ public class ConfigurationController {
         LOGGER.info("putTestPlexServerByMachineId( " + machineIdentifier + " )");
 
         ObjectNode objectNode = objectMapper.createObjectNode();
-        PlexServer returnedPlexServer = gapsService.getPlexSearch().getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
+        PlexServer returnedPlexServer = gapsService.getPlexSearch().getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(null);
 
-        if (StringUtils.isEmpty(returnedPlexServer.getMachineIdentifier())) {
+        if (returnedPlexServer != null && StringUtils.isEmpty(returnedPlexServer.getMachineIdentifier())) {
             //Failed to find and delete
             objectNode.put("success", false);
         } else {
@@ -156,8 +156,8 @@ public class ConfigurationController {
         LOGGER.info("deletePlexServer( " + machineIdentifier + " )");
 
         ObjectNode objectNode = objectMapper.createObjectNode();
-        PlexServer returnedPlexServer = gapsService.getPlexSearch().getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
-        if (StringUtils.isEmpty(returnedPlexServer.getMachineIdentifier())) {
+        PlexServer returnedPlexServer = gapsService.getPlexSearch().getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(null);
+        if (returnedPlexServer != null && StringUtils.isEmpty(returnedPlexServer.getMachineIdentifier())) {
             //Failed to find and delete
             objectNode.put("success", false);
         } else {

@@ -36,12 +36,6 @@ public class PlexServerValidator implements Validator {
             errors.rejectValue("address", "address.empty");
         }
 
-        if (plexSearch.getPort() == null) {
-            errors.rejectValue("port", "port.empty");
-        } else if (plexSearch.getPort() < 0) {
-            errors.rejectValue("port", "port.belowRange");
-        }
-
         if (plexSearch.getPort() > 65536) {
             errors.rejectValue("port", "port.aboveRange");
         }
