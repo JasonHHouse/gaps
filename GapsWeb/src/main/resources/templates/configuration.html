@@ -46,7 +46,7 @@
 </nav>
 
 <div class="container">
-    <h2 class="top-margin">Configuration</h2>
+    <h3 class="top-margin">Configuration</h3>
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
@@ -58,8 +58,11 @@
         <li class="nav-item">
             <a class="nav-link disabled" data-ol-has-click-handler="" href="#folders" id="folderTab">Folders</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#network" id="networkTab">Network</a>
+        </li>
     </ul>
-    <div class="tab-content" id="myTabContent">
+    <div class="tab-content top-margin" id="myTabContent">
         <div class="tab-pane fade show active top-margin" id="tmdb">
             <p>To use Gaps, you'll need a MovieDB api key. Navigate over to <a
                     href="https://www.themoviedb.org/settings/api" rel="noopener" target="_blank">The Movie DB</a>,
@@ -236,7 +239,53 @@
         <div class="tab-pane fade top-margin" id="folders">
             <p>folders</p>
         </div>
+        <div class="tab-pane fade top-margin" id="network">
 
+            <form class="needs-validation" id="networkConfiguration" novalidate>
+                <h4 class="text-primary">Plex</h4>
+                <div class="form-group">
+                    <label for="port">Plex Connection Timeout</label>
+                    <div class="input-group">
+                        <input aria-describedby="plexConnectionTimeoutHelp" class="form-control"
+                               id="plexConnectionTimeout" required type="text"
+                               value="2500">
+                        <div class="invalid-feedback" id="emptyPlexConnectionTimeout">
+                            Please enter a valid time.
+                        </div>
+                    </div>
+                    <small class="form-text text-muted" id="plexConnectionTimeoutHelp">Default connect timeout (in
+                        milliseconds).</small>
+                </div>
+                <div class="form-group">
+                    <label for="port">Plex Connection Timeout</label>
+                    <div class="input-group">
+                        <input aria-describedby="plexReaTimeoutHeldp" class="form-control"
+                               id="plexReadTimeout" required type="text"
+                               value="2500">
+                        <div class="invalid-feedback" id="emptyPlexReadTimeout">
+                            Please enter a valid time.
+                        </div>
+                    </div>
+                    <small class="form-text text-muted" id="plexReadTimeoutHelp">Default read timeout (in milliseconds).</small>
+                </div>
+                <div class="form-group">
+                    <label for="port">Plex Write Timeout</label>
+                    <div class="input-group">
+                        <input aria-describedby="plexWriteTimeoutHelp" class="form-control"
+                               id="plexWriteTimeout" required type="text"
+                               value="2500">
+                        <div class="invalid-feedback" id="emptyPlexWriteTimeout">
+                            Please enter a valid time.
+                        </div>
+                    </div>
+                    <small class="form-text text-muted" id="plexWriteTimeoutHelp">Default write timeout (in milliseconds).</small>
+                </div>
+
+                <a class="btn btn-primary" href="javascript:void(0)" id="updateNetwork" onclick="updateNetwork();"
+                   type="button">Update</a>
+
+            </form>
+        </div>
     </div>
 </div>
 

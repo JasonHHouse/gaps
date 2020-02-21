@@ -48,10 +48,10 @@
 </nav>
 
 <div class="container">
-    <h3 class="top-margin">Owned Movies</h3>
+    <h3 class="top-margin">Libraries</h3>
 
     <div th:if="${plexServersFound}" th:remove="tag">
-        <h4 class="top-margin" id="libraryTitle"
+        <h4 class="top-margin text-primary" id="libraryTitle"
             th:text="${plexServer.friendlyName} + ' - ' + ${plexLibrary.title}"></h4>
 
         <div class="dropdown show">
