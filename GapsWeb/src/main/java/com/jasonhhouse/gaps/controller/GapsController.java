@@ -107,6 +107,15 @@ public class GapsController {
         return ResponseEntity.ok().body(payload);
     }
 
+    @RequestMapping(method = RequestMethod.GET,
+            value = "/about",
+            produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView getAbout() {
+        LOGGER.info("getAbout()");
+
+        return new ModelAndView("about");
+    }
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         LOGGER.info("initBinder()");
