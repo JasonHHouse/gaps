@@ -50,19 +50,33 @@
 <div class="container">
     <h3 class="top-margin">RSS</h3>
 
-    <p class="top-margin text-muted">Select the RSS feed to view.</p>
-
-    <form action="/rss" class="top-margin" method="get">
-        <div th:each="plexServer : ${plexServers}" th:remove="tag">
-            <div class="form-check" th:each="plexLibrary : *{plexServer.getPlexLibraries()}">
-                <input class="form-check-input" id="library" name="library" type="radio" th:value="${plexServer.getMachineIdentifier() + '_' + plexLibrary.getKey()}">
-                <label class="form-check-label" for="library"
-                       th:text="${plexServer.getFriendlyName() + ' - ' + plexLibrary.getTitle()}">
-                </label>
+    <div th:if="${!foundPlexLibraries}" th:remove="tag">
+        <div class="top-margin bottom-margin">
+            <div class="card mx-auto" style="width: 24rem;">
+                <img alt="..." class="card-img-top" src="/images/mind_the_gap.png">
+                <div class="card-body">
+                    <h5 class="card-title">Your movies are really missing</h5>
+                    <p class="card-text">You need to run Gaps at least once to have found the missing movies.</p>
+                    <a class="btn btn-primary" href="/recommended">Search</a>
+                </div>
             </div>
         </div>
-        <button class="btn btn-primary top-margin" type="submit">Open</button>
-    </form>
+    </div>
+
+    <div th:if="${foundPlexLibraries}" th:remove="tag">
+        <p class="top-margin text-muted">Select the RSS feed to view.</p>
+
+        <form action="/rss" class="top-margin" method="get">
+            <div th:each="instance : ${plexServerMap}" class="form-check">
+                <input class="form-check-input" id="library" name="library" type="radio"
+                       th:value="${instance.value.getMachineIdentifier() + '_' + instance.key.getKey()}">
+                <label class="form-check-label" for="library"
+                       th:text="${instance.value.getFriendlyName() + ' - ' + instance.key.getTitle()}">
+                </label>
+            </div>
+            <button class="btn btn-primary top-margin" type="submit">Open</button>
+        </form>
+    </div>
 
 </div>
 
