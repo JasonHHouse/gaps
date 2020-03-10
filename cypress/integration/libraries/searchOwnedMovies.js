@@ -1,4 +1,4 @@
-import {redLibraryBefore, jokerLibraryBefore, searchPlexForMovies, spyOnAddEventListener} from "../common";
+import {jokerLibraryBefore, redLibraryBefore, searchPlexForMovies, spyOnAddEventListener} from "../common";
 
 describe('Find owned movies', function () {
     before(redLibraryBefore);
@@ -28,8 +28,31 @@ describe('Find owned movies', function () {
             .clear()
             .type('Saw');
 
-        cy.get('.col-md-10 > .card-body > .card-title')
-            .should('have.text', 'Saw (2004)');
+        cy.get('#movies_info')
+            .should('have.text', 'Showing 1 to 1 of 1 entries');
+    });
+
+    it('Research Movies', () => {
+        cy.visit('/libraries', {onBeforeLoad: spyOnAddEventListener});
+
+        cy.get('#dropdownMenuLink')
+            .click();
+
+        cy.get('[data-key="2"]')
+            .click();
+
+        cy.get('label > input')
+            .clear()
+            .type('Saw');
+
+        cy.get('#movies_info')
+            .should('have.text', 'Showing 1 to 1 of 1 entries');
+
+        cy.get('#movieContainer > .top-margin')
+            .click();
+
+        cy.get('#movies_info')
+            .should('have.text', 'Showing 1 to 1 of 1 entries');
     });
 
     it('Regular Movies Empty', () => {

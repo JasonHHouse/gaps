@@ -29,8 +29,8 @@ export function searchPlexForMovies(cy) {
         .clear()
         .type('Saw');
 
-    cy.get('.col-md-10 > .card-body > .card-title')
-        .should('have.text', 'Saw (2004)');
+    cy.get('#movies_info')
+        .should('have.text', 'Showing 1 to 1 of 1 entries');
 }
 
 export function nuke() {
@@ -48,6 +48,14 @@ export function redLibraryBefore() {
     nuke();
 
     cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
+
+    cy.get('#movieDbApiKey')
+        .clear()
+        .type('723b4c763114904392ca441909aa0375')
+        .should('have.value', '723b4c763114904392ca441909aa0375');
+
+    cy.get('#saveTmdbKey')
+        .click();
 
     cy.get('#plexTab')
         .click();
@@ -107,6 +115,14 @@ export function redLibraryBefore() {
 
 export function jokerLibraryBefore() {
     cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
+
+    cy.get('#movieDbApiKey')
+        .clear()
+        .type('723b4c763114904392ca441909aa0375')
+        .should('have.value', '723b4c763114904392ca441909aa0375');
+
+    cy.get('#saveTmdbKey')
+        .click();
 
     cy.get('#plexTab')
         .click();

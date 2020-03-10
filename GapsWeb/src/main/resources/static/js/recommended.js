@@ -89,10 +89,9 @@ jQuery(function ($) {
         stompClient.subscribe('/finishedSearching', function (message) {
             searchContainer.css({'display': 'none'});
 
-            const payload = JSON.parse(status.body);
+            const payload = JSON.parse(message.body);
 
             backButton.text('Restart');
-            disconnect();
             if (payload && payload.code === Payload.SEARCH_SUCCESSFUL) {
                 searchTitle.text(`Search Complete`);
                 searchDescription.text(`${movieCounter} movies to add to complete your collections. Below is everything Gaps found that is missing from your movie collections.`);
@@ -175,6 +174,8 @@ function searchForMovies() {
     searchContainer.show(100);
     notSearchedYetContainer.css({'display': 'none'});
     noMovieContainer.css({'display': 'none'});
+    moviesTable.data().clear();
+    moviesTable.rows().invalidate().draw();
 
     //reset movie counter;
     movieCounter = 0;

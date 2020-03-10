@@ -86,6 +86,7 @@ function switchPlexLibrary(machineIdentifier, key) {
 function searchForMovies() {
     movieSearchingContainer.show();
     noMovieContainer.css({'display': 'none'});
+    moviesTable.data().clear();
 
     $.ajax({
         type: "GET",
