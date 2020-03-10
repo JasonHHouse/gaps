@@ -34,3 +34,4 @@ GapsWeb/target
 /rssFeed.json
 GapsOnWindows/*.jar
 *.zip
+cypress/videos
