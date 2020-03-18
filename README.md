@@ -51,34 +51,41 @@ To track the logs from Gaps, use the following command. Again, change the contai
 
 To see Gaps, open up your browser and navigate over to the ip address and port you set for Gaps.
 
-If your browser is on the same machine running Docker and you did not change the port, then you can navigate to 
+If your browser is on the same machine running Docker and you did not change the port, then you can navigate to
 
-    https://localhost:8484
-    
-Or
+#### HTTPS 
+1. https://{IP_ADDRESS}:8484
+2. https://127.0.0.1:8484
 
-    https://127.0.0.1:8484 
+#### HTTP
+1. http://{IP_ADDRESS}:8484
+2. http://127.0.0.1:8484
 
-You should be presented with this screen
+### Home Page
 
 ![Home Page](images/gaps-main.png)
 
+Click the *Configuration* tab to set up Gaps. 
 
-### Landing Page
+### Configuration
 
-On this screen, you need to enter your Movie Database Api Key. The page has information on getting the key. The basics are that you'll need navigate over to [The Movie DB](https://www.themoviedb.org/settings/api), create an account, and make an API Key. Then you would copy that key into the Api Key field.
+#### TMDB
 
-*Note: Right now only searching via Plex is working. In time, I'll add back in searching by folder.*
+First you need to enter your The Movie Database (TMDB) Api Key. As noted on the page, to use Gaps, you'll need a MovieDB api key. Navigate over to [The Movie DB](https://www.themoviedb.org/settings/api), create an account, and make an API Key. Copy that key and paste it below.
 
-Click the *Search via Plex* button and move on to the next page. 
+With your TMDB key added, now you need to configure the information to connect to Plex.
 
-### Plex Configuration
+Click the *Test* button to confirm your key works.
 
-With your Movie DB key added, now we need to configure the information to connect to Plex.
+Click the *Save* button to add your key.
 
-![Plex Connection](images/plex_configuration.png)
+Click the *Plex* tab to set up Gaps. 
 
-On this page, you'll need to configure how you connect to Plex. This includes three main things: the host/ip address of Plex, the port Plex uses, and your personal Plex Token.
+#### Plex
+
+![Plex Connection](images/plex-configuration.png)
+
+Now you'll need to configure how to connect Gaps to Plex. This includes three main things: the host/ip address of Plex, the port Plex uses, and your personal Plex Token.
 
 The host/ip address and port are the same ones you use to connect to Plex via the web. It could look something like this
 
@@ -96,27 +103,54 @@ So, in the first case the host is localhost and the port 32400. In the second ca
 
 Lastly, you'll need to get your personal Plex Token. If you do not know already it's easy to find. Plex has a great write up [here](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/) about how to find your token.
 
-Once you have those three, click next.
+Click the *Test* button to confirm your Plex server configuration works.
 
-*Note: In the title bar, if you ever need to jump back a bit, you can click any of the sections to make an edit.*
+Click the *Save* button to add your Plex server.
+
+#### Folders
+
+*Note: Right now only searching via Plex is working. In time, I'll add back in searching by folder.*
+
+#### Network
+
+![Plex Connection](images/network-configuration.png)
+
+Increase the timeout if Plex connection is on a remote network and timeouts are occurring.
 
 ### Libraries
 
-On the Libraries page, Gaps will try to connect to Plex and if successful it will return the 'Movie' type libraries it found.
+Click the *Libraries* tab to set up Gaps.
 
-![Plex Movie Libraries](images/plex_libraries.png)
+*If you have more than one Movie Library or Plex Server, the dropdown lets you pick the Server and Library to search from.*  
 
-Select any or all of the movie libraries you want to search. You must select at least one.
+![Plex Movie Libraries](images/plex-libraries-empty.png)
 
-### Results
+Click the *Search* button find your Plex Movies.
+
+![Plex Movie Libraries](images/plex-libraries.png)
+
+Gaps will display the movies found in the Plex Server Library.
+
+*Note: Rerun this step for each server you want Gaps to find the missing movies in.*
+
+Click the *Recommended* tab to set up Gaps.
+
+### Recommended
 Once you've started searching, the movies will start populating on the final page.
 
-![Plex Movie Libraries](images/results.png) 
+![Gap Not Searched Missing Movies Yet](images/recommended-empty.png) 
+
+Click the *Search* button find your missing movies.
+
+![Gaps Recommended Movies](images/recommended.png) 
+
+For large libraries, this can take a while to run. The results are stored and only need to be rerun when Plex is updated. Missing movies are added as found. Do not navigate away. Gaps will still run but you'll have to check logs to know when it is complete. It is currently easier to just leave the page open. Fixes for this are coming soon.
 
 ### Recommended and RSS
-Once you've completed at least one search of your plex libraries, you can then view the history. Recommended is a user friendly version and RSS is for machine RSS feeds. 
 
-![Plex Recommended Movies](images/recommended.png) 
+![Gaps RSS Feed](images/rss.png) 
+
+Once you've completed at least one search of your plex libraries, you can then view and use the output as RSS.
 
 ## License
 Copyright 2019 Jason H House
