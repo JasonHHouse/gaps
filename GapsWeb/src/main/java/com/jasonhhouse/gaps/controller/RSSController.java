@@ -41,8 +41,6 @@ public class RSSController {
             rss = ioService.getRssFile();
         }
 
-        LOGGER.info("rss:" + rss);
-
         if (StringUtils.isEmpty(rss)) {
             //Show empty page
             LOGGER.error("No RSS Found, didn't call from redirect");

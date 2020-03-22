@@ -23,7 +23,7 @@ public interface UrlGenerator {
      * @param year       movie release year
      * @return query
      */
-    @NotNull HttpUrl generateSearchMovieUrl(String movieDbKey, String query, String year, String language);
+    @NotNull HttpUrl generateSearchMovieUrl(String movieDbKey, String query, String year);
 
     /**
      * Better way to search from plex returning imdb id. Is exact in returning responses but may not be available to
@@ -33,7 +33,7 @@ public interface UrlGenerator {
      * @param imdbId     IMDB id
      * @return query
      */
-    @NotNull HttpUrl generateFindMovieUrl(String movieDbKey, String imdbId, String language);
+    @NotNull HttpUrl generateFindMovieUrl(String movieDbKey, String imdbId);
 
     /**
      * Movie searches and finds don't contain collection information and a second detail per movie query must be run
@@ -42,7 +42,7 @@ public interface UrlGenerator {
      * @param movieId    TMDB id
      * @return query
      */
-    @NotNull HttpUrl generateMovieDetailUrl(String movieDbKey, String movieId, String language);
+    @NotNull HttpUrl generateMovieDetailUrl(String movieDbKey, String movieId);
 
     /**
      * With a collection id from a movie, then a user can search for collection details to get the other movies
@@ -51,7 +51,7 @@ public interface UrlGenerator {
      * @param collectionId collection id
      * @return query
      */
-    @NotNull HttpUrl generateCollectionUrl(String movieDbKey, String collectionId, String language);
+    @NotNull HttpUrl generateCollectionUrl(String movieDbKey, String collectionId);
 
     /**
      * Using plex token, address, and port, create a plex url to query for plex movie collections to select from
