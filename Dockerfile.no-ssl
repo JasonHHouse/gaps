@@ -1,4 +1,4 @@
-FROM openjdk:11.0.5-jre-slim
+FROM openjdk:11.0.6-jre-slim
 
 MAINTAINER jh5975@gmail.com
 
@@ -12,6 +12,6 @@ RUN mkdir -p /usr/app
 
 WORKDIR /usr/app
 
-COPY GapsWeb/target/GapsWeb-0.1.6.jar /usr/app/
+COPY GapsWeb/target/GapsWeb-0.2.2.jar /usr/app/
 
-ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=no-ssl", "GapsWeb-0.1.6.jar"]
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=no-ssl", "GapsWeb-0.2.2.jar"]

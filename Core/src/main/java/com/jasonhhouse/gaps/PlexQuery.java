@@ -11,6 +11,7 @@
 package com.jasonhhouse.gaps;
 
 import java.util.List;
+import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -19,9 +20,20 @@ import org.jetbrains.annotations.NotNull;
 public interface PlexQuery {
 
     /**
-     * @param plexSearch Needs to have the IP Address, port, and plex token to connect
-     * @return The list of libraries that are of type movie for that Plex server
+     * @param plexServer Needs to have the IP Address, port, and plex token to connect
      */
-    @NotNull List<PlexLibrary> getLibraries(@NotNull PlexSearch plexSearch);
+    @NotNull Payload getLibraries(@NotNull PlexServer plexServer);
 
+    /**
+     * Find the plex server name, key, and libraries based on the given PlexSearch parameters
+     *
+     * @param plexServer the search parameters
+     */
+    @NotNull Payload queryPlexServer(@NotNull PlexServer plexServer);
+
+    /**
+     * Connect to plex via the URL and parse all the movies from the returned XML creating a HashSet of movies the
+     * user has.
+     */
+    List<Movie> findAllPlexMovies(Map<MoviePair, Movie> previousMovies, @NotNull String url);
 }

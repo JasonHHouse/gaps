@@ -26,7 +26,7 @@ public interface GapsService {
     /**
      * Updates PlexLibrary's to add them if not added and set them selected or unselected if added
      *
-     * @param selectedLibraries The libraries to update
+     * @param selectedLibraries The libraries to update. they must come in as a single string added together of the plex server ID and the library key.
      */
     void updateLibrarySelections(@NotNull List<String> selectedLibraries);
 
@@ -36,4 +36,9 @@ public interface GapsService {
      * @param plexSearch The object to copy into the plex search singleton
      */
     void updatePlexSearch(PlexSearch plexSearch);
+
+    /**
+     * Resets the plex search object itself to the singleton object
+     */
+    void nukePlexSearch();
 }

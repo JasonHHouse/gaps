@@ -10,27 +10,17 @@
 
 package com.jasonhhouse.gaps.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.GapsService;
-import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexQuery;
-import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexSearchFormatter;
 import com.jasonhhouse.gaps.service.BindingErrorsService;
 import com.jasonhhouse.gaps.service.IoService;
-import com.jasonhhouse.gaps.validator.PlexPropertiesValidator;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import javax.validation.Valid;
+import com.jasonhhouse.gaps.validator.PlexServerValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,7 +45,7 @@ public class PlexLibrariesController {
         this.gapsService = gapsService;
     }
 
-    @RequestMapping(method = RequestMethod.POST,
+   /* @RequestMapping(method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView postPlexLibraries(@Valid PlexSearch plexSearch, BindingResult bindingResult) {
@@ -73,13 +63,15 @@ public class PlexLibrariesController {
             LOGGER.warn("Could not write gaps properties.", e);
         }
 
+        PlexServer plexServer = plexQuery.getPlexServer(plexSearch);
         List<PlexLibrary> plexLibraries = plexQuery.getLibraries(plexSearch);
-        gapsService.getPlexSearch().getLibraries().addAll(plexLibraries);
+        plexServer.getPlexLibraries().addAll(plexLibraries);
+        gapsService.getPlexSearch().setPlexServer(plexServer);
 
         ModelAndView modelAndView = new ModelAndView("plexLibraries");
         modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
         return modelAndView;
-    }
+    }*/
 
     @RequestMapping(method = RequestMethod.GET,
             produces = MediaType.TEXT_HTML_VALUE)
@@ -94,81 +86,6 @@ public class PlexLibrariesController {
     public void initBinder(WebDataBinder binder) {
         LOGGER.info("initBinder()");
         binder.addCustomFormatter(new PlexSearchFormatter(), "plexSearch");
-        binder.setValidator(new PlexPropertiesValidator());
-    }
-
-    private void setPlexSearch() {
-        String json = "[\n" +
-                "  {\n" +
-                "    \"key\": 23,\n" +
-                "    \"title\": \"BM\",\n" +
-                "    \"selected\": false\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"key\": 22,\n" +
-                "    \"title\": \"Family Videos\",\n" +
-                "    \"selected\": false\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"key\": 13,\n" +
-                "    \"title\": \"Grandad Movies\",\n" +
-                "    \"selected\": false\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"key\": 2,\n" +
-                "    \"title\": \"Movies\",\n" +
-                "    \"selected\": false\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"key\": 14,\n" +
-                "    \"title\": \"Movies - 3D\",\n" +
-                "    \"selected\": false\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"key\": 11,\n" +
-                "    \"title\": \"Movies - 4K\",\n" +
-                "    \"selected\": false\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"key\": 16,\n" +
-                "    \"title\": \"Stand Up Comedy\",\n" +
-                "    \"selected\": false\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"key\": 6,\n" +
-                "    \"title\": \"Workout Videos\",\n" +
-                "    \"selected\": false\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"key\": 9,\n" +
-                "    \"title\": \"Bassnectar\",\n" +
-                "    \"selected\": false\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"key\": 10,\n" +
-                "    \"title\": \"Halloween\",\n" +
-                "    \"selected\": false\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"key\": 20,\n" +
-                "    \"title\": \"Home Theater Demos\",\n" +
-                "    \"selected\": false\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"key\": 19,\n" +
-                "    \"title\": \"Pre-Rolls\",\n" +
-                "    \"selected\": false\n" +
-                "  }\n" +
-                "]";
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<PlexLibrary> plexLibraries;
-        try {
-            plexLibraries = Arrays.asList(objectMapper.readValue(json, PlexLibrary[].class));
-            gapsService.getPlexSearch().getLibraries().addAll(plexLibraries);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
+        binder.setValidator(new PlexServerValidator());
     }
 }

@@ -1,0 +1,23 @@
+{
+  "name": "gaps",
+  "version": "0.2.2-alpha",
+  "description": "Gaps searches through your Plex Server or local folders for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.",
+  "main": "/",
+  "dependencies": {},
+  "devDependencies": {
+    "cypress": "^4.1.0"
+  },
+  "scripts": {
+    "e2e": "cypress open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JasonHHouse/Gaps.git"
+  },
+  "author": "Jason House",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JasonHHouse/Gaps/issues"
+  },
+  "homepage": "https://github.com/JasonHHouse/Gaps#readme"
+}

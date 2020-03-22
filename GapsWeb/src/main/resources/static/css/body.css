@@ -19,8 +19,8 @@ main {
 }
 
 .list-item-icon {
-    display:block;
-    margin:auto;
+    display: block;
+    margin: auto;
     transform: translateY(25%);
 }
 

@@ -9,20 +9,32 @@
  */
 package com.jasonhhouse.gaps.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jasonhhouse.gaps.GapsSearch;
+import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Movie;
-import com.jasonhhouse.gaps.service.BindingErrorsService;
+import com.jasonhhouse.gaps.Payload;
+import com.jasonhhouse.gaps.PlexLibrary;
+import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.service.IoService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,44 +43,67 @@ public class RecommendedController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RecommendedController.class);
 
-    private final BindingErrorsService bindingErrorsService;
     private final IoService ioService;
+    private final GapsService gapsService;
+    private final GapsSearch gapsSearch;
 
     @Autowired
-    public RecommendedController(BindingErrorsService bindingErrorsService, IoService ioService) {
-        this.bindingErrorsService = bindingErrorsService;
+    public RecommendedController(IoService ioService, GapsService gapsService, GapsSearch gapsSearch) {
         this.ioService = ioService;
+        this.gapsService = gapsService;
+        this.gapsSearch = gapsSearch;
     }
 
-    @RequestMapping(method = RequestMethod.GET,
-            path = "/recommended")
+    @RequestMapping(method = RequestMethod.GET, path = "/recommended")
     public ModelAndView getRecommended() {
         LOGGER.info("getRecommended()");
-        String recommended = null;
-        if (ioService.doesRecommendedFileExist()) {
-            recommended = ioService.getRecommendedMovies();
-        }
 
-        if (StringUtils.isEmpty(recommended)) {
-            //Show empty page
-            return new ModelAndView("emptyState");
+        PlexServer plexServer;
+        PlexLibrary plexLibrary;
+        if (CollectionUtils.isNotEmpty(gapsService.getPlexSearch().getPlexServers())) {
+            //Read first plex servers movies
+            plexServer = gapsService.getPlexSearch().getPlexServers().stream().findFirst().orElse(new PlexServer());
+            plexLibrary = plexServer.getPlexLibraries().stream().findFirst().orElse(new PlexLibrary());
         } else {
-            ObjectMapper objectMapper = new ObjectMapper();
-            try {
-                Movie[] recommendedMovies = objectMapper.readValue(recommended, Movie[].class);
-                LOGGER.info("recommended.length:" + recommendedMovies.length);
-
-                ModelAndView modelAndView = new ModelAndView("recommended");
-                modelAndView.addObject("recommended", recommendedMovies);
-                modelAndView.addObject("urls", buildUrls(recommendedMovies));
-                return modelAndView;
-            } catch (JsonProcessingException e) {
-                LOGGER.error("Could not parse Recommended JSON", e);
-                return bindingErrorsService.getErrorPage();
-            }
-
-
+            plexServer = new PlexServer();
+            plexLibrary = new PlexLibrary();
         }
+
+        Map<String, PlexServer> plexServerMap = gapsService.getPlexSearch().getPlexServers().stream().collect(Collectors.toMap(PlexServer::getMachineIdentifier, Function.identity()));
+
+        ModelAndView modelAndView = new ModelAndView("recommended");
+        modelAndView.addObject("plexServers", plexServerMap);
+        modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
+        modelAndView.addObject("plexServer", plexServer);
+        modelAndView.addObject("plexLibrary", plexLibrary);
+        return modelAndView;
+    }
+
+
+    @RequestMapping(method = RequestMethod.GET,
+            path = "/recommended/{machineIdentifier}/{key}")
+    @ResponseBody
+    public ResponseEntity<Payload> getRecommended(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
+        LOGGER.info("getRecommended( " + machineIdentifier + ", " + key + " )");
+
+        final List<Movie> ownedMovies = ioService.readOwnedMovies(machineIdentifier, key);
+        Payload payload;
+
+        if (CollectionUtils.isEmpty(ownedMovies)) {
+            payload = Payload.PLEX_LIBRARY_MOVIE_NOT_FOUND;
+            LOGGER.warn(payload.getReason());
+        } else {
+            List<Movie> movies = ioService.readRecommendedMovies(machineIdentifier, key);
+            if (CollectionUtils.isEmpty(movies)) {
+                payload = Payload.RECOMMENDED_MOVIES_NOT_FOUND;
+                LOGGER.warn(payload.getReason());
+            } else {
+                payload = Payload.RECOMMENDED_MOVIES_FOUND;
+            }
+            payload.setExtras(movies);
+        }
+
+        return ResponseEntity.ok().body(payload);
     }
 
     private List<String> buildUrls(Movie[] movies) {
@@ -90,4 +125,34 @@ public class RecommendedController {
 
         return urls;
     }
+
+    /**
+     * Start Gaps searching for missing movies
+     *
+     * @param machineIdentifier plex server id
+     * @param key               plex library key
+     */
+    @RequestMapping(value = "/recommended/find/{machineIdentifier}/{key}",
+            method = RequestMethod.PUT)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void putFindRecommencedMovies(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
+        LOGGER.info("putFindRecommencedMovies( " + machineIdentifier + ", " + key + " )");
+
+        ioService.migrateJsonSeedFileIfNeeded();
+        gapsSearch.run(machineIdentifier, key);
+    }
+
+    /**
+     * Cancel Gaps searching for missing movies
+     *
+     * @param machineIdentifier plex server id
+     * @param key               plex library key
+     */
+    @MessageMapping("/recommended/cancel/{machineIdentifier}/{key}")
+    public void cancelSearching(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
+        LOGGER.info("cancelSearching( " + machineIdentifier + ", " + key + " )");
+        gapsSearch.cancelSearch();
+    }
+
+
 }

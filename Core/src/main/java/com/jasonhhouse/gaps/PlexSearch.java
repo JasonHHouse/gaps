@@ -10,40 +10,25 @@
 
 package com.jasonhhouse.gaps;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.apache.commons.collections4.list.SetUniqueList;
+import java.util.HashSet;
+import java.util.Set;
 
 public final class PlexSearch {
 
     public static final String MOVIE_DB_API_KEY = "movieDbApiKey";
-
-    public static final String PLEX_TOKEN = "plexToken";
-
-    public static final String ADDRESS = "address";
-
-    public static final String PORT = "port";
-
+    private final Set<PlexServer> plexServers;
     private String movieDbApiKey;
 
-    private String plexToken;
-
-    private String address;
-
-    private Integer port;
-
-    private final SetUniqueList<PlexLibrary> libraries;
-
     public PlexSearch() {
-        libraries = SetUniqueList.setUniqueList(new ArrayList<>());
+        plexServers = new HashSet<>();
     }
 
-    public void setLibrarySelected(PlexLibrary plexLibrary) {
-        libraries.get(libraries.indexOf(plexLibrary)).setSelected(true);
+    public void addPlexServer(PlexServer plexServer) {
+        this.plexServers.add(plexServer);
     }
 
-    public List<PlexLibrary> getLibraries() {
-        return libraries;
+    public Set<PlexServer> getPlexServers() {
+        return plexServers;
     }
 
     public String getMovieDbApiKey() {
@@ -54,38 +39,11 @@ public final class PlexSearch {
         this.movieDbApiKey = movieDbApiKey;
     }
 
-    public String getPlexToken() {
-        return plexToken;
-    }
-
-    public void setPlexToken(String plexToken) {
-        this.plexToken = plexToken;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public Integer getPort() {
-        return port;
-    }
-
-    public void setPort(Integer port) {
-        this.port = port;
-    }
-
     @Override
     public String toString() {
         return "PlexSearch{" +
                 "movieDbApiKey='" + movieDbApiKey + '\'' +
-                ", plexToken='" + plexToken + '\'' +
-                ", address='" + address + '\'' +
-                ", port=" + port +
-                ", libraries=" + libraries +
+                ", plexServers=" + plexServers +
                 '}';
     }
 }

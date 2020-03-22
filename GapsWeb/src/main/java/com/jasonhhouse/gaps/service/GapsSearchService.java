@@ -18,13 +18,11 @@ import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.jasonhhouse.gaps.GapsSearch;
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Movie;
-import com.jasonhhouse.gaps.PlexLibrary;
+import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.SearchCancelledException;
 import com.jasonhhouse.gaps.SearchResults;
 import com.jasonhhouse.gaps.UrlGenerator;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.LocalDate;
@@ -33,65 +31,35 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ResponseStatusException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 @Service
 public class GapsSearchService implements GapsSearch {
-
-    public static final String ID_IDX_START = "://";
-
-    public static final String ID_IDX_END = "?";
 
     public static final String COLLECTION_ID = "belongs_to_collection";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GapsSearchService.class);
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-
-    private final List<Movie> everyMovie;
-
-    private final TreeSet<Movie> searched;
-
-    private final TreeSet<Movie> recommended;
-
-    private final TreeSet<Movie> ownedMovies;
-
-    private final AtomicInteger totalMovieCount;
-
-    private final AtomicInteger searchedMovieCount;
 
     private final AtomicBoolean cancelSearch;
 
@@ -103,363 +71,93 @@ public class GapsSearchService implements GapsSearch {
 
     private final IoService ioService;
 
+    private final TmdbService tmdbService;
+
     private final GapsService gapsService;
 
     @Autowired
-    public GapsSearchService(@Qualifier("real") UrlGenerator urlGenerator, SimpMessagingTemplate template, IoService ioService, GapsService gapsService) {
+    public GapsSearchService(@Qualifier("real") UrlGenerator urlGenerator, SimpMessagingTemplate template, IoService ioService, TmdbService tmdbService, GapsService gapsService) {
         this.template = template;
+        this.tmdbService = tmdbService;
         this.gapsService = gapsService;
-        this.ownedMovies = new TreeSet<>();
-        this.searched = new TreeSet<>();
-        this.recommended = new TreeSet<>();
-        this.everyMovie = new ArrayList<>();
         this.urlGenerator = urlGenerator;
         this.ioService = ioService;
 
-        totalMovieCount = new AtomicInteger();
         tempTvdbCounter = new AtomicInteger();
-        searchedMovieCount = new AtomicInteger();
         cancelSearch = new AtomicBoolean(true);
     }
 
     @Override
-    @Async
-    public void run() {
-        LOGGER.info("run( )");
+    public void run(String machineIdentifier, Integer key) {
+        LOGGER.info("run( " + machineIdentifier + ", " + key + " )");
 
-        searched.clear();
-        ownedMovies.clear();
-        recommended.clear();
-        everyMovie.clear();
-        everyMovie.addAll(ioService.readMovieIdsFromFile());
-        totalMovieCount.set(0);
-        searchedMovieCount.set(0);
+        if (StringUtils.isEmpty(gapsService.getPlexSearch().getMovieDbApiKey())) {
+            Payload payload = tmdbService.testTmdbKey(gapsService.getPlexSearch().getMovieDbApiKey());
+            if (payload != Payload.TMDB_KEY_VALID) {
+                LOGGER.error(payload.getReason());
+                template.convertAndSend("/finishedSearching", payload);
+                return;
+            }
+        }
+
         cancelSearch.set(false);
 
+        final Set<Movie> recommended = new TreeSet<>();
+        final Set<Movie> searched = new TreeSet<>();
+        final List<Movie> everyMovie = new ArrayList<>(ioService.readMovieIdsFromFile());
+        final Set<Movie> ownedMovies = new TreeSet<>(ioService.readOwnedMovies(machineIdentifier, key));
+        final AtomicInteger searchedMovieCount = new AtomicInteger(0);
+
+        if (CollectionUtils.isEmpty(ownedMovies)) {
+            String reason = "Owned movies cannot be empty";
+            LOGGER.error(reason);
+            template.convertAndSend("/finishedSearching", Payload.OWNED_MOVIES_CANNOT_BE_EMPTY);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason);
+        }
+
         try {
-            //ToDo
-            String sessionId = null;
-//            // Get TMDB Authorization from user,
-//            // requires user input so needs to be done early before user walks away
-            //if (StringUtils.isNotEmpty(gaps.getMovieDbListId())) {
-            //    sessionId = getTmdbAuthorization(gaps);
-            //}
-
-            findAllPlexMovies();
-
             StopWatch watch = new StopWatch();
             watch.start();
-            searchForMovies();
+            searchForMovies(machineIdentifier, key, ownedMovies, everyMovie, recommended, searched, searchedMovieCount);
             watch.stop();
-            System.out.println("Time Elapsed: " + TimeUnit.MILLISECONDS.toSeconds(watch.getTime()) + " seconds.");
-            System.out.println("Times used TVDB ID: " + tempTvdbCounter);
-
-            /*if (StringUtils.isNotEmpty(gaps.getMovieDbListId())) {
-                createTmdbList(sessionId);
-            }*/
-
+            LOGGER.info("Time Elapsed: " + TimeUnit.MILLISECONDS.toSeconds(watch.getTime()) + " seconds.");
+            LOGGER.info("Times used TVDB ID: " + tempTvdbCounter);
         } catch (SearchCancelledException e) {
             String reason = "Search cancelled";
             LOGGER.error(reason, e);
-            template.convertAndSend("/finishedSearching", false);
+            template.convertAndSend("/finishedSearching", Payload.OWNED_MOVIES_CANNOT_BE_EMPTY);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
+        } catch (IOException e) {
+            String reason = "Search failed";
+            LOGGER.error(reason, e);
+            template.convertAndSend("/finishedSearching", Payload.SEARCH_FAILED);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
         } finally {
             cancelSearch.set(true);
         }
 
-        ioService.writeToFile(recommended);
-
         //Always write to log
-        ioService.writeRecommendedToFile(recommended);
+        ioService.writeRecommendedToFile(recommended, machineIdentifier, key);
         ioService.writeMovieIdsToFile(new TreeSet<>(everyMovie));
 
-        template.convertAndSend("/finishedSearching", true);
+        template.convertAndSend("/finishedSearching", Payload.SEARCH_SUCCESSFUL);
 
-        LOGGER.info("OWNED");
-        for (Movie movie : ownedMovies) {
-            System.out.println(movie.toString());
-        }
-
-        LOGGER.info("RESULTS");
+        LOGGER.info("Recommended");
         for (Movie movie : recommended) {
-            System.out.println(movie.toString());
+            LOGGER.info(movie.toString());
         }
-    }
-
-    @NotNull
-    @Override
-    public Integer getTotalMovieCount() {
-        return totalMovieCount.get();
-    }
-
-    @NotNull
-    @Override
-    public Integer getSearchedMovieCount() {
-        return searchedMovieCount.get();
-    }
-
-    @Override
-    public @NotNull CopyOnWriteArrayList<Movie> getRecommendedMovies() {
-        return new CopyOnWriteArrayList<>(recommended);
     }
 
     @Override
     public void cancelSearch() {
         LOGGER.debug("cancelSearch()");
         cancelSearch.set(true);
-        searched.clear();
-        ownedMovies.clear();
-        recommended.clear();
-        totalMovieCount.set(0);
-        searchedMovieCount.set(0);
     }
 
     @Override
     public boolean isSearching() {
+        LOGGER.info("isSearching()");
         return !cancelSearch.get();
-    }
-
-    /**
-     * Using TMDB api (V3), get access to user list and add recommended movies to
-     */
-  /*  private @Nullable String getTmdbAuthorization() {
-        // Create the request_token request
-        OkHttpClient client = new OkHttpClient();
-
-        HttpUrl url = new HttpUrl.Builder()
-                .scheme("http")
-                .host("api.themoviedb.org")
-                .addPathSegment("3")
-                .addPathSegment("authentication")
-                .addPathSegment("token")
-                .addPathSegment("new")
-                .addQueryParameter("api_key", gapsService.getPlexSearch().getMovieDbApiKey())
-                .build();
-
-        MediaType mediaType = MediaType.parse("application/octet-stream");
-        RequestBody.create("{}", mediaType);
-        RequestBody body;
-        Request request = new Request.Builder()
-                .url(url)
-                .get()
-                .build();
-
-        String request_token;
-        try {
-            Response response = client.newCall(request).execute();
-            JsonNode responseJson = objectMapper.readTree(response.body().string());
-            request_token = responseJson.get("request_token").asText();
-
-            // Have user click link to authorize the token
-            LOGGER.info("\n############################################\n" +
-                    "Click the link below to authorize TMDB list access: \n" +
-                    "https://www.themoviedb.org/authenticate/" + request_token + "\n" +
-                    "Press enter to continue\n" +
-                    "############################################\n");
-            new Thread(new UserInputThreadCountdown()).start();
-            System.in.read();
-        } catch (Exception e) {
-            LOGGER.error("Unable to authenticate tmdb, and add movies to list. ", e);
-            return null;
-        }
-
-        url = new HttpUrl.Builder()
-                .scheme("http")
-                .host("api.themoviedb.org")
-                .addPathSegment("3")
-                .addPathSegment("authentication")
-                .addPathSegment("session")
-                .addPathSegment("new")
-                .addQueryParameter("api_key", gapsService.getPlexSearch().getMovieDbApiKey())
-                .build();
-
-        // Create the sesssion ID for MovieDB using the approved token
-        mediaType = MediaType.parse("application/json");
-        body = RequestBody.create("{\"request_token\":\"" + request_token + "\"}", mediaType);
-        request = new Request.Builder()
-                .url(url)
-                .post(body)
-                .addHeader("content-type", "application/json")
-                .build();
-
-        try {
-            Response response = client.newCall(request).execute();
-            JsonNode sessionResponse = objectMapper.readTree(response.body().string());
-            return sessionResponse.get("session_id").asText(); // TODO: Save sessionID to file for reuse
-        } catch (IOException e) {
-            LOGGER.error("Unable to create session id: " + e.getMessage());
-            return null;
-        }
-    }*/
-
-    /**
-     * Using TMDB api (V3), get access to user list and add recommended movies to
-     */
-    //ToDo
-   /* private void createTmdbList(@Nullable String sessionId) {
-        OkHttpClient client;
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body;
-
-        // Add item to TMDB list specified by user
-        int counter = 0;
-        if (sessionId != null)
-            for (Movie m : recommended) {
-                client = new OkHttpClient();
-
-                body = RequestBody.create("{\"media_id\":" + m.getTvdbId() + "}", mediaType);
-
-                HttpUrl url = new HttpUrl.Builder()
-                        .scheme("https")
-                        .host("api.themoviedb.org")
-                        .addPathSegment("3")
-                        .addPathSegment("list")
-                        .addPathSegment(gaps.getMovieDbListId())
-                        .addPathSegment("add_item")
-                        .addQueryParameter("session_id", sessionId)
-                        .addQueryParameter("api_key", gaps.getMovieDbApiKey())
-                        .build();
-
-                Request request = new Request.Builder()
-                        .url(url)
-                        .post(body)
-                        .addHeader("content-type", "application/json;charset=utf-8")
-                        .build();
-
-                try {
-
-                    Response response = client.newCall(request).execute();
-                    if (response.isSuccessful())
-                        counter++;
-                } catch (IOException e) {
-                    LOGGER.error("Unable to add movie: " + e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-        LOGGER.info(counter + " Movies added to list. \nList located at: https://www.themoviedb.org/list/" + gaps.getMovieDbListId());
-    }*/
-
-    /**
-     * Connect to plex via the URL and parse all the movies from the returned XML creating a HashSet of movies the
-     * user has.
-     */
-    private void findAllPlexMovies() throws SearchCancelledException {
-        LOGGER.info("findAllPlexMovies( )");
-        OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(180, TimeUnit.SECONDS)
-                .writeTimeout(180, TimeUnit.SECONDS)
-                .readTimeout(180, TimeUnit.SECONDS)
-                .build();
-
-
-        List<String> urls = generatePlexUrls();
-
-        if (CollectionUtils.isEmpty(urls)) {
-            LOGGER.info("No URLs added to plexMovieUrls. Check your application.yaml file if needed.");
-            return;
-        }
-
-        for (String url : urls) {
-            //Cancel search if needed
-            if (cancelSearch.get()) {
-                throw new SearchCancelledException("Search cancelled");
-            }
-
-            try {
-                HttpUrl httpUrl = urlGenerator.generatePlexUrl(url);
-
-                Request request = new Request.Builder()
-                        .url(httpUrl)
-                        .build();
-
-                try (Response response = client.newCall(request).execute()) {
-                    String body = response.body() != null ? response.body().string() : null;
-
-                    if (StringUtils.isBlank(body)) {
-                        String reason = "Body returned empty from Plex";
-                        LOGGER.error(reason);
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason);
-                    }
-
-                    InputStream fileIS = new ByteArrayInputStream(body.getBytes());
-                    DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-                    DocumentBuilder builder = builderFactory.newDocumentBuilder();
-                    Document xmlDocument = builder.parse(fileIS);
-                    XPath xPath = XPathFactory.newInstance().newXPath();
-                    String expression = "/MediaContainer/Video";
-                    NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
-
-                    if (nodeList.getLength() == 0) {
-                        String reason = "No movies found in url: " + url;
-                        LOGGER.warn(reason);
-                        continue;
-                    }
-
-                    for (int i = 0; i < nodeList.getLength(); i++) {
-                        Node node = nodeList.item(i);
-
-                        Node nodeTitle = node.getAttributes().getNamedItem("title");
-
-                        if (nodeTitle == null) {
-                            String reason = "Missing title from Video element in Plex";
-                            LOGGER.error(reason);
-                            throw new NullPointerException(reason);
-                        }
-
-                        //Files can't have : so need to remove to find matches correctly
-                        String title = nodeTitle.getNodeValue().replaceAll(":", "");
-                        if (node.getAttributes().getNamedItem("year") == null) {
-                            LOGGER.warn("Year not found for " + title);
-                            continue;
-                        }
-                        int year = Integer.parseInt(node.getAttributes().getNamedItem("year").getNodeValue());
-
-                        String guid = "";
-                        if (node.getAttributes().getNamedItem("guid") != null) {
-                            guid = node.getAttributes().getNamedItem("guid").getNodeValue();
-                        }
-
-                        Movie movie;
-                        Movie searchMovie = new Movie.Builder(title, year).build();
-                        int indexOfMovie = everyMovie.indexOf(searchMovie);
-                        if (indexOfMovie != -1) {
-                            LOGGER.debug("Using existing movie information");
-                            movie = everyMovie.get(indexOfMovie);
-                        } else {
-                            if (guid.contains("com.plexapp.agents.themoviedb")) {
-                                guid = guid.substring(guid.indexOf(ID_IDX_START) + ID_IDX_START.length(), guid.indexOf(ID_IDX_END));
-                                movie = new Movie.Builder(title, year).setTvdbId(Integer.parseInt(guid)).build();
-                            } else if (guid.contains("com.plexapp.agents.imdb://")) {
-                                guid = guid.substring(guid.indexOf(ID_IDX_START) + ID_IDX_START.length(), guid.indexOf(ID_IDX_END));
-                                movie = new Movie.Builder(title, year).setImdbId(guid).build();
-                            } else {
-                                LOGGER.warn("Cannot handle guid value of " + guid);
-                                movie = new Movie.Builder(title, year).build();
-                            }
-                        }
-
-                        LOGGER.debug("guid:" + guid);
-
-                        ownedMovies.add(movie);
-                        totalMovieCount.incrementAndGet();
-                    }
-                    LOGGER.debug(ownedMovies.size() + " movies found in plex");
-
-                } catch (IOException e) {
-                    String reason = "Error connecting to Plex to get Movie list: " + url;
-                    LOGGER.error(reason, e);
-                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason, e);
-                } catch (ParserConfigurationException | XPathExpressionException | SAXException e) {
-                    String reason = "Error parsing XML from Plex: " + url;
-                    LOGGER.error(reason, e);
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
-                }
-            } catch (IllegalArgumentException | NullPointerException e) {
-                String reason = "Error with plex Url: " + url;
-                LOGGER.error(reason, e);
-                throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason, e);
-            }
-        }
     }
 
     /**
@@ -470,25 +168,36 @@ public class GapsSearchService implements GapsSearch {
      * optimize some network calls, we add movies found in a collection and in plex to our already searched list, so we
      * don't re-query collections again and again.
      */
-    private void searchForMovies() throws SearchCancelledException {
-        LOGGER.info("Searching for Movie Collections...");
+    private void searchForMovies(String machineIdentifier, Integer key, Set<Movie> ownedMovies, List<Movie> everyMovie, Set<Movie> recommended, Set<Movie> searched,
+                                 AtomicInteger searchedMovieCount) throws SearchCancelledException, IOException {
+        LOGGER.info("searchForMovies()");
         OkHttpClient client = new OkHttpClient();
 
         if (StringUtils.isEmpty(gapsService.getPlexSearch().getMovieDbApiKey())) {
-            LOGGER.error("No MovieDb Key added to movieDbApiKey. Need to submit movieDbApiKey on each request.");
-            return;
+            gapsService.updatePlexSearch(ioService.readProperties());
+
+            if (StringUtils.isEmpty(gapsService.getPlexSearch().getMovieDbApiKey())) {
+                final String error = "No MovieDb Key found. Need to configure key first.";
+                LOGGER.error(error);
+                throw new IllegalStateException(error);
+            }
         }
 
         for (Movie movie : ownedMovies) {
 
+            String languageCode = "en";
+            if (movie.getLanguage() != null) {
+                languageCode = new Locale(movie.getLanguage(), "").getLanguage();
+            }
+
             //Cancel search if needed
             if (cancelSearch.get()) {
-                throw new SearchCancelledException("Search was cancelled");
+                throw new SearchCancelledException("Search cancelled");
             }
 
             //Print the count first to handle the continue if block or the regular searching case
             if (searchedMovieCount.get() % 10 == 0) {
-                LOGGER.info(((int) ((searchedMovieCount.get()) / ((double) (totalMovieCount.get())) * 100)) + "% Complete. Processed " + searchedMovieCount.get() + " files of " + totalMovieCount.get() + ". ");
+                LOGGER.info(((int) ((searchedMovieCount.get()) / ((double) (ownedMovies.size())) * 100)) + "% Complete. Processed " + searchedMovieCount.get() + " files of " + ownedMovies.size() + ". ");
             }
             searchedMovieCount.incrementAndGet();
 
@@ -500,23 +209,24 @@ public class GapsSearchService implements GapsSearch {
             try {
                 //If TMDB is available, skip the search
                 //If IMDB is available use find
-                //Otherwise fall back to movie title and year search
+                //Otherwise, fall back to movie title and year search
+                LOGGER.info(movie.toString());
                 if (movie.getTvdbId() != -1 && movie.getCollectionId() != -1) {
-                    LOGGER.debug("Used Collection ID to get " + movie.getName());
+                    LOGGER.info("Used Collection ID to get " + movie.getName());
                     tempTvdbCounter.incrementAndGet();
-                    handleCollection(movie, client);
+                    handleCollection(machineIdentifier, key, ownedMovies, everyMovie, recommended, searched, searchedMovieCount, movie, client, languageCode);
                     continue;
                 } else if (movie.getTvdbId() != -1) {
-                    LOGGER.debug("Used TVDB ID to get " + movie.getName());
+                    LOGGER.info("Used TVDB ID to get " + movie.getName());
                     tempTvdbCounter.incrementAndGet();
-                    searchMovieDetails(movie, client);
+                    searchMovieDetails(machineIdentifier, key, ownedMovies, everyMovie, recommended, searched, searchedMovieCount, movie, client, languageCode);
                     continue;
                 } else if (StringUtils.isNotBlank(movie.getImdbId())) {
-                    LOGGER.debug("Used 'find' to search for " + movie.getName());
-                    searchMovieUrl = urlGenerator.generateFindMovieUrl(gapsService.getPlexSearch().getMovieDbApiKey(), URLEncoder.encode(movie.getImdbId(), "UTF-8"));
+                    LOGGER.info("Used 'find' to search for " + movie.getName());
+                    searchMovieUrl = urlGenerator.generateFindMovieUrl(gapsService.getPlexSearch().getMovieDbApiKey(), URLEncoder.encode(movie.getImdbId(), "UTF-8"), languageCode);
                 } else {
-                    LOGGER.debug("Used 'search' to search for " + movie.getName());
-                    searchMovieUrl = urlGenerator.generateSearchMovieUrl(gapsService.getPlexSearch().getMovieDbApiKey(), URLEncoder.encode(movie.getName(), "UTF-8"), String.valueOf(movie.getYear()));
+                    LOGGER.info("Used 'search' to search for " + movie.getName());
+                    searchMovieUrl = urlGenerator.generateSearchMovieUrl(gapsService.getPlexSearch().getMovieDbApiKey(), URLEncoder.encode(movie.getName(), "UTF-8"), String.valueOf(movie.getYear()), languageCode);
                 }
 
                 Request request = new Request.Builder()
@@ -528,7 +238,7 @@ public class GapsSearchService implements GapsSearch {
                     json = response.body() != null ? response.body().string() : null;
 
                     if (json == null) {
-                        LOGGER.error("Body returned null from TheMovieDB for " + movie.getName());
+                        LOGGER.error("Body returned null from TheMovieDB for: " + movie);
                         continue;
                     }
 
@@ -542,6 +252,11 @@ public class GapsSearchService implements GapsSearch {
                     } else {
                         //Results from 'search'
                         results = (ArrayNode) foundMovies.get("results");
+                    }
+
+                    if (results == null) {
+                        LOGGER.error("Results returned null from TheMovieDB for: " + movie);
+                        continue;
                     }
 
                     if (results.size() == 0) {
@@ -573,7 +288,7 @@ public class GapsSearchService implements GapsSearch {
                         everyMovie.add(newMovie);
                     }
 
-                    searchMovieDetails(movie, client);
+                    searchMovieDetails(machineIdentifier, key, ownedMovies, everyMovie, recommended, searched, searchedMovieCount, movie, client, languageCode);
                 } catch (JsonProcessingException e) {
                     LOGGER.error("Error parsing movie " + movie + ". " + e.getMessage());
                     LOGGER.error("URL: " + searchMovieUrl);
@@ -606,8 +321,10 @@ public class GapsSearchService implements GapsSearch {
         }
     }
 
-    private void searchMovieDetails(Movie movie, OkHttpClient client) {
-        HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(gapsService.getPlexSearch().getMovieDbApiKey(), String.valueOf(movie.getImdbId()));
+    private void searchMovieDetails(String machineIdentifier, Integer key, Set<Movie> ownedMovies, List<Movie> everyMovie, Set<Movie> recommended, Set<Movie> searched,
+                                    AtomicInteger searchedMovieCount, Movie movie, OkHttpClient client, String languageCode) {
+        LOGGER.info("searchMovieDetails()");
+        HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(gapsService.getPlexSearch().getMovieDbApiKey(), String.valueOf(movie.getImdbId()), languageCode);
 
         Request request = new Request.Builder()
                 .url(movieDetailUrl)
@@ -651,15 +368,17 @@ public class GapsSearchService implements GapsSearch {
                 everyMovie.add(newMovie);
             }
 
-            handleCollection(movie, client);
+            handleCollection(machineIdentifier, key, ownedMovies, everyMovie, recommended, searched, searchedMovieCount, movie, client, languageCode);
 
         } catch (IOException e) {
             LOGGER.error("Error getting movie details " + movie, e);
         }
     }
 
-    private void handleCollection(Movie movie, OkHttpClient client) {
-        HttpUrl collectionUrl = urlGenerator.generateCollectionUrl(gapsService.getPlexSearch().getMovieDbApiKey(), String.valueOf(movie.getCollectionId()));
+    private void handleCollection(String machineIdentifier, Integer key, Set<Movie> ownedMovies, List<Movie> everyMovie, Set<Movie> recommended, Set<Movie> searched,
+                                  AtomicInteger searchedMovieCount, Movie movie, OkHttpClient client, String languageCode) {
+        LOGGER.info("handleCollection()");
+        HttpUrl collectionUrl = urlGenerator.generateCollectionUrl(gapsService.getPlexSearch().getMovieDbApiKey(), String.valueOf(movie.getCollectionId()), languageCode);
 
         Request request = new Request.Builder()
                 .url(collectionUrl)
@@ -682,17 +401,24 @@ public class GapsSearchService implements GapsSearch {
                 return;
             } else if (indexOfMovie != -1) {
                 int id = collection.get("id").asInt();
-                everyMovie.get(indexOfMovie).setCollectionId(id);
                 String name = collection.get("name").asText();
+                everyMovie.get(indexOfMovie).setCollectionId(id);
                 everyMovie.get(indexOfMovie).setCollection(name);
+                movie.setCollection(name);
+                movie.setCollectionId(id);
             } else {
+                int id = collection.get("id").asInt();
+                String name = collection.get("name").asText();
                 Movie newMovie = new Movie.Builder(movie.getName(), movie.getYear())
                         .setTvdbId(movie.getTvdbId())
                         .setImdbId(movie.getImdbId())
-                        .setCollection(collection.get("name").asText())
-                        .setCollectionId(collection.get("id").asInt())
+                        .setCollection(name)
+                        .setCollectionId(id)
                         .build();
                 everyMovie.add(newMovie);
+
+                movie.setCollection(name);
+                movie.setCollectionId(id);
             }
 
             ArrayNode parts = (ArrayNode) collection.get("parts");
@@ -729,6 +455,8 @@ public class GapsSearchService implements GapsSearch {
                         .setPosterUrl(posterUrl)
                         .build();
 
+                Movie ownedMovieFromCollection = new Movie.Builder(title, year).build();
+
                 indexOfMovie = everyMovie.indexOf(new Movie.Builder(title, year).build());
                 if (indexOfMovie == -1) {
                     LOGGER.debug("Adding collection movie");
@@ -738,12 +466,12 @@ public class GapsSearchService implements GapsSearch {
                     everyMovie.get(indexOfMovie).setTvdbId(tvdbId);
                 }
 
-                if (ownedMovies.contains(movieFromCollection)) {
+                if (ownedMovies.contains(ownedMovieFromCollection)) {
                     searched.add(movieFromCollection);
-                    sendEmptySearchUpdate();
+                    sendEmptySearchUpdate(ownedMovies.size(), searchedMovieCount);
                 } else if (!searched.contains(movieFromCollection) && year != 0 && year < Year.now().getValue()) {
                     // Get recommended Movie details from MovieDB API
-                    HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(gapsService.getPlexSearch().getMovieDbApiKey(), String.valueOf(movieFromCollection.getTvdbId()));
+                    HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(gapsService.getPlexSearch().getMovieDbApiKey(), String.valueOf(movieFromCollection.getTvdbId()), languageCode);
 
                     Request newReq = new Request.Builder()
                             .url(movieDetailUrl)
@@ -753,7 +481,7 @@ public class GapsSearchService implements GapsSearch {
 
                         String movieDetailJson = movieDetailResponse.body() != null ? movieDetailResponse.body().string() : null;
 
-                        LOGGER.debug(movieDetailJson);
+                        LOGGER.info(movieDetailJson);
 
                         if (movieDetailJson == null) {
                             LOGGER.error("Body returned null from TheMovieDB for details on " + movie.getName());
@@ -783,16 +511,18 @@ public class GapsSearchService implements GapsSearch {
                                 .setImdbId(movieDet.get("imdb_id").asText())
                                 .setCollectionId(movie.getCollectionId())
                                 .setCollection(movie.getCollection())
+                                .setPosterUrl("https://image.tmdb.org/t/p/w185/" + movieDet.get("poster_path").asText())
+                                .setOverview(movieDet.get("overview").asText())
                                 .build();
 
                         if (recommended.add(recommendedMovie)) {
                             // Write current list of recommended movies to file.
-                            ioService.writeRssFile(recommended);
+                            ioService.writeRssFile(machineIdentifier, key, recommended);
 
-                            LOGGER.info("/newMovieFound:" + movieFromCollection.toString());
+                            LOGGER.info("/newMovieFound:" + recommendedMovie.toString());
 
                             //Send message over websocket
-                            SearchResults searchResults = new SearchResults(getSearchedMovieCount(), getTotalMovieCount(), movieFromCollection);
+                            SearchResults searchResults = new SearchResults(searchedMovieCount.get(), ownedMovies.size(), recommendedMovie);
                             template.convertAndSend("/newMovieFound", objectMapper.writeValueAsString(searchResults));
                         }
                     } catch (Exception e) {
@@ -800,7 +530,7 @@ public class GapsSearchService implements GapsSearch {
                     }
 
                 } else {
-                    sendEmptySearchUpdate();
+                    sendEmptySearchUpdate(ownedMovies.size(), searchedMovieCount);
                 }
             }
 
@@ -811,49 +541,11 @@ public class GapsSearchService implements GapsSearch {
         searched.add(movie);
     }
 
-    private void sendEmptySearchUpdate() throws JsonProcessingException {
+    private void sendEmptySearchUpdate(int totalMovieCount, AtomicInteger searchedMovieCount) throws JsonProcessingException {
         //Send message over websocket
         //No new movie, just updated counts
-        SearchResults searchResults = new SearchResults(getSearchedMovieCount(), getTotalMovieCount(), null);
+        SearchResults searchResults = new SearchResults(searchedMovieCount.get(), totalMovieCount, null);
         template.convertAndSend("/newMovieFound", objectMapper.writeValueAsString(searchResults));
     }
 
-
-   /* public static class UserInputThreadCountdown implements Runnable {
-
-        int time_limit = 60;
-
-        Date start;
-
-        @Override
-        public void run() {
-            start = new Date();
-            try {
-                this.runTimer();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        private void runTimer() throws IOException {
-            long timePassedStart;
-            do {
-                timePassedStart = (new Date().getTime() - start.getTime()) / 1000;
-            } while (timePassedStart < time_limit);
-            System.in.close();
-        }
-
-    }*/
-
-    private List<String> generatePlexUrls() {
-        LOGGER.info(gapsService.getPlexSearch().getLibraries().toString());
-        List<String> urls = gapsService.getPlexSearch()
-                .getLibraries()
-                .stream()
-                .filter(PlexLibrary::getSelected)
-                .map(plexLibrary -> "http://" + gapsService.getPlexSearch().getAddress() + ":" + gapsService.getPlexSearch().getPort() + "/library/sections/" + plexLibrary.getKey() + "/all/?X-Plex-Token=" + gapsService.getPlexSearch().getPlexToken())
-                .collect(Collectors.toList());
-        LOGGER.info("URLS: " + urls.size());
-        return urls;
-    }
 }

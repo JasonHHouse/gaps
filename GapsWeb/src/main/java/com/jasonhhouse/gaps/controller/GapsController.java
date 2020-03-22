@@ -10,17 +10,24 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsService;
+import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.service.IoService;
 import java.io.IOException;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -39,21 +46,74 @@ public class GapsController {
         this.gapsService = gapsService;
     }
 
-    @RequestMapping(method = RequestMethod.GET,
-            produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView getIndex() {
-        LOGGER.info("getIndex()");
-        ModelAndView modelAndView = new ModelAndView("index");
 
+    @RequestMapping(method = RequestMethod.GET,
+            value = "/home",
+            produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView getIndexOnClick() {
+        LOGGER.info("getIndexOnClick()");
+
+        PlexSearch plexSearch = null;
         try {
-            PlexSearch plexSearch = ioService.readProperties();
+            plexSearch = ioService.readProperties();
+            plexSearch.getPlexServers().addAll(ioService.readPlexConfiguration());
             gapsService.updatePlexSearch(plexSearch);
         } catch (IOException e) {
             LOGGER.warn("Failed to read gaps properties.", e);
         }
 
+        ModelAndView modelAndView = new ModelAndView("index");
         modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
         return modelAndView;
+    }
+
+    @RequestMapping(method = RequestMethod.GET,
+            produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView getIndex() {
+        LOGGER.info("getIndex()");
+
+        PlexSearch plexSearch = null;
+        try {
+            plexSearch = ioService.readProperties();
+            plexSearch.getPlexServers().addAll(ioService.readPlexConfiguration());
+            gapsService.updatePlexSearch(plexSearch);
+        } catch (IOException e) {
+            LOGGER.warn("Failed to read gaps properties.", e);
+        }
+
+        //If configuration is filled in, jump to libraries page
+        if(plexSearch != null && StringUtils.isNotEmpty(plexSearch.getMovieDbApiKey()) && CollectionUtils.isNotEmpty(plexSearch.getPlexServers())) {
+            return new ModelAndView("redirect:/libraries");
+        }
+
+
+
+        ModelAndView modelAndView = new ModelAndView("index");
+        modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
+        return modelAndView;
+    }
+
+    @RequestMapping(method = RequestMethod.PUT,
+            value = "/nuke/{username}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<Payload> putNuke(@PathVariable("username") final String username) {
+        LOGGER.info("putNuke( " + username + " )");
+        LOGGER.info("Deleting all local files");
+        Payload payload = ioService.nuke();
+        if (payload.getCode() == Payload.NUKE_SUCCESSFUL.getCode()) {
+            gapsService.nukePlexSearch();
+        }
+        return ResponseEntity.ok().body(payload);
+    }
+
+    @RequestMapping(method = RequestMethod.GET,
+            value = "/about",
+            produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView getAbout() {
+        LOGGER.info("getAbout()");
+
+        return new ModelAndView("about");
     }
 
     @InitBinder

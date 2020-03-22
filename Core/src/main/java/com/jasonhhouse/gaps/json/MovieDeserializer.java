@@ -33,12 +33,31 @@ public class MovieDeserializer extends StdDeserializer<Movie> {
         String imdbId = node.get(Movie.IMDB_ID).asText();
         String name = node.get(Movie.NAME).asText();
         int year = (Integer) node.get(Movie.YEAR).numberValue();
-        int collectionId = (Integer) node.get(Movie.COLLECTION_ID).numberValue();
-        String collection = node.get(Movie.COLLECTION).asText();
+
+
+        int collectionId = -1;
+        if (node.has(Movie.COLLECTION_ID)) {
+            collectionId = (Integer) node.get(Movie.COLLECTION_ID).numberValue();
+        }
+
+        String collection = null;
+        if (node.has(Movie.COLLECTION)) {
+            collection = node.get(Movie.COLLECTION).asText();
+        }
 
         String posterUrl = null;
         if (node.has(Movie.POSTER)) {
             posterUrl = node.get(Movie.POSTER).asText();
+        }
+
+        String language = null;
+        if (node.has(Movie.LANGUAGE)) {
+            language = node.get(Movie.LANGUAGE).asText();
+        }
+
+        String overview = null;
+        if (node.has(Movie.OVERVIEW)) {
+            overview = node.get(Movie.OVERVIEW).asText();
         }
 
         Movie.Builder builder = new Movie.Builder(name, year)
@@ -46,7 +65,9 @@ public class MovieDeserializer extends StdDeserializer<Movie> {
                 .setImdbId(imdbId)
                 .setCollectionId(collectionId)
                 .setCollection(collection)
-                .setPosterUrl(posterUrl);
+                .setPosterUrl(posterUrl)
+                .setLanguage(language)
+                .setOverview(overview);
 
         return builder.build();
     }

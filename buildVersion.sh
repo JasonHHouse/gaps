@@ -1,10 +1,12 @@
 #!/bin/bash
-VERSION="-v0.1.6"
+read -n 1 -s -r -p "Are the ports set correctly?"
+VERSION="0.2.2"
 DOCKER_SSL_VERSION="housewrecker/gaps:v$VERSION"
 DOCKER_NO_SSL_VERSION="housewrecker/gaps:v$VERSION-no-ssl"
 JAR_VERSION="GapsWeb/target/GapsWeb-$VERSION.jar"
 ZIP_VERSION="Gaps-$VERSION.zip"
 mvn clean install
+cypress run
 docker build -f Dockerfile.ssl -t $DOCKER_SSL_VERSION .
 docker push $DOCKER_SSL_VERSION
 docker build -f Dockerfile.no-ssl -t $DOCKER_NO_SSL_VERSION .

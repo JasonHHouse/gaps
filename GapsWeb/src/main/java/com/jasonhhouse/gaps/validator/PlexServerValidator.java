@@ -10,11 +10,7 @@
 
 package com.jasonhhouse.gaps.validator;
 
-import com.jasonhhouse.gaps.PlexLibrary;
-import com.jasonhhouse.gaps.PlexSearch;
-import com.jasonhhouse.gaps.controller.GapsController;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.BooleanUtils;
+import com.jasonhhouse.gaps.PlexServer;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -22,39 +18,37 @@ import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-public class PlexLibrariesValidator implements Validator {
+public class PlexServerValidator implements Validator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PlexLibrariesValidator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PlexServerValidator.class);
 
     @Override
     public boolean supports(@NotNull Class<?> clazz) {
-        return PlexSearch.class.equals(clazz);
+        return PlexServer.class.equals(clazz);
     }
 
     @Override
     public void validate(@NotNull Object obj, @NotNull Errors errors) {
         LOGGER.info("validate( " + obj + ", " + errors + " )");
 
-        PlexSearch plexSearch = (PlexSearch) obj;
-        if (CollectionUtils.isEmpty(plexSearch.getLibraries())) {
-            errors.rejectValue("libraries", "libraries.empty");
-            return;
+        PlexServer plexSearch = (PlexServer) obj;
+        if (StringUtils.isEmpty(plexSearch.getAddress())) {
+            errors.rejectValue("address", "address.empty");
         }
 
-        for (PlexLibrary plexLibrary : plexSearch.getLibraries()) {
-            if (StringUtils.isEmpty(plexLibrary.getTitle())) {
-                errors.rejectValue("libraries", "plexLibrary.getTitle().empty");
-            }
-
-            if (plexLibrary.getKey() == null) {
-                errors.rejectValue("libraries", "plexLibrary.getKey().empty");
-            }
-
-            if (plexLibrary.getSelected() == null) {
-                plexLibrary.setSelected(false);
-            }
+        if (plexSearch.getPort() == null) {
+            errors.rejectValue("port", "port.empty");
+        } else if (plexSearch.getPort() < 0) {
+            errors.rejectValue("port", "port.belowRange");
         }
 
+        if (plexSearch.getPort() > 65536) {
+            errors.rejectValue("port", "port.aboveRange");
+        }
+
+        if (StringUtils.isEmpty(plexSearch.getPlexToken())) {
+            errors.rejectValue("plexToken", "plexToken.empty");
+        }
     }
 }
 

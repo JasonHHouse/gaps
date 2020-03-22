@@ -10,15 +10,21 @@
 
 package com.jasonhhouse.gaps.controller;
 
+import com.jasonhhouse.gaps.GapsService;
+import com.jasonhhouse.gaps.PlexLibrary;
+import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.gaps.service.RssService;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Map;
 
 @RestController
 public class RSSController {
@@ -26,25 +32,32 @@ public class RSSController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RSSController.class);
 
     private final IoService ioService;
+    private final RssService rssService;
+    private final GapsService gapsService;
 
     @Autowired
-    public RSSController(IoService ioService) {
+    public RSSController(IoService ioService, RssService rssService, GapsService gapsService) {
         this.ioService = ioService;
+        this.rssService = rssService;
+        this.gapsService = gapsService;
     }
 
     @RequestMapping(method = RequestMethod.GET,
-            path = "/rss")
-    public String getRss() {
-        LOGGER.info("getRss()");
+            path = "/rss/{machineIdentifier}/{libraryKey}")
+    public String getRss(@PathVariable("machineIdentifier") String machineIdentifier, @PathVariable("libraryKey") Integer libraryKey) {
+        LOGGER.info("getRss( " + machineIdentifier + ", " + libraryKey +  " )");
+
         String rss = null;
-        if (ioService.doesRssFileExist()) {
-            rss = ioService.getRssFile();
+        if (ioService.doesRssFileExist(machineIdentifier, libraryKey)) {
+            rss = ioService.getRssFile(machineIdentifier, libraryKey);
         }
+
+        LOGGER.info("rss:" + rss);
 
         if (StringUtils.isEmpty(rss)) {
             //Show empty page
-            LOGGER.error("No RSS Found, didn't call from redirect");
-            return null;
+            LOGGER.warn("No RSS Found, didn't call from redirect");
+            return "No RSS feed found.";
         } else {
             return rss;
         }
@@ -54,17 +67,12 @@ public class RSSController {
             path = "/rssCheck")
     public ModelAndView getRssCheck() {
         LOGGER.info("getRssCheck()");
-        String rss = null;
-        if (ioService.doesRssFileExist()) {
-            rss = ioService.getRssFile();
-        }
 
-        if (StringUtils.isEmpty(rss)) {
-            //Show empty page
-            return new ModelAndView("emptyState");
-        } else {
-            return new ModelAndView("rss");
-        }
+        ModelAndView modelAndView = new ModelAndView("rssCheck");
+        Map<PlexLibrary, PlexServer> map = rssService.foundAnyRssFeeds();
+        modelAndView.addObject("plexServers", gapsService.getPlexSearch().getPlexServers());
+        modelAndView.addObject("plexServerMap", map);
+        modelAndView.addObject("foundPlexLibraries", MapUtils.isNotEmpty(map));
+        return modelAndView;
     }
-
 }
