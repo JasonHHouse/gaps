@@ -11,18 +11,26 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsService;
+import com.jasonhhouse.gaps.PlexLibrary;
+import com.jasonhhouse.gaps.PlexQuery;
+import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexSearchFormatter;
 import com.jasonhhouse.gaps.service.BindingErrorsService;
 import com.jasonhhouse.gaps.validator.PlexLibrariesValidator;
 import java.util.ArrayList;
+import java.util.List;
+import javax.validation.Valid;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,7 +55,7 @@ public class PlexMovieListController {
     public ModelAndView postPlexMovieList(@RequestParam ArrayList<String> selectedLibraries) {
         LOGGER.info("postPlexMovieList( " + selectedLibraries + " )");
 
-        if (CollectionUtils.isEmpty(selectedLibraries)) {
+        if(CollectionUtils.isEmpty(selectedLibraries)) {
             return bindingErrorsService.getErrorPage();
         }
 

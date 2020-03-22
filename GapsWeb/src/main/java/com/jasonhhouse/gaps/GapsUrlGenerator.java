@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class GapsUrlGenerator implements UrlGenerator {
 
     @Override
-    public @NotNull HttpUrl generateSearchMovieUrl(@NotNull String movieDbKey, @NotNull String query, @NotNull String year, @NotNull String language) {
+    public @NotNull HttpUrl generateSearchMovieUrl(@NotNull String movieDbKey, @NotNull String query, @NotNull String year) {
         return new HttpUrl.Builder()
                 .scheme("https")
                 .host("api.themoviedb.org")
@@ -26,7 +26,7 @@ public class GapsUrlGenerator implements UrlGenerator {
                 .addPathSegment("search")
                 .addPathSegment("movie")
                 .addQueryParameter("api_key", movieDbKey)
-                .addQueryParameter("language", language)
+                .addQueryParameter("language", "en-US")
                 .addQueryParameter("page", "1")
                 .addQueryParameter("include_adult", "false")
                 .addQueryParameter("query", query)
@@ -35,7 +35,7 @@ public class GapsUrlGenerator implements UrlGenerator {
     }
 
     @Override
-    public @NotNull HttpUrl generateFindMovieUrl(@NotNull String movieDbKey, @NotNull String imdbId, @NotNull String language) {
+    public @NotNull HttpUrl generateFindMovieUrl(@NotNull String movieDbKey, @NotNull String imdbId) {
         return new HttpUrl.Builder()
                 .scheme("https")
                 .host("api.themoviedb.org")
@@ -43,13 +43,13 @@ public class GapsUrlGenerator implements UrlGenerator {
                 .addPathSegment("find")
                 .addPathSegment(imdbId)
                 .addQueryParameter("api_key", movieDbKey)
-                .addQueryParameter("language", language)
+                .addQueryParameter("language", "en-US")
                 .addQueryParameter("external_source", "imdb_id")
                 .build();
     }
 
     @Override
-    public @NotNull HttpUrl generateMovieDetailUrl(@NotNull String movieDbKey, @NotNull String movieId, @NotNull String language) {
+    public @NotNull HttpUrl generateMovieDetailUrl(@NotNull String movieDbKey, @NotNull String movieId) {
         return new HttpUrl.Builder()
                 .scheme("https")
                 .host("api.themoviedb.org")
@@ -57,12 +57,12 @@ public class GapsUrlGenerator implements UrlGenerator {
                 .addPathSegment("movie")
                 .addPathSegment(movieId)
                 .addQueryParameter("api_key", movieDbKey)
-                .addQueryParameter("language", language)
+                .addQueryParameter("language", "en-US")
                 .build();
     }
 
     @Override
-    public @NotNull HttpUrl generateCollectionUrl(@NotNull String movieDbKey, @NotNull String collectionId, @NotNull String language) {
+    public @NotNull HttpUrl generateCollectionUrl(@NotNull String movieDbKey, @NotNull String collectionId) {
         return new HttpUrl.Builder()
                 .scheme("https")
                 .host("api.themoviedb.org")
@@ -70,7 +70,7 @@ public class GapsUrlGenerator implements UrlGenerator {
                 .addPathSegment("collection")
                 .addPathSegment(collectionId)
                 .addQueryParameter("api_key", movieDbKey)
-                .addQueryParameter("language", language)
+                .addQueryParameter("language", "en-US")
                 .build();
     }
 
