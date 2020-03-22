@@ -14,7 +14,8 @@ import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexSearch;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -43,16 +44,16 @@ public class GapsServiceImpl implements GapsService {
     public void updateLibrarySelections(@NotNull List<String> selectedLibraries) {
         LOGGER.info("updateLibrarySelections( " + selectedLibraries + " )");
         LOGGER.info("BEFORE:" + getPlexSearch().getLibraries().toString());
+
+        Map<Integer, PlexLibrary> map = getPlexSearch().getLibraries().stream().collect(Collectors.toMap(PlexLibrary::getKey, Function.identity()));
+
         for (String selectedLibrary : selectedLibraries) {
-
-            Optional<PlexLibrary> library = getPlexSearch().getLibraries().stream().filter(plexLibrary -> plexLibrary.getKey().equals(Integer.valueOf(selectedLibrary))).findFirst();
-
-            if (!library.isPresent()) {
-                LOGGER.warn("Can't find library");
+            Integer key = Integer.valueOf(selectedLibrary);
+            if (map.containsKey(key)) {
+                map.get(key).setSelected(true);
             } else {
-                library.get().setSelected(true);
+                LOGGER.warn("Can't find library");
             }
-
         }
         LOGGER.info("AFTER:" + getPlexSearch().getLibraries().toString());
     }

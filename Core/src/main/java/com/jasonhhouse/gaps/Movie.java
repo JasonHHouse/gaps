@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 @JsonSerialize(using = MovieSerializer.class)
 @JsonDeserialize(using = MovieDeserializer.class)
-public final class Movie implements Comparable<Movie> {
+public final class Movie implements Comparable<Movie>, MovieMetadata {
 
     public static final String TVDB_ID = "tvdbId";
 
@@ -74,18 +74,22 @@ public final class Movie implements Comparable<Movie> {
         this.collectionId = collectionId;
     }
 
+    @Override
     public int getTvdbId() {
         return tvdbId;
     }
 
+    @Override
     public void setTvdbId(int tvdbId) {
         this.tvdbId = tvdbId;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public int getYear() {
         return year;
     }
@@ -96,6 +100,7 @@ public final class Movie implements Comparable<Movie> {
     }
 
     @Nullable
+    @Override
     public String getImdbId() {
         return imdbId;
     }
@@ -112,13 +117,13 @@ public final class Movie implements Comparable<Movie> {
 
         //Compare tvdb id first
         if (tvdbId != -1 && tvdbId == movie.tvdbId) {
-            //System.out.println("Movie - tvdbId equals() true: " + tvdbId);
+            //LOGGER.info("Movie - tvdbId equals() true: " + tvdbId);
             return true;
         }
 
         //Compare imdb id next
         if (StringUtils.isNotEmpty(imdbId) && imdbId.equals(movie.imdbId)) {
-            //System.out.println("Movie - imdbId equals() true: " + imdbId);
+            //LOGGER.info("Movie - imdbId equals() true: " + imdbId);
             return true;
         }
 

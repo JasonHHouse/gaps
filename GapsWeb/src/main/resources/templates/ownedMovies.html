@@ -7,28 +7,28 @@
 -
 - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>Gaps</title>
-    <meta name="theme-color" content="#3f51b5"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="shortcut icon" href="images/gaps.ico"/>
-    <link rel="stylesheet" href="css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="css/input.min.css">
+    <link rel="shortcut icon" href="/images/gaps.ico"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/dataTables.bootstrap4.min.css"/>
+    <link rel="stylesheet" href="/css/input.min.css">
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 
 <body>
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <a class="navbar-brand" href="/">Gaps</a>
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
+            <li class="nav-item" aria-current="page">
                 <a class="nav-link" href="/ownedMovies">Owned Movies</a>
             </li>
             <li class="nav-item">
@@ -42,23 +42,41 @@
 </nav>
 
 <div class="container">
+    <h3 class="top-margin">Owned Movies</h3>
+
     <div class="top-margin">
-        <div class="card mx-auto" style="width: 24rem;">
-            <img src="/images/broken-bridge-2.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">The gap is only getting bigger...</h5>
-                <p class="card-text">Check the logs to see what went wrong. You can message /u/whitefox111 on Reddit or
-                    post an issue on the gaps <a href="https://github.com/JasonHHouse/Gaps">gaps</a> GitHub if you need
-                    more help.</p>
-                <a href="/" class="btn btn-primary">Back</a>
-            </div>
-        </div>
+        <table id="movies" class="display" style="width:100%">
+            <thead>
+            <tr>
+                <th>Poster</th>
+                <th>Title</th>
+                <th>Year</th>
+                <th>Language</th>
+                <th>Link</th>
+                <th>Find Missing</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="movie, status : ${ownedMovies}">
+                <td th:text="${movie.thumbnail}"></td>
+                <td th:text="${movie.name}" class="word-break"></td>
+                <td th:text="${movie.year}"></td>
+                <td th:text="${movie.language}" class="word-break"></td>
+                <td><a target="_blank" th:href="${urls.get(status.index)}">Details</a></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
+<input id="plexSearch" name="plexSearch" th:value="${{plexSearch}}" type="hidden"/>
 
-<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="js/js.cookie.min.js"></script>
+<script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/js/datatables.min.js"></script>
+<script type="text/javascript" src="/js/sockjs-1.4.0.min.js"></script>
+<script type="text/javascript" src="/js/stomp-2.3.3.min.js"></script>
+<script type="text/javascript" src="/js/ownedMovies.js"></script>
 </body>
 </html>
