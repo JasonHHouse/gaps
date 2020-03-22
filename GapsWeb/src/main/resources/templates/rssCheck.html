@@ -68,13 +68,9 @@
 
         <form action="/rss" class="top-margin" method="get">
             <div th:each="instance : ${plexServerMap}" class="form-check">
-                <input class="form-check-input" id="library" name="library" type="radio"
-                       th:value="${instance.value.getMachineIdentifier() + '_' + instance.key.getKey()}">
-                <label class="form-check-label" for="library"
-                       th:text="${instance.value.getFriendlyName() + ' - ' + instance.key.getTitle()}">
-                </label>
-            </div>
-            <button class="btn btn-primary top-margin" type="submit">Open</button>
+                <a th:href="'/rss/' + ${instance.value.getMachineIdentifier() + '/' + instance.key.getKey()}"
+                   th:text="${instance.value.getFriendlyName() + ' - ' + instance.key.getTitle()}">
+                </a>
         </form>
     </div>
 

@@ -43,12 +43,9 @@ public class RSSController {
     }
 
     @RequestMapping(method = RequestMethod.GET,
-            path = "/rss")
-    public String getRss(@RequestParam("library") String library) {
-        LOGGER.info("getRss( " + library + " )");
-        String[] keys = library.split("_");
-        String machineIdentifier = keys[0];
-        int libraryKey = Integer.parseInt(keys[1]);
+            path = "/rss/{machineIdentifier}/{libraryKey}")
+    public String getRss(@PathVariable("machineIdentifier") String machineIdentifier, @PathVariable("libraryKey") Integer libraryKey) {
+        LOGGER.info("getRss( " + machineIdentifier + ", " + libraryKey +  " )");
 
         String rss = null;
         if (ioService.doesRssFileExist(machineIdentifier, libraryKey)) {
