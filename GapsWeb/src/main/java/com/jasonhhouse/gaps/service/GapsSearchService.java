@@ -324,7 +324,7 @@ public class GapsSearchService implements GapsSearch {
     private void searchMovieDetails(String machineIdentifier, Integer key, Set<Movie> ownedMovies, List<Movie> everyMovie, Set<Movie> recommended, Set<Movie> searched,
                                     AtomicInteger searchedMovieCount, Movie movie, OkHttpClient client, String languageCode) {
         LOGGER.info("searchMovieDetails()");
-        HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(gapsService.getPlexSearch().getMovieDbApiKey(), String.valueOf(movie.getImdbId()), languageCode);
+        HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(gapsService.getPlexSearch().getMovieDbApiKey(), String.valueOf(movie.getTvdbId()), languageCode);
 
         Request request = new Request.Builder()
                 .url(movieDetailUrl)
@@ -343,6 +343,7 @@ public class GapsSearchService implements GapsSearch {
 
             if (!movieDetails.has("belongs_to_collection") || movieDetails.get("belongs_to_collection").isNull()) {
                 //No collection found, just add movie to searched and continue
+                LOGGER.info("No collection found for " + movie.getName());
                 searched.add(movie);
                 return;
             }
