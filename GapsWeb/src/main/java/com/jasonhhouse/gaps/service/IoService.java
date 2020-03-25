@@ -67,7 +67,7 @@ public class IoService {
             try {
                 String path = new File(new File(new File(IoService.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParent()).getParent()).getParent();
                 decodedPath = URLDecoder.decode(path, "UTF-8");
-                decodedPath = decodedPath.substring("file:\\".length());
+                decodedPath = decodedPath.startsWith("file:\\") ? decodedPath.substring("file:\\".length()) : decodedPath;
             } catch (UnsupportedEncodingException e) {
                 //Do nothing
             }
