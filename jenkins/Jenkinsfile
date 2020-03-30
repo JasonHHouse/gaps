@@ -1,4 +1,8 @@
 pipeline {
+    environment {
+        registry = "housewrecker/gaps"
+        registryCredential = 'dockerhub'
+    }
     agent none
     stages {
         stage('Java Build') {
@@ -19,14 +23,10 @@ pipeline {
             }
         }
         stage('Building image') {
-            environment {
-                registry = "housewrecker/gaps"
-                registryCredential = 'dockerhub'
-            }
             agent {
                 dockerfile {
                     filename "Dockerfile.ssl"
-                    args '-i  -p 2222:8484 -v /gaps:/usr/data --name gaps_dev gaps_dev'
+                    args '-i  -p 2222:8484 -v /gaps:/usr/data'
                 }
             }
             steps{
