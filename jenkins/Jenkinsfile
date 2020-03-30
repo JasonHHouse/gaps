@@ -26,7 +26,6 @@ pipeline {
             agent {
                 dockerfile {
                     filename "Dockerfile.ssl"
-                    args '-i  -p 2222:8484 -v /gaps:/usr/data'
                 }
             }
             steps{
