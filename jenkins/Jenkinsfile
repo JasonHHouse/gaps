@@ -11,26 +11,11 @@ pipeline {
             steps {
                 sh 'mvn -B -DskipTests clean package'
                 sh 'mvn test'
+                sh 'docker build -f Dockerfile.ssl -t housewrecker/gaps:v0.2.3.$BUILD_NUMBER .'
             }
             post {
                 always {
                     junit 'GapsWeb/target/surefire-reports/*.xml'
-                }
-            }
-        }
-        stage('Building image') {
-            environment {
-                registry = "housewrecker/gaps"
-                registryCredential = 'dockerhub'
-            }
-            agent {
-                dockerfile {
-                  filename "Dockerfile.ssl"
-                }
-              }
-            steps{
-                script {
-                    docker.build registry + ":v0.2.3.$BUILD_NUMBER"
                 }
             }
         }
