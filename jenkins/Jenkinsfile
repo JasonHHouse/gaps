@@ -26,6 +26,7 @@ pipeline {
             agent {
                 dockerfile {
                     filename "Dockerfile.ssl"
+                    args "-t " + registry + ":v0.2.3.$BUILD_NUMBER"
                 }
             }
             steps{
