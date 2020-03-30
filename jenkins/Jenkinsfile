@@ -2,16 +2,13 @@ pipeline {
     agent {
         docker {
             image 'openjdk8'
+            args '-v /root/.m2:/root/.m2'
         }
     }
     stages {
-        stage('Install Maven') {
-            steps {
-                sh 'RUN apt-get install -y maven'
-            }
-        }
         stage('Java Build') {
             steps {
+                sh 'apt-get install -y maven'
                 sh 'mvn -B -DskipTests clean package'
             }
         }
