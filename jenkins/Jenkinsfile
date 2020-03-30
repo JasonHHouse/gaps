@@ -6,12 +6,12 @@ pipeline {
         }
     }
     stages {
-        stage('Build') {
+        stage('Java Build') {
             steps {
                 sh 'mvn -B -DskipTests clean package'
             }
         }
-        stage('Test') {
+        stage('Junit Test') {
             steps {
                 sh 'mvn test'
             }
@@ -19,6 +19,15 @@ pipeline {
                 always {
                     junit 'GapsWeb/target/surefire-reports/*.xml'
                 }
+            }
+        }
+        stage('Install Node') {
+            steps {
+                sh 'RUN apt-get install -y curl \
+                      && curl -sL https://deb.nodesource.com/setup_9.x | bash - \
+                      && apt-get install -y nodejs \
+                      && curl -L https://www.npmjs.com/install.sh | sh'
+                sh 'npm ci'
             }
         }
     }
