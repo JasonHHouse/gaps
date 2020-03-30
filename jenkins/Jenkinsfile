@@ -25,7 +25,7 @@ pipeline {
             steps {
                 sh 'RUN apt-get install -y curl \
                       && curl -sL https://deb.nodesource.com/setup_9.x | bash - \
-                      && apt-get install -y nodejs \
+                      && apt-get install -y nodejs npm \
                       && curl -L https://www.npmjs.com/install.sh | sh'
                 sh 'npm ci'
             }
