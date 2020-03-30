@@ -19,6 +19,10 @@ pipeline {
             }
         }
         stage('Building image') {
+            environment {
+                registry = "housewrecker/gaps"
+                registryCredential = 'dockerhub'
+            }
             agent {
                 dockerfile {
                   filename "Dockerfile.ssl"
@@ -26,7 +30,7 @@ pipeline {
               }
             steps{
                 script {
-                    docker.build "housewrecker/gaps:v0.2.3.$BUILD_NUMBER"
+                    docker.build registry + ":v0.2.3.$BUILD_NUMBER"
                 }
             }
         }
