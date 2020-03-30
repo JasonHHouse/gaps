@@ -26,7 +26,6 @@ pipeline {
             agent {
                 dockerfile {
                     filename "Dockerfile.ssl"
-                    label "gaps"
                     args '-i --entrypoint=/bin/bash'
                 }
             }
