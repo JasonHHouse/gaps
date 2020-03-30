@@ -17,7 +17,7 @@ pipeline {
             }
             post {
                 always {
-                    junit 'target/surefire-reports/*.xml'
+                    junit 'GapsWeb/target/surefire-reports/*.xml'
                 }
             }
         }
