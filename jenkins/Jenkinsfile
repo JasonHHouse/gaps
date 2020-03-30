@@ -4,21 +4,17 @@ pipeline {
         registryCredential = 'dockerhub'
     }
 
-    agent {
-        docker {
-            image 'adoptopenjdk/maven-openjdk8'
-            args '-v /root/.m2:/root/.m2'
-        }
-        dockerfile true
-    }
+    agent none
     stages {
         stage('Java Build') {
+            agent {
+                docker {
+                    image 'adoptopenjdk/maven-openjdk8'
+                    args '-v /root/.m2:/root/.m2'
+                }
+            }
             steps {
                 sh 'mvn -B -DskipTests clean package'
-            }
-        }
-        stage('Junit Test') {
-            steps {
                 sh 'mvn test'
             }
             post {
@@ -28,6 +24,11 @@ pipeline {
             }
         }
         stage('Building image') {
+            agent {
+                dockerfile {
+                  filename "Dockerfile.ssl"
+                }
+              }
             steps{
                 script {
                     docker.build registry + ":v0.2.3.$BUILD_NUMBER"

@@ -7,7 +7,7 @@ JAR_VERSION="GapsWeb/target/GapsWeb-$VERSION.jar"
 ZIP_VERSION="Gaps-$VERSION.zip"
 mvn clean install
 cypress run
-docker build -f Dockerfile -t $DOCKER_SSL_LATEST .
+docker build -f Dockerfile.ssl -t $DOCKER_SSL_LATEST .
 docker push $DOCKER_SSL_LATEST
 docker build -f Dockerfile.no-ssl -t $DOCKER_NO_SSL_LATEST .
 docker push $DOCKER_NO_SSL_LATEST
