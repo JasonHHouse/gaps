@@ -1,4 +1,9 @@
 pipeline {
+    environment {
+        registry = "housewrecker/gaps"
+        registryCredential = 'dockerhub'
+    }
+
     agent {
         docker {
             image 'adoptopenjdk/maven-openjdk8'
@@ -21,14 +26,13 @@ pipeline {
                 }
             }
         }
-        stage('Install Node') {
-            steps {
-                sh 'apt-get install -y curl \
-                      && curl -sL https://deb.nodesource.com/setup_12.x | bash - \
-                      && apt-get install -y nodejs \
-                      && curl -L https://www.npmjs.com/install.sh | sh'
-                sh 'npm install'
+        stage('Building image') {
+            steps{
+                script {
+                    docker.build registry + ":$BUILD_NUMBER"
+                }
             }
         }
+}
     }
 }
