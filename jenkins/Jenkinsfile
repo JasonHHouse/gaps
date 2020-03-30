@@ -1,14 +1,13 @@
 pipeline {
     agent {
         docker {
-            image 'openjdk8'
+            image 'adoptopenjdk/maven-openjdk8'
             args '-v /root/.m2:/root/.m2'
         }
     }
     stages {
         stage('Java Build') {
             steps {
-                sh 'apt-get install -y maven'
                 sh 'mvn -B -DskipTests clean package'
             }
         }
@@ -24,7 +23,7 @@ pipeline {
         }
         stage('Install Node') {
             steps {
-                sh 'RUN apt-get install -y curl \
+                sh 'apt-get install -y curl \
                       && curl -sL https://deb.nodesource.com/setup_9.x | bash - \
                       && apt-get install -y nodejs npm \
                       && curl -L https://www.npmjs.com/install.sh | sh'
