@@ -1,8 +1,8 @@
+environment {
+    registry = "housewrecker/gaps"
+    registryCredential = 'dockerhub'
+}
 pipeline {
-    environment {
-        registry = "housewrecker/gaps"
-        registryCredential = 'dockerhub'
-    }
     agent none
     stages {
         stage('Java Build') {
