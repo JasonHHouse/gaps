@@ -26,7 +26,7 @@ pipeline {
             agent {
                 dockerfile {
                     filename "Dockerfile.ssl"
-                    args '-i --entrypoint=/usr/app/'
+                    args '-i  -p 2222:8484 -v /gaps:/usr/data --name gaps_dev gaps_dev'
                 }
             }
             steps{
