@@ -22,18 +22,5 @@ pipeline {
                 }
             }
         }
-        stage('Building image') {
-            agent {
-                dockerfile {
-                    filename "Dockerfile.ssl"
-                    args  " --entrypoint='' "
-                }
-            }
-            steps{
-                script {
-                    docker.build
-                }
-            }
-        }
     }
 }
