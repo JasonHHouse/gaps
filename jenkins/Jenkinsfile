@@ -3,7 +3,7 @@ environment {
     registryCredential = 'dockerhub'
 }
 pipeline {
-    agent none
+    agent any
     stages {
         stage('Java Build') {
             agent {
