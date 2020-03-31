@@ -26,11 +26,13 @@ pipeline {
             agent {
                 dockerfile {
                     filename "Dockerfile.ssl"
-                    args  "--entrypoint='' "
+                    args  "-t gaps_dev --entrypoint='' "
                 }
             }
             steps{
-                sh 'docker build -f Dockerfile.no-ssl -t gaps_dev .'
+                script {
+                    def gaps = docker.build "gaps_dev"
+                }
             }
         }
     }
