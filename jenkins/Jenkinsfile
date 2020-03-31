@@ -24,14 +24,11 @@ pipeline {
         }
         stage('Building image') {
             agent {
-                dockerfile {
-                    filename "Dockerfile.ssl"
-                    args "-t housewrecker/gaps:v0.2.3.$BUILD_NUMBER"
-                }
+                dockerfile true
             }
             steps{
                 script {
-                    docker.build registry + ":v0.2.3.$BUILD_NUMBER"
+                    def customImage = docker.build(registry + ":v0.2.3.$BUILD_NUMBER", "Dockerfile.ssl")
                 }
             }
         }
