@@ -24,11 +24,15 @@ pipeline {
         }
         stage('Building image') {
             agent {
-                dockerfile true
+                dockerfile {
+                    filename "Dockerfile.ssl"
+                    args "-t housewrecker/gaps:v0.2.3.$BUILD_NUMBER"
+                }
             }
             steps{
                 script {
-                    def customImage = docker.build(registry + ":v0.2.3.$BUILD_NUMBER", "Dockerfile.ssl")
+                    def gaps = docker.build(registry + ":v0.2.3.$BUILD_NUMBER", "-f Dockerfile.ssl .")
+                    gaps.runWith("-p 8485:8484 -v /usr/data:/usr/data --name gaps_dev gaps_dev")
                 }
             }
         }
