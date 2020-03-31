@@ -26,13 +26,11 @@ pipeline {
             agent {
                 dockerfile {
                     filename "Dockerfile.ssl"
-                    args  "-t housewrecker/gaps:v0.2.3.$BUILD_NUMBER --entrypoint='' "
+                    args  "--entrypoint='' "
                 }
             }
             steps{
-                script {
-                    def gaps = docker.build "housewrecker/gaps:v0.2.3.$BUILD_NUMBER"
-                }
+                def gaps = docker.build "housewrecker/gaps:v0.2.3.$BUILD_NUMBER"
             }
         }
     }
