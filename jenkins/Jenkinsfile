@@ -30,7 +30,7 @@ pipeline {
                 }
             }
             steps{
-                def gaps = docker.build "housewrecker/gaps:v0.2.3.$BUILD_NUMBER"
+                docker.build "housewrecker/gaps:v0.2.3.$BUILD_NUMBER"
             }
         }
     }
