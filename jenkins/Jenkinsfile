@@ -31,7 +31,7 @@ pipeline {
             }
             steps{
                 script {
-                    def gaps = docker.build("housewrecker/gaps:v0.2.3.$BUILD_NUMBER", "-f Dockerfile.ssl .")
+                    def gaps = docker.build registry + ".$BUILD_NUMBER"
                 }
             }
         }
