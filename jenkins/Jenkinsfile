@@ -26,11 +26,12 @@ pipeline {
             agent {
                 dockerfile {
                     filename "Dockerfile.ssl"
-                    args  " --entrypoint='' "
+                    args  " --entrypoint='/usr/app' "
                 }
             }
             steps {
                 sh "echo 'done building'"
+                sh "sleep 15"
             }
         }
     }
