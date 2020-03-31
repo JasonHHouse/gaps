@@ -30,7 +30,7 @@ pipeline {
                 }
             }
             steps{
-                docker.build "housewrecker/gaps:v0.2.3.$BUILD_NUMBER"
+                sh 'docker build -f Dockerfile.no-ssl -t gaps_dev .'
             }
         }
     }
