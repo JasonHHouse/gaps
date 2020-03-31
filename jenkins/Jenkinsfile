@@ -26,6 +26,7 @@ pipeline {
             agent {
                 dockerfile {
                     filename "Dockerfile.ssl"
+                    args  "--entrypoint='' "
                 }
             }
             steps{
