@@ -36,12 +36,14 @@ pipeline {
         stage('npm install') {
             agent {
                 docker {
-                    image 'node:6-alpine'
-                    args '-p 8585:3000'
+                      image 'cypress/base:10'
                 }
             }
             steps {
-                sh 'npm install'
+                 echo "Running build ${env.BUILD_ID} on ${env.JENKINS_URL}"
+                 sh 'npm ci'
+                 sh 'npm run cy:verify'
+                 sh 'nohup npm run start:ci &'
             }
         }
     }
