@@ -28,6 +28,9 @@ pipeline {
                     filename "Dockerfile.ssl"
                 }
             }
+            steps {
+                sh 'echo "done"'
+            }
         }
     }
 }
