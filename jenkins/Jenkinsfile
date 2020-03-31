@@ -24,7 +24,9 @@ pipeline {
         }
         stage('Building image') {
             agent {
-                dockerfile true
+                dockerfile {
+                    filename "Dockerfile.ssl"
+                }
             }
             steps{
                 script {
