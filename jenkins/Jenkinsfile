@@ -3,7 +3,7 @@ environment {
     registryCredential = 'dockerhub'
 }
 pipeline {
-    agent any
+    agent none
     stages {
         stage('Java Build') {
             agent {
@@ -31,8 +31,7 @@ pipeline {
             }
             steps{
                 script {
-                    def gaps = docker.build(registry + ":v0.2.3.$BUILD_NUMBER", "-f Dockerfile.ssl .")
-
+                    def gaps = docker.build("housewrecker/gaps:v0.2.3.$BUILD_NUMBER", "-f Dockerfile.ssl .")
                 }
             }
         }
