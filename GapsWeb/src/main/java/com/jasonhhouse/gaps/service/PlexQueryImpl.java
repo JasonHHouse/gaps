@@ -21,6 +21,7 @@ import com.sun.org.apache.xml.internal.dtm.ref.DTMNodeList;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -37,6 +38,7 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -269,7 +271,8 @@ public class PlexQueryImpl implements PlexQuery {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason);
                 }
 
-                InputStream fileIS = new ByteArrayInputStream(body.getBytes());
+
+                InputStream fileIS = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
                 DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder builder = builderFactory.newDocumentBuilder();
                 Document xmlDocument = builder.parse(fileIS);
@@ -374,7 +377,12 @@ public class PlexQueryImpl implements PlexQuery {
     }
 
     private <T> T parseXml(Response response, HttpUrl url, String expression) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
-        String body = response.body() != null ? response.body().string() : null;
+        ResponseBody responseBody = response.body();
+        if (responseBody == null) {
+            LOGGER.warn("Empty response body");
+            throw new IOException("Empty response body");
+        }
+        String body = responseBody.string();
 
         if (StringUtils.isBlank(body)) {
             String reason = "Body returned null from Plex. Url: " + url;
@@ -382,7 +390,7 @@ public class PlexQueryImpl implements PlexQuery {
             throw new IllegalStateException(reason);
         }
 
-        InputStream fileIS = new ByteArrayInputStream(body.getBytes());
+        InputStream fileIS = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = builderFactory.newDocumentBuilder();
         Document xmlDocument = builder.parse(fileIS);
