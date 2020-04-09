@@ -18,6 +18,7 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +52,12 @@ public class TmdbService {
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
-            String jsonBody = response.body().string();
+            ResponseBody responseBody = response.body();
+            if(responseBody == null) {
+                LOGGER.warn("Empty response body");
+                return Payload.TMDB_KEY_INVALID.setExtras(key);
+            }
+            String jsonBody = responseBody.string();
 
             LOGGER.info("jsonBody: " + jsonBody);
 

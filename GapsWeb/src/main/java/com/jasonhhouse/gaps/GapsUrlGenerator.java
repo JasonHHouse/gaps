@@ -12,6 +12,7 @@ package com.jasonhhouse.gaps;
 
 import okhttp3.HttpUrl;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 @Service(value = "real")
@@ -75,7 +76,7 @@ public class GapsUrlGenerator implements UrlGenerator {
     }
 
     @Override
-    public @NotNull HttpUrl generatePlexUrl(@NotNull String plexUrl) {
+    public @Nullable HttpUrl generatePlexUrl(@NotNull String plexUrl) {
         return HttpUrl.parse(plexUrl);
     }
 }

@@ -22,6 +22,7 @@ import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.SearchCancelledException;
 import com.jasonhhouse.gaps.SearchResults;
 import com.jasonhhouse.gaps.UrlGenerator;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -40,6 +41,7 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
@@ -223,21 +225,30 @@ public class GapsSearchService implements GapsSearch {
                     continue;
                 } else if (StringUtils.isNotBlank(movie.getImdbId())) {
                     LOGGER.info("Used 'find' to search for " + movie.getName());
-                    searchMovieUrl = urlGenerator.generateFindMovieUrl(gapsService.getPlexSearch().getMovieDbApiKey(), URLEncoder.encode(movie.getImdbId(), "UTF-8"), languageCode);
+                    @SuppressFBWarnings(
+                            value="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE",
+                            justification="StringUtils is doing the null check")
+                    String imdbId = URLEncoder.encode(movie.getImdbId(), "UTF-8");
+                    searchMovieUrl = urlGenerator.generateFindMovieUrl(gapsService.getPlexSearch().getMovieDbApiKey(), imdbId, languageCode);
                 } else {
                     LOGGER.info("Used 'search' to search for " + movie.getName());
-                    searchMovieUrl = urlGenerator.generateSearchMovieUrl(gapsService.getPlexSearch().getMovieDbApiKey(), URLEncoder.encode(movie.getName(), "UTF-8"), String.valueOf(movie.getYear()), languageCode);
+                    String name = URLEncoder.encode(movie.getName(), "UTF-8");
+                    searchMovieUrl = urlGenerator.generateSearchMovieUrl(gapsService.getPlexSearch().getMovieDbApiKey(), name, String.valueOf(movie.getYear()), languageCode);
                 }
 
                 Request request = new Request.Builder()
                         .url(searchMovieUrl)
                         .build();
 
-                String json;
+                String json = "";
                 try (Response response = client.newCall(request).execute()) {
-                    json = response.body() != null ? response.body().string() : null;
 
-                    if (json == null) {
+                    ResponseBody responseBody = response.body();
+                    if (responseBody != null) {
+                        json = responseBody.string();
+                    }
+
+                    if (StringUtils.isEmpty(json)) {
                         LOGGER.error("Body returned null from TheMovieDB for: " + movie);
                         continue;
                     }
@@ -331,10 +342,13 @@ public class GapsSearchService implements GapsSearch {
                 .build();
 
         try (Response movieDetailResponse = client.newCall(request).execute()) {
+            String movieDetailJson = "";
+            ResponseBody responseBody = movieDetailResponse.body();
+            if (responseBody != null) {
+                movieDetailJson = responseBody.string();
+            }
 
-            String movieDetailJson = movieDetailResponse.body() != null ? movieDetailResponse.body().string() : null;
-
-            if (movieDetailJson == null) {
+            if (StringUtils.isEmpty(movieDetailJson)) {
                 LOGGER.error("Body returned null from TheMovieDB for details on " + movie.getName());
                 return;
             }
@@ -386,9 +400,13 @@ public class GapsSearchService implements GapsSearch {
                 .build();
 
         try (Response collectionResponse = client.newCall(request).execute()) {
-            String collectionJson = collectionResponse.body() != null ? collectionResponse.body().string() : null;
+            String collectionJson = "";
+            ResponseBody responseBody = collectionResponse.body();
+            if (responseBody != null) {
+                collectionJson = responseBody.string();
+            }
 
-            if (collectionJson == null) {
+            if (StringUtils.isEmpty(collectionJson)) {
                 LOGGER.error("Body returned null from TheMovieDB for collection information about " + movie.getName());
                 return;
             }
@@ -479,12 +497,15 @@ public class GapsSearchService implements GapsSearch {
                             .build();
 
                     try (Response movieDetailResponse = client.newCall(newReq).execute()) {
-
-                        String movieDetailJson = movieDetailResponse.body() != null ? movieDetailResponse.body().string() : null;
+                        String movieDetailJson = "";
+                        ResponseBody movieDetailResponseBody = movieDetailResponse.body();
+                        if (movieDetailResponseBody != null) {
+                            movieDetailJson = movieDetailResponseBody.string();
+                        }
 
                         LOGGER.info(movieDetailJson);
 
-                        if (movieDetailJson == null) {
+                        if (StringUtils.isEmpty(movieDetailJson)) {
                             LOGGER.error("Body returned null from TheMovieDB for details on " + movie.getName());
                             return;
                         }
@@ -526,6 +547,8 @@ public class GapsSearchService implements GapsSearch {
                             SearchResults searchResults = new SearchResults(searchedMovieCount.get(), ownedMovies.size(), recommendedMovie);
                             template.convertAndSend("/newMovieFound", objectMapper.writeValueAsString(searchResults));
                         }
+                    } catch (RuntimeException e) {
+                        throw e;
                     } catch (Exception e) {
                         LOGGER.warn(e.getMessage());
                     }

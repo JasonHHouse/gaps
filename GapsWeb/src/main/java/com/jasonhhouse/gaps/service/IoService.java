@@ -14,20 +14,20 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.Rss;
-
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -89,7 +88,7 @@ public class IoService {
             return Collections.emptyList();
         }
 
-        try (BufferedReader br = new BufferedReader(new FileReader(ownedMovieFile))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(ownedMovieFile), StandardCharsets.UTF_8))) {
             StringBuilder fullFile = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
@@ -114,7 +113,7 @@ public class IoService {
     public @NotNull String getRssFile(String machineIdentifier, int key) {
         try {
             Path path = new File(STORAGE_FOLDER + machineIdentifier + File.separator + key + File.separator + RSS_FEED_JSON_FILE).toPath();
-            return new String(Files.readAllBytes(path));
+            return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
         } catch (IOException e) {
             LOGGER.error("Check for RSS file next time", e);
             return "";
@@ -205,7 +204,12 @@ public class IoService {
     private void makeFolder(String machineIdentifier, int key) {
         File folder = new File(STORAGE_FOLDER + machineIdentifier + File.separator + key);
         if (!folder.exists()) {
-            folder.mkdirs();
+            boolean isCreated = folder.mkdirs();
+            if (isCreated) {
+                LOGGER.info("Folder created: " + folder);
+            } else {
+                LOGGER.warn("Folder not created: " + folder);
+            }
         }
 
     }
@@ -220,7 +224,7 @@ public class IoService {
             return Collections.emptyList();
         }
 
-        try (BufferedReader br = new BufferedReader(new FileReader(ownedMovieFile))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(ownedMovieFile), StandardCharsets.UTF_8))) {
             StringBuilder fullFile = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
@@ -318,7 +322,7 @@ public class IoService {
             LOGGER.warn("Can't find json file '" + fileName + "'. Most likely first run.");
             return plexServers;
         }
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
             StringBuilder fullFile = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
@@ -349,7 +353,7 @@ public class IoService {
             LOGGER.warn("Can't find json file '" + fileName + "'. Most likely first run.");
             return everyMovie;
         }
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
             StringBuilder fullFile = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
@@ -377,24 +381,40 @@ public class IoService {
 
         properties.setProperty("version", "v0.2.1");
 
-        properties.store(new FileWriter(new File(STORAGE_FOLDER + PROPERTIES)), "");
+        try (FileOutputStream fileOutputStream = new FileOutputStream(STORAGE_FOLDER + PROPERTIES)) {
+            try (OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8)) {
+                properties.store(outputStreamWriter, "");
+            }
+        } catch (FileNotFoundException e) {
+            LOGGER.warn(STORAGE_FOLDER + PROPERTIES + " does not exist");
+            throw e;
+        } catch (IOException e) {
+            LOGGER.warn(STORAGE_FOLDER + PROPERTIES + " failed to parse");
+            throw e;
+        }
+
     }
 
     public PlexSearch readProperties() throws IOException {
         File file = new File(STORAGE_FOLDER + PROPERTIES);
         PlexSearch plexSearch = new PlexSearch();
 
-        if (!file.exists()) {
-            LOGGER.warn(file + " does not exist");
-            return plexSearch;
-        }
-
         Properties properties = new Properties();
-        properties.load(new FileReader(file));
+        try (FileInputStream fileInputStream = new FileInputStream(file)) {
+            try (InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, StandardCharsets.UTF_8)) {
+                properties.load(inputStreamReader);
 
-        if (properties.containsKey(PlexSearch.MOVIE_DB_API_KEY)) {
-            String movieDbApiKey = properties.getProperty(PlexSearch.MOVIE_DB_API_KEY);
-            plexSearch.setMovieDbApiKey(movieDbApiKey);
+                if (properties.containsKey(PlexSearch.MOVIE_DB_API_KEY)) {
+                    String movieDbApiKey = properties.getProperty(PlexSearch.MOVIE_DB_API_KEY);
+                    plexSearch.setMovieDbApiKey(movieDbApiKey);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            LOGGER.warn(file + " does not exist");
+            throw e;
+        } catch (IOException e) {
+            LOGGER.warn(file + " failed to parse");
+            throw e;
         }
 
         return plexSearch;
@@ -415,11 +435,20 @@ public class IoService {
     private void nuke(File file) {
         LOGGER.info("nuke( " + file + " )");
         if (!file.isFile()) {
-            for (File children : file.listFiles()) {
+            File[] files = file.listFiles();
+            if (files == null) {
+                return;
+            }
+            for (File children : files) {
                 nuke(children);
             }
         } else {
-            file.delete();
+            boolean isDeleted = file.delete();
+            if (isDeleted) {
+                LOGGER.info("File deleted: " + file);
+            } else {
+                LOGGER.warn("File not deleted: " + file);
+            }
         }
     }
 }

@@ -11,6 +11,7 @@ package com.jasonhhouse.gaps;
 
 import okhttp3.HttpUrl;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface UrlGenerator {
 
@@ -59,5 +60,5 @@ public interface UrlGenerator {
      * @param plexUrl Takes URL and parses it
      * @return query
      */
-    @NotNull HttpUrl generatePlexUrl(String plexUrl);
+    @Nullable HttpUrl generatePlexUrl(String plexUrl);
 }

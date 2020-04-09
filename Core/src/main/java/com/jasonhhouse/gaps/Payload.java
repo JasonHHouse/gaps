@@ -1,6 +1,8 @@
 package com.jasonhhouse.gaps;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.jetbrains.annotations.NotNull;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Payload {
@@ -29,18 +31,22 @@ public enum Payload {
 
     final private int code;
     final private String reason;
-    private Object extras;
+    @NotNull private Object extras;
 
     Payload(int code, String reason) {
         this.code = code;
         this.reason = reason;
+        this.extras = new Object();
     }
 
-    public Object getExtras() {
+    public @NotNull Object getExtras() {
         return extras;
     }
 
-    public Payload setExtras(Object extras) {
+    @SuppressFBWarnings(
+            value="ME_ENUM_FIELD_SETTER",
+            justification="I know what I'm doing")
+    public @NotNull Payload setExtras(@NotNull Object extras) {
         this.extras = extras;
         return this;
     }
@@ -49,7 +55,7 @@ public enum Payload {
         return code;
     }
 
-    public String getReason() {
+    public @NotNull String getReason() {
         return reason;
     }
 }
