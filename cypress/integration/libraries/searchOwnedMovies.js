@@ -63,7 +63,7 @@ describe('Find owned movies', function () {
         cy.get('#dropdownMenuLink')
             .click();
 
-        cy.get('[data-machineidentifier="9fd02a2820323f4b17b870350eb2b38f7a19b3b8"]')
+        cy.get('[data-key="1"][data-machineidentifier="721fee4db63634b88ed699f8b0a16d7682a7a0d9"]')
             .click();
 
         cy.get('.card-body > .btn')

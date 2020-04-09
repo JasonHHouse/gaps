@@ -13,10 +13,4 @@ describe('Not Searched Yet RSS', function () {
             .should('be.visible');
     });
 
-    it('Clean configuration page load', () => {
-        cy.request('/rss?library=abc_1', {onBeforeLoad: spyOnAddEventListener})
-            .should((response) => {
-                expect(response.body).to.eq("No RSS feed found.")
-            });
-    });
 });

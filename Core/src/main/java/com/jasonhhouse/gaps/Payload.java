@@ -31,22 +31,21 @@ public enum Payload {
 
     final private int code;
     final private String reason;
-    @NotNull private Object extras;
+    private Object extras;
 
     Payload(int code, String reason) {
         this.code = code;
         this.reason = reason;
-        this.extras = new Object();
     }
 
-    public @NotNull Object getExtras() {
+    public Object getExtras() {
         return extras;
     }
 
     @SuppressFBWarnings(
             value="ME_ENUM_FIELD_SETTER",
             justification="I know what I'm doing")
-    public @NotNull Payload setExtras(@NotNull Object extras) {
+    public Payload setExtras(Object extras) {
         this.extras = extras;
         return this;
     }
@@ -55,7 +54,7 @@ public enum Payload {
         return code;
     }
 
-    public @NotNull String getReason() {
+    public String getReason() {
         return reason;
     }
 }

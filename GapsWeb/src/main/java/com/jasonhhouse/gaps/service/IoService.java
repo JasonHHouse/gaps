@@ -379,7 +379,7 @@ public class IoService {
             properties.setProperty(PlexSearch.MOVIE_DB_API_KEY, plexSearch.getMovieDbApiKey());
         }
 
-        properties.setProperty("version", "v0.2.1");
+        properties.setProperty("version", "v0.2.3");
 
         try (FileOutputStream fileOutputStream = new FileOutputStream(STORAGE_FOLDER + PROPERTIES)) {
             try (OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8)) {

@@ -170,6 +170,7 @@ public class GapsSearchService implements GapsSearch {
      * optimize some network calls, we add movies found in a collection and in plex to our already searched list, so we
      * don't re-query collections again and again.
      */
+    @SuppressFBWarnings(value="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private void searchForMovies(String machineIdentifier, Integer key, Set<Movie> ownedMovies, List<Movie> everyMovie, Set<Movie> recommended, Set<Movie> searched,
                                  AtomicInteger searchedMovieCount) throws SearchCancelledException, IOException {
         LOGGER.info("searchForMovies()");
@@ -225,9 +226,6 @@ public class GapsSearchService implements GapsSearch {
                     continue;
                 } else if (StringUtils.isNotBlank(movie.getImdbId())) {
                     LOGGER.info("Used 'find' to search for " + movie.getName());
-                    @SuppressFBWarnings(
-                            value="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE",
-                            justification="StringUtils is doing the null check")
                     String imdbId = URLEncoder.encode(movie.getImdbId(), "UTF-8");
                     searchMovieUrl = urlGenerator.generateFindMovieUrl(gapsService.getPlexSearch().getMovieDbApiKey(), imdbId, languageCode);
                 } else {
