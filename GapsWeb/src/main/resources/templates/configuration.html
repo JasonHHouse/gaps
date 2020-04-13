@@ -61,6 +61,9 @@
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#network" id="networkTab">Network</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#advanced" id="advancedTab">Advanced</a>
+        </li>
     </ul>
     <div class="tab-content top-margin" id="myTabContent">
         <div class="tab-pane fade show active top-margin" id="tmdb">
@@ -285,6 +288,30 @@
                    type="button">Update</a>
 
             </form>
+        </div>
+        <div class="tab-pane fade top-margin" id="advanced">
+
+            <form class="needs-validation" id="advancedConfiguration" novalidate>
+                <div class="form-group">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="confirmDeleteAll" onchange="setDeleteAllEnabledOrDisabled();">
+                        <label class="form-check-label" for="confirmDeleteAll">Delete All Stored Data</label>
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="deleteAll" onclick="nuke();" disabled type="button">Delete</button>
+            </form>
+
+            <div class="alert alert-dismissible alert-danger gaps-hide top-margin" id="deleteAllError">
+                <button class="close" data-hide="alert" type="button">&times;</button>
+                <h4 class="alert-heading">Error!</h4>
+                <p class="mb-0">Could not delete stored data. Check the logs and try again.</p>
+            </div>
+
+            <div class="alert alert-dismissible alert-success gaps-hide top-margin" id="deleteAllSuccess">
+                <button class="close" data-hide="alert" type="button">&times;</button>
+                <h4 class="alert-heading">Success!</h4>
+                <p class="mb-0">Deleting stored data successful.</p>
+            </div>
         </div>
     </div>
 </div>

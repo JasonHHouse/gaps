@@ -94,11 +94,11 @@ public class GapsController {
     }
 
     @RequestMapping(method = RequestMethod.PUT,
-            value = "/nuke/{username}",
+            value = "/nuke",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<Payload> putNuke(@PathVariable("username") final String username) {
-        LOGGER.info("putNuke( " + username + " )");
+    public ResponseEntity<Payload> putNuke() {
+        LOGGER.info("putNuke()");
         LOGGER.info("Deleting all local files");
         Payload payload = ioService.nuke();
         if (payload.getCode() == Payload.NUKE_SUCCESSFUL.getCode()) {
