@@ -259,7 +259,7 @@ function nuke() {
         url: '/nuke',
         success: function (result) {
             hideAllAlertsAndSpinners();
-            if (result && result.code === 30) {
+            if (result && result.code === Payload.NUKE_SUCCESSFUL) {
                 deleteAllSuccess.show();
                 $('#movieDbApiKey').val('');
                 $('#plexServers').html('');

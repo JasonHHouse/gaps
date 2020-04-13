@@ -14,50 +14,54 @@ import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 
 public class PlexLibrary implements Comparable<PlexLibrary> {
-    private Integer key;
-    private String title;
-    private String machineIdentifier;
-    private Boolean selected;
+    private @NotNull Integer key;
+    private @NotNull String title;
+    private @NotNull String machineIdentifier;
+    private @NotNull Boolean selected;
 
     public PlexLibrary() {
+        key = -1;
+        title = "";
+        machineIdentifier = "";
+        selected = false;
     }
 
-    public PlexLibrary(Integer key, String title, String machineIdentifier, Boolean selected) {
+    public PlexLibrary(@NotNull Integer key, @NotNull String title, @NotNull String machineIdentifier, @NotNull Boolean selected) {
         this.key = key;
         this.title = title;
         this.machineIdentifier = machineIdentifier;
         this.selected = selected;
     }
 
-    public Integer getKey() {
+    public @NotNull Integer getKey() {
         return key;
     }
 
-    public void setKey(Integer key) {
+    public void setKey(@NotNull Integer key) {
         this.key = key;
     }
 
-    public String getMachineIdentifier() {
+    public @NotNull String getMachineIdentifier() {
         return machineIdentifier;
     }
 
-    public void setMachineIdentifier(String machineIdentifier) {
+    public void setMachineIdentifier(@NotNull String machineIdentifier) {
         this.machineIdentifier = machineIdentifier;
     }
 
-    public String getTitle() {
+    public @NotNull String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(@NotNull String title) {
         this.title = title;
     }
 
-    public Boolean getSelected() {
+    public @NotNull Boolean getSelected() {
         return selected;
     }
 
-    public void setSelected(Boolean selected) {
+    public void setSelected(@NotNull Boolean selected) {
         this.selected = selected;
     }
 
