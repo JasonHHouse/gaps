@@ -13,6 +13,7 @@ import {Payload} from '/js/modules/payload.js';
 let plexSpinner, plexSaveSuccess, plexSaveError, plexTestSuccess, plexTestError, plexDeleteSuccess, plexDeleteError,
     plexDuplicateError;
 let tmdbSpinner, tmdbSaveSuccess, tmdbSaveError, tmdbTestSuccess, tmdbTestError;
+let deleteAllError, deleteAllSuccess;
 
 window.addEventListener('load', function () {
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
@@ -44,6 +45,9 @@ document.addEventListener('DOMContentLoaded', function () {
     tmdbTestSuccess = $('#tmdbTestSuccess');
     tmdbTestError = $('#tmdbTestError');
     plexDuplicateError = $('#plexDuplicateError');
+
+    deleteAllError = $('#deleteAllError');
+    deleteAllSuccess = $('#deleteAllSuccess');
 
     const socket = new SockJS('/gs-guide-websocket');
     const stompClient = Stomp.over(socket);
@@ -84,6 +88,8 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addPlexServer = addPlexServer;
     window.testExistingPlexServer = testExistingPlexServer;
     window.removePlexServer = removePlexServer;
+    window.setDeleteAllEnabledOrDisabled = setDeleteAllEnabledOrDisabled;
+    window.nuke = nuke;
 });
 
 function testTmdbKey() {
@@ -243,6 +249,31 @@ function removePlexServer(machineIdentifier) {
     });
 }
 
+function setDeleteAllEnabledOrDisabled() {
+    $('#deleteAll').prop("disabled", !$('#confirmDeleteAll').is(":checked"));
+}
+
+function nuke() {
+    $.ajax({
+        type: 'PUT',
+        url: '/nuke',
+        success: function (result) {
+            hideAllAlertsAndSpinners();
+            if (result && result.code === Payload.NUKE_SUCCESSFUL) {
+                deleteAllSuccess.show();
+                $('#movieDbApiKey').val('');
+                $('#plexServers').html('');
+            } else {
+                deleteAllError.show();
+            }
+        },
+        error: function () {
+            hideAllAlertsAndSpinners();
+            deleteAllError.show();
+        }
+    });
+}
+
 function hideAllAlertsAndSpinners() {
     //Spinners
     plexSpinner.hide();
@@ -261,6 +292,10 @@ function hideAllAlertsAndSpinners() {
     tmdbTestError.hide();
     tmdbSaveSuccess.hide();
     tmdbSaveError.hide();
+
+    //Advanced
+    deleteAllSuccess.hide();
+    deleteAllError.hide();
 }
 
 $(function () {

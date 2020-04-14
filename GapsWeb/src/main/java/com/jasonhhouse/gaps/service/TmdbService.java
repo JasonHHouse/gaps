@@ -75,7 +75,7 @@ public class TmdbService {
             return payload;
         } catch (IOException e) {
             LOGGER.error("Error connecting to TMDB with url " + url);
-            return Payload.TMDB_KEY_VALID.setExtras(key + System.lineSeparator() + url);
+            return Payload.TMDB_KEY_INVALID.setExtras(key + System.lineSeparator() + url);
         }
     }
 }
