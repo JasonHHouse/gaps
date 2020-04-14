@@ -34,7 +34,7 @@ export function searchPlexForMovies(cy) {
 }
 
 export function nuke() {
-    cy.request('PUT', '/nuke/jhouse')
+    cy.request('PUT', '/nuke')
         .then((response) => {
             expect(response.body).to.have.property('code', 30);
             expect(response.body).to.have.property('reason', 'Nuke successful. All files deleted.');
