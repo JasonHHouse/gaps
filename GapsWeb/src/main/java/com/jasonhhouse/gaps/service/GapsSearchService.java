@@ -188,10 +188,10 @@ public class GapsSearchService implements GapsSearch {
 
         for (Movie movie : ownedMovies) {
 
-            String languageCode = "en";
-            if (movie.getLanguage() != null) {
-                languageCode = new Locale(movie.getLanguage(), "").getLanguage();
-            }
+            String languageCode = "en-US";
+//            if (StringUtils.isNotBlank(movie.getLanguage())) {
+//                languageCode = new Locale(movie.getLanguage(), "").getLanguage();
+//            }
 
             //Cancel search if needed
             if (cancelSearch.get()) {
