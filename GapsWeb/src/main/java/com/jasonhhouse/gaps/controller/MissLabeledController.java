@@ -1,9 +1,9 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsService;
-import com.jasonhhouse.gaps.MediaContainer;
 import com.jasonhhouse.gaps.Pair;
 import com.jasonhhouse.gaps.service.MissLabeled;
+import com.jasonhhouse.plex.MediaContainer;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

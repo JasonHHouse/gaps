@@ -36,3 +36,4 @@ GapsOnWindows/*.jar
 *.zip
 cypress/screenshots
 cypress/videos
+Plex/target/

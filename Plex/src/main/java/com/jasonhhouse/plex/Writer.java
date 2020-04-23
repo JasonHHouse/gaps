@@ -1,11 +1,11 @@
-package com.jasonhhouse.gaps;
+package com.jasonhhouse.plex;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
-public class Collection {
+public class Writer {
     private String tag;
 
-    public Collection() {
+    public Writer() {
     }
 
     public String getTag() {
@@ -19,7 +19,7 @@ public class Collection {
 
     @Override
     public String toString() {
-        return "Collection{" +
+        return "Writer{" +
                 "tag='" + tag + '\'' +
                 '}';
     }

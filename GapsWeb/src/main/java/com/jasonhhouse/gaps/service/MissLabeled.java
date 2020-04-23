@@ -1,9 +1,9 @@
 package com.jasonhhouse.gaps.service;
 
-import com.jasonhhouse.gaps.MediaContainer;
 import com.jasonhhouse.gaps.Pair;
 import com.jasonhhouse.gaps.UrlGenerator;
-import com.jasonhhouse.gaps.Video;
+import com.jasonhhouse.plex.MediaContainer;
+import com.jasonhhouse.plex.Video;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -110,7 +110,7 @@ public class MissLabeled {
             LOGGER.info("title:" + title);
             LOGGER.info("file:" + file);
             Double matchPercentage = similarity(title, file);
-            if(matchPercentage < .75) {
+            if (matchPercentage < .75) {
                 Pair<String, Double> pair = new Pair<>(title, matchPercentage);
                 pairs.add(pair);
             }
@@ -131,6 +131,5 @@ public class MissLabeled {
         LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
         return (longerLength - levenshteinDistance.apply(longer, shorter)) / (double) longerLength;
     }
-// you can use StringUtils.getLevenshteinDistance() as the editDistance() function
-// full copy-paste working code is below
+
 }

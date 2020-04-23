@@ -1,4 +1,4 @@
-package com.jasonhhouse.gaps;
+package com.jasonhhouse.plex;
 
 import java.util.List;
 import java.util.Objects;
@@ -103,6 +103,7 @@ public class Video {
     public List<Collection> getCollections() {
         return collections;
     }
+
     @XmlElement(name = "Collection")
     public void setCollections(List<Collection> collections) {
         this.collections = collections;

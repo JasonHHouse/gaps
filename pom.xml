@@ -6,6 +6,7 @@
     <modules>
         <module>Core</module>
         <module>GapsWeb</module>
+        <module>Plex</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

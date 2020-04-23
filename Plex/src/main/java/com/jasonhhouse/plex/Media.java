@@ -1,4 +1,4 @@
-package com.jasonhhouse.gaps;
+package com.jasonhhouse.plex;
 
 import java.util.List;
 import java.util.Objects;

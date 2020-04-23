@@ -1,11 +1,11 @@
-package com.jasonhhouse.gaps;
+package com.jasonhhouse.plex;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
-public class Director {
+public class Role {
     private String tag;
 
-    public Director() {
+    public Role() {
     }
 
     public String getTag() {
@@ -19,7 +19,7 @@ public class Director {
 
     @Override
     public String toString() {
-        return "Director{" +
+        return "Role{" +
                 "tag='" + tag + '\'' +
                 '}';
     }
