@@ -12,6 +12,6 @@ RUN mkdir -p /usr/app
 
 WORKDIR /usr/app
 
-COPY GapsWeb/target/GapsWeb-0.3.1.jar /usr/app/
+COPY GapsWeb/target/GapsWeb-0.4.0-SNAPSHOT.jar /usr/app/
 
-ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=no-ssl", "GapsWeb-0.3.1.jar"]
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=no-ssl", "GapsWeb-0.4.0-SNAPSHOT.jar"]

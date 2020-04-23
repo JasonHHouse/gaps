@@ -1,6 +1,6 @@
 #!/bin/bash
 read -n 1 -s -r -p "Are the ports set correctly?"
-VERSION=0.3.1
+VERSION=0.4.0-SNAPSHOT
 DOCKER_SSL_LATEST="housewrecker/gaps:latest"
 DOCKER_NO_SSL_LATEST="housewrecker/gaps:latest-no-ssl"
 JAR_VERSION="GapsWeb/target/GapsWeb-$VERSION.jar"
