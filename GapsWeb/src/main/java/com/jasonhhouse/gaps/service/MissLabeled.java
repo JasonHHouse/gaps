@@ -34,67 +34,6 @@ public class MissLabeled {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MissLabeled.class);
 
-    private final UrlGenerator urlGenerator;
-
-    @Autowired
-    public MissLabeled(@Qualifier("real") UrlGenerator urlGenerator) {
-        this.urlGenerator = urlGenerator;
-    }
-
-    public @NotNull MediaContainer findAllPlexVideos(@NotNull String url) {
-        LOGGER.info("findAllPlexVideos()");
-
-        OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(180, TimeUnit.SECONDS)
-                .writeTimeout(180, TimeUnit.SECONDS)
-                .readTimeout(180, TimeUnit.SECONDS)
-                .build();
-
-        if (StringUtils.isEmpty(url)) {
-            LOGGER.info("No URL added to findAllPlexVideos().");
-            return new MediaContainer();
-        }
-
-        MediaContainer mediaContainer;
-        try {
-            HttpUrl httpUrl = urlGenerator.generatePlexUrl(url);
-
-            Request request = new Request.Builder()
-                    .url(httpUrl)
-                    .build();
-
-            try (Response response = client.newCall(request).execute()) {
-                String body = response.body() != null ? response.body().string() : null;
-
-                if (StringUtils.isBlank(body)) {
-                    String reason = "Body returned empty from Plex";
-                    LOGGER.error(reason);
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason);
-                }
-
-                InputStream inputStream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
-                JAXBContext jaxbContext = JAXBContext.newInstance(MediaContainer.class);
-                Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-                mediaContainer = (MediaContainer) jaxbUnmarshaller.unmarshal(inputStream);
-
-            } catch (IOException e) {
-                String reason = "Error connecting to Plex to get Movie list: " + url;
-                LOGGER.error(reason, e);
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason, e);
-            } catch (JAXBException e) {
-                String reason = "Error parsing XML from Plex: " + url;
-                LOGGER.error(reason, e);
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
-            }
-        } catch (IllegalArgumentException | NullPointerException e) {
-            String reason = "Error with plex Url: " + url;
-            LOGGER.error(reason, e);
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason, e);
-        }
-
-        return mediaContainer;
-    }
-
     public List<Pair<String, Double>> findMatchPercentage(MediaContainer mediaContainer) {
         List<Pair<String, Double>> pairs = new ArrayList<>();
         for (Video video : mediaContainer.getVideos()) {
@@ -119,7 +58,7 @@ public class MissLabeled {
     }
 
     private Double similarity(String s1, String s2) {
-        String longer = s1, shorter = s2;
+        String longer = s1.toLowerCase(), shorter = s2.toLowerCase();
         if (s1.length() < s2.length()) { // longer should always have greater length
             longer = s2;
             shorter = s1;

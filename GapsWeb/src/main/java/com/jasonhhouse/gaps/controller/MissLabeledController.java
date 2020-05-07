@@ -2,6 +2,7 @@ package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Pair;
+import com.jasonhhouse.gaps.PlexQuery;
 import com.jasonhhouse.gaps.service.MissLabeled;
 import com.jasonhhouse.plex.MediaContainer;
 import java.util.List;
@@ -21,11 +22,13 @@ public class MissLabeledController {
     private static final Logger LOGGER = LoggerFactory.getLogger(MissLabeledController.class);
 
     private final GapsService gapsService;
+    private final PlexQuery plexQuery;
     private final MissLabeled missLabeled;
 
     @Autowired
-    public MissLabeledController(GapsService gapsService, MissLabeled missLabeled) {
+    public MissLabeledController(GapsService gapsService, PlexQuery plexQuery, MissLabeled missLabeled) {
         this.gapsService = gapsService;
+        this.plexQuery = plexQuery;
         this.missLabeled = missLabeled;
     }
 
@@ -36,19 +39,19 @@ public class MissLabeledController {
         LOGGER.info("getPlexMovies( " + machineIdentifier + ", " + key + " )");
 
         String url = generatePlexUrl(machineIdentifier, key);
-        MediaContainer mediaContainer = missLabeled.findAllPlexVideos(url);
+        MediaContainer mediaContainer = plexQuery.findAllPlexVideos(url);
         return ResponseEntity.ok().body(mediaContainer);
     }
 
     @RequestMapping(method = RequestMethod.GET,
             value = "/missMatched/{machineIdentifier}/{key}")
     @ResponseBody
-    public ResponseEntity<List<Pair<String,Double>>> getMisMatched(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
+    public ResponseEntity<List<Pair<String, Double>>> getMisMatched(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("getPlexMovies( " + machineIdentifier + ", " + key + " )");
 
         String url = generatePlexUrl(machineIdentifier, key);
-        MediaContainer mediaContainer = missLabeled.findAllPlexVideos(url);
-        List<Pair<String,Double>> pairs = missLabeled.findMatchPercentage(mediaContainer);
+        MediaContainer mediaContainer = plexQuery.findAllPlexVideos(url);
+        List<Pair<String, Double>> pairs = missLabeled.findMatchPercentage(mediaContainer);
 
         return ResponseEntity.ok().body(pairs);
     }
