@@ -1,41 +1,32 @@
+/*
+ * Copyright 2020 Jason H House
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 package com.jasonhhouse.gaps.service;
 
+import com.jasonhhouse.gaps.Mislabeled;
 import com.jasonhhouse.gaps.Pair;
-import com.jasonhhouse.gaps.UrlGenerator;
 import com.jasonhhouse.plex.MediaContainer;
 import com.jasonhhouse.plex.Video;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.similarity.LevenshteinDistance;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class MissLabeled {
+public class MislabeledService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MissLabeled.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MislabeledService.class);
 
-    public List<Pair<String, Double>> findMatchPercentage(MediaContainer mediaContainer) {
-        List<Pair<String, Double>> pairs = new ArrayList<>();
+    public List<Mislabeled> findMatchPercentage(MediaContainer mediaContainer, Double percentage) {
+        List<Mislabeled> mislabeled = new ArrayList<>();
         for (Video video : mediaContainer.getVideos()) {
             String file = video.getMedia().get(0).getParts().get(0).getFile();
             if (file.contains("(")) {
@@ -49,12 +40,12 @@ public class MissLabeled {
             LOGGER.info("title:" + title);
             LOGGER.info("file:" + file);
             Double matchPercentage = similarity(title, file);
-            if (matchPercentage < .75) {
-                Pair<String, Double> pair = new Pair<>(title, matchPercentage);
-                pairs.add(pair);
+            if (matchPercentage < percentage) {
+                Mislabeled mislabeledItem = new Mislabeled(file, title, matchPercentage);
+                mislabeled.add(mislabeledItem);
             }
         }
-        return pairs;
+        return mislabeled;
     }
 
     private Double similarity(String s1, String s2) {
