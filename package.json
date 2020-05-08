@@ -3,12 +3,25 @@
   "version": "0.4.0-SNAPSHOT",
   "description": "Gaps searches through your Plex Server or local folders for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.",
   "main": "/",
-  "dependencies": {},
+  "dependencies": {
+    "cssnano": "^4.1.10",
+    "postcss-cli": "^7.1.1",
+    "uglify-es": "^3.3.9",
+    "uglify-js": "^3.9.2"
+  },
   "devDependencies": {
     "cypress": "^4.4.0"
   },
   "scripts": {
-    "e2e": "cypress open"
+    "e2e": "cypress open",
+    "minify-input-css": "postcss GapsWeb/src/main/resources/static/css/input.css > GapsWeb/src/main/resources/static/css/input.min.css",
+    "uglifyjs-index-js": "uglifyjs GapsWeb/src/main/resources/static/js/index.js --compress --output GapsWeb/src/main/resources/static/js/index.min.js",
+    "uglifyjs-configuration-js": "uglifyjs GapsWeb/src/main/resources/static/js/configuration.js --compress --output GapsWeb/src/main/resources/static/js/configuration.min.js",
+    "uglifyjs-libraries-js": "uglifyjs GapsWeb/src/main/resources/static/js/libraries.js --compress --output GapsWeb/src/main/resources/static/js/libraries.min.js",
+    "uglifyjs-recommended-js": "uglifyjs GapsWeb/src/main/resources/static/js/recommended.js --compress --output GapsWeb/src/main/resources/static/js/recommended.min.js",
+    "uglifyjs-common-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/common.js --compress --output GapsWeb/src/main/resources/static/js/modules/common.min.js",
+    "uglifyjs-payload-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/payload.js --compress --output GapsWeb/src/main/resources/static/js/modules/payload.min.js",
+    "uglifyjs-mislabeled-js": "uglifyjs GapsWeb/src/main/resources/static/js/mislabeled.js --compress --output GapsWeb/src/main/resources/static/js/mislabeled.min.js"
   },
   "repository": {
     "type": "git",
