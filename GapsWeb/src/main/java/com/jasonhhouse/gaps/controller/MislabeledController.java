@@ -43,17 +43,6 @@ public class MislabeledController {
         this.plexQuery = plexQuery;
         this.mislabeledService = mislabeledService;
     }
-/*
-    @RequestMapping(method = RequestMethod.GET,
-            value = "/{machineIdentifier}/{key}")
-    @ResponseBody
-    public ResponseEntity<MediaContainer> getPlexMovies(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
-        LOGGER.info("getPlexMovies( " + machineIdentifier + ", " + key + " )");
-
-        String url = generatePlexUrl(machineIdentifier, key);
-        MediaContainer mediaContainer = plexQuery.findAllPlexVideos(url);
-        return ResponseEntity.ok().body(mediaContainer);
-    }*/
 
     @RequestMapping(method = RequestMethod.GET,
             produces = MediaType.TEXT_HTML_VALUE)
