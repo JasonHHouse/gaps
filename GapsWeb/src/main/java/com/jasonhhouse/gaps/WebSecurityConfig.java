@@ -34,31 +34,49 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSecurityConfig.class);
 
+    private final YamlConfig myConfig;
+
     private final IoService ioService;
 
     @Autowired
-    public WebSecurityConfig(IoService ioService) {
+    public WebSecurityConfig(YamlConfig myConfig, IoService ioService) {
+        this.myConfig = myConfig;
         this.ioService = ioService;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
-                .authorizeRequests().antMatchers("/images/gaps.ico",
-                "/css/bootstrap.min.css",
-                "/css/input.min.css",
-                "/js/jquery-3.4.1.min.js",
-                "/js/bootstrap.bundle.min.js",
-                "/js/index.min.js",
-                "/images/final-2.svg").permitAll()
-                .anyRequest().fullyAuthenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .and()
-                .logout()
-                .permitAll();
+        LOGGER.info("Name: " + myConfig.getName());
+        LOGGER.info("Description: " + myConfig.getDescription());
+        LOGGER.info("Version: " + myConfig.getVersion());
+        LOGGER.info("LoginEnabled: " + myConfig.getLoginEnabled());
+
+        if(myConfig.getLoginEnabled()) {
+            http.cors().and().csrf().disable()
+                    .authorizeRequests().antMatchers("/images/gaps.ico",
+                    "/css/bootstrap.min.css",
+                    "/css/input.min.css",
+                    "/js/jquery-3.4.1.min.js",
+                    "/js/bootstrap.bundle.min.js",
+                    "/js/index.min.js",
+                    "/images/final-2.svg").permitAll()
+                    .anyRequest().fullyAuthenticated()
+                    .and()
+                    .formLogin()
+                    .loginPage("/login")
+                    .permitAll()
+                    .and()
+                    .logout()
+                    .permitAll();
+        } else {
+          /*  http.cors()
+                    .and()
+                    .csrf()
+                    .disable()
+                    .authorizeRequests()
+                    .anyRequest()
+                    .fullyAuthenticated();*/
+        }
     }
 
     @Bean

@@ -13,10 +13,12 @@ npm run uglifyjs-common-js
 npm run uglifyjs-payload-js
 npm run uglifyjs-mislabeled-js
 mvn clean install spotbugs:check
+docker build -f Dockerfile.no-ssl-no-login -t gaps-dev  .
+docker run -p 8484:8484 --name gaps-dev -v /home/jason/gaps:/usr/data:Z gaps-dev
 cypress run
 docker build -f Dockerfile.ssl -t $DOCKER_SSL_VERSION .
-docker push $DOCKER_SSL_VERSION
 docker build -f Dockerfile.no-ssl -t $DOCKER_NO_SSL_VERSION .
+docker push $DOCKER_SSL_VERSION
 docker push $DOCKER_NO_SSL_VERSION
 mkdir -p GapsOnWindows
 rm $ZIP_VERSION

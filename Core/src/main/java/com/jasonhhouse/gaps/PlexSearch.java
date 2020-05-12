@@ -17,7 +17,6 @@ public final class PlexSearch {
 
     public static final String MOVIE_DB_API_KEY = "movieDbApiKey";
     public static final String VERSION_KEY = "version";
-    public static final String VERSION_VALUE = "v0.4.0-SNAPSHOT";
     public static final String USERNAME_KEY = "username";
     public static final String USERNAME_VALUE = "user";
     public static final String PASSWORD = "password";

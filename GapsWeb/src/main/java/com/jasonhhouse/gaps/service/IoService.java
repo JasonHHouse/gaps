@@ -17,6 +17,7 @@ import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.Rss;
+import com.jasonhhouse.gaps.YamlConfig;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,6 +42,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -56,7 +58,11 @@ public class IoService {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private final String STORAGE_FOLDER;
 
-    public IoService() {
+    private final YamlConfig yamlConfig;
+
+    @Autowired
+    public IoService(YamlConfig yamlConfig) {
+        this.yamlConfig = yamlConfig;
         //Look for properties file for file locations
         String os = System.getProperty("os.name");
         if (os.contains("Windows")) {
@@ -360,7 +366,7 @@ public class IoService {
             properties.setProperty(PlexSearch.MOVIE_DB_API_KEY, plexSearch.getMovieDbApiKey());
         }
 
-        properties.setProperty(PlexSearch.VERSION_KEY, PlexSearch.VERSION_VALUE);
+        properties.setProperty(PlexSearch.VERSION_KEY, yamlConfig.getVersion());
         properties.setProperty(PlexSearch.USERNAME_KEY, PlexSearch.USERNAME_VALUE);
 
         if (StringUtils.isNotEmpty(plexSearch.getPassword())) {
