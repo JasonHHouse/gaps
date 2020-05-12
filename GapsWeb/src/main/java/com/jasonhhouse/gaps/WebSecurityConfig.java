@@ -32,16 +32,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers("/images/gaps.ico",
-                        "/css/bootstrap.min.css",
-                        "/css/input.min.css",
-                        "/js/jquery-3.4.1.min.js",
-                        "/js/bootstrap.bundle.min.js",
-                        "/js/index.min.js",
-                        "/images/final-2.svg").permitAll()
-                .anyRequest().authenticated()
+        http.cors().and().csrf().disable()
+                .authorizeRequests().antMatchers("/images/gaps.ico",
+                "/css/bootstrap.min.css",
+                "/css/input.min.css",
+                "/js/jquery-3.4.1.min.js",
+                "/js/bootstrap.bundle.min.js",
+                "/js/index.min.js",
+                "/images/final-2.svg").permitAll()
+                .anyRequest().fullyAuthenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")

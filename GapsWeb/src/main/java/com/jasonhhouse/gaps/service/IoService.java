@@ -399,6 +399,10 @@ public class IoService {
         File file = new File(STORAGE_FOLDER + PROPERTIES);
         PlexSearch plexSearch = new PlexSearch();
 
+        LOGGER.info("Can Read " + file + ": " + file.canRead());
+        LOGGER.info("Can Write " + file + ": " + file.canWrite());
+        LOGGER.info("Can Execute " + file + ": " + file.canExecute());
+
         Properties properties = new Properties();
         try (FileInputStream fileInputStream = new FileInputStream(file)) {
             try (InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, StandardCharsets.UTF_8)) {
