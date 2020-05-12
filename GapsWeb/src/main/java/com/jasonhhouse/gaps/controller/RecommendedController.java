@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -138,7 +139,6 @@ public class RecommendedController {
     public void putFindRecommencedMovies(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("putFindRecommencedMovies( " + machineIdentifier + ", " + key + " )");
 
-        ioService.migrateJsonSeedFileIfNeeded();
         gapsSearch.run(machineIdentifier, key);
     }
 
@@ -149,7 +149,7 @@ public class RecommendedController {
      * @param key               plex library key
      */
     @MessageMapping("/recommended/cancel/{machineIdentifier}/{key}")
-    public void cancelSearching(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
+    public void cancelSearching(@DestinationVariable final String machineIdentifier, @DestinationVariable final Integer key) {
         LOGGER.info("cancelSearching( " + machineIdentifier + ", " + key + " )");
         gapsSearch.cancelSearch();
     }

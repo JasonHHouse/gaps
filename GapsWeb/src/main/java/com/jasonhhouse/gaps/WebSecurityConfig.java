@@ -10,9 +10,13 @@
 package com.jasonhhouse.gaps;
 
 
+import com.jasonhhouse.gaps.service.IoService;
+import java.io.IOException;
 import java.util.UUID;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,6 +33,13 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSecurityConfig.class);
+
+    private final IoService ioService;
+
+    @Autowired
+    public WebSecurityConfig(IoService ioService) {
+        this.ioService = ioService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -53,11 +64,32 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
-        UUID uuid = UUID.randomUUID();
-        LOGGER.info("Gaps Password: " + uuid.toString());
+        PlexSearch plexSearch = null;
+        try {
+            plexSearch = ioService.readProperties();
+        } catch (IOException e) {
+            LOGGER.warn("No properties found to get password. Generating new password");
+        }
+
+        String password;
+        if (plexSearch == null || StringUtils.isEmpty(plexSearch.getPassword())) {
+            password = UUID.randomUUID().toString();
+            plexSearch = new PlexSearch();
+            plexSearch.setPassword(password);
+            LOGGER.info("Gaps Password: " + password);
+            try {
+                ioService.writeProperties(plexSearch);
+            } catch (IOException e) {
+                LOGGER.error("Failed to write out password to properties file.");
+            }
+        } else {
+            LOGGER.info("Using password from /usr/data/gaps.properties");
+            password = plexSearch.getPassword();
+        }
+
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         UserDetails userDetails = User.withUsername("user")
-                .password(encoder.encode(uuid.toString()))
+                .password(encoder.encode(password))
                 .roles("USER")
                 .build();
 

@@ -6,7 +6,7 @@ EXPOSE 32400
 
 RUN mkdir -p /usr/data
 
-COPY movieIds.json /tmp
+COPY movieIds.json /usr/data
 
 RUN mkdir -p /usr/app
 

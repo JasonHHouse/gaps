@@ -55,7 +55,6 @@ public class IoService {
     private static final String RECOMMENDED_MOVIES = "recommendedMovies.json";
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private final String STORAGE_FOLDER;
-    private final String TEMP_STORAGE_FOLDER;
 
     public IoService() {
         //Look for properties file for file locations
@@ -71,10 +70,8 @@ public class IoService {
                 //Do nothing
             }
             STORAGE_FOLDER = decodedPath + "\\";
-            TEMP_STORAGE_FOLDER = decodedPath + "\\temp\\";
         } else {
             STORAGE_FOLDER = "/usr/data/";
-            TEMP_STORAGE_FOLDER = "/tmp/";
         }
     }
 
@@ -156,22 +153,6 @@ public class IoService {
             LOGGER.error("Can't find file " + RECOMMENDED_MOVIES, e);
         } catch (IOException e) {
             LOGGER.error("Can't write to file " + RECOMMENDED_MOVIES, e);
-        }
-    }
-
-    public void migrateJsonSeedFileIfNeeded() {
-        final File seedFile = new File(STORAGE_FOLDER + STORAGE);
-        if (seedFile.exists()) {
-            LOGGER.info("Seed file exists, not copying over");
-            return;
-        }
-
-        final File tempSeed = new File(TEMP_STORAGE_FOLDER + STORAGE);
-        try {
-            Files.move(tempSeed.toPath(), seedFile.toPath());
-            LOGGER.info("Seed file doesn't exist, copying over");
-        } catch (IOException e) {
-            LOGGER.error("Failed to copy seed file over", e);
         }
     }
 
@@ -379,7 +360,12 @@ public class IoService {
             properties.setProperty(PlexSearch.MOVIE_DB_API_KEY, plexSearch.getMovieDbApiKey());
         }
 
-        properties.setProperty("version", "v0.4.0-SNAPSHOT");
+        properties.setProperty(PlexSearch.VERSION_KEY, PlexSearch.VERSION_VALUE);
+        properties.setProperty(PlexSearch.USERNAME_KEY, PlexSearch.USERNAME_VALUE);
+
+        if (StringUtils.isNotEmpty(plexSearch.getPassword())) {
+            properties.setProperty(PlexSearch.PASSWORD, plexSearch.getPassword());
+        }
 
         try (FileOutputStream fileOutputStream = new FileOutputStream(STORAGE_FOLDER + PROPERTIES)) {
             try (OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8)) {
@@ -411,6 +397,11 @@ public class IoService {
                 if (properties.containsKey(PlexSearch.MOVIE_DB_API_KEY)) {
                     String movieDbApiKey = properties.getProperty(PlexSearch.MOVIE_DB_API_KEY);
                     plexSearch.setMovieDbApiKey(movieDbApiKey);
+                }
+
+                if (properties.containsKey(PlexSearch.PASSWORD)) {
+                    String password = properties.getProperty(PlexSearch.PASSWORD);
+                    plexSearch.setPassword(password);
                 }
             }
         } catch (FileNotFoundException e) {
