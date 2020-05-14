@@ -1,7 +1,6 @@
 #!/bin/bash
 VERSION="0.4.0-SNAPSHOT"
-DOCKER_SSL_VERSION="housewrecker/gaps:v$VERSION"
-DOCKER_NO_SSL_VERSION="housewrecker/gaps:v$VERSION-no-ssl"
+DOCKER_LATEST="housewrecker/gaps:v$VERSION"
 JAR_VERSION="GapsWeb/target/GapsWeb-$VERSION.jar"
 ZIP_VERSION="Gaps-$VERSION.zip"
 npm run minify-input-css
@@ -13,13 +12,10 @@ npm run uglifyjs-common-js
 npm run uglifyjs-payload-js
 npm run uglifyjs-mislabeled-js
 mvn clean install spotbugs:check
-docker build -f Dockerfile.no-ssl-no-login -t gaps-dev  .
-docker run -p 8484:8484 --name gaps-dev -v /home/jason/gaps:/usr/data:Z gaps-dev
+docker build -f Dockerfile -t $DOCKER_LATEST .
+docker run -p 8484:8484 -e profile=-Dspring.profiles.active=no-ssl-no-login --name gaps-dev-no-ssl-no-login -v /home/jason/gaps:/usr/data:Z gaps-dev
 cypress run
-docker build -f Dockerfile.ssl -t $DOCKER_SSL_VERSION .
-docker build -f Dockerfile.no-ssl -t $DOCKER_NO_SSL_VERSION .
-docker push $DOCKER_SSL_VERSION
-docker push $DOCKER_NO_SSL_VERSION
+docker push $DOCKER_LATEST
 mkdir -p GapsOnWindows
 rm $ZIP_VERSION
 rm GapsOnWindows/*.jar
