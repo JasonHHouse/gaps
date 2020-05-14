@@ -13,7 +13,7 @@ npm run uglifyjs-payload-js
 npm run uglifyjs-mislabeled-js
 mvn clean install spotbugs:check
 docker build -f Dockerfile -t $DOCKER_LATEST .
-docker run -p 8484:8484 -e profile=-Dspring.profiles.active=no-ssl-no-login --name gaps-dev-no-ssl-no-login -v /home/jason/gaps:/usr/data:Z gaps-dev
+docker run -p 8484:8484 --name gaps-dev -v /home/jason/gaps:/usr/data:Z gaps-dev
 cypress run
 docker push $DOCKER_LATEST
 mkdir -p GapsOnWindows
