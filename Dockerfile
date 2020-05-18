@@ -1,4 +1,4 @@
-FROM openjdk:11.0.6-jre-slim
+FROM openjdk:11.0.7-jre-slim
 
 MAINTAINER jh5975@gmail.com
 
