@@ -38,10 +38,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final IoService ioService;
 
+    private final GapsService gapsService;
+
     @Autowired
-    public WebSecurityConfig(YamlConfig myConfig, IoService ioService) {
+    public WebSecurityConfig(YamlConfig myConfig, IoService ioService, GapsService gapsService) {
         this.myConfig = myConfig;
         this.ioService = ioService;
+        this.gapsService = gapsService;
     }
 
     @Override
@@ -51,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         LOGGER.info("Version: " + myConfig.getVersion());
         LOGGER.info("LoginEnabled: " + myConfig.getLoginEnabled());
 
-        if(myConfig.getLoginEnabled()) {
+        if (myConfig.getLoginEnabled()) {
             http.cors().and().csrf().disable()
                     .authorizeRequests().antMatchers("/images/gaps.ico",
                     "/css/bootstrap.min.css",
@@ -68,20 +71,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                     .logout()
                     .permitAll();
-        } else {
-          /*  http.cors()
-                    .and()
-                    .csrf()
-                    .disable()
-                    .authorizeRequests()
-                    .anyRequest()
-                    .fullyAuthenticated();*/
         }
     }
 
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
+        LOGGER.info("userDetailsService()");
         PlexSearch plexSearch = null;
         try {
             plexSearch = ioService.readProperties();

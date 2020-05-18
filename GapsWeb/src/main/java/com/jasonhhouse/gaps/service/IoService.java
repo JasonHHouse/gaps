@@ -360,6 +360,7 @@ public class IoService {
     }
 
     public void writeProperties(PlexSearch plexSearch) throws IOException {
+        LOGGER.info("writeProperties( " + plexSearch + " )");
         Properties properties = new Properties();
 
         if (StringUtils.isNotEmpty(plexSearch.getMovieDbApiKey())) {
@@ -388,6 +389,7 @@ public class IoService {
     }
 
     public PlexSearch readProperties() throws IOException {
+        LOGGER.info("readProperties()");
         File file = new File(STORAGE_FOLDER + PROPERTIES);
         PlexSearch plexSearch = new PlexSearch();
 
@@ -417,7 +419,7 @@ public class IoService {
             LOGGER.warn(file + " failed to parse");
             throw e;
         }
-
+        LOGGER.info("plexSearch: " + plexSearch);
         return plexSearch;
     }
 
