@@ -54,7 +54,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         LOGGER.info("Version: " + myConfig.getVersion());
         LOGGER.info("LoginEnabled: " + myConfig.getLoginEnabled());
 
-        if (myConfig.getLoginEnabled()) {
+        if (myConfig.getLoginEnabled() && myConfig.getSslEnabled()) {
+            LOGGER.info("Login Enabled. Configuring site security with ssl.");
             http.cors().and().csrf().disable()
                     .authorizeRequests().antMatchers("/images/gaps.ico",
                     "/css/bootstrap.min.css",
@@ -64,6 +65,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     "/js/index.min.js",
                     "/images/final-2.svg").permitAll()
                     .anyRequest().fullyAuthenticated()
+                    .and()
+                    .formLogin()
+                    .loginPage("/login")
+                    .permitAll()
+                    .and()
+                    .logout()
+                    .permitAll();
+        } else if (myConfig.getLoginEnabled() && !myConfig.getSslEnabled()) {
+            LOGGER.info("Login Enabled. Configuring site security without ssl.");
+            http.authorizeRequests().antMatchers("/images/**",
+                    "/css/**",
+                    "/js/**").permitAll()
+                    .anyRequest().permitAll()
                     .and()
                     .formLogin()
                     .loginPage("/login")
@@ -93,6 +107,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             LOGGER.info("Gaps Password: " + password);
             try {
                 ioService.writeProperties(plexSearch);
+                gapsService.updatePlexSearch(plexSearch);
             } catch (IOException e) {
                 LOGGER.error("Failed to write out password to properties file.");
             }

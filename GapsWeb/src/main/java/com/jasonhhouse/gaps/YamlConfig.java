@@ -23,6 +23,7 @@ public class YamlConfig {
     private String description;
     private String version;
     private Boolean loginEnabled;
+    private Boolean sslEnabled;
 
     public String getName() {
         return name;
@@ -56,6 +57,14 @@ public class YamlConfig {
         this.loginEnabled = loginEnabled;
     }
 
+    public Boolean getSslEnabled() {
+        return sslEnabled;
+    }
+
+    public void setSslEnabled(Boolean sslEnabled) {
+        this.sslEnabled = sslEnabled;
+    }
+
     @Override
     public String toString() {
         return "YamlConfig{" +
@@ -63,6 +72,7 @@ public class YamlConfig {
                 ", description='" + description + '\'' +
                 ", version='" + version + '\'' +
                 ", loginEnabled=" + loginEnabled +
+                ", sslEnabled=" + sslEnabled +
                 '}';
     }
 }

@@ -11,3 +11,4 @@ spring:
 info:
   app:
     loginEnabled: false
+    sslEnabled: false

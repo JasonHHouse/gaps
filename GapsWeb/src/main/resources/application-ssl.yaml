@@ -19,3 +19,4 @@ security:
 info:
   app:
     loginEnabled: true
+    sslEnabled: true
