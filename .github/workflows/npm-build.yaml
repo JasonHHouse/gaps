@@ -18,4 +18,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
-      - run: cypress run
+      - run: npm run minify-input-css
+      - run: npm run uglifyjs-index-js
+      - run: npm run uglifyjs-configuration-js
+      - run: npm run uglifyjs-libraries-js
+      - run: npm run uglifyjs-recommended-js
+      - run: npm run uglifyjs-common-js
+      - run: npm run uglifyjs-payload-js
+      - run: npm run uglifyjs-mislabeled-js
