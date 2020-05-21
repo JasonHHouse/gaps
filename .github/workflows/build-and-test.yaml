@@ -32,4 +32,4 @@ jobs:
       - name: Build with Maven
         run: mvn clean install spotbugs:check --file pom.xml
       - name: Publish to Registry
-      - run: docker build -f Dockerfile -t gaps-dev .
+        run: docker build -f Dockerfile -t gaps-dev .
