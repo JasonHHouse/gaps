@@ -11,7 +11,7 @@ jobs:
         node-version: [10.x]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@master
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -37,12 +37,3 @@ jobs:
           name: housewrecker/gaps
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-#      - uses: ./
-#        name: Build and push Docker image
-#        with:
-#          image: housewrecker/gaps
-#          tag: 0.4.0-SNAPSHOT
-#          registry: docker.io
-#          dockerfile: Dockerfile
-#          username: ${{ secrets.DOCKER_USERNAME }}
-#          password: ${{ secrets.DOCKER_PASSWORD }}
