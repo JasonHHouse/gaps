@@ -1,4 +1,4 @@
-name: Java & Node.js CI
+name: Build & Deploy
 
 on: [push]
 
@@ -18,9 +18,19 @@ jobs:
           java-version: 11.0.7
       - name: Build with Maven
         run: mvn clean install spotbugs:check --file pom.xml
-      - uses: actions/checkout@v2
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
+
+      - uses: JasonHHouse/Gaps@v3
+          name: Build & push Docker image
+          with:
+            image: housewrecker/gaps
+            tag: 0.4.0-SNAPSHOT
+            registry: docker.io
+            dockerfile: Dockerfile
+            username: ${{ secrets.DOCKER_USERNAME }}
+            password: ${{ secrets.DOCKER_PASSWORD }}
