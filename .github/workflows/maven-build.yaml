@@ -1,4 +1,4 @@
-name: Build & Deploy
+name: Build and Deploy
 
 on: [push]
 
@@ -24,7 +24,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
       - uses: JasonHHouse/Gaps@v3
-          name: Build & push Docker image
+          name: Build and push Docker image
           with:
             image: housewrecker/gaps
             tag: 0.4.0-SNAPSHOT
