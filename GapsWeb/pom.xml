@@ -5,7 +5,7 @@
     <parent>
         <artifactId>Gaps</artifactId>
         <groupId>com.jasonhhouse</groupId>
-        <version>0.3.1</version>
+        <version>0.4.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -19,7 +19,13 @@
         <dependency>
             <groupId>com.jasonhhouse</groupId>
             <artifactId>Core</artifactId>
-            <version>0.3.1</version>
+            <version>0.4.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jasonhhouse</groupId>
+            <artifactId>Plex</artifactId>
+            <version>0.4.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -54,6 +60,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>webjars-locator-core</artifactId>
         </dependency>
@@ -73,13 +84,13 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
-            <version>4.4.1</version>
+            <version>4.4.1-1</version>
         </dependency>
 
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
-            <version>3.4.1</version>
+            <version>3.5.1</version>
         </dependency>
 
         <dependency>
@@ -111,7 +122,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>28.2-jre</version>
+            <version>29.0-jre</version>
         </dependency>
 
         <dependency>
@@ -135,6 +146,26 @@
             <artifactId>annotations</artifactId>
         </dependency>
 
+        <!-- API, java.xml.bind module -->
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+
+        <!-- Runtime, com.sun.xml.bind module -->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.8</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -152,6 +183,12 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
 

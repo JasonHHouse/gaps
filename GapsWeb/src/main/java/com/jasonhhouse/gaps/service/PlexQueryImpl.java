@@ -17,7 +17,7 @@ import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexQuery;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.UrlGenerator;
-import com.sun.org.apache.xml.internal.dtm.ref.DTMNodeList;
+import com.jasonhhouse.plex.MediaContainer;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,6 +27,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -188,7 +191,7 @@ public class PlexQueryImpl implements PlexQuery {
                     .build();
 
             try (Response response = client.newCall(request).execute()) {
-                DTMNodeList dtmNodeList = parseXml(response, url, "/MediaContainer");
+                NodeList dtmNodeList = parseXml(response, url, "/MediaContainer");
                 Node node = dtmNodeList.item(0);
 
                 if (node == null) {
@@ -237,6 +240,62 @@ public class PlexQueryImpl implements PlexQuery {
             return Payload.PLEX_URL_ERROR.setExtras("url:" + url);
         }
     }
+
+    @Override
+    public @NotNull MediaContainer findAllPlexVideos(@NotNull String url) {
+        LOGGER.info("findAllPlexVideos()");
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(180, TimeUnit.SECONDS)
+                .writeTimeout(180, TimeUnit.SECONDS)
+                .readTimeout(180, TimeUnit.SECONDS)
+                .build();
+
+        if (StringUtils.isEmpty(url)) {
+            LOGGER.info("No URL added to findAllPlexVideos().");
+            return new MediaContainer();
+        }
+
+        MediaContainer mediaContainer;
+        try {
+            HttpUrl httpUrl = urlGenerator.generatePlexUrl(url);
+
+            Request request = new Request.Builder()
+                    .url(httpUrl)
+                    .build();
+
+            try (Response response = client.newCall(request).execute()) {
+                String body = response.body() != null ? response.body().string() : null;
+
+                if (StringUtils.isBlank(body)) {
+                    String reason = "Body returned empty from Plex";
+                    LOGGER.error(reason);
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason);
+                }
+
+                InputStream inputStream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
+                JAXBContext jaxbContext = JAXBContext.newInstance(MediaContainer.class);
+                Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+                mediaContainer = (MediaContainer) jaxbUnmarshaller.unmarshal(inputStream);
+
+            } catch (IOException e) {
+                String reason = "Error connecting to Plex to get Movie list: " + url;
+                LOGGER.error(reason, e);
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason, e);
+            } catch (JAXBException e) {
+                String reason = "Error parsing XML from Plex: " + url;
+                LOGGER.error(reason, e);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
+            }
+        } catch (IllegalArgumentException | NullPointerException e) {
+            String reason = "Error with plex Url: " + url;
+            LOGGER.error(reason, e);
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason, e);
+        }
+
+        return mediaContainer;
+    }
+
 
     @Override
     public List<Movie> findAllPlexMovies(Map<MoviePair, Movie> previousMovies, @NotNull String url) {

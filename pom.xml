@@ -6,6 +6,7 @@
     <modules>
         <module>Core</module>
         <module>GapsWeb</module>
+        <module>Plex</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -15,12 +16,13 @@
     </parent>
     <groupId>com.jasonhhouse</groupId>
     <artifactId>Gaps</artifactId>
-    <version>0.3.1</version>
+    <version>0.4.0-SNAPSHOT</version>
     <name>Gaps</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
+        <jaxb.api.version>2.3.0</jaxb.api.version>
     </properties>
 
     <dependencyManagement>
@@ -100,7 +102,7 @@
                     <dependency>
                         <groupId>com.github.spotbugs</groupId>
                         <artifactId>spotbugs</artifactId>
-                        <version>4.0.1</version>
+                        <version>4.0.2</version>
                     </dependency>
                 </dependencies>
             </plugin>

@@ -47,12 +47,10 @@ public class SearchController {
      */
     @RequestMapping(value = "startSearching", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
+    @Deprecated
     public void postStartSearching() {
         LOGGER.info("postStartSearching( )");
 
-        ioService.migrateJsonSeedFileIfNeeded();
-
         throw new IllegalStateException("Need to pass in machineIdentifier and plex key");
-        //gapsSearch.run();
     }
 }

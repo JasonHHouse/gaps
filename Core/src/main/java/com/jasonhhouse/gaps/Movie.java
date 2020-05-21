@@ -14,8 +14,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jasonhhouse.gaps.json.MovieDeserializer;
 import com.jasonhhouse.gaps.json.MovieSerializer;
+import com.jasonhhouse.plex.Video;
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @JsonSerialize(using = MovieSerializer.class)
@@ -42,29 +44,25 @@ public final class Movie implements Comparable<Movie> {
 
     private final String name;
 
-    private final int year;
+    private final Integer year;
 
     @Nullable
     @JsonProperty("poster_url")
-    private String posterUrl;
-
+    private final String posterUrl;
+    @Nullable
+    private final String imdbId;
+    @Nullable
+    private final String language;
+    @Nullable
+    private final String overview;
     @Nullable
     private String collection;
+    @NotNull
+    private Integer collectionId;
+    @NotNull
+    private Integer tvdbId;
 
-    private int collectionId;
-
-    private int tvdbId;
-
-    @Nullable
-    private String imdbId;
-
-    @Nullable
-    private String language;
-
-    @Nullable
-    private String overview;
-
-    private Movie(String name, int year, @Nullable String posterUrl, @Nullable String collection, int collectionId, int tvdbId,
+    private Movie(String name, Integer year, @Nullable String posterUrl, @Nullable String collection, @NotNull Integer collectionId, @NotNull Integer tvdbId,
                   @Nullable String imdbId, @Nullable String language, @Nullable String overview) {
         this.name = name;
         this.year = year;
@@ -77,7 +75,7 @@ public final class Movie implements Comparable<Movie> {
         this.overview = overview;
     }
 
-    public int getCollectionId() {
+    public @NotNull Integer getCollectionId() {
         return collectionId;
     }
 
@@ -85,7 +83,7 @@ public final class Movie implements Comparable<Movie> {
         this.collectionId = collectionId;
     }
 
-    public int getTvdbId() {
+    public @NotNull Integer getTvdbId() {
         return tvdbId;
     }
 
@@ -136,7 +134,7 @@ public final class Movie implements Comparable<Movie> {
         Movie movie = (Movie) o;
 
         //Compare tvdb id first
-        if (tvdbId != -1 && tvdbId == movie.tvdbId) {
+        if (tvdbId != -1 && tvdbId.equals(movie.tvdbId)) {
             //LOGGER.info("Movie - tvdbId equals() true: " + tvdbId);
             return true;
         }
@@ -148,7 +146,7 @@ public final class Movie implements Comparable<Movie> {
         }
 
         //Fallback is year and title
-        return year == movie.year && name.equals(movie.name);
+        return year.equals(movie.year) && name.equals(movie.name);
     }
 
     @Override
@@ -159,10 +157,6 @@ public final class Movie implements Comparable<Movie> {
     @Nullable
     public String getPosterUrl() {
         return posterUrl;
-    }
-
-    public void setPosterUrl(String posterUrl) {
-        this.posterUrl = posterUrl;
     }
 
     @Override

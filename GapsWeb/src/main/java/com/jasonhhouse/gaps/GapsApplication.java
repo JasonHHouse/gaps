@@ -36,19 +36,11 @@ public class GapsApplication {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GapsApplication.class);
 
-    private final YamlConfig myConfig;
-
-    public GapsApplication(YamlConfig myConfig) {
-        this.myConfig = myConfig;
+    public GapsApplication() {
     }
 
     public static void main(String[] args) {
         SpringApplication.run(GapsApplication.class, args);
-    }
-
-    public void run(String... args) {
-        LOGGER.info("Using environment: " + myConfig.getEnvironment());
-        LOGGER.info("Name: " + myConfig.getName());
     }
 
     @Bean

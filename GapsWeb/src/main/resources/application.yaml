@@ -9,8 +9,11 @@
 # Maximum time the response should be cached (in seconds)
 # The cache must re-validate stale resources with the server. Any expired resources must not be used without re-validating.
 # The resources are public and any cache may store the response.
+
+logging:
+  level:
+    root: INFO
 spring:
-  profiles: ssl
   mvc:
     async:
       request-timeout: -1
@@ -20,49 +23,9 @@ spring:
         max-age: 120
         must-revalidate: true
         cache-public: true
-logging:
-  level:
-    root: INFO
 server:
-  port: 8484
-  compression:
-    enabled: true
-    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
-    min-response-size: 1024
-  error:
-    whitelabel:
-      enabled: false
   http2:
     enabled: true
-  ssl:
-    key-store-type: PKCS12
-    key-store: classpath:keystore/gaps.p12
-    key-store-password: gapsgapsgaps
-    key-alias: gaps
-security:
-  require-ssl: true
-info:
-  app:
-    name: Gaps
-    description: Gaps searches through your Plex Server or local folders for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.
-    version: 0.3.1
-
----
-spring:
-  profiles: no-ssl
-  mvc:
-    async:
-      request-timeout: -1
-  resources:
-    cache:
-      cachecontrol:
-        max-age: 120
-        must-revalidate: true
-        cache-public: true
-logging:
-  level:
-    root: INFO
-server:
   port: 8484
   compression:
     enabled: true
@@ -75,5 +38,4 @@ info:
   app:
     name: Gaps
     description: Gaps searches through your Plex Server or local folders for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.
-    version: 0.3.1
-
+    version: 0.4.0-SNAPSHOT

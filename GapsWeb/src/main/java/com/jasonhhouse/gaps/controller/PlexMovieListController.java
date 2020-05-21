@@ -16,6 +16,7 @@ import com.jasonhhouse.gaps.MoviePair;
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexQuery;
 import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.plex.MediaContainer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,6 +65,8 @@ public class PlexMovieListController {
         Map<MoviePair, Movie> previousMovies = generateOwnedMovieMap(everyMovie);
         String url = generatePlexUrl(machineIdentifier, key);
         ownedMovies = plexQuery.findAllPlexMovies(previousMovies, url);
+
+        //Update Owned Movies
         ioService.writeOwnedMoviesToFile(ownedMovies, machineIdentifier, key);
         return ResponseEntity.ok().body(ownedMovies);
     }

@@ -93,6 +93,9 @@ public class ConfigurationController {
         }
 */
         try {
+            PlexSearch plexSearch = ioService.readProperties();
+            gapsService.updatePlexSearch(plexSearch);
+
             plexQuery.queryPlexServer(plexServer);
             Payload payload = plexQuery.getLibraries(plexServer);
 
@@ -143,18 +146,26 @@ public class ConfigurationController {
     public ResponseEntity<String> putTestPlexServerByMachineId(@PathVariable("machineIdentifier") final String machineIdentifier) {
         LOGGER.info("putTestPlexServerByMachineId( " + machineIdentifier + " )");
 
-        ObjectNode objectNode = objectMapper.createObjectNode();
-        PlexServer returnedPlexServer = gapsService.getPlexSearch().getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
+        try {
+            PlexSearch plexSearch = ioService.readProperties();
+            gapsService.updatePlexSearch(plexSearch);
 
-        if (StringUtils.isEmpty(returnedPlexServer.getMachineIdentifier())) {
-            //Failed to find and delete
-            objectNode.put("success", false);
-        } else {
-            plexQuery.queryPlexServer(returnedPlexServer);
-            objectNode.put("success", true);
+            ObjectNode objectNode = objectMapper.createObjectNode();
+            PlexServer returnedPlexServer = gapsService.getPlexSearch().getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
+
+            if (StringUtils.isEmpty(returnedPlexServer.getMachineIdentifier())) {
+                //Failed to find and delete
+                objectNode.put("success", false);
+            } else {
+                plexQuery.queryPlexServer(returnedPlexServer);
+                objectNode.put("success", true);
+            }
+
+            return ResponseEntity.ok().body(objectNode.toString());
+        } catch (IOException e) {
+            LOGGER.error("Failed to read PlexSearch", e);
+            return ResponseEntity.status(500).body("Failed to read PlexSearch");
         }
-
-        return ResponseEntity.ok().body(objectNode.toString());
     }
 
     @RequestMapping(value = "/delete/plex/{machineIdentifier}",
@@ -164,18 +175,26 @@ public class ConfigurationController {
     public ResponseEntity<String> deletePlexServer(@PathVariable("machineIdentifier") final String machineIdentifier) {
         LOGGER.info("deletePlexServer( " + machineIdentifier + " )");
 
-        ObjectNode objectNode = objectMapper.createObjectNode();
-        PlexServer returnedPlexServer = gapsService.getPlexSearch().getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
-        if (StringUtils.isEmpty(returnedPlexServer.getMachineIdentifier())) {
-            //Failed to find and delete
-            objectNode.put("success", false);
-        } else {
-            gapsService.getPlexSearch().getPlexServers().remove(returnedPlexServer);
-            ioService.writePlexConfiguration(gapsService.getPlexSearch().getPlexServers());
-            objectNode.put("success", true);
-        }
+        try {
+            PlexSearch plexSearch = ioService.readProperties();
+            gapsService.updatePlexSearch(plexSearch);
 
-        return ResponseEntity.ok().body(objectNode.toString());
+            ObjectNode objectNode = objectMapper.createObjectNode();
+            PlexServer returnedPlexServer = gapsService.getPlexSearch().getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
+            if (StringUtils.isEmpty(returnedPlexServer.getMachineIdentifier())) {
+                //Failed to find and delete
+                objectNode.put("success", false);
+            } else {
+                gapsService.getPlexSearch().getPlexServers().remove(returnedPlexServer);
+                ioService.writePlexConfiguration(gapsService.getPlexSearch().getPlexServers());
+                objectNode.put("success", true);
+            }
+
+            return ResponseEntity.ok().body(objectNode.toString());
+        } catch (IOException e) {
+            LOGGER.error("Failed to read PlexSearch", e);
+            return ResponseEntity.status(500).body("Failed to read PlexSearch");
+        }
     }
 
     @RequestMapping(value = "/test/tmdbKey/{tmdbKey}",
@@ -197,9 +216,12 @@ public class ConfigurationController {
     public ResponseEntity<Payload> postSaveTmdbKey(@PathVariable("tmdbKey") final String tmdbKey) {
         LOGGER.info("postSaveTmdbKey( " + tmdbKey + " )");
 
-        gapsService.getPlexSearch().setMovieDbApiKey(tmdbKey);
         Payload payload;
         try {
+            PlexSearch plexSearch = ioService.readProperties();
+            gapsService.updatePlexSearch(plexSearch);
+            gapsService.getPlexSearch().setMovieDbApiKey(tmdbKey);
+
             ioService.writeProperties(gapsService.getPlexSearch());
             payload = Payload.TMDB_KEY_SAVE_SUCCESSFUL.setExtras("tmdbKey:" + tmdbKey);
         } catch (IOException e) {

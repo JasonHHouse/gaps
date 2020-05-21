@@ -16,8 +16,14 @@ import java.util.Set;
 public final class PlexSearch {
 
     public static final String MOVIE_DB_API_KEY = "movieDbApiKey";
+    public static final String VERSION_KEY = "version";
+    public static final String USERNAME_KEY = "username";
+    public static final String USERNAME_VALUE = "user";
+    public static final String PASSWORD = "password";
+
     private final Set<PlexServer> plexServers;
     private String movieDbApiKey;
+    private String password;
 
     public PlexSearch() {
         plexServers = new HashSet<>();
@@ -39,11 +45,20 @@ public final class PlexSearch {
         this.movieDbApiKey = movieDbApiKey;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "PlexSearch{" +
-                "movieDbApiKey='" + movieDbApiKey + '\'' +
-                ", plexServers=" + plexServers +
+                "plexServers=" + plexServers +
+                ", movieDbApiKey='" + movieDbApiKey + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

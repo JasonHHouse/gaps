@@ -37,8 +37,14 @@
             <li class="nav-item">
                 <a class="nav-link" href="/recommended">Recommended</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/mislabeled">Mislabeled</a>
+            </li>
             <li aria-current="page" class="nav-item active">
                 <a class="nav-link" href="/rssCheck">RSS</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/updates" id="updatesTab">Updates</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/about" id="aboutTab">About</a>
@@ -71,6 +77,7 @@
                 <a th:href="'/rss/' + ${instance.value.getMachineIdentifier() + '/' + instance.key.getKey()}"
                    th:text="${instance.value.getFriendlyName() + ' - ' + instance.key.getTitle()}">
                 </a>
+            </div>
         </form>
     </div>
 

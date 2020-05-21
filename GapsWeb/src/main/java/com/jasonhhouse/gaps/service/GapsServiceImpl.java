@@ -72,6 +72,10 @@ public class GapsServiceImpl implements GapsService {
         if (StringUtils.isNotEmpty(plexSearch.getMovieDbApiKey())) {
             this.plexSearch.setMovieDbApiKey(plexSearch.getMovieDbApiKey());
         }
+
+        if (StringUtils.isNotEmpty(plexSearch.getPassword())) {
+            this.plexSearch.setPassword(plexSearch.getPassword());
+        }
     }
 
     @Override

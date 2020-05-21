@@ -17,6 +17,7 @@ import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.Rss;
+import com.jasonhhouse.gaps.YamlConfig;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,6 +42,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -55,9 +57,12 @@ public class IoService {
     private static final String RECOMMENDED_MOVIES = "recommendedMovies.json";
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private final String STORAGE_FOLDER;
-    private final String TEMP_STORAGE_FOLDER;
 
-    public IoService() {
+    private final YamlConfig yamlConfig;
+
+    @Autowired
+    public IoService(YamlConfig yamlConfig) {
+        this.yamlConfig = yamlConfig;
         //Look for properties file for file locations
         String os = System.getProperty("os.name");
         if (os.contains("Windows")) {
@@ -71,10 +76,8 @@ public class IoService {
                 //Do nothing
             }
             STORAGE_FOLDER = decodedPath + "\\";
-            TEMP_STORAGE_FOLDER = decodedPath + "\\temp\\";
         } else {
             STORAGE_FOLDER = "/usr/data/";
-            TEMP_STORAGE_FOLDER = "/tmp/";
         }
     }
 
@@ -156,22 +159,6 @@ public class IoService {
             LOGGER.error("Can't find file " + RECOMMENDED_MOVIES, e);
         } catch (IOException e) {
             LOGGER.error("Can't write to file " + RECOMMENDED_MOVIES, e);
-        }
-    }
-
-    public void migrateJsonSeedFileIfNeeded() {
-        final File seedFile = new File(STORAGE_FOLDER + STORAGE);
-        if (seedFile.exists()) {
-            LOGGER.info("Seed file exists, not copying over");
-            return;
-        }
-
-        final File tempSeed = new File(TEMP_STORAGE_FOLDER + STORAGE);
-        try {
-            Files.move(tempSeed.toPath(), seedFile.toPath());
-            LOGGER.info("Seed file doesn't exist, copying over");
-        } catch (IOException e) {
-            LOGGER.error("Failed to copy seed file over", e);
         }
     }
 
@@ -373,13 +360,19 @@ public class IoService {
     }
 
     public void writeProperties(PlexSearch plexSearch) throws IOException {
+        LOGGER.info("writeProperties( " + plexSearch + " )");
         Properties properties = new Properties();
 
         if (StringUtils.isNotEmpty(plexSearch.getMovieDbApiKey())) {
             properties.setProperty(PlexSearch.MOVIE_DB_API_KEY, plexSearch.getMovieDbApiKey());
         }
 
-        properties.setProperty("version", "v0.3.1");
+        properties.setProperty(PlexSearch.VERSION_KEY, yamlConfig.getVersion());
+        properties.setProperty(PlexSearch.USERNAME_KEY, PlexSearch.USERNAME_VALUE);
+
+        if (StringUtils.isNotEmpty(plexSearch.getPassword())) {
+            properties.setProperty(PlexSearch.PASSWORD, plexSearch.getPassword());
+        }
 
         try (FileOutputStream fileOutputStream = new FileOutputStream(STORAGE_FOLDER + PROPERTIES)) {
             try (OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8)) {
@@ -396,8 +389,13 @@ public class IoService {
     }
 
     public PlexSearch readProperties() throws IOException {
+        LOGGER.info("readProperties()");
         File file = new File(STORAGE_FOLDER + PROPERTIES);
         PlexSearch plexSearch = new PlexSearch();
+
+        LOGGER.info("Can Read " + file + ": " + file.canRead());
+        LOGGER.info("Can Write " + file + ": " + file.canWrite());
+        LOGGER.info("Can Execute " + file + ": " + file.canExecute());
 
         Properties properties = new Properties();
         try (FileInputStream fileInputStream = new FileInputStream(file)) {
@@ -408,6 +406,11 @@ public class IoService {
                     String movieDbApiKey = properties.getProperty(PlexSearch.MOVIE_DB_API_KEY);
                     plexSearch.setMovieDbApiKey(movieDbApiKey);
                 }
+
+                if (properties.containsKey(PlexSearch.PASSWORD)) {
+                    String password = properties.getProperty(PlexSearch.PASSWORD);
+                    plexSearch.setPassword(password);
+                }
             }
         } catch (FileNotFoundException e) {
             LOGGER.warn(file + " does not exist");
@@ -416,7 +419,7 @@ public class IoService {
             LOGGER.warn(file + " failed to parse");
             throw e;
         }
-
+        LOGGER.info("plexSearch: " + plexSearch);
         return plexSearch;
     }
 

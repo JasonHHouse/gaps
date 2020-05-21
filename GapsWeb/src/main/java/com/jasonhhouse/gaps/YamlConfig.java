@@ -16,11 +16,14 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableConfigurationProperties
-@ConfigurationProperties
+@ConfigurationProperties("info.app")
 public class YamlConfig {
 
     private String name;
-    private String environment;
+    private String description;
+    private String version;
+    private Boolean loginEnabled;
+    private Boolean sslEnabled;
 
     public String getName() {
         return name;
@@ -30,11 +33,46 @@ public class YamlConfig {
         this.name = name;
     }
 
-    public String getEnvironment() {
-        return environment;
+    public String getDescription() {
+        return description;
     }
 
-    public void setEnvironment(String environment) {
-        this.environment = environment;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public Boolean getLoginEnabled() {
+        return loginEnabled;
+    }
+
+    public void setLoginEnabled(Boolean loginEnabled) {
+        this.loginEnabled = loginEnabled;
+    }
+
+    public Boolean getSslEnabled() {
+        return sslEnabled;
+    }
+
+    public void setSslEnabled(Boolean sslEnabled) {
+        this.sslEnabled = sslEnabled;
+    }
+
+    @Override
+    public String toString() {
+        return "YamlConfig{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", version='" + version + '\'' +
+                ", loginEnabled=" + loginEnabled +
+                ", sslEnabled=" + sslEnabled +
+                '}';
     }
 }
