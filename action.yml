@@ -1,3 +1,6 @@
 # action.yml
-name: 'Build and Publish Gaps'
-description: 'Pushing gaps to Docker Hub'
+name: 'Run Gaps'
+description: 'Greet someone and record the time'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
