@@ -31,5 +31,9 @@ jobs:
           java-version: 11.0.7
       - name: Build with Maven
         run: mvn clean install spotbugs:check --file pom.xml
+      - name: Build Docker
+        run: docker build -f Dockerfile -t housewrecker/gaps:latest .
+      - name: Update Username and Password
+        run: docker login -u="${{ secrets.DOCKER_USERNAME }}" -p="${{ secrets.DOCKER_PASSWORD }}"
       - name: Publish to Registry
-        run: docker build -f Dockerfile -t gaps-dev .
+        run: docker push housewrecker/gaps:latest
