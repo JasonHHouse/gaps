@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
-      - uses: ./.github/actions/action
+      - uses: ./.github/actions/
         name: Build and push Docker image
         with:
           image: housewrecker/gaps
