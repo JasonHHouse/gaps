@@ -23,6 +23,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
+      - run: ./minify
       - uses: ./
         name: Build and push Docker image
         with:
