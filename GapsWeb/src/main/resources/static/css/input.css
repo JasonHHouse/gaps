@@ -40,3 +40,22 @@
     margin-right: auto;
     width: 50%;
 }
+
+.center-text {
+    text-align: center;
+}
+.center-parent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.icon-margins {
+    margin-bottom: -16px;
+    margin-top: -16px;
+    margin-left: -16px;
+}
+
+.nav-button-padding {
+    padding-top: 16px;
+}
