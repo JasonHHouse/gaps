@@ -37,3 +37,5 @@ GapsOnWindows/*.jar
 cypress/screenshots
 cypress/videos
 Plex/target/
+
+GapsWeb/src/main/resources/static/css/input.min.css
