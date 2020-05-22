@@ -13,7 +13,7 @@
   <Category>Tools: MediaApp:Other MediaServer:Other Status:Stable</Category>
   <WebUI>https://[IP]:[PORT:8884]</WebUI>
   <TemplateURL>https://github.com/JasonHHouse/Gaps/gaps.xml</TemplateURL>
-  <Icon>https://raw.githubusercontent.com/JasonHHouse/Gaps/master/images/gaps.png</Icon>
+  <Icon>https://raw.githubusercontent.com/JasonHHouse/Gaps/master/images/final-gaps.png</Icon>
   <ExtraParams/>
   <PostArgs/>
   <CPUset/>
