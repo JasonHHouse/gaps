@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
@@ -28,6 +29,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
 
 @Configuration
 @EnableWebSecurity
@@ -63,7 +66,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     "/js/jquery-3.4.1.min.js",
                     "/js/bootstrap.bundle.min.js",
                     "/js/index.min.js",
-                    "/images/final-2.svg").permitAll()
+                    "/images/final-2.svg",
+                    "/images/final-gaps.svg").permitAll()
                     .anyRequest().fullyAuthenticated()
                     .and()
                     .formLogin()
@@ -74,20 +78,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll();
         } else if (myConfig.getLoginEnabled() && !myConfig.getSslEnabled()) {
             LOGGER.info("Login Enabled. Configuring site security without ssl.");
-            http.authorizeRequests().antMatchers("/images/**",
-                    "/css/**",
-                    "/js/**").permitAll()
-                    .anyRequest().permitAll()
+
+            http.cors().and().csrf().disable()
+                    .authorizeRequests()
+                    .anyRequest().fullyAuthenticated()
                     .and()
                     .formLogin()
                     .loginPage("/login")
+                    .defaultSuccessUrl("/home")
                     .permitAll()
                     .and()
                     .logout()
                     .permitAll();
+
         } else {
             http.cors().and().csrf().disable();
         }
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        super.configure(web);
+        web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
     }
 
     @Bean
