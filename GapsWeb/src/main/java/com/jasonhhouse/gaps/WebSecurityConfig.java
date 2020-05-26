@@ -85,6 +85,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                     .logout()
                     .permitAll();
+        } else {
+            http.cors().and().csrf().disable();
         }
     }
 
@@ -92,36 +94,41 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public UserDetailsService userDetailsService() {
         LOGGER.info("userDetailsService()");
-        PlexSearch plexSearch = null;
-        try {
-            plexSearch = ioService.readProperties();
-        } catch (IOException e) {
-            LOGGER.warn("No properties found to get password. Generating new password");
-        }
+        if (myConfig.getLoginEnabled()) {
 
-        String password;
-        if (plexSearch == null || StringUtils.isEmpty(plexSearch.getPassword())) {
-            password = UUID.randomUUID().toString();
-            plexSearch = new PlexSearch();
-            plexSearch.setPassword(password);
-            LOGGER.info("Gaps Password: " + password);
+            PlexSearch plexSearch = null;
             try {
-                ioService.writeProperties(plexSearch);
-                gapsService.updatePlexSearch(plexSearch);
+                plexSearch = ioService.readProperties();
             } catch (IOException e) {
-                LOGGER.error("Failed to write out password to properties file.");
+                LOGGER.warn("No properties found to get password. Generating new password");
             }
+
+            String password;
+            if (plexSearch == null || StringUtils.isEmpty(plexSearch.getPassword())) {
+                password = UUID.randomUUID().toString();
+                plexSearch = new PlexSearch();
+                plexSearch.setPassword(password);
+                LOGGER.info("Gaps Password: " + password);
+                try {
+                    ioService.writeProperties(plexSearch);
+                    gapsService.updatePlexSearch(plexSearch);
+                } catch (IOException e) {
+                    LOGGER.error("Failed to write out password to properties file.");
+                }
+            } else {
+                LOGGER.info("Using password from /usr/data/gaps.properties");
+                password = plexSearch.getPassword();
+            }
+
+            PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+            UserDetails userDetails = User.withUsername("user")
+                    .password(encoder.encode(password))
+                    .roles("USER")
+                    .build();
+
+            return new InMemoryUserDetailsManager(userDetails);
         } else {
-            LOGGER.info("Using password from /usr/data/gaps.properties");
-            password = plexSearch.getPassword();
+            return super.userDetailsService();
         }
-
-        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        UserDetails userDetails = User.withUsername("user")
-                .password(encoder.encode(password))
-                .roles("USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(userDetails);
     }
 }

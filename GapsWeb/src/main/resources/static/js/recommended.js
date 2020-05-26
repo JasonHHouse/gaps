@@ -23,6 +23,7 @@ let searchResults;
 let searchTitle;
 let searchDescription;
 let movieCounter;
+let socket;
 
 jQuery(function ($) {
     Handlebars.registerHelper('json', function (context) {
@@ -82,7 +83,7 @@ jQuery(function ($) {
 
     getRecommendedMoviesForTable(`/recommended/${plexServer.machineIdentifier}/${libraryKey}`, movieContainer, noMovieContainer, notSearchedYetContainer, moviesTable);
 
-    const socket = new SockJS('/gs-guide-websocket');
+    socket = new SockJS('/gs-guide-websocket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function () {
 
@@ -159,6 +160,7 @@ function cancel() {
 
 window.onbeforeunload = function () {
     disconnect();
+    //return false;
 };
 
 function setCopyToClipboardEnabled(bool) {
@@ -194,9 +196,14 @@ function searchForMovies() {
 }
 
 function disconnect() {
-    if (stompClient !== null) {
+    if (stompClient !== null && stompClient.status === 'CONNECTED') {
         stompClient.disconnect();
     }
+
+    if(socket !== null) {
+        socket.close();
+    }
+
     console.log("Disconnected");
 }
 

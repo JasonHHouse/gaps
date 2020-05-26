@@ -36,13 +36,13 @@
                     Libraries
                 </a>
             </li>
-            <li class="nav-item nav-button-padding active">
+            <li aria-current="page" class="nav-item nav-button-padding active">
                 <a class="nav-link center-text nav-anchor-spacing" href="/recommended">
                     <div class="icon collection-fill-active"></div>
                     Missing
                 </a>
             </li>
-            <li class="nav-item nav-button-padding">
+            <li class="nav-item nav-button-padding" hidden>
                 <a class="nav-link center-text nav-anchor-spacing" href="/mislabeled">
                     <div class="icon exclamation-triangle-default"></div>
                     Mislabeled
@@ -61,13 +61,13 @@
                 </a>
             </li>
             <li class="nav-item nav-button-padding">
-                <a class="nav-link center-text nav-anchor-spacing" href="/updates" id="updatesTab">
+                <a class="nav-link center-text nav-anchor-spacing" href="/updates">
                     <div class="icon arrow-clockwise-default"></div>
                     Updates
                 </a>
             </li>
             <li class="nav-item nav-button-padding">
-                <a class="nav-link center-text nav-anchor-spacing" href="/about" id="aboutTab">
+                <a class="nav-link center-text nav-anchor-spacing" href="/about">
                     <div class="icon info-circle-default"></div>
                     About
                 </a>
@@ -203,6 +203,6 @@
 <script src="/js/sockjs-1.4.0.min.js" type="text/javascript"></script>
 <script src="/js/stomp-2.3.3.min.js" type="text/javascript"></script>
 <script src="/js/handlebars-v4.7.6.min.js" type="text/javascript"></script>
-<script type="module" src="/js/recommended.min.js"></script>
+<script type="module" src="/js/recommended.js"></script>
 </body>
 </html>

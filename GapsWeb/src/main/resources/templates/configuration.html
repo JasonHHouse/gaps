@@ -40,7 +40,7 @@
                     Missing
                 </a>
             </li>
-            <li class="nav-item nav-button-padding">
+            <li class="nav-item nav-button-padding" hidden>
                 <a class="nav-link center-text nav-anchor-spacing" href="/mislabeled">
                     <div class="icon exclamation-triangle-default"></div>
                     Mislabeled
@@ -52,20 +52,20 @@
                     RSS
                 </a>
             </li>
-            <li class="nav-item nav-button-padding active">
+            <li aria-current="page" class="nav-item nav-button-padding active">
                 <a class="nav-link center-text nav-anchor-spacing" href="/configuration">
                     <div class="icon gear-active"></div>
                     Settings
                 </a>
             </li>
             <li class="nav-item nav-button-padding">
-                <a class="nav-link center-text nav-anchor-spacing" href="/updates" id="updatesTab">
+                <a class="nav-link center-text nav-anchor-spacing" href="/updates">
                     <div class="icon arrow-clockwise-default"></div>
                     Updates
                 </a>
             </li>
             <li class="nav-item nav-button-padding">
-                <a class="nav-link center-text nav-anchor-spacing" href="/about" id="aboutTab">
+                <a class="nav-link center-text nav-anchor-spacing" href="/about">
                     <div class="icon info-circle-default"></div>
                     About
                 </a>
@@ -83,7 +83,7 @@
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#plex" id="plexTab">Plex</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" hidden>
             <a class="nav-link disabled" data-ol-has-click-handler="" href="#folders" id="folderTab">Folders</a>
         </li>
         <li class="nav-item">

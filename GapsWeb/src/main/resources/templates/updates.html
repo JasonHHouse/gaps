@@ -40,7 +40,7 @@
                     Missing
                 </a>
             </li>
-            <li class="nav-item nav-button-padding">
+            <li class="nav-item nav-button-padding" hidden>
                 <a class="nav-link center-text nav-anchor-spacing" href="/mislabeled">
                     <div class="icon exclamation-triangle-default"></div>
                     Mislabeled
@@ -58,14 +58,14 @@
                     Settings
                 </a>
             </li>
-            <li class="nav-item nav-button-padding active">
-                <a class="nav-link center-text nav-anchor-spacing" href="/updates" id="updatesTab">
+            <li aria-current="page"  class="nav-item nav-button-padding active">
+                <a class="nav-link center-text nav-anchor-spacing" href="/updates">
                     <div class="icon arrow-clockwise-active"></div>
                     Updates
                 </a>
             </li>
             <li class="nav-item nav-button-padding">
-                <a class="nav-link center-text nav-anchor-spacing" href="/about" id="aboutTab">
+                <a class="nav-link center-text nav-anchor-spacing" href="/about">
                     <div class="icon info-circle-default"></div>
                     About
                 </a>
@@ -173,6 +173,5 @@
 
 <script src="/js/jquery-3.4.1.min.js" type="text/javascript"></script>
 <script src="/js/bootstrap.bundle.min.js" type="text/javascript"></script>
-<script src="/js/index.min.js" type="text/javascript"></script>
 </body>
 </html>

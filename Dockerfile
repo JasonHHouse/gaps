@@ -10,11 +10,11 @@ ENV ENABLE_SSL false
 
 ENV ENABLE_LOGIN false
 
-RUN mkdir -p /usr/data
+RUN mkdir -p /usr/data && chmod 777 /usr/data
 
 COPY movieIds.json /usr/data
 
-RUN mkdir -p /usr/app
+RUN mkdir -p /usr/app && chmod 777 /usr/data
 
 WORKDIR /usr/app
 
