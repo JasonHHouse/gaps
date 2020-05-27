@@ -2,8 +2,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>console</headerType>
-  <jar>/Users/jhouse/Code/Gaps/GapsWeb/target/GapsWeb-0.4.0-SNAPSHOT.jar</jar>
-  <outfile>/Users/jhouse/Desktop/Gaps-v0.4.0-SNAPSHOT.exe</outfile>
+  <jar>/Users/jhouse/Code/Gaps/GapsWeb/target/GapsWeb-0.4.0.jar</jar>
+  <outfile>/Users/jhouse/Desktop/Gaps-v0.4.0.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
@@ -37,7 +37,7 @@
     <productName>Gaps</productName>
     <companyName></companyName>
     <internalName>Gaps</internalName>
-    <originalFilename>Gaps-0.4.0-SNAPSHOT.exe</originalFilename>
+    <originalFilename>Gaps-0.4.0.exe</originalFilename>
     <trademarks></trademarks>
     <language>ENGLISH_US</language>
   </versionInfo>
