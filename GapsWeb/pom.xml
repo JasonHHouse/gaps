@@ -5,7 +5,7 @@
     <parent>
         <artifactId>Gaps</artifactId>
         <groupId>com.jasonhhouse</groupId>
-        <version>0.4.1-SNAPSHOT</version>
+        <version>0.4.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -19,13 +19,13 @@
         <dependency>
             <groupId>com.jasonhhouse</groupId>
             <artifactId>Core</artifactId>
-            <version>0.4.1-SNAPSHOT</version>
+            <version>0.4.1</version>
         </dependency>
 
         <dependency>
             <groupId>com.jasonhhouse</groupId>
             <artifactId>Plex</artifactId>
-            <version>0.4.1-SNAPSHOT</version>
+            <version>0.4.1</version>
         </dependency>
 
         <dependency>
