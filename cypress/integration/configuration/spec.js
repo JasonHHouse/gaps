@@ -23,27 +23,27 @@ describe('Configuration Tests', function () {
 
         cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
 
-        cy.get('#configurationTab')
+        cy.get('.active > .nav-link')
             .should('have.attr', 'href', '/configuration')
             .parent()
             .should('have.attr', 'aria-current', 'page');
 
-        cy.get('#librariesTab')
+        cy.get('.navbar-nav > :nth-child(1) > .nav-link')
             .should('have.attr', 'href', '/libraries')
             .parent()
             .should('not.have.attr', 'aria-current', 'page');
 
-        cy.get('#recommendedTab')
+        cy.get('.navbar-nav > :nth-child(2) > .nav-link')
             .should('have.attr', 'href', '/recommended')
             .parent()
             .should('not.have.attr', 'aria-current', 'page');
 
-        cy.get('#rssTab')
+        cy.get('.navbar-nav > :nth-child(4) > .nav-link')
             .should('have.attr', 'href', '/rssCheck')
             .parent()
             .should('not.have.attr', 'aria-current', 'page');
 
-        cy.get('#aboutTab')
+        cy.get('.navbar-nav > :nth-child(7) > .nav-link')
             .should('have.attr', 'href', '/about')
             .parent()
             .should('not.have.attr', 'aria-current', 'page');

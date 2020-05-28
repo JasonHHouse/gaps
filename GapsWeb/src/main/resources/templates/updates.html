@@ -23,29 +23,52 @@
 
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="/">Gaps</a>
+    <a class="" href=".">
+        <img src="/images/final-gaps.svg" class="d-inline-block align-top" alt="" width="96" height="96">
+    </a>
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/configuration">Configuration</a>
+            <li class="nav-item nav-button-padding">
+                <a class="nav-link center-text nav-anchor-spacing" href="/libraries">
+                    <div class="icon list-ul-default"></div>
+                    Libraries
+                </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/libraries">Libraries</a>
+            <li class="nav-item nav-button-padding">
+                <a class="nav-link center-text nav-anchor-spacing" href="/recommended">
+                    <div class="icon collection-fill-default"></div>
+                    Missing
+                </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/recommended">Recommended</a>
+            <li class="nav-item nav-button-padding" hidden>
+                <a class="nav-link center-text nav-anchor-spacing" href="/mislabeled">
+                    <div class="icon exclamation-triangle-default"></div>
+                    Mislabeled
+                </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/mislabeled">Mislabeled</a>
+            <li class="nav-item nav-button-padding">
+                <a class="nav-link center-text nav-anchor-spacing" href="/rssCheck">
+                    <div class="icon rss-default"></div>
+                    RSS
+                </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/rssCheck">RSS</a>
+            <li class="nav-item nav-button-padding">
+                <a class="nav-link center-text nav-anchor-spacing" href="/configuration">
+                    <div class="icon gear-default"></div>
+                    Settings
+                </a>
             </li>
-            <li aria-current="page" class="nav-item active">
-                <a class="nav-link" href="/updates" id="updatesTab">Updates</a>
+            <li aria-current="page"  class="nav-item nav-button-padding active">
+                <a class="nav-link center-text nav-anchor-spacing" href="/updates">
+                    <div class="icon arrow-clockwise-active"></div>
+                    Updates
+                </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/about">About</a>
+            <li class="nav-item nav-button-padding">
+                <a class="nav-link center-text nav-anchor-spacing" href="/about">
+                    <div class="icon info-circle-default"></div>
+                    About
+                </a>
             </li>
         </ul>
     </div>
@@ -55,10 +78,17 @@
     <img src="/images/final-2.svg" alt="Gaps Logo" style="width:50%;height:50%;" class="center">
 
     <h3 class="top-margin">Updates</h3>
-    <h4 class="top-margin text-primary">v0.4.0-SNAPSHOT</h4>
+    <h4 class="top-margin text-primary">v0.4.0</h4>
     <ul class="text-muted">
-        <li>Updates Page</li>
-        <li>Plex miss-labeled videos</li>
+        <li>Added Updates Page</li>
+        <li>GitHub CI/CD Builds</li>
+        <li>New Gaps Logo</li>
+        <li>New Gaps Icon</li>
+        <li>New Icons</li>
+        <li>Updated Navbar</li>
+        <li>Updated End to End Testing</li>
+        <li>Springboot 2.3.0</li>
+        <li>Cypress 4.7.0</li>
     </ul>
 
     <h4 class="top-margin text-primary">v0.3.1</h4>
@@ -146,6 +176,5 @@
 
 <script src="/js/jquery-3.4.1.min.js" type="text/javascript"></script>
 <script src="/js/bootstrap.bundle.min.js" type="text/javascript"></script>
-<script src="/js/index.min.js" type="text/javascript"></script>
 </body>
 </html>

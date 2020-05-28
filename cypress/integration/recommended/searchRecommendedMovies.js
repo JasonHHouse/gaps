@@ -6,6 +6,13 @@ describe('Search for Recommended', function () {
     it('Clean configuration page load', () => {
         searchSawLibrary(cy);
 
+        cy.get('#libraryTitle').then( ($libraryTitle) => {
+            if($libraryTitle.text() !== "Red - Saw") {
+                cy.get('#dropdownMenuLink').click();
+                cy.get('[data-key="2"]').click();
+            }
+        });
+
         cy.get('#noMovieContainer > .card > .card-img-top')
             .should('not.be.visible');
 

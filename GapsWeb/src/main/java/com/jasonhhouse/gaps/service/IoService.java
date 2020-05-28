@@ -414,10 +414,10 @@ public class IoService {
             }
         } catch (FileNotFoundException e) {
             LOGGER.warn(file + " does not exist");
-            throw e;
+            return plexSearch;
         } catch (IOException e) {
             LOGGER.warn(file + " failed to parse");
-            throw e;
+            return plexSearch;
         }
         LOGGER.info("plexSearch: " + plexSearch);
         return plexSearch;

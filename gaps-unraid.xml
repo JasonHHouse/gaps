@@ -11,9 +11,9 @@
   <Project>https://github.com/JasonHHouse/Gaps/</Project>
   <Overview>Search your movies and find missing movies from MovieDB collections.</Overview>
   <Category>Tools: MediaApp:Other MediaServer:Other Status:Stable</Category>
-  <WebUI>https://[IP]:[PORT:8884]</WebUI>
+  <WebUI>http://[IP]:[PORT:8884]</WebUI>
   <TemplateURL>https://github.com/JasonHHouse/Gaps/gaps.xml</TemplateURL>
-  <Icon>https://raw.githubusercontent.com/JasonHHouse/Gaps/master/images/gaps.png</Icon>
+  <Icon>https://raw.githubusercontent.com/JasonHHouse/Gaps/master/images/final-gaps.png</Icon>
   <ExtraParams/>
   <PostArgs/>
   <CPUset/>
@@ -41,5 +41,7 @@
   <Environment/>
   <Labels/>
   <Config Name="UI" Target="8484" Default="" Mode="tcp" Description="Container Port: 8484" Type="Port" Display="always" Required="false" Mask="false">8884</Config>
+  <Config Name="SSL Boolean" Target="ENABLE_SSL" Default="" Mode="" Description="true/false to enable SSL" Type="Variable" Display="always" Required="false" Mask="false">false</Config>
+  <Config Name="Login Boolean" Target="ENABLE_LOGIN" Default="" Mode="" Description="true/false to enable login" Type="Variable" Display="always" Required="false" Mask="false">false</Config>
   <Config Name="config" Target="/usr/data" Default="" Mode="rw" Description="File path for gaps config and data storage." Type="Path" Display="always" Required="false" Mask="false">/mnt/user/appdata/gaps/</Config>
 </Container>
