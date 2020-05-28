@@ -1,6 +1,7 @@
 name: Build and Deploy
 
-on: [published]
+on:
+  release
 
 jobs:
   build:
