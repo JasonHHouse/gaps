@@ -54,17 +54,10 @@ public class PlexMovieListController {
     public ResponseEntity<List<Movie>> getPlexMovies(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("getPlexMovies( " + machineIdentifier + ", " + key + " )");
 
-        List<Movie> ownedMovies = ioService.readOwnedMovies(machineIdentifier, key);
-
-        if (CollectionUtils.isNotEmpty(ownedMovies)) {
-            ioService.writeOwnedMoviesToFile(ownedMovies, machineIdentifier, key);
-            return ResponseEntity.ok().body(ownedMovies);
-        }
-
         Set<Movie> everyMovie = ioService.readMovieIdsFromFile();
         Map<MoviePair, Movie> previousMovies = generateOwnedMovieMap(everyMovie);
         String url = generatePlexUrl(machineIdentifier, key);
-        ownedMovies = plexQuery.findAllPlexMovies(previousMovies, url);
+        List<Movie> ownedMovies = plexQuery.findAllPlexMovies(previousMovies, url);
 
         //Update Owned Movies
         ioService.writeOwnedMoviesToFile(ownedMovies, machineIdentifier, key);
