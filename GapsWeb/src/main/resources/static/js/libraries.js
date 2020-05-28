@@ -87,6 +87,7 @@ function searchForMovies() {
     movieSearchingContainer.show();
     noMovieContainer.css({'display': 'none'});
     moviesTable.data().clear();
+    moviesTable.rows().invalidate().draw();
 
     $.ajax({
         type: "GET",
