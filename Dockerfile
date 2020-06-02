@@ -1,4 +1,4 @@
-FROM openjdk:11.0.7-jre-slim
+FROM adoptopenjdk/openjdk11-openj9:jre-11.0.7_10_openj9-0.20.0
 
 MAINTAINER jh5975@gmail.com
 
@@ -18,7 +18,7 @@ RUN mkdir -p /usr/app && chmod 777 /usr/data
 
 WORKDIR /usr/app
 
-COPY GapsWeb/target/GapsWeb-0.4.1.jar /usr/app/gaps.jar
+COPY GapsWeb/target/GapsWeb-0.4.2.jar /usr/app/gaps.jar
 
 COPY start.sh /usr/app/
 
