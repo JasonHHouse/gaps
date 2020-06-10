@@ -13,6 +13,10 @@
     margin-top: 16px;
 }
 
+.left-margin-p {
+    margin-left: 4px;
+}
+
 .all-padding {
     padding: 16px;
 }
@@ -71,12 +75,31 @@
     margin-right: auto;
 }
 
+.missing {
+    position: absolute;
+    top: 88px;
+    left: 70px;
+}
+
 .tooltip-inner {
     max-width: 512px !important;
     display: inline-block !important;
     margin-left: auto !important;
     margin-right: auto !important;
 }
+/* 
+.p-overview {
+    line-height: 1.35em;
+    margin-bottom: 40px;
+    color: #fff;
+  }
+
+  .p-overview-span { 
+    background-color:#191919; 
+    padding: 0 4px;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  } */
 
 .list-ul-default {
     background-color: #fafafa; /* defines the background color of the image */

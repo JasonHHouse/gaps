@@ -83,7 +83,7 @@
             <table class="display top-margin" id="movies" style="width:100%">
                 <thead>
                     <tr>
-                        <th>Collections</th>
+                        <th hidden>Collections</th>
                         <th hidden>Title</th>
                         <th hidden>Summary</th>
                     </tr>
@@ -100,54 +100,24 @@
     <script id="movieCard" type="text/x-handlebars-template">
         <div class="card bg-dark text-white">
             <img class="card-img" src="https://image.tmdb.org/t/p/w1280{{backdrop_path}}" alt="Card image">
-            <div class="card-img-overlay">
-              <h5 class="card-title">{{name}}</h5>
-              <p class="card-text">{{overview}}</p>
-
-              <div class="row">
-                  {{#each parts}}
-                  <div class="col-2" id="{{id}}" data-container="body" data-toggle="tooltip" data-html="true" 
-                    title="<div class='card mb-3'><div class='row no-gutters'><div class='col-12 col-md-auto'><img style='height: 225px; width: 150px; display: block;' src='https://image.tmdb.org/t/p/w185{{poster_path}}' class='card-img' alt='Plex Poster'></div><div class='col-12 col-md'><div class='card-body'><h5 class='card-title'>{{original_title}} ({{release_date}})</h5><p class='card-text text-muted'>{{overview}}</p><p class='card-text'><small class='text-info'>{{original_language}}</small></p></div></div></div></div>">
-                      <img style="height: 225px; width: auto;"
-                          src="https://image.tmdb.org/t/p/w185{{poster_path}}"
-                          class="card-img center" alt="Plex Poster">
-                          <p>{{title}} ({{release_date}})</p>
-                  </div>
-                  {{/each}}
-              </div>
+            <div class="card-img-overlay" style="margin-top:412px;background-color:rgba(25, 25, 25, 0.8); display:table;width:75%; margin-left: auto;margin-right: auto;">
+              <h4 class="card-title">{{name}}</h4>
+              <p class="card-text ">{{overview}}</p>
             </div>
-        </div>
-
-<!-- 
-        <div>{{json movie}}</div>
-
-        <div class="card mb-3">
-            <div class="row no-gutters" style="margin-bottom:8px">
-                <div class="col-12 col-md-auto">
-                    <img style="height: 225px; width: 150px; display: block;"
-                        src="{{poster_url}}"
-                        class="card-img" alt="Plex Poster">
-                </div>
-                <div class="col-12 col-md">
-                    <div class="card-body">
-                        <h5 class="card-title">{{name}}</h5>
-                        <p class="card-text text-muted">{{overview}}</p>
-                        <p class="card-text"><small class="text-info">{{language}}</small></p>
-                    </div>
-                </div>
-            </div>
-            <h4>Movies</h4>
-            <div class="row">
+            <div class="row" style="background-color:#191919;margin-left:0px">
                 {{#each parts}}
-                <div class="col" id="{{id}}" data-container="body" data-toggle="tooltip" data-html="true" title="<div class='card mb-3'><div class='row no-gutters' style='margin-bottom:8px'><div class='col-12 col-md-auto'><img style='height: 225px; width: 150px; display: block;' src='https://image.tmdb.org/t/p/w185{{poster_path}}' class='card-img' alt='Plex Poster'></div><div class='col-12 col-md'><div class='card-body'><h5 class='card-title'>{{original_title}} ({{release_date}})</h5><p class='card-text text-muted'>{{overview}}</p><p class='card-text'><small class='text-info'>{{original_language}}</small></p></div></div></div></div>">
-                    <img style="height: 225px; width: 150px;"
+                <div class="col-2 top-margin" id="{{id}}" data-container="body" data-toggle="tooltip" data-html="true" 
+                  title="<div class='card mb-3'><div class='row no-gutters'><div class='col-12 col-md-auto'><img style='height: 225px; width: auto; display: block;' src='https://image.tmdb.org/t/p/w185{{poster_path}}' class='card-img' alt='Plex Poster'></div><div class='col-12 col-md'><div class='card-body'><h5 class='card-title'>{{original_title}} ({{release_date}})</h5><p class='card-text text-muted'>{{overview}}</p><p class='card-text'><small class='text-info'>{{original_language}}</small></p></div></div></div></div>">
+                    <img style="height: 225px; width: auto; opacity: 0.3;"
                         src="https://image.tmdb.org/t/p/w185{{poster_path}}"
-                        class="card-img center" alt="Plex Poster">
-                        <p class="center-text">{{title}} ({{release_date}})</p>
+                        class="card-img" alt="Plex Poster">
+                    <img class="missing" 
+                        src="/images/x.svg" width="48px" height="48px" alt="Missing">
+                        <p class="left-margin-p">{{title}}<br>({{release_date}})</p>
                 </div>
                 {{/each}}
             </div>
-        </div> -->
+        </div>
     </script>
 
     <script src="/js/jquery-3.4.1.min.js" type="text/javascript"></script>
