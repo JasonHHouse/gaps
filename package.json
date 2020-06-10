@@ -21,7 +21,8 @@
     "uglifyjs-recommended-js": "uglifyjs GapsWeb/src/main/resources/static/js/recommended.js --compress --output GapsWeb/src/main/resources/static/js/recommended.min.js",
     "uglifyjs-common-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/common.js --compress --output GapsWeb/src/main/resources/static/js/modules/common.min.js",
     "uglifyjs-payload-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/payload.js --compress --output GapsWeb/src/main/resources/static/js/modules/payload.min.js",
-    "uglifyjs-mislabeled-js": "uglifyjs GapsWeb/src/main/resources/static/js/mislabeled.js --compress --output GapsWeb/src/main/resources/static/js/mislabeled.min.js"
+    "uglifyjs-mislabeled-js": "uglifyjs GapsWeb/src/main/resources/static/js/mislabeled.js --compress --output GapsWeb/src/main/resources/static/js/mislabeled.min.js",
+    "uglifyjs-collections-js": "uglifyjs GapsWeb/src/main/resources/static/js/collections.js --compress --output GapsWeb/src/main/resources/static/js/collections.min.js"
   },
   "repository": {
     "type": "git",

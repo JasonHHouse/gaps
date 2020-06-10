@@ -65,10 +65,17 @@
 .icon {
     width: 48px;
     height: 48px;
-    #margin-bottom: 4px;
+    margin-bottom: 4px;
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+.tooltip-inner {
+    max-width: 512px !important;
+    display: inline-block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
 .list-ul-default {

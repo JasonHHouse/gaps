@@ -7,3 +7,4 @@ npm run uglifyjs-recommended-js
 npm run uglifyjs-common-js
 npm run uglifyjs-payload-js
 npm run uglifyjs-mislabeled-js
+npm run uglifyjs-collections-js
