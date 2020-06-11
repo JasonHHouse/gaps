@@ -15,8 +15,14 @@ public class CollectionsController {
     private static final Logger LOGGER = LoggerFactory.getLogger(CollectionsController.class);
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView getAbout() {
-        LOGGER.info("getAbout()");
+    public ModelAndView getCollections() {
+        LOGGER.info("getCollections()");
         return new ModelAndView("collections");
+    }
+
+    @RequestMapping(value = "/actors", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView getActors() {
+        LOGGER.info("getActors()");
+        return new ModelAndView("collections-actors");
     }
 }

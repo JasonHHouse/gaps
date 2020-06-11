@@ -87,6 +87,14 @@
     margin-left: auto !important;
     margin-right: auto !important;
 }
+
+.line-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+  }
+
 /* 
 .p-overview {
     line-height: 1.35em;
