@@ -117,7 +117,7 @@
                 </div>
             </div>
             <div class="row" style="background-color:#191919;margin-left:0px;margin-right:0px">
-                {{#each cast}}
+                {{#each crew}}
                 <div class="col-3 top-margin" id="{{id}}" data-container="body" data-toggle="tooltip" data-html="true"
                   title="<div class='card mb-3'><div class='row no-gutters'><div class='col-12 col-md-auto'><img style='height: auto; width: auto; display: block;' src='https://image.tmdb.org/t/p/w185{{poster_path}}' class='card-img' alt='Plex Poster'></div><div class='col-12 col-md'><div class='card-body'><h5 class='card-title'>{{original_title}} ({{release_date}})</h5><p class='card-text text-muted'>{{overview}}</p><p class='card-text'><small class='text-info'>{{original_language}}</small></p></div></div></div></div>">
                     {{#if (mod_zero id)}}
@@ -137,7 +137,7 @@
                     <img class="missing-actors"
                          src="/images/search.svg" width="72px" height="72px" alt="Missing">
                     {{/if}}
-                    <p class="left-margin-p">{{title}}<br>({{release_date}})</p>
+                    <p class="left-margin-p">{{title}}<br>{{job}}<br>({{release_date}})</p>
                 </div>
                 {{/each}}
             </div>
@@ -148,7 +148,7 @@
     <script src="/js/bootstrap.bundle.min.js" type="text/javascript"></script>
     <script src="/js/datatables.min.js" type="text/javascript"></script>
     <script src="/js/handlebars-v4.7.6.min.js" type="text/javascript"></script>
-    <script src="/js/collections-actors.min.js" type="text/javascript"></script>
+    <script src="/js/collections-directors.min.js" type="text/javascript"></script>
 </body>
 
 </html>

@@ -81,6 +81,12 @@
     left: 70px;
 }
 
+.missing-actors {
+    position: absolute;
+    top: 150px;
+    left: 100px;
+}
+
 .tooltip-inner {
     max-width: 512px !important;
     display: inline-block !important;

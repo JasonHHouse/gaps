@@ -9,3 +9,4 @@ npm run uglifyjs-payload-js
 npm run uglifyjs-mislabeled-js
 npm run uglifyjs-collections-js
 npm run uglifyjs-collections-actors-js
+npm run uglifyjs-collections-directors-js
