@@ -76,7 +76,7 @@
         </div>
     </nav>
     <div class="container">
-        <h3 class="top-margin">Collections</h3>
+        <h3 class="top-margin">Movie Collections</h3>
 
         <div class="top-margin bottom-margin" id="movieContainer">
 
@@ -98,26 +98,42 @@
     </div>
 
     <script id="movieCard" type="text/x-handlebars-template">
-        <div class="card bg-dark text-white">
-            <img class="card-img" src="https://image.tmdb.org/t/p/w1280{{backdrop_path}}" alt="Card image">
-            <div class="card-img-overlay" style="margin-top:412px;background-color:rgba(25, 25, 25, 0.8); display:table;width:75%; margin-left: auto;margin-right: auto;">
-              <h4 class="card-title">{{name}}</h4>
-              <p class="card-text ">{{overview}}</p>
-            </div>
-            <div class="row" style="background-color:#191919;margin-left:0px;margin-right:0px">
-                {{#each parts}}
-                <div class="col-2 top-margin" id="{{id}}" data-container="body" data-toggle="tooltip" data-html="true" 
-                  title="<div class='card mb-3'><div class='row no-gutters'><div class='col-12 col-md-auto'><img style='height: 225px; width: auto; display: block;' src='https://image.tmdb.org/t/p/w185{{poster_path}}' class='card-img' alt='Plex Poster'></div><div class='col-12 col-md'><div class='card-body'><h5 class='card-title'>{{original_title}} ({{release_date}})</h5><p class='card-text text-muted'>{{overview}}</p><p class='card-text'><small class='text-info'>{{original_language}}</small></p></div></div></div></div>">
-                    <img style="height: 225px; width: auto; opacity: 0.3;"
-                        src="https://image.tmdb.org/t/p/w185{{poster_path}}"
-                        class="card-img" alt="Plex Poster">
-                    <img class="missing" 
-                        src="/images/x.svg" width="48px" height="48px" alt="Missing">
-                        <p class="left-margin-p">{{title}}<br>({{release_date}})</p>
-                </div>
-                {{/each}}
+        <div class="row">
+            <img width="100%" src="https://image.tmdb.org/t/p/w780{{backdrop_path}}" alt="Card image" style="margin-left: 4px;margin-right: 4px;margin-top: -8px;">
+            <div style="margin-top:40%;background-color:rgba(25, 25, 25, 0.8);position: absolute;margin-left: 15%;margin-right: 15%;width:70%">
+              <h4 style="padding-left: 4px;padding-right: 4px;padding-top: 4px;">{{name}}</h4>
+              <p style="padding-left: 8px;padding-right: 8px;padding-bottom: 4px;">{{overview}}</p>
             </div>
         </div>
+        {{#each parts}}
+        {{#if (four_mod_zero @index)}}
+        <div class="row">
+        {{/if}}
+            <div class="col-3 top-margin" id="{{id}}" data-container="body" data-toggle="tooltip" data-html="true" 
+                title="<div class='card mb-3'><div class='row no-gutters'><div class='col-12 col-md-auto'><img style='height: 225px; width: auto; display: block;' src='https://image.tmdb.org/t/p/w185{{poster_path}}' class='card-img' alt='Plex Poster'></div><div class='col-12 col-md'><div class='card-body'><h5 class='card-title'>{{original_title}} ({{release_date}})</h5><p class='card-text text-muted'>{{overview}}</p><p class='card-text'><small class='text-info'>{{original_language}}</small></p></div></div></div></div>">
+                {{#if (mod_zero id)}}
+                <img style="height: 365px; width: auto; opacity: 0.3;"
+                    src="https://image.tmdb.org/t/p/w342{{poster_path}}"
+                    class="card-img" alt="Plex Poster">
+                <img class="missing-actors"
+                    src="/images/x.svg" width="72px" height="72px" alt="Missing">
+                {{else if (mod_one id)}}
+                <img style="height: 365px; width: auto;"
+                        src="https://image.tmdb.org/t/p/w342{{poster_path}}"
+                        class="card-img" alt="Plex Poster">
+                {{else}}
+                <img style="height: 365px; width: auto; opacity: 0.3;"
+                    src="https://image.tmdb.org/t/p/w342{{poster_path}}"
+                    class="card-img" alt="Plex Poster">
+                <img class="missing-actors"
+                        src="/images/search.svg" width="72px" height="72px" alt="searching">
+                {{/if}}
+                <p class="left-margin-p">{{title}}<br>({{release_date}})</p>
+            </div> 
+        {{#if (four_mod_three @index)}}
+        </div>
+        {{/if}}
+        {{/each}}
     </script>
 
     <script src="/js/jquery-3.4.1.min.js" type="text/javascript"></script>

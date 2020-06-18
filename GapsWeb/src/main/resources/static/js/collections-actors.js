@@ -8,7 +8,7 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-const dataSet = [
+const actor = 
     {
         "birthday": "December 18, 1963",
         "known_for_department": "Acting",
@@ -3037,8 +3037,7 @@ const dataSet = [
                 "credit_id": "5ea23479c6006d001dfca7e4"
             }
         ],
-    }
-];
+    };
 
 const tooltipIds = [];
 
@@ -3048,6 +3047,12 @@ Handlebars.registerHelper({
     },
     mod_one: function (value) {
         return value % 3 === 1;
+    },
+    four_mod_zero: function (value) {
+        return value % 4 === 0;
+    },
+    four_mod_three: function (value) {
+        return value % 4 === 3;
     }
 });
 
@@ -3056,7 +3061,36 @@ jQuery(function ($) {
         return JSON.stringify(context);
     });
 
-    dataSet.forEach(director => director.cast.forEach(movie => movie.release_date = new Date(movie.release_date).getFullYear()));
+    actor.cast.forEach(movie => movie.release_date = new Date(movie.release_date).getFullYear());
+
+    actor.poster_url = 'https://image.tmdb.org/t/p/w185' + actor.poster_path;
+    actor.birthday = new Date(actor.birthday).toDateString();
+
+    {
+    
+        const actorCard = $("#actorCard").html();
+        const theTemplate = Handlebars.compile(actorCard);
+        $('#actor').html(theTemplate(actor));
+    }
+    
+    {
+        actor.crew.forEach(movie => tooltipIds.push(movie.id));
+
+        const movieCard = $("#movieCard").html();
+        const theTemplate = Handlebars.compile(movieCard);
+        $('#movies').html(theTemplate(actor));
+    }
+/* 
+
+
+    row.poster_url = 'https://image.tmdb.org/t/p/w185' + row.poster_path;
+    row.birthday = new Date(row.birthday).toDateString();
+
+    row.crew.forEach(movie => tooltipIds.push(movie.id));
+
+    const plexServerCard = $("#movieCard").html();
+    const theTemplate = Handlebars.compile(plexServerCard);
+    return theTemplate(row);
 
     $('#movies').DataTable({
         data: dataSet,
@@ -3077,14 +3111,7 @@ jQuery(function ($) {
                 searchable: false,
                 render: function (data, type, row) {
                     if (type === 'display') {
-                        row.poster_url = 'https://image.tmdb.org/t/p/w185' + row.poster_path;
-                        row.birthday = new Date(row.birthday).toDateString();
-
-                        row.crew.forEach(movie => tooltipIds.push(movie.id));
-
-                        const plexServerCard = $("#movieCard").html();
-                        const theTemplate = Handlebars.compile(plexServerCard);
-                        return theTemplate(row);
+                      
                     }
                     return "";
                 }
@@ -3094,5 +3121,5 @@ jQuery(function ($) {
                 visible: false
             }
         ]
-    });
+    }); */
 });

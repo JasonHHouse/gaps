@@ -15,8 +15,6 @@
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
     <link href="/images/gaps.ico" rel="shortcut icon" />
     <link href="/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="/css/datatables.min.css" rel="stylesheet" type="text/css" />
-    <link href="/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
     <link href="/css/input.min.css" rel="stylesheet">
 
     <!--Let browser know website is optimized for mobile-->
@@ -76,19 +74,14 @@
         </div>
     </nav>
     <div class="container">
-        <h3 class="top-margin">Collections</h3>
+        <h3 class="top-margin">Actor Collections</h3>
 
         <div class="top-margin bottom-margin" id="movieContainer">
 
-            <table class="display top-margin" id="movies" style="width:100%">
-                <thead>
-                    <tr>
-                        <th hidden>Collections</th>
-                        <th hidden>Title</th>
-                        <th hidden>Biography</th>
-                    </tr>
-                </thead>
-            </table>
+            <div class="card">
+                <div class="top-margin" id="actor"></div>
+                <div class="top-margin" id="movies"></div>
+            </div>
 
             <button class="btn btn-secondary" onclick="copyToClipboard()" type="button">Copy</button>
             <button class="btn btn-secondary" onclick="searchForMovies()" type="button">Re-Search</button>
@@ -97,56 +90,60 @@
 
     </div>
 
-    <script id="movieCard" type="text/x-handlebars-template">
-        <div class="card mb-3">
-            <div class="row no-gutters">
-                <div class="col-12 col-md-auto">
-                    <img style="height: auto; width: 185px; display: block;border-radius: 50%;margin-top: 8px;margin-left: 8px"
-                         src="https://image.tmdb.org/t/p/w185{{profile_path}}"
-                         class="card-img" alt="Plex Poster">
-                </div>
-                <div class="col-12 col-md">
-                    <div class="card-body">
-                        <h5 class="card-title">{{name}}</h5>
-                        <p class="card-text text-muted">Born on {{birthday}} in {{place_of_birth}}</p>
-                        {{#if deathday}}
-                        <p class="card-text text-muted">Died on {{deathday}}</p>
-                        {{/if}}
-                        <p class="card-text text-muted line-clamp">{{biography}}</p>
-                    </div>
-                </div>
+    <script id="actorCard" type="text/x-handlebars-template">
+        <div class="row">
+            <div class="col-12 col-md-auto">
+                <img style="height: auto; width: 185px; display: block;border-radius: 50%;margin-top: 8px;margin-left: 8px"
+                     src="https://image.tmdb.org/t/p/w185{{profile_path}}"
+                     class="card-img" alt="Plex Poster">
             </div>
-            <div class="row" style="background-color:#191919;margin-left:0px;margin-right:0px">
-                {{#each cast}}
-                <div class="col-3 top-margin" id="{{id}}" data-container="body" data-toggle="tooltip" data-html="true"
-                  title="<div class='card mb-3'><div class='row no-gutters'><div class='col-12 col-md-auto'><img style='height: auto; width: auto; display: block;' src='https://image.tmdb.org/t/p/w185{{poster_path}}' class='card-img' alt='Plex Poster'></div><div class='col-12 col-md'><div class='card-body'><h5 class='card-title'>{{original_title}} ({{release_date}})</h5><p class='card-text text-muted'>{{overview}}</p><p class='card-text'><small class='text-info'>{{original_language}}</small></p></div></div></div></div>">
-                    {{#if (mod_zero id)}}
-                    <img style="height: 365px; width: auto; opacity: 0.3;"
-                        src="https://image.tmdb.org/t/p/w342{{poster_path}}"
-                        class="card-img" alt="Plex Poster">
-                    <img class="missing-actors"
-                        src="/images/x.svg" width="72px" height="72px" alt="Missing">
-                    {{else if (mod_one id)}}
-                    <img style="height: 365px; width: auto;"
-                         src="https://image.tmdb.org/t/p/w342{{poster_path}}"
-                         class="card-img" alt="Plex Poster">
-                    {{else}}
-                    <img style="height: 365px; width: auto; opacity: 0.3;"
-                        src="https://image.tmdb.org/t/p/w342{{poster_path}}"
-                        class="card-img" alt="Plex Poster">
-                    <img class="missing-actors"
-                         src="/images/search.svg" width="72px" height="72px" alt="Missing">
+            <div class="col-12 col-md">
+                <div class="card-body">
+                    <h5 class="card-title">{{name}}</h5>
+                    <p class="card-text text-muted">Born on {{birthday}} in {{place_of_birth}}</p>
+                    {{#if deathday}}
+                    <p class="card-text text-muted">Died on {{deathday}}</p>
                     {{/if}}
-                    <p class="left-margin-p">{{title}}<br>({{release_date}})</p>
+                    <p class="card-text text-muted line-clamp">{{biography}}</p>
                 </div>
-                {{/each}}
             </div>
         </div>
     </script>
 
+    <script id="movieCard" type="text/x-handlebars-template">
+        {{#each cast}}
+        {{#if (four_mod_zero @index)}}
+        <div class="row" style="margin-left:0px;margin-right:0px">
+        {{/if}}
+            <div class="col-3 top-margin" id="{{id}}" data-container="body" data-toggle="tooltip" data-html="true"
+                title="<div class='card mb-3'><div class='row no-gutters'><div class='col-12 col-md-auto'><img style='height: auto; width: auto; display: block;' src='https://image.tmdb.org/t/p/w185{{poster_path}}' class='card-img' alt='Plex Poster'></div><div class='col-12 col-md'><div class='card-body'><h5 class='card-title'>{{original_title}} ({{release_date}})</h5><p class='card-text text-muted'>{{overview}}</p><p class='card-text'><small class='text-info'>{{original_language}}</small></p></div></div></div></div>">
+                {{#if (mod_zero id)}}
+                <img style="height: 365px; width: auto; opacity: 0.3;"
+                    src="https://image.tmdb.org/t/p/w342{{poster_path}}"
+                    class="card-img" alt="Plex Poster">
+                <img class="missing-actors"
+                    src="/images/x.svg" width="72px" height="72px" alt="Missing">
+                {{else if (mod_one id)}}
+                <img style="height: 365px; width: auto;"
+                        src="https://image.tmdb.org/t/p/w342{{poster_path}}"
+                        class="card-img" alt="Plex Poster">
+                {{else}}
+                <img style="height: 365px; width: auto; opacity: 0.3;"
+                    src="https://image.tmdb.org/t/p/w342{{poster_path}}"
+                    class="card-img" alt="Plex Poster">
+                <img class="missing-actors"
+                        src="/images/search.svg" width="72px" height="72px" alt="searching">
+                {{/if}}
+                <p class="left-margin-p">{{title}}<br>({{release_date}})</p>
+            </div>
+        {{#if (four_mod_three @index)}}
+        </div>
+        {{/if}}
+        {{/each}}
+    </script>
+
     <script src="/js/jquery-3.4.1.min.js" type="text/javascript"></script>
     <script src="/js/bootstrap.bundle.min.js" type="text/javascript"></script>
-    <script src="/js/datatables.min.js" type="text/javascript"></script>
     <script src="/js/handlebars-v4.7.6.min.js" type="text/javascript"></script>
     <script src="/js/collections-actors.min.js" type="text/javascript"></script>
 </body>

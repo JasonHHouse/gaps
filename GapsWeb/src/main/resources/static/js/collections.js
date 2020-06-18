@@ -749,6 +749,21 @@ var dataSet = [
 
 let tooltipIds = [];
 
+Handlebars.registerHelper({
+    mod_zero: function (value) {
+        return value % 3 === 0;
+    },
+    mod_one: function (value) {
+        return value % 3 === 1;
+    },
+    four_mod_zero: function (value) {
+        return value % 4 === 0;
+    },
+    four_mod_three: function (value) {
+        return value % 4 === 3;
+    }
+});
+
 jQuery(function ($) {
     Handlebars.registerHelper('json', function (context) {
         return JSON.stringify(context);
