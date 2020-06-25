@@ -522,229 +522,537 @@ var dataSet = [
         "poster_path": "/zIsnaiX2ox5hy6oJrmyZv5SojNG.jpg",
         "backdrop_path": "/yz9EdlfKU8bpN0hbdJMy6QkFBoN.jpg",
         "parts": [
-          {
-            "adult": false,
-            "backdrop_path": "/Y4E38GCezVsm7zT7ZwNP7ULNZE.jpg",
-            "genre_ids": [
-              27
-            ],
-            "id": 4488,
-            "original_language": "English",
-            "original_title": "Friday the 13th",
-            "overview": "Camp counselors are stalked and murdered by an unknown assailant while trying to reopen a summer camp that was the site of a child's drowning.",
-            "poster_path": "/4nbUlVEg31I8lchI3bu3Oq3Ks4t.jpg",
-            "release_date": "1980",
-            "title": "Friday the 13th",
-            "video": false,
-            "vote_average": 6.3,
-            "vote_count": 1568,
-            "popularity": 23.276
-          },
-          {
-            "id": 9725,
-            "video": false,
-            "vote_count": 852,
-            "vote_average": 6,
-            "title": "Friday the 13th Part 2",
-            "release_date": "1981",
-            "original_language": "English",
-            "original_title": "Friday the 13th Part 2",
-            "genre_ids": [
-              27,
-              53
-            ],
-            "backdrop_path": "/wDmw9Nacka0oWj7hEIIEInP94Lx.jpg",
-            "adult": false,
-            "overview": "Five years after the horrible bloodbath at Camp Crystal Lake, it seems Jason Voorhees and his demented mother are in the past. Paul opens up a new camp close to the infamous site, ignoring warnings to stay away, and a sexually-charged group of counselors follow -- including child psychologist major Ginny. But Jason has been hiding out all this time, and now he's ready for revenge.",
-            "poster_path": "/fhxx5U9LR2o4kXXPfJJIRkRCwFm.jpg",
-            "popularity": 14.563
-          },
-          {
-            "id": 9728,
-            "video": false,
-            "vote_count": 702,
-            "vote_average": 5.7,
-            "title": "Friday the 13th Part III",
-            "release_date": "1982",
-            "original_language": "English",
-            "original_title": "Friday the 13th Part III",
-            "genre_ids": [
-              27
-            ],
-            "backdrop_path": "/n7TDRuPGptgtiJtV1zqDsJxYo8L.jpg",
-            "adult": false,
-            "overview": "An idyllic summer turns into a nightmare of unspeakable terror for yet another group of naive counselors. Ignoring Camp Crystal Lake's bloody legacy, one by one they fall victim to the maniacal Jason who stalks them at every turn.",
-            "poster_path": "/gZx4IjNgaMyC30mTOGyZIL2nq66.jpg",
-            "popularity": 14.903
-          },
-          {
-            "id": 9730,
-            "video": false,
-            "vote_count": 638,
-            "vote_average": 5.9,
-            "title": "Friday the 13th: The Final Chapter",
-            "release_date": "1984",
-            "original_language": "English",
-            "original_title": "Friday the 13th: The Final Chapter",
-            "genre_ids": [
-              27
-            ],
-            "backdrop_path": "/aWmMWZ9rDNCXmXVXuHbEm1sX0jK.jpg",
-            "adult": false,
-            "overview": "After the Crystal Lake Massacres, Jason is pronounced dead and taken to the hospital morgue, where he is mysteriously revived, allowing his diabolical killing spree to continue at the camp where the gruesome slaughtering began. But this time, in addition to terrified teenagers, he meets a young boy named Tommy who has a special talent for horror masks and make up, leading up to a horrifying, bloody battle! Has Jason finally met his match?",
-            "poster_path": "/5KRBkaF6PdorcFjWiDY4tJy67Jf.jpg",
-            "popularity": 9.895
-          },
-          {
-            "adult": false,
-            "backdrop_path": "/iWQPZphjmQV8sbatCaXfjk1rksV.jpg",
-            "genre_ids": [
-              27
-            ],
-            "id": 9731,
-            "original_language": "English",
-            "original_title": "Friday the 13th: A New Beginning",
-            "overview": "Homicidal maniac Jason returns from the grave to cause more bloody mayhem. Young Tommy may have escaped from Crystal Lake, but he’s still haunted by the gruesome events that happened there. When gory murders start happening at the secluded halfway house for troubled teens where he now lives, it seems like his nightmarish nemesis, Jason, is back for more sadistic slaughters. But as things spiral out of control and the body count rises, Tommy begins to wonder if he’s become the killer he fears most.",
-            "poster_path": "/iKOWTkGqZtucGEJuo9Cr60PMROC.jpg",
-            "release_date": "1985",
-            "title": "Friday the 13th: A New Beginning",
-            "video": false,
-            "vote_average": 5.1,
-            "vote_count": 553,
-            "popularity": 10.985
-          },
-          {
-            "adult": false,
-            "backdrop_path": "/93tvkTtV6tQQiYhxhij9tuODNOq.jpg",
-            "genre_ids": [
-              27,
-              9648,
-              53
-            ],
-            "id": 10225,
-            "original_language": "English",
-            "original_title": "Friday the 13th Part VI: Jason Lives",
-            "overview": "Determined to finish off the infamous killer Jason Voorhees once and for all, Tommy Jarvis and a friend exhume Jason’s corpse in order to cremate him. Things go awry when Jason is instead resurrected, sparking a new chain of ruthlessly brutal murders. Now it’s up to Tommy to stop the dark, devious and demented deaths that he unwittingly brought about.",
-            "poster_path": "/527lL7kLmvxLXnMoaMrKashaC58.jpg",
-            "release_date": "1986",
-            "title": "Friday the 13th Part VI: Jason Lives",
-            "video": false,
-            "vote_average": 5.9,
-            "vote_count": 575,
-            "popularity": 11.155
-          },
-          {
-            "id": 10281,
-            "video": false,
-            "vote_count": 506,
-            "vote_average": 5.3,
-            "title": "Friday the 13th Part VII: The New Blood",
-            "release_date": "1988",
-            "original_language": "English",
-            "original_title": "Friday the 13th Part VII: The New Blood",
-            "genre_ids": [
-              27
-            ],
-            "backdrop_path": "/3KO6cs5qighEoA98CFo1u26hqh7.jpg",
-            "adult": false,
-            "overview": "A young girl who possesses the power of telekinesis accidentally causes her father's death after a family dispute at Crystal Lake. Years later, when a doctor tries to exploit her abilities, her power becomes a hellish curse, and she unwittingly unchains the merciless, bloodthirsty Jason Voorhees from his watery grave.",
-            "poster_path": "/2Tyr422N8ivi9TfA9BAP896Z6Q.jpg",
-            "popularity": 11.945
-          },
-          {
-            "id": 10283,
-            "video": false,
-            "vote_count": 506,
-            "vote_average": 4.8,
-            "title": "Friday the 13th Part VIII: Jason Takes Manhattan",
-            "release_date": "1989",
-            "original_language": "English",
-            "original_title": "Friday the 13th Part VIII: Jason Takes Manhattan",
-            "genre_ids": [
-              27,
-              53
-            ],
-            "backdrop_path": "/4XmL78nsM1XF3yLjne8QJSGQKYd.jpg",
-            "adult": false,
-            "overview": "A group of students on a graduation cruise bound for Manhattan soon realize they've got a stowaway aboard the ship: serial killer Jason Voorhees.",
-            "poster_path": "/s5U5JgPpgfTnbGxQF2bOlfqqz5b.jpg",
-            "popularity": 12.302
-          },
-          {
-            "id": 10285,
-            "video": false,
-            "vote_count": 474,
-            "vote_average": 4.2,
-            "title": "Jason Goes to Hell: The Final Friday",
-            "release_date": "1993",
-            "original_language": "English",
-            "original_title": "Jason Goes to Hell: The Final Friday",
-            "genre_ids": [
-              27
-            ],
-            "backdrop_path": "/lLsAb0oBdQQselGdSSEmaN4XhR7.jpg",
-            "adult": false,
-            "overview": "Jason Voorhees, the living, breathing essence of evil, is back for one fierce, final fling! Tracked down and blown to bits by a special FBI task force, everyone now assumes that he's finally dead. But everybody assumes wrong. Jason has been reborn with the bone-chilling ability to assume the identity of anyone he touches. The terrifying truth is that he could be anywhere, or anybody. In this shocking, blood-soaked finale to Jason's carnage-ridden reign of terror, the horrible secret of his unstoppable killing instinct is finally revealed.",
-            "poster_path": "/Aacq05foqiWdXqetFv02HBvMoJy.jpg",
-            "popularity": 14.789
-          },
-          {
-            "id": 11470,
-            "video": false,
-            "vote_count": 686,
-            "vote_average": 4.6,
-            "title": "Jason X",
-            "release_date": "2001",
-            "original_language": "English",
-            "original_title": "Jason X",
-            "genre_ids": [
-              27,
-              878
-            ],
-            "backdrop_path": "/hcPF3hyL5Knvn1Z7MEoevZY8Dt7.jpg",
-            "adult": false,
-            "overview": "In the year 2455, Old Earth is now a contaminated planet abandoned for centuries -- a brown world of violent storms, toxic landmasses and poisonous seas. Yet humans have returned to the deadly place that they once fled, not to live, but to research the ancient, rusting artifacts of the long-gone civilizations. But it's not the harmful environment that could prove fatal to the intrepid, young explorers who have just landed on Old Earth. For them, it's Friday the 13th, and Jason lives!",
-            "poster_path": "/qizsVrFGEkfVZ3WvkJb1q95JFVf.jpg",
-            "popularity": 16.589
-          },
-          {
-            "id": 6466,
-            "video": false,
-            "vote_count": 1381,
-            "vote_average": 5.8,
-            "title": "Freddy vs. Jason",
-            "release_date": "2003",
-            "original_language": "English",
-            "original_title": "Freddy vs. Jason",
-            "genre_ids": [
-              27
-            ],
-            "backdrop_path": "/per8xKUsoXn15nPNFwkqUdTk7SY.jpg",
-            "adult": false,
-            "overview": "In an attempt to free himself from a state of forgotten limbo, evil dream-demon Freddy Krueger (Robert Englund) devises a plan to manipulate un-dead mass murderer Jason Voorhees (Ken Kirzenger) into slicing-and-dicing his way through the teenage population of Springwood.  But when the master of dreams loses control of his monster, a brutal fight to the death is the only way out in this long anticipated crossover between two of modern horror's most notorious killers!",
-            "poster_path": "/nKgtVLL9j752T89gr9jY3m7YRyU.jpg",
-            "popularity": 17.982
-          },
-          {
-            "adult": false,
-            "backdrop_path": "/1wifwQ25N27DCIBRqvG3lKkZua3.jpg",
-            "genre_ids": [
-              27
-            ],
-            "id": 13207,
-            "original_language": "English",
-            "original_title": "Friday the 13th",
-            "overview": "Ignoring the warnings of the locals, a group of teenage camp counselors takes on the job of reopening Camp Crystal Lake — on Friday the 13th no less, and raise the ire of Jason Voorhees, a masked, homicidal maniac.",
-            "poster_path": "/88wlJ4teYlck4hJ2bnlxBrAVh0m.jpg",
-            "release_date": "2009",
-            "title": "Friday the 13th",
-            "video": false,
-            "vote_average": 5.8,
-            "vote_count": 1486,
-            "popularity": 19.666
-          }
+            {
+                "adult": false,
+                "backdrop_path": "/Y4E38GCezVsm7zT7ZwNP7ULNZE.jpg",
+                "genre_ids": [
+                    27
+                ],
+                "id": 4488,
+                "original_language": "English",
+                "original_title": "Friday the 13th",
+                "overview": "Camp counselors are stalked and murdered by an unknown assailant while trying to reopen a summer camp that was the site of a child's drowning.",
+                "poster_path": "/4nbUlVEg31I8lchI3bu3Oq3Ks4t.jpg",
+                "release_date": "1980",
+                "title": "Friday the 13th",
+                "video": false,
+                "vote_average": 6.3,
+                "vote_count": 1568,
+                "popularity": 23.276
+            },
+            {
+                "id": 9725,
+                "video": false,
+                "vote_count": 852,
+                "vote_average": 6,
+                "title": "Friday the 13th Part 2",
+                "release_date": "1981",
+                "original_language": "English",
+                "original_title": "Friday the 13th Part 2",
+                "genre_ids": [
+                    27,
+                    53
+                ],
+                "backdrop_path": "/wDmw9Nacka0oWj7hEIIEInP94Lx.jpg",
+                "adult": false,
+                "overview": "Five years after the horrible bloodbath at Camp Crystal Lake, it seems Jason Voorhees and his demented mother are in the past. Paul opens up a new camp close to the infamous site, ignoring warnings to stay away, and a sexually-charged group of counselors follow -- including child psychologist major Ginny. But Jason has been hiding out all this time, and now he's ready for revenge.",
+                "poster_path": "/fhxx5U9LR2o4kXXPfJJIRkRCwFm.jpg",
+                "popularity": 14.563
+            },
+            {
+                "id": 9728,
+                "video": false,
+                "vote_count": 702,
+                "vote_average": 5.7,
+                "title": "Friday the 13th Part III",
+                "release_date": "1982",
+                "original_language": "English",
+                "original_title": "Friday the 13th Part III",
+                "genre_ids": [
+                    27
+                ],
+                "backdrop_path": "/n7TDRuPGptgtiJtV1zqDsJxYo8L.jpg",
+                "adult": false,
+                "overview": "An idyllic summer turns into a nightmare of unspeakable terror for yet another group of naive counselors. Ignoring Camp Crystal Lake's bloody legacy, one by one they fall victim to the maniacal Jason who stalks them at every turn.",
+                "poster_path": "/gZx4IjNgaMyC30mTOGyZIL2nq66.jpg",
+                "popularity": 14.903
+            },
+            {
+                "id": 9730,
+                "video": false,
+                "vote_count": 638,
+                "vote_average": 5.9,
+                "title": "Friday the 13th: The Final Chapter",
+                "release_date": "1984",
+                "original_language": "English",
+                "original_title": "Friday the 13th: The Final Chapter",
+                "genre_ids": [
+                    27
+                ],
+                "backdrop_path": "/aWmMWZ9rDNCXmXVXuHbEm1sX0jK.jpg",
+                "adult": false,
+                "overview": "After the Crystal Lake Massacres, Jason is pronounced dead and taken to the hospital morgue, where he is mysteriously revived, allowing his diabolical killing spree to continue at the camp where the gruesome slaughtering began. But this time, in addition to terrified teenagers, he meets a young boy named Tommy who has a special talent for horror masks and make up, leading up to a horrifying, bloody battle! Has Jason finally met his match?",
+                "poster_path": "/5KRBkaF6PdorcFjWiDY4tJy67Jf.jpg",
+                "popularity": 9.895
+            },
+            {
+                "adult": false,
+                "backdrop_path": "/iWQPZphjmQV8sbatCaXfjk1rksV.jpg",
+                "genre_ids": [
+                    27
+                ],
+                "id": 9731,
+                "original_language": "English",
+                "original_title": "Friday the 13th: A New Beginning",
+                "overview": "Homicidal maniac Jason returns from the grave to cause more bloody mayhem. Young Tommy may have escaped from Crystal Lake, but he’s still haunted by the gruesome events that happened there. When gory murders start happening at the secluded halfway house for troubled teens where he now lives, it seems like his nightmarish nemesis, Jason, is back for more sadistic slaughters. But as things spiral out of control and the body count rises, Tommy begins to wonder if he’s become the killer he fears most.",
+                "poster_path": "/iKOWTkGqZtucGEJuo9Cr60PMROC.jpg",
+                "release_date": "1985",
+                "title": "Friday the 13th: A New Beginning",
+                "video": false,
+                "vote_average": 5.1,
+                "vote_count": 553,
+                "popularity": 10.985
+            },
+            {
+                "adult": false,
+                "backdrop_path": "/93tvkTtV6tQQiYhxhij9tuODNOq.jpg",
+                "genre_ids": [
+                    27,
+                    9648,
+                    53
+                ],
+                "id": 10225,
+                "original_language": "English",
+                "original_title": "Friday the 13th Part VI: Jason Lives",
+                "overview": "Determined to finish off the infamous killer Jason Voorhees once and for all, Tommy Jarvis and a friend exhume Jason’s corpse in order to cremate him. Things go awry when Jason is instead resurrected, sparking a new chain of ruthlessly brutal murders. Now it’s up to Tommy to stop the dark, devious and demented deaths that he unwittingly brought about.",
+                "poster_path": "/527lL7kLmvxLXnMoaMrKashaC58.jpg",
+                "release_date": "1986",
+                "title": "Friday the 13th Part VI: Jason Lives",
+                "video": false,
+                "vote_average": 5.9,
+                "vote_count": 575,
+                "popularity": 11.155
+            },
+            {
+                "id": 10281,
+                "video": false,
+                "vote_count": 506,
+                "vote_average": 5.3,
+                "title": "Friday the 13th Part VII: The New Blood",
+                "release_date": "1988",
+                "original_language": "English",
+                "original_title": "Friday the 13th Part VII: The New Blood",
+                "genre_ids": [
+                    27
+                ],
+                "backdrop_path": "/3KO6cs5qighEoA98CFo1u26hqh7.jpg",
+                "adult": false,
+                "overview": "A young girl who possesses the power of telekinesis accidentally causes her father's death after a family dispute at Crystal Lake. Years later, when a doctor tries to exploit her abilities, her power becomes a hellish curse, and she unwittingly unchains the merciless, bloodthirsty Jason Voorhees from his watery grave.",
+                "poster_path": "/2Tyr422N8ivi9TfA9BAP896Z6Q.jpg",
+                "popularity": 11.945
+            },
+            {
+                "id": 10283,
+                "video": false,
+                "vote_count": 506,
+                "vote_average": 4.8,
+                "title": "Friday the 13th Part VIII: Jason Takes Manhattan",
+                "release_date": "1989",
+                "original_language": "English",
+                "original_title": "Friday the 13th Part VIII: Jason Takes Manhattan",
+                "genre_ids": [
+                    27,
+                    53
+                ],
+                "backdrop_path": "/4XmL78nsM1XF3yLjne8QJSGQKYd.jpg",
+                "adult": false,
+                "overview": "A group of students on a graduation cruise bound for Manhattan soon realize they've got a stowaway aboard the ship: serial killer Jason Voorhees.",
+                "poster_path": "/s5U5JgPpgfTnbGxQF2bOlfqqz5b.jpg",
+                "popularity": 12.302
+            },
+            {
+                "id": 10285,
+                "video": false,
+                "vote_count": 474,
+                "vote_average": 4.2,
+                "title": "Jason Goes to Hell: The Final Friday",
+                "release_date": "1993",
+                "original_language": "English",
+                "original_title": "Jason Goes to Hell: The Final Friday",
+                "genre_ids": [
+                    27
+                ],
+                "backdrop_path": "/lLsAb0oBdQQselGdSSEmaN4XhR7.jpg",
+                "adult": false,
+                "overview": "Jason Voorhees, the living, breathing essence of evil, is back for one fierce, final fling! Tracked down and blown to bits by a special FBI task force, everyone now assumes that he's finally dead. But everybody assumes wrong. Jason has been reborn with the bone-chilling ability to assume the identity of anyone he touches. The terrifying truth is that he could be anywhere, or anybody. In this shocking, blood-soaked finale to Jason's carnage-ridden reign of terror, the horrible secret of his unstoppable killing instinct is finally revealed.",
+                "poster_path": "/Aacq05foqiWdXqetFv02HBvMoJy.jpg",
+                "popularity": 14.789
+            },
+            {
+                "id": 11470,
+                "video": false,
+                "vote_count": 686,
+                "vote_average": 4.6,
+                "title": "Jason X",
+                "release_date": "2001",
+                "original_language": "English",
+                "original_title": "Jason X",
+                "genre_ids": [
+                    27,
+                    878
+                ],
+                "backdrop_path": "/hcPF3hyL5Knvn1Z7MEoevZY8Dt7.jpg",
+                "adult": false,
+                "overview": "In the year 2455, Old Earth is now a contaminated planet abandoned for centuries -- a brown world of violent storms, toxic landmasses and poisonous seas. Yet humans have returned to the deadly place that they once fled, not to live, but to research the ancient, rusting artifacts of the long-gone civilizations. But it's not the harmful environment that could prove fatal to the intrepid, young explorers who have just landed on Old Earth. For them, it's Friday the 13th, and Jason lives!",
+                "poster_path": "/qizsVrFGEkfVZ3WvkJb1q95JFVf.jpg",
+                "popularity": 16.589
+            },
+            {
+                "id": 6466,
+                "video": false,
+                "vote_count": 1381,
+                "vote_average": 5.8,
+                "title": "Freddy vs. Jason",
+                "release_date": "2003",
+                "original_language": "English",
+                "original_title": "Freddy vs. Jason",
+                "genre_ids": [
+                    27
+                ],
+                "backdrop_path": "/per8xKUsoXn15nPNFwkqUdTk7SY.jpg",
+                "adult": false,
+                "overview": "In an attempt to free himself from a state of forgotten limbo, evil dream-demon Freddy Krueger (Robert Englund) devises a plan to manipulate un-dead mass murderer Jason Voorhees (Ken Kirzenger) into slicing-and-dicing his way through the teenage population of Springwood.  But when the master of dreams loses control of his monster, a brutal fight to the death is the only way out in this long anticipated crossover between two of modern horror's most notorious killers!",
+                "poster_path": "/nKgtVLL9j752T89gr9jY3m7YRyU.jpg",
+                "popularity": 17.982
+            },
+            {
+                "adult": false,
+                "backdrop_path": "/1wifwQ25N27DCIBRqvG3lKkZua3.jpg",
+                "genre_ids": [
+                    27
+                ],
+                "id": 13207,
+                "original_language": "English",
+                "original_title": "Friday the 13th",
+                "overview": "Ignoring the warnings of the locals, a group of teenage camp counselors takes on the job of reopening Camp Crystal Lake — on Friday the 13th no less, and raise the ire of Jason Voorhees, a masked, homicidal maniac.",
+                "poster_path": "/88wlJ4teYlck4hJ2bnlxBrAVh0m.jpg",
+                "release_date": "2009",
+                "title": "Friday the 13th",
+                "video": false,
+                "vote_average": 5.8,
+                "vote_count": 1486,
+                "popularity": 19.666
+            }
         ]
-      }
+    },
+    {
+        "id": 425164,
+        "name": "Dragon Ball Z Movies Collection",
+        "overview": "The collection movies of Dragon Ball Z",
+        "poster_path": "/uJT3CmfSy9R1T2vCVpDWhNJXhPX.jpg",
+        "backdrop_path": "/7PcbijxTfwi9vjWEfXdS0ReAw8q.jpg",
+        "parts": [
+            {
+                "id": 28609,
+                "video": false,
+                "vote_count": 305,
+                "vote_average": 6.5,
+                "title": "Dragon Ball Z: Dead Zone",
+                "release_date": "1989-07-15",
+                "original_language": "ja",
+                "original_title": "ドラゴンボールＺ オラの悟飯をかえせッ!!",
+                "genre_ids": [
+                    28,
+                    16
+                ],
+                "backdrop_path": "/4dmEpmTdXJffmD0FM90WNY3vd3C.jpg",
+                "adult": false,
+                "overview": "Gohan has been kidnapped! To make matters worse, the evil Garlic Jr. is gathering the Dragonballs to wish for immortality. Only then will Garlic Jr. be able to take over the Earth in order to gain revenge for the death of his father. Goku rushes to save Gohan, but arrives at the fortress just as Garlic Jr. summons the Eternal Dragon! Krillin and Piccolo try to help Goku, but their combined powers.",
+                "poster_path": "/ywtyEDTM2YO7qod7USNNwhrAfvA.jpg",
+                "popularity": 17.133
+            },
+            {
+                "adult": false,
+                "backdrop_path": "/xVHgLL32VHlPMl1syvVMuZFSVLM.jpg",
+                "genre_ids": [
+                    28,
+                    16,
+                    878
+                ],
+                "id": 39100,
+                "original_language": "ja",
+                "original_title": "ドラゴンボールZ この世で一番強いヤツ",
+                "overview": "The evil Dr. Kochin uses the dragon balls to resurrect his mentor, Dr. Wheelo, in an effort to take over the world. Dr. Wheelo, his body having been destroyed by the avalanche that killed him fifty years before, desires the body of the strongest fighter in the world as his new vessel. Believing Roshi to be the world's strongest warrior, Dr. Kochin abducts Bulma and forces Roshi to surrender himself to save her. When Goku hears of their abduction, he goes to their rescue.",
+                "poster_path": "/5elbm3iLgGQ6nA5vqUmi9vIojbF.jpg",
+                "release_date": "1990-03-10",
+                "title": "Dragon Ball Z: The World's Strongest",
+                "video": false,
+                "vote_average": 6.3,
+                "vote_count": 270,
+                "popularity": 13.113
+            },
+            {
+                "id": 39101,
+                "video": false,
+                "vote_count": 296,
+                "vote_average": 6.5,
+                "title": "Dragon Ball Z: The Tree of Might",
+                "release_date": "1990-06-07",
+                "original_language": "ja",
+                "original_title": "ドラゴンボールZ 地球まるごと超決戦",
+                "genre_ids": [
+                    28,
+                    16,
+                    878
+                ],
+                "backdrop_path": "/s0XaJEApAfgMgKUBy6UfOnNTtwR.jpg",
+                "adult": false,
+                "overview": "Goku and friends must stop a band of space pirates from consuming fruit from the Tree of Might before it's destructive powers drain Earth's energy.",
+                "poster_path": "/fDX4Dp8IKvjBAaEb5MOJrGkxWX0.jpg",
+                "popularity": 12.461
+            },
+            {
+                "adult": false,
+                "backdrop_path": "/cyQK5IzMXDUS8o84HYbSIFQt1Vy.jpg",
+                "genre_ids": [
+                    28,
+                    16,
+                    878
+                ],
+                "id": 39102,
+                "original_language": "ja",
+                "original_title": "ドラゴンボールゼット 超スーパーサイヤ人じんだ孫そん悟ご空くう",
+                "overview": "A Super Namekian named Slug comes to invade Earth. But the Z Warriors do their best to stop Slug and his gang.",
+                "poster_path": "/vO44QmFFjLzckUxNfzjBPuKHm2N.jpg",
+                "release_date": "1991-03-19",
+                "title": "Dragon Ball Z: Lord Slug",
+                "video": false,
+                "vote_average": 6.3,
+                "vote_count": 286,
+                "popularity": 11.051
+            },
+            {
+                "id": 24752,
+                "video": false,
+                "vote_count": 328,
+                "vote_average": 6.7,
+                "title": "Dragon Ball Z: Cooler's Revenge",
+                "release_date": "1991-07-20",
+                "original_language": "ja",
+                "original_title": "Doragon bôru Z 5: Tobikkiri no saikyô tai saikyô",
+                "genre_ids": [
+                    28,
+                    16,
+                    878
+                ],
+                "backdrop_path": "/hph1RMsL4223xyqxfEx3OXodf5E.jpg",
+                "adult": false,
+                "overview": "After defeating Frieza, Goku returns to Earth and goes on a camping trip with Gohan and Krillin. Everything is normal until Cooler - Frieza's brother - sends three henchmen after Goku. A long fight ensues between our heroes and Cooler, in which he transforms into the fourth stage of his evolution and has the edge in the fight... until Goku transforms into a Super Saiyan.",
+                "poster_path": "/ywZWtNVTO7rGSFvOAPWpdmZlO6k.jpg",
+                "popularity": 13.171
+            },
+            {
+                "adult": false,
+                "backdrop_path": "/l1H7adqYhxBrBK45aKAzqm6nIVC.jpg",
+                "genre_ids": [
+                    28,
+                    16,
+                    878
+                ],
+                "id": 39103,
+                "original_language": "ja",
+                "original_title": "ドラゴンボールZ 激突!!100億パワーの戦士たち",
+                "overview": "Cooler has resurrected himself as a robot and is enslaving the people of New Namek. Goku and the gang must help.",
+                "poster_path": "/zJn14ySh0NTZCOIReQZiWE1fkje.jpg",
+                "release_date": "1992-03-07",
+                "title": "Dragon Ball Z: The Return of Cooler",
+                "video": false,
+                "vote_average": 6.7,
+                "vote_count": 309,
+                "popularity": 12.881
+            },
+            {
+                "adult": false,
+                "backdrop_path": "/mGr18hk6oDQyGjaSpbF7o5epoJV.jpg",
+                "genre_ids": [
+                    28,
+                    16,
+                    878
+                ],
+                "id": 39104,
+                "original_language": "ja",
+                "original_title": "ドラゴンボールＺ 極限バトル！三大超サイヤ人",
+                "overview": "Dr. Gero's Androids #13, #14, and #15 are awakened by the laboratory computers and immediately head to the mall where Goku is shopping. After Goku, Trunks, and Vegeta defeat #14 and #15, #13 absorbs their inner computers and becomes a super being greater than the original three separately were. Now it is up to Goku to stop him.",
+                "poster_path": "/uVJqC187rKxQ1sJsWlKjNfAzeTk.jpg",
+                "release_date": "1992-07-11",
+                "title": "Dragon Ball Z: Super Android 13!",
+                "video": false,
+                "vote_average": 6.6,
+                "vote_count": 272,
+                "popularity": 18.932
+            },
+            {
+                "adult": false,
+                "backdrop_path": "/2GmSSCZ9WE00ti0TdwFQCYbhXuL.jpg",
+                "genre_ids": [
+                    16,
+                    878,
+                    28
+                ],
+                "id": 34433,
+                "original_language": "ja",
+                "original_title": "ドラゴンボールＺ 燃え尽きろ!!熱戦・烈戦・超激戦",
+                "overview": "While the Saiyan Paragus persuades Vegeta to rule a new planet, King Kai alerts Goku of the South Galaxy's destruction by an unknown Super Saiyan.",
+                "poster_path": "/faYggmY3FHQCMPKmnjORQygF6zm.jpg",
+                "release_date": "1993-03-06",
+                "title": "Dragon Ball Z: Broly – The Legendary Super Saiyan",
+                "video": false,
+                "vote_average": 7.2,
+                "vote_count": 475,
+                "popularity": 20.503
+            },
+            {
+                "id": 39105,
+                "video": false,
+                "vote_count": 287,
+                "vote_average": 6.8,
+                "title": "Dragon Ball Z: Bojack Unbound",
+                "release_date": "1993-07-10",
+                "original_language": "ja",
+                "original_title": "ドラゴンボールZ 銀河ギリギリ!! ぶっちぎりの凄い奴",
+                "genre_ids": [
+                    28,
+                    16,
+                    878
+                ],
+                "backdrop_path": "/k5ypSoY4Ze0Gfi8zkijhr6lV3yx.jpg",
+                "adult": false,
+                "overview": "Mr. Money is holding another World Martial Arts Tournament and Mr. Satan invites everyone in the world to join in. Little does he know that Bojack, an ancient villain who has escaped his prison, is competing. Since Goku is currently dead, it is up to Gohan, Vegeta, and Trunks to defeat Bojack and his henchman.",
+                "poster_path": "/iihTK9Af8G1ZzBjkIIAV4qQMkzF.jpg",
+                "popularity": 21.111
+            },
+            {
+                "adult": false,
+                "backdrop_path": "/d4RvwoV7vIG38BoHthnsLk03WgD.jpg",
+                "genre_ids": [
+                    28,
+                    16,
+                    878
+                ],
+                "id": 44251,
+                "original_language": "ja",
+                "original_title": "ドラゴンボールＺ 危険なふたり！超戦士はねむれない",
+                "overview": "A Saiyan Space pod crash-lands on Earth out of which a wounded Saiyan crawls: Broly, the Legendary Super Saiyan. The wounded Broly shouts out in frustration and turns into normal form. The place soon freezes, trapping him in it and he falls into a coma.",
+                "poster_path": "/4CkArpSqySpBQH95Oqr94ktU6rU.jpg",
+                "release_date": "1994-03-12",
+                "title": "Dragon Ball Z: Broly – Second Coming",
+                "video": false,
+                "vote_average": 6.6,
+                "vote_count": 363,
+                "popularity": 20.478
+            },
+            {
+                "adult": false,
+                "backdrop_path": "/1I8QhrrHKaxGE3e0f2S75kqrxd9.jpg",
+                "genre_ids": [
+                    28,
+                    16,
+                    878
+                ],
+                "id": 39106,
+                "original_language": "ja",
+                "original_title": "ドラゴンボールＺ 超戦士撃破!!勝のはオレだ",
+                "overview": "Jaga Bada, Mr. Satan's old sparring partner, has invited Satan to his personal island to hold a grudge match. Trunks and Goten decide to come for the adventure and Android #18 is following Satan for the money he owes her. Little do they know that Jaga Bada's scientist have found a way to resurrect Broly, the legendary Super Saiyan.",
+                "poster_path": "/zndqKR7TTDVWMgD0CSqARVugXoP.jpg",
+                "release_date": "1994-07-09",
+                "title": "Dragon Ball Z: Bio-Broly",
+                "video": false,
+                "vote_average": 5.8,
+                "vote_count": 306,
+                "popularity": 14.453
+            },
+            {
+                "id": 39107,
+                "video": false,
+                "vote_count": 463,
+                "vote_average": 7.5,
+                "title": "Dragon Ball Z: Fusion Reborn",
+                "release_date": "1995-03-04",
+                "original_language": "ja",
+                "original_title": "ドラゴンボールZ 復活のフュージョン!! 悟空とベジータ",
+                "genre_ids": [
+                    28,
+                    16,
+                    14
+                ],
+                "backdrop_path": "/m3GqDIJo3U1pjcBCbHadFYbrOMX.jpg",
+                "adult": false,
+                "overview": "Not paying attention to his job, a young demon allows the evil cleansing machine to overflow and explode, turning the young demon into the infamous monster Janemba. Goku and Vegeta make solo attempts to defeat the monster, but realize their only option is fusion.",
+                "poster_path": "/7AHvaEAeQfkfJ4OqcBePxa2ao09.jpg",
+                "popularity": 11.171
+            },
+            {
+                "adult": false,
+                "backdrop_path": "/vv6HgFCq95kK32T3epDuvXKunjA.jpg",
+                "genre_ids": [
+                    16,
+                    28,
+                    878
+                ],
+                "id": 39108,
+                "original_language": "ja",
+                "original_title": "ドラゴンボールZ 龍拳爆発!!悟空がやらねば誰がやる",
+                "overview": "The Z Warriors discover an unopenable music box and are told to open it with the Dragon Balls. The contents turn out to be a warrior named Tapion who had sealed himself inside along with a monster called Hildegarn. Goku must now perfect a new technique to defeat the evil monster.",
+                "poster_path": "/gd3argrGcs6mEHYPmnVHrP11sCG.jpg",
+                "release_date": "1995-07-15",
+                "title": "Dragon Ball Z: Wrath of the Dragon",
+                "video": false,
+                "vote_average": 7.1,
+                "vote_count": 375,
+                "popularity": 13.445
+            },
+            {
+                "adult": false,
+                "backdrop_path": "/p3QiswydWRXm0vhhIrMrYeR9oOL.jpg",
+                "genre_ids": [
+                    16,
+                    28,
+                    878
+                ],
+                "id": 126963,
+                "original_language": "ja",
+                "original_title": "ドラゴンボールZ 神と神",
+                "overview": "The events of Battle of Gods take place some years after the battle with Majin Buu, which determined the fate of the entire universe. After awakening from a long slumber, Beerus, the God of Destruction is visited by Whis, his attendant and learns that the galactic overlord Frieza has been defeated by a Super Saiyan from the North Quadrant of the universe named Goku, who is also a former student of the North Kai. Ecstatic over the new challenge, Goku ignores King Kai's advice and battles Beerus, but he is easily overwhelmed and defeated. Beerus leaves, but his eerie remark of \"Is there nobody on Earth more worthy to destroy?\" lingers on. Now it is up to the heroes to stop the God of Destruction before all is lost.",
+                "poster_path": "/zpsArO4EkJpDIFh6sbQTwgwEQgy.jpg",
+                "release_date": "2013-03-30",
+                "title": "Dragon Ball Z: Battle of Gods",
+                "video": false,
+                "vote_average": 6.7,
+                "vote_count": 905,
+                "popularity": 18.687
+            },
+            {
+                "adult": false,
+                "backdrop_path": "/yWZCOzib7BipGjYJ39nrplb1Fy.jpg",
+                "genre_ids": [
+                    28,
+                    16,
+                    878
+                ],
+                "id": 303857,
+                "original_language": "ja",
+                "original_title": "ドラゴンボールZ 復活の「F」",
+                "overview": "One peaceful day on Earth, two remnants of Frieza's army named Sorbet and Tagoma arrive searching for the Dragon Balls with the aim of reviving Frieza. They succeed, and Frieza subsequently seeks revenge on the Saiyans.",
+                "poster_path": "/soq3AxjALdBfdPAm8H7yuMmNL5Y.jpg",
+                "release_date": "2015-04-18",
+                "title": "Dragon Ball Z: Resurrection 'F'",
+                "video": false,
+                "vote_average": 6.9,
+                "vote_count": 897,
+                "popularity": 15.858
+            }
+        ]
+    }
 ];
 
 let tooltipIds = [];
