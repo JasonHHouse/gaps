@@ -12,6 +12,7 @@ package com.jasonhhouse.gaps;
 
 import java.util.HashSet;
 import java.util.Set;
+import org.jetbrains.annotations.NotNull;
 
 public final class PlexSearch {
 
@@ -20,13 +21,18 @@ public final class PlexSearch {
     public static final String USERNAME_KEY = "username";
     public static final String USERNAME_VALUE = "user";
     public static final String PASSWORD = "password";
+    public static final String SCHEDULE = "schedule";
 
     private final Set<PlexServer> plexServers;
     private String movieDbApiKey;
     private String password;
 
+    @NotNull
+    private Schedule schedule;
+
     public PlexSearch() {
         plexServers = new HashSet<>();
+        schedule = Schedule.DAILY_4AM;
     }
 
     public void addPlexServer(PlexServer plexServer) {
@@ -53,12 +59,22 @@ public final class PlexSearch {
         this.password = password;
     }
 
+    @NotNull
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(@NotNull Schedule schedule) {
+        this.schedule = schedule;
+    }
+
     @Override
     public String toString() {
         return "PlexSearch{" +
                 "plexServers=" + plexServers +
                 ", movieDbApiKey='" + movieDbApiKey + '\'' +
                 ", password='" + password + '\'' +
+                ", schedule='" + schedule + '\'' +
                 '}';
     }
 }

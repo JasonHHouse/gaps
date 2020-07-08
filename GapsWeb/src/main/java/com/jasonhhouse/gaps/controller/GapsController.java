@@ -46,7 +46,6 @@ public class GapsController {
         this.gapsService = gapsService;
     }
 
-
     @RequestMapping(method = RequestMethod.GET,
             value = "/home",
             produces = MediaType.TEXT_HTML_VALUE)

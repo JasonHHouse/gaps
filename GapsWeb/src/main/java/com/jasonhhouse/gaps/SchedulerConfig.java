@@ -10,8 +10,14 @@
 
 package com.jasonhhouse.gaps;
 
+import com.jasonhhouse.gaps.controller.GapsController;
+import com.jasonhhouse.gaps.service.SchedulerService;
+import java.io.IOException;
 import java.util.Date;
 import java.util.concurrent.ScheduledFuture;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -24,34 +30,42 @@ import org.springframework.scheduling.support.CronTrigger;
 @EnableScheduling
 public class SchedulerConfig implements SchedulingConfigurer {
 
-    private static final String DAILY_4AM = "0 0 4 * * ?";
-    private static final String EVERY_MONDAY = "0 0 4 ? * MON *";
-    private static final String EVERY_TWO_WEEKS = "0 0 4 1,15 * ? *";
-    private static final String EVERY_MONTH = "0 0 4 1 * ?";
+    private static final Logger LOGGER = LoggerFactory.getLogger(GapsController.class);
 
     private TaskScheduler taskScheduler;
     private ScheduledFuture<?> searchAgain;
 
+    private SchedulerService schedulerService;
+
+    public SchedulerConfig(SchedulerService schedulerService) {
+        this.schedulerService = schedulerService;
+    }
+
     @Override
-    public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
+    public void configureTasks(@NotNull ScheduledTaskRegistrar taskRegistrar) {
         ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
         threadPoolTaskScheduler.setPoolSize(1);
         threadPoolTaskScheduler.setThreadNamePrefix("scheduler-thread");
         threadPoolTaskScheduler.initialize();
-        setSearchSchedule(threadPoolTaskScheduler, DAILY_4AM);
+
+        Schedule schedule;
+        try {
+            schedule = schedulerService.getRawSchedule();
+        } catch (IOException e) {
+            LOGGER.error("Error reading schedule. Defaulting to daily.", e);
+            schedule = Schedule.DAILY_4AM;
+        }
+
+        setSearchSchedule(threadPoolTaskScheduler, schedule.getCron());
         this.taskScheduler = threadPoolTaskScheduler;
         taskRegistrar.setTaskScheduler(threadPoolTaskScheduler);
     }
 
     private void setSearchSchedule(TaskScheduler scheduler, String cronExp) {
         searchAgain = scheduler.schedule(() -> {
-            System.out.println(Thread.currentThread().getName() + " The Task1 executed at " + new Date());
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            LOGGER.info(Thread.currentThread().getName() + " The scheduled search executed at " + new Date());
+            //ToDo start gaps search
+
         }, triggerContext -> new CronTrigger(cronExp).nextExecutionTime(triggerContext));
     }
 
