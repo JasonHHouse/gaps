@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=200px height=200px src="https://i.imgur.com/6wj0hh6.jpg" alt="Project logo"></a>
+ <img width=320px height=180px src="https://github.com/JasonHHouse/gaps/tree/master/images/gaps-logo-black.png" alt="Project logo"></a>
 </p>
 
 <h3 align="center">Gaps</h3>
@@ -8,8 +8,8 @@
 <div align="center">
 
   [![Status](https://img.shields.io/badge/status-active-success.svg)]() 
-  [![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/issues)
-  [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/pulls)
+  [![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/JasonHHouse/Gaps/issues)
+  [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/JasonHHouse/Gaps/pulls)
   [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 
 </div>
@@ -40,23 +40,37 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 What things you need to install the software and how to install them.
 
-```
-Give examples
-```
+#### Option 1 
+<code>
+Gaps can run in <a href="https://www.docker.com/">Docker</a>. If you choose to run this way, you'll need a Docker environment installed. Docker has a good write up on installing Docker CE. Check it out <a href="https://docs.docker.com/install/">here</a>. Once you get docker up and running
+</code>
+
+#### Option 2
+<code>
+Gaps can run as an exe on Windows. GapsOnWindows can be found on the <a href="https://github.com/JasonHHouse/gaps/releases">releases</a> page. Gaps-{version}.zip.
+</code>
 
 ### Installing
 A step by step series of examples that tell you how to get a development env running.
 
-Say what the step will be
+With Docker installed, you'll need to now pull down the latest Gaps image. The Gaps image is hosted [here](https://hub.docker.com/r/housewrecker/gaps). To pull the image, run the following command in a terminal
+
+If you are running an x86 machine, use this command.
 
 ```
-Give the example
+docker pull housewrecker/gaps:latest
 ```
 
-And repeat
+If you are running an ARM machine, use this command.
 
 ```
-until finished
+docker pull housewrecker/gaps:arm-latest
+```
+
+With the image pulled, now you can run the container. 
+
+```
+docker run -d -p 8484:8484 --name mygaps --expose 32400 -v /{localFolder}/gaps:/usr/data housewrecker/gaps:latest
 ```
 
 End with an example of getting some data out of the system or using it for a little demo.
