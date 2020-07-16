@@ -1,16 +1,16 @@
 <p align="center">
   <a href="" rel="noopener">
- <img style="background-color: black" width=320px height=180px src="https://github.com/JasonHHouse/gaps/tree/master/images/FinalGAPS.png" alt="Project logo"></a>
+ <img style="background-color: black" width=320px height=180px src="https://github.com/JasonHHouse/gaps/blob/master/images/FinalWHITE.png" alt="Project logo"></a>
 </p>
 
 <h3 align="center">Gaps</h3>
 
 <div align="center">
 
-  [![Status](https://img.shields.io/badge/status-active-success.svg)]() 
-  [![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/JasonHHouse/Gaps/issues)
-  [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/JasonHHouse/Gaps/pulls)
-  [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
+  [![Status](https://github.com/JasonHHouse/gaps/blob/master/images/status.svg)]() 
+  [![GitHub Issues](https://github.com/JasonHHouse/gaps/blob/master/images/issues.svg)](https://github.com/JasonHHouse/Gaps/issues)
+  [![GitHub Pull Requests](https://github.com/JasonHHouse/gaps/blob/master/images/prs.svg)](https://github.com/JasonHHouse/Gaps/pulls)
+  [![License](https://github.com/JasonHHouse/gaps/blob/master/images/license.svg)](/LICENSE)
 
 </div>
 
@@ -77,13 +77,13 @@ Open your browser and navigate to, http://{IP_ADDRESS}:8484
 
 If everything worked, you will be greeted by the gaps home page.
 
-![Home Page](images/gaps-main.png)
+![Home Page](https://github.com/JasonHHouse/gaps/blob/master/images/gaps-main.png)
 
 ## 🎈 Usage <a name="usage"></a>
 
 ### Home Page
 
-![Home Page](images/gaps-main.png)
+![Home Page](https://github.com/JasonHHouse/gaps/blob/master/images/gaps-main.png)
 
 Click the *Settings* tab to set up Gaps. 
 
@@ -103,7 +103,7 @@ Click the *Plex* tab to set up Gaps.
 
 #### Plex
 
-![Plex Connection](images/plex-configuration.png)
+![Plex Connection](https://github.com/JasonHHouse/gaps/blob/master/images/plex-configuration.png)
 
 Now you'll need to configure how to connect Gaps to Plex. This includes three main things: the host/ip address of Plex, the port Plex uses, and your personal Plex Token.
 
@@ -133,7 +133,7 @@ Click the *Save* button to add your Plex server.
 
 #### Network
 
-![Plex Connection](images/network-configuration.png)
+![Plex Connection](https://github.com/JasonHHouse/gaps/blob/master/images/network-configuration.png)
 
 Increase the timeout if Plex connection is on a remote network and timeouts are occurring.
 
@@ -143,11 +143,11 @@ Click the *Libraries* tab to set up Gaps.
 
 *If you have more than one Movie Library or Plex Server, the dropdown lets you pick the Server and Library to search from.*  
 
-![Plex Movie Libraries](images/plex-libraries-empty.png)
+![Plex Movie Libraries](https://github.com/JasonHHouse/gaps/blob/master/images/plex-libraries-empty.png)
 
 Click the *Search* button find your Plex Movies.
 
-![Plex Movie Libraries](images/plex-libraries.png)
+![Plex Movie Libraries](https://github.com/JasonHHouse/gaps/blob/master/images/plex-libraries.png)
 
 Gaps will display the movies found in the Plex Server Library.
 
@@ -158,17 +158,17 @@ Click the *Recommended* tab to set up Gaps.
 ### Missing
 Once you've started searching, the movies will start populating on the final page.
 
-![Gap Not Searched Missing Movies Yet](images/recommended-empty.png) 
+![Gap Not Searched Missing Movies Yet](https://github.com/JasonHHouse/gaps/blob/master/images/recommended-empty.png) 
 
 Click the *Search* button find your missing movies.
 
-![Gaps Recommended Movies](images/recommended.png) 
+![Gaps Recommended Movies](https://github.com/JasonHHouse/gaps/blob/master/images/recommended.png) 
 
 For large libraries, this can take a while to run. The results are stored and only need to be rerun when Plex updates. Missing movies are added as found. Do not navigate away. Gaps will still run but you'll have to check logs to know when it is complete. It is currently easier to just leave the page open. Fixes for this are coming soon.
 
 ### Recommended and RSS
 
-![Gaps RSS Feed](images/rss.png) 
+![Gaps RSS Feed](https://github.com/JasonHHouse/gaps/blob/master/images/rss.png) 
 
 Once you've completed at least one search of your plex libraries, you can then view and use the output as RSS.
 
