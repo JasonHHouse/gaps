@@ -91,7 +91,7 @@ Click the *Settings* tab to set up Gaps.
 
 #### TMDB
 
-First you need to enter your The Movie Database (TMDB) Api Key. As noted on the page, to use Gaps, you'll need a MovieDB api key. Navigate over to [The Movie DB](https://www.themoviedb.org/settings/api), create an account, and make an API Key. Copy that key and paste it below.
+First, you need to enter your The Movie Database (TMDB) API Key. As noted on the page, to use Gaps, you'll need a MovieDB API key. Navigate over to [The Movie DB](https://www.themoviedb.org/settings/api), create an account, and make an API Key. Copy that key and paste it below.
 
 With your TMDB key added, now you need to configure the information to connect to Plex.
 
@@ -105,9 +105,9 @@ Click the *Plex* tab to set up Gaps.
 
 ![Plex Connection](https://github.com/JasonHHouse/gaps/blob/master/images/plex-configuration.png)
 
-Now you'll need to configure how to connect Gaps to Plex. This includes three main things: the host/ip address of Plex, the port Plex uses, and your personal Plex Token.
+Now you'll need to configure how to connect Gaps to Plex. This includes three main things: the host/IP address of Plex, the port Plex uses, and your personal Plex Token.
 
-The host/ip address and port are the same ones you use to connect to Plex via the web. It could look something like this
+The host/IP address and port are the same ones you use to connect to Plex via the web. It could look something like this
 
     https://localhost:32400/web/index.html
     
@@ -119,7 +119,7 @@ If Plex and Gaps are both running in the same Docker, you may need to use the IP
 
     https://192.168.1.10:32400/web/index.html
 
-So, in the first case the host is localhost and the port 32400. In the second case, the host is 127.0.0.1 with the same port.
+So, in the first case, the host is localhost and the port 32400. In the second case, the host is 127.0.0.1 with the same port.
 
 Lastly, you'll need to get your personal Plex Token. If you do not know already it's easy to find. Plex has a great write up [here](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/) about how to find your token.
 
@@ -145,7 +145,7 @@ Click the *Libraries* tab to set up Gaps.
 
 ![Plex Movie Libraries](https://github.com/JasonHHouse/gaps/blob/master/images/plex-libraries-empty.png)
 
-Click the *Search* button find your Plex Movies.
+Click the *Search* button to find your Plex Movies.
 
 ![Plex Movie Libraries](https://github.com/JasonHHouse/gaps/blob/master/images/plex-libraries.png)
 
@@ -160,7 +160,7 @@ Once you've started searching, the movies will start populating on the final pag
 
 ![Gap Not Searched Missing Movies Yet](https://github.com/JasonHHouse/gaps/blob/master/images/recommended-empty.png) 
 
-Click the *Search* button find your missing movies.
+Click the *Search* button to find your missing movies.
 
 ![Gaps Recommended Movies](https://github.com/JasonHHouse/gaps/blob/master/images/recommended.png) 
 
