@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
- <img style="background-color: black" width=320px height=180px src="https://github.com/JasonHHouse/gaps/blob/master/images/FinalWHITE.png" alt="Project logo"></a>
+ <img style="background-color: black" width=320px height=180px src="https://github.com/JasonHHouse/gaps/blob/master/images/Final-Black.png" alt="Project logo"></a>
 </p>
 
 <h3 align="center">Gaps</h3>
