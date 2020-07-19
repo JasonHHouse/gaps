@@ -30,6 +30,7 @@ import java.time.LocalDate;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -418,6 +419,8 @@ public class GapsSearchService implements GapsSearch {
                 JsonNode parts = collection.get("parts");
                 parts.iterator().forEachRemaining(jsonNode -> moviesInCollection.add(jsonNode.get("original_title").toString()));
             }
+
+            LOGGER.info("MoviesInCollection: " + Arrays.toString(moviesInCollection.toArray()));
 
             if (collection.has("status_code") && collection.get("status_code").asInt() == 34) {
                 LOGGER.warn(collection.get("status_message").asText());

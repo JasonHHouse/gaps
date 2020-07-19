@@ -182,6 +182,11 @@
                     <h6 class="card-title">{{collection}}</h6>
                     <p class="card-text text-muted">{{overview}}</p>
                     <p class="card-text"><small class="text-info">English</small></p>
+                    <ul>
+                        {{#each movies_in_collection}}
+                        <li>{{this}}</li>
+                        {{/each}}
+                    </ul>
                 </div>
             </div>
         </div>

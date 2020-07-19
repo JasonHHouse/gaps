@@ -35,7 +35,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-@RestController(value = "/libraries")
+@RestController
+@RequestMapping("/libraries")
 public class LibraryController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LibraryController.class);

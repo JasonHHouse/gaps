@@ -37,6 +37,11 @@ public class MovieSerializer extends StdSerializer<Movie> {
         jsonGenerator.writeStringField(Movie.COLLECTION, movie.getCollection());
         jsonGenerator.writeStringField(Movie.LANGUAGE, movie.getLanguage());
         jsonGenerator.writeStringField(Movie.OVERVIEW, movie.getOverview());
+        jsonGenerator.writeArrayFieldStart(Movie.MOVIES_IN_COLLECTION);
+        for (String movieInCollection : movie.getMoviesInCollection()) {
+            jsonGenerator.writeString(movieInCollection);
+        }
+        jsonGenerator.writeEndArray();
         jsonGenerator.writeEndObject();
     }
 }
