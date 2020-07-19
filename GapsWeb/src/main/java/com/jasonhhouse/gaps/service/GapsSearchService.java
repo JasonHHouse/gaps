@@ -170,7 +170,7 @@ public class GapsSearchService implements GapsSearch {
      * optimize some network calls, we add movies found in a collection and in plex to our already searched list, so we
      * don't re-query collections again and again.
      */
-    @SuppressFBWarnings(value="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
+    @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private void searchForMovies(String machineIdentifier, Integer key, Set<Movie> ownedMovies, List<Movie> everyMovie, Set<Movie> recommended, Set<Movie> searched,
                                  AtomicInteger searchedMovieCount) throws SearchCancelledException, IOException {
         LOGGER.info("searchForMovies()");
@@ -413,6 +413,12 @@ public class GapsSearchService implements GapsSearch {
 
             int indexOfMovie = everyMovie.indexOf(movie);
 
+            List<String> moviesInCollection = new ArrayList<>();
+            if (collection.has("parts")) {
+                JsonNode parts = collection.get("parts");
+                parts.iterator().forEachRemaining(jsonNode -> moviesInCollection.add(jsonNode.get("original_title").toString()));
+            }
+
             if (collection.has("status_code") && collection.get("status_code").asInt() == 34) {
                 LOGGER.warn(collection.get("status_message").asText());
                 return;
@@ -423,6 +429,7 @@ public class GapsSearchService implements GapsSearch {
                 everyMovie.get(indexOfMovie).setCollection(name);
                 movie.setCollection(name);
                 movie.setCollectionId(id);
+                movie.getMoviesInCollection().addAll(moviesInCollection);
             } else {
                 int id = collection.get("id").asInt();
                 String name = collection.get("name").asText();
@@ -431,6 +438,7 @@ public class GapsSearchService implements GapsSearch {
                         .setImdbId(movie.getImdbId())
                         .setCollection(name)
                         .setCollectionId(id)
+                        .setMoviesInCollection(moviesInCollection)
                         .build();
                 everyMovie.add(newMovie);
 

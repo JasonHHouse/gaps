@@ -14,7 +14,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jasonhhouse.gaps.json.MovieDeserializer;
 import com.jasonhhouse.gaps.json.MovieSerializer;
-import com.jasonhhouse.plex.Video;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -42,6 +43,8 @@ public final class Movie implements Comparable<Movie> {
 
     public static final String OVERVIEW = "overview";
 
+    public static final String MOVIES_IN_COLLECTION = "movies_in_collection";
+
     private final String name;
 
     private final Integer year;
@@ -61,9 +64,11 @@ public final class Movie implements Comparable<Movie> {
     private Integer collectionId;
     @NotNull
     private Integer tvdbId;
+    @NotNull
+    private final List<String> moviesInCollection;
 
     private Movie(String name, Integer year, @Nullable String posterUrl, @Nullable String collection, @NotNull Integer collectionId, @NotNull Integer tvdbId,
-                  @Nullable String imdbId, @Nullable String language, @Nullable String overview) {
+                  @Nullable String imdbId, @Nullable String language, @Nullable String overview, @NotNull List<String> moviesInCollection) {
         this.name = name;
         this.year = year;
         this.posterUrl = posterUrl;
@@ -73,6 +78,7 @@ public final class Movie implements Comparable<Movie> {
         this.imdbId = imdbId;
         this.language = language;
         this.overview = overview;
+        this.moviesInCollection = moviesInCollection;
     }
 
     public @NotNull Integer getCollectionId() {
@@ -121,6 +127,11 @@ public final class Movie implements Comparable<Movie> {
     @Nullable
     public String getOverview() {
         return overview;
+    }
+
+    @NotNull
+    public List<String> getMoviesInCollection() {
+        return moviesInCollection;
     }
 
     @Override
@@ -198,6 +209,8 @@ public final class Movie implements Comparable<Movie> {
 
         private String overview;
 
+        private List<String> moviesInCollection;
+
         public Builder(String name, int year) {
             this.name = name;
             this.year = year;
@@ -208,10 +221,11 @@ public final class Movie implements Comparable<Movie> {
             this.collectionId = -1;
             this.language = "en";
             this.overview = "";
+            this.moviesInCollection = new ArrayList<>();
         }
 
         public Movie build() {
-            return new Movie(name, year, posterUrl, collection, collectionId, tvdbId, imdbId, language, overview);
+            return new Movie(name, year, posterUrl, collection, collectionId, tvdbId, imdbId, language, overview, moviesInCollection);
         }
 
         public Builder setPosterUrl(String posterUrl) {
@@ -246,6 +260,11 @@ public final class Movie implements Comparable<Movie> {
 
         public Builder setOverview(String overview) {
             this.overview = overview;
+            return this;
+        }
+
+        public Builder setMoviesInCollection(List<String> moviesInCollection) {
+            this.moviesInCollection = moviesInCollection;
             return this;
         }
     }

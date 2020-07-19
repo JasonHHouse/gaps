@@ -2,7 +2,6 @@ package com.jasonhhouse.gaps;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.jetbrains.annotations.NotNull;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Payload {
@@ -43,8 +42,8 @@ public enum Payload {
     }
 
     @SuppressFBWarnings(
-            value="ME_ENUM_FIELD_SETTER",
-            justification="I know what I'm doing")
+            value = "ME_ENUM_FIELD_SETTER",
+            justification = "I know what I'm doing")
     public Payload setExtras(Object extras) {
         this.extras = extras;
         return this;

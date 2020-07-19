@@ -16,17 +16,16 @@ import com.jasonhhouse.gaps.MoviePair;
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexQuery;
 import com.jasonhhouse.gaps.service.IoService;
-import com.jasonhhouse.plex.MediaContainer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -48,8 +47,7 @@ public class PlexMovieListController {
         this.plexQuery = plexQuery;
     }
 
-    @RequestMapping(method = RequestMethod.GET,
-            value = "/movies/{machineIdentifier}/{key}")
+    @GetMapping(value = "/movies/{machineIdentifier}/{key}")
     @ResponseBody
     public ResponseEntity<List<Movie>> getPlexMovies(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("getPlexMovies( " + machineIdentifier + ", " + key + " )");

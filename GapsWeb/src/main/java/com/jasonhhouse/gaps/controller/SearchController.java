@@ -28,12 +28,9 @@ public class SearchController {
 
     private final GapsSearch gapsSearch;
 
-    private final IoService ioService;
-
     @Autowired
-    SearchController(GapsSearch gapsSearch, IoService ioService) {
+    SearchController(GapsSearch gapsSearch) {
         this.gapsSearch = gapsSearch;
-        this.ioService = ioService;
     }
 
     @MessageMapping("/cancelSearching")

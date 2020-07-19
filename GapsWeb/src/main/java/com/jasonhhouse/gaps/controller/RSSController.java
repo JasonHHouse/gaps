@@ -15,16 +15,18 @@ import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.service.RssService;
-import org.apache.commons.collections4.CollectionUtils;
+import java.util.Map;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.Map;
 
 @RestController
 public class RSSController {
@@ -42,10 +44,9 @@ public class RSSController {
         this.gapsService = gapsService;
     }
 
-    @RequestMapping(method = RequestMethod.GET,
-            path = "/rss/{machineIdentifier}/{libraryKey}")
+    @GetMapping(path = "/rss/{machineIdentifier}/{libraryKey}")
     public String getRss(@PathVariable("machineIdentifier") String machineIdentifier, @PathVariable("libraryKey") Integer libraryKey) {
-        LOGGER.info("getRss( " + machineIdentifier + ", " + libraryKey +  " )");
+        LOGGER.info("getRss( " + machineIdentifier + ", " + libraryKey + " )");
 
         String rss = null;
         if (ioService.doesRssFileExist(machineIdentifier, libraryKey)) {
@@ -63,8 +64,7 @@ public class RSSController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET,
-            path = "/rssCheck")
+    @GetMapping(path = "/rssCheck")
     public ModelAndView getRssCheck() {
         LOGGER.info("getRssCheck()");
 
