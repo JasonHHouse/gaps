@@ -16,6 +16,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.jasonhhouse.gaps.Movie;
+import com.jasonhhouse.gaps.Pair;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -64,12 +66,12 @@ public class MovieDeserializer extends StdDeserializer<Movie> {
             overview = node.get(Movie.OVERVIEW).asText();
         }
 
-        List<String> moviesInCollection = new ArrayList<>();
+        List<Pair<String, String>> moviesInCollection = new ArrayList<>();
         if (node.has(Movie.MOVIES_IN_COLLECTION)) {
             ArrayNode arrayNode = (ArrayNode) node.get(Movie.MOVIES_IN_COLLECTION);
-            if(arrayNode.isArray()) {
+            if (arrayNode.isArray()) {
                 for (JsonNode jsonNode : arrayNode) {
-                    moviesInCollection.add(jsonNode.asText());
+                    moviesInCollection.add(new Pair<>(jsonNode.get("name").asText(), jsonNode.get("id").asText()));
                 }
             }
         }

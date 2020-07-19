@@ -65,10 +65,10 @@ public final class Movie implements Comparable<Movie> {
     @NotNull
     private Integer tvdbId;
     @NotNull
-    private final List<String> moviesInCollection;
+    private final List<Pair<String, String>> moviesInCollection;
 
     private Movie(String name, Integer year, @Nullable String posterUrl, @Nullable String collection, @NotNull Integer collectionId, @NotNull Integer tvdbId,
-                  @Nullable String imdbId, @Nullable String language, @Nullable String overview, @NotNull List<String> moviesInCollection) {
+                  @Nullable String imdbId, @Nullable String language, @Nullable String overview, @NotNull List<Pair<String, String>> moviesInCollection) {
         this.name = name;
         this.year = year;
         this.posterUrl = posterUrl;
@@ -130,7 +130,7 @@ public final class Movie implements Comparable<Movie> {
     }
 
     @NotNull
-    public List<String> getMoviesInCollection() {
+    public List<Pair<String, String>> getMoviesInCollection() {
         return moviesInCollection;
     }
 
@@ -209,7 +209,7 @@ public final class Movie implements Comparable<Movie> {
 
         private String overview;
 
-        private List<String> moviesInCollection;
+        private List<Pair<String, String>> moviesInCollection;
 
         public Builder(String name, int year) {
             this.name = name;
@@ -263,7 +263,7 @@ public final class Movie implements Comparable<Movie> {
             return this;
         }
 
-        public Builder setMoviesInCollection(List<String> moviesInCollection) {
+        public Builder setMoviesInCollection(List<Pair<String, String>> moviesInCollection) {
             this.moviesInCollection = moviesInCollection;
             return this;
         }

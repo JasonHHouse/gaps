@@ -15,13 +15,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
-import com.jasonhhouse.gaps.GapsSearch;
-import com.jasonhhouse.gaps.GapsService;
-import com.jasonhhouse.gaps.Movie;
-import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.SearchCancelledException;
-import com.jasonhhouse.gaps.SearchResults;
-import com.jasonhhouse.gaps.UrlGenerator;
+import com.jasonhhouse.gaps.*;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -38,6 +32,8 @@ import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -414,10 +410,10 @@ public class GapsSearchService implements GapsSearch {
 
             int indexOfMovie = everyMovie.indexOf(movie);
 
-            List<String> moviesInCollection = new ArrayList<>();
+            List<Pair<String, String>> moviesInCollection = new ArrayList<>();
             if (collection.has("parts")) {
                 JsonNode parts = collection.get("parts");
-                parts.iterator().forEachRemaining(jsonNode -> moviesInCollection.add(jsonNode.get("original_title").toString()));
+                parts.iterator().forEachRemaining(jsonNode -> moviesInCollection.add(new Pair<>(jsonNode.get("title").asText(), jsonNode.get("id").asText())));
             }
 
             LOGGER.info("MoviesInCollection: " + Arrays.toString(moviesInCollection.toArray()));
@@ -481,6 +477,7 @@ public class GapsSearchService implements GapsSearch {
                         .setCollectionId(movie.getCollectionId())
                         .setCollection(movie.getCollection())
                         .setPosterUrl(posterUrl)
+                        .setMoviesInCollection(moviesInCollection)
                         .build();
 
                 Movie ownedMovieFromCollection = new Movie.Builder(title, year).build();
@@ -544,6 +541,7 @@ public class GapsSearchService implements GapsSearch {
                                 .setCollection(movie.getCollection())
                                 .setPosterUrl("https://image.tmdb.org/t/p/w185/" + movieDet.get("poster_path").asText())
                                 .setOverview(movieDet.get("overview").asText())
+                                .setMoviesInCollection(moviesInCollection)
                                 .build();
 
                         if (recommended.add(recommendedMovie)) {

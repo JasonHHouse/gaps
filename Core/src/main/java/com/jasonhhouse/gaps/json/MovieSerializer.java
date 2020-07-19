@@ -14,6 +14,8 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.jasonhhouse.gaps.Movie;
+import com.jasonhhouse.gaps.Pair;
+
 import java.io.IOException;
 
 public class MovieSerializer extends StdSerializer<Movie> {
@@ -38,8 +40,11 @@ public class MovieSerializer extends StdSerializer<Movie> {
         jsonGenerator.writeStringField(Movie.LANGUAGE, movie.getLanguage());
         jsonGenerator.writeStringField(Movie.OVERVIEW, movie.getOverview());
         jsonGenerator.writeArrayFieldStart(Movie.MOVIES_IN_COLLECTION);
-        for (String movieInCollection : movie.getMoviesInCollection()) {
-            jsonGenerator.writeString(movieInCollection);
+        for (Pair<String, String> movieInCollection : movie.getMoviesInCollection()) {
+            jsonGenerator.writeStartObject();
+            jsonGenerator.writeStringField("name", movieInCollection.getLeft());
+            jsonGenerator.writeStringField("id", movieInCollection.getRight());
+            jsonGenerator.writeEndObject();
         }
         jsonGenerator.writeEndArray();
         jsonGenerator.writeEndObject();
