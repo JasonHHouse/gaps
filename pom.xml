@@ -11,12 +11,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.0.RELEASE</version>
+        <version>2.3.1.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.jasonhhouse</groupId>
     <artifactId>Gaps</artifactId>
-    <version>0.4.2</version>
+    <version>0.4.3</version>
     <name>Gaps</name>
     <description>Demo project for Spring Boot</description>
 
@@ -102,11 +102,18 @@
                     <dependency>
                         <groupId>com.github.spotbugs</groupId>
                         <artifactId>spotbugs</artifactId>
-                        <version>4.0.3</version>
+                        <version>4.0.6</version>
                     </dependency>
                 </dependencies>
             </plugin>
         </plugins>
     </build>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub OWNER Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/JasonHHouse/gaps</url>
+        </repository>
+    </distributionManagement>
 </project>

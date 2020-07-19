@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="0.4.2"
+VERSION="0.4.3"
 DOCKER_LATEST="housewrecker/gaps:v$VERSION"
 JAR_VERSION="GapsWeb/target/GapsWeb-$VERSION.jar"
 ZIP_VERSION="Gaps-$VERSION.zip"

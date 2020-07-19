@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
+@RequestMapping("/libraries")
 public class LibraryController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LibraryController.class);
@@ -54,8 +56,7 @@ public class LibraryController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET,
-            path = "/libraries")
+    @GetMapping
     public ModelAndView getLibraries() {
         LOGGER.info("getLibraries()");
 
@@ -99,8 +100,7 @@ public class LibraryController {
         return modelAndView;
     }
 
-    @RequestMapping(method = RequestMethod.GET,
-            path = "/libraries/{machineIdentifier}/{key}")
+    @GetMapping(path = "{machineIdentifier}/{key}")
     @ResponseBody
     public ResponseEntity<Payload> getLibraries(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("getLibraries( " + machineIdentifier + ", " + key + " )");

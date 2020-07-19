@@ -36,7 +36,7 @@ public interface PlexQuery {
      * Connect to plex via the URL and parse all the movies from the returned XML creating a HashSet of movies the
      * user has.
      */
-    List<Movie> findAllPlexMovies(Map<MoviePair, Movie> previousMovies, @NotNull String url);
+    List<Movie> findAllPlexMovies(Map<Pair<String, Integer>, Movie> previousMovies, @NotNull String url);
 
     @NotNull MediaContainer findAllPlexVideos(@NotNull String url);
 }

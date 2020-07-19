@@ -13,7 +13,7 @@ package com.jasonhhouse.gaps;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 
-public class Rss {
+public final class Rss {
     @JsonProperty("imdb_id")
     private String imdbId;
 

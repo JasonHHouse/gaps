@@ -31,15 +31,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
+@RequestMapping("/recommended")
 public class RecommendedController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RecommendedController.class);
@@ -55,7 +57,7 @@ public class RecommendedController {
         this.gapsSearch = gapsSearch;
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/recommended")
+    @GetMapping
     public ModelAndView getRecommended() {
         LOGGER.info("getRecommended()");
 
@@ -80,9 +82,7 @@ public class RecommendedController {
         return modelAndView;
     }
 
-
-    @RequestMapping(method = RequestMethod.GET,
-            path = "/recommended/{machineIdentifier}/{key}")
+    @GetMapping(path = "{machineIdentifier}/{key}")
     @ResponseBody
     public ResponseEntity<Payload> getRecommended(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("getRecommended( " + machineIdentifier + ", " + key + " )");
@@ -133,8 +133,7 @@ public class RecommendedController {
      * @param machineIdentifier plex server id
      * @param key               plex library key
      */
-    @RequestMapping(value = "/recommended/find/{machineIdentifier}/{key}",
-            method = RequestMethod.PUT)
+    @PutMapping(value = "/find/{machineIdentifier}/{key}")
     @ResponseStatus(value = HttpStatus.OK)
     public void putFindRecommencedMovies(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("putFindRecommencedMovies( " + machineIdentifier + ", " + key + " )");
@@ -148,7 +147,7 @@ public class RecommendedController {
      * @param machineIdentifier plex server id
      * @param key               plex library key
      */
-    @MessageMapping("/recommended/cancel/{machineIdentifier}/{key}")
+    @MessageMapping("/cancel/{machineIdentifier}/{key}")
     public void cancelSearching(@DestinationVariable final String machineIdentifier, @DestinationVariable final Integer key) {
         LOGGER.info("cancelSearching( " + machineIdentifier + ", " + key + " )");
         gapsSearch.cancelSearch();
