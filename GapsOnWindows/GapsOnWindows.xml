@@ -2,8 +2,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>console</headerType>
-  <jar>/Users/jhouse/Code/Gaps/GapsWeb/target/GapsWeb-0.4.3-SNAPSHOT.jar</jar>
-  <outfile>/Users/jhouse/Desktop/Gaps-v0.4.3-SNAPSHOT.exe</outfile>
+  <jar>/Users/jhouse/Code/Gaps/GapsWeb/target/GapsWeb-0.4.3.jar</jar>
+  <outfile>/Users/jhouse/Desktop/Gaps-v0.4.3.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>

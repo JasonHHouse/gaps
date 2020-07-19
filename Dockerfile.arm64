@@ -34,6 +34,3 @@ CMD ./start.sh
 #docker run -p 8484:8484 --env ENABLE_SSL=true --name gaps-dev -v /home/jason/gaps:/usr/data:Z gaps-dev
 #docker run -p 8484:8484 --env ENABLE_LOGIN=true --name gaps-dev -v /home/jason/gaps:/usr/data:Z gaps-dev
 #docker run -p 8484:8484 --name gaps-dev -v /home/jason/gaps:/usr/data:Z gaps-dev
-
-#docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t housewrecker/gaps:arm-latest .
-#docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t housewrecker/gaps:arm-latest -f Dockerfile.arm64 .
