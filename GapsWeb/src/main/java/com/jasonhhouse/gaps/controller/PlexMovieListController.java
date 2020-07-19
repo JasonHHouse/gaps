@@ -10,11 +10,7 @@
 
 package com.jasonhhouse.gaps.controller;
 
-import com.jasonhhouse.gaps.GapsService;
-import com.jasonhhouse.gaps.Movie;
-import com.jasonhhouse.gaps.MoviePair;
-import com.jasonhhouse.gaps.PlexLibrary;
-import com.jasonhhouse.gaps.PlexQuery;
+import com.jasonhhouse.gaps.*;
 import com.jasonhhouse.gaps.service.IoService;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +24,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -53,7 +48,7 @@ public class PlexMovieListController {
         LOGGER.info("getPlexMovies( " + machineIdentifier + ", " + key + " )");
 
         Set<Movie> everyMovie = ioService.readMovieIdsFromFile();
-        Map<MoviePair, Movie> previousMovies = generateOwnedMovieMap(everyMovie);
+        Map<Pair<String, Integer>, Movie> previousMovies = generateOwnedMovieMap(everyMovie);
         String url = generatePlexUrl(machineIdentifier, key);
         List<Movie> ownedMovies = plexQuery.findAllPlexMovies(previousMovies, url);
 
@@ -62,8 +57,8 @@ public class PlexMovieListController {
         return ResponseEntity.ok().body(ownedMovies);
     }
 
-    private Map<MoviePair, Movie> generateOwnedMovieMap(Set<Movie> everyMovie) {
-        Map<MoviePair, Movie> previousMovies = new HashMap<>();
+    private Map<Pair<String, Integer>, Movie> generateOwnedMovieMap(Set<Movie> everyMovie) {
+        Map<Pair<String, Integer>, Movie> previousMovies = new HashMap<>();
 
         gapsService
                 .getPlexSearch()
@@ -75,7 +70,7 @@ public class PlexMovieListController {
                         .forEach(plexLibrary -> {
                             everyMovie
                                     .forEach(movie -> {
-                                        previousMovies.put(new MoviePair(movie.getName(), movie.getYear()), movie);
+                                        previousMovies.put(new Pair<>(movie.getName(), movie.getYear()), movie);
                                     });
                         }));
 

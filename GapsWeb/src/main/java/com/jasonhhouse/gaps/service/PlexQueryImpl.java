@@ -10,13 +10,7 @@
 
 package com.jasonhhouse.gaps.service;
 
-import com.jasonhhouse.gaps.Movie;
-import com.jasonhhouse.gaps.MoviePair;
-import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.PlexLibrary;
-import com.jasonhhouse.gaps.PlexQuery;
-import com.jasonhhouse.gaps.PlexServer;
-import com.jasonhhouse.gaps.UrlGenerator;
+import com.jasonhhouse.gaps.*;
 import com.jasonhhouse.plex.MediaContainer;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -298,7 +292,7 @@ public class PlexQueryImpl implements PlexQuery {
 
 
     @Override
-    public List<Movie> findAllPlexMovies(Map<MoviePair, Movie> previousMovies, @NotNull String url) {
+    public List<Movie> findAllPlexMovies(Map<Pair<String, Integer>, Movie> previousMovies, @NotNull String url) {
         LOGGER.info("findAllPlexMovies()");
 
         List<Movie> ownedMovies = new ArrayList<>();
@@ -418,8 +412,8 @@ public class PlexQueryImpl implements PlexQuery {
         return ownedMovies;
     }
 
-    private Movie getOrCreateOwnedMovie(Map<MoviePair, Movie> previousMovies, String title, int year, String thumbnail, int tvdbId, String imdbId, String language, int collection, String collectionName, String summary) {
-        MoviePair moviePair = new MoviePair(title, year);
+    private Movie getOrCreateOwnedMovie(Map<Pair<String, Integer>, Movie> previousMovies, String title, int year, String thumbnail, int tvdbId, String imdbId, String language, int collection, String collectionName, String summary) {
+        Pair<String, Integer> moviePair = new Pair<>(title, year);
         if (previousMovies.containsKey(moviePair)) {
             return previousMovies.get(moviePair);
         } else {
