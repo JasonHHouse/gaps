@@ -167,12 +167,10 @@
 </div>
 
 <script id="movieCard" type="text/x-handlebars-template">
-    <div>{{json movie}}</div>
-
-    <div class="card mb-3">
+    <div class="card">
         <div class="row no-gutters">
             <div class="col-12 col-md-auto">
-                <img style="height: 225px; width: 150px; display: block;"
+                <img style="height: auto; width: 225px; display: block;"
                      src="{{poster_url}}"
                      class="card-img" alt="Plex Poster">
             </div>
@@ -180,11 +178,25 @@
                 <div class="card-body">
                     <h5 class="card-title">{{name}} ({{year}})</h5>
                     <h6 class="card-title">{{collection}}</h6>
-                    <p class="card-text text-muted">{{overview}}</p>
+                    <p class="card-text text-muted long-text">{{overview}}</p>
                     <p class="card-text"><small class="text-info">English</small></p>
-                    {{#each movies_in_collection}}
-                    <a href="https://www.themoviedb.org/movie/{{this.id}}" class="card-link" target="_blank">{{this.name}}</a>
-                    {{/each}}
+                    <div>
+                        <span class="card-text">Owned</span><br>
+                        {{#each movies_in_collection}}
+                        {{#if this.owned}}
+                        <a href="https://www.themoviedb.org/movie/{{this.id}}" class="card-link" target="_blank">{{this.title}}</a>
+                        {{/if}}
+                        {{/each}}
+                    </div>
+                    <br>
+                    <div>
+                        <span class="card-text">Missing</span><br>
+                        {{#each movies_in_collection}}
+                        {{#if (isNotOwned this.owned)}}
+                        <a href="https://www.themoviedb.org/movie/{{this.id}}" class="card-link" target="_blank">{{this.title}}</a>
+                        {{/if}}
+                        {{/each}}
+                    </div>
                 </div>
             </div>
         </div>

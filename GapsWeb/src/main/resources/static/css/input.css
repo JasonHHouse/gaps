@@ -154,3 +154,11 @@
     mask: url(/images/info-circle.svg) no-repeat center / contain;
     -webkit-mask: url(/images/info-circle.svg) no-repeat center / contain;
 }
+
+.long-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* number of lines to show */
+    -webkit-box-orient: vertical;
+}

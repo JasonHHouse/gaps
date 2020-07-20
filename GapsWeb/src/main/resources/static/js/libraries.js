@@ -17,10 +17,6 @@ let moviesTable;
 let libraryKey;
 
 jQuery(function ($) {
-    Handlebars.registerHelper('json', function (context) {
-        return JSON.stringify(context);
-    });
-
     libraryTitle = $('#libraryTitle');
     noMovieContainer = $('#noMovieContainer');
     movieContainer = $('#movieContainer');
