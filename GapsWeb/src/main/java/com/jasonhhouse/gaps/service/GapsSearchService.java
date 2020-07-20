@@ -413,6 +413,11 @@ public class GapsSearchService implements GapsSearch {
 
             JsonNode collection = objectMapper.readTree(collectionJson);
 
+            if (collection.has("status_code") && collection.get("status_code").asInt() == 34) {
+                LOGGER.warn(collection.get("status_message").asText());
+                return;
+            }
+
             int indexOfMovie = everyMovie.indexOf(movie);
 
             List<MovieFromCollection> moviesInCollection = new ArrayList<>();
@@ -420,20 +425,20 @@ public class GapsSearchService implements GapsSearch {
                 JsonNode parts = collection.get("parts");
                 parts.iterator().forEachRemaining(jsonNode -> {
                     String title = jsonNode.get("title").asText();
-                    int year = jsonNode.get("year").asInt();
+                    int year = -1;
+                    if(jsonNode.has("year")) {
+                        year = jsonNode.get("year").asInt(-1);
+                    }
                     String id = jsonNode.get("id").asText();
-                    Boolean owned = everyMovie.contains(new Movie.Builder(title, year).build());
+                    Boolean owned = ownedMovies.contains(new Movie.Builder(title, year).build());
                     moviesInCollection.add(new MovieFromCollection(title, id, owned));
                 });
             }
 
             LOGGER.info("MoviesInCollection: " + Arrays.toString(moviesInCollection.toArray()));
 
-            if (collection.has("status_code") && collection.get("status_code").asInt() == 34) {
-                LOGGER.warn(collection.get("status_message").asText());
-                return;
-            } else if (indexOfMovie != -1) {
-                int id = collection.get("id").asInt();
+           if (indexOfMovie != -1) {
+                int id = collection.get("id").asInt(-1);
                 String name = collection.get("name").asText();
                 everyMovie.get(indexOfMovie).setCollectionId(id);
                 everyMovie.get(indexOfMovie).setCollection(name);

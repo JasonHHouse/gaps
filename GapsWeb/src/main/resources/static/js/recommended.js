@@ -26,8 +26,11 @@ let movieCounter;
 let socket;
 
 jQuery(function ($) {
-    Handlebars.registerHelper('json', function (context) {
-        return JSON.stringify(context);
+
+    Handlebars.registerHelper({
+        isNotOwned: function (value) {
+            return !value;
+        }
     });
 
     libraryTitle = $('#libraryTitle');
