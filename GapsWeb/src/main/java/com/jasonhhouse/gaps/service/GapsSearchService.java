@@ -424,7 +424,7 @@ public class GapsSearchService implements GapsSearch {
             if (collection.has("parts")) {
                 JsonNode parts = collection.get("parts");
                 parts.iterator().forEachRemaining(jsonNode -> {
-                    String title = jsonNode.get("title").asText();
+                    String title = jsonNode.get("title").asText().replaceAll(":", "");
                     int year = -1;
                     if(jsonNode.has("year")) {
                         year = jsonNode.get("year").asInt(-1);
