@@ -25,7 +25,7 @@ describe('Searched RSS', function () {
 
         cy.request('/rss/721fee4db63634b88ed699f8b0a16d7682a7a0d9/2')
             .then((resp) => {
-                const result = JSON.parse(resp.body);
+                const result = resp.body;
                 expect(result).to.have.lengthOf(7);
                 expect(result[0].imdb_id).to.eq('tt3348730')
             });

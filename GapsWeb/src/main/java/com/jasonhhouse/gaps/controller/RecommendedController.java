@@ -16,18 +16,21 @@ import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.service.IoService;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -57,7 +60,7 @@ public class RecommendedController {
         this.gapsSearch = gapsSearch;
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getRecommended() {
         LOGGER.info("getRecommended()");
 
@@ -82,7 +85,8 @@ public class RecommendedController {
         return modelAndView;
     }
 
-    @GetMapping(path = "{machineIdentifier}/{key}")
+    @GetMapping(path = "{machineIdentifier}/{key}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Payload> getRecommended(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("getRecommended( " + machineIdentifier + ", " + key + " )");
@@ -107,33 +111,14 @@ public class RecommendedController {
         return ResponseEntity.ok().body(payload);
     }
 
-    private List<String> buildUrls(Movie[] movies) {
-        LOGGER.info("buildUrls( " + Arrays.toString(movies) + " ) ");
-        List<String> urls = new ArrayList<>();
-        for (Movie movie : movies) {
-            if (movie.getTvdbId() != -1) {
-                urls.add("https://www.themoviedb.org/movie/" + movie.getTvdbId());
-                continue;
-            }
-
-            if (StringUtils.isNotEmpty(movie.getImdbId())) {
-                urls.add("https://www.imdb.com/title/" + movie.getImdbId() + "/");
-                continue;
-            }
-
-            urls.add(null);
-        }
-
-        return urls;
-    }
-
     /**
      * Start Gaps searching for missing movies
      *
      * @param machineIdentifier plex server id
      * @param key               plex library key
      */
-    @PutMapping(value = "/find/{machineIdentifier}/{key}")
+    @PutMapping(value = "/find/{machineIdentifier}/{key}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     public void putFindRecommencedMovies(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("putFindRecommencedMovies( " + machineIdentifier + ", " + key + " )");
