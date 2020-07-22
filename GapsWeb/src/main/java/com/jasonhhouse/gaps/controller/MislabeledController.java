@@ -11,7 +11,6 @@ package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Mislabeled;
-import com.jasonhhouse.gaps.Pair;
 import com.jasonhhouse.gaps.PlexQuery;
 import com.jasonhhouse.gaps.service.MislabeledService;
 import com.jasonhhouse.plex.MediaContainer;
@@ -22,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,16 +44,14 @@ public class MislabeledController {
         this.mislabeledService = mislabeledService;
     }
 
-    @RequestMapping(method = RequestMethod.GET,
-            produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getMislabeled() {
         LOGGER.info("getMislabeled()");
 
         return new ModelAndView("mislabeled");
     }
 
-    @RequestMapping(method = RequestMethod.GET,
-            value = "/{machineIdentifier}/{key}/{percentage}")
+    @GetMapping(value = "/{machineIdentifier}/{key}/{percentage}")
     @ResponseBody
     public ResponseEntity<List<Mislabeled>> getMisMatched(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key,
                                                           @PathVariable("percentage") final Double percentage) {

@@ -16,7 +16,7 @@
     </parent>
     <groupId>com.jasonhhouse</groupId>
     <artifactId>Gaps</artifactId>
-    <version>0.4.2</version>
+    <version>0.4.5</version>
     <name>Gaps</name>
     <description>Demo project for Spring Boot</description>
 
@@ -109,4 +109,11 @@
         </plugins>
     </build>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub OWNER Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/JasonHHouse/gaps</url>
+        </repository>
+    </distributionManagement>
 </project>

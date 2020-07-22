@@ -14,8 +14,15 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.jasonhhouse.gaps.Movie;
+import com.jasonhhouse.gaps.MovieFromCollection;
+import com.jasonhhouse.gaps.Pair;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class MovieDeserializer extends StdDeserializer<Movie> {
     public MovieDeserializer() {
@@ -60,6 +67,16 @@ public class MovieDeserializer extends StdDeserializer<Movie> {
             overview = node.get(Movie.OVERVIEW).asText();
         }
 
+        List<MovieFromCollection> moviesInCollection = new ArrayList<>();
+        if (node.has(Movie.MOVIES_IN_COLLECTION)) {
+            ArrayNode arrayNode = (ArrayNode) node.get(Movie.MOVIES_IN_COLLECTION);
+            if (arrayNode.isArray()) {
+                for (JsonNode jsonNode : arrayNode) {
+                    moviesInCollection.add(new MovieFromCollection(jsonNode.get("title").asText(), jsonNode.get("id").asText(), jsonNode.get("owned").asBoolean()));
+                }
+            }
+        }
+
         Movie.Builder builder = new Movie.Builder(name, year)
                 .setTvdbId(tvdbId)
                 .setImdbId(imdbId)
@@ -67,7 +84,8 @@ public class MovieDeserializer extends StdDeserializer<Movie> {
                 .setCollection(collection)
                 .setPosterUrl(posterUrl)
                 .setLanguage(language)
-                .setOverview(overview);
+                .setOverview(overview)
+                .setMoviesInCollection(moviesInCollection);
 
         return builder.build();
     }

@@ -53,7 +53,7 @@ public class TmdbService {
 
         try (Response response = client.newCall(request).execute()) {
             ResponseBody responseBody = response.body();
-            if(responseBody == null) {
+            if (responseBody == null) {
                 LOGGER.warn("Empty response body");
                 return Payload.TMDB_KEY_INVALID.setExtras(key);
             }

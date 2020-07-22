@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=0.4.2
+VERSION=0.4.5
 DOCKER_LATEST="housewrecker/gaps:latest"
 JAR_VERSION="GapsWeb/target/GapsWeb-$VERSION.jar"
 ZIP_VERSION="Gaps-$VERSION.zip"
@@ -13,9 +13,9 @@ npm run uglifyjs-payload-js
 npm run uglifyjs-mislabeled-js
 mvn clean install spotbugs:check
 docker build -f Dockerfile -t $DOCKER_LATEST .
-docker run -p 8484:8484 --name gaps-dev -v /home/jason/gaps:/usr/data:Z gaps-dev
 cypress run
-docker push $DOCKER_LATEST
+docker buildx build --platform linux/ppc64le,linux/s390x,linux/amd64 -t housewrecker/gaps:latest -f Dockerfile --push .
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t housewrecker/gaps:arm-latest -f Dockerfile.arm64 --push .
 mkdir -p GapsOnWindows
 rm $ZIP_VERSION
 rm GapsOnWindows/*.jar

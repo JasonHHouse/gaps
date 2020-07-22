@@ -155,12 +155,10 @@
 </div>
 
 <script id="movieCard" type="text/x-handlebars-template">
-    <div>{{json movie}}</div>
-
-    <div class="card mb-3">
+    <div class="card">
         <div class="row no-gutters">
             <div class="col-12 col-md-auto">
-                <img style="height: 225px; width: 150px; display: block;"
+                <img style="height: auto; width: 225px; display: block;"
                      src="http://{{address}}:{{port}}{{poster_url}}/?X-Plex-Token={{plexToken}}"
                      class="card-img" alt="Plex Poster">
             </div>

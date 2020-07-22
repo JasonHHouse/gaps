@@ -9,7 +9,7 @@ describe('Verify About Page', function () {
             .should('have.text', 'About');
 
         cy.get('.container > :nth-child(3)')
-            .should('have.text', 'v0.4.2');
+            .should('have.text', 'v0.4.5');
 
         cy.get('.container > :nth-child(6)')
             .should('have.text', 'Software');

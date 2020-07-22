@@ -2,7 +2,7 @@ package com.jasonhhouse.gaps;
 
 import java.util.Objects;
 
-public class Pair<L,R> {
+public class Pair<L, R> {
     private final L left;
     private final R right;
 

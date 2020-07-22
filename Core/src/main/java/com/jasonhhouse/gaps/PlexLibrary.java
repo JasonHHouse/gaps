@@ -13,7 +13,7 @@ package com.jasonhhouse.gaps;
 import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 
-public class PlexLibrary implements Comparable<PlexLibrary> {
+public final class PlexLibrary implements Comparable<PlexLibrary> {
     private @NotNull Integer key;
     private @NotNull String title;
     private @NotNull String machineIdentifier;

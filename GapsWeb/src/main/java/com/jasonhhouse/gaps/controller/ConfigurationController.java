@@ -31,7 +31,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -60,8 +64,7 @@ public class ConfigurationController {
         this.ioService = ioService;
     }
 
-    @RequestMapping(method = RequestMethod.GET,
-            produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getConfiguration() {
         LOGGER.info("getConfiguration()");
 
@@ -80,8 +83,7 @@ public class ConfigurationController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/add/plex",
-            method = RequestMethod.POST,
+    @PostMapping(value = "/add/plex",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     public void postAddPlexServer(@Valid final PlexServer plexServer, BindingResult bindingResult) {
@@ -117,8 +119,7 @@ public class ConfigurationController {
         }
     }
 
-    @RequestMapping(value = "/test/plex",
-            method = RequestMethod.PUT,
+    @PutMapping(value = "/test/plex",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -139,8 +140,7 @@ public class ConfigurationController {
         return ResponseEntity.ok().body(payload);
     }
 
-    @RequestMapping(value = "/test/plex/{machineIdentifier}",
-            method = RequestMethod.PUT,
+    @PutMapping(value = "/test/plex/{machineIdentifier}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<String> putTestPlexServerByMachineId(@PathVariable("machineIdentifier") final String machineIdentifier) {
@@ -168,8 +168,7 @@ public class ConfigurationController {
         }
     }
 
-    @RequestMapping(value = "/delete/plex/{machineIdentifier}",
-            method = RequestMethod.DELETE,
+    @DeleteMapping(value = "/delete/plex/{machineIdentifier}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<String> deletePlexServer(@PathVariable("machineIdentifier") final String machineIdentifier) {
@@ -197,15 +196,13 @@ public class ConfigurationController {
         }
     }
 
-    @RequestMapping(value = "/test/tmdbKey/{tmdbKey}",
-            method = RequestMethod.PUT,
+    @PutMapping(value = "/test/tmdbKey/{tmdbKey}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Payload> postTestTmdbKey(@PathVariable("tmdbKey") final String tmdbKey) {
         LOGGER.info("postTestTmdbKey( " + tmdbKey + " )");
 
         Payload payload = tmdbService.testTmdbKey(tmdbKey).setExtras("tmdbKey:" + tmdbKey);
-        ;
         return ResponseEntity.ok().body(payload);
     }
 

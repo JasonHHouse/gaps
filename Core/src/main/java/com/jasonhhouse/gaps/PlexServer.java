@@ -13,14 +13,14 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class PlexServer {
+public final class PlexServer {
 
     private String friendlyName;
     private String machineIdentifier;
     private String plexToken;
     private String address;
     private Integer port;
-    private Set<PlexLibrary> plexLibraries;
+    private final Set<PlexLibrary> plexLibraries;
 
     public PlexServer() {
         plexLibraries = new TreeSet<>();
