@@ -26,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,7 +57,7 @@ public class LibraryController {
         }
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getLibraries() {
         LOGGER.info("getLibraries()");
 
@@ -100,7 +101,8 @@ public class LibraryController {
         return modelAndView;
     }
 
-    @GetMapping(path = "{machineIdentifier}/{key}")
+    @GetMapping(path = "{machineIdentifier}/{key}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Payload> getLibraries(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("getLibraries( " + machineIdentifier + ", " + key + " )");
