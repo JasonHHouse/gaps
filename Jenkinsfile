@@ -3,12 +3,13 @@ pipeline {
   stages {
     stage('Minify') {
       steps {
-        sh 'npm install'
-        sh 'npm ci'
-        sh './minify'
+        nodejs() {
+            sh 'npm install'
+            sh 'npm ci'
+            sh './minify'
+        }
       }
     }
-    
     stage('Build Jars') {
       steps {
         withSonarQubeEnv('SonarQube') {
