@@ -9,6 +9,7 @@ describe('Searched RSS', function () {
 
         cy.get('#dropdownMenuLink')
             .click();
+        
 
         cy.get('[data-key="2"]')
             .click();
