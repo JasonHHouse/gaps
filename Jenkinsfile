@@ -1,5 +1,9 @@
 pipeline {
   agent any
+  tools {
+          maven 'Maven'
+          jdk 'Open JDK 11'
+      }
   stages {
     stage('Minify') {
       steps {
