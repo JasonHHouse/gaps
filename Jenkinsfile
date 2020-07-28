@@ -8,6 +8,7 @@ pipeline {
         sh './minify'
       }
     }
+    
     stage('Build Jars') {
       steps {
         withSonarQubeEnv('SonarQube') {
