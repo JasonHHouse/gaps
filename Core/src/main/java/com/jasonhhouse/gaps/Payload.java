@@ -28,8 +28,8 @@ public enum Payload {
     RECOMMENDED_MOVIES_FOUND(50, "Recommended movies found."),
     RECOMMENDED_MOVIES_NOT_FOUND(51, "Recommended movies not found.");
 
-    final private int code;
-    final private String reason;
+    private final int code;
+    private final String reason;
     private Object extras;
 
     Payload(int code, String reason) {
