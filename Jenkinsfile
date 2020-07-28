@@ -15,5 +15,13 @@ pipeline {
       }
     }
 
+    stage('Build Docker and Test') {
+      steps {
+        sh 'docker build -f Dockerfile -t gaps-dev .'
+        sh 'docker run -p 8484:8484 --name gaps-dev gaps-dev'
+        sh 'cypress run'
+      }
+    }
+
   }
 }
