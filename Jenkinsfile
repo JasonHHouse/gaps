@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Minify') {
       steps {
-        nodejs() {
+        nodejs(nodeJSInstallationName: 'Node 12.x') {
             sh 'npm install'
             sh 'npm ci'
             sh './minify'
