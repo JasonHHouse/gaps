@@ -11,7 +11,7 @@ npm run uglifyjs-recommended-js
 npm run uglifyjs-common-js
 npm run uglifyjs-payload-js
 npm run uglifyjs-mislabeled-js
-mvn clean install spotbugs:check
+mvn clean install deploy
 docker build -f Dockerfile -t $DOCKER_LATEST .
 cypress run
 docker buildx build --platform linux/ppc64le,linux/s390x,linux/amd64 -t housewrecker/gaps:latest -f Dockerfile --push .
