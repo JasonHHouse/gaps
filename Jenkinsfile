@@ -3,6 +3,7 @@ pipeline {
   stages {
     stage('Minify') {
       steps {
+        sh 'npm ci'
         sh './minify'
       }
     }
