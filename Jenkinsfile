@@ -18,11 +18,11 @@ pipeline {
   }
   post {
       success {
-        telegramSend "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
+        curl -s -X POST https://api.telegram.org/bot1302374772:AAFdOH2GGdRsOxuBREQfKo9fU0IQNl6Q7sY/sendMessage -d chat_id=housewrecker -d text="SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
       }
 
       failure {
-        telegramSend "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
+        curl -s -X POST https://api.telegram.org/bot1302374772:AAFdOH2GGdRsOxuBREQfKo9fU0IQNl6Q7sY/sendMessage -d chat_id=housewrecker -d text="FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
       }
     }
 }
