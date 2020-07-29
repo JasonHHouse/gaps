@@ -15,10 +15,14 @@ pipeline {
         }
       }
     }
-    stage('Send Message') {
-        steps {
-            telegramSend 'Build successful'
-        }
-    }
   }
+  post {
+      success {
+        telegramSend "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
+      }
+
+      failure {
+        telegramSend "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
+      }
+    }
 }
