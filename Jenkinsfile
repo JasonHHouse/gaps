@@ -15,5 +15,10 @@ pipeline {
         }
       }
     }
+    stage('Send Message') {
+        steps {
+            telegramSend 'Build successful'
+        }
+    }
   }
 }
