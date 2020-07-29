@@ -356,7 +356,7 @@ public class IoService {
             LOGGER.error("Can't write to file " + fileName, e);
         }
 
-        return everyMovie;asfd
+        return everyMovie;
     }
 
     public void writeProperties(PlexSearch plexSearch) throws IOException {
