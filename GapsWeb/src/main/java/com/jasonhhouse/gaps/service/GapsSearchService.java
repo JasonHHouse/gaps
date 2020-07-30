@@ -24,20 +24,26 @@ import com.jasonhhouse.gaps.SearchCancelledException;
 import com.jasonhhouse.gaps.SearchResults;
 import com.jasonhhouse.gaps.UrlGenerator;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -227,11 +233,11 @@ public class GapsSearchService implements GapsSearch {
                     continue;
                 } else if (StringUtils.isNotBlank(movie.getImdbId())) {
                     LOGGER.info("Used 'find' to search for " + movie.getName());
-                    String imdbId = URLEncoder.encode(movie.getImdbId(), "UTF-8");
+                    String imdbId = URLEncoder.encode(movie.getImdbId(), StandardCharsets.UTF_8);
                     searchMovieUrl = urlGenerator.generateFindMovieUrl(gapsService.getPlexSearch().getMovieDbApiKey(), imdbId, languageCode);
                 } else {
                     LOGGER.info("Used 'search' to search for " + movie.getName());
-                    String name = URLEncoder.encode(movie.getName(), "UTF-8");
+                    String name = URLEncoder.encode(movie.getName(), StandardCharsets.UTF_8);
                     searchMovieUrl = urlGenerator.generateSearchMovieUrl(gapsService.getPlexSearch().getMovieDbApiKey(), name, String.valueOf(movie.getYear()), languageCode);
                 }
 
@@ -300,32 +306,25 @@ public class GapsSearchService implements GapsSearch {
 
                     searchMovieDetails(machineIdentifier, key, ownedMovies, everyMovie, recommended, searched, searchedMovieCount, movie, client, languageCode);
                 } catch (JsonProcessingException e) {
-                    LOGGER.error("Error parsing movie " + movie + ". " + e.getMessage());
+                    LOGGER.error("Error parsing movie " + movie + ". ", e);
                     LOGGER.error("URL: " + searchMovieUrl);
-                    e.printStackTrace();
                 } catch (IOException e) {
                     LOGGER.error("Error searching for movie " + movie, e);
                     LOGGER.error("URL: " + searchMovieUrl);
-                    e.printStackTrace();
                 } finally {
                     try {
                         //can't have too many connections to the movie database in a specific time, have to wait
                         Thread.sleep(700);
                     } catch (InterruptedException e) {
                         LOGGER.error("Error sleeping", e);
-                        e.printStackTrace();
                     }
                 }
-            } catch (UnsupportedEncodingException e) {
-                LOGGER.error("Error parsing movie URL " + movie, e);
-                e.printStackTrace();
             } finally {
                 try {
                     //can't have too many connections to the movie database in a specific time, have to wait
                     Thread.sleep(350);
                 } catch (InterruptedException e) {
                     LOGGER.error("Error sleeping", e);
-                    e.printStackTrace();
                 }
             }
         }

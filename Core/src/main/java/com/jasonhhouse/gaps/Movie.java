@@ -14,13 +14,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jasonhhouse.gaps.json.MovieDeserializer;
 import com.jasonhhouse.gaps.json.MovieSerializer;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -67,14 +63,14 @@ public final class Movie implements Comparable<Movie> {
     private final String language;
     @Nullable
     private final String overview;
+    @NotNull
+    private final List<MovieFromCollection> moviesInCollection;
     @Nullable
     private String collection;
     @NotNull
     private Integer collectionId;
     @NotNull
     private Integer tvdbId;
-    @NotNull
-    private final List<MovieFromCollection> moviesInCollection;
 
     private Movie(@NotNull String name, @NotNull Integer year, @Nullable String posterUrl, @Nullable String collection, @NotNull Integer collectionId, @NotNull Integer tvdbId,
                   @Nullable String imdbId, @Nullable String language, @Nullable String overview, @NotNull List<MovieFromCollection> moviesInCollection) {
