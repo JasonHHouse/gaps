@@ -14,9 +14,13 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jasonhhouse.gaps.json.MovieDeserializer;
 import com.jasonhhouse.gaps.json.MovieSerializer;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -142,6 +146,10 @@ public final class Movie implements Comparable<Movie> {
         return moviesInCollection;
     }
 
+    public @NotNull String getNameWithoutBadCharacters() {
+        return nameWithoutBadCharacters;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -170,7 +178,7 @@ public final class Movie implements Comparable<Movie> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, year);
+        return Objects.hash(nameWithoutBadCharacters, year);
     }
 
     @Nullable
@@ -183,18 +191,20 @@ public final class Movie implements Comparable<Movie> {
         return "Movie{" +
                 "name='" + name + '\'' +
                 ", year=" + year +
+                ", nameWithoutBadCharacters='" + nameWithoutBadCharacters + '\'' +
                 ", posterUrl='" + posterUrl + '\'' +
-                ", collection='" + collection + '\'' +
-                ", collectionId=" + collectionId +
-                ", tvdbId=" + tvdbId +
                 ", imdbId='" + imdbId + '\'' +
                 ", language='" + language + '\'' +
                 ", overview='" + overview + '\'' +
+                ", collection='" + collection + '\'' +
+                ", collectionId=" + collectionId +
+                ", tvdbId=" + tvdbId +
+                ", moviesInCollection=" + moviesInCollection +
                 '}';
     }
 
     public int compareTo(Movie o) {
-        return getName().compareTo(o.getName());
+        return getNameWithoutBadCharacters().compareTo(o.getNameWithoutBadCharacters());
     }
 
     public static class Builder {

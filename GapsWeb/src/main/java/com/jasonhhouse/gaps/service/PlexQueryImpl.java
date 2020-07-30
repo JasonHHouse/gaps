@@ -392,7 +392,7 @@ public class PlexQueryImpl implements PlexQuery {
 
                     ownedMovies.add(movie);
                 }
-                LOGGER.debug(ownedMovies.size() + " movies found in plex");
+                LOGGER.info(ownedMovies.size() + " movies found in plex");
 
             } catch (IOException e) {
                 String reason = "Error connecting to Plex to get Movie list: " + url;

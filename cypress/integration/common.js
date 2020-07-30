@@ -15,7 +15,7 @@ export function spyOnAddEventListener(win) {
     };
 }
 
-export function searchPlexForMovies(cy) {
+export function searchPlexForMoviesFromSaw(cy) {
     cy.get('#dropdownMenuLink')
         .click();
 
@@ -31,6 +31,25 @@ export function searchPlexForMovies(cy) {
 
     cy.get('#movies_info')
         .should('have.text', 'Showing 1 to 1 of 1 entries');
+}
+
+
+export function searchPlexForMoviesFromMovies(cy) {
+    cy.get('#dropdownMenuLink')
+        .click();
+
+    cy.get('[data-key="1"]')
+        .click();
+
+    cy.get('.card-body > .btn')
+        .click();
+
+    cy.get('label > input')
+        .clear()
+        .type('2001 A Space');
+
+    cy.get('#movies_info')
+        .should('have.text', 'Showing 1 to 1 of 1 entries (filtered from 4 total entries)');
 }
 
 export function nuke() {

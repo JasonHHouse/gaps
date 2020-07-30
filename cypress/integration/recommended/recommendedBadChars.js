@@ -1,15 +1,17 @@
-import {redLibraryBefore, searchPlexForMoviesFromSaw, spyOnAddEventListener} from "../common";
+import {redLibraryBefore, searchPlexForMoviesFromMovies, spyOnAddEventListener} from "../common";
 
-describe('Search for Recommended', function () {
+describe('Search for Recommended Best Movies', function () {
     beforeEach(redLibraryBefore);
 
     it('Clean configuration page load', () => {
-        searchSawLibrary(cy);
+        searchMoviesLibrary(cy);
 
         cy.get('#libraryTitle').then( ($libraryTitle) => {
-            if($libraryTitle.text() !== "Red - Saw") {
-                cy.get('#dropdownMenuLink').click();
-                cy.get('[data-key="2"]').click();
+            if($libraryTitle.text() !== "Movies") {
+                cy.get('#dropdownMenuLink')
+                    .click();
+                cy.get('[data-key="1"]')
+                    .click();
             }
         });
 
@@ -18,13 +20,13 @@ describe('Search for Recommended', function () {
 
     });
 
-    it('Search Movies', () => {
-        searchSawLibrary(cy);
+    it('Search Movies with bad chars', () => {
+        searchMoviesLibrary(cy);
 
         cy.get('#dropdownMenuLink')
             .click();
 
-        cy.get('[data-key="2"]')
+        cy.get('[data-key="1"]')
             .click();
 
         cy.get('.card-body > .btn')
@@ -36,13 +38,13 @@ describe('Search for Recommended', function () {
             .should('have.text', 'Showing 1 to 7 of 7 entries');
     });
 
-    it('Research Movies', () => {
-        searchSawLibrary(cy);
+    it('Research Movies with bad chars', () => {
+        searchMoviesLibrary(cy);
 
         cy.get('#dropdownMenuLink')
             .click();
 
-        cy.get('[data-key="2"]')
+        cy.get('[data-key="1"]')
             .click();
 
         cy.get('.card-body > .btn')
@@ -60,13 +62,16 @@ describe('Search for Recommended', function () {
 
         cy.get('#movies_info')
             .should('have.text', 'Showing 1 to 7 of 7 entries');
+
+        cy.get(':nth-child(1) > td > .card > .row > .col-md > .card-body > h5.card-title')
+            .should('have.text', '2010 (1984)');
     });
 });
 
-function searchSawLibrary(cy) {
+function searchMoviesLibrary(cy) {
     cy.visit('/libraries', {onBeforeLoad: spyOnAddEventListener});
 
-    searchPlexForMoviesFromSaw(cy);
+    searchPlexForMoviesFromMovies(cy);
 
     cy.visit('/recommended', {onBeforeLoad: spyOnAddEventListener});
 }

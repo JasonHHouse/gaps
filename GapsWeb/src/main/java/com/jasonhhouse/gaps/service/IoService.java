@@ -218,7 +218,7 @@ public class IoService {
                 fullFile.append(line);
             }
 
-            return objectMapper.readValue(fullFile.toString(), new TypeReference<List<Movie>>() {
+            return objectMapper.readValue(fullFile.toString(), new TypeReference<>() {
             });
         } catch (FileNotFoundException e) {
             LOGGER.error("Can't find file " + ownedMovieFile, e);
