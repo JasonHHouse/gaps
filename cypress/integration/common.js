@@ -109,7 +109,13 @@ export function redLibraryBefore() {
     cy.get('.card-header')
         .should('have.text', 'Red');
 
+    cy.get('.list-group > :nth-child(1)')
+        .should('have.text', 'Best Movies');
+
     cy.get('.list-group > :nth-child(2)')
+        .should('have.text', 'Movies');
+
+    cy.get('.list-group > :nth-child(3)')
         .should('have.text', 'Saw');
 }
 
