@@ -424,7 +424,7 @@ public class GapsSearchService implements GapsSearch {
             if (collection.has("parts")) {
                 JsonNode parts = collection.get("parts");
                 parts.iterator().forEachRemaining(jsonNode -> {
-                    String title = jsonNode.get("title").asText().replaceAll("[<>`~\\[\\]()*&^%$#@!|{}.,?\\-_=+:;]", "");
+                    String title = jsonNode.get("title").asText();
                     int year = -1;
                     if(jsonNode.has("year")) {
                         year = jsonNode.get("year").asInt(-1);
@@ -465,7 +465,7 @@ public class GapsSearchService implements GapsSearch {
             for (JsonNode part : parts) {
                 int tvdbId = part.get("id").asInt();
                 //Files can't have : so need to remove to find matches correctly
-                String title = part.get("title").asText().replaceAll("[<>`~\\[\\]()*&^%$#@!|{}.,?\\-_=+:;]", "");
+                String title = part.get("title").asText();
                 int year;
                 try {
                     if (part.has("release_date") && StringUtils.isNotEmpty(part.get("release_date").asText())) {
