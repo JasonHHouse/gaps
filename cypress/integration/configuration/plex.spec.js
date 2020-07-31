@@ -202,8 +202,13 @@ describe('Plex Configuration Tests', function () {
             .should('have.text', 'Red');
 
         cy.get('.list-group > :nth-child(1)')
+            .should('have.text', 'Best Movies');
+
+        cy.get('.list-group > :nth-child(2)')
             .should('have.text', 'Movies');
 
+        cy.get('.list-group > :nth-child(3)')
+            .should('have.text', 'Saw');
     });
 
     it('Test valid existing Plex Server', () => {
@@ -312,7 +317,13 @@ describe('Plex Configuration Tests', function () {
             .should('have.text', 'Red');
 
         cy.get('.list-group > :nth-child(1)')
+            .should('have.text', 'Best Movies');
+
+        cy.get('.list-group > :nth-child(2)')
             .should('have.text', 'Movies');
+
+        cy.get('.list-group > :nth-child(3)')
+            .should('have.text', 'Saw');
 
         cy.get('#address')
             .clear()

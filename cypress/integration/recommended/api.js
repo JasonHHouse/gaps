@@ -1,4 +1,4 @@
-import {nuke, redLibraryBefore, searchPlexForMovies, spyOnAddEventListener} from "../common";
+import {nuke, redLibraryBefore, searchPlexForMoviesFromSaw, spyOnAddEventListener} from "../common";
 
 describe('Recommended API', function () {
 
@@ -30,7 +30,7 @@ describe('Recommended API', function () {
 function searchSawLibrary(cy) {
     cy.visit('/libraries', {onBeforeLoad: spyOnAddEventListener});
 
-    searchPlexForMovies(cy);
+    searchPlexForMoviesFromSaw(cy);
 
     cy.visit('/recommended', {onBeforeLoad: spyOnAddEventListener});
 }

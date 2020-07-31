@@ -45,9 +45,14 @@ public final class Movie implements Comparable<Movie> {
 
     public static final String MOVIES_IN_COLLECTION = "movies_in_collection";
 
+    @NotNull
     private final String name;
 
+    @NotNull
     private final Integer year;
+
+    @NotNull
+    private final String nameWithoutBadCharacters;
 
     @Nullable
     @JsonProperty("poster_url")
@@ -58,18 +63,19 @@ public final class Movie implements Comparable<Movie> {
     private final String language;
     @Nullable
     private final String overview;
+    @NotNull
+    private final List<MovieFromCollection> moviesInCollection;
     @Nullable
     private String collection;
     @NotNull
     private Integer collectionId;
     @NotNull
     private Integer tvdbId;
-    @NotNull
-    private final List<MovieFromCollection> moviesInCollection;
 
-    private Movie(String name, Integer year, @Nullable String posterUrl, @Nullable String collection, @NotNull Integer collectionId, @NotNull Integer tvdbId,
+    private Movie(@NotNull String name, @NotNull Integer year, @Nullable String posterUrl, @Nullable String collection, @NotNull Integer collectionId, @NotNull Integer tvdbId,
                   @Nullable String imdbId, @Nullable String language, @Nullable String overview, @NotNull List<MovieFromCollection> moviesInCollection) {
         this.name = name;
+        this.nameWithoutBadCharacters = name.replaceAll("[<>`~\\[\\]()*&^%$#@!|{}.,?\\-_=+:;]", "");
         this.year = year;
         this.posterUrl = posterUrl;
         this.collection = collection;
@@ -97,11 +103,13 @@ public final class Movie implements Comparable<Movie> {
         this.tvdbId = tvdbId;
     }
 
+    @NotNull
     public String getName() {
         return name;
     }
 
-    public int getYear() {
+    @NotNull
+    public Integer getYear() {
         return year;
     }
 
@@ -134,6 +142,10 @@ public final class Movie implements Comparable<Movie> {
         return moviesInCollection;
     }
 
+    public @NotNull String getNameWithoutBadCharacters() {
+        return nameWithoutBadCharacters;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -157,12 +169,12 @@ public final class Movie implements Comparable<Movie> {
         }
 
         //Fallback is year and title
-        return year.equals(movie.year) && name.equals(movie.name);
+        return year.equals(movie.year) && nameWithoutBadCharacters.equals(movie.nameWithoutBadCharacters);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, year);
+        return Objects.hash(nameWithoutBadCharacters, year);
     }
 
     @Nullable
@@ -175,18 +187,20 @@ public final class Movie implements Comparable<Movie> {
         return "Movie{" +
                 "name='" + name + '\'' +
                 ", year=" + year +
+                ", nameWithoutBadCharacters='" + nameWithoutBadCharacters + '\'' +
                 ", posterUrl='" + posterUrl + '\'' +
-                ", collection='" + collection + '\'' +
-                ", collectionId=" + collectionId +
-                ", tvdbId=" + tvdbId +
                 ", imdbId='" + imdbId + '\'' +
                 ", language='" + language + '\'' +
                 ", overview='" + overview + '\'' +
+                ", collection='" + collection + '\'' +
+                ", collectionId=" + collectionId +
+                ", tvdbId=" + tvdbId +
+                ", moviesInCollection=" + moviesInCollection +
                 '}';
     }
 
     public int compareTo(Movie o) {
-        return getName().compareTo(o.getName());
+        return getNameWithoutBadCharacters().compareTo(o.getNameWithoutBadCharacters());
     }
 
     public static class Builder {
@@ -211,7 +225,7 @@ public final class Movie implements Comparable<Movie> {
 
         private List<MovieFromCollection> moviesInCollection;
 
-        public Builder(String name, int year) {
+        public Builder(@NotNull String name, @NotNull Integer year) {
             this.name = name;
             this.year = year;
             this.tvdbId = -1;

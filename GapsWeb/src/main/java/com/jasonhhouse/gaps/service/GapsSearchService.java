@@ -25,13 +25,19 @@ import com.jasonhhouse.gaps.SearchResults;
 import com.jasonhhouse.gaps.UrlGenerator;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -109,7 +115,7 @@ public class GapsSearchService implements GapsSearch {
         final Set<Movie> recommended = new TreeSet<>();
         final Set<Movie> searched = new TreeSet<>();
         final List<Movie> everyMovie = new ArrayList<>(ioService.readMovieIdsFromFile());
-        final Set<Movie> ownedMovies = new TreeSet<>(ioService.readOwnedMovies(machineIdentifier, key));
+        final Set<Movie> ownedMovies = new HashSet<>(ioService.readOwnedMovies(machineIdentifier, key));
         final AtomicInteger searchedMovieCount = new AtomicInteger(0);
 
         if (CollectionUtils.isEmpty(ownedMovies)) {
@@ -154,7 +160,7 @@ public class GapsSearchService implements GapsSearch {
 
     @Override
     public void cancelSearch() {
-        LOGGER.debug("cancelSearch()");
+        LOGGER.info("cancelSearch()");
         cancelSearch.set(true);
     }
 
@@ -228,11 +234,11 @@ public class GapsSearchService implements GapsSearch {
                     continue;
                 } else if (StringUtils.isNotBlank(movie.getImdbId())) {
                     LOGGER.info("Used 'find' to search for " + movie.getName());
-                    String imdbId = URLEncoder.encode(movie.getImdbId(), "UTF-8");
+                    String imdbId = URLEncoder.encode(movie.getImdbId(), StandardCharsets.UTF_8);
                     searchMovieUrl = urlGenerator.generateFindMovieUrl(gapsService.getPlexSearch().getMovieDbApiKey(), imdbId, languageCode);
                 } else {
                     LOGGER.info("Used 'search' to search for " + movie.getName());
-                    String name = URLEncoder.encode(movie.getName(), "UTF-8");
+                    String name = URLEncoder.encode(movie.getName(), StandardCharsets.UTF_8);
                     searchMovieUrl = urlGenerator.generateSearchMovieUrl(gapsService.getPlexSearch().getMovieDbApiKey(), name, String.valueOf(movie.getYear()), languageCode);
                 }
 
@@ -277,8 +283,8 @@ public class GapsSearchService implements GapsSearch {
                     }
 
                     if (results.size() > 1) {
-                        LOGGER.debug("Results for " + movie + " came back with " + results.size() + " results. Using first result.");
-                        LOGGER.debug(movie + " URL: " + searchMovieUrl);
+                        LOGGER.info("Results for " + movie + " came back with " + results.size() + " results. Using first result.");
+                        LOGGER.info(movie + " URL: " + searchMovieUrl);
                     }
 
                     JsonNode result = results.get(0);
@@ -287,7 +293,7 @@ public class GapsSearchService implements GapsSearch {
 
                     int indexOfMovie = everyMovie.indexOf(movie);
                     if (indexOfMovie != -1) {
-                        LOGGER.debug("Merging movie data");
+                        LOGGER.info("Merging movie data");
                         everyMovie.get(indexOfMovie).setTvdbId(movie.getTvdbId());
                     } else {
                         Movie newMovie = new Movie.Builder(movie.getName(), movie.getYear())
@@ -301,32 +307,25 @@ public class GapsSearchService implements GapsSearch {
 
                     searchMovieDetails(machineIdentifier, key, ownedMovies, everyMovie, recommended, searched, searchedMovieCount, movie, client, languageCode);
                 } catch (JsonProcessingException e) {
-                    LOGGER.error("Error parsing movie " + movie + ". " + e.getMessage());
+                    LOGGER.error("Error parsing movie " + movie + ". ", e);
                     LOGGER.error("URL: " + searchMovieUrl);
-                    e.printStackTrace();
                 } catch (IOException e) {
                     LOGGER.error("Error searching for movie " + movie, e);
                     LOGGER.error("URL: " + searchMovieUrl);
-                    e.printStackTrace();
                 } finally {
                     try {
                         //can't have too many connections to the movie database in a specific time, have to wait
                         Thread.sleep(700);
                     } catch (InterruptedException e) {
                         LOGGER.error("Error sleeping", e);
-                        e.printStackTrace();
                     }
                 }
-            } catch (UnsupportedEncodingException e) {
-                LOGGER.error("Error parsing movie URL " + movie, e);
-                e.printStackTrace();
             } finally {
                 try {
                     //can't have too many connections to the movie database in a specific time, have to wait
                     Thread.sleep(350);
                 } catch (InterruptedException e) {
                     LOGGER.error("Error sleeping", e);
-                    e.printStackTrace();
                 }
             }
         }
@@ -369,7 +368,7 @@ public class GapsSearchService implements GapsSearch {
 
             int indexOfMovie = everyMovie.indexOf(movie);
             if (indexOfMovie != -1) {
-                LOGGER.debug("Merging movie data");
+                LOGGER.info("Merging movie data");
                 everyMovie.get(indexOfMovie).setTvdbId(movie.getTvdbId());
                 everyMovie.get(indexOfMovie).setCollectionId(movie.getCollectionId());
                 everyMovie.get(indexOfMovie).setCollection(movie.getCollection());
@@ -424,20 +423,33 @@ public class GapsSearchService implements GapsSearch {
             if (collection.has("parts")) {
                 JsonNode parts = collection.get("parts");
                 parts.iterator().forEachRemaining(jsonNode -> {
-                    String title = jsonNode.get("title").asText().replaceAll("[<>`~\\[\\]()*&^%$#@!|{}.,?\\-_=+:;]", "");
-                    int year = -1;
-                    if(jsonNode.has("year")) {
-                        year = jsonNode.get("year").asInt(-1);
+                    String title = jsonNode.get("title").asText();
+                    int year = 0;
+                    if (jsonNode.has("release_date")) {
+                        String oldDate = jsonNode.get("release_date").asText("0000-01-01");
+
+                        try {
+                            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(oldDate);
+                            Calendar calendar = new GregorianCalendar();
+                            calendar.setTime(date);
+                            year = calendar.get(Calendar.YEAR);
+                        } catch (ParseException e) {
+                            LOGGER.warn("Could not parse date");
+                        }
                     }
                     String id = jsonNode.get("id").asText();
-                    Boolean owned = ownedMovies.contains(new Movie.Builder(title, year).build());
+
+                    Movie collectionMovie = new Movie.Builder(title, year).build();
+                    LOGGER.info(collectionMovie.toString());
+
+                    Boolean owned = ownedMovies.contains(collectionMovie);
                     moviesInCollection.add(new MovieFromCollection(title, id, owned));
                 });
             }
 
             LOGGER.info("MoviesInCollection: " + Arrays.toString(moviesInCollection.toArray()));
 
-           if (indexOfMovie != -1) {
+            if (indexOfMovie != -1) {
                 int id = collection.get("id").asInt(-1);
                 String name = collection.get("name").asText();
                 everyMovie.get(indexOfMovie).setCollectionId(id);
@@ -463,9 +475,9 @@ public class GapsSearchService implements GapsSearch {
 
             ArrayNode parts = (ArrayNode) collection.get("parts");
             for (JsonNode part : parts) {
-                int tvdbId = part.get("id").asInt();
+                int tmdbId = part.get("id").asInt();
                 //Files can't have : so need to remove to find matches correctly
-                String title = part.get("title").asText().replaceAll("[<>`~\\[\\]()*&^%$#@!|{}.,?\\-_=+:;]", "");
+                String title = part.get("title").asText();
                 int year;
                 try {
                     if (part.has("release_date") && StringUtils.isNotEmpty(part.get("release_date").asText())) {
@@ -485,32 +497,38 @@ public class GapsSearchService implements GapsSearch {
                 try {
                     posterUrl = part.get("poster_url").asText();
                 } catch (Exception e) {
-                    LOGGER.debug("No poster found for" + title + ".");
+                    LOGGER.info("No poster found for" + title + ".");
                 }
 
                 Movie movieFromCollection = new Movie.Builder(title, year)
-                        .setTvdbId(tvdbId)
+                        .setTvdbId(tmdbId)
                         .setCollectionId(movie.getCollectionId())
                         .setCollection(movie.getCollection())
                         .setPosterUrl(posterUrl)
                         .setMoviesInCollection(moviesInCollection)
                         .build();
 
-                Movie ownedMovieFromCollection = new Movie.Builder(title, year).build();
-
-                indexOfMovie = everyMovie.indexOf(new Movie.Builder(title, year).build());
-                if (indexOfMovie == -1) {
-                    LOGGER.debug("Adding collection movie");
-                    everyMovie.add(movieFromCollection);
-                } else {
-                    LOGGER.debug("Merging collection movie");
-                    everyMovie.get(indexOfMovie).setTvdbId(tvdbId);
+                if (ownedMovies.contains(movieFromCollection)) {
+                    LOGGER.info("Skip owned movie: " + movieFromCollection);
+                    continue;
                 }
 
-                if (ownedMovies.contains(ownedMovieFromCollection)) {
+                indexOfMovie = everyMovie.indexOf(movieFromCollection);
+                if (indexOfMovie == -1) {
+                    LOGGER.info("Adding collection movie");
+                    everyMovie.add(movieFromCollection);
+                } else {
+                    LOGGER.info("Merging collection movie");
+                    everyMovie.get(indexOfMovie).setTvdbId(tmdbId);
+                }
+
+                if (ownedMovies.contains(movieFromCollection)) {
+                    LOGGER.info("Owned movie found: " + movieFromCollection);
                     searched.add(movieFromCollection);
                     sendEmptySearchUpdate(ownedMovies.size(), searchedMovieCount);
                 } else if (!searched.contains(movieFromCollection) && year != 0 && year < Year.now().getValue()) {
+                    LOGGER.info("Missing movie found: " + movieFromCollection);
+
                     // Get recommended Movie details from MovieDB API
                     HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(gapsService.getPlexSearch().getMovieDbApiKey(), String.valueOf(movieFromCollection.getTvdbId()), languageCode);
 
@@ -559,6 +577,14 @@ public class GapsSearchService implements GapsSearch {
                                 .setOverview(movieDet.get("overview").asText())
                                 .setMoviesInCollection(moviesInCollection)
                                 .build();
+
+                        LOGGER.info("ownedMovies");
+                        ownedMovies.forEach(movie1 -> LOGGER.info(movie1.toString()));
+
+                        if (ownedMovies.contains(recommendedMovie)) {
+                            LOGGER.info("Skip owned movie: " + recommendedMovie);
+                            continue;
+                        }
 
                         if (recommended.add(recommendedMovie)) {
                             // Write current list of recommended movies to file.

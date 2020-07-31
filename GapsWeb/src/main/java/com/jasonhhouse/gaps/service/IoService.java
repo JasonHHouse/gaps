@@ -26,7 +26,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -68,13 +67,9 @@ public class IoService {
         if (os.contains("Windows")) {
             //Default to the same folder as the jar
             String decodedPath = "";
-            try {
-                String path = new File(new File(new File(IoService.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParent()).getParent()).getParent();
-                decodedPath = URLDecoder.decode(path, "UTF-8");
-                decodedPath = decodedPath.startsWith("file:\\") ? decodedPath.substring("file:\\".length()) : decodedPath;
-            } catch (UnsupportedEncodingException e) {
-                //Do nothing
-            }
+            String path = new File(new File(new File(IoService.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParent()).getParent()).getParent();
+            decodedPath = URLDecoder.decode(path, StandardCharsets.UTF_8);
+            decodedPath = decodedPath.startsWith("file:\\") ? decodedPath.substring("file:\\".length()) : decodedPath;
             STORAGE_FOLDER = decodedPath + "\\";
         } else {
             STORAGE_FOLDER = "/usr/data/";
@@ -218,7 +213,7 @@ public class IoService {
                 fullFile.append(line);
             }
 
-            return objectMapper.readValue(fullFile.toString(), new TypeReference<List<Movie>>() {
+            return objectMapper.readValue(fullFile.toString(), new TypeReference<>() {
             });
         } catch (FileNotFoundException e) {
             LOGGER.error("Can't find file " + ownedMovieFile, e);
