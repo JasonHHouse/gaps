@@ -37,6 +37,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -114,7 +115,7 @@ public class GapsSearchService implements GapsSearch {
         final Set<Movie> recommended = new TreeSet<>();
         final Set<Movie> searched = new TreeSet<>();
         final List<Movie> everyMovie = new ArrayList<>(ioService.readMovieIdsFromFile());
-        final Set<Movie> ownedMovies = new TreeSet<>(ioService.readOwnedMovies(machineIdentifier, key));
+        final Set<Movie> ownedMovies = new HashSet<>(ioService.readOwnedMovies(machineIdentifier, key));
         final AtomicInteger searchedMovieCount = new AtomicInteger(0);
 
         if (CollectionUtils.isEmpty(ownedMovies)) {
@@ -474,7 +475,7 @@ public class GapsSearchService implements GapsSearch {
 
             ArrayNode parts = (ArrayNode) collection.get("parts");
             for (JsonNode part : parts) {
-                int tvdbId = part.get("id").asInt();
+                int tmdbId = part.get("id").asInt();
                 //Files can't have : so need to remove to find matches correctly
                 String title = part.get("title").asText();
                 int year;
@@ -500,7 +501,7 @@ public class GapsSearchService implements GapsSearch {
                 }
 
                 Movie movieFromCollection = new Movie.Builder(title, year)
-                        .setTvdbId(tvdbId)
+                        .setTvdbId(tmdbId)
                         .setCollectionId(movie.getCollectionId())
                         .setCollection(movie.getCollection())
                         .setPosterUrl(posterUrl)
@@ -518,7 +519,7 @@ public class GapsSearchService implements GapsSearch {
                     everyMovie.add(movieFromCollection);
                 } else {
                     LOGGER.info("Merging collection movie");
-                    everyMovie.get(indexOfMovie).setTvdbId(tvdbId);
+                    everyMovie.get(indexOfMovie).setTvdbId(tmdbId);
                 }
 
                 if (ownedMovies.contains(movieFromCollection)) {
