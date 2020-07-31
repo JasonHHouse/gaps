@@ -34,8 +34,8 @@ public class MovieDeserializer extends StdDeserializer<Movie> {
     public Movie deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
         int tvdbId = (Integer) node.get(Movie.TVDB_ID).numberValue();
-        String imdbId = node.get(Movie.IMDB_ID).asText();
-        String name = node.get(Movie.NAME).asText();
+        String imdbId = node.get(Movie.IMDB_ID).textValue();
+        String name = node.get(Movie.NAME).textValue();
         int year = (Integer) node.get(Movie.YEAR).numberValue();
 
 
@@ -46,22 +46,22 @@ public class MovieDeserializer extends StdDeserializer<Movie> {
 
         String collection = null;
         if (node.has(Movie.COLLECTION)) {
-            collection = node.get(Movie.COLLECTION).asText();
+            collection = node.get(Movie.COLLECTION).textValue();
         }
 
         String posterUrl = null;
         if (node.has(Movie.POSTER)) {
-            posterUrl = node.get(Movie.POSTER).asText();
+            posterUrl = node.get(Movie.POSTER).textValue();
         }
 
         String language = null;
         if (node.has(Movie.LANGUAGE)) {
-            language = node.get(Movie.LANGUAGE).asText();
+            language = node.get(Movie.LANGUAGE).textValue();
         }
 
         String overview = null;
         if (node.has(Movie.OVERVIEW)) {
-            overview = node.get(Movie.OVERVIEW).asText();
+            overview = node.get(Movie.OVERVIEW).textValue();
         }
 
         List<MovieFromCollection> moviesInCollection = new ArrayList<>();
@@ -69,7 +69,7 @@ public class MovieDeserializer extends StdDeserializer<Movie> {
             ArrayNode arrayNode = (ArrayNode) node.get(Movie.MOVIES_IN_COLLECTION);
             if (arrayNode.isArray()) {
                 for (JsonNode jsonNode : arrayNode) {
-                    moviesInCollection.add(new MovieFromCollection(jsonNode.get("title").asText(), jsonNode.get("id").asText(), jsonNode.get("owned").asBoolean()));
+                    moviesInCollection.add(new MovieFromCollection(jsonNode.get("title").textValue(), jsonNode.get("id").textValue(), jsonNode.get("owned").booleanValue()));
                 }
             }
         }

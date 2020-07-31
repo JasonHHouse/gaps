@@ -32,16 +32,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -112,10 +103,10 @@ public class GapsSearchService implements GapsSearch {
 
         cancelSearch.set(false);
 
-        final Set<Movie> recommended = new TreeSet<>();
-        final Set<Movie> searched = new TreeSet<>();
+        final Set<Movie> recommended = new LinkedHashSet<>();
+        final List<Movie> searched = new ArrayList<>();
         final List<Movie> everyMovie = new ArrayList<>(ioService.readMovieIdsFromFile());
-        final Set<Movie> ownedMovies = new HashSet<>(ioService.readOwnedMovies(machineIdentifier, key));
+        final List<Movie> ownedMovies = new ArrayList<>(ioService.readOwnedMovies(machineIdentifier, key));
         final AtomicInteger searchedMovieCount = new AtomicInteger(0);
 
         if (CollectionUtils.isEmpty(ownedMovies)) {
@@ -179,7 +170,7 @@ public class GapsSearchService implements GapsSearch {
      * don't re-query collections again and again.
      */
     @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    private void searchForMovies(String machineIdentifier, Integer key, Set<Movie> ownedMovies, List<Movie> everyMovie, Set<Movie> recommended, Set<Movie> searched,
+    private void searchForMovies(String machineIdentifier, Integer key, List<Movie> ownedMovies, List<Movie> everyMovie, Set<Movie> recommended, List<Movie> searched,
                                  AtomicInteger searchedMovieCount) throws SearchCancelledException, IOException {
         LOGGER.info("searchForMovies()");
         OkHttpClient client = new OkHttpClient();
@@ -288,7 +279,7 @@ public class GapsSearchService implements GapsSearch {
                     }
 
                     JsonNode result = results.get(0);
-                    int id = result.get("id").asInt();
+                    int id = result.get("id").intValue();
                     movie.setTvdbId(id);
 
                     int indexOfMovie = everyMovie.indexOf(movie);
@@ -331,7 +322,7 @@ public class GapsSearchService implements GapsSearch {
         }
     }
 
-    private void searchMovieDetails(String machineIdentifier, Integer key, Set<Movie> ownedMovies, List<Movie> everyMovie, Set<Movie> recommended, Set<Movie> searched,
+    private void searchMovieDetails(String machineIdentifier, Integer key, List<Movie> ownedMovies, List<Movie> everyMovie, Set<Movie> recommended, List<Movie> searched,
                                     AtomicInteger searchedMovieCount, Movie movie, OkHttpClient client, String languageCode) {
         LOGGER.info("searchMovieDetails()");
         HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(gapsService.getPlexSearch().getMovieDbApiKey(), String.valueOf(movie.getTvdbId()), languageCode);
@@ -361,8 +352,8 @@ public class GapsSearchService implements GapsSearch {
                 return;
             }
 
-            int collectionId = movieDetails.get(COLLECTION_ID).get("id").asInt();
-            String collectionName = movieDetails.get(COLLECTION_ID).get("name").asText();
+            int collectionId = movieDetails.get(COLLECTION_ID).get("id").intValue();
+            String collectionName = movieDetails.get(COLLECTION_ID).get("name").textValue();
             movie.setCollectionId(collectionId);
             movie.setCollection(collectionName);
 
@@ -389,7 +380,7 @@ public class GapsSearchService implements GapsSearch {
         }
     }
 
-    private void handleCollection(String machineIdentifier, Integer key, Set<Movie> ownedMovies, List<Movie> everyMovie, Set<Movie> recommended, Set<Movie> searched,
+    private void handleCollection(String machineIdentifier, Integer key, List<Movie> ownedMovies, List<Movie> everyMovie, Set<Movie> recommended, List<Movie> searched,
                                   AtomicInteger searchedMovieCount, Movie movie, OkHttpClient client, String languageCode) {
         LOGGER.info("handleCollection()");
         HttpUrl collectionUrl = urlGenerator.generateCollectionUrl(gapsService.getPlexSearch().getMovieDbApiKey(), String.valueOf(movie.getCollectionId()), languageCode);
@@ -412,8 +403,8 @@ public class GapsSearchService implements GapsSearch {
 
             JsonNode collection = objectMapper.readTree(collectionJson);
 
-            if (collection.has("status_code") && collection.get("status_code").asInt() == 34) {
-                LOGGER.warn(collection.get("status_message").asText());
+            if (collection.has("status_code") && collection.get("status_code").intValue() == 34) {
+                LOGGER.warn(collection.get("status_message").textValue());
                 return;
             }
 
@@ -423,10 +414,10 @@ public class GapsSearchService implements GapsSearch {
             if (collection.has("parts")) {
                 JsonNode parts = collection.get("parts");
                 parts.iterator().forEachRemaining(jsonNode -> {
-                    String title = jsonNode.get("title").asText();
+                    String title = jsonNode.get("title").textValue();
                     int year = 0;
                     if (jsonNode.has("release_date")) {
-                        String oldDate = jsonNode.get("release_date").asText("0000-01-01");
+                        String oldDate = jsonNode.get("release_date").textValue();
 
                         try {
                             Date date = new SimpleDateFormat("yyyy-MM-dd").parse(oldDate);
@@ -437,7 +428,7 @@ public class GapsSearchService implements GapsSearch {
                             LOGGER.warn("Could not parse date");
                         }
                     }
-                    String id = jsonNode.get("id").asText();
+                    String id = jsonNode.get("id").textValue();
 
                     Movie collectionMovie = new Movie.Builder(title, year).build();
                     LOGGER.info(collectionMovie.toString());
@@ -450,39 +441,44 @@ public class GapsSearchService implements GapsSearch {
             LOGGER.info("MoviesInCollection: " + Arrays.toString(moviesInCollection.toArray()));
 
             if (indexOfMovie != -1) {
-                int id = collection.get("id").asInt(-1);
-                String name = collection.get("name").asText();
+                LOGGER.info("Movie found: " + movie);
+                int id = collection.get("id").intValue();
+                String name = collection.get("name").textValue();
                 everyMovie.get(indexOfMovie).setCollectionId(id);
                 everyMovie.get(indexOfMovie).setCollection(name);
                 movie.setCollection(name);
                 movie.setCollectionId(id);
                 movie.getMoviesInCollection().addAll(moviesInCollection);
             } else {
-                int id = collection.get("id").asInt();
-                String name = collection.get("name").asText();
+                LOGGER.info("Movie not found: " + movie);
+                int collectionId = collection.get("id").intValue();
+                String collectionName = collection.get("name").textValue();
                 Movie newMovie = new Movie.Builder(movie.getName(), movie.getYear())
                         .setTvdbId(movie.getTvdbId())
                         .setImdbId(movie.getImdbId())
-                        .setCollection(name)
-                        .setCollectionId(id)
+                        .setCollection(collectionName)
+                        .setCollectionId(collectionId)
                         .setMoviesInCollection(moviesInCollection)
+                        .setLanguage(movie.getLanguage())
+                        .setOverview(movie.getOverview())
+                        .setPosterUrl(movie.getPosterUrl())
                         .build();
                 everyMovie.add(newMovie);
 
-                movie.setCollection(name);
-                movie.setCollectionId(id);
+                movie.setCollection(collectionName);
+                movie.setCollectionId(collectionId);
             }
 
             ArrayNode parts = (ArrayNode) collection.get("parts");
             for (JsonNode part : parts) {
-                int tmdbId = part.get("id").asInt();
+                int tmdbId = part.get("id").intValue();
                 //Files can't have : so need to remove to find matches correctly
-                String title = part.get("title").asText();
+                String title = part.get("title").textValue();
                 int year;
                 try {
-                    if (part.has("release_date") && StringUtils.isNotEmpty(part.get("release_date").asText())) {
+                    if (part.has("release_date") && StringUtils.isNotEmpty(part.get("release_date").textValue())) {
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
-                        LocalDate date = LocalDate.parse(part.get("release_date").asText(), formatter);
+                        LocalDate date = LocalDate.parse(part.get("release_date").textValue(), formatter);
                         year = date.getYear();
                     } else {
                         LOGGER.warn("No year found for " + title + ". Value returned was empty. Not adding the movie to recommended list.");
@@ -495,7 +491,7 @@ public class GapsSearchService implements GapsSearch {
 
                 String posterUrl = "";
                 try {
-                    posterUrl = part.get("poster_url").asText();
+                    posterUrl = part.get("poster_url").textValue();
                 } catch (Exception e) {
                     LOGGER.info("No poster found for" + title + ".");
                 }
@@ -555,7 +551,7 @@ public class GapsSearchService implements GapsSearch {
                         // Get the release year from movie release date
                         if (movieDet.has("release_date")) {
                             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
-                            LocalDate date = LocalDate.parse(movieDet.get("release_date").asText(), formatter);
+                            LocalDate date = LocalDate.parse(movieDet.get("release_date").textValue(), formatter);
                             year = date.getYear();
                         } else {
                             LOGGER.warn("No year found for " + title + ". Value returned was '" + movieDet.get("release_date") + "'. Not adding the movie to recommended list.");
@@ -563,23 +559,20 @@ public class GapsSearchService implements GapsSearch {
                         }
 
                         if (collection.has("name")) {
-                            movie.setCollection(collection.get("name").asText());
-                            movieFromCollection.setCollection(collection.get("name").asText());
+                            movie.setCollection(collection.get("name").textValue());
+                            movieFromCollection.setCollection(collection.get("name").textValue());
                         }
 
                         // Add movie with imbd_id and other details for RSS to recommended list
-                        Movie recommendedMovie = new Movie.Builder(movieDet.get("title").asText(), year)
-                                .setTvdbId(movieDet.get("id").asInt())
-                                .setImdbId(movieDet.get("imdb_id").asText())
+                        Movie recommendedMovie = new Movie.Builder(movieDet.get("title").textValue(), year)
+                                .setTvdbId(movieDet.get("id").intValue())
+                                .setImdbId(movieDet.get("imdb_id").textValue())
                                 .setCollectionId(movie.getCollectionId())
                                 .setCollection(movie.getCollection())
-                                .setPosterUrl("https://image.tmdb.org/t/p/w185/" + movieDet.get("poster_path").asText())
-                                .setOverview(movieDet.get("overview").asText())
+                                .setPosterUrl("https://image.tmdb.org/t/p/w185/" + movieDet.get("poster_path").textValue())
+                                .setOverview(movieDet.get("overview").textValue())
                                 .setMoviesInCollection(moviesInCollection)
                                 .build();
-
-                        LOGGER.info("ownedMovies");
-                        ownedMovies.forEach(movie1 -> LOGGER.info(movie1.toString()));
 
                         if (ownedMovies.contains(recommendedMovie)) {
                             LOGGER.info("Skip owned movie: " + recommendedMovie);
@@ -588,7 +581,7 @@ public class GapsSearchService implements GapsSearch {
 
                         if (recommended.add(recommendedMovie)) {
                             // Write current list of recommended movies to file.
-                            ioService.writeRssFile(machineIdentifier, key, recommended);
+                            ioService.writeRssFile(machineIdentifier, key, new HashSet<>(recommended));
 
                             LOGGER.info("/newMovieFound:" + recommendedMovie.toString());
 
