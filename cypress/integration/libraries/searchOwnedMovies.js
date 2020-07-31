@@ -1,4 +1,4 @@
-import {jokerLibraryBefore, redLibraryBefore, searchPlexForMovies, spyOnAddEventListener} from "../common";
+import {jokerLibraryBefore, redLibraryBefore, searchPlexForMoviesFromSaw, spyOnAddEventListener} from "../common";
 
 describe('Find owned movies', function () {
     before(redLibraryBefore);
@@ -6,7 +6,7 @@ describe('Find owned movies', function () {
     it('Find Movies', () => {
         cy.visit('/libraries', {onBeforeLoad: spyOnAddEventListener});
 
-        searchPlexForMovies(cy);
+        searchPlexForMoviesFromSaw(cy);
     });
 
     it('Refresh Movies', () => {

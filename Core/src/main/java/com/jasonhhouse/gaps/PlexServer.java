@@ -15,12 +15,12 @@ import java.util.TreeSet;
 
 public final class PlexServer {
 
+    private final Set<PlexLibrary> plexLibraries;
     private String friendlyName;
     private String machineIdentifier;
     private String plexToken;
     private String address;
     private Integer port;
-    private final Set<PlexLibrary> plexLibraries;
 
     public PlexServer() {
         plexLibraries = new TreeSet<>();

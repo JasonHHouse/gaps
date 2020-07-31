@@ -15,8 +15,6 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.MovieFromCollection;
-import com.jasonhhouse.gaps.Pair;
-
 import java.io.IOException;
 
 public class MovieSerializer extends StdSerializer<Movie> {
