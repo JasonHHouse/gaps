@@ -63,7 +63,7 @@ public class TmdbService {
 
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseJson = objectMapper.readTree(jsonBody);
-            boolean success = responseJson.get("success").asBoolean();
+            boolean success = responseJson.get("success").booleanValue();
             Payload payload;
             if (success) {
                 payload = Payload.TMDB_KEY_VALID.setExtras(key);

@@ -14,9 +14,12 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jasonhhouse.gaps.json.MovieDeserializer;
 import com.jasonhhouse.gaps.json.MovieSerializer;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -158,13 +161,11 @@ public final class Movie implements Comparable<Movie> {
 
         //Compare tvdb id first
         if (tvdbId != -1 && tvdbId.equals(movie.tvdbId)) {
-            //LOGGER.info("Movie - tvdbId equals() true: " + tvdbId);
             return true;
         }
 
         //Compare imdb id next
         if (StringUtils.isNotEmpty(imdbId) && imdbId.equals(movie.imdbId)) {
-            //LOGGER.info("Movie - imdbId equals() true: " + imdbId);
             return true;
         }
 
