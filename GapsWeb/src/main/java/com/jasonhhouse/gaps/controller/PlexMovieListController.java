@@ -51,7 +51,7 @@ public class PlexMovieListController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<List<Movie>> getPlexMovies(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
-        LOGGER.info("getPlexMovies( " + machineIdentifier + ", " + key + " )");
+        LOGGER.info("getPlexMovies( {}, {} )", machineIdentifier, key);
 
         Set<Movie> everyMovie = ioService.readMovieIdsFromFile();
         Map<Pair<String, Integer>, Movie> previousMovies = generateOwnedMovieMap(everyMovie);
@@ -73,18 +73,13 @@ public class PlexMovieListController {
                         .getPlexLibraries()
                         .stream()
                         .filter(PlexLibrary::getSelected)
-                        .forEach(plexLibrary -> {
-                            everyMovie
-                                    .forEach(movie -> {
-                                        previousMovies.put(new Pair<>(movie.getName(), movie.getYear()), movie);
-                                    });
-                        }));
+                        .forEach(plexLibrary -> everyMovie.forEach(movie -> previousMovies.put(new Pair<>(movie.getName(), movie.getYear()), movie))));
 
         return previousMovies;
     }
 
     private String generatePlexUrl(String machineIdentifier, Integer key) {
-        LOGGER.info("generatePlexUrl( " + machineIdentifier + ", " + key + " )");
+        LOGGER.info("generatePlexUrl( {}, {} )", machineIdentifier, key);
         return gapsService
                 .getPlexSearch()
                 .getPlexServers()

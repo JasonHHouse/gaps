@@ -22,7 +22,7 @@ import org.springframework.validation.Validator;
 public class TmdbKeyValidator implements Validator {
 
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GapsController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TmdbKeyValidator.class);
 
     @Override
     public boolean supports(@NotNull Class<?> clazz) {
@@ -31,7 +31,7 @@ public class TmdbKeyValidator implements Validator {
 
     @Override
     public void validate(@NotNull Object obj, @NotNull Errors errors) {
-        LOGGER.info("validate( " + obj + ", " + errors + " )");
+        LOGGER.info("validate( {}, {} )", obj, errors);
 
         PlexSearch plexSearch = (PlexSearch) obj;
         if (StringUtils.isEmpty(plexSearch.getMovieDbApiKey())) {

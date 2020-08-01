@@ -104,7 +104,7 @@ public class LibraryController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Payload> getLibraries(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
-        LOGGER.info("getLibraries( " + machineIdentifier + ", " + key + " )");
+        LOGGER.info("getLibraries( {}, {} )", machineIdentifier, key);
 
         List<Movie> movies = ioService.readOwnedMovies(machineIdentifier, key);
         Payload payload;

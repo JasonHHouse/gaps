@@ -85,8 +85,6 @@ public class PlexQueryImpl implements PlexQuery {
                 .addQueryParameter("X-Plex-Token", plexServer.getPlexToken())
                 .build();
 
-        //ToDo
-        //Need to control time out here, using web configuration
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
                 .readTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
@@ -138,7 +136,7 @@ public class PlexQueryImpl implements PlexQuery {
                             throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason);
                         }
 
-                        String title = titleNode.getNodeValue().replaceAll(":", "");
+                        String title = titleNode.getNodeValue().replace(":", "");
                         Integer key = Integer.valueOf(keyNode.getNodeValue().trim());
 
                         PlexLibrary plexLibrary = new PlexLibrary(key, title, plexServer.getMachineIdentifier(), false);
@@ -147,7 +145,7 @@ public class PlexQueryImpl implements PlexQuery {
                 }
 
             } catch (IOException e) {
-                String reason = "Error connecting to Plex to get library list: " + url;
+                String reason = String.format("Error connecting to Plex to get library list: %s", url);
                 LOGGER.error(reason, e);
                 return Payload.PLEX_CONNECTION_FAILED.setExtras("url:" + url);
             } catch (ParserConfigurationException | XPathExpressionException | SAXException e) {
@@ -161,14 +159,14 @@ public class PlexQueryImpl implements PlexQuery {
             return Payload.PLEX_URL_ERROR.setExtras("url:" + url);
         }
 
-        LOGGER.info(plexLibraries.size() + " Plex libraries found");
+        LOGGER.info("{} Plex libraries found", plexLibraries.size());
         plexServer.getPlexLibraries().addAll(plexLibraries);
         return Payload.PLEX_LIBRARIES_FOUND.setExtras("size():" + plexLibraries.size());
     }
 
     @Override
     public @NotNull Payload queryPlexServer(@NotNull PlexServer plexServer) throws ResponseStatusException {
-        LOGGER.info("queryPlexLibraries( " + plexServer + " )");
+        LOGGER.info("queryPlexLibraries( {}} )", plexServer);
 
         HttpUrl url = new HttpUrl.Builder()
                 .scheme("http")
@@ -209,7 +207,7 @@ public class PlexQueryImpl implements PlexQuery {
                 }
 
                 String friendlyName = friendlyNameNode.getNodeValue().trim();
-                LOGGER.info("friendlyName:" + friendlyName);
+                LOGGER.info("friendlyName:{}", friendlyName);
 
                 Node machineIdentifierNode = map.getNamedItem("machineIdentifier");
                 if (machineIdentifierNode == null) {
@@ -219,23 +217,23 @@ public class PlexQueryImpl implements PlexQuery {
                 }
 
                 String machineIdentifier = machineIdentifierNode.getNodeValue().trim();
-                LOGGER.info("machineIdentifier:" + machineIdentifier);
+                LOGGER.info("machineIdentifier:{}", machineIdentifier);
 
                 plexServer.setFriendlyName(friendlyName);
                 plexServer.setMachineIdentifier(machineIdentifier);
 
                 return Payload.PLEX_CONNECTION_SUCCEEDED.setExtras("url:" + url);
             } catch (IOException e) {
-                String reason = "Error connecting to Plex to get library list: " + url;
+                String reason = String.format("Error connecting to Plex to get library list: %s", url);
                 LOGGER.error(reason, e);
                 return Payload.PLEX_CONNECTION_FAILED.setExtras("url:" + url);
             } catch (ParserConfigurationException | XPathExpressionException | SAXException e) {
-                String reason = "Error parsing XML from Plex: " + url;
+                String reason = String.format("Error parsing XML from Plex: %s", url);
                 LOGGER.error(reason, e);
                 return Payload.PARSING_PLEX_FAILED.setExtras("url:" + url);
             }
         } catch (IllegalArgumentException e) {
-            String reason = "Error with plex Url: " + url;
+            String reason = String.format("Error with plex Url: %s", url);
             LOGGER.error(reason, e);
             return Payload.PLEX_URL_ERROR.setExtras("url:" + url);
         }
@@ -279,16 +277,16 @@ public class PlexQueryImpl implements PlexQuery {
                 mediaContainer = (MediaContainer) jaxbUnmarshaller.unmarshal(inputStream);
 
             } catch (IOException e) {
-                String reason = "Error connecting to Plex to get Movie list: " + url;
+                String reason = String.format("Error connecting to Plex to get Movie list: %s", url);
                 LOGGER.error(reason, e);
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason, e);
             } catch (JAXBException e) {
-                String reason = "Error parsing XML from Plex: " + url;
+                String reason = String.format("Error parsing XML from Plex: %s", url);
                 LOGGER.error(reason, e);
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
             }
         } catch (IllegalArgumentException | NullPointerException e) {
-            String reason = "Error with plex Url: " + url;
+            String reason = String.format("Error with plex Url: %s", url);
             LOGGER.error(reason, e);
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason, e);
         }
@@ -340,8 +338,7 @@ public class PlexQueryImpl implements PlexQuery {
                 NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
 
                 if (nodeList.getLength() == 0) {
-                    String reason = "No movies found in url: " + url;
-                    LOGGER.warn(reason);
+                    LOGGER.warn("No movies found in url: {}", url);
                     return ownedMovies;
                 }
 
@@ -359,7 +356,7 @@ public class PlexQueryImpl implements PlexQuery {
                     //Files can't have : so need to remove to find matches correctly
                     String title = nodeTitle.getNodeValue().replaceAll(":", "");
                     if (node.getAttributes().getNamedItem("year") == null) {
-                        LOGGER.warn("Year not found for " + title);
+                        LOGGER.warn("Year not found for {}", title);
                         continue;
                     }
                     int year = Integer.parseInt(node.getAttributes().getNamedItem("year").getNodeValue());
@@ -392,25 +389,25 @@ public class PlexQueryImpl implements PlexQuery {
                         guid = guid.substring(guid.indexOf(ID_IDX_START) + ID_IDX_START.length(), guid.indexOf(ID_IDX_END));
                         movie = getOrCreateOwnedMovie(previousMovies, title, year, thumbnail, -1, guid, language, -1, null, summary);
                     } else {
-                        LOGGER.warn("Cannot handle guid value of " + guid);
+                        LOGGER.warn("Cannot handle guid value of {}", guid);
                         movie = getOrCreateOwnedMovie(previousMovies, title, year, thumbnail, -1, null, null, -1, null, summary);
                     }
 
                     ownedMovies.add(movie);
                 }
-                LOGGER.info(ownedMovies.size() + " movies found in plex");
+                LOGGER.info("{} movies found in plex", ownedMovies.size());
 
             } catch (IOException e) {
-                String reason = "Error connecting to Plex to get Movie list: " + url;
+                String reason = String.format("Error connecting to Plex to get Movie list: %s", url);
                 LOGGER.error(reason, e);
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason, e);
             } catch (ParserConfigurationException | XPathExpressionException | SAXException e) {
-                String reason = "Error parsing XML from Plex: " + url;
+                String reason = String.format("Error parsing XML from Plex: %s", url);
                 LOGGER.error(reason, e);
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
             }
         } catch (IllegalArgumentException | NullPointerException e) {
-            String reason = "Error with plex Url: " + url;
+            String reason = String.format("Error with plex Url: %s", url);
             LOGGER.error(reason, e);
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason, e);
         }
@@ -444,7 +441,7 @@ public class PlexQueryImpl implements PlexQuery {
         String body = responseBody.string();
 
         if (StringUtils.isBlank(body)) {
-            String reason = "Body returned null from Plex. Url: " + url;
+            String reason = String.format("Body returned null from Plex. Url: %s", url);
             LOGGER.error(reason);
             throw new IllegalStateException(reason);
         }

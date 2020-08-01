@@ -12,8 +12,6 @@ package com.jasonhhouse.gaps;
 
 import com.jasonhhouse.gaps.service.GapsServiceImpl;
 import java.util.concurrent.Executor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.MessageSource;
@@ -33,11 +31,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SpringBootApplication
 @EnableAsync
 public class GapsApplication {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(GapsApplication.class);
-
-    public GapsApplication() {
-    }
 
     public static void main(String[] args) {
         SpringApplication.run(GapsApplication.class, args);

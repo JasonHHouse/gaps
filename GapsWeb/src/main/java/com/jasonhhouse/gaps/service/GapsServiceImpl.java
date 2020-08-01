@@ -41,7 +41,7 @@ public class GapsServiceImpl implements GapsService {
 
     @Override
     public void updateLibrarySelections(@NotNull List<String> selectedLibraries) {
-        LOGGER.info("updateLibrarySelections( " + selectedLibraries + " )");
+        LOGGER.info("updateLibrarySelections( {} )", selectedLibraries);
 
         Map<String, PlexLibrary> map = new HashMap<>();
         getPlexSearch()
@@ -68,7 +68,7 @@ public class GapsServiceImpl implements GapsService {
 
     @Override
     public void updatePlexSearch(PlexSearch plexSearch) {
-        LOGGER.info("updatePlexSearch( " + plexSearch + " )");
+        LOGGER.info("updatePlexSearch( {} )", plexSearch);
         if (StringUtils.isNotEmpty(plexSearch.getMovieDbApiKey())) {
             this.plexSearch.setMovieDbApiKey(plexSearch.getMovieDbApiKey());
         }

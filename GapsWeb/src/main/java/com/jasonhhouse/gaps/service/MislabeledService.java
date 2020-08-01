@@ -35,9 +35,9 @@ public class MislabeledService {
             }
             file = file.substring(file.lastIndexOf('/') + 1);
             String title = video.getTitle();
-            title = title.replaceAll(":", "");
-            LOGGER.info("title:" + title);
-            LOGGER.info("file:" + file);
+            title = title.replace(":", "");
+            LOGGER.info("title:{}", title);
+            LOGGER.info("file:{}", file);
             Double matchPercentage = similarity(title, file);
             if (matchPercentage < percentage) {
                 Mislabeled mislabeledItem = new Mislabeled(file, title, matchPercentage);
@@ -48,7 +48,8 @@ public class MislabeledService {
     }
 
     private Double similarity(String s1, String s2) {
-        String longer = s1.toLowerCase(), shorter = s2.toLowerCase();
+        String longer = s1.toLowerCase();
+        String shorter = s2.toLowerCase();
         if (s1.length() < s2.length()) { // longer should always have greater length
             longer = s2;
             shorter = s1;

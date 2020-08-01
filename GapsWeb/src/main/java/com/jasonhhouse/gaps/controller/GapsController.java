@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -103,8 +102,7 @@ public class GapsController {
         return ResponseEntity.ok().body(payload);
     }
 
-    @RequestMapping(method = RequestMethod.GET,
-            value = "/about",
+    @GetMapping(value = "/about",
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getAbout() {
         LOGGER.info("getAbout()");

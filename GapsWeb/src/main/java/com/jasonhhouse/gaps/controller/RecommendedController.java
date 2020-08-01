@@ -84,7 +84,7 @@ public class RecommendedController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Payload> getRecommended(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
-        LOGGER.info("getRecommended( " + machineIdentifier + ", " + key + " )");
+        LOGGER.info("getRecommended( {}, {} )", machineIdentifier, key);
 
         final List<Movie> ownedMovies = ioService.readOwnedMovies(machineIdentifier, key);
         Payload payload;
@@ -116,7 +116,7 @@ public class RecommendedController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     public void putFindRecommencedMovies(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
-        LOGGER.info("putFindRecommencedMovies( " + machineIdentifier + ", " + key + " )");
+        LOGGER.info("putFindRecommencedMovies( {}, {} )", machineIdentifier, key);
 
         gapsSearch.run(machineIdentifier, key);
     }
@@ -129,7 +129,7 @@ public class RecommendedController {
      */
     @MessageMapping("/cancel/{machineIdentifier}/{key}")
     public void cancelSearching(@DestinationVariable final String machineIdentifier, @DestinationVariable final Integer key) {
-        LOGGER.info("cancelSearching( " + machineIdentifier + ", " + key + " )");
+        LOGGER.info("cancelSearching( {}, {} )", machineIdentifier, key);
         gapsSearch.cancelSearch();
     }
 

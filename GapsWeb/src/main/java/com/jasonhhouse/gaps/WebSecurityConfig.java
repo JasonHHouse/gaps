@@ -50,10 +50,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        LOGGER.info("Name: " + myConfig.getName());
-        LOGGER.info("Description: " + myConfig.getDescription());
-        LOGGER.info("Version: " + myConfig.getVersion());
-        LOGGER.info("LoginEnabled: " + myConfig.getLoginEnabled());
+        LOGGER.info("Name: {}",  myConfig.getName());
+        LOGGER.info("Description: {}", myConfig.getDescription());
+        LOGGER.info("Version: {}" , myConfig.getVersion());
+        LOGGER.info("LoginEnabled: {}", myConfig.getLoginEnabled());
 
         if (myConfig.getLoginEnabled() && myConfig.getSslEnabled()) {
             LOGGER.info("Login Enabled. Configuring site security with ssl.");
@@ -118,7 +118,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 password = UUID.randomUUID().toString();
                 plexSearch = new PlexSearch();
                 plexSearch.setPassword(password);
-                LOGGER.info("Gaps Password: " + password);
+                LOGGER.info("Gaps Password: {}", password);
                 try {
                     ioService.writeProperties(plexSearch);
                     gapsService.updatePlexSearch(plexSearch);

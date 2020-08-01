@@ -54,7 +54,7 @@ public class MislabeledController {
     @ResponseBody
     public ResponseEntity<List<Mislabeled>> getMisMatched(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key,
                                                           @PathVariable("percentage") final Double percentage) {
-        LOGGER.info("getPlexMovies( " + machineIdentifier + ", " + key + ", " + percentage + " )");
+        LOGGER.info("getPlexMovies( {}, {}, {} )", machineIdentifier, key, percentage);
 
         String url = generatePlexUrl(machineIdentifier, key);
         MediaContainer mediaContainer = plexQuery.findAllPlexVideos(url);
@@ -64,7 +64,7 @@ public class MislabeledController {
     }
 
     private String generatePlexUrl(String machineIdentifier, Integer key) {
-        LOGGER.info("generatePlexUrl( " + machineIdentifier + ", " + key + " )");
+        LOGGER.info("generatePlexUrl( {}, {} )", machineIdentifier, key);
         return gapsService
                 .getPlexSearch()
                 .getPlexServers()

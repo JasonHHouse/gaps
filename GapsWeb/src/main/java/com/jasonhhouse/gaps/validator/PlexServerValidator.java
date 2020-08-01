@@ -29,7 +29,7 @@ public class PlexServerValidator implements Validator {
 
     @Override
     public void validate(@NotNull Object obj, @NotNull Errors errors) {
-        LOGGER.info("validate( " + obj + ", " + errors + " )");
+        LOGGER.info("validate( {}, {} )", obj, errors);
 
         PlexServer plexSearch = (PlexServer) obj;
         if (StringUtils.isEmpty(plexSearch.getAddress())) {
