@@ -14,9 +14,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 public final class Role {
     private String tag;
 
-    public Role() {
-    }
-
     public String getTag() {
         return tag;
     }

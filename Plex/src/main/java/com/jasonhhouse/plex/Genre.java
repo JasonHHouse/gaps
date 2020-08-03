@@ -14,9 +14,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 public final class Genre {
     private String tag;
 
-    public Genre() {
-    }
-
     public String getTag() {
         return tag;
     }

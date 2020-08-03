@@ -140,12 +140,12 @@ public class GapsSearchService implements GapsSearch {
             LOGGER.info("Times used TVDB ID: {}", tempTvdbCounter);
         } catch (SearchCancelledException e) {
             String reason = "Search cancelled";
-            LOGGER.error(reason, e);
+            LOGGER.error(reason);
             template.convertAndSend(FINISHED_SEARCHING_URL, Payload.OWNED_MOVIES_CANNOT_BE_EMPTY);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
         } catch (IOException e) {
             String reason = "Search failed";
-            LOGGER.error(reason, e);
+            LOGGER.error(reason);
             template.convertAndSend(FINISHED_SEARCHING_URL, Payload.SEARCH_FAILED);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
         } finally {
@@ -160,7 +160,8 @@ public class GapsSearchService implements GapsSearch {
 
         LOGGER.info("Recommended");
         for (Movie movie : recommended) {
-            LOGGER.info(movie.toString());
+            String strMovie = movie.toString();
+            LOGGER.info(strMovie);
         }
     }
 

@@ -29,9 +29,6 @@ public final class Media {
     private String videoProfile;
     private List<Part> parts;
 
-    public Media() {
-    }
-
     public Integer getId() {
         return id;
     }

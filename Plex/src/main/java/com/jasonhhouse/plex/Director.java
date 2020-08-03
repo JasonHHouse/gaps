@@ -14,9 +14,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 public final class Director {
     private String tag;
 
-    public Director() {
-    }
-
     public String getTag() {
         return tag;
     }

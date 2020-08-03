@@ -43,9 +43,6 @@ public final class Video {
     private List<Role> roles;
     private List<Media> media;
 
-    public Video() {
-    }
-
     public String getKey() {
         return key;
     }

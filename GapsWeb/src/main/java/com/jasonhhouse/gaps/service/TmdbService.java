@@ -59,7 +59,7 @@ public class TmdbService {
             }
             String jsonBody = responseBody.string();
 
-            LOGGER.info("jsonBody: " + jsonBody);
+            LOGGER.info("jsonBody: {}", jsonBody);
 
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseJson = objectMapper.readTree(jsonBody);

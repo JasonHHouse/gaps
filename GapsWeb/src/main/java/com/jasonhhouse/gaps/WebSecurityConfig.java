@@ -74,7 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                     .logout()
                     .permitAll();
-        } else if (myConfig.getLoginEnabled() && !myConfig.getSslEnabled()) {
+        } else if (Boolean.TRUE.equals(myConfig.getLoginEnabled()) && !myConfig.getSslEnabled()) {
             LOGGER.info("Login Enabled. Configuring site security without ssl.");
 
             http.cors().and().csrf().disable()
@@ -104,7 +104,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public UserDetailsService userDetailsService() {
         LOGGER.info("userDetailsService()");
-        if (myConfig.getLoginEnabled()) {
+        if (Boolean.TRUE.equals(myConfig.getLoginEnabled())) {
 
             PlexSearch plexSearch = null;
             try {

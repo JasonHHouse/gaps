@@ -21,9 +21,6 @@ public final class Part {
     private String container;
     private String videoProfile;
 
-    public Part() {
-    }
-
     public Integer getId() {
         return id;
     }

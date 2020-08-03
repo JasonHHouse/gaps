@@ -44,11 +44,11 @@ public class GapsServiceTest {
         gapsService.updatePlexSearch(plexSearch);
         gapsService.getPlexSearch().addPlexServer(plexServer);
 
-        assertEquals("GapsSearch not updating plex servers", gapsService.getPlexSearch().getPlexServers().size(), 1);
+        assertEquals("GapsSearch not updating plex servers", 1, gapsService.getPlexSearch().getPlexServers().size());
 
         gapsService.nukePlexSearch();
-        assertEquals("GapsSearch not nuking movie db api key", gapsService.getPlexSearch().getMovieDbApiKey(), "");
-        assertEquals("GapsSearch not nuking plex servers", gapsService.getPlexSearch().getPlexServers().size(), 0);
+        assertEquals("GapsSearch not nuking movie db api key", "", gapsService.getPlexSearch().getMovieDbApiKey());
+        assertEquals("GapsSearch not nuking plex servers", 0, gapsService.getPlexSearch().getPlexServers().size());
     }
 
     @Test
@@ -80,7 +80,7 @@ public class GapsServiceTest {
             }
         }
 
-        assertEquals("Default selected libraries is wrong", count, 0);
+        assertEquals("Default selected libraries is wrong", 0, count);
 
         gapsService.updateLibrarySelections(new ArrayList<String>(){{
             add("abcqwe1");
@@ -95,6 +95,6 @@ public class GapsServiceTest {
             }
         }
 
-        assertEquals("Updated selected libraries is wrong", count, 1);
+        assertEquals("Updated selected libraries is wrong", 1, count);
     }
 }

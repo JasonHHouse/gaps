@@ -14,9 +14,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 public final class Country {
     private String tag;
 
-    public Country() {
-    }
-
     public String getTag() {
         return tag;
     }

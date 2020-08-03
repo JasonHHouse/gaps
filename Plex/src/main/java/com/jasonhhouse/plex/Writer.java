@@ -14,9 +14,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 public final class Writer {
     private String tag;
 
-    public Writer() {
-    }
-
     public String getTag() {
         return tag;
     }
