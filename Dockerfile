@@ -6,6 +6,10 @@ LABEL github="https://github.com/JasonHHouse/Gaps"
 
 EXPOSE 32400
 
+RUN apt-get -y update
+
+RUN apt-get -y upgrade
+
 ENV JAR_FILE gaps.jar
 
 ENV ENABLE_SSL false

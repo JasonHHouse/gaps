@@ -14,11 +14,9 @@ import com.jasonhhouse.gaps.service.GapsServiceImpl;
 import java.util.concurrent.Executor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -29,6 +27,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * Search for all missing movies in your plex collection by MovieDB collection.
  */
 @SpringBootApplication
+@EntityScan("com.jasonhhouse.plex")
 @EnableAsync
 public class GapsApplication {
 

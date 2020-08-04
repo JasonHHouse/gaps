@@ -7,13 +7,13 @@ public final class MovieFromCollection {
     @NotNull
     private final String title;
     @NotNull
-    private final String id;
+    private final String tmdbId;
     @NotNull
     private final Boolean owned;
 
-    public MovieFromCollection(@NotNull String title, @NotNull String id, @NotNull Boolean owned) {
+    public MovieFromCollection(@NotNull String title, @NotNull String tmdbId, @NotNull Boolean owned) {
         this.title = title;
-        this.id = id;
+        this.tmdbId = tmdbId;
         this.owned = owned;
     }
 
@@ -23,8 +23,8 @@ public final class MovieFromCollection {
     }
 
     @NotNull
-    public String getId() {
-        return id;
+    public String getTmdbId() {
+        return tmdbId;
     }
 
     @NotNull
@@ -38,20 +38,20 @@ public final class MovieFromCollection {
         if (o == null || getClass() != o.getClass()) return false;
         MovieFromCollection that = (MovieFromCollection) o;
         return title.equals(that.title) &&
-                id.equals(that.id) &&
+                tmdbId.equals(that.tmdbId) &&
                 owned.equals(that.owned);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, id, owned);
+        return Objects.hash(title, tmdbId, owned);
     }
 
     @Override
     public String toString() {
         return "MovieFromCollection{" +
                 "title='" + title + '\'' +
-                ", id='" + id + '\'' +
+                ", id='" + tmdbId + '\'' +
                 ", owned=" + owned +
                 '}';
     }

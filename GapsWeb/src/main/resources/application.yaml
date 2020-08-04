@@ -23,6 +23,15 @@ spring:
         max-age: 120
         must-revalidate: true
         cache-public: true
+  jpa:
+    database-platform: com.jasonhhouse.gaps.sql.SQLDialect
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:sqlite:/usr/data/gaps.db
+    driver-class-name: org.sqlite.JDBC
+    username: admin
+    password: admin
 server:
   http2:
     enabled: true

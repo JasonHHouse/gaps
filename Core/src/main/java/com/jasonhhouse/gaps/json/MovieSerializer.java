@@ -42,7 +42,7 @@ public class MovieSerializer extends StdSerializer<Movie> {
         for (MovieFromCollection movieInCollection : movie.getMoviesInCollection()) {
             jsonGenerator.writeStartObject();
             jsonGenerator.writeStringField("title", movieInCollection.getTitle());
-            jsonGenerator.writeStringField("id", movieInCollection.getId());
+            jsonGenerator.writeStringField("id", movieInCollection.getTmdbId());
             jsonGenerator.writeBooleanField("owned", movieInCollection.getOwned());
             jsonGenerator.writeEndObject();
         }

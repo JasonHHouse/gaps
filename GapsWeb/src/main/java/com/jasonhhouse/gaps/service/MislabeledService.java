@@ -23,8 +23,10 @@ import org.springframework.stereotype.Service;
 public class MislabeledService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MislabeledService.class);
+    private static final LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
 
     public List<Mislabeled> findMatchPercentage(MediaContainer mediaContainer, Double percentage) {
+        LOGGER.info("findMatchPercentage( {} )", percentage);
         List<Mislabeled> mislabeled = new ArrayList<>();
         for (Video video : mediaContainer.getVideos()) {
             String file = video.getMedia().get(0).getParts().get(0).getFile();
@@ -36,8 +38,6 @@ public class MislabeledService {
             file = file.substring(file.lastIndexOf('/') + 1);
             String title = video.getTitle();
             title = title.replace(":", "");
-            LOGGER.info("title:{}", title);
-            LOGGER.info("file:{}", file);
             Double matchPercentage = similarity(title, file);
             if (matchPercentage < percentage) {
                 Mislabeled mislabeledItem = new Mislabeled(file, title, matchPercentage);
@@ -58,7 +58,7 @@ public class MislabeledService {
         if (longerLength == 0) {
             return 1.0; /* both strings are zero length */
         }
-        LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
+
         return (longerLength - levenshteinDistance.apply(longer, shorter)) / (double) longerLength;
     }
 

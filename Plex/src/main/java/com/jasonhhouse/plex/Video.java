@@ -11,11 +11,16 @@ package com.jasonhhouse.plex;
 
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
+@Entity
 public final class Video {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
     private Integer ratingKey;
     private String key;
     private String guid;
@@ -35,13 +40,28 @@ public final class Video {
     private Long addedAt;
     private Long updatedAt;
     private String primaryExtra;
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Genre> genres;
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Collection> collections;
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Director> directors;
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Writer> writers;
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Country> counties;
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Role> roles;
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Media> media;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getKey() {
         return key;
