@@ -26,7 +26,9 @@ public enum Payload {
     PLEX_LIBRARY_MOVIE_FOUND(40, "Plex's library movies found."),
     PLEX_LIBRARY_MOVIE_NOT_FOUND(41, "Plex's library movies not found."),
     RECOMMENDED_MOVIES_FOUND(50, "Recommended movies found."),
-    RECOMMENDED_MOVIES_NOT_FOUND(51, "Recommended movies not found.");
+    RECOMMENDED_MOVIES_NOT_FOUND(51, "Recommended movies not found."),
+    SCHEDULE_FOUND(60, "Search schedule found."),
+    SCHEDULE_NOT_FOUND(61, "Search schedule not found.");
 
     private final int code;
     private final String reason;

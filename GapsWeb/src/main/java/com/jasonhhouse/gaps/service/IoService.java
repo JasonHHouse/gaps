@@ -17,6 +17,7 @@ import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.Rss;
+import com.jasonhhouse.gaps.Schedule;
 import com.jasonhhouse.gaps.YamlConfig;
 import java.io.BufferedReader;
 import java.io.File;
@@ -364,6 +365,7 @@ public class IoService {
 
         properties.setProperty(PlexSearch.VERSION_KEY, yamlConfig.getVersion());
         properties.setProperty(PlexSearch.USERNAME_KEY, PlexSearch.USERNAME_VALUE);
+        properties.setProperty(PlexSearch.SCHEDULE, String.valueOf(plexSearch.getSchedule().ordinal()));
 
         if (StringUtils.isNotEmpty(plexSearch.getPassword())) {
             properties.setProperty(PlexSearch.PASSWORD, plexSearch.getPassword());
@@ -405,6 +407,13 @@ public class IoService {
                 if (properties.containsKey(PlexSearch.PASSWORD)) {
                     String password = properties.getProperty(PlexSearch.PASSWORD);
                     plexSearch.setPassword(password);
+                }
+
+                if (properties.containsKey(PlexSearch.SCHEDULE)) {
+                    String strSchedule = properties.getProperty(PlexSearch.SCHEDULE);
+                    int intSchedule = Integer.parseInt(strSchedule);
+                    Schedule schedule = Schedule.getSchedule(intSchedule);
+                    plexSearch.setSchedule(schedule);
                 }
             }
         } catch (FileNotFoundException e) {
