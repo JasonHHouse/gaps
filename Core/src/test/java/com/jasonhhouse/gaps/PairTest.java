@@ -17,15 +17,21 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 class PairTest {
 
     @Test
-    void pairTest() {
+    void pairTest_NotEqual() {
+        Pair<Integer, Float> pair1 = new Pair<>(1, 1.0F);
+        Pair<Integer, Float> pair3 = new Pair<>(1, 2.0F);
+
+        assertNotEquals(pair1, pair3, "Pair equals method broken");
+    }
+
+    @Test
+    void pairTest_Equal() {
         Pair<Integer, Float> pair1 = new Pair<>(1, 1.0F);
         Pair<Integer, Float> pair2 = new Pair<>(1, 1.0F);
-        Pair<Integer, Float> pair3 = new Pair<>(1, 2.0F);
 
         assertEquals(pair1.getLeft(), pair2.getLeft(), "Pair1 and Pair2 left should match");
         assertEquals(pair1.getRight(), pair2.getRight(), "Pair1 and Pair2 right should match");
 
         assertEquals(pair1, pair2, "Pair equals method broken");
-        assertNotEquals(pair1, pair3, "Pair equals method broken");
     }
 }

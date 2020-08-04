@@ -11,26 +11,24 @@
 package com.jasonhhouse.gaps;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public final class Rss {
     @JsonProperty("imdb_id")
-    private String imdbId;
+    private final String imdbId;
 
     @JsonProperty("release_date")
-    private Integer releaseDate;
+    private final Integer releaseDate;
 
     @JsonProperty("tvdb_id")
-    private Integer tvdbId;
+    private final Integer tvdbId;
 
     @JsonProperty("title")
-    private String title;
+    private final String title;
 
     @JsonProperty("poster_path")
-    private String posterPath;
-
-    public Rss() {
-    }
+    private final String posterPath;
 
     public Rss(String imdbId, Integer releaseDate, Integer tvdbId, String title, String posterPath) {
         this.imdbId = imdbId;
@@ -44,40 +42,20 @@ public final class Rss {
         return imdbId;
     }
 
-    public void setImdbId(String imdbId) {
-        this.imdbId = imdbId;
-    }
-
     public Integer getReleaseDate() {
         return releaseDate;
-    }
-
-    public void setReleaseDate(Integer releaseDate) {
-        this.releaseDate = releaseDate;
     }
 
     public Integer getTvdbId() {
         return tvdbId;
     }
 
-    public void setTvdbId(Integer tvdbId) {
-        this.tvdbId = tvdbId;
-    }
-
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getPosterPath() {
         return posterPath;
-    }
-
-    public void setPosterPath(String posterPath) {
-        this.posterPath = posterPath;
     }
 
     @Override
