@@ -55,7 +55,7 @@ public class PlexMovieListController {
 
         Set<Movie> everyMovie = ioService.readMovieIdsFromFile();
         Map<Pair<String, Integer>, Movie> previousMovies = generateOwnedMovieMap(everyMovie);
-        String url = generatePlexUrl(machineIdentifier, key);
+        String url = generatePlexMovieUrl(machineIdentifier, key);
         List<Movie> ownedMovies = plexQuery.findAllPlexMovies(previousMovies, url);
 
         //Update Owned Movies
@@ -78,7 +78,7 @@ public class PlexMovieListController {
         return previousMovies;
     }
 
-    private String generatePlexUrl(String machineIdentifier, Integer key) {
+    private String generatePlexMovieUrl(String machineIdentifier, Integer key) {
         LOGGER.info("generatePlexUrl( {}, {} )", machineIdentifier, key);
         return gapsService
                 .getPlexSearch()

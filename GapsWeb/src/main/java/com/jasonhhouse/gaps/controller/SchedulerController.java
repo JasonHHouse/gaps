@@ -43,17 +43,16 @@ public class SchedulerController {
             value = "/{schedule}")
     @ResponseBody
     public ResponseEntity<Payload> putSchedule(@PathVariable("schedule") final Integer schedule) {
-        LOGGER.info("putSchedule( " + schedule + " )");
+        LOGGER.info("putSchedule( {} )", schedule);
 
-        String json = null;
         try {
-            json = schedulerService.getJsonSchedule();
+            schedulerService.setSchedule(schedule);
         } catch (IOException e) {
             LOGGER.error("Failed to get JSON Schedule", e);
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Payload.SCHEDULE_NOT_FOUND);
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Payload.SCHEDULE_NOT_UPDATED);
         }
 
-        return ResponseEntity.ok().body(Payload.SCHEDULE_FOUND.setExtras(json));
+        return ResponseEntity.ok().body(Payload.SCHEDULE_UPDATED);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -64,6 +63,18 @@ public class SchedulerController {
         } catch (IOException e) {
             LOGGER.error("Failed to read schedule from properties", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to read schedule from properties");
+        }
+    }
+
+    @GetMapping(value = "/all",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getAllSchedules() {
+        LOGGER.info("getAllSchedules()");
+        try {
+            return ResponseEntity.ok().body(schedulerService.getAllSchedules());
+        } catch (IOException e) {
+            LOGGER.error("Failed to read schedule from properties", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to parse schedule into JSON");
         }
     }
 }

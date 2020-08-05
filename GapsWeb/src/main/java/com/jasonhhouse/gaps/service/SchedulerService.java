@@ -10,53 +10,84 @@
 
 package com.jasonhhouse.gaps.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jasonhhouse.gaps.GapsSearch;
 import com.jasonhhouse.gaps.GapsService;
+import com.jasonhhouse.gaps.GapsUrlGenerator;
+import com.jasonhhouse.gaps.PlexQuery;
 import com.jasonhhouse.gaps.Schedule;
+import com.jasonhhouse.gaps.SearchGapsTask;
 import java.io.IOException;
+import java.util.List;
+import java.util.TimeZone;
+import java.util.concurrent.ScheduledFuture;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SchedulerService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SchedulerService.class);
+
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private final IoService ioService;
     private final GapsService gapsService;
+    private final TaskScheduler scheduler;
+    private final SearchGapsTask searchGapsTask;
+    private ScheduledFuture<?> scheduledFuture;
 
     @Autowired
-    public SchedulerService(IoService ioService, GapsService gapsService) {
+    public SchedulerService(IoService ioService, GapsService gapsService, GapsSearch gapsSearch, @Qualifier("Gaps") TaskScheduler scheduler, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator) {
         this.ioService = ioService;
         this.gapsService = gapsService;
+        this.scheduler = scheduler;
+        this.searchGapsTask = new SearchGapsTask(gapsService, gapsSearch, ioService, plexQuery, gapsUrlGenerator);
     }
 
-    public void setSchedule(int intSchedule) {
+    public void setSchedule(int intSchedule) throws IOException {
+        LOGGER.info("setSchedule( {} )", intSchedule);
         Schedule schedule = Schedule.getSchedule(intSchedule);
         gapsService.getPlexSearch().setSchedule(schedule);
+        ioService.writeProperties(gapsService.getPlexSearch());
+        setTaskForScheduler(schedule);
     }
 
     public Schedule getRawSchedule() throws IOException {
+        LOGGER.info("getRawSchedule()");
         return ioService.readProperties().getSchedule();
     }
 
+    public String getAllSchedules() throws JsonProcessingException {
+        LOGGER.info("getAllSchedules()");
+        List<Schedule> schedules = Schedule.getAllSchedules();
+        return objectMapper.writeValueAsString(schedules);
+    }
+
     public String getJsonSchedule() throws IOException {
-        JsonSchedule jsonSchedule = new JsonSchedule(ioService.readProperties().getSchedule().ordinal());
-        return objectMapper.writeValueAsString(jsonSchedule);
+        LOGGER.info("getJsonSchedule()");
+        return objectMapper.writeValueAsString(ioService.readProperties().getSchedule());
     }
 
-    private final class JsonSchedule {
-        private int scheduleOrdinal;
-
-        public JsonSchedule(int scheduleOrdinal) {
-            this.scheduleOrdinal = scheduleOrdinal;
+    private void setTaskForScheduler(Schedule schedule) {
+        if (scheduledFuture != null) {
+            scheduledFuture.cancel(true);
         }
 
-        public int getScheduleOrdinal() {
-            return scheduleOrdinal;
-        }
-
-        public void setScheduleOrdinal(int scheduleOrdinal) {
-            this.scheduleOrdinal = scheduleOrdinal;
-        }
+        scheduledFuture = scheduler.schedule(searchGapsTask, new CronTrigger(schedule.getCron(), TimeZone.getTimeZone(TimeZone.getDefault().getID())));
     }
+
+    // A context refresh event listener
+    @EventListener({ContextRefreshedEvent.class})
+    public void contextRefreshedEvent() {
+        // Get all tasks from DB and reschedule them in case of context restarted
+    }
+
 }

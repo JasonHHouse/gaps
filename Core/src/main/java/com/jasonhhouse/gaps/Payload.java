@@ -28,7 +28,9 @@ public enum Payload {
     RECOMMENDED_MOVIES_FOUND(50, "Recommended movies found."),
     RECOMMENDED_MOVIES_NOT_FOUND(51, "Recommended movies not found."),
     SCHEDULE_FOUND(60, "Search schedule found."),
-    SCHEDULE_NOT_FOUND(61, "Search schedule not found.");
+    SCHEDULE_NOT_FOUND(61, "Search schedule not found."),
+    SCHEDULE_UPDATED(62, "Search schedule updated successfully."),
+    SCHEDULE_NOT_UPDATED(63, "Search schedule update failed.");
 
     private final int code;
     private final String reason;

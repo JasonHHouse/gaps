@@ -365,7 +365,7 @@ public class IoService {
 
         properties.setProperty(PlexSearch.VERSION_KEY, yamlConfig.getVersion());
         properties.setProperty(PlexSearch.USERNAME_KEY, PlexSearch.USERNAME_VALUE);
-        properties.setProperty(PlexSearch.SCHEDULE, String.valueOf(plexSearch.getSchedule().ordinal()));
+        properties.setProperty(PlexSearch.SCHEDULE, plexSearch.getSchedule().getId().toString());
 
         if (StringUtils.isNotEmpty(plexSearch.getPassword())) {
             properties.setProperty(PlexSearch.PASSWORD, plexSearch.getPassword());
@@ -411,7 +411,7 @@ public class IoService {
 
                 if (properties.containsKey(PlexSearch.SCHEDULE)) {
                     String strSchedule = properties.getProperty(PlexSearch.SCHEDULE);
-                    int intSchedule = Integer.parseInt(strSchedule);
+                    Integer intSchedule = Integer.valueOf(strSchedule);
                     Schedule schedule = Schedule.getSchedule(intSchedule);
                     plexSearch.setSchedule(schedule);
                 }

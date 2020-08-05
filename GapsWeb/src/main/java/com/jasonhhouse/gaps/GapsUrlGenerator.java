@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 @Service(value = "real")
 public class GapsUrlGenerator implements UrlGenerator {
 
+    private static final String HTTP = "http";
     private static final String HTTPS = "https";
     private static final String TMDB_URL = "api.themoviedb.org";
     private static final String TMDB_VERSION = "3";
@@ -32,6 +33,10 @@ public class GapsUrlGenerator implements UrlGenerator {
     private static final String FIND = "find";
     private static final String EXTERNAL_SOURCE = "external_source";
     private static final String COLLECTION = "collection";
+    private static final String LIBRARY = "library";
+    private static final String SECTIONS = "sections";
+    private static final String ALL = "all";
+    private static final String PLEX_TOKEN = "X-Plex-Token";
 
     @Override
     public @NotNull HttpUrl generateSearchMovieUrl(@NotNull String movieDbKey, @NotNull String query, @NotNull String year, @NotNull String language) {
@@ -93,5 +98,19 @@ public class GapsUrlGenerator implements UrlGenerator {
     @Override
     public @Nullable HttpUrl generatePlexUrl(@NotNull String plexUrl) {
         return HttpUrl.parse(plexUrl);
+    }
+
+    @Override
+    public @Nullable HttpUrl generatePlexLibraryUrl(PlexServer plexServer, PlexLibrary plexLibrary) {
+        return new HttpUrl.Builder()
+                .scheme(HTTP)
+                .host(plexServer.getAddress())
+                .port(plexServer.getPort())
+                .addPathSegment(LIBRARY)
+                .addPathSegment(SECTIONS)
+                .addPathSegment(plexLibrary.getKey().toString())
+                .addPathSegment(ALL)
+                .addQueryParameter(PLEX_TOKEN, plexServer.getPlexToken())
+                .build();
     }
 }

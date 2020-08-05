@@ -13,6 +13,7 @@ package com.jasonhhouse.gaps;
 import com.jasonhhouse.plex.MediaContainer;
 import java.util.List;
 import java.util.Map;
+import okhttp3.HttpUrl;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -38,5 +39,8 @@ public interface PlexQuery {
      */
     List<Movie> findAllPlexMovies(Map<Pair<String, Integer>, Movie> previousMovies, @NotNull String url);
 
+    @NotNull List<Movie> findAllPlexMovies(Map<Pair<String, Integer>, Movie> previousMovies, @NotNull HttpUrl url);
+
     @NotNull MediaContainer findAllPlexVideos(@NotNull String url);
+
 }

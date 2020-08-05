@@ -294,7 +294,6 @@ public class PlexQueryImpl implements PlexQuery {
         return mediaContainer;
     }
 
-
     @Override
     public List<Movie> findAllPlexMovies(Map<Pair<String, Integer>, Movie> previousMovies, @NotNull String url) {
         LOGGER.info("findAllPlexMovies()");
@@ -317,6 +316,119 @@ public class PlexQueryImpl implements PlexQuery {
 
             Request request = new Request.Builder()
                     .url(httpUrl)
+                    .build();
+
+            try (Response response = client.newCall(request).execute()) {
+                String body = response.body() != null ? response.body().string() : null;
+
+                if (StringUtils.isBlank(body)) {
+                    String reason = "Body returned empty from Plex";
+                    LOGGER.error(reason);
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason);
+                }
+
+
+                InputStream fileIS = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
+                DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder builder = builderFactory.newDocumentBuilder();
+                Document xmlDocument = builder.parse(fileIS);
+                XPath xPath = XPathFactory.newInstance().newXPath();
+                String expression = "/MediaContainer/Video";
+                NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
+
+                if (nodeList.getLength() == 0) {
+                    LOGGER.warn("No movies found in url: {}", url);
+                    return ownedMovies;
+                }
+
+                for (int i = 0; i < nodeList.getLength(); i++) {
+                    Node node = nodeList.item(i);
+
+                    Node nodeTitle = node.getAttributes().getNamedItem("title");
+
+                    if (nodeTitle == null) {
+                        String reason = "Missing title from Video element in Plex";
+                        LOGGER.error(reason);
+                        throw new NullPointerException(reason);
+                    }
+
+                    //Files can't have : so need to remove to find matches correctly
+                    String title = nodeTitle.getNodeValue().replaceAll(":", "");
+                    if (node.getAttributes().getNamedItem("year") == null) {
+                        LOGGER.warn("Year not found for {}", title);
+                        continue;
+                    }
+                    int year = Integer.parseInt(node.getAttributes().getNamedItem("year").getNodeValue());
+
+                    String guid = "";
+                    if (node.getAttributes().getNamedItem("guid") != null) {
+                        guid = node.getAttributes().getNamedItem("guid").getNodeValue();
+                    }
+
+                    String thumbnail = "";
+                    if (node.getAttributes().getNamedItem("thumb") != null) {
+                        thumbnail = node.getAttributes().getNamedItem("thumb").getNodeValue();
+                    }
+
+                    String summary = "";
+                    if (node.getAttributes().getNamedItem("summary") != null) {
+                        summary = node.getAttributes().getNamedItem("summary").getNodeValue();
+                    }
+
+                    Movie movie;
+                    if (guid.contains("com.plexapp.agents.themoviedb")) {
+                        //ToDo
+                        //Find out what it looks like in TMDB
+                        //language = ??
+                        guid = guid.substring(guid.indexOf(ID_IDX_START) + ID_IDX_START.length(), guid.indexOf(ID_IDX_END));
+                        movie = getOrCreateOwnedMovie(previousMovies, title, year, thumbnail, Integer.parseInt(guid), null, null, -1, null, summary);
+                    } else if (guid.contains("com.plexapp.agents.imdb://")) {
+                        String language = guid.substring(guid.indexOf("?lang=") + "?lang=".length());
+                        language = new Locale(language, "").getDisplayLanguage();
+                        guid = guid.substring(guid.indexOf(ID_IDX_START) + ID_IDX_START.length(), guid.indexOf(ID_IDX_END));
+                        movie = getOrCreateOwnedMovie(previousMovies, title, year, thumbnail, -1, guid, language, -1, null, summary);
+                    } else {
+                        LOGGER.warn("Cannot handle guid value of {}", guid);
+                        movie = getOrCreateOwnedMovie(previousMovies, title, year, thumbnail, -1, null, null, -1, null, summary);
+                    }
+
+                    ownedMovies.add(movie);
+                }
+                LOGGER.info("{} movies found in plex", ownedMovies.size());
+
+            } catch (IOException e) {
+                String reason = String.format("Error connecting to Plex to get Movie list: %s", url);
+                LOGGER.error(reason, e);
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason, e);
+            } catch (ParserConfigurationException | XPathExpressionException | SAXException e) {
+                String reason = String.format("Error parsing XML from Plex: %s", url);
+                LOGGER.error(reason, e);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
+            }
+        } catch (IllegalArgumentException | NullPointerException e) {
+            String reason = String.format("Error with plex Url: %s", url);
+            LOGGER.error(reason, e);
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason, e);
+        }
+
+        return ownedMovies;
+    }
+
+    @Override
+    public @NotNull List<Movie> findAllPlexMovies(Map<Pair<String, Integer>, Movie> previousMovies, @NotNull HttpUrl url) {
+        LOGGER.info("findAllPlexMovies()");
+
+        List<Movie> ownedMovies = new ArrayList<>();
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(180, TimeUnit.SECONDS)
+                .writeTimeout(180, TimeUnit.SECONDS)
+                .readTimeout(180, TimeUnit.SECONDS)
+                .build();
+
+        try {
+            Request request = new Request.Builder()
+                    .url(url)
                     .build();
 
             try (Response response = client.newCall(request).execute()) {

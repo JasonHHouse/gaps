@@ -10,14 +10,19 @@
 
 package com.jasonhhouse.gaps;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.util.ArrayList;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Schedule {
 
-    DAILY_4AM("Daily", "0 0 4 * * ?"),
-    EVERY_MONDAY("Weekly", "0 0 4 ? * MON *"),
-    EVERY_TWO_WEEKS("Bi-weekly", "0 0 4 1,15 * ? *"),
-    EVERY_MONTH("Monthly", "0 0 4 1 * ?");
+    HOURLY("Hourly", "0 57 * * * *", 0),
+    DAILY_4AM("Daily", "0 0 4 * * ?", 1),
+    EVERY_MONDAY("Weekly", "0 0 4 ? * MON *", 2),
+    EVERY_TWO_WEEKS("Bi-weekly", "0 0 4 1,15 * ? *", 3),
+    EVERY_MONTH("Monthly", "0 0 4 1 * ?", 4);
 
     @NotNull
     private final String message;
@@ -25,9 +30,37 @@ public enum Schedule {
     @NotNull
     private final String cron;
 
-    Schedule(@NotNull String message, @NotNull String cron) {
+    @NotNull
+    private final Integer id;
+
+    Schedule(@NotNull String message, @NotNull String cron, @NotNull Integer id) {
         this.message = message;
         this.cron = cron;
+        this.id = id;
+    }
+
+    public static Schedule getSchedule(@NotNull Integer id) {
+        if (HOURLY.getId().equals(id)) {
+            return HOURLY;
+        }else if (DAILY_4AM.getId().equals(id)) {
+            return DAILY_4AM;
+        } else if (EVERY_MONDAY.getId().equals(id)) {
+            return EVERY_MONDAY;
+        } else if (EVERY_TWO_WEEKS.getId().equals(id)) {
+            return EVERY_TWO_WEEKS;
+        } else {
+            return EVERY_MONTH;
+        }
+    }
+
+    public static List<Schedule> getAllSchedules() {
+        return new ArrayList<>() {{
+            add(HOURLY);
+            add(DAILY_4AM);
+            add(EVERY_MONDAY);
+            add(EVERY_TWO_WEEKS);
+            add(EVERY_MONTH);
+        }};
     }
 
     @NotNull
@@ -40,16 +73,9 @@ public enum Schedule {
         return cron;
     }
 
-    public static Schedule getSchedule(int ordinal) {
-        if (ordinal == DAILY_4AM.ordinal()) {
-            return DAILY_4AM;
-        } else if (ordinal == EVERY_MONDAY.ordinal()) {
-            return EVERY_MONDAY;
-        } else if (ordinal == EVERY_TWO_WEEKS.ordinal()) {
-            return EVERY_TWO_WEEKS;
-        } else {
-            return EVERY_MONTH;
-        }
+    @NotNull
+    public Integer getId() {
+        return id;
     }
 
     @Override
@@ -57,6 +83,7 @@ public enum Schedule {
         return "Schedule{" +
                 "message='" + message + '\'' +
                 ", cron='" + cron + '\'' +
+                ", id=" + id +
                 '}';
     }
 }
