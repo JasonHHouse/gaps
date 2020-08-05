@@ -54,6 +54,9 @@ describe('Configuration Tests', function () {
         cy.get('#plexTab')
             .should('not.have.class', 'active');
 
+        cy.get('#scheduleTab')
+            .should('not.have.class', 'active');
+
         cy.get('#folderTab')
             .should('have.class', 'disabled');
 

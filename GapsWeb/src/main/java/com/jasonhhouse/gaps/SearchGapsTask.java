@@ -62,9 +62,9 @@ public class SearchGapsTask implements Runnable {
         for (PlexServer plexServer : gapsService.getPlexSearch().getPlexServers()) {
             Payload getLibrariesResults = plexQuery.getLibraries(plexServer);
             if (Payload.PLEX_LIBRARIES_FOUND == getLibrariesResults) {
-                LOGGER.info("Plex libraries found for Plex Server {}" + plexServer.getFriendlyName());
+                LOGGER.info("Plex libraries found for Plex Server {}", plexServer.getFriendlyName());
             } else {
-                LOGGER.warn("Plex libraries not found for Plex Server {}" + plexServer.getFriendlyName());
+                LOGGER.warn("Plex libraries not found for Plex Server {}", plexServer.getFriendlyName());
             }
         }
     }
