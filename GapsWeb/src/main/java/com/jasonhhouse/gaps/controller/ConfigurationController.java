@@ -9,6 +9,7 @@
  */
 package com.jasonhhouse.gaps.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.jasonhhouse.gaps.GapsService;
@@ -17,6 +18,7 @@ import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.service.PlexQueryImpl;
+import com.jasonhhouse.gaps.service.SchedulerService;
 import com.jasonhhouse.gaps.service.TmdbService;
 import java.io.IOException;
 import java.util.List;
@@ -56,13 +58,15 @@ public class ConfigurationController {
     private final PlexQueryImpl plexQuery;
     private final GapsService gapsService;
     private final IoService ioService;
+    private final SchedulerService schedulerService;
 
-    public ConfigurationController(TmdbService tmdbService, SimpMessagingTemplate template, PlexQueryImpl plexQuery, GapsService gapsService, IoService ioService) {
+    public ConfigurationController(TmdbService tmdbService, SimpMessagingTemplate template, PlexQueryImpl plexQuery, GapsService gapsService, IoService ioService, SchedulerService schedulerService) {
         this.tmdbService = tmdbService;
         this.template = template;
         this.plexQuery = plexQuery;
         this.gapsService = gapsService;
         this.ioService = ioService;
+        this.schedulerService = schedulerService;
     }
 
     @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
@@ -81,6 +85,11 @@ public class ConfigurationController {
 
         ModelAndView modelAndView = new ModelAndView("configuration");
         modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
+        try {
+            modelAndView.addObject("schedules", schedulerService.getAllSchedules());
+        } catch (JsonProcessingException e) {
+            LOGGER.error("Could not parse schedules into JSON", e);
+        }
         return modelAndView;
     }
 

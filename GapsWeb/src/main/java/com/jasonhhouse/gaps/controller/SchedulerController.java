@@ -11,8 +11,10 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.Payload;
+import com.jasonhhouse.gaps.Schedule;
 import com.jasonhhouse.gaps.service.SchedulerService;
 import java.io.IOException;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +70,7 @@ public class SchedulerController {
 
     @GetMapping(value = "/all",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getAllSchedules() {
+    public ResponseEntity<?> getAllSchedules() {
         LOGGER.info("getAllSchedules()");
         try {
             return ResponseEntity.ok().body(schedulerService.getAllSchedules());

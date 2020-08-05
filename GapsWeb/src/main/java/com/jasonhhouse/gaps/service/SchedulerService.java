@@ -65,10 +65,9 @@ public class SchedulerService {
         return ioService.readProperties().getSchedule();
     }
 
-    public String getAllSchedules() throws JsonProcessingException {
+    public List<Schedule> getAllSchedules() throws JsonProcessingException {
         LOGGER.info("getAllSchedules()");
-        List<Schedule> schedules = Schedule.getAllSchedules();
-        return objectMapper.writeValueAsString(schedules);
+        return  Schedule.getAllSchedules();
     }
 
     public String getJsonSchedule() throws IOException {

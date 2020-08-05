@@ -13,6 +13,7 @@ import {Payload} from '/js/modules/payload.min.js';
 let plexSpinner, plexSaveSuccess, plexSaveError, plexTestSuccess, plexTestError, plexDeleteSuccess, plexDeleteError,
     plexDuplicateError;
 let tmdbSpinner, tmdbSaveSuccess, tmdbSaveError, tmdbTestSuccess, tmdbTestError;
+let scheduleSpinner, scheduleSaveSuccess, scheduleSaveError;
 let deleteAllError, deleteAllSuccess;
 
 window.addEventListener('load', function () {
@@ -45,6 +46,9 @@ document.addEventListener('DOMContentLoaded', function () {
     tmdbTestSuccess = $('#tmdbTestSuccess');
     tmdbTestError = $('#tmdbTestError');
     plexDuplicateError = $('#plexDuplicateError');
+    scheduleSpinner = $('#scheduleSpinner');
+    scheduleSaveSuccess = $('#scheduleSaveSuccess');
+    scheduleSaveError = $('#scheduleSaveError');
 
     deleteAllError = $('#deleteAllError');
     deleteAllSuccess = $('#deleteAllSuccess');
@@ -88,6 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addPlexServer = addPlexServer;
     window.testExistingPlexServer = testExistingPlexServer;
     window.removePlexServer = removePlexServer;
+    window.saveSchedule = saveSchedule;
     window.setDeleteAllEnabledOrDisabled = setDeleteAllEnabledOrDisabled;
     window.nuke = nuke;
 });
@@ -245,6 +250,29 @@ function removePlexServer(machineIdentifier) {
         error: function () {
             hideAllAlertsAndSpinners();
             plexDeleteError.show();
+        }
+    });
+}
+
+function saveSchedule() {
+    hideAllAlertsAndSpinners();
+
+    const id = $('#setSchedule').val();
+
+    $.ajax({
+        type: "PUT",
+        url: `/schedule/${id}`,
+        success: function (result) {
+            hideAllAlertsAndSpinners();
+            if (result && result.code === Payload.SCHEDULE_UPDATED) {
+                scheduleSaveSuccess.show();
+            } else {
+                scheduleSaveError.show();
+            }
+        },
+        error: function () {
+            hideAllAlertsAndSpinners();
+            scheduleSaveError.show();
         }
     });
 }
