@@ -22,4 +22,6 @@ public interface Notification {
     void recommendedMoviesSearchFailed(PlexServer plexServer, PlexLibrary plexLibrary, String error);
 
     void recommendedMoviesSearchFinished(PlexServer plexServer, PlexLibrary plexLibrary);
+
+    void test();
 }

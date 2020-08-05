@@ -13,5 +13,5 @@ package com.jasonhhouse.gaps.notifications;
 public interface NotificationAgent {
     boolean isEnabled();
 
-    void sendMessage(String level, String message);
+    void sendMessage(String level, String title, String message);
 }

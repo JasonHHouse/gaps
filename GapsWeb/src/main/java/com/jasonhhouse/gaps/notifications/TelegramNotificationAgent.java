@@ -41,7 +41,7 @@ public class TelegramNotificationAgent implements NotificationAgent {
     }
 
     @Override
-    public void sendMessage(String level, String message) {
+    public void sendMessage(String level, String title, String message) {
 
         HttpUrl url = new HttpUrl.Builder()
                 .scheme("https")
@@ -50,7 +50,7 @@ public class TelegramNotificationAgent implements NotificationAgent {
                 .addPathSegment("sendMessage")
                 .build();
 
-        String telegramMessage = String.format("{\"chat_id\":\"%s\", \"text\":\"%s\", \"parse_mode\":\"HTML\"}", chatId, message);
+        String telegramMessage = String.format("{\"chat_id\":\"%s\", \"text\":\"%s\", \"parse_mode\":\"HTML\"}", chatId, String.format("<strong>%s</strong>\n%s", title, message));
         LOGGER.info("telegramMessage {}", telegramMessage);
         RequestBody body = RequestBody.create(telegramMessage, MediaType.get("application/json"));
 

@@ -22,7 +22,10 @@ public class NotificationService implements Notification {
 
     @Override
     public void plexServerConnectSuccessful(PlexServer plexServer) {
-        notificationAgents.forEach(notificationAgent -> notificationAgent.sendMessage("INFO", String.format("<strong>Automatic Search</strong>\nConnection to Plex Server %s Successful", plexServer.getFriendlyName())));
+        notificationAgents
+                .stream()
+                .filter(NotificationAgent::isEnabled)
+                .forEach(notificationAgent -> notificationAgent.sendMessage("INFO", "Automatic Search", String.format("Connection to Plex Server %s Successful", plexServer.getFriendlyName())));
     }
 
     @Override
@@ -58,5 +61,13 @@ public class NotificationService implements Notification {
     @Override
     public void recommendedMoviesSearchFinished(PlexServer plexServer, PlexLibrary plexLibrary) {
 
+    }
+
+    @Override
+    public void test() {
+        notificationAgents
+                .stream()
+                .filter(NotificationAgent::isEnabled)
+                .forEach(notificationAgent -> notificationAgent.sendMessage("DEBUG", "Gaps Test", "Test Successful"));
     }
 }
