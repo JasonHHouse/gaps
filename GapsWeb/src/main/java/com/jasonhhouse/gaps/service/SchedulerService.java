@@ -45,11 +45,11 @@ public class SchedulerService {
     private ScheduledFuture<?> scheduledFuture;
 
     @Autowired
-    public SchedulerService(IoService ioService, GapsService gapsService, GapsSearch gapsSearch, @Qualifier("Gaps") TaskScheduler scheduler, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator) {
+    public SchedulerService(IoService ioService, GapsService gapsService, GapsSearch gapsSearch, @Qualifier("Gaps") TaskScheduler scheduler, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator, NotificationService notificationService) {
         this.ioService = ioService;
         this.gapsService = gapsService;
         this.scheduler = scheduler;
-        this.searchGapsTask = new SearchGapsTask(gapsService, gapsSearch, ioService, plexQuery, gapsUrlGenerator);
+        this.searchGapsTask = new SearchGapsTask(gapsService, gapsSearch, ioService, plexQuery, gapsUrlGenerator, notificationService);
     }
 
     public void setSchedule(int intSchedule) throws IOException {

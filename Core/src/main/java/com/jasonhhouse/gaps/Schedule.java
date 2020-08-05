@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Schedule {
 
-    HOURLY("Hourly", "0 48 * * * *", 0),
+    HOURLY("Hourly", "0 13 * * * *", 0),
     DAILY_4AM("Daily", "0 0 4 * * ?", 1),
     EVERY_MONDAY("Weekly", "0 0 4 ? * MON *", 2),
     EVERY_TWO_WEEKS("Bi-weekly", "0 0 4 1,15 * ? *", 3),

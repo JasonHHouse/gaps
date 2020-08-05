@@ -1,6 +1,17 @@
+/*
+ *
+ *  Copyright 2020 Jason H House
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ *  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 package com.jasonhhouse.gaps;
 
 import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.gaps.service.NotificationService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,15 +30,16 @@ public class SearchGapsTask implements Runnable {
     private final IoService ioService;
     private final PlexQuery plexQuery;
     private final GapsUrlGenerator gapsUrlGenerator;
+    private final NotificationService notificationService;
 
-    public SearchGapsTask(GapsService gapsService, GapsSearch gapsSearch, IoService ioService, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator) {
+    public SearchGapsTask(GapsService gapsService, GapsSearch gapsSearch, IoService ioService, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator, NotificationService notificationService) {
         this.gapsService = gapsService;
         this.gapsSearch = gapsSearch;
         this.ioService = ioService;
         this.plexQuery = plexQuery;
         this.gapsUrlGenerator = gapsUrlGenerator;
+        this.notificationService = notificationService;
     }
-
 
     @Override
     public void run() {
@@ -38,6 +50,8 @@ public class SearchGapsTask implements Runnable {
             return;
         }
 
+        checkPlexServers();
+
         updatePlexLibraries();
 
         updateLibraryMovies();
@@ -45,19 +59,32 @@ public class SearchGapsTask implements Runnable {
         findRecommendedMovies();
     }
 
-    private void updateLibraryMovies() {
-        LOGGER.info("updateLibraryMovies");
+    private void checkPlexServers() {
+        LOGGER.info("checkPlexServers()");
+
         for (PlexServer plexServer : gapsService.getPlexSearch().getPlexServers()) {
-            for(PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
+            Payload payload = plexQuery.queryPlexServer(plexServer);
+            if (payload.getCode() == Payload.PLEX_CONNECTION_SUCCEEDED.getCode()) {
+                notificationService.plexServerConnectSuccessful(plexServer);
+            } else {
+                notificationService.plexServerConnectFailed(plexServer, payload.getReason());
+            }
+        }
+    }
+
+    private void updateLibraryMovies() {
+        LOGGER.info("updateLibraryMovies()");
+        for (PlexServer plexServer : gapsService.getPlexSearch().getPlexServers()) {
+            for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
                 HttpUrl url = gapsUrlGenerator.generatePlexLibraryUrl(plexServer, plexLibrary);
-                List<Movie> ownedMovies =plexQuery.findAllPlexMovies(generateOwnedMovieMap(), url);
+                List<Movie> ownedMovies = plexQuery.findAllPlexMovies(generateOwnedMovieMap(), url);
                 ioService.writeOwnedMoviesToFile(ownedMovies, plexLibrary.getMachineIdentifier(), plexLibrary.getKey());
             }
         }
     }
 
     private void updatePlexLibraries() {
-        LOGGER.info("updatePlexLibraries");
+        LOGGER.info("updatePlexLibraries()");
         //Update each Plex Library from each Plex Server
         for (PlexServer plexServer : gapsService.getPlexSearch().getPlexServers()) {
             Payload getLibrariesResults = plexQuery.getLibraries(plexServer);
@@ -70,9 +97,9 @@ public class SearchGapsTask implements Runnable {
     }
 
     private void findRecommendedMovies() {
-        LOGGER.info("findRecommendedMovies");
+        LOGGER.info("findRecommendedMovies()");
         for (PlexServer plexServer : gapsService.getPlexSearch().getPlexServers()) {
-            for(PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
+            for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
                 gapsSearch.run(plexLibrary.getMachineIdentifier(), plexLibrary.getKey());
             }
         }
