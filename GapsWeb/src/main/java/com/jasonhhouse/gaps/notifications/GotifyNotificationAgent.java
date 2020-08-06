@@ -74,7 +74,7 @@ public class GotifyNotificationAgent implements NotificationAgent {
     }
 
     @Override
-    public void sendMessage(NotificationType notificationType, String level, String title, String message) {
+    public boolean sendMessage(NotificationType notificationType, String level, String title, String message) {
         LOGGER.info("sendMessage( {}, {}, {} )", level, title, message);
 
         HttpUrl url = HttpUrl.parse(String.format("%s/message?token=%s", address, token));
@@ -86,7 +86,7 @@ public class GotifyNotificationAgent implements NotificationAgent {
             gotifyMessage = objectMapper.writeValueAsString(gotify);
         } catch (JsonProcessingException e) {
             LOGGER.error("Failed to turn Gotify message into JSON", e);
-            return;
+            return false;
         }
 
         LOGGER.info("Gotify {}", gotifyMessage);
@@ -100,15 +100,17 @@ public class GotifyNotificationAgent implements NotificationAgent {
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
                 LOGGER.info("Gotify message sent via {}", url);
+                return true;
             } else {
                 LOGGER.error("Error with Gotify Url: {} Body returned {}", url, response.body().toString());
+                return false;
             }
 
         } catch (IOException e) {
             LOGGER.error(String.format("Error with Gotify Url: %s", url), e);
+            return false;
         }
     }
-
 
     public static final class Gotify {
         private final String title;

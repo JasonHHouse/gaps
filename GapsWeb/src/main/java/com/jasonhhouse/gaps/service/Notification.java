@@ -23,7 +23,7 @@ public interface Notification {
 
     void recommendedMoviesSearchFinished(PlexServer plexServer, PlexLibrary plexLibrary);
 
-    void test();
+    boolean test();
 
-    void test(int id) throws IllegalArgumentException, IllegalAccessException;
+    boolean test(int id) throws IllegalArgumentException, IllegalAccessException;
 }

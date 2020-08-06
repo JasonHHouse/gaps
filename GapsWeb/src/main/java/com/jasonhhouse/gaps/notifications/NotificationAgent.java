@@ -22,5 +22,5 @@ public interface NotificationAgent {
 
     boolean isEnabled();
 
-    void sendMessage(NotificationType notificationType, String level, String title, String message);
+    boolean sendMessage(NotificationType notificationType, String level, String title, String message);
 }

@@ -2,7 +2,6 @@ package com.jasonhhouse.gaps.notifications;
 
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.service.IoService;
-import java.util.List;
 import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +46,7 @@ public class EmailNotificationAgent implements NotificationAgent {
     }
 
     @Override
-    public void sendMessage(NotificationType notificationType, String level, String title, String message) {
+    public boolean sendMessage(NotificationType notificationType, String level, String title, String message) {
         try {
             SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
             simpleMailMessage.setFrom(mailFrom);
@@ -55,8 +54,10 @@ public class EmailNotificationAgent implements NotificationAgent {
             simpleMailMessage.setSubject(title);
             simpleMailMessage.setText(message);
             mailSender.send(simpleMailMessage);
+            return true;
         } catch (MailException e) {
             LOGGER.error("Error with Sending Email Notification.", e);
+            return false;
         }
     }
 

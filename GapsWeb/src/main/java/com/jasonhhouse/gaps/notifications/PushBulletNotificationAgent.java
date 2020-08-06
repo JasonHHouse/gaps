@@ -64,7 +64,7 @@ public class PushBulletNotificationAgent implements NotificationAgent {
     }
 
     @Override
-    public void sendMessage(NotificationType notificationType, String level, String title, String message) {
+    public boolean sendMessage(NotificationType notificationType, String level, String title, String message) {
         LOGGER.info("sendMessage( {}, {}, {} )", level, title, message);
 
         HttpUrl url = new HttpUrl.Builder()
@@ -89,7 +89,7 @@ public class PushBulletNotificationAgent implements NotificationAgent {
             pushBulletMessage = objectMapper.writeValueAsString(pushBullet);
         } catch (JsonProcessingException e) {
             LOGGER.error("Failed to turn PushBullet message into JSON", e);
-            return;
+            return false;
         }
 
         LOGGER.info("pushBulletMessage {}", pushBulletMessage);
@@ -104,12 +104,15 @@ public class PushBulletNotificationAgent implements NotificationAgent {
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
                 LOGGER.info("PushBullet message sent via {}", url);
+                return true;
             } else {
                 LOGGER.error("Error with PushBullet Url: {} Body returned {}", url, response.body().toString());
+                return false;
             }
 
         } catch (IOException e) {
             LOGGER.error(String.format("Error with PushBullet Url: %s", url), e);
+            return false;
         }
     }
 

@@ -41,9 +41,15 @@ public class NotificationController {
         LOGGER.info("putTestAll()");
 
         try {
-            notificationService.test();
-            LOGGER.info("Notification Test All Succeeded");
-            return ResponseEntity.ok().body(Payload.NOTIFICATION_TEST_SUCCEEDED);
+            boolean result = notificationService.test();
+
+            if (result) {
+                LOGGER.info("Notification Test All Succeeded");
+                return ResponseEntity.ok().body(Payload.NOTIFICATION_TEST_SUCCEEDED);
+            } else {
+                LOGGER.error("Notification Test All Failed");
+                return ResponseEntity.ok().body(Payload.NOTIFICATION_TEST_FAILED);
+            }
         } catch (Exception e) {
             LOGGER.error("Notification Test All Failed", e);
             return ResponseEntity.ok().body(Payload.NOTIFICATION_TEST_FAILED.setExtras(e.getMessage()));
@@ -57,9 +63,14 @@ public class NotificationController {
         LOGGER.info("putTest( {} )", id);
 
         try {
-            notificationService.test(id);
-            LOGGER.info("Notification Test with ID {} Succeeded", id);
-            return ResponseEntity.ok().body(Payload.NOTIFICATION_TEST_SUCCEEDED);
+            boolean result = notificationService.test(id);
+            if (result) {
+                LOGGER.info("Notification Test with ID {} Succeeded", id);
+                return ResponseEntity.ok().body(Payload.NOTIFICATION_TEST_SUCCEEDED);
+            } else {
+                LOGGER.error("Notification Test Failed with ID {}", id);
+                return ResponseEntity.ok().body(Payload.NOTIFICATION_TEST_FAILED);
+            }
         } catch (Exception e) {
             LOGGER.error(String.format("Notification Test Failed with ID %s", id), e);
             return ResponseEntity.ok().body(Payload.NOTIFICATION_TEST_FAILED.setExtras(e.getMessage()));

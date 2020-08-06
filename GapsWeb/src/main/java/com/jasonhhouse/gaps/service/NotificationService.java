@@ -38,7 +38,7 @@ public class NotificationService implements Notification {
         notificationAgents
                 .stream()
                 .filter(NotificationAgent::isEnabled)
-                .forEach(notificationAgent -> notificationAgent.sendMessage(NotificationType.TEST_PLEX_SERVER,"INFO", "Gaps Search", String.format("Connection to Plex Server %s Successful", plexServer.getFriendlyName())));
+                .forEach(notificationAgent -> notificationAgent.sendMessage(NotificationType.TEST_PLEX_SERVER, "INFO", "Gaps Search", String.format("Connection to Plex Server %s Successful", plexServer.getFriendlyName())));
     }
 
     @Override
@@ -46,7 +46,7 @@ public class NotificationService implements Notification {
         notificationAgents
                 .stream()
                 .filter(NotificationAgent::isEnabled)
-                .forEach(notificationAgent -> notificationAgent.sendMessage(NotificationType.SCAN_PLEX_SERVER,"INFO", "Gaps Search", String.format("Scanning Plex Server %s in %s Library Failed. %s", plexServer.getFriendlyName(), plexLibrary.getTitle(), error)));
+                .forEach(notificationAgent -> notificationAgent.sendMessage(NotificationType.SCAN_PLEX_SERVER, "INFO", "Gaps Search", String.format("Scanning Plex Server %s in %s Library Failed. %s", plexServer.getFriendlyName(), plexLibrary.getTitle(), error)));
     }
 
     @Override
@@ -54,7 +54,7 @@ public class NotificationService implements Notification {
         notificationAgents
                 .stream()
                 .filter(NotificationAgent::isEnabled)
-                .forEach(notificationAgent -> notificationAgent.sendMessage(NotificationType.SCAN_PLEX_SERVER,"INFO", "Gaps Search", String.format("Scanning Plex Server %s in %s Library Successful", plexServer.getFriendlyName(), plexLibrary.getTitle())));
+                .forEach(notificationAgent -> notificationAgent.sendMessage(NotificationType.SCAN_PLEX_SERVER, "INFO", "Gaps Search", String.format("Scanning Plex Server %s in %s Library Successful", plexServer.getFriendlyName(), plexLibrary.getTitle())));
     }
 
     @Override
@@ -86,7 +86,7 @@ public class NotificationService implements Notification {
         notificationAgents
                 .stream()
                 .filter(NotificationAgent::isEnabled)
-                .forEach(notificationAgent -> notificationAgent.sendMessage(NotificationType.RECOMMENDED_MOVIES,"INFO", "Gaps Search", String.format("Scanning Plex Server %s on Library %s Failed %s", plexServer.getFriendlyName(), plexLibrary.getTitle(), error)));
+                .forEach(notificationAgent -> notificationAgent.sendMessage(NotificationType.RECOMMENDED_MOVIES, "INFO", "Gaps Search", String.format("Scanning Plex Server %s on Library %s Failed %s", plexServer.getFriendlyName(), plexLibrary.getTitle(), error)));
     }
 
     @Override
@@ -94,23 +94,28 @@ public class NotificationService implements Notification {
         notificationAgents
                 .stream()
                 .filter(NotificationAgent::isEnabled)
-                .forEach(notificationAgent -> notificationAgent.sendMessage(NotificationType.RECOMMENDED_MOVIES,"INFO", "Gaps Search", String.format("Scanning Plex Server %s on Library %s Successfully Finished", plexServer.getFriendlyName(), plexLibrary.getTitle())));
+                .forEach(notificationAgent -> notificationAgent.sendMessage(NotificationType.RECOMMENDED_MOVIES, "INFO", "Gaps Search", String.format("Scanning Plex Server %s on Library %s Successfully Finished", plexServer.getFriendlyName(), plexLibrary.getTitle())));
     }
 
     @Override
-    public void test() {
-        notificationAgents
-                .stream()
-                .filter(NotificationAgent::isEnabled)
-                .forEach(notificationAgent -> notificationAgent.sendMessage(NotificationType.TEST, "DEBUG", "Gaps Test", "Test Successful"));
+    public boolean test() {
+        boolean passedTest = true;
+
+        for (NotificationAgent notificationAgent : notificationAgents) {
+            boolean result = notificationAgent.sendMessage(NotificationType.TEST, "DEBUG", "Gaps Test", "Test Successful");
+            if (!result) {
+                passedTest = false;
+            }
+        }
+
+        return passedTest;
     }
 
     @Override
-    public void test(int id) throws IllegalArgumentException {
+    public boolean test(int id) throws IllegalArgumentException {
         for (NotificationAgent notificationAgent : notificationAgents) {
             if (notificationAgent.getId() == id) {
-                notificationAgent.sendMessage(NotificationType.TEST,"DEBUG", "Gaps Test", "Test Successful");
-                return;
+                return notificationAgent.sendMessage(NotificationType.TEST, "DEBUG", "Gaps Test", "Test Successful");
             }
         }
         throw new IllegalArgumentException("Invalid Id for Notification Agent");

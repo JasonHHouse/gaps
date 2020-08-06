@@ -70,7 +70,7 @@ public class TelegramNotificationAgent implements NotificationAgent {
     }
 
     @Override
-    public void sendMessage(NotificationType notificationType, String level, String title, String message) {
+    public boolean sendMessage(NotificationType notificationType, String level, String title, String message) {
         LOGGER.info("sendMessage( {}, {}, {} )", level, title, message);
 
         HttpUrl url = new HttpUrl.Builder()
@@ -92,12 +92,15 @@ public class TelegramNotificationAgent implements NotificationAgent {
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
                 LOGGER.info("Telegram message sent via {}", url);
+                return true;
             } else {
                 LOGGER.error("Error with Telegram Url: {} Body returned {}", url, response.body().toString());
+                return false;
             }
 
         } catch (IOException e) {
             LOGGER.error(String.format("Error with Telegram Url: %s", url), e);
+            return false;
         }
     }
 

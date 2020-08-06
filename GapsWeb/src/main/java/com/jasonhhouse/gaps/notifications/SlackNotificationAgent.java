@@ -52,7 +52,7 @@ public class SlackNotificationAgent implements NotificationAgent {
     }
 
     @Override
-    public void sendMessage(NotificationType notificationType, String level, String title, String message) {
+    public boolean sendMessage(NotificationType notificationType, String level, String title, String message) {
         LOGGER.info("sendMessage( {}, {}, {} )", level, title, message);
 
         HttpUrl url = HttpUrl.get(webHookUrl);
@@ -68,7 +68,7 @@ public class SlackNotificationAgent implements NotificationAgent {
             slackMessage = objectMapper.writeValueAsString(slack);
         } catch (JsonProcessingException e) {
             LOGGER.error("Failed to turn Slack message into JSON", e);
-            return;
+            return false;
         }
 
         LOGGER.info("slackMessage {}", slackMessage);
@@ -83,12 +83,15 @@ public class SlackNotificationAgent implements NotificationAgent {
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
                 LOGGER.info("Slack message sent via {}", url);
+                return true;
             } else {
                 LOGGER.error("Error with Slack Url: {} Body returned {}", url, response.body().toString());
+                return false;
             }
 
         } catch (IOException e) {
             LOGGER.error(String.format("Error with Slack Url: %s", url), e);
+            return false;
         }
     }
 
