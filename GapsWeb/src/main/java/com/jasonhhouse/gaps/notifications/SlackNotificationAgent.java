@@ -26,7 +26,7 @@ public class SlackNotificationAgent implements NotificationAgent {
 
     public SlackNotificationAgent(IoService ioService) {
         this.ioService = ioService;
-        this.webHookUrl = "https://hooks.slack.com/services/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";
+        this.webHookUrl = "";
 
         client = new OkHttpClient.Builder()
                 .connectTimeout(TIMEOUT, TimeUnit.MILLISECONDS)

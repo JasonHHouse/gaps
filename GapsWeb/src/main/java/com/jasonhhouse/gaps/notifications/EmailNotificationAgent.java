@@ -25,7 +25,7 @@ public class EmailNotificationAgent implements NotificationAgent {
     public EmailNotificationAgent(IoService ioService) {
         this.ioService = ioService;
         username = "jh5975";
-        password = "ibgbtwiwrwloecnp";
+        password = "";
         mailTo = "jh5975@gmail.com";
         mailFrom = "jh5975@gmail.com";
         mailSender = getJavaMailSender();
