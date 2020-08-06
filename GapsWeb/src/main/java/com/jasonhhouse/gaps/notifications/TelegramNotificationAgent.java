@@ -9,8 +9,11 @@
  */
 package com.jasonhhouse.gaps.notifications;
 
+import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.service.IoService;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
@@ -28,9 +31,17 @@ public class TelegramNotificationAgent implements NotificationAgent {
     private final String chatId;
     private final OkHttpClient client;
     private final IoService ioService;
+    private final List<NotificationType> notificationTypes;
 
     public TelegramNotificationAgent(IoService ioService) {
         this.ioService = ioService;
+
+        notificationTypes = new ArrayList<>() {{
+            add(NotificationType.TEST_TMDB);
+            add(NotificationType.SCAN_PLEX_SERVER);
+            add(NotificationType.SCAN_PLEX_LIBRARIES);
+            add(NotificationType.RECOMMENDED_MOVIES);
+        }};
 
         client = new OkHttpClient.Builder()
                 .connectTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
@@ -43,13 +54,23 @@ public class TelegramNotificationAgent implements NotificationAgent {
     }
 
     @Override
+    public int getId() {
+        return 0;
+    }
+
+    @Override
+    public String getName() {
+        return "Telegram Notification Agent";
+    }
+
+    @Override
     public boolean isEnabled() {
         //ToDo Check IoService
         return true;
     }
 
     @Override
-    public void sendMessage(String level, String title, String message) {
+    public void sendMessage(NotificationType notificationType, String level, String title, String message) {
         LOGGER.info("sendMessage( {}, {}, {} )", level, title, message);
 
         HttpUrl url = new HttpUrl.Builder()
@@ -79,4 +100,5 @@ public class TelegramNotificationAgent implements NotificationAgent {
             LOGGER.error(String.format("Error with Telegram Url: %s", url), e);
         }
     }
+
 }

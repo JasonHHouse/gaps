@@ -11,6 +11,7 @@ package com.jasonhhouse.gaps.notifications;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.service.IoService;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -47,13 +48,23 @@ public class PushBulletNotificationAgent implements NotificationAgent {
 
 
     @Override
+    public int getId() {
+        return 1;
+    }
+
+    @Override
+    public String getName() {
+        return "PushBullet Notification Agent";
+    }
+
+    @Override
     public boolean isEnabled() {
         //ToDo Check IoService
         return true;
     }
 
     @Override
-    public void sendMessage(String level, String title, String message) {
+    public void sendMessage(NotificationType notificationType, String level, String title, String message) {
         LOGGER.info("sendMessage( {}, {}, {} )", level, title, message);
 
         HttpUrl url = new HttpUrl.Builder()

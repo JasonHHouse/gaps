@@ -2,6 +2,7 @@ package com.jasonhhouse.gaps.notifications;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.service.IoService;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -25,7 +26,7 @@ public class SlackNotificationAgent implements NotificationAgent {
 
     public SlackNotificationAgent(IoService ioService) {
         this.ioService = ioService;
-        this.webHookUrl = "https://hooks.slack.com/services/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";
+        this.webHookUrl = "https://hooks.slack.com/services/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";
 
         client = new OkHttpClient.Builder()
                 .connectTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
@@ -35,13 +36,23 @@ public class SlackNotificationAgent implements NotificationAgent {
     }
 
     @Override
+    public int getId() {
+        return 2;
+    }
+
+    @Override
+    public String getName() {
+        return "Slack Notification Agent";
+    }
+
+    @Override
     public boolean isEnabled() {
         //ToDo Check IoService
         return true;
     }
 
     @Override
-    public void sendMessage(String level, String title, String message) {
+    public void sendMessage(NotificationType notificationType, String level, String title, String message) {
         LOGGER.info("sendMessage( {}, {}, {} )", level, title, message);
 
         HttpUrl url = HttpUrl.get(webHookUrl);

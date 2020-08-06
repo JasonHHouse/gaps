@@ -30,7 +30,9 @@ public enum Payload {
     SCHEDULE_FOUND(60, "Search schedule found."),
     SCHEDULE_NOT_FOUND(61, "Search schedule not found."),
     SCHEDULE_UPDATED(62, "Search schedule updated successfully."),
-    SCHEDULE_NOT_UPDATED(63, "Search schedule update failed.");
+    SCHEDULE_NOT_UPDATED(63, "Search schedule update failed."),
+    NOTIFICATION_TEST_SUCCEEDED(70, "Notification test succeeded."),
+    NOTIFICATION_TEST_FAILED(711, "Notification test failed.");
 
     private final int code;
     private final String reason;

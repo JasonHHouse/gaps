@@ -10,11 +10,17 @@
 
 package com.jasonhhouse.gaps.notifications;
 
+import com.jasonhhouse.gaps.NotificationType;
+
 public interface NotificationAgent {
 
     long TIMEOUT = 2500;
 
+    int getId();
+
+    String getName();
+
     boolean isEnabled();
 
-    void sendMessage(String level, String title, String message);
+    void sendMessage(NotificationType notificationType, String level, String title, String message);
 }

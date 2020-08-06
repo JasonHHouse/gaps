@@ -1,5 +1,6 @@
 package com.jasonhhouse.gaps;
 
+import com.jasonhhouse.gaps.notifications.EmailNotificationAgent;
 import com.jasonhhouse.gaps.notifications.NotificationAgent;
 import com.jasonhhouse.gaps.notifications.PushBulletNotificationAgent;
 import com.jasonhhouse.gaps.notifications.SlackNotificationAgent;
@@ -32,4 +33,8 @@ public class NotificationConfiguration {
         return new SlackNotificationAgent(ioService);
     }
 
+    @Bean
+    public NotificationAgent getEmailElement() {
+        return new EmailNotificationAgent(ioService);
+    }
 }
