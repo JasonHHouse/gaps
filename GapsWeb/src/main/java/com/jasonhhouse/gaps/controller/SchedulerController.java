@@ -72,11 +72,6 @@ public class SchedulerController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllSchedules() {
         LOGGER.info("getAllSchedules()");
-        try {
-            return ResponseEntity.ok().body(schedulerService.getAllSchedules());
-        } catch (IOException e) {
-            LOGGER.error("Failed to read schedule from properties", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to parse schedule into JSON");
-        }
+        return ResponseEntity.ok().body(schedulerService.getAllSchedules());
     }
 }

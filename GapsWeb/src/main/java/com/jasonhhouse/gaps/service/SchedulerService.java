@@ -10,7 +10,6 @@
 
 package com.jasonhhouse.gaps.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.GapsSearch;
 import com.jasonhhouse.gaps.GapsService;
@@ -45,11 +44,11 @@ public class SchedulerService {
     private ScheduledFuture<?> scheduledFuture;
 
     @Autowired
-    public SchedulerService(IoService ioService, GapsService gapsService, GapsSearch gapsSearch, @Qualifier("Gaps") TaskScheduler scheduler, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator, NotificationService notificationService) {
+    public SchedulerService(IoService ioService, TmdbService tmdbService, GapsService gapsService, GapsSearch gapsSearch, @Qualifier("Gaps") TaskScheduler scheduler, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator, NotificationService notificationService) {
         this.ioService = ioService;
         this.gapsService = gapsService;
         this.scheduler = scheduler;
-        this.searchGapsTask = new SearchGapsTask(gapsService, gapsSearch, ioService, plexQuery, gapsUrlGenerator, notificationService);
+        this.searchGapsTask = new SearchGapsTask(gapsService, gapsSearch, tmdbService, ioService, plexQuery, gapsUrlGenerator, notificationService);
     }
 
     public void setSchedule(int intSchedule) throws IOException {
@@ -65,9 +64,9 @@ public class SchedulerService {
         return ioService.readProperties().getSchedule();
     }
 
-    public List<Schedule> getAllSchedules() throws JsonProcessingException {
+    public List<Schedule> getAllSchedules() {
         LOGGER.info("getAllSchedules()");
-        return  Schedule.getAllSchedules();
+        return Schedule.getAllSchedules();
     }
 
     public String getJsonSchedule() throws IOException {

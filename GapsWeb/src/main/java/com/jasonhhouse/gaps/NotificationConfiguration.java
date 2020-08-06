@@ -1,6 +1,7 @@
 package com.jasonhhouse.gaps;
 
 import com.jasonhhouse.gaps.notifications.NotificationAgent;
+import com.jasonhhouse.gaps.notifications.PushBulletNotificationAgent;
 import com.jasonhhouse.gaps.notifications.TelegramNotificationAgent;
 import com.jasonhhouse.gaps.service.IoService;
 import org.springframework.context.annotation.Bean;
@@ -16,8 +17,13 @@ public class NotificationConfiguration {
     }
 
     @Bean
-    public NotificationAgent getElement() {
+    public NotificationAgent getTelegramElement() {
         return new TelegramNotificationAgent(ioService);
+    }
+
+    @Bean
+    public NotificationAgent getPushBulletElement() {
+        return new PushBulletNotificationAgent(ioService);
     }
 
 }

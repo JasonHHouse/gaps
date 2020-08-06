@@ -11,6 +11,9 @@
 package com.jasonhhouse.gaps.notifications;
 
 public interface NotificationAgent {
+
+    long TIMEOUT = 2500;
+
     boolean isEnabled();
 
     void sendMessage(String level, String title, String message);

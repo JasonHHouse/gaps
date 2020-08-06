@@ -20,6 +20,8 @@ import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.MovieFromCollection;
 import com.jasonhhouse.gaps.Payload;
+import com.jasonhhouse.gaps.PlexLibrary;
+import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.SearchCancelledException;
 import com.jasonhhouse.gaps.SearchResults;
 import com.jasonhhouse.gaps.UrlGenerator;
@@ -91,13 +93,16 @@ public class GapsSearchService implements GapsSearch {
 
     private final GapsService gapsService;
 
+    private final NotificationService notificationService;
+
     @Autowired
-    public GapsSearchService(@Qualifier("real") UrlGenerator urlGenerator, SimpMessagingTemplate template, IoService ioService, TmdbService tmdbService, GapsService gapsService) {
+    public GapsSearchService(@Qualifier("real") UrlGenerator urlGenerator, SimpMessagingTemplate template, IoService ioService, TmdbService tmdbService, GapsService gapsService, NotificationService notificationService) {
         this.template = template;
         this.tmdbService = tmdbService;
         this.gapsService = gapsService;
         this.urlGenerator = urlGenerator;
         this.ioService = ioService;
+        this.notificationService = notificationService;
 
         tempTvdbCounter = new AtomicInteger();
         cancelSearch = new AtomicBoolean(true);
@@ -106,6 +111,10 @@ public class GapsSearchService implements GapsSearch {
     @Override
     public void run(String machineIdentifier, Integer key) {
         LOGGER.info("run( {}, {} )", machineIdentifier, key);
+
+        PlexServer plexServer = gapsService.getPlexSearch().getPlexServers().stream().filter(tempPlexServer -> tempPlexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().get();
+        PlexLibrary plexLibrary = plexServer.getPlexLibraries().stream().filter(tempPlexLibrary -> tempPlexLibrary.getKey().equals(key)).findAny().get();
+        notificationService.recommendedMoviesSearchStarted(plexServer, plexLibrary);
 
         if (StringUtils.isEmpty(gapsService.getPlexSearch().getMovieDbApiKey())) {
             Payload payload = tmdbService.testTmdbKey(gapsService.getPlexSearch().getMovieDbApiKey());
@@ -142,15 +151,19 @@ public class GapsSearchService implements GapsSearch {
             String reason = "Search cancelled";
             LOGGER.error(reason);
             template.convertAndSend(FINISHED_SEARCHING_URL, Payload.OWNED_MOVIES_CANNOT_BE_EMPTY);
+            notificationService.recommendedMoviesSearchFailed(plexServer, plexLibrary, reason);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
         } catch (IOException e) {
             String reason = "Search failed";
             LOGGER.error(reason);
             template.convertAndSend(FINISHED_SEARCHING_URL, Payload.SEARCH_FAILED);
+            notificationService.recommendedMoviesSearchFailed(plexServer, plexLibrary, e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
         } finally {
             cancelSearch.set(true);
         }
+
+        notificationService.recommendedMoviesSearchFinished(plexServer, plexLibrary);
 
         //Always write to log
         ioService.writeRecommendedToFile(recommended, machineIdentifier, key);

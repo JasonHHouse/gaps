@@ -12,6 +12,8 @@ package com.jasonhhouse.gaps;
 
 import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.service.NotificationService;
+import com.jasonhhouse.gaps.service.TmdbService;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +22,7 @@ import okhttp3.HttpUrl;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.server.ResponseStatusException;
 
 public class SearchGapsTask implements Runnable {
 
@@ -27,14 +30,16 @@ public class SearchGapsTask implements Runnable {
 
     private final GapsService gapsService;
     private final GapsSearch gapsSearch;
+    private final TmdbService tmdbService;
     private final IoService ioService;
     private final PlexQuery plexQuery;
     private final GapsUrlGenerator gapsUrlGenerator;
     private final NotificationService notificationService;
 
-    public SearchGapsTask(GapsService gapsService, GapsSearch gapsSearch, IoService ioService, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator, NotificationService notificationService) {
+    public SearchGapsTask(GapsService gapsService, GapsSearch gapsSearch, TmdbService tmdbService, IoService ioService, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator, NotificationService notificationService) {
         this.gapsService = gapsService;
         this.gapsSearch = gapsSearch;
+        this.tmdbService = tmdbService;
         this.ioService = ioService;
         this.plexQuery = plexQuery;
         this.gapsUrlGenerator = gapsUrlGenerator;
@@ -50,13 +55,38 @@ public class SearchGapsTask implements Runnable {
             return;
         }
 
-        checkPlexServers();
+        boolean tmdbResult = checkTmdbKey();
 
-        updatePlexLibraries();
+        if (tmdbResult) {
+            checkPlexServers();
 
-        updateLibraryMovies();
+            updatePlexLibraries();
 
-        findRecommendedMovies();
+            updateLibraryMovies();
+
+            findRecommendedMovies();
+        }
+    }
+
+    private boolean checkTmdbKey() {
+        LOGGER.info("checkTmdbKey()");
+
+        try {
+            String tmdbKey = ioService.readProperties().getMovieDbApiKey();
+            Payload payload = tmdbService.testTmdbKey(tmdbKey);
+
+            if (Payload.TMDB_KEY_VALID.getCode() == payload.getCode()) {
+                notificationService.tmdbConnectionSuccessful();
+                return true;
+            } else {
+                notificationService.tmdbConnectionFailed(payload.getReason());
+                return false;
+            }
+        } catch (IOException e) {
+            LOGGER.error("Failed to read properties for TMDB key", e);
+            notificationService.tmdbConnectionFailed(e.getMessage());
+            return false;
+        }
     }
 
     private void checkPlexServers() {
@@ -72,17 +102,6 @@ public class SearchGapsTask implements Runnable {
         }
     }
 
-    private void updateLibraryMovies() {
-        LOGGER.info("updateLibraryMovies()");
-        for (PlexServer plexServer : gapsService.getPlexSearch().getPlexServers()) {
-            for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
-                HttpUrl url = gapsUrlGenerator.generatePlexLibraryUrl(plexServer, plexLibrary);
-                List<Movie> ownedMovies = plexQuery.findAllPlexMovies(generateOwnedMovieMap(), url);
-                ioService.writeOwnedMoviesToFile(ownedMovies, plexLibrary.getMachineIdentifier(), plexLibrary.getKey());
-            }
-        }
-    }
-
     private void updatePlexLibraries() {
         LOGGER.info("updatePlexLibraries()");
         //Update each Plex Library from each Plex Server
@@ -92,6 +111,22 @@ public class SearchGapsTask implements Runnable {
                 LOGGER.info("Plex libraries found for Plex Server {}", plexServer.getFriendlyName());
             } else {
                 LOGGER.warn("Plex libraries not found for Plex Server {}", plexServer.getFriendlyName());
+            }
+        }
+    }
+
+    private void updateLibraryMovies() {
+        LOGGER.info("updateLibraryMovies()");
+        for (PlexServer plexServer : gapsService.getPlexSearch().getPlexServers()) {
+            for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
+                HttpUrl url = gapsUrlGenerator.generatePlexLibraryUrl(plexServer, plexLibrary);
+                try {
+                    List<Movie> ownedMovies = plexQuery.findAllPlexMovies(generateOwnedMovieMap(), url);
+                    ioService.writeOwnedMoviesToFile(ownedMovies, plexLibrary.getMachineIdentifier(), plexLibrary.getKey());
+                    notificationService.plexLibraryScanSuccessful(plexServer, plexLibrary);
+                } catch (ResponseStatusException e) {
+                    notificationService.plexLibraryScanFailed(plexServer, plexLibrary, e.getMessage());
+                }
             }
         }
     }

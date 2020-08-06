@@ -9,7 +9,6 @@
  */
 package com.jasonhhouse.gaps.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.jasonhhouse.gaps.GapsService;
@@ -85,11 +84,7 @@ public class ConfigurationController {
 
         ModelAndView modelAndView = new ModelAndView("configuration");
         modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
-        try {
-            modelAndView.addObject("schedules", schedulerService.getAllSchedules());
-        } catch (JsonProcessingException e) {
-            LOGGER.error("Could not parse schedules into JSON", e);
-        }
+        modelAndView.addObject("schedules", schedulerService.getAllSchedules());
         return modelAndView;
     }
 
