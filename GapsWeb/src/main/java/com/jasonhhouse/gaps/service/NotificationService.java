@@ -45,7 +45,7 @@ public class NotificationService implements Notification {
         notificationAgents
                 .stream()
                 .filter(NotificationAgent::isEnabled)
-                .forEach(notificationAgent -> notificationAgent.sendMessage("INFO", "Gaps Search", String.format("Scanning Plex Server %s Failed. %s", plexServer.getFriendlyName(), error)));
+                .forEach(notificationAgent -> notificationAgent.sendMessage("INFO", "Gaps Search", String.format("Scanning Plex Server %s in %s Library Failed. %s", plexServer.getFriendlyName(), plexLibrary.getTitle(), error)));
     }
 
     @Override
@@ -53,7 +53,7 @@ public class NotificationService implements Notification {
         notificationAgents
                 .stream()
                 .filter(NotificationAgent::isEnabled)
-                .forEach(notificationAgent -> notificationAgent.sendMessage("INFO", "Gaps Search", String.format("Scanning Plex Server %s Successful", plexServer.getFriendlyName())));
+                .forEach(notificationAgent -> notificationAgent.sendMessage("INFO", "Gaps Search", String.format("Scanning Plex Server %s in %s Library Successful", plexServer.getFriendlyName(), plexLibrary.getTitle())));
     }
 
     @Override

@@ -70,7 +70,7 @@ public class TelegramNotificationAgent implements NotificationAgent {
 
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
-                LOGGER.error("Telegram message sent via {}", url);
+                LOGGER.info("Telegram message sent via {}", url);
             } else {
                 LOGGER.error("Error with Telegram Url: {} Body returned {}", url, response.body().toString());
             }

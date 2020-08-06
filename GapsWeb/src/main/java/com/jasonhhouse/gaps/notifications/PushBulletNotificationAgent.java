@@ -92,7 +92,7 @@ public class PushBulletNotificationAgent implements NotificationAgent {
 
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
-                LOGGER.error("PushBullet message sent via {}", url);
+                LOGGER.info("PushBullet message sent via {}", url);
             } else {
                 LOGGER.error("Error with PushBullet Url: {} Body returned {}", url, response.body().toString());
             }
