@@ -1,4 +1,4 @@
-import {nuke, redLibraryBefore, searchPlexForMovies, spyOnAddEventListener} from "../common";
+import {nuke, redLibraryBefore, searchPlexForMoviesFromSaw, spyOnAddEventListener} from "../common";
 
 describe('Searched RSS', function () {
     before(nuke)
@@ -27,7 +27,6 @@ describe('Searched RSS', function () {
             .then((resp) => {
                 const result = resp.body;
                 expect(result).to.have.lengthOf(7);
-                expect(result[0].imdb_id).to.eq('tt3348730')
             });
     })
 });
@@ -35,7 +34,7 @@ describe('Searched RSS', function () {
 function searchSawLibrary(cy) {
     cy.visit('/libraries', {onBeforeLoad: spyOnAddEventListener});
 
-    searchPlexForMovies(cy);
+    searchPlexForMoviesFromSaw(cy);
 
     cy.visit('/recommended', {onBeforeLoad: spyOnAddEventListener});
 }

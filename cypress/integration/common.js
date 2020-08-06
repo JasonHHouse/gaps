@@ -46,10 +46,10 @@ export function searchPlexForMoviesFromMovies(cy) {
 
     cy.get('label > input')
         .clear()
-        .type('2001 A Space');
+        .type('Gods');
 
     cy.get('#movies_info')
-        .should('have.text', 'Showing 1 to 1 of 1 entries (filtered from 4 total entries)');
+        .should('have.text', 'Showing 1 to 1 of 1 entries (filtered from 21 total entries)');
 }
 
 export function nuke() {
