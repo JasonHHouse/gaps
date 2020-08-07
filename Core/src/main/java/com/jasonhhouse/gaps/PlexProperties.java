@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 
-public final class PlexSearch {
+public final class PlexProperties {
 
     public static final String MOVIE_DB_API_KEY = "movieDbApiKey";
     public static final String VERSION_KEY = "version";
@@ -30,7 +30,7 @@ public final class PlexSearch {
     @NotNull
     private Schedule schedule;
 
-    public PlexSearch() {
+    public PlexProperties() {
         plexServers = new HashSet<>();
         schedule = Schedule.DAILY_4AM;
     }

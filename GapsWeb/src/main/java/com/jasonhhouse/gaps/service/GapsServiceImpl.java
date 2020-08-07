@@ -12,7 +12,7 @@ package com.jasonhhouse.gaps.service;
 
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.PlexLibrary;
-import com.jasonhhouse.gaps.PlexSearch;
+import com.jasonhhouse.gaps.PlexProperties;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,15 +28,15 @@ public class GapsServiceImpl implements GapsService {
     private static final Logger LOGGER = LoggerFactory.getLogger(GapsServiceImpl.class);
 
     @NotNull
-    private final PlexSearch plexSearch;
+    private final PlexProperties plexProperties;
 
     public GapsServiceImpl() {
-        this.plexSearch = new PlexSearch();
+        this.plexProperties = new PlexProperties();
     }
 
     @Override
-    public @NotNull PlexSearch getPlexSearch() {
-        return plexSearch;
+    public @NotNull PlexProperties getPlexSearch() {
+        return plexProperties;
     }
 
     @Override
@@ -62,25 +62,25 @@ public class GapsServiceImpl implements GapsService {
     @Override
     public String toString() {
         return "GapsServiceImpl{" +
-                "plexSearch=" + plexSearch +
+                "plexSearch=" + plexProperties +
                 '}';
     }
 
     @Override
-    public void updatePlexSearch(PlexSearch plexSearch) {
-        LOGGER.info("updatePlexSearch( {} )", plexSearch);
-        if (StringUtils.isNotEmpty(plexSearch.getMovieDbApiKey())) {
-            this.plexSearch.setMovieDbApiKey(plexSearch.getMovieDbApiKey());
+    public void updatePlexSearch(PlexProperties plexProperties) {
+        LOGGER.info("updatePlexSearch( {} )", plexProperties);
+        if (StringUtils.isNotEmpty(plexProperties.getMovieDbApiKey())) {
+            this.plexProperties.setMovieDbApiKey(plexProperties.getMovieDbApiKey());
         }
 
-        if (StringUtils.isNotEmpty(plexSearch.getPassword())) {
-            this.plexSearch.setPassword(plexSearch.getPassword());
+        if (StringUtils.isNotEmpty(plexProperties.getPassword())) {
+            this.plexProperties.setPassword(plexProperties.getPassword());
         }
     }
 
     @Override
     public void nukePlexSearch() {
-        plexSearch.setMovieDbApiKey("");
-        plexSearch.getPlexServers().clear();
+        plexProperties.setMovieDbApiKey("");
+        plexProperties.getPlexServers().clear();
     }
 }

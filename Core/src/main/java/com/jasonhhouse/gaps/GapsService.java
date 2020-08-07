@@ -21,7 +21,7 @@ public interface GapsService {
     /**
      * @return Returns the PlexSearch instance as a singleton
      */
-    PlexSearch getPlexSearch();
+    PlexProperties getPlexSearch();
 
     /**
      * Updates PlexLibrary's to add them if not added and set them selected or unselected if added
@@ -33,9 +33,9 @@ public interface GapsService {
     /**
      * Updates the plex search object itself to the singleton object
      *
-     * @param plexSearch The object to copy into the plex search singleton
+     * @param plexProperties The object to copy into the plex search singleton
      */
-    void updatePlexSearch(PlexSearch plexSearch);
+    void updatePlexSearch(PlexProperties plexProperties);
 
     /**
      * Resets the plex search object itself to the singleton object

@@ -19,17 +19,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.Formatter;
 
-public class PlexSearchFormatter implements Formatter<PlexSearch> {
+public class PlexSearchFormatter implements Formatter<PlexProperties> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PlexSearchFormatter.class);
 
     @NotNull
     @Override
-    public PlexSearch parse(@NotNull String text, @NotNull Locale locale) throws ParseException {
+    public PlexProperties parse(@NotNull String text, @NotNull Locale locale) throws ParseException {
         LOGGER.info("parse( {}, {} )", text, locale);
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.readValue(text, PlexSearch.class);
+            return objectMapper.readValue(text, PlexProperties.class);
         } catch (JsonProcessingException e) {
             LOGGER.error("Error parsing player.", e);
             throw new ParseException("Error parsing player.", 0);
@@ -38,12 +38,12 @@ public class PlexSearchFormatter implements Formatter<PlexSearch> {
 
     @NotNull
     @Override
-    public String print(@NotNull PlexSearch plexSearch, @NotNull Locale locale) {
-        LOGGER.info("print( {}, {} )", plexSearch, locale);
+    public String print(@NotNull PlexProperties plexProperties, @NotNull Locale locale) {
+        LOGGER.info("print( {}, {} )", plexProperties, locale);
         ObjectMapper mapper = new ObjectMapper();
 
         try {
-            return mapper.writeValueAsString(plexSearch);
+            return mapper.writeValueAsString(plexProperties);
         } catch (JsonProcessingException e) {
             LOGGER.error("Error converting room id and issue id to JSON", e);
             return "";

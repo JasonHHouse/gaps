@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.PlexSearch;
+import com.jasonhhouse.gaps.PlexProperties;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.service.PlexQueryImpl;
@@ -73,8 +73,8 @@ public class ConfigurationController {
         LOGGER.info("getConfiguration()");
 
         try {
-            PlexSearch plexSearch = ioService.readProperties();
-            gapsService.updatePlexSearch(plexSearch);
+            PlexProperties plexProperties = ioService.readProperties();
+            gapsService.updatePlexSearch(plexProperties);
 
             List<PlexServer> plexServers = ioService.readPlexConfiguration();
             gapsService.getPlexSearch().getPlexServers().addAll(plexServers);
@@ -95,8 +95,8 @@ public class ConfigurationController {
         LOGGER.info("postAddPlexServer( {} )", plexServer);
 
         try {
-            PlexSearch plexSearch = ioService.readProperties();
-            gapsService.updatePlexSearch(plexSearch);
+            PlexProperties plexProperties = ioService.readProperties();
+            gapsService.updatePlexSearch(plexProperties);
 
             plexQuery.queryPlexServer(plexServer);
             Payload payload = plexQuery.getLibraries(plexServer);
@@ -143,8 +143,8 @@ public class ConfigurationController {
         LOGGER.info("putTestPlexServerByMachineId( {} )", machineIdentifier);
 
         try {
-            PlexSearch plexSearch = ioService.readProperties();
-            gapsService.updatePlexSearch(plexSearch);
+            PlexProperties plexProperties = ioService.readProperties();
+            gapsService.updatePlexSearch(plexProperties);
 
             ObjectNode objectNode = objectMapper.createObjectNode();
             PlexServer returnedPlexServer = gapsService.getPlexSearch().getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
@@ -171,8 +171,8 @@ public class ConfigurationController {
         LOGGER.info("deletePlexServer( {} )", machineIdentifier);
 
         try {
-            PlexSearch plexSearch = ioService.readProperties();
-            gapsService.updatePlexSearch(plexSearch);
+            PlexProperties plexProperties = ioService.readProperties();
+            gapsService.updatePlexSearch(plexProperties);
 
             ObjectNode objectNode = objectMapper.createObjectNode();
             PlexServer returnedPlexServer = gapsService.getPlexSearch().getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
@@ -210,8 +210,8 @@ public class ConfigurationController {
 
         Payload payload;
         try {
-            PlexSearch plexSearch = ioService.readProperties();
-            gapsService.updatePlexSearch(plexSearch);
+            PlexProperties plexProperties = ioService.readProperties();
+            gapsService.updatePlexSearch(plexProperties);
             gapsService.getPlexSearch().setMovieDbApiKey(tmdbKey);
 
             ioService.writeProperties(gapsService.getPlexSearch());

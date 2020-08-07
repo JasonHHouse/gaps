@@ -11,7 +11,7 @@ package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.PlexSearch;
+import com.jasonhhouse.gaps.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
 import java.io.IOException;
 import org.apache.commons.collections4.CollectionUtils;
@@ -51,11 +51,11 @@ public class GapsController {
     public ModelAndView getIndexOnClick() {
         LOGGER.info("getIndexOnClick()");
 
-        PlexSearch plexSearch = null;
+        PlexProperties plexProperties = null;
         try {
-            plexSearch = ioService.readProperties();
-            plexSearch.getPlexServers().addAll(ioService.readPlexConfiguration());
-            gapsService.updatePlexSearch(plexSearch);
+            plexProperties = ioService.readProperties();
+            plexProperties.getPlexServers().addAll(ioService.readPlexConfiguration());
+            gapsService.updatePlexSearch(plexProperties);
         } catch (IOException e) {
             LOGGER.warn("Failed to read gaps properties.", e);
         }
@@ -69,17 +69,17 @@ public class GapsController {
     public ModelAndView getIndex() {
         LOGGER.info("getIndex()");
 
-        PlexSearch plexSearch = null;
+        PlexProperties plexProperties = null;
         try {
-            plexSearch = ioService.readProperties();
-            plexSearch.getPlexServers().addAll(ioService.readPlexConfiguration());
-            gapsService.updatePlexSearch(plexSearch);
+            plexProperties = ioService.readProperties();
+            plexProperties.getPlexServers().addAll(ioService.readPlexConfiguration());
+            gapsService.updatePlexSearch(plexProperties);
         } catch (IOException e) {
             LOGGER.warn("Failed to read gaps properties.", e);
         }
 
         //If configuration is filled in, jump to libraries page
-        if (plexSearch != null && StringUtils.isNotEmpty(plexSearch.getMovieDbApiKey()) && CollectionUtils.isNotEmpty(plexSearch.getPlexServers())) {
+        if (plexProperties != null && StringUtils.isNotEmpty(plexProperties.getMovieDbApiKey()) && CollectionUtils.isNotEmpty(plexProperties.getPlexServers())) {
             return new ModelAndView("redirect:/libraries");
         }
 

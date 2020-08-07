@@ -14,7 +14,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.PlexSearch;
+import com.jasonhhouse.gaps.PlexProperties;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.Rss;
 import com.jasonhhouse.gaps.Schedule;
@@ -355,20 +355,20 @@ public class IoService {
         return everyMovie;
     }
 
-    public void writeProperties(PlexSearch plexSearch) throws IOException {
-        LOGGER.info("writeProperties( {} )", plexSearch);
+    public void writeProperties(PlexProperties plexProperties) throws IOException {
+        LOGGER.info("writeProperties( {} )", plexProperties);
         Properties properties = new Properties();
 
-        if (StringUtils.isNotEmpty(plexSearch.getMovieDbApiKey())) {
-            properties.setProperty(PlexSearch.MOVIE_DB_API_KEY, plexSearch.getMovieDbApiKey());
+        if (StringUtils.isNotEmpty(plexProperties.getMovieDbApiKey())) {
+            properties.setProperty(PlexProperties.MOVIE_DB_API_KEY, plexProperties.getMovieDbApiKey());
         }
 
-        properties.setProperty(PlexSearch.VERSION_KEY, yamlConfig.getVersion());
-        properties.setProperty(PlexSearch.USERNAME_KEY, PlexSearch.USERNAME_VALUE);
-        properties.setProperty(PlexSearch.SCHEDULE, plexSearch.getSchedule().getId().toString());
+        properties.setProperty(PlexProperties.VERSION_KEY, yamlConfig.getVersion());
+        properties.setProperty(PlexProperties.USERNAME_KEY, PlexProperties.USERNAME_VALUE);
+        properties.setProperty(PlexProperties.SCHEDULE, plexProperties.getSchedule().getId().toString());
 
-        if (StringUtils.isNotEmpty(plexSearch.getPassword())) {
-            properties.setProperty(PlexSearch.PASSWORD, plexSearch.getPassword());
+        if (StringUtils.isNotEmpty(plexProperties.getPassword())) {
+            properties.setProperty(PlexProperties.PASSWORD, plexProperties.getPassword());
         }
 
         try (FileOutputStream fileOutputStream = new FileOutputStream(storageFolder + PROPERTIES)) {
@@ -385,10 +385,10 @@ public class IoService {
 
     }
 
-    public PlexSearch readProperties() throws IOException {
+    public PlexProperties readProperties() throws IOException {
         LOGGER.info("readProperties()");
         File file = new File(storageFolder + PROPERTIES);
-        PlexSearch plexSearch = new PlexSearch();
+        PlexProperties plexProperties = new PlexProperties();
 
         LOGGER.info("Can Read {}:{}", file, file.canRead());
         LOGGER.info("Can Write {}:{}", file, file.canWrite());
@@ -399,32 +399,32 @@ public class IoService {
             try (InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, StandardCharsets.UTF_8)) {
                 properties.load(inputStreamReader);
 
-                if (properties.containsKey(PlexSearch.MOVIE_DB_API_KEY)) {
-                    String movieDbApiKey = properties.getProperty(PlexSearch.MOVIE_DB_API_KEY);
-                    plexSearch.setMovieDbApiKey(movieDbApiKey);
+                if (properties.containsKey(PlexProperties.MOVIE_DB_API_KEY)) {
+                    String movieDbApiKey = properties.getProperty(PlexProperties.MOVIE_DB_API_KEY);
+                    plexProperties.setMovieDbApiKey(movieDbApiKey);
                 }
 
-                if (properties.containsKey(PlexSearch.PASSWORD)) {
-                    String password = properties.getProperty(PlexSearch.PASSWORD);
-                    plexSearch.setPassword(password);
+                if (properties.containsKey(PlexProperties.PASSWORD)) {
+                    String password = properties.getProperty(PlexProperties.PASSWORD);
+                    plexProperties.setPassword(password);
                 }
 
-                if (properties.containsKey(PlexSearch.SCHEDULE)) {
-                    String strSchedule = properties.getProperty(PlexSearch.SCHEDULE);
+                if (properties.containsKey(PlexProperties.SCHEDULE)) {
+                    String strSchedule = properties.getProperty(PlexProperties.SCHEDULE);
                     Integer intSchedule = Integer.valueOf(strSchedule);
                     Schedule schedule = Schedule.getSchedule(intSchedule);
-                    plexSearch.setSchedule(schedule);
+                    plexProperties.setSchedule(schedule);
                 }
             }
         } catch (FileNotFoundException e) {
             LOGGER.warn("{} does not exist", file);
-            return plexSearch;
+            return plexProperties;
         } catch (IOException e) {
             LOGGER.warn("{} failed to parse", file);
-            return plexSearch;
+            return plexProperties;
         }
-        LOGGER.info("plexSearch: {}", plexSearch);
-        return plexSearch;
+        LOGGER.info("plexSearch: {}", plexProperties);
+        return plexProperties;
     }
 
     public Payload nuke() {

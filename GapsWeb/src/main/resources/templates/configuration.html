@@ -102,7 +102,7 @@
                     href="https://www.themoviedb.org/settings/api" rel="noopener" target="_blank">The Movie DB</a>,
                 create an account, and make an API Key. Copy that key and paste it below.</p>
 
-            <form class="needs-validation" id="tmdbConfiguration" novalidate th:object="${plexSearch}">
+            <form class="needs-validation" id="tmdbConfiguration" novalidate th:object="${plexProperties}">
                 <div class="form-group">
                     <label for="movieDbApiKey">Movie Database Api Key</label>
                     <div class="input-group">
@@ -244,7 +244,7 @@
             <h3 class="top-margin">Servers</h3>
 
             <div class="row top-margin" id="plexServers">
-                <div class="col-lg-4" th:each="plexServer,status : *{plexSearch.plexServers}"
+                <div class="col-lg-4" th:each="plexServer,status : *{plexProperties.plexServers}"
                      th:id="*{plexServer.machineIdentifier}">
                     <div class="top-margin">
                         <div class="card border-secondary mb-3" style="max-width: 20rem;">
@@ -275,7 +275,7 @@
                 on each configured server, then search for all movies in each library, and produce a missing movie
                 list.</p>
 
-            <form class="needs-validation" id="scheduleConfiguration" novalidate th:object="${plexSearch}">
+            <form class="needs-validation" id="scheduleConfiguration" novalidate th:object="${plexProperties}">
                 <div class="form-group">
                     <label for="setSchedule">Set Schedule</label>
                     <select class="form-control" id="setSchedule">

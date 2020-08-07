@@ -10,7 +10,7 @@
 
 package com.jasonhhouse.gaps.validator;
 
-import com.jasonhhouse.gaps.PlexSearch;
+import com.jasonhhouse.gaps.PlexProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -25,15 +25,15 @@ public class TmdbKeyValidator implements Validator {
 
     @Override
     public boolean supports(@NotNull Class<?> clazz) {
-        return PlexSearch.class.equals(clazz);
+        return PlexProperties.class.equals(clazz);
     }
 
     @Override
     public void validate(@NotNull Object obj, @NotNull Errors errors) {
         LOGGER.info("validate( {}, {} )", obj, errors);
 
-        PlexSearch plexSearch = (PlexSearch) obj;
-        if (StringUtils.isEmpty(plexSearch.getMovieDbApiKey())) {
+        PlexProperties plexProperties = (PlexProperties) obj;
+        if (StringUtils.isEmpty(plexProperties.getMovieDbApiKey())) {
             errors.rejectValue("movieDbApiKey", "movieDbApiKey.empty");
         }
     }

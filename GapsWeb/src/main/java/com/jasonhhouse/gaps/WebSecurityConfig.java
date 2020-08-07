@@ -106,28 +106,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         LOGGER.info("userDetailsService()");
         if (Boolean.TRUE.equals(myConfig.getLoginEnabled())) {
 
-            PlexSearch plexSearch = null;
+            PlexProperties plexProperties = null;
             try {
-                plexSearch = ioService.readProperties();
+                plexProperties = ioService.readProperties();
             } catch (IOException e) {
                 LOGGER.warn("No properties found to get password. Generating new password");
             }
 
             String password;
-            if (plexSearch == null || StringUtils.isEmpty(plexSearch.getPassword())) {
+            if (plexProperties == null || StringUtils.isEmpty(plexProperties.getPassword())) {
                 password = UUID.randomUUID().toString();
-                plexSearch = new PlexSearch();
-                plexSearch.setPassword(password);
+                plexProperties = new PlexProperties();
+                plexProperties.setPassword(password);
                 LOGGER.info("Gaps Password: {}", password);
                 try {
-                    ioService.writeProperties(plexSearch);
-                    gapsService.updatePlexSearch(plexSearch);
+                    ioService.writeProperties(plexProperties);
+                    gapsService.updatePlexSearch(plexProperties);
                 } catch (IOException e) {
                     LOGGER.error("Failed to write out password to properties file.");
                 }
             } else {
                 LOGGER.info("Using password from /usr/data/gaps.properties");
-                password = plexSearch.getPassword();
+                password = plexProperties.getPassword();
             }
 
             PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();

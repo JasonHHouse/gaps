@@ -1,7 +1,7 @@
 package com.jasonhhouse.gaps.service;
 
 import com.jasonhhouse.gaps.PlexLibrary;
-import com.jasonhhouse.gaps.PlexSearch;
+import com.jasonhhouse.gaps.PlexProperties;
 import com.jasonhhouse.gaps.PlexServer;
 import java.util.ArrayList;
 import org.junit.Before;
@@ -26,10 +26,10 @@ public class GapsServiceTest {
 
     @Test
     public void setPlexSearchMovieDbApiKey() {
-        PlexSearch plexSearch = new PlexSearch();
-        plexSearch.setMovieDbApiKey("123qwe");
-        gapsService.updatePlexSearch(plexSearch);
-        assertEquals("GapsSearch not updating movie db api key", gapsService.getPlexSearch().getMovieDbApiKey(), plexSearch.getMovieDbApiKey());
+        PlexProperties plexProperties = new PlexProperties();
+        plexProperties.setMovieDbApiKey("123qwe");
+        gapsService.updatePlexSearch(plexProperties);
+        assertEquals("GapsSearch not updating movie db api key", gapsService.getPlexSearch().getMovieDbApiKey(), plexProperties.getMovieDbApiKey());
     }
 
     @Test
@@ -38,10 +38,10 @@ public class GapsServiceTest {
         plexServer.setAddress("123");
         plexServer.setPort(123);
 
-        PlexSearch plexSearch = new PlexSearch();
-        plexSearch.setMovieDbApiKey("123qwe");
+        PlexProperties plexProperties = new PlexProperties();
+        plexProperties.setMovieDbApiKey("123qwe");
 
-        gapsService.updatePlexSearch(plexSearch);
+        gapsService.updatePlexSearch(plexProperties);
         gapsService.getPlexSearch().addPlexServer(plexServer);
 
         assertEquals("GapsSearch not updating plex servers", 1, gapsService.getPlexSearch().getPlexServers().size());
@@ -65,10 +65,10 @@ public class GapsServiceTest {
         plexServer.getPlexLibraries().add(plexLibrary1);
         plexServer.getPlexLibraries().add(plexLibrary2);
 
-        PlexSearch plexSearch = new PlexSearch();
-        plexSearch.setMovieDbApiKey("123qwe");
+        PlexProperties plexProperties = new PlexProperties();
+        plexProperties.setMovieDbApiKey("123qwe");
 
-        gapsService.updatePlexSearch(plexSearch);
+        gapsService.updatePlexSearch(plexProperties);
         gapsService.getPlexSearch().addPlexServer(plexServer);
 
         int count = 0;

@@ -13,7 +13,7 @@ import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexLibrary;
-import com.jasonhhouse.gaps.PlexSearch;
+import com.jasonhhouse.gaps.PlexProperties;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.service.IoService;
 import java.io.IOException;
@@ -78,8 +78,8 @@ public class LibraryController {
 
         if (StringUtils.isEmpty(gapsService.getPlexSearch().getMovieDbApiKey())) {
             try {
-                PlexSearch plexSearch = ioService.readProperties();
-                gapsService.updatePlexSearch(plexSearch);
+                PlexProperties plexProperties = ioService.readProperties();
+                gapsService.updatePlexSearch(plexProperties);
 
                 if (StringUtils.isEmpty(gapsService.getPlexSearch().getMovieDbApiKey())) {
                     LOGGER.warn("No owned movies found.");
