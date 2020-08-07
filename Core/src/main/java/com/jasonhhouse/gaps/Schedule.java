@@ -20,8 +20,8 @@ public enum Schedule {
 
     HOURLY("Hourly", "0 18 * * * *", 0),
     DAILY_4AM("Daily", "0 0 4 * * ?", 1),
-    EVERY_MONDAY("Weekly", "0 0 4 ? * MON *", 2),
-    EVERY_TWO_WEEKS("Bi-weekly", "0 0 4 1,15 * ? *", 3),
+    EVERY_MONDAY("Weekly", "0 4 ? * MON *", 2),
+    EVERY_TWO_WEEKS("Bi-weekly", "0 4 1,15 * ? *", 3),
     EVERY_MONTH("Monthly", "0 0 4 1 * ?", 4);
 
     @NotNull
