@@ -12,6 +12,7 @@ package com.jasonhhouse.gaps.notifications;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.NotificationType;
+import com.jasonhhouse.gaps.properties.PushBulletProperties;
 import com.jasonhhouse.gaps.service.IoService;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -22,22 +23,18 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PushBulletNotificationAgent implements NotificationAgent {
+public class PushBulletNotificationAgent extends AbstractNotificationAgent<PushBulletProperties> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PushBulletNotificationAgent.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private final String channel_tag;
-    private final String accessToken;
     private final OkHttpClient client;
-    private final IoService ioService;
 
     public PushBulletNotificationAgent(IoService ioService) {
-        this.ioService = ioService;
-        this.channel_tag = "gaps";
-        this.accessToken = "o.iv0WmtnLWI3xfhTSNhuuQvNmovUFHszt";
+        super(ioService);
 
         client = new OkHttpClient.Builder()
                 .connectTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
@@ -58,14 +55,12 @@ public class PushBulletNotificationAgent implements NotificationAgent {
     }
 
     @Override
-    public boolean isEnabled() {
-        //ToDo Check IoService
-        return true;
-    }
-
-    @Override
     public boolean sendMessage(NotificationType notificationType, String level, String title, String message) {
-        LOGGER.info("sendMessage( {}, {}, {} )", level, title, message);
+        LOGGER.info(SEND_MESSAGE, level, title, message);
+
+        if(sendPrepMessage(notificationType)) {
+            return false;
+        }
 
         HttpUrl url = new HttpUrl.Builder()
                 .scheme("https")
@@ -75,25 +70,25 @@ public class PushBulletNotificationAgent implements NotificationAgent {
                 .build();
 
         Headers headers = new Headers.Builder()
-                .add("Content-Type", "application/json")
-                .add("Access-Token", accessToken)
+                .add("Content-Type", org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+                .add("Access-Token", t.getAccessToken())
                 .build();
 
         PushBullet pushBullet = new PushBullet();
         pushBullet.setBody(message);
         pushBullet.setTitle(title);
-        pushBullet.setChannel_tag(channel_tag);
+        pushBullet.setChannel_tag(t.getChannel_tag());
 
         String pushBulletMessage = "";
         try {
             pushBulletMessage = objectMapper.writeValueAsString(pushBullet);
         } catch (JsonProcessingException e) {
-            LOGGER.error("Failed to turn PushBullet message into JSON", e);
+            LOGGER.error(String.format(FAILED_TO_PARSE_JSON, getName()), e);
             return false;
         }
 
         LOGGER.info("pushBulletMessage {}", pushBulletMessage);
-        RequestBody body = RequestBody.create(pushBulletMessage, MediaType.get("application/json"));
+        RequestBody body = RequestBody.create(pushBulletMessage, MediaType.get(org.springframework.http.MediaType.APPLICATION_JSON_VALUE));
 
         Request request = new Request.Builder()
                 .headers(headers)
@@ -113,6 +108,17 @@ public class PushBulletNotificationAgent implements NotificationAgent {
         } catch (IOException e) {
             LOGGER.error(String.format("Error with PushBullet Url: %s", url), e);
             return false;
+        }
+    }
+
+    @Nullable
+    @Override
+    public PushBulletProperties getNotificationProperties() {
+        try {
+            return ioService.readProperties().getPushBulletProperties();
+        } catch (IOException e) {
+            LOGGER.error(String.format(FAILED_TO_READ_PROPERTIES, getName()), e);
+            return null;
         }
     }
 

@@ -70,7 +70,7 @@ public class RSSController {
 
         ModelAndView modelAndView = new ModelAndView("rssCheck");
         Map<PlexLibrary, PlexServer> map = rssService.foundAnyRssFeeds();
-        modelAndView.addObject("plexServers", gapsService.getPlexSearch().getPlexServers());
+        modelAndView.addObject("plexServers", gapsService.getPlexProperties().getPlexServers());
         modelAndView.addObject("plexServerMap", map);
         modelAndView.addObject("foundPlexLibraries", MapUtils.isNotEmpty(map));
         return modelAndView;

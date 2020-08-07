@@ -68,7 +68,7 @@ public class GapsApplication {
     static class MyConfig implements WebMvcConfigurer {
         @Override
         public void addFormatters(FormatterRegistry registry) {
-            registry.addFormatter(new PlexSearchFormatter());
+            registry.addFormatter(new PlexPropertiesFormatter());
         }
     }
 

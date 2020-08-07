@@ -8,38 +8,36 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.jasonhhouse.gaps;
+package com.jasonhhouse.gaps.properties;
 
-import com.jasonhhouse.gaps.properties.PlexProperties;
+import com.jasonhhouse.gaps.NotificationType;
 import java.util.List;
-import org.jetbrains.annotations.NotNull;
 
-/**
- * Blackboard service interface for storing the PlexProperties object controllers
- */
-public interface GapsService {
+public abstract class AbstractNotificationProperties implements NotificationProperties {
 
-    /**
-     * @return Returns the PlexProperties instance as a singleton
-     */
-    PlexProperties getPlexProperties();
+    protected final Boolean isEnabled;
+    protected final List<NotificationType> notificationTypes;
 
-    /**
-     * Updates PlexLibrary's to add them if not added and set them selected or unselected if added
-     *
-     * @param selectedLibraries The libraries to update. they must come in as a single string added together of the plex server ID and the library key.
-     */
-    void updateLibrarySelections(@NotNull List<String> selectedLibraries);
+    public AbstractNotificationProperties(Boolean isEnabled, List<NotificationType> notificationTypes) {
+        this.isEnabled = isEnabled;
+        this.notificationTypes = notificationTypes;
+    }
 
-    /**
-     * Updates the plex properties object itself to the singleton object
-     *
-     * @param plexProperties The object to copy into the plex properties singleton
-     */
-    void updatePlexProperties(PlexProperties plexProperties);
+    @Override
+    public Boolean getEnabled() {
+        return isEnabled;
+    }
 
-    /**
-     * Resets the plex properties object itself to the singleton object
-     */
-    void nukePlexProperties();
+    @Override
+    public List<NotificationType> getNotificationTypes() {
+        return notificationTypes;
+    }
+
+    @Override
+    public String toString() {
+        return "AbstractNotificationProperties{" +
+                "isEnabled=" + isEnabled +
+                ", notificationTypes=" + notificationTypes +
+                '}';
+    }
 }

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.PlexProperties;
+import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.service.PlexQueryImpl;
@@ -48,7 +48,7 @@ public class ConfigurationController {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final String TMDB_KEY = "tmdbKey:";
     private static final String SUCCESS = "success";
-    private static final String FAILED_TO_READ_PLEX_SEARCH = "Failed to read PlexSearch";
+    private static final String FAILED_TO_READ_PLEX_PROPERTIES = "Failed to read PlexProperties";
     private static final String CONFIGURATION_PLEX = "/configuration/plex";
     private static final String CONFIGURATION_PLEX_COMPLETE = CONFIGURATION_PLEX + "/complete";
 
@@ -74,16 +74,16 @@ public class ConfigurationController {
 
         try {
             PlexProperties plexProperties = ioService.readProperties();
-            gapsService.updatePlexSearch(plexProperties);
+            gapsService.updatePlexProperties(plexProperties);
 
             List<PlexServer> plexServers = ioService.readPlexConfiguration();
-            gapsService.getPlexSearch().getPlexServers().addAll(plexServers);
+            gapsService.getPlexProperties().getPlexServers().addAll(plexServers);
         } catch (IOException e) {
             LOGGER.warn("Failed to read gaps properties.", e);
         }
 
         ModelAndView modelAndView = new ModelAndView("configuration");
-        modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
+        modelAndView.addObject("plexProperties", gapsService.getPlexProperties());
         modelAndView.addObject("schedules", schedulerService.getAllSchedules());
         return modelAndView;
     }
@@ -96,18 +96,18 @@ public class ConfigurationController {
 
         try {
             PlexProperties plexProperties = ioService.readProperties();
-            gapsService.updatePlexSearch(plexProperties);
+            gapsService.updatePlexProperties(plexProperties);
 
             plexQuery.queryPlexServer(plexServer);
             Payload payload = plexQuery.getLibraries(plexServer);
 
             if (payload.getCode() == Payload.PLEX_LIBRARIES_FOUND.getCode()) {
-                int initialCount = gapsService.getPlexSearch().getPlexServers().size();
-                gapsService.getPlexSearch().addPlexServer(plexServer);
-                if (gapsService.getPlexSearch().getPlexServers().size() == initialCount) {
+                int initialCount = gapsService.getPlexProperties().getPlexServers().size();
+                gapsService.getPlexProperties().addPlexServer(plexServer);
+                if (gapsService.getPlexProperties().getPlexServers().size() == initialCount) {
                     template.convertAndSend(CONFIGURATION_PLEX + "/duplicate", Payload.DUPLICATE_PLEX_LIBRARY);
                 } else {
-                    ioService.writePlexConfiguration(gapsService.getPlexSearch().getPlexServers());
+                    ioService.writePlexConfiguration(gapsService.getPlexProperties().getPlexServers());
                     template.convertAndSend(CONFIGURATION_PLEX_COMPLETE, payload.setExtras(plexServer));
                 }
             } else {
@@ -144,10 +144,10 @@ public class ConfigurationController {
 
         try {
             PlexProperties plexProperties = ioService.readProperties();
-            gapsService.updatePlexSearch(plexProperties);
+            gapsService.updatePlexProperties(plexProperties);
 
             ObjectNode objectNode = objectMapper.createObjectNode();
-            PlexServer returnedPlexServer = gapsService.getPlexSearch().getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
+            PlexServer returnedPlexServer = gapsService.getPlexProperties().getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
 
             if (StringUtils.isEmpty(returnedPlexServer.getMachineIdentifier())) {
                 //Failed to find and delete
@@ -159,8 +159,8 @@ public class ConfigurationController {
 
             return ResponseEntity.ok().body(objectNode.toString());
         } catch (IOException e) {
-            LOGGER.error(FAILED_TO_READ_PLEX_SEARCH, e);
-            return ResponseEntity.status(500).body(FAILED_TO_READ_PLEX_SEARCH);
+            LOGGER.error(FAILED_TO_READ_PLEX_PROPERTIES, e);
+            return ResponseEntity.status(500).body(FAILED_TO_READ_PLEX_PROPERTIES);
         }
     }
 
@@ -172,23 +172,23 @@ public class ConfigurationController {
 
         try {
             PlexProperties plexProperties = ioService.readProperties();
-            gapsService.updatePlexSearch(plexProperties);
+            gapsService.updatePlexProperties(plexProperties);
 
             ObjectNode objectNode = objectMapper.createObjectNode();
-            PlexServer returnedPlexServer = gapsService.getPlexSearch().getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
+            PlexServer returnedPlexServer = gapsService.getPlexProperties().getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
             if (StringUtils.isEmpty(returnedPlexServer.getMachineIdentifier())) {
                 //Failed to find and delete
                 objectNode.put(SUCCESS, false);
             } else {
-                gapsService.getPlexSearch().getPlexServers().remove(returnedPlexServer);
-                ioService.writePlexConfiguration(gapsService.getPlexSearch().getPlexServers());
+                gapsService.getPlexProperties().getPlexServers().remove(returnedPlexServer);
+                ioService.writePlexConfiguration(gapsService.getPlexProperties().getPlexServers());
                 objectNode.put(SUCCESS, true);
             }
 
             return ResponseEntity.ok().body(objectNode.toString());
         } catch (IOException e) {
-            LOGGER.error(FAILED_TO_READ_PLEX_SEARCH, e);
-            return ResponseEntity.status(500).body(FAILED_TO_READ_PLEX_SEARCH);
+            LOGGER.error(FAILED_TO_READ_PLEX_PROPERTIES, e);
+            return ResponseEntity.status(500).body(FAILED_TO_READ_PLEX_PROPERTIES);
         }
     }
 
@@ -211,10 +211,10 @@ public class ConfigurationController {
         Payload payload;
         try {
             PlexProperties plexProperties = ioService.readProperties();
-            gapsService.updatePlexSearch(plexProperties);
-            gapsService.getPlexSearch().setMovieDbApiKey(tmdbKey);
+            gapsService.updatePlexProperties(plexProperties);
+            gapsService.getPlexProperties().setMovieDbApiKey(tmdbKey);
 
-            ioService.writeProperties(gapsService.getPlexSearch());
+            ioService.writeProperties(gapsService.getPlexProperties());
             payload = Payload.TMDB_KEY_SAVE_SUCCESSFUL.setExtras(TMDB_KEY + tmdbKey);
         } catch (IOException e) {
             payload = Payload.TMDB_KEY_SAVE_UNSUCCESSFUL.setExtras(TMDB_KEY + tmdbKey);

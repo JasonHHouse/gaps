@@ -50,7 +50,7 @@ public class SearchGapsTask implements Runnable {
     public void run() {
         LOGGER.info("run()");
 
-        if (CollectionUtils.isEmpty(gapsService.getPlexSearch().getPlexServers())) {
+        if (CollectionUtils.isEmpty(gapsService.getPlexProperties().getPlexServers())) {
             LOGGER.warn("No Plex Servers Found. Canceling automatic search.");
             return;
         }
@@ -92,7 +92,7 @@ public class SearchGapsTask implements Runnable {
     private void checkPlexServers() {
         LOGGER.info("checkPlexServers()");
 
-        for (PlexServer plexServer : gapsService.getPlexSearch().getPlexServers()) {
+        for (PlexServer plexServer : gapsService.getPlexProperties().getPlexServers()) {
             Payload payload = plexQuery.queryPlexServer(plexServer);
             if (payload.getCode() == Payload.PLEX_CONNECTION_SUCCEEDED.getCode()) {
                 notificationService.plexServerConnectSuccessful(plexServer);
@@ -105,7 +105,7 @@ public class SearchGapsTask implements Runnable {
     private void updatePlexLibraries() {
         LOGGER.info("updatePlexLibraries()");
         //Update each Plex Library from each Plex Server
-        for (PlexServer plexServer : gapsService.getPlexSearch().getPlexServers()) {
+        for (PlexServer plexServer : gapsService.getPlexProperties().getPlexServers()) {
             Payload getLibrariesResults = plexQuery.getLibraries(plexServer);
             if (Payload.PLEX_LIBRARIES_FOUND == getLibrariesResults) {
                 LOGGER.info("Plex libraries found for Plex Server {}", plexServer.getFriendlyName());
@@ -117,7 +117,7 @@ public class SearchGapsTask implements Runnable {
 
     private void updateLibraryMovies() {
         LOGGER.info("updateLibraryMovies()");
-        for (PlexServer plexServer : gapsService.getPlexSearch().getPlexServers()) {
+        for (PlexServer plexServer : gapsService.getPlexProperties().getPlexServers()) {
             for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
                 HttpUrl url = gapsUrlGenerator.generatePlexLibraryUrl(plexServer, plexLibrary);
                 try {
@@ -133,7 +133,7 @@ public class SearchGapsTask implements Runnable {
 
     private void findRecommendedMovies() {
         LOGGER.info("findRecommendedMovies()");
-        for (PlexServer plexServer : gapsService.getPlexSearch().getPlexServers()) {
+        for (PlexServer plexServer : gapsService.getPlexProperties().getPlexServers()) {
             for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
                 gapsSearch.run(plexLibrary.getMachineIdentifier(), plexLibrary.getKey());
             }
@@ -145,7 +145,7 @@ public class SearchGapsTask implements Runnable {
         Map<Pair<String, Integer>, Movie> previousMovies = new HashMap<>();
 
         gapsService
-                .getPlexSearch()
+                .getPlexProperties()
                 .getPlexServers()
                 .forEach(plexServer -> plexServer
                         .getPlexLibraries()

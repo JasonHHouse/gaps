@@ -8,8 +8,10 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.jasonhhouse.gaps;
+package com.jasonhhouse.gaps.properties;
 
+import com.jasonhhouse.gaps.PlexServer;
+import com.jasonhhouse.gaps.Schedule;
 import java.util.HashSet;
 import java.util.Set;
 import org.jetbrains.annotations.NotNull;
@@ -24,6 +26,11 @@ public final class PlexProperties {
     public static final String SCHEDULE = "schedule";
 
     private final Set<PlexServer> plexServers;
+    private TelegramProperties telegramProperties;
+    private PushBulletProperties pushBulletProperties;
+    private EmailProperties emailProperties;
+    private GotifyProperties gotifyProperties;
+    private SlackProperties slackProperties;
     private String movieDbApiKey;
     private String password;
 
@@ -33,6 +40,46 @@ public final class PlexProperties {
     public PlexProperties() {
         plexServers = new HashSet<>();
         schedule = Schedule.DAILY_4AM;
+    }
+
+    public SlackProperties getSlackProperties() {
+        return slackProperties;
+    }
+
+    public void setSlackProperties(SlackProperties slackProperties) {
+        this.slackProperties = slackProperties;
+    }
+
+    public GotifyProperties getGotifyProperties() {
+        return gotifyProperties;
+    }
+
+    public void setGotifyProperties(GotifyProperties gotifyProperties) {
+        this.gotifyProperties = gotifyProperties;
+    }
+
+    public EmailProperties getEmailProperties() {
+        return emailProperties;
+    }
+
+    public void setEmailProperties(EmailProperties emailProperties) {
+        this.emailProperties = emailProperties;
+    }
+
+    public PushBulletProperties getPushBulletProperties() {
+        return pushBulletProperties;
+    }
+
+    public void setPushBulletProperties(PushBulletProperties pushBulletProperties) {
+        this.pushBulletProperties = pushBulletProperties;
+    }
+
+    public TelegramProperties getTelegramProperties() {
+        return telegramProperties;
+    }
+
+    public void setTelegramProperties(TelegramProperties telegramProperties) {
+        this.telegramProperties = telegramProperties;
     }
 
     public void addPlexServer(PlexServer plexServer) {
@@ -70,11 +117,16 @@ public final class PlexProperties {
 
     @Override
     public String toString() {
-        return "PlexSearch{" +
+        return "PlexProperties{" +
                 "plexServers=" + plexServers +
+                ", telegramProperties=" + telegramProperties +
+                ", pushBulletProperties=" + pushBulletProperties +
+                ", emailProperties=" + emailProperties +
+                ", gotifyProperties=" + gotifyProperties +
+                ", slackProperties=" + slackProperties +
                 ", movieDbApiKey='" + movieDbApiKey + '\'' +
                 ", password='" + password + '\'' +
-                ", schedule='" + schedule + '\'' +
+                ", schedule=" + schedule +
                 '}';
     }
 }

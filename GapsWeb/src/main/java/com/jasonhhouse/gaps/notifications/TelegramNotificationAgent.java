@@ -9,11 +9,12 @@
  */
 package com.jasonhhouse.gaps.notifications;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.NotificationType;
+import com.jasonhhouse.gaps.properties.TelegramProperties;
 import com.jasonhhouse.gaps.service.IoService;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
@@ -24,33 +25,20 @@ import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TelegramNotificationAgent implements NotificationAgent {
+public class TelegramNotificationAgent extends AbstractNotificationAgent<TelegramProperties> {
     private static final Logger LOGGER = LoggerFactory.getLogger(TelegramNotificationAgent.class);
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    private final String botId;
-    private final String chatId;
     private final OkHttpClient client;
-    private final IoService ioService;
-    private final List<NotificationType> notificationTypes;
 
     public TelegramNotificationAgent(IoService ioService) {
-        this.ioService = ioService;
-
-        notificationTypes = new ArrayList<>() {{
-            add(NotificationType.TEST_TMDB);
-            add(NotificationType.SCAN_PLEX_SERVER);
-            add(NotificationType.SCAN_PLEX_LIBRARIES);
-            add(NotificationType.RECOMMENDED_MOVIES);
-        }};
+        super(ioService);
 
         client = new OkHttpClient.Builder()
                 .connectTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
                 .readTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
                 .writeTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
                 .build();
-
-        botId = "1302139119:AAEuphtEuopXaTpitiGlWCY-3l33SBkPe2o"; //Get from IoService
-        chatId = "1041081317"; //Get from IoService
     }
 
     @Override
@@ -64,25 +52,32 @@ public class TelegramNotificationAgent implements NotificationAgent {
     }
 
     @Override
-    public boolean isEnabled() {
-        //ToDo Check IoService
-        return true;
-    }
-
-    @Override
     public boolean sendMessage(NotificationType notificationType, String level, String title, String message) {
-        LOGGER.info("sendMessage( {}, {}, {} )", level, title, message);
+        LOGGER.info(SEND_MESSAGE, level, title, message);
+
+        if(sendPrepMessage(notificationType)) {
+            return false;
+        }
 
         HttpUrl url = new HttpUrl.Builder()
                 .scheme("https")
                 .host("api.telegram.org")
-                .addPathSegment(String.format("bot%s", botId))
+                .addPathSegment(String.format("bot%s", t.getBotId()))
                 .addPathSegment("sendMessage")
                 .build();
 
-        String telegramMessage = String.format("{\"chat_id\":\"%s\", \"text\":\"%s\", \"parse_mode\":\"HTML\"}", chatId, String.format("<strong>%s</strong>\n%s", title, message));
+        Telegram telegram = new Telegram(t.getChatId(), String.format("<strong>%s</strong>\n%s", title, message), "HTML");
+
+        String telegramMessage = "";
+        try {
+            telegramMessage = objectMapper.writeValueAsString(telegram);
+        } catch (JsonProcessingException e) {
+            LOGGER.error(String.format(FAILED_TO_PARSE_JSON, getName()), e);
+            return false;
+        }
+
         LOGGER.info("telegramMessage {}", telegramMessage);
-        RequestBody body = RequestBody.create(telegramMessage, MediaType.get("application/json"));
+        RequestBody body = RequestBody.create(telegramMessage, MediaType.get(org.springframework.http.MediaType.APPLICATION_JSON_VALUE));
 
         Request request = new Request.Builder()
                 .url(url)
@@ -104,4 +99,37 @@ public class TelegramNotificationAgent implements NotificationAgent {
         }
     }
 
+    @Override
+    public TelegramProperties getNotificationProperties() {
+        try {
+            return ioService.readProperties().getTelegramProperties();
+        } catch (IOException e) {
+            LOGGER.error(String.format(FAILED_TO_READ_PROPERTIES, getName()), e);
+            return null;
+        }
+    }
+
+    public static final class Telegram {
+        private final String chat_id;
+        private final String text;
+        private final String parse_mode;
+
+        public Telegram(String chat_id, String text, String parse_mode) {
+            this.chat_id = chat_id;
+            this.text = text;
+            this.parse_mode = parse_mode;
+        }
+
+        public String getChat_id() {
+            return chat_id;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        public String getParse_mode() {
+            return parse_mode;
+        }
+    }
 }

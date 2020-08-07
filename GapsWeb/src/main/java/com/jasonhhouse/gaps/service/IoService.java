@@ -14,7 +14,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.PlexProperties;
+import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.Rss;
 import com.jasonhhouse.gaps.Schedule;
@@ -423,7 +423,7 @@ public class IoService {
             LOGGER.warn("{} failed to parse", file);
             return plexProperties;
         }
-        LOGGER.info("plexSearch: {}", plexProperties);
+        LOGGER.info("plexProperties: {}", plexProperties);
         return plexProperties;
     }
 

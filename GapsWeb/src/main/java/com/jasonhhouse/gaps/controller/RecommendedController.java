@@ -61,20 +61,20 @@ public class RecommendedController {
 
         PlexServer plexServer;
         PlexLibrary plexLibrary;
-        if (CollectionUtils.isNotEmpty(gapsService.getPlexSearch().getPlexServers())) {
+        if (CollectionUtils.isNotEmpty(gapsService.getPlexProperties().getPlexServers())) {
             //Read first plex servers movies
-            plexServer = gapsService.getPlexSearch().getPlexServers().stream().findFirst().orElse(new PlexServer());
+            plexServer = gapsService.getPlexProperties().getPlexServers().stream().findFirst().orElse(new PlexServer());
             plexLibrary = plexServer.getPlexLibraries().stream().findFirst().orElse(new PlexLibrary());
         } else {
             plexServer = new PlexServer();
             plexLibrary = new PlexLibrary();
         }
 
-        Map<String, PlexServer> plexServerMap = gapsService.getPlexSearch().getPlexServers().stream().collect(Collectors.toMap(PlexServer::getMachineIdentifier, Function.identity()));
+        Map<String, PlexServer> plexServerMap = gapsService.getPlexProperties().getPlexServers().stream().collect(Collectors.toMap(PlexServer::getMachineIdentifier, Function.identity()));
 
         ModelAndView modelAndView = new ModelAndView("recommended");
         modelAndView.addObject("plexServers", plexServerMap);
-        modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
+        modelAndView.addObject("plexProperties", gapsService.getPlexProperties());
         modelAndView.addObject("plexServer", plexServer);
         modelAndView.addObject("plexLibrary", plexLibrary);
         return modelAndView;

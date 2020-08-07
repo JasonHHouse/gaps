@@ -12,7 +12,7 @@ package com.jasonhhouse.gaps.service;
 
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.PlexLibrary;
-import com.jasonhhouse.gaps.PlexProperties;
+import com.jasonhhouse.gaps.properties.PlexProperties;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +35,7 @@ public class GapsServiceImpl implements GapsService {
     }
 
     @Override
-    public @NotNull PlexProperties getPlexSearch() {
+    public @NotNull PlexProperties getPlexProperties() {
         return plexProperties;
     }
 
@@ -44,7 +44,7 @@ public class GapsServiceImpl implements GapsService {
         LOGGER.info("updateLibrarySelections( {} )", selectedLibraries);
 
         Map<String, PlexLibrary> map = new HashMap<>();
-        getPlexSearch()
+        getPlexProperties()
                 .getPlexServers()
                 .forEach(plexServer -> plexServer
                         .getPlexLibraries()
@@ -62,13 +62,13 @@ public class GapsServiceImpl implements GapsService {
     @Override
     public String toString() {
         return "GapsServiceImpl{" +
-                "plexSearch=" + plexProperties +
+                "plexProperties=" + plexProperties +
                 '}';
     }
 
     @Override
-    public void updatePlexSearch(PlexProperties plexProperties) {
-        LOGGER.info("updatePlexSearch( {} )", plexProperties);
+    public void updatePlexProperties(PlexProperties plexProperties) {
+        LOGGER.info("updatePlexProperties( {} )", plexProperties);
         if (StringUtils.isNotEmpty(plexProperties.getMovieDbApiKey())) {
             this.plexProperties.setMovieDbApiKey(plexProperties.getMovieDbApiKey());
         }
@@ -79,7 +79,7 @@ public class GapsServiceImpl implements GapsService {
     }
 
     @Override
-    public void nukePlexSearch() {
+    public void nukePlexProperties() {
         plexProperties.setMovieDbApiKey("");
         plexProperties.getPlexServers().clear();
     }

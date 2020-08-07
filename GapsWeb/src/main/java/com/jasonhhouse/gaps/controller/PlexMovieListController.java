@@ -67,7 +67,7 @@ public class PlexMovieListController {
         Map<Pair<String, Integer>, Movie> previousMovies = new HashMap<>();
 
         gapsService
-                .getPlexSearch()
+                .getPlexProperties()
                 .getPlexServers()
                 .forEach(plexServer -> plexServer
                         .getPlexLibraries()
@@ -81,7 +81,7 @@ public class PlexMovieListController {
     private String generatePlexMovieUrl(String machineIdentifier, Integer key) {
         LOGGER.info("generatePlexUrl( {}, {} )", machineIdentifier, key);
         return gapsService
-                .getPlexSearch()
+                .getPlexProperties()
                 .getPlexServers()
                 .stream()
                 .filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier))

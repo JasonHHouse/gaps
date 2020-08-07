@@ -10,6 +10,7 @@
 package com.jasonhhouse.gaps;
 
 
+import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
 import java.io.IOException;
 import java.util.UUID;
@@ -121,7 +122,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 LOGGER.info("Gaps Password: {}", password);
                 try {
                     ioService.writeProperties(plexProperties);
-                    gapsService.updatePlexSearch(plexProperties);
+                    gapsService.updatePlexProperties(plexProperties);
                 } catch (IOException e) {
                     LOGGER.error("Failed to write out password to properties file.");
                 }

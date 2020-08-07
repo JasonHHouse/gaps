@@ -115,7 +115,7 @@ public class MislabeledController {
     private String generatePlexUrl(String machineIdentifier, Integer key) {
         LOGGER.info("generatePlexUrl( {}, {} )", machineIdentifier, key);
         return gapsService
-                .getPlexSearch()
+                .getPlexProperties()
                 .getPlexServers()
                 .stream()
                 .filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier))

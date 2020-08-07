@@ -54,8 +54,8 @@ public class SchedulerService {
     public void setSchedule(int intSchedule) throws IOException {
         LOGGER.info("setSchedule( {} )", intSchedule);
         Schedule schedule = Schedule.getSchedule(intSchedule);
-        gapsService.getPlexSearch().setSchedule(schedule);
-        ioService.writeProperties(gapsService.getPlexSearch());
+        gapsService.getPlexProperties().setSchedule(schedule);
+        ioService.writeProperties(gapsService.getPlexProperties());
         setTaskForScheduler(schedule);
     }
 

@@ -11,7 +11,7 @@ package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.PlexProperties;
+import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
 import java.io.IOException;
 import org.apache.commons.collections4.CollectionUtils;
@@ -55,13 +55,13 @@ public class GapsController {
         try {
             plexProperties = ioService.readProperties();
             plexProperties.getPlexServers().addAll(ioService.readPlexConfiguration());
-            gapsService.updatePlexSearch(plexProperties);
+            gapsService.updatePlexProperties(plexProperties);
         } catch (IOException e) {
             LOGGER.warn("Failed to read gaps properties.", e);
         }
 
         ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
+        modelAndView.addObject("plexProperties", gapsService.getPlexProperties());
         return modelAndView;
     }
 
@@ -73,7 +73,7 @@ public class GapsController {
         try {
             plexProperties = ioService.readProperties();
             plexProperties.getPlexServers().addAll(ioService.readPlexConfiguration());
-            gapsService.updatePlexSearch(plexProperties);
+            gapsService.updatePlexProperties(plexProperties);
         } catch (IOException e) {
             LOGGER.warn("Failed to read gaps properties.", e);
         }
@@ -85,7 +85,7 @@ public class GapsController {
 
 
         ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
+        modelAndView.addObject("plexProperties", gapsService.getPlexProperties());
         return modelAndView;
     }
 
@@ -97,7 +97,7 @@ public class GapsController {
         LOGGER.info("Deleting all local files");
         Payload payload = ioService.nuke();
         if (payload.getCode() == Payload.NUKE_SUCCESSFUL.getCode()) {
-            gapsService.nukePlexSearch();
+            gapsService.nukePlexProperties();
         }
         return ResponseEntity.ok().body(payload);
     }

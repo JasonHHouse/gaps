@@ -1,7 +1,7 @@
 package com.jasonhhouse.gaps.service;
 
 import com.jasonhhouse.gaps.PlexLibrary;
-import com.jasonhhouse.gaps.PlexProperties;
+import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.PlexServer;
 import java.util.ArrayList;
 import org.junit.Before;
@@ -25,15 +25,15 @@ public class GapsServiceTest {
     }
 
     @Test
-    public void setPlexSearchMovieDbApiKey() {
+    public void setPlexPropertiesMovieDbApiKey() {
         PlexProperties plexProperties = new PlexProperties();
         plexProperties.setMovieDbApiKey("123qwe");
-        gapsService.updatePlexSearch(plexProperties);
-        assertEquals("GapsSearch not updating movie db api key", gapsService.getPlexSearch().getMovieDbApiKey(), plexProperties.getMovieDbApiKey());
+        gapsService.updatePlexProperties(plexProperties);
+        assertEquals("GapsSearch not updating movie db api key", gapsService.getPlexProperties().getMovieDbApiKey(), plexProperties.getMovieDbApiKey());
     }
 
     @Test
-    public void nukePlexSearch() {
+    public void nukePlexProperties() {
         PlexServer plexServer = new PlexServer();
         plexServer.setAddress("123");
         plexServer.setPort(123);
@@ -41,14 +41,14 @@ public class GapsServiceTest {
         PlexProperties plexProperties = new PlexProperties();
         plexProperties.setMovieDbApiKey("123qwe");
 
-        gapsService.updatePlexSearch(plexProperties);
-        gapsService.getPlexSearch().addPlexServer(plexServer);
+        gapsService.updatePlexProperties(plexProperties);
+        gapsService.getPlexProperties().addPlexServer(plexServer);
 
-        assertEquals("GapsSearch not updating plex servers", 1, gapsService.getPlexSearch().getPlexServers().size());
+        assertEquals("GapsSearch not updating plex servers", 1, gapsService.getPlexProperties().getPlexServers().size());
 
-        gapsService.nukePlexSearch();
-        assertEquals("GapsSearch not nuking movie db api key", "", gapsService.getPlexSearch().getMovieDbApiKey());
-        assertEquals("GapsSearch not nuking plex servers", 0, gapsService.getPlexSearch().getPlexServers().size());
+        gapsService.nukePlexProperties();
+        assertEquals("GapsSearch not nuking movie db api key", "", gapsService.getPlexProperties().getMovieDbApiKey());
+        assertEquals("GapsSearch not nuking plex servers", 0, gapsService.getPlexProperties().getPlexServers().size());
     }
 
     @Test
@@ -68,11 +68,11 @@ public class GapsServiceTest {
         PlexProperties plexProperties = new PlexProperties();
         plexProperties.setMovieDbApiKey("123qwe");
 
-        gapsService.updatePlexSearch(plexProperties);
-        gapsService.getPlexSearch().addPlexServer(plexServer);
+        gapsService.updatePlexProperties(plexProperties);
+        gapsService.getPlexProperties().addPlexServer(plexServer);
 
         int count = 0;
-        for(PlexServer plexServer1 : gapsService.getPlexSearch().getPlexServers()) {
+        for(PlexServer plexServer1 : gapsService.getPlexProperties().getPlexServers()) {
             for(PlexLibrary plexLibrary : plexServer1.getPlexLibraries()) {
                 if(plexLibrary.getSelected()) {
                     count++;
@@ -87,7 +87,7 @@ public class GapsServiceTest {
         }});
 
         count = 0;
-        for(PlexServer plexServer1 : gapsService.getPlexSearch().getPlexServers()) {
+        for(PlexServer plexServer1 : gapsService.getPlexProperties().getPlexServers()) {
             for(PlexLibrary plexLibrary : plexServer1.getPlexLibraries()) {
                 if(plexLibrary.getSelected()) {
                     count++;

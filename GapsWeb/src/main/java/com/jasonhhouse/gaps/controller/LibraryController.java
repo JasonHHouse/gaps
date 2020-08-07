@@ -13,7 +13,7 @@ import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexLibrary;
-import com.jasonhhouse.gaps.PlexProperties;
+import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.service.IoService;
 import java.io.IOException;
@@ -49,10 +49,10 @@ public class LibraryController {
         this.ioService = ioService;
         this.gapsService = gapsService;
 
-        if (CollectionUtils.isEmpty(gapsService.getPlexSearch().getPlexServers())) {
+        if (CollectionUtils.isEmpty(gapsService.getPlexProperties().getPlexServers())) {
             //Only add if empty, otherwise the server information should be correct
             List<PlexServer> plexServers = ioService.readPlexConfiguration();
-            gapsService.getPlexSearch().getPlexServers().addAll(plexServers);
+            gapsService.getPlexProperties().getPlexServers().addAll(plexServers);
         }
     }
 
@@ -63,9 +63,9 @@ public class LibraryController {
         boolean plexServersFound;
         PlexServer plexServer;
         PlexLibrary plexLibrary;
-        if (CollectionUtils.isNotEmpty(gapsService.getPlexSearch().getPlexServers())) {
+        if (CollectionUtils.isNotEmpty(gapsService.getPlexProperties().getPlexServers())) {
             //Read first plex servers movies
-            plexServer = gapsService.getPlexSearch().getPlexServers().stream().findFirst().orElse(new PlexServer());
+            plexServer = gapsService.getPlexProperties().getPlexServers().stream().findFirst().orElse(new PlexServer());
             plexLibrary = plexServer.getPlexLibraries().stream().findFirst().orElse(new PlexLibrary());
             plexServersFound = true;
         } else {
@@ -74,14 +74,14 @@ public class LibraryController {
             plexServersFound = false;
         }
 
-        Map<String, PlexServer> plexServerMap = gapsService.getPlexSearch().getPlexServers().stream().collect(Collectors.toMap(PlexServer::getMachineIdentifier, Function.identity()));
+        Map<String, PlexServer> plexServerMap = gapsService.getPlexProperties().getPlexServers().stream().collect(Collectors.toMap(PlexServer::getMachineIdentifier, Function.identity()));
 
-        if (StringUtils.isEmpty(gapsService.getPlexSearch().getMovieDbApiKey())) {
+        if (StringUtils.isEmpty(gapsService.getPlexProperties().getMovieDbApiKey())) {
             try {
                 PlexProperties plexProperties = ioService.readProperties();
-                gapsService.updatePlexSearch(plexProperties);
+                gapsService.updatePlexProperties(plexProperties);
 
-                if (StringUtils.isEmpty(gapsService.getPlexSearch().getMovieDbApiKey())) {
+                if (StringUtils.isEmpty(gapsService.getPlexProperties().getMovieDbApiKey())) {
                     LOGGER.warn("No owned movies found.");
                     //ToDo
                     //Can't search without key, show error message here
@@ -93,7 +93,7 @@ public class LibraryController {
 
         ModelAndView modelAndView = new ModelAndView("libraries");
         modelAndView.addObject("plexServers", plexServerMap);
-        modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
+        modelAndView.addObject("plexProperties", gapsService.getPlexProperties());
         modelAndView.addObject("plexServer", plexServer);
         modelAndView.addObject("plexLibrary", plexLibrary);
         modelAndView.addObject("plexServersFound", plexServersFound);

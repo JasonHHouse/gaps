@@ -13,10 +13,9 @@ package com.jasonhhouse.gaps.notifications;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.NotificationType;
+import com.jasonhhouse.gaps.properties.GotifyProperties;
 import com.jasonhhouse.gaps.service.IoService;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
@@ -24,28 +23,18 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GotifyNotificationAgent implements NotificationAgent {
+public class GotifyNotificationAgent extends AbstractNotificationAgent<GotifyProperties> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TelegramNotificationAgent.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GotifyNotificationAgent.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private final String address;
-    private final String token;
     private final OkHttpClient client;
-    private final IoService ioService;
-    private final List<NotificationType> notificationTypes;
 
     public GotifyNotificationAgent(IoService ioService) {
-        this.ioService = ioService;
-
-        notificationTypes = new ArrayList<>() {{
-            add(NotificationType.TEST_TMDB);
-            add(NotificationType.SCAN_PLEX_SERVER);
-            add(NotificationType.SCAN_PLEX_LIBRARIES);
-            add(NotificationType.RECOMMENDED_MOVIES);
-        }};
+        super(ioService);
 
         client = new OkHttpClient.Builder()
                 .connectTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
@@ -53,8 +42,6 @@ public class GotifyNotificationAgent implements NotificationAgent {
                 .writeTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
                 .build();
 
-        address = "http://192.168.1.8:8070"; //Get from IoService
-        token = "ARdm.yHtPQ9ainb"; //Get from IoService
     }
 
     @Override
@@ -68,16 +55,14 @@ public class GotifyNotificationAgent implements NotificationAgent {
     }
 
     @Override
-    public boolean isEnabled() {
-        //ToDo Check IoService
-        return true;
-    }
-
-    @Override
     public boolean sendMessage(NotificationType notificationType, String level, String title, String message) {
-        LOGGER.info("sendMessage( {}, {}, {} )", level, title, message);
+        LOGGER.info(SEND_MESSAGE, level, title, message);
 
-        HttpUrl url = HttpUrl.parse(String.format("%s/message?token=%s", address, token));
+        if (sendPrepMessage(notificationType)) {
+            return false;
+        }
+
+        HttpUrl url = HttpUrl.parse(String.format("%s/message?token=%s", t.getAddress(), t.getToken()));
 
         Gotify gotify = new Gotify(title, message);
 
@@ -85,12 +70,12 @@ public class GotifyNotificationAgent implements NotificationAgent {
         try {
             gotifyMessage = objectMapper.writeValueAsString(gotify);
         } catch (JsonProcessingException e) {
-            LOGGER.error("Failed to turn Gotify message into JSON", e);
+            LOGGER.error(String.format(FAILED_TO_PARSE_JSON, getName()), e);
             return false;
         }
 
         LOGGER.info("Gotify {}", gotifyMessage);
-        RequestBody body = RequestBody.create(gotifyMessage, MediaType.get("application/json"));
+        RequestBody body = RequestBody.create(gotifyMessage, MediaType.get(org.springframework.http.MediaType.APPLICATION_JSON_VALUE));
 
         Request request = new Request.Builder()
                 .url(url)
@@ -109,6 +94,17 @@ public class GotifyNotificationAgent implements NotificationAgent {
         } catch (IOException e) {
             LOGGER.error(String.format("Error with Gotify Url: %s", url), e);
             return false;
+        }
+    }
+
+    @Nullable
+    @Override
+    public GotifyProperties getNotificationProperties() {
+        try {
+            return ioService.readProperties().getGotifyProperties();
+        } catch (IOException e) {
+            LOGGER.error(String.format(FAILED_TO_READ_PROPERTIES, getName()), e);
+            return null;
         }
     }
 
