@@ -18,13 +18,6 @@ import org.jetbrains.annotations.NotNull;
 
 public final class PlexProperties {
 
-    public static final String MOVIE_DB_API_KEY = "movieDbApiKey";
-    public static final String VERSION_KEY = "version";
-    public static final String USERNAME_KEY = "username";
-    public static final String USERNAME_VALUE = "user";
-    public static final String PASSWORD = "password";
-    public static final String SCHEDULE = "schedule";
-
     private final Set<PlexServer> plexServers;
     private TelegramProperties telegramProperties;
     private PushBulletProperties pushBulletProperties;
@@ -39,7 +32,7 @@ public final class PlexProperties {
 
     public PlexProperties() {
         plexServers = new HashSet<>();
-        schedule = Schedule.DAILY_4AM;
+        schedule = Schedule.EVERY_MONDAY;
     }
 
     public SlackProperties getSlackProperties() {

@@ -10,19 +10,27 @@
 
 package com.jasonhhouse.gaps;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.jasonhhouse.gaps.json.ScheduleDeserializer;
+import com.jasonhhouse.gaps.json.ScheduleSerializer;
 import java.util.ArrayList;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
+@JsonSerialize(using = ScheduleSerializer.class)
+@JsonDeserialize(using = ScheduleDeserializer.class)
 public enum Schedule {
 
-    HOURLY("Hourly", "0 18 * * * *", 0),
+    HOURLY("Hourly", "0 18 * * * ?", 0),
     DAILY_4AM("Daily", "0 0 4 * * ?", 1),
-    EVERY_MONDAY("Weekly", "0 4 ? * MON *", 2),
-    EVERY_TWO_WEEKS("Bi-weekly", "0 4 1,15 * ? *", 3),
+    EVERY_MONDAY("Weekly", "0 0 4 * * MON", 2),
+    EVERY_TWO_WEEKS("Bi-weekly", "0 0 4 1,15 * ?", 3),
     EVERY_MONTH("Monthly", "0 0 4 1 * ?", 4);
+
+    public static final String ID = "id";
+    public static final String MESSAGE = "message";
 
     @NotNull
     private final String message;
@@ -42,7 +50,7 @@ public enum Schedule {
     public static Schedule getSchedule(@NotNull Integer id) {
         if (HOURLY.getId().equals(id)) {
             return HOURLY;
-        }else if (DAILY_4AM.getId().equals(id)) {
+        } else if (DAILY_4AM.getId().equals(id)) {
             return DAILY_4AM;
         } else if (EVERY_MONDAY.getId().equals(id)) {
             return EVERY_MONDAY;

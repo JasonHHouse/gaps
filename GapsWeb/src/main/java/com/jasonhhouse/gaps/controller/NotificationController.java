@@ -10,7 +10,10 @@
 
 package com.jasonhhouse.gaps.controller;
 
+import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Payload;
+import com.jasonhhouse.gaps.properties.TelegramProperties;
+import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.service.NotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -29,9 +33,38 @@ public class NotificationController {
     private static final Logger LOGGER = LoggerFactory.getLogger(NotificationController.class);
 
     private final NotificationService notificationService;
+    private final IoService ioService;
+    private final GapsService gapsService;
 
-    public NotificationController(NotificationService notificationService) {
+    public NotificationController(NotificationService notificationService, IoService ioService, GapsService gapsService) {
         this.notificationService = notificationService;
+        this.ioService = ioService;
+        this.gapsService = gapsService;
+    }
+
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            value = "/telegram")
+    @ResponseBody
+    public ResponseEntity<Payload> putTelegram(@RequestBody TelegramProperties telegramProperties) {
+        LOGGER.info("putTelegram( {} )", telegramProperties);
+
+        try {
+
+
+            boolean result = notificationService.test();
+
+            if (result) {
+                LOGGER.info("Notification Test All Succeeded");
+                return ResponseEntity.ok().body(Payload.NOTIFICATION_TEST_SUCCEEDED);
+            } else {
+                LOGGER.error("Notification Test All Failed");
+                return ResponseEntity.ok().body(Payload.NOTIFICATION_TEST_FAILED);
+            }
+        } catch (Exception e) {
+            LOGGER.error("Notification Test All Failed", e);
+            return ResponseEntity.ok().body(Payload.NOTIFICATION_TEST_FAILED.setExtras(e.getMessage()));
+        }
     }
 
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,

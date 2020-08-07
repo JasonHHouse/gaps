@@ -14,11 +14,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.Rss;
-import com.jasonhhouse.gaps.Schedule;
 import com.jasonhhouse.gaps.YamlConfig;
+import com.jasonhhouse.gaps.properties.PlexProperties;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,7 +25,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -35,10 +33,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -313,7 +309,7 @@ public class IoService {
             }
 
             LOGGER.info(fullFile.toString());
-            plexServers = objectMapper.readValue(fullFile.toString(), new TypeReference<List<PlexServer>>() {
+            plexServers = objectMapper.readValue(fullFile.toString(), new TypeReference<>() {
             });
             LOGGER.info(plexServers.toString());
         } catch (FileNotFoundException e) {
@@ -343,7 +339,7 @@ public class IoService {
                 fullFile.append(line);
             }
 
-            everyMovie = objectMapper.readValue(fullFile.toString(), new TypeReference<Set<Movie>>() {
+            everyMovie = objectMapper.readValue(fullFile.toString(), new TypeReference<>() {
             });
             LOGGER.info("everyMovie.size():{}", everyMovie.size());
         } catch (FileNotFoundException e) {
@@ -357,74 +353,61 @@ public class IoService {
 
     public void writeProperties(PlexProperties plexProperties) throws IOException {
         LOGGER.info("writeProperties( {} )", plexProperties);
-        Properties properties = new Properties();
 
-        if (StringUtils.isNotEmpty(plexProperties.getMovieDbApiKey())) {
-            properties.setProperty(PlexProperties.MOVIE_DB_API_KEY, plexProperties.getMovieDbApiKey());
-        }
-
-        properties.setProperty(PlexProperties.VERSION_KEY, yamlConfig.getVersion());
-        properties.setProperty(PlexProperties.USERNAME_KEY, PlexProperties.USERNAME_VALUE);
-        properties.setProperty(PlexProperties.SCHEDULE, plexProperties.getSchedule().getId().toString());
-
-        if (StringUtils.isNotEmpty(plexProperties.getPassword())) {
-            properties.setProperty(PlexProperties.PASSWORD, plexProperties.getPassword());
-        }
-
-        try (FileOutputStream fileOutputStream = new FileOutputStream(storageFolder + PROPERTIES)) {
-            try (OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8)) {
-                properties.store(outputStreamWriter, "");
+        final String properties = storageFolder + PROPERTIES;
+        File propertiesFile = new File(properties);
+        if (propertiesFile.exists()) {
+            boolean deleted = propertiesFile.delete();
+            if (!deleted) {
+                LOGGER.error("Can't delete existing file {}", propertiesFile.getName());
+                return;
             }
-        } catch (FileNotFoundException e) {
-            LOGGER.warn("{}{} does not exist", storageFolder, PROPERTIES);
-            throw e;
-        } catch (IOException e) {
-            LOGGER.warn("{}{} failed to parse", storageFolder, PROPERTIES);
-            throw e;
         }
 
+        try {
+            boolean created = propertiesFile.createNewFile();
+            if (!created) {
+                LOGGER.error("Can't create file {}", propertiesFile.getAbsolutePath());
+                return;
+            }
+        } catch (IOException e) {
+            LOGGER.error(String.format("Can't create file %s", propertiesFile.getAbsolutePath()), e);
+            return;
+        }
+
+        try (FileOutputStream outputStream = new FileOutputStream(propertiesFile)) {
+            byte[] output = objectMapper.writeValueAsBytes(plexProperties);
+            outputStream.write(output);
+        } catch (FileNotFoundException e) {
+            LOGGER.error(String.format("Can't find file %s", propertiesFile.getAbsolutePath()), e);
+        } catch (IOException e) {
+            LOGGER.error(String.format("Can't write to file %s", propertiesFile.getAbsolutePath()), e);
+        }
     }
 
     public PlexProperties readProperties() throws IOException {
         LOGGER.info("readProperties()");
+
         File file = new File(storageFolder + PROPERTIES);
-        PlexProperties plexProperties = new PlexProperties();
-
-        LOGGER.info("Can Read {}:{}", file, file.canRead());
-        LOGGER.info("Can Write {}:{}", file, file.canWrite());
-        LOGGER.info("Can Execute {}:{}", file, file.canWrite());
-
-        Properties properties = new Properties();
-        try (FileInputStream fileInputStream = new FileInputStream(file)) {
-            try (InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, StandardCharsets.UTF_8)) {
-                properties.load(inputStreamReader);
-
-                if (properties.containsKey(PlexProperties.MOVIE_DB_API_KEY)) {
-                    String movieDbApiKey = properties.getProperty(PlexProperties.MOVIE_DB_API_KEY);
-                    plexProperties.setMovieDbApiKey(movieDbApiKey);
-                }
-
-                if (properties.containsKey(PlexProperties.PASSWORD)) {
-                    String password = properties.getProperty(PlexProperties.PASSWORD);
-                    plexProperties.setPassword(password);
-                }
-
-                if (properties.containsKey(PlexProperties.SCHEDULE)) {
-                    String strSchedule = properties.getProperty(PlexProperties.SCHEDULE);
-                    Integer intSchedule = Integer.valueOf(strSchedule);
-                    Schedule schedule = Schedule.getSchedule(intSchedule);
-                    plexProperties.setSchedule(schedule);
-                }
-            }
-        } catch (FileNotFoundException e) {
-            LOGGER.warn("{} does not exist", file);
-            return plexProperties;
-        } catch (IOException e) {
-            LOGGER.warn("{} failed to parse", file);
-            return plexProperties;
+        if (!file.exists()) {
+            LOGGER.warn("Can't find json file '{}'. Most likely first run.", file);
+            return new PlexProperties();
         }
-        LOGGER.info("plexProperties: {}", plexProperties);
-        return plexProperties;
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+            StringBuilder fullFile = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                fullFile.append(line);
+            }
+
+            return objectMapper.readValue(fullFile.toString(), PlexProperties.class);
+        } catch (FileNotFoundException e) {
+            LOGGER.error(String.format("Can't find file %s", file), e);
+            return new PlexProperties();
+        } catch (IOException e) {
+            LOGGER.error(String.format("Can't read file %s", file), e);
+            return new PlexProperties();
+        }
     }
 
     public Payload nuke() {
