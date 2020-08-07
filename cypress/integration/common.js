@@ -33,6 +33,16 @@ export function searchPlexForMoviesFromSaw(cy) {
         .should('have.text', 'Showing 1 to 1 of 1 entries');
 }
 
+export function searchPlexForMoviesFromBestMovies(cy) {
+    cy.get('#dropdownMenuLink')
+        .click();
+
+    cy.get('[data-key="5"]')
+        .click();
+
+    cy.get('.card-body > .btn')
+        .click();
+}
 
 export function searchPlexForMoviesFromMovies(cy) {
     cy.get('#dropdownMenuLink')
