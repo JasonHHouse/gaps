@@ -10,8 +10,8 @@
 
 package com.jasonhhouse.gaps.controller;
 
-import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Payload;
+import com.jasonhhouse.gaps.properties.EmailProperties;
 import com.jasonhhouse.gaps.properties.GotifyProperties;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.properties.PushBulletProperties;
@@ -43,6 +43,38 @@ public class NotificationController {
     public NotificationController(NotificationService notificationService, IoService ioService) {
         this.notificationService = notificationService;
         this.ioService = ioService;
+    }
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            value = "/email")
+    @ResponseBody
+    public ResponseEntity<Payload> putEmail(@RequestBody EmailProperties emailProperties) {
+        LOGGER.info("putEmail( {} )", emailProperties);
+
+        try {
+            PlexProperties plexProperties = ioService.readProperties();
+            plexProperties.setEmailProperties(emailProperties);
+            ioService.writeProperties(plexProperties);
+            LOGGER.info("Email Properties Updated Successfully");
+            return ResponseEntity.ok().body(Payload.EMAIL_NOTIFICATION_UPDATE_SUCCEEDED);
+        } catch (Exception e) {
+            LOGGER.error(Payload.EMAIL_NOTIFICATION_UPDATE_FAILED.getReason(), e);
+            return ResponseEntity.ok().body(Payload.EMAIL_NOTIFICATION_UPDATE_FAILED.setExtras(e.getMessage()));
+        }
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+            value = "/email")
+    @ResponseBody
+    public ResponseEntity<Payload> getEmail() {
+        LOGGER.info("getEmail()");
+
+        try {
+            return ResponseEntity.ok().body(Payload.EMAIL_NOTIFICATION_FOUND.setExtras(ioService.readProperties().getEmailProperties()));
+        } catch (Exception e) {
+            LOGGER.error(Payload.EMAIL_NOTIFICATION_NOT_FOUND.getReason(), e);
+            return ResponseEntity.ok().body(Payload.EMAIL_NOTIFICATION_NOT_FOUND.setExtras(e.getMessage()));
+        }
     }
 
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,
@@ -78,7 +110,6 @@ public class NotificationController {
         }
     }
 
-
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             value = "/pushbullet")
@@ -91,10 +122,10 @@ public class NotificationController {
             plexProperties.setPushBulletProperties(pushBulletProperties);
             ioService.writeProperties(plexProperties);
             LOGGER.info("PushBullet Properties Updated Successfully");
-            return ResponseEntity.ok().body(Payload.PUSHBULLET_NOTIFICATION_UPDATE_SUCCEEDED);
+            return ResponseEntity.ok().body(Payload.PUSH_BULLET_NOTIFICATION_UPDATE_SUCCEEDED);
         } catch (Exception e) {
-            LOGGER.error(Payload.PUSHBULLET_NOTIFICATION_UPDATE_FAILED.getReason(), e);
-            return ResponseEntity.ok().body(Payload.PUSHBULLET_NOTIFICATION_UPDATE_FAILED.setExtras(e.getMessage()));
+            LOGGER.error(Payload.PUSH_BULLET_NOTIFICATION_UPDATE_FAILED.getReason(), e);
+            return ResponseEntity.ok().body(Payload.PUSH_BULLET_NOTIFICATION_UPDATE_FAILED.setExtras(e.getMessage()));
         }
     }
 
@@ -105,10 +136,10 @@ public class NotificationController {
         LOGGER.info("getPushBullet()");
 
         try {
-            return ResponseEntity.ok().body(Payload.PUSHBULLET_NOTIFICATION_FOUND.setExtras(ioService.readProperties().getPushBulletProperties()));
+            return ResponseEntity.ok().body(Payload.PUSH_BULLET_NOTIFICATION_FOUND.setExtras(ioService.readProperties().getPushBulletProperties()));
         } catch (Exception e) {
-            LOGGER.error(Payload.PUSHBULLET_NOTIFICATION_NOT_FOUND.getReason(), e);
-            return ResponseEntity.ok().body(Payload.PUSHBULLET_NOTIFICATION_NOT_FOUND.setExtras(e.getMessage()));
+            LOGGER.error(Payload.PUSH_BULLET_NOTIFICATION_NOT_FOUND.getReason(), e);
+            return ResponseEntity.ok().body(Payload.PUSH_BULLET_NOTIFICATION_NOT_FOUND.setExtras(e.getMessage()));
         }
     }
 

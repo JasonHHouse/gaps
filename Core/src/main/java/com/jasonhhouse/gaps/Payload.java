@@ -41,14 +41,18 @@ public enum Payload {
     SLACK_NOTIFICATION_UPDATE_FAILED(91, "Slack Notification Update Failed."),
     SLACK_NOTIFICATION_FOUND(92, "Slack Notification Found."),
     SLACK_NOTIFICATION_NOT_FOUND(93, "Slack Notification Not Found."),
-    PUSHBULLET_NOTIFICATION_UPDATE_SUCCEEDED(100, "PushBullet Notification Update Succeeded."),
-    PUSHBULLET_NOTIFICATION_UPDATE_FAILED(101, "PushBullet Notification Update Failed."),
-    PUSHBULLET_NOTIFICATION_FOUND(102, "PushBullet Notification Found."),
-    PUSHBULLET_NOTIFICATION_NOT_FOUND(103, "PushBullet Notification Not Found."),
+    PUSH_BULLET_NOTIFICATION_UPDATE_SUCCEEDED(100, "PushBullet Notification Update Succeeded."),
+    PUSH_BULLET_NOTIFICATION_UPDATE_FAILED(101, "PushBullet Notification Update Failed."),
+    PUSH_BULLET_NOTIFICATION_FOUND(102, "PushBullet Notification Found."),
+    PUSH_BULLET_NOTIFICATION_NOT_FOUND(103, "PushBullet Notification Not Found."),
     GOTIFY_NOTIFICATION_UPDATE_SUCCEEDED(110, "Gotify Notification Update Succeeded."),
     GOTIFY_NOTIFICATION_UPDATE_FAILED(111, "Gotify Notification Update Failed."),
     GOTIFY_NOTIFICATION_FOUND(112, "Gotify Notification Found."),
-    GOTIFY_NOTIFICATION_NOT_FOUND(113, "Gotify Notification Not Found.");
+    GOTIFY_NOTIFICATION_NOT_FOUND(113, "Gotify Notification Not Found."),
+    EMAIL_NOTIFICATION_UPDATE_SUCCEEDED(120, "Email Notification Update Succeeded."),
+    EMAIL_NOTIFICATION_UPDATE_FAILED(121, "Email Notification Update Failed."),
+    EMAIL_NOTIFICATION_FOUND(122, "Email Notification Found."),
+    EMAIL_NOTIFICATION_NOT_FOUND(123, "Email Notification Not Found.");
 
     private final int code;
     private final String reason;
