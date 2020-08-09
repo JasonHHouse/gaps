@@ -32,7 +32,23 @@ public enum Payload {
     SCHEDULE_UPDATED(62, "Search schedule updated successfully."),
     SCHEDULE_NOT_UPDATED(63, "Search schedule update failed."),
     NOTIFICATION_TEST_SUCCEEDED(70, "Notification test succeeded."),
-    NOTIFICATION_TEST_FAILED(711, "Notification test failed.");
+    NOTIFICATION_TEST_FAILED(71, "Notification test failed."),
+    TELEGRAM_NOTIFICATION_UPDATE_SUCCEEDED(80, "Telegram Notification Update Succeeded."),
+    TELEGRAM_NOTIFICATION_UPDATE_FAILED(81, "Telegram Notification Update Failed."),
+    TELEGRAM_NOTIFICATION_FOUND(82, "Telegram Notification Found."),
+    TELEGRAM_NOTIFICATION_NOT_FOUND(83, "Telegram Notification Not Found."),
+    SLACK_NOTIFICATION_UPDATE_SUCCEEDED(90, "Slack Notification Update Succeeded."),
+    SLACK_NOTIFICATION_UPDATE_FAILED(91, "Slack Notification Update Failed."),
+    SLACK_NOTIFICATION_FOUND(92, "Slack Notification Found."),
+    SLACK_NOTIFICATION_NOT_FOUND(93, "Slack Notification Not Found."),
+    PUSHBULLET_NOTIFICATION_UPDATE_SUCCEEDED(100, "PushBullet Notification Update Succeeded."),
+    PUSHBULLET_NOTIFICATION_UPDATE_FAILED(101, "PushBullet Notification Update Failed."),
+    PUSHBULLET_NOTIFICATION_FOUND(102, "PushBullet Notification Found."),
+    PUSHBULLET_NOTIFICATION_NOT_FOUND(103, "PushBullet Notification Not Found."),
+    GOTIFY_NOTIFICATION_UPDATE_SUCCEEDED(110, "Gotify Notification Update Succeeded."),
+    GOTIFY_NOTIFICATION_UPDATE_FAILED(111, "Gotify Notification Update Failed."),
+    GOTIFY_NOTIFICATION_FOUND(112, "Gotify Notification Found."),
+    GOTIFY_NOTIFICATION_NOT_FOUND(113, "Gotify Notification Not Found.");
 
     private final int code;
     private final String reason;

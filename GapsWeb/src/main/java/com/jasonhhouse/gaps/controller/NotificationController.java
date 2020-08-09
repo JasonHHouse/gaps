@@ -12,6 +12,10 @@ package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Payload;
+import com.jasonhhouse.gaps.properties.GotifyProperties;
+import com.jasonhhouse.gaps.properties.PlexProperties;
+import com.jasonhhouse.gaps.properties.PushBulletProperties;
+import com.jasonhhouse.gaps.properties.SlackProperties;
 import com.jasonhhouse.gaps.properties.TelegramProperties;
 import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.service.NotificationService;
@@ -20,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,36 +39,142 @@ public class NotificationController {
 
     private final NotificationService notificationService;
     private final IoService ioService;
-    private final GapsService gapsService;
 
-    public NotificationController(NotificationService notificationService, IoService ioService, GapsService gapsService) {
+    public NotificationController(NotificationService notificationService, IoService ioService) {
         this.notificationService = notificationService;
         this.ioService = ioService;
-        this.gapsService = gapsService;
     }
 
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            value = "/gotify")
+    @ResponseBody
+    public ResponseEntity<Payload> putGotify(@RequestBody GotifyProperties gotifyProperties) {
+        LOGGER.info("putGotify( {} )", gotifyProperties);
+
+        try {
+            PlexProperties plexProperties = ioService.readProperties();
+            plexProperties.setGotifyProperties(gotifyProperties);
+            ioService.writeProperties(plexProperties);
+            LOGGER.info("Gotify Properties Updated Successfully");
+            return ResponseEntity.ok().body(Payload.GOTIFY_NOTIFICATION_UPDATE_SUCCEEDED);
+        } catch (Exception e) {
+            LOGGER.error(Payload.GOTIFY_NOTIFICATION_UPDATE_FAILED.getReason(), e);
+            return ResponseEntity.ok().body(Payload.GOTIFY_NOTIFICATION_UPDATE_FAILED.setExtras(e.getMessage()));
+        }
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+            value = "/gotify")
+    @ResponseBody
+    public ResponseEntity<Payload> getGotify() {
+        LOGGER.info("getGotify()");
+
+        try {
+            return ResponseEntity.ok().body(Payload.GOTIFY_NOTIFICATION_FOUND.setExtras(ioService.readProperties().getGotifyProperties()));
+        } catch (Exception e) {
+            LOGGER.error(Payload.GOTIFY_NOTIFICATION_NOT_FOUND.getReason(), e);
+            return ResponseEntity.ok().body(Payload.GOTIFY_NOTIFICATION_NOT_FOUND.setExtras(e.getMessage()));
+        }
+    }
+
+
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            value = "/pushbullet")
+    @ResponseBody
+    public ResponseEntity<Payload> putPushBullet(@RequestBody PushBulletProperties pushBulletProperties) {
+        LOGGER.info("putPushBullet( {} )", pushBulletProperties);
+
+        try {
+            PlexProperties plexProperties = ioService.readProperties();
+            plexProperties.setPushBulletProperties(pushBulletProperties);
+            ioService.writeProperties(plexProperties);
+            LOGGER.info("PushBullet Properties Updated Successfully");
+            return ResponseEntity.ok().body(Payload.PUSHBULLET_NOTIFICATION_UPDATE_SUCCEEDED);
+        } catch (Exception e) {
+            LOGGER.error(Payload.PUSHBULLET_NOTIFICATION_UPDATE_FAILED.getReason(), e);
+            return ResponseEntity.ok().body(Payload.PUSHBULLET_NOTIFICATION_UPDATE_FAILED.setExtras(e.getMessage()));
+        }
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+            value = "/pushbullet")
+    @ResponseBody
+    public ResponseEntity<Payload> getPushBullet() {
+        LOGGER.info("getPushBullet()");
+
+        try {
+            return ResponseEntity.ok().body(Payload.PUSHBULLET_NOTIFICATION_FOUND.setExtras(ioService.readProperties().getPushBulletProperties()));
+        } catch (Exception e) {
+            LOGGER.error(Payload.PUSHBULLET_NOTIFICATION_NOT_FOUND.getReason(), e);
+            return ResponseEntity.ok().body(Payload.PUSHBULLET_NOTIFICATION_NOT_FOUND.setExtras(e.getMessage()));
+        }
+    }
+
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            value = "/slack")
+    @ResponseBody
+    public ResponseEntity<Payload> putSlack(@RequestBody SlackProperties slackProperties) {
+        LOGGER.info("putSlack( {} )", slackProperties);
+
+        try {
+            PlexProperties plexProperties = ioService.readProperties();
+            plexProperties.setSlackProperties(slackProperties);
+            ioService.writeProperties(plexProperties);
+            LOGGER.info("Slack Properties Updated Successfully");
+            return ResponseEntity.ok().body(Payload.SLACK_NOTIFICATION_UPDATE_SUCCEEDED);
+        } catch (Exception e) {
+            LOGGER.error(Payload.SLACK_NOTIFICATION_UPDATE_FAILED.getReason(), e);
+            return ResponseEntity.ok().body(Payload.SLACK_NOTIFICATION_UPDATE_FAILED.setExtras(e.getMessage()));
+        }
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+            value = "/slack")
+    @ResponseBody
+    public ResponseEntity<Payload> getSlack() {
+        LOGGER.info("getSlack()");
+
+        try {
+            return ResponseEntity.ok().body(Payload.SLACK_NOTIFICATION_FOUND.setExtras(ioService.readProperties().getSlackProperties()));
+        } catch (Exception e) {
+            LOGGER.error(Payload.SLACK_NOTIFICATION_NOT_FOUND.getReason(), e);
+            return ResponseEntity.ok().body(Payload.SLACK_NOTIFICATION_NOT_FOUND.setExtras(e.getMessage()));
+        }
+    }
+
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             value = "/telegram")
     @ResponseBody
     public ResponseEntity<Payload> putTelegram(@RequestBody TelegramProperties telegramProperties) {
         LOGGER.info("putTelegram( {} )", telegramProperties);
 
         try {
-
-
-            boolean result = notificationService.test();
-
-            if (result) {
-                LOGGER.info("Notification Test All Succeeded");
-                return ResponseEntity.ok().body(Payload.NOTIFICATION_TEST_SUCCEEDED);
-            } else {
-                LOGGER.error("Notification Test All Failed");
-                return ResponseEntity.ok().body(Payload.NOTIFICATION_TEST_FAILED);
-            }
+            PlexProperties plexProperties = ioService.readProperties();
+            plexProperties.setTelegramProperties(telegramProperties);
+            ioService.writeProperties(plexProperties);
+            LOGGER.info("Telegram Properties Updated Successfully");
+            return ResponseEntity.ok().body(Payload.TELEGRAM_NOTIFICATION_UPDATE_SUCCEEDED);
         } catch (Exception e) {
-            LOGGER.error("Notification Test All Failed", e);
-            return ResponseEntity.ok().body(Payload.NOTIFICATION_TEST_FAILED.setExtras(e.getMessage()));
+            LOGGER.error(Payload.TELEGRAM_NOTIFICATION_UPDATE_FAILED.getReason(), e);
+            return ResponseEntity.ok().body(Payload.TELEGRAM_NOTIFICATION_UPDATE_FAILED.setExtras(e.getMessage()));
+        }
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+            value = "/telegram")
+    @ResponseBody
+    public ResponseEntity<Payload> getTelegram() {
+        LOGGER.info("getTelegram()");
+
+        try {
+            return ResponseEntity.ok().body(Payload.TELEGRAM_NOTIFICATION_FOUND.setExtras(ioService.readProperties().getTelegramProperties()));
+        } catch (Exception e) {
+            LOGGER.error(Payload.TELEGRAM_NOTIFICATION_NOT_FOUND.getReason(), e);
+            return ResponseEntity.ok().body(Payload.TELEGRAM_NOTIFICATION_NOT_FOUND.setExtras(e.getMessage()));
         }
     }
 

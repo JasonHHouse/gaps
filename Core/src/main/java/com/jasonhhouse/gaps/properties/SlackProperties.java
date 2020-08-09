@@ -10,14 +10,22 @@
 
 package com.jasonhhouse.gaps.properties;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jasonhhouse.gaps.NotificationType;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public class SlackProperties extends AbstractNotificationProperties {
+
+    @NotNull
     private final String webHookUrl;
 
-    public SlackProperties(Boolean isEnabled, List<NotificationType> notificationTypes, String webHookUrl) {
-        super(isEnabled, notificationTypes);
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    public SlackProperties(@JsonProperty(value = "enabled", required = true) @NotNull Boolean enabled,
+                           @JsonProperty(value = "notificationTypes", required = true) @NotNull List<NotificationType> notificationTypes,
+                           @JsonProperty(value = "webHookUrl", required = true) @NotNull String webHookUrl) {
+        super(enabled, notificationTypes);
         this.webHookUrl = webHookUrl;
     }
 
@@ -25,11 +33,12 @@ public class SlackProperties extends AbstractNotificationProperties {
     public String toString() {
         return "SlackProperties{" +
                 "webHookUrl='" + webHookUrl + '\'' +
-                ", isEnabled=" + isEnabled +
+                ", enabled=" + enabled +
                 ", notificationTypes=" + notificationTypes +
                 '}';
     }
 
+    @NotNull
     public String getWebHookUrl() {
         return webHookUrl;
     }

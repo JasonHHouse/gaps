@@ -12,11 +12,14 @@ package com.jasonhhouse.gaps.properties;
 
 import com.jasonhhouse.gaps.NotificationType;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public interface NotificationProperties {
 
+    @NotNull
     Boolean getEnabled();
 
+    @NotNull
     List<NotificationType> getNotificationTypes();
 
 }

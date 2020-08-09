@@ -10,24 +10,36 @@
 
 package com.jasonhhouse.gaps.properties;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jasonhhouse.gaps.NotificationType;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public class GotifyProperties extends AbstractNotificationProperties {
 
+    @NotNull
     private final String address;
+
+    @NotNull
     private final String token;
 
-    public GotifyProperties(Boolean isEnabled, List<NotificationType> notificationTypes, String address, String token) {
-        super(isEnabled, notificationTypes);
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    public GotifyProperties(@JsonProperty(value = "enabled", required = true) @NotNull Boolean enabled,
+                            @JsonProperty(value = "notificationTypes", required = true) @NotNull List<NotificationType> notificationTypes,
+                            @JsonProperty(value = "address", required = true) @NotNull String address,
+                            @JsonProperty(value = "token", required = true) @NotNull String token) {
+        super(enabled, notificationTypes);
         this.address = address;
         this.token = token;
     }
 
+    @NotNull
     public String getAddress() {
         return address;
     }
 
+    @NotNull
     public String getToken() {
         return token;
     }
@@ -37,7 +49,7 @@ public class GotifyProperties extends AbstractNotificationProperties {
         return "GotifyProperties{" +
                 "address='" + address + '\'' +
                 ", token='" + token + '\'' +
-                ", isEnabled=" + isEnabled +
+                ", enabled=" + enabled +
                 ", notificationTypes=" + notificationTypes +
                 '}';
     }

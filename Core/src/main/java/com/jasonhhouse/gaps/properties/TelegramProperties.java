@@ -10,24 +10,35 @@
 
 package com.jasonhhouse.gaps.properties;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jasonhhouse.gaps.NotificationType;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public final class TelegramProperties extends AbstractNotificationProperties {
 
+    @NotNull
     private final String botId;
+    @NotNull
     private final String chatId;
 
-    public TelegramProperties(String botId, String chatId, Boolean isEnabled, List<NotificationType> notificationTypes) {
-        super(isEnabled, notificationTypes);
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    public TelegramProperties(@JsonProperty(value = "enabled", required = true) @NotNull Boolean enabled,
+                              @JsonProperty(value = "notificationTypes", required = true) @NotNull List<NotificationType> notificationTypes,
+                              @JsonProperty(value = "botId", required = true) @NotNull String botId,
+                              @JsonProperty(value = "chatId", required = true) @NotNull String chatId) {
+        super(enabled, notificationTypes);
         this.botId = botId;
         this.chatId = chatId;
     }
 
+    @NotNull
     public String getBotId() {
         return botId;
     }
 
+    @NotNull
     public String getChatId() {
         return chatId;
     }
@@ -37,7 +48,7 @@ public final class TelegramProperties extends AbstractNotificationProperties {
         return "TelegramProperties{" +
                 "botId='" + botId + '\'' +
                 ", chatId='" + chatId + '\'' +
-                ", isEnabled='" + isEnabled + '\'' +
+                ", enabled='" + enabled + '\'' +
                 ", notificationTypes=" + notificationTypes +
                 '}';
     }

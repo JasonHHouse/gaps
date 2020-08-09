@@ -10,23 +10,35 @@
 
 package com.jasonhhouse.gaps.properties;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jasonhhouse.gaps.NotificationType;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public final class PushBulletProperties extends AbstractNotificationProperties {
+    @NotNull
     private final String channel_tag;
+
+    @NotNull
     private final String accessToken;
 
-    public PushBulletProperties(Boolean isEnabled, List<NotificationType> notificationTypes, String channel_tag, String accessToken) {
-        super(isEnabled, notificationTypes);
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    public PushBulletProperties(@JsonProperty(value = "enabled", required = true) @NotNull Boolean enabled,
+                                @JsonProperty(value = "notificationTypes", required = true) @NotNull List<NotificationType> notificationTypes,
+                                @JsonProperty(value = "channel_tag", required = true) @NotNull String channel_tag,
+                                @JsonProperty(value = "accessToken", required = true) @NotNull String accessToken) {
+        super(enabled, notificationTypes);
         this.channel_tag = channel_tag;
         this.accessToken = accessToken;
     }
 
+    @NotNull
     public String getChannel_tag() {
         return channel_tag;
     }
 
+    @NotNull
     public String getAccessToken() {
         return accessToken;
     }
@@ -36,7 +48,7 @@ public final class PushBulletProperties extends AbstractNotificationProperties {
         return "PushBulletProperties{" +
                 "channel_tag='" + channel_tag + '\'' +
                 ", accessToken='" + accessToken + '\'' +
-                ", isEnabled=" + isEnabled +
+                ", enabled=" + enabled +
                 ", notificationTypes=" + notificationTypes +
                 '}';
     }

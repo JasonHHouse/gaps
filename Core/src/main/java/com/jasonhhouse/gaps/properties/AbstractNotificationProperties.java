@@ -12,23 +12,29 @@ package com.jasonhhouse.gaps.properties;
 
 import com.jasonhhouse.gaps.NotificationType;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractNotificationProperties implements NotificationProperties {
 
-    protected final Boolean isEnabled;
+    @NotNull
+    protected final Boolean enabled;
+
+    @NotNull
     protected final List<NotificationType> notificationTypes;
 
-    public AbstractNotificationProperties(Boolean isEnabled, List<NotificationType> notificationTypes) {
-        this.isEnabled = isEnabled;
+    public AbstractNotificationProperties(@NotNull Boolean enabled, @NotNull List<NotificationType> notificationTypes) {
+        this.enabled = enabled;
         this.notificationTypes = notificationTypes;
     }
 
     @Override
+    @NotNull
     public Boolean getEnabled() {
-        return isEnabled;
+        return enabled;
     }
 
     @Override
+    @NotNull
     public List<NotificationType> getNotificationTypes() {
         return notificationTypes;
     }
@@ -36,7 +42,7 @@ public abstract class AbstractNotificationProperties implements NotificationProp
     @Override
     public String toString() {
         return "AbstractNotificationProperties{" +
-                "isEnabled=" + isEnabled +
+                "enabled=" + enabled +
                 ", notificationTypes=" + notificationTypes +
                 '}';
     }
