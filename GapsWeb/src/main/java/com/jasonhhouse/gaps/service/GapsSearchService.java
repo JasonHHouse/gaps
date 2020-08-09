@@ -186,7 +186,7 @@ public class GapsSearchService implements GapsSearch {
 
     @Override
     public boolean isSearching() {
-        LOGGER.info("isSearching()");
+        LOGGER.info("isSearching() {}", !cancelSearch.get());
         return !cancelSearch.get();
     }
 

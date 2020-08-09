@@ -42,6 +42,9 @@ export function searchPlexForMoviesFromBestMovies(cy) {
 
     cy.get('.card-body > .btn')
         .click();
+
+    //Wait for timeout from clearing data
+    cy.wait(5000);
 }
 
 export function searchPlexForMoviesFromMovies(cy) {

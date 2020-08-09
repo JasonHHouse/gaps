@@ -1,4 +1,4 @@
-import {redLibraryBefore, searchPlexForMoviesFromBestMovies, searchPlexForMoviesFromMovies, searchPlexForMoviesFromSaw, spyOnAddEventListener} from "../common";
+import {redLibraryBefore, searchPlexForMoviesFromBestMovies, spyOnAddEventListener} from "../common";
 
 describe('Search for Duplicates', function () {
     before(redLibraryBefore);
@@ -15,7 +15,7 @@ describe('Search for Duplicates', function () {
         cy.get('.card-body > .btn')
             .click();
 
-        cy.wait(40000);
+        waitUtilSearchingIsDone();
 
         let ownedMovies;
         cy.request('/plex/movies/721fee4db63634b88ed699f8b0a16d7682a7a0d9/5')
@@ -31,7 +31,7 @@ describe('Search for Duplicates', function () {
     });
 
     it('Check Saw and Recommended for Duplicates', () => {
-        cy.wait(40000);
+        waitUtilSearchingIsDone();
 
         let ownedMovies;
         cy.request('/plex/movies/721fee4db63634b88ed699f8b0a16d7682a7a0d9/2')
@@ -47,13 +47,12 @@ describe('Search for Duplicates', function () {
     });
 
     it('Check Movies and Recommended for Duplicates', () => {
-        cy.wait(40000);
+        waitUtilSearchingIsDone();
 
         let ownedMovies;
         cy.request('/plex/movies/721fee4db63634b88ed699f8b0a16d7682a7a0d9/1')
             .then((resp) => {
                 ownedMovies = resp.body;
-                cy.log("ownedMovies.length: " + ownedMovies.length);
             }).request('/recommended/721fee4db63634b88ed699f8b0a16d7682a7a0d9/1')
             .then((resp) => {
                 const recommendedMovies = resp.body.extras;
@@ -65,28 +64,26 @@ describe('Search for Duplicates', function () {
 });
 
 function checkForDuplicates(ownedMovies, recommendedMovies) {
-    for (let recommendedMovie in recommendedMovies) {
-        for (let ownedMovie in ownedMovies) {
-            expect(recommendedMovies.tvdbId).to.not.eq(ownedMovie.tvdbId);
-            expect(recommendedMovies.imdbId).to.not.eq(ownedMovie.imdbId);
+    cy.log("recommendedMovies.length: " + recommendedMovies.length);
+    cy.log("ownedMovies.length: " + ownedMovies.length);
+
+    for (const recommendedMovie in recommendedMovies) {
+        for (const ownedMovie in ownedMovies) {
+            if(recommendedMovie.tvdbId === ownedMovie.tvdbId
+                || recommendedMovie.imdbId === ownedMovie.imdbId) {
+                cy.log("Recommended Movie: " + recommendedMovie);
+                cy.log("Owned Movie: " + ownedMovie);
+            }
+
+            if((recommendedMovie.tvdbId !== undefined && ownedMovie.tvdbId !== undefined)) {
+                expect(recommendedMovie.tvdbId).to.not.eq(ownedMovie.tvdbId);
+            }
+
+            if((recommendedMovie.imdbId !== undefined && ownedMovie.imdbId !== undefined)) {
+                expect(recommendedMovie.imdbId).to.not.eq(ownedMovie.imdbId);
+            }
         }
     }
-}
-
-function searchSawLibrary(cy) {
-    cy.visit('/libraries', {onBeforeLoad: spyOnAddEventListener});
-
-    searchPlexForMoviesFromSaw(cy);
-
-    cy.visit('/recommended', {onBeforeLoad: spyOnAddEventListener});
-}
-
-function searchtMovieLibrary(cy) {
-    cy.visit('/libraries', {onBeforeLoad: spyOnAddEventListener});
-
-    searchPlexForMoviesFromMovies(cy);
-
-    cy.visit('/recommended', {onBeforeLoad: spyOnAddEventListener});
 }
 
 function searchBestMovieLibrary(cy) {
@@ -95,4 +92,16 @@ function searchBestMovieLibrary(cy) {
     searchPlexForMoviesFromBestMovies(cy);
 
     cy.visit('/recommended', {onBeforeLoad: spyOnAddEventListener});
+}
+
+function waitUtilSearchingIsDone() {
+    cy.request('/isSearching')
+        .then((resp) => {
+
+            if (resp.status === 200 && resp.body.isSearching === false) {
+                return;
+            }
+            // else recurse
+            waitUtilSearchingIsDone()
+        });
 }

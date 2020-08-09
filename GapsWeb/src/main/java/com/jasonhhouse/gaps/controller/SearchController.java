@@ -14,8 +14,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -50,5 +53,26 @@ public class SearchController {
         LOGGER.warn("Deprecated Method");
 
         throw new IllegalStateException("Need to pass in machineIdentifier and plex key");
+    }
+
+    @GetMapping(value = "/isSearching",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<IsSearching> getIsSearching() {
+        LOGGER.info("getIsSearching()");
+
+        IsSearching isSearching = new IsSearching(gapsSearch.isSearching());
+        return ResponseEntity.ok().body(isSearching);
+    }
+
+    public static class IsSearching {
+        private final Boolean isSearching;
+
+        public IsSearching(Boolean isSearching) {
+            this.isSearching = isSearching;
+        }
+
+        public Boolean getIsSearching() {
+            return isSearching;
+        }
     }
 }
