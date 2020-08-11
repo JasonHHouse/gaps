@@ -51,9 +51,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        LOGGER.info("Name: {}",  myConfig.getName());
+        LOGGER.info("Name: {}", myConfig.getName());
         LOGGER.info("Description: {}", myConfig.getDescription());
-        LOGGER.info("Version: {}" , myConfig.getVersion());
+        LOGGER.info("Version: {}", myConfig.getVersion());
         LOGGER.info("LoginEnabled: {}", myConfig.getLoginEnabled());
 
         if (myConfig.getLoginEnabled() && myConfig.getSslEnabled()) {

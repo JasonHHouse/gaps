@@ -27,6 +27,11 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.jasonhhouse.gaps.notifications.NotificationStatus.FAILED_TO_PARSE_JSON;
+import static com.jasonhhouse.gaps.notifications.NotificationStatus.FAILED_TO_READ_PROPERTIES;
+import static com.jasonhhouse.gaps.notifications.NotificationStatus.SEND_MESSAGE;
+import static com.jasonhhouse.gaps.notifications.NotificationStatus.TIMEOUT;
+
 public class GotifyNotificationAgent extends AbstractNotificationAgent<GotifyProperties> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GotifyNotificationAgent.class);
@@ -87,7 +92,7 @@ public class GotifyNotificationAgent extends AbstractNotificationAgent<GotifyPro
                 LOGGER.info("Gotify message sent via {}", url);
                 return true;
             } else {
-                LOGGER.error("Error with Gotify Url: {} Body returned {}", url, response.body().toString());
+                LOGGER.error("Error with Gotify Url: {} Body returned {}", url, response.body());
                 return false;
             }
 

@@ -43,6 +43,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
@@ -112,8 +113,25 @@ public class GapsSearchService implements GapsSearch {
     public void run(String machineIdentifier, Integer key) {
         LOGGER.info("run( {}, {} )", machineIdentifier, key);
 
-        PlexServer plexServer = gapsService.getPlexProperties().getPlexServers().stream().filter(tempPlexServer -> tempPlexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().get();
-        PlexLibrary plexLibrary = plexServer.getPlexLibraries().stream().filter(tempPlexLibrary -> tempPlexLibrary.getKey().equals(key)).findAny().get();
+        Optional<PlexServer> optionalPlexServer = gapsService.getPlexProperties().getPlexServers().stream().filter(tempPlexServer -> tempPlexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst();
+        PlexServer plexServer;
+        if (optionalPlexServer.isPresent()) {
+            plexServer = optionalPlexServer.get();
+        } else {
+            LOGGER.error("Plex server not found with machineIdentifier {} and key {}", machineIdentifier, key);
+            return;
+        }
+
+        Optional<PlexLibrary> optionalPlexLibrary = plexServer.getPlexLibraries().stream().filter(tempPlexLibrary -> tempPlexLibrary.getKey().equals(key)).findAny();
+
+        PlexLibrary plexLibrary;
+        if (optionalPlexLibrary.isPresent()) {
+            plexLibrary = optionalPlexLibrary.get();
+        } else {
+            LOGGER.error("Plex library not found with machineIdentifier {} and key {}", machineIdentifier, key);
+            return;
+        }
+
         notificationService.recommendedMoviesSearchStarted(plexServer, plexLibrary);
 
         if (StringUtils.isEmpty(gapsService.getPlexProperties().getMovieDbApiKey())) {

@@ -95,7 +95,7 @@ function searchBestMovieLibrary(cy) {
 }
 
 function waitUtilSearchingIsDone() {
-    cy.request('/isSearching')
+    cy.request('/searchStatus')
         .then((resp) => {
 
             if (resp.status === 200 && resp.body.isSearching === false) {

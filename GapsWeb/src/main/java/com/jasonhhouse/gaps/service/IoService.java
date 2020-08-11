@@ -54,11 +54,8 @@ public class IoService {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private final String storageFolder;
 
-    private final YamlConfig yamlConfig;
-
     @Autowired
     public IoService(YamlConfig yamlConfig) {
-        this.yamlConfig = yamlConfig;
         //Look for properties file for file locations
         String os = System.getProperty("os.name");
         if (os.contains("Windows")) {
@@ -357,9 +354,10 @@ public class IoService {
         final String properties = storageFolder + PROPERTIES;
         File propertiesFile = new File(properties);
         if (propertiesFile.exists()) {
-            boolean deleted = propertiesFile.delete();
-            if (!deleted) {
-                LOGGER.error("Can't delete existing file {}", propertiesFile.getName());
+            try {
+                Files.delete(propertiesFile.toPath());
+            } catch (IOException e) {
+                LOGGER.error(String.format("Can't delete existing file %s", propertiesFile.getName()), e);
                 return;
             }
         }

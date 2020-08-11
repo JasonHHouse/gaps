@@ -9,6 +9,7 @@
  */
 package com.jasonhhouse.gaps.notifications;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.NotificationType;
@@ -26,6 +27,11 @@ import okhttp3.Response;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static com.jasonhhouse.gaps.notifications.NotificationStatus.FAILED_TO_PARSE_JSON;
+import static com.jasonhhouse.gaps.notifications.NotificationStatus.FAILED_TO_READ_PROPERTIES;
+import static com.jasonhhouse.gaps.notifications.NotificationStatus.SEND_MESSAGE;
+import static com.jasonhhouse.gaps.notifications.NotificationStatus.TIMEOUT;
 
 public class PushBulletNotificationAgent extends AbstractNotificationAgent<PushBulletProperties> {
 
@@ -58,7 +64,7 @@ public class PushBulletNotificationAgent extends AbstractNotificationAgent<PushB
     public boolean sendMessage(NotificationType notificationType, String level, String title, String message) {
         LOGGER.info(SEND_MESSAGE, level, title, message);
 
-        if(sendPrepMessage(notificationType)) {
+        if (sendPrepMessage(notificationType)) {
             return false;
         }
 
@@ -74,10 +80,7 @@ public class PushBulletNotificationAgent extends AbstractNotificationAgent<PushB
                 .add("Access-Token", t.getAccessToken())
                 .build();
 
-        PushBullet pushBullet = new PushBullet();
-        pushBullet.setBody(message);
-        pushBullet.setTitle(title);
-        pushBullet.setChannel_tag(t.getChannel_tag());
+        PushBullet pushBullet = new PushBullet(t.getChannelTag(), title, message);
 
         String pushBulletMessage = "";
         try {
@@ -101,7 +104,7 @@ public class PushBulletNotificationAgent extends AbstractNotificationAgent<PushB
                 LOGGER.info("PushBullet message sent via {}", url);
                 return true;
             } else {
-                LOGGER.error("Error with PushBullet Url: {} Body returned {}", url, response.body().toString());
+                LOGGER.error("Error with PushBullet Url: {} Body returned {}", url, response.body());
                 return false;
             }
 
@@ -124,20 +127,20 @@ public class PushBulletNotificationAgent extends AbstractNotificationAgent<PushB
 
     public static final class PushBullet {
         private final String type;
-        private String channel_tag;
-        private String title;
-        private String body;
+        private final String channelTag;
+        private final String title;
+        private final String body;
 
-        public PushBullet() {
+        public PushBullet(String channelTag, String title, String body) {
+            this.channelTag = channelTag;
+            this.title = title;
+            this.body = body;
             type = "note";
         }
 
-        public String getChannel_tag() {
-            return channel_tag;
-        }
-
-        public void setChannel_tag(String channel_tag) {
-            this.channel_tag = channel_tag;
+        @JsonProperty("channel_tag")
+        public String getChannelTag() {
+            return channelTag;
         }
 
         public String getType() {
@@ -148,16 +151,8 @@ public class PushBulletNotificationAgent extends AbstractNotificationAgent<PushB
             return title;
         }
 
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
         public String getBody() {
             return body;
-        }
-
-        public void setBody(String body) {
-            this.body = body;
         }
     }
 }

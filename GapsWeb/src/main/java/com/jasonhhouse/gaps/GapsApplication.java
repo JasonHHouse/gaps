@@ -17,7 +17,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.scheduling.TaskScheduler;
@@ -64,17 +67,17 @@ public class GapsApplication {
         return messageSource;
     }
 
+    @Bean
+    @Qualifier("Gaps")
+    public TaskScheduler taskScheduler() {
+        return new ThreadPoolTaskScheduler();
+    }
+
     @Configuration
     static class MyConfig implements WebMvcConfigurer {
         @Override
         public void addFormatters(FormatterRegistry registry) {
             registry.addFormatter(new PlexPropertiesFormatter());
         }
-    }
-
-    @Bean
-    @Qualifier("Gaps")
-    public TaskScheduler taskScheduler() {
-        return new ThreadPoolTaskScheduler();
     }
 }

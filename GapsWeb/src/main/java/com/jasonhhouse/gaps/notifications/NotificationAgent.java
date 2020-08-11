@@ -16,16 +16,6 @@ import org.jetbrains.annotations.Nullable;
 
 public interface NotificationAgent<T extends NotificationProperties> {
 
-    String FAILED_TO_READ_PROPERTIES = "Failed to read %s from Properties file.";
-
-    String AGENT_NOT_ENABLED_FOR_NOTIFICATION_TYPE = "{} not enabled for notification type {}";
-
-    String FAILED_TO_PARSE_JSON = "Failed to turn %s message into JSON";
-
-    String SEND_MESSAGE = "sendMessage( {}, {}, {} )";
-
-    long TIMEOUT = 2500;
-
     int getId();
 
     String getName();

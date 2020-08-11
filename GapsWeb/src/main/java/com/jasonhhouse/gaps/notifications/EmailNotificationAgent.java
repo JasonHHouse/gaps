@@ -22,6 +22,9 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
+import static com.jasonhhouse.gaps.notifications.NotificationStatus.FAILED_TO_READ_PROPERTIES;
+import static com.jasonhhouse.gaps.notifications.NotificationStatus.SEND_MESSAGE;
+
 public class EmailNotificationAgent extends AbstractNotificationAgent<EmailProperties> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailNotificationAgent.class);
@@ -44,7 +47,7 @@ public class EmailNotificationAgent extends AbstractNotificationAgent<EmailPrope
     public boolean sendMessage(NotificationType notificationType, String level, String title, String message) {
         LOGGER.info(SEND_MESSAGE, level, title, message);
 
-        if(sendPrepMessage(notificationType)) {
+        if (sendPrepMessage(notificationType)) {
             return false;
         }
 

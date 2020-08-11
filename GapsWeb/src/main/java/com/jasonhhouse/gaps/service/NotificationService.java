@@ -13,7 +13,7 @@ import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.notifications.NotificationAgent;
-import com.jasonhhouse.gaps.notifications.TelegramNotificationAgent;
+import com.jasonhhouse.gaps.properties.NotificationProperties;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,17 +22,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class NotificationService implements Notification {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TelegramNotificationAgent.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NotificationService.class);
 
-    private final List<NotificationAgent> notificationAgents;
+    private final List<NotificationAgent<? extends NotificationProperties>> notificationAgents;
 
-    public NotificationService(List<NotificationAgent> notificationAgents) {
+    public NotificationService(List<NotificationAgent<? extends NotificationProperties>> notificationAgents) {
         this.notificationAgents = notificationAgents;
     }
 
     @Override
     public void plexServerConnectFailed(PlexServer plexServer, String error) {
-        for (NotificationAgent notificationAgent : notificationAgents) {
+        for (NotificationAgent<? extends NotificationProperties> notificationAgent : notificationAgents) {
             if (notificationAgent.isEnabled()) {
                 try {
                     notificationAgent.sendMessage(NotificationType.TEST_PLEX_SERVER, "ERROR", "Gaps Search", String.format("Connection to Plex Server %s Failed. %s", plexServer.getFriendlyName(), error));
@@ -45,7 +45,7 @@ public class NotificationService implements Notification {
 
     @Override
     public void plexServerConnectSuccessful(PlexServer plexServer) {
-        for (NotificationAgent notificationAgent : notificationAgents) {
+        for (NotificationAgent<? extends NotificationProperties> notificationAgent : notificationAgents) {
             if (notificationAgent.isEnabled()) {
                 try {
                     notificationAgent.sendMessage(NotificationType.TEST_PLEX_SERVER, "INFO", "Gaps Search", String.format("Connection to Plex Server %s Successful", plexServer.getFriendlyName()));
@@ -58,7 +58,7 @@ public class NotificationService implements Notification {
 
     @Override
     public void plexLibraryScanFailed(PlexServer plexServer, PlexLibrary plexLibrary, String error) {
-        for (NotificationAgent notificationAgent : notificationAgents) {
+        for (NotificationAgent<? extends NotificationProperties> notificationAgent : notificationAgents) {
             if (notificationAgent.isEnabled()) {
                 try {
                     notificationAgent.sendMessage(NotificationType.SCAN_PLEX_SERVER, "INFO", "Gaps Search", String.format("Scanning Plex Server %s in %s Library Failed. %s", plexServer.getFriendlyName(), plexLibrary.getTitle(), error));
@@ -71,7 +71,7 @@ public class NotificationService implements Notification {
 
     @Override
     public void plexLibraryScanSuccessful(PlexServer plexServer, PlexLibrary plexLibrary) {
-        for (NotificationAgent notificationAgent : notificationAgents) {
+        for (NotificationAgent<? extends NotificationProperties> notificationAgent : notificationAgents) {
             if (notificationAgent.isEnabled()) {
                 try {
                     notificationAgent.sendMessage(NotificationType.SCAN_PLEX_SERVER, "INFO", "Gaps Search", String.format("Scanning Plex Server %s in %s Library Successful", plexServer.getFriendlyName(), plexLibrary.getTitle()));
@@ -84,7 +84,7 @@ public class NotificationService implements Notification {
 
     @Override
     public void tmdbConnectionFailed(String error) {
-        for (NotificationAgent notificationAgent : notificationAgents) {
+        for (NotificationAgent<? extends NotificationProperties> notificationAgent : notificationAgents) {
             if (notificationAgent.isEnabled()) {
                 try {
                     notificationAgent.sendMessage(NotificationType.TEST_TMDB, "INFO", "Gaps Search", String.format("TMDB Connection Failed. %s", error));
@@ -97,7 +97,7 @@ public class NotificationService implements Notification {
 
     @Override
     public void tmdbConnectionSuccessful() {
-        for (NotificationAgent notificationAgent : notificationAgents) {
+        for (NotificationAgent<? extends NotificationProperties> notificationAgent : notificationAgents) {
             if (notificationAgent.isEnabled()) {
                 try {
                     notificationAgent.sendMessage(NotificationType.TEST_TMDB, "INFO", "Gaps Search", "TMDB Connection Successful");
@@ -110,7 +110,7 @@ public class NotificationService implements Notification {
 
     @Override
     public void recommendedMoviesSearchStarted(PlexServer plexServer, PlexLibrary plexLibrary) {
-        for (NotificationAgent notificationAgent : notificationAgents) {
+        for (NotificationAgent<? extends NotificationProperties> notificationAgent : notificationAgents) {
             if (notificationAgent.isEnabled()) {
                 try {
                     notificationAgent.sendMessage(NotificationType.RECOMMENDED_MOVIES, "INFO", "Gaps Search", String.format("Scanning Plex Server %s on Library %s Started", plexServer.getFriendlyName(), plexLibrary.getTitle()));
@@ -123,7 +123,7 @@ public class NotificationService implements Notification {
 
     @Override
     public void recommendedMoviesSearchFailed(PlexServer plexServer, PlexLibrary plexLibrary, String error) {
-        for (NotificationAgent notificationAgent : notificationAgents) {
+        for (NotificationAgent<? extends NotificationProperties> notificationAgent : notificationAgents) {
             if (notificationAgent.isEnabled()) {
                 try {
                     notificationAgent.sendMessage(NotificationType.RECOMMENDED_MOVIES, "INFO", "Gaps Search", String.format("Scanning Plex Server %s on Library %s Failed %s", plexServer.getFriendlyName(), plexLibrary.getTitle(), error));
@@ -136,7 +136,7 @@ public class NotificationService implements Notification {
 
     @Override
     public void recommendedMoviesSearchFinished(PlexServer plexServer, PlexLibrary plexLibrary) {
-        for (NotificationAgent notificationAgent : notificationAgents) {
+        for (NotificationAgent<? extends NotificationProperties> notificationAgent : notificationAgents) {
             if (notificationAgent.isEnabled()) {
                 try {
                     notificationAgent.sendMessage(NotificationType.RECOMMENDED_MOVIES, "INFO", "Gaps Search", String.format("Scanning Plex Server %s on Library %s Successfully Finished", plexServer.getFriendlyName(), plexLibrary.getTitle()));
@@ -151,7 +151,7 @@ public class NotificationService implements Notification {
     public boolean test() {
         boolean passedTest = true;
 
-        for (NotificationAgent notificationAgent : notificationAgents) {
+        for (NotificationAgent<? extends NotificationProperties> notificationAgent : notificationAgents) {
             try {
                 boolean result = notificationAgent.sendMessage(NotificationType.TEST, "DEBUG", "Gaps Test", "Test Successful");
                 if (!result) {
@@ -168,7 +168,7 @@ public class NotificationService implements Notification {
 
     @Override
     public boolean test(int id) throws IllegalArgumentException {
-        for (NotificationAgent notificationAgent : notificationAgents) {
+        for (NotificationAgent<? extends NotificationProperties> notificationAgent : notificationAgents) {
             if (notificationAgent.getId() == id) {
                 try {
                     return notificationAgent.sendMessage(NotificationType.TEST, "DEBUG", "Gaps Test", "Test Successful");
