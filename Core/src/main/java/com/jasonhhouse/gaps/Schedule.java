@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jasonhhouse.gaps.json.ScheduleDeserializer;
 import com.jasonhhouse.gaps.json.ScheduleSerializer;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
@@ -61,13 +61,7 @@ public enum Schedule {
     }
 
     public static List<Schedule> getAllSchedules() {
-        return new ArrayList<>() {{
-            add(HOURLY);
-            add(DAILY_4AM);
-            add(EVERY_MONDAY);
-            add(EVERY_TWO_WEEKS);
-            add(EVERY_MONTH);
-        }};
+        return Arrays.asList(HOURLY, DAILY_4AM, EVERY_MONDAY, EVERY_TWO_WEEKS, EVERY_MONTH);
     }
 
     @NotNull

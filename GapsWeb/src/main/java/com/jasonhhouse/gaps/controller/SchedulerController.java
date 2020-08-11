@@ -70,7 +70,7 @@ public class SchedulerController {
 
     @GetMapping(value = "/all",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getAllSchedules() {
+    public ResponseEntity<List<Schedule>> getAllSchedules() {
         LOGGER.info("getAllSchedules()");
         return ResponseEntity.ok().body(schedulerService.getAllSchedules());
     }

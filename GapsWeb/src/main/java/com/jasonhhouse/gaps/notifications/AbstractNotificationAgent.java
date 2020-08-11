@@ -16,6 +16,8 @@ import com.jasonhhouse.gaps.service.IoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.jasonhhouse.gaps.notifications.NotificationStatus.AGENT_NOT_ENABLED_FOR_NOTIFICATION_TYPE;
+
 public abstract class AbstractNotificationAgent<T extends NotificationProperties> implements NotificationAgent<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractNotificationAgent.class);

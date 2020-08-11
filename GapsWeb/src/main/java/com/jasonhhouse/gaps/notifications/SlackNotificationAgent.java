@@ -10,6 +10,7 @@
 
 package com.jasonhhouse.gaps.notifications;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.NotificationType;
@@ -27,6 +28,9 @@ import okhttp3.Response;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static com.jasonhhouse.gaps.notifications.NotificationStatus.FAILED_TO_READ_PROPERTIES;
+import static com.jasonhhouse.gaps.notifications.NotificationStatus.TIMEOUT;
 
 public class SlackNotificationAgent extends AbstractNotificationAgent<SlackProperties> {
 
@@ -68,7 +72,7 @@ public class SlackNotificationAgent extends AbstractNotificationAgent<SlackPrope
                 .add("Content-Type", org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
-        Slack slack = new Slack(String.format("*%s*\n%s", title, message));
+        Slack slack = new Slack(String.format("*%s*%n%s", title, message));
 
         String slackMessage = "";
         try {
@@ -92,7 +96,7 @@ public class SlackNotificationAgent extends AbstractNotificationAgent<SlackPrope
                 LOGGER.info("Slack message sent via {}", url);
                 return true;
             } else {
-                LOGGER.error("Error with Slack Url: {} Body returned {}", url, response.body().toString());
+                LOGGER.error("Error with Slack Url: {} Body returned {}", url, response.body());
                 return false;
             }
 
@@ -146,19 +150,20 @@ public class SlackNotificationAgent extends AbstractNotificationAgent<SlackPrope
 
     private static final class Text {
         private final String type;
-        private final String text;
+        private final String value;
 
-        private Text(String text) {
+        private Text(String value) {
             this.type = "mrkdwn";
-            this.text = text;
+            this.value = value;
         }
 
         public String getType() {
             return type;
         }
 
-        public String getText() {
-            return text;
+        @JsonProperty("text")
+        public String getValue() {
+            return value;
         }
     }
 }

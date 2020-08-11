@@ -12,7 +12,6 @@ package com.jasonhhouse.gaps;
 
 import com.jasonhhouse.gaps.notifications.EmailNotificationAgent;
 import com.jasonhhouse.gaps.notifications.GotifyNotificationAgent;
-import com.jasonhhouse.gaps.notifications.NotificationAgent;
 import com.jasonhhouse.gaps.notifications.PushBulletNotificationAgent;
 import com.jasonhhouse.gaps.notifications.SlackNotificationAgent;
 import com.jasonhhouse.gaps.notifications.TelegramNotificationAgent;
@@ -30,27 +29,27 @@ public class NotificationConfiguration {
     }
 
     @Bean
-    public NotificationAgent getTelegramElement() {
+    public TelegramNotificationAgent getTelegramElement() {
         return new TelegramNotificationAgent(ioService);
     }
 
     @Bean
-    public NotificationAgent getPushBulletElement() {
+    public PushBulletNotificationAgent getPushBulletElement() {
         return new PushBulletNotificationAgent(ioService);
     }
 
     @Bean
-    public NotificationAgent getSlackElement() {
+    public SlackNotificationAgent getSlackElement() {
         return new SlackNotificationAgent(ioService);
     }
 
     @Bean
-    public NotificationAgent getEmailElement() {
+    public EmailNotificationAgent getEmailElement() {
         return new EmailNotificationAgent(ioService);
     }
 
     @Bean
-    public NotificationAgent getGotifyElement() {
+    public GotifyNotificationAgent getGotifyElement() {
         return new GotifyNotificationAgent(ioService);
     }
 }

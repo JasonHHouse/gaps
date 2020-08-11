@@ -10,6 +10,7 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsSearch;
+import com.jasonhhouse.gaps.SearchStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,24 +56,13 @@ public class SearchController {
         throw new IllegalStateException("Need to pass in machineIdentifier and plex key");
     }
 
-    @GetMapping(value = "/isSearching",
+    @GetMapping(value = "/searchStatus",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<IsSearching> getIsSearching() {
-        LOGGER.info("getIsSearching()");
+    public ResponseEntity<SearchStatus> getIsSearching() {
+        LOGGER.info("getSearchStatus()");
 
-        IsSearching isSearching = new IsSearching(gapsSearch.isSearching());
-        return ResponseEntity.ok().body(isSearching);
+        SearchStatus searchStatus = new SearchStatus(gapsSearch.isSearching());
+        return ResponseEntity.ok().body(searchStatus);
     }
 
-    public static class IsSearching {
-        private final Boolean isSearching;
-
-        public IsSearching(Boolean isSearching) {
-            this.isSearching = isSearching;
-        }
-
-        public Boolean getIsSearching() {
-            return isSearching;
-        }
-    }
 }

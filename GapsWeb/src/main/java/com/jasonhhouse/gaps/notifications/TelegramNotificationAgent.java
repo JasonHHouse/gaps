@@ -9,6 +9,7 @@
  */
 package com.jasonhhouse.gaps.notifications;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.NotificationType;
@@ -24,6 +25,11 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static com.jasonhhouse.gaps.notifications.NotificationStatus.FAILED_TO_PARSE_JSON;
+import static com.jasonhhouse.gaps.notifications.NotificationStatus.FAILED_TO_READ_PROPERTIES;
+import static com.jasonhhouse.gaps.notifications.NotificationStatus.SEND_MESSAGE;
+import static com.jasonhhouse.gaps.notifications.NotificationStatus.TIMEOUT;
 
 public class TelegramNotificationAgent extends AbstractNotificationAgent<TelegramProperties> {
     private static final Logger LOGGER = LoggerFactory.getLogger(TelegramNotificationAgent.class);
@@ -55,7 +61,7 @@ public class TelegramNotificationAgent extends AbstractNotificationAgent<Telegra
     public boolean sendMessage(NotificationType notificationType, String level, String title, String message) {
         LOGGER.info(SEND_MESSAGE, level, title, message);
 
-        if(sendPrepMessage(notificationType)) {
+        if (sendPrepMessage(notificationType)) {
             return false;
         }
 
@@ -66,7 +72,7 @@ public class TelegramNotificationAgent extends AbstractNotificationAgent<Telegra
                 .addPathSegment("sendMessage")
                 .build();
 
-        Telegram telegram = new Telegram(t.getChatId(), String.format("<strong>%s</strong>\n%s", title, message), "HTML");
+        Telegram telegram = new Telegram(t.getChatId(), String.format("<strong>%s</strong>%n%s", title, message), "HTML");
 
         String telegramMessage = "";
         try {
@@ -89,7 +95,7 @@ public class TelegramNotificationAgent extends AbstractNotificationAgent<Telegra
                 LOGGER.info("Telegram message sent via {}", url);
                 return true;
             } else {
-                LOGGER.error("Error with Telegram Url: {} Body returned {}", url, response.body().toString());
+                LOGGER.error("Error with Telegram Url: {} Body returned {}", url, response.body());
                 return false;
             }
 
@@ -110,26 +116,28 @@ public class TelegramNotificationAgent extends AbstractNotificationAgent<Telegra
     }
 
     public static final class Telegram {
-        private final String chat_id;
+        private final String chatId;
         private final String text;
-        private final String parse_mode;
+        private final String parseMode;
 
-        public Telegram(String chat_id, String text, String parse_mode) {
-            this.chat_id = chat_id;
+        public Telegram(String chatId, String text, String parseMode) {
+            this.chatId = chatId;
             this.text = text;
-            this.parse_mode = parse_mode;
+            this.parseMode = parseMode;
         }
 
-        public String getChat_id() {
-            return chat_id;
+        @JsonProperty("chat_id")
+        public String getChatId() {
+            return chatId;
         }
 
         public String getText() {
             return text;
         }
 
-        public String getParse_mode() {
-            return parse_mode;
+        @JsonProperty("parse_mode")
+        public String getParseMode() {
+            return parseMode;
         }
     }
 }

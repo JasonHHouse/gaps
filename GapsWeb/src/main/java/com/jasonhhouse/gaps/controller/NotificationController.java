@@ -44,6 +44,7 @@ public class NotificationController {
         this.notificationService = notificationService;
         this.ioService = ioService;
     }
+
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             value = "/email")
