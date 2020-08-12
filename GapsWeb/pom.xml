@@ -13,6 +13,8 @@
 
     <properties>
         <start-class>com.jasonhhouse.gaps.GapsApplication</start-class>
+        <sonar.sources>src/main/java,src/main/resources</sonar.sources>
+        <sonar.exclusions>src/main/**/datatables*,src/main/**/bootstrap*,src/main/**/jquery*,src/main/**/sockjs*,src/main/**/stomp*,src/main/**/handlebars*</sonar.exclusions>
     </properties>
 
     <dependencies>
