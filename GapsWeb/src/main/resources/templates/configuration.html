@@ -288,12 +288,11 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="scheduleEnabled">
-                        <label class="form-check-label" for="scheduleEnabled">
-                            Enabled
-                        </label>
-                    </div>
+                    <label for="scheduleEnabled">Schedule Agent</label>
+                    <select class="form-control" id="scheduleEnabled">
+                        <option>Disabled</option>
+                        <option>Enabled</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <a class="btn btn-primary" href="javascript:void(0)" id="saveSchedule" onclick="saveSchedule();"
@@ -334,24 +333,45 @@
                     <!--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
                 </div>
                 <div class="form-group">
-                    <label for="telegramNotificationTypes">Notification Types</label>
-                    <select multiple class="form-control" id="telegramNotificationTypes">
-                        <option>TMDB API Connection</option>
-                        <option>Plex Server Connection</option>
-                        <option>Plex Metadata Update</option>
-                        <option>Plex Library Update</option>
-                        <option>Gaps Missing Collections</option>
-                    </select>
-                </div>
-                <div class="form-group">
+                    <label>Notification Types</label>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="telegramEnabled">
-                        <label class="form-check-label" for="telegramEnabled">
-                            Enabled
+                        <input class="form-check-input" type="checkbox" value="" id="telegramTmdbApiConnectionNotification">
+                        <label class="form-check-label" for="telegramTmdbApiConnectionNotification">
+                            TMDB API Connection
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="telegramPlexServerConnectionNotification">
+                        <label class="form-check-label" for="telegramPlexServerConnectionNotification">
+                            Plex Server Connection
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="telegramPlexMetadataUpdateNotification">
+                        <label class="form-check-label" for="telegramPlexMetadataUpdateNotification">
+                            Plex Metadata Update
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="telegramPlexLibraryUpdateNotification">
+                        <label class="form-check-label" for="telegramPlexLibraryUpdateNotification">
+                            Plex Library Update
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="telegramGapsMissingCollectionsNotification">
+                        <label class="form-check-label" for="telegramGapsMissingCollectionsNotification">
+                            Gaps Missing Collections
                         </label>
                     </div>
                 </div>
-
+                <div class="form-group">
+                    <label for="telegramEnabled">Notification Agent</label>
+                    <select class="form-control" id="telegramEnabled">
+                        <option>Disabled</option>
+                        <option>Enabled</option>
+                    </select>
+                </div>
                 <div class="form-group">
                     <a class="btn btn-info" href="javascript:void(0)" id="testTelegram" onclick="testTelegram();"
                        type="button">Test</a>
@@ -369,22 +389,44 @@
                     <small id="slackWebHookUrlHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                 </div>
                 <div class="form-group">
-                    <label for="slackNotificationTypes">Notification Types</label>
-                    <select multiple class="form-control" id="slackNotificationTypes">
-                        <option>TMDB API Connection</option>
-                        <option>Plex Server Connection</option>
-                        <option>Plex Metadata Update</option>
-                        <option>Plex Library Update</option>
-                        <option>Gaps Missing Collections</option>
-                    </select>
-                </div>
-                <div class="form-group">
+                    <label>Notification Types</label>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="slackEnabled">
-                        <label class="form-check-label" for="slackEnabled">
-                            Enabled
+                        <input class="form-check-input" type="checkbox" value="" id="slackTmdbApiConnectionNotification">
+                        <label class="form-check-label" for="slackTmdbApiConnectionNotification">
+                            TMDB API Connection
                         </label>
                     </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="slackPlexServerConnectionNotification">
+                        <label class="form-check-label" for="slackPlexServerConnectionNotification">
+                            Plex Server Connection
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="slackPlexMetadataUpdateNotification">
+                        <label class="form-check-label" for="slackPlexMetadataUpdateNotification">
+                            Plex Metadata Update
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="slackPlexLibraryUpdateNotification">
+                        <label class="form-check-label" for="slackPlexLibraryUpdateNotification">
+                            Plex Library Update
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="slackGapsMissingCollectionsNotification">
+                        <label class="form-check-label" for="slackGapsMissingCollectionsNotification">
+                            Gaps Missing Collections
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="slackEnabled">Notification Agent</label>
+                    <select class="form-control" id="slackEnabled">
+                        <option>Disabled</option>
+                        <option>Enabled</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <a class="btn btn-info" href="javascript:void(0)" id="testSlack" onclick="testSlack();"
@@ -411,22 +453,44 @@
                     <small id="pushBulletAccessTokenHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                 </div>
                 <div class="form-group">
-                    <label for="pushBulletNotificationTypes">Notification Types</label>
-                    <select multiple class="form-control" id="pushBulletNotificationTypes">
-                        <option>TMDB API Connection</option>
-                        <option>Plex Server Connection</option>
-                        <option>Plex Metadata Update</option>
-                        <option>Plex Library Update</option>
-                        <option>Gaps Missing Collections</option>
-                    </select>
-                </div>
-                <div class="form-group">
+                    <label>Notification Types</label>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="pushBulletEnabled">
-                        <label class="form-check-label" for="pushBulletEnabled">
-                            Enabled
+                        <input class="form-check-input" type="checkbox" value="" id="pushBulletTmdbApiConnectionNotification">
+                        <label class="form-check-label" for="pushBulletTmdbApiConnectionNotification">
+                            TMDB API Connection
                         </label>
                     </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="pushBulletPlexServerConnectionNotification">
+                        <label class="form-check-label" for="pushBulletPlexServerConnectionNotification">
+                            Plex Server Connection
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="pushBulletPlexMetadataUpdateNotification">
+                        <label class="form-check-label" for="pushBulletPlexMetadataUpdateNotification">
+                            Plex Metadata Update
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="pushBulletPlexLibraryUpdateNotification">
+                        <label class="form-check-label" for="pushBulletPlexLibraryUpdateNotification">
+                            Plex Library Update
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="pushBulletGapsMissingCollectionsNotification">
+                        <label class="form-check-label" for="pushBulletGapsMissingCollectionsNotification">
+                            Gaps Missing Collections
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="pushBulletEnabled">Notification Agent</label>
+                    <select class="form-control" id="pushBulletEnabled">
+                        <option>Disabled</option>
+                        <option>Enabled</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <a class="btn btn-info" href="javascript:void(0)" id="testPushBullet" onclick="testPushBullet();"
@@ -451,22 +515,44 @@
                     <small id="gotifyTokenHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                 </div>
                 <div class="form-group">
-                    <label for="gotifyNotificationTypes">Notification Types</label>
-                    <select multiple class="form-control" id="gotifyNotificationTypes">
-                        <option>TMDB API Connection</option>
-                        <option>Plex Server Connection</option>
-                        <option>Plex Metadata Update</option>
-                        <option>Plex Library Update</option>
-                        <option>Gaps Missing Collections</option>
-                    </select>
-                </div>
-                <div class="form-group">
+                    <label>Notification Types</label>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="gotifyEnabled">
-                        <label class="form-check-label" for="gotifyEnabled">
-                            Enabled
+                        <input class="form-check-input" type="checkbox" value="" id="gotifyTmdbApiConnectionNotification">
+                        <label class="form-check-label" for="gotifyTmdbApiConnectionNotification">
+                            TMDB API Connection
                         </label>
                     </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="gotifyPlexServerConnectionNotification">
+                        <label class="form-check-label" for="gotifyPlexServerConnectionNotification">
+                            Plex Server Connection
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="gotifyPlexMetadataUpdateNotification">
+                        <label class="form-check-label" for="gotifyPlexMetadataUpdateNotification">
+                            Plex Metadata Update
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="gotifyPlexLibraryUpdateNotification">
+                        <label class="form-check-label" for="gotifyPlexLibraryUpdateNotification">
+                            Plex Library Update
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="gotifyGapsMissingCollectionsNotification">
+                        <label class="form-check-label" for="gotifyGapsMissingCollectionsNotification">
+                            Gaps Missing Collections
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="gotifyEnabled">Notification Agent</label>
+                    <select class="form-control" id="gotifyEnabled">
+                        <option>Disabled</option>
+                        <option>Enabled</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <a class="btn btn-info" href="javascript:void(0)" id="testGotify" onclick="testGotify();"
