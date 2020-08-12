@@ -79,7 +79,7 @@ public class PushBulletNotificationAgent extends AbstractNotificationAgent<PushB
                 .add("Content-Type", org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
                 .add("Access-Token", t.getAccessToken())
                 .build();
-
+        
         PushBullet pushBullet = new PushBullet(t.getChannelTag(), title, message);
 
         String pushBulletMessage = "";
