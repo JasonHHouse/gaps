@@ -86,6 +86,9 @@
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#schedule" id="scheduleTab">Schedule</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#notification" id="notificationTab">Notifications</a>
+        </li>
         <li class="nav-item" hidden>
             <a class="nav-link disabled" data-ol-has-click-handler="" href="#folders" id="folderTab">Folders</a>
         </li>
@@ -284,9 +287,18 @@
                         </div>
                     </select>
                 </div>
-
-                <a class="btn btn-primary" href="javascript:void(0)" id="saveSchedule" onclick="saveSchedule();"
-                   type="button">Save</a>
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="scheduleEnabled">
+                        <label class="form-check-label" for="scheduleEnabled">
+                            Enabled
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <a class="btn btn-primary" href="javascript:void(0)" id="saveSchedule" onclick="saveSchedule();"
+                       type="button">Save</a>
+                </div>
             </form>
 
             <div class="spinner-border text-primary gaps-hide top-margin" id="scheduleSpinner" role="status">
@@ -304,6 +316,165 @@
                 <h4 class="alert-heading">Success!</h4>
                 <p class="mb-0">Your schedule saved successfully.</p>
             </div>
+
+        </div>
+        <div class="tab-pane fade top-margin" id="notification">
+            <h4>Telegram Notifications</h4>
+            <form class="needs-validation" id="telegramConfiguration" novalidate>
+                <div class="form-group">
+                    <label for="telegramBotId">Bot ID</label>
+                    <input type="text" class="form-control" id="telegramBotId" aria-describedby="telegramBotIdHelp"
+                           th:value="${plexProperties?.telegramProperties?.botId}">
+                    <!--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
+                </div>
+                <div class="form-group">
+                    <label for="telegramChatId">Chat ID</label>
+                    <input type="text" class="form-control" id="telegramChatId" aria-describedby="telegramChatIdHelp"
+                           th:value="${plexProperties?.telegramProperties?.chatId}">
+                    <!--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
+                </div>
+                <div class="form-group">
+                    <label for="telegramNotificationTypes">Notification Types</label>
+                    <select multiple class="form-control" id="telegramNotificationTypes">
+                        <option>TMDB API Connection</option>
+                        <option>Plex Server Connection</option>
+                        <option>Plex Metadata Update</option>
+                        <option>Plex Library Update</option>
+                        <option>Gaps Missing Collections</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="telegramEnabled">
+                        <label class="form-check-label" for="telegramEnabled">
+                            Enabled
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <a class="btn btn-info" href="javascript:void(0)" id="testTelegram" onclick="testTelegram();"
+                       type="button">Test</a>
+                    <a class="btn btn-primary" href="javascript:void(0)" id="saveTelegram" onclick="saveTelegram();"
+                       type="button">Save</a>
+                </div>
+            </form>
+            <hr class="thin">
+          <h4>Slack Notifications</h4>
+            <form class="needs-validation" id="slackConfiguration" novalidate>
+                <div class="form-group">
+                    <label for="slackWebHookUrl">Bot ID</label>
+                    <input type="text" class="form-control" id="slackWebHookUrl" aria-describedby="slackWebHookUrlHelp"
+                           th:value="${plexProperties?.slackProperties?.webHookUrl}">
+                    <small id="slackWebHookUrlHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                    <label for="slackNotificationTypes">Notification Types</label>
+                    <select multiple class="form-control" id="slackNotificationTypes">
+                        <option>TMDB API Connection</option>
+                        <option>Plex Server Connection</option>
+                        <option>Plex Metadata Update</option>
+                        <option>Plex Library Update</option>
+                        <option>Gaps Missing Collections</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="slackEnabled">
+                        <label class="form-check-label" for="slackEnabled">
+                            Enabled
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <a class="btn btn-info" href="javascript:void(0)" id="testSlack" onclick="testSlack();"
+                       type="button">Test</a>
+                    <a class="btn btn-primary" href="javascript:void(0)" id="saveSlack" onclick="saveSlack();"
+                       type="button">Save</a>
+                </div>
+            </form>
+            <hr class="thin">
+            <h4>PushBullet Notifications</h4>
+            <form class="needs-validation" id="pushBulletConfiguration" novalidate>
+                <div class="form-group">
+                    <label for="pushBulletChannelTag">Channel Tag</label>
+                    <input type="text" class="form-control" id="pushBulletChannelTag"
+                           aria-describedby="pushBulletChannelTagHelp"
+                           th:value="${plexProperties?.pushBulletProperties?.channelTag}">
+                    <small id="pushBulletChannelTagHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                    <label for="pushBulletAccessToken">Access Token</label>
+                    <input type="text" class="form-control" id="pushBulletAccessToken"
+                           aria-describedby="pushBulletAccessTokenHelp"
+                           th:value="${plexProperties?.pushBulletProperties?.accessToken}">
+                    <small id="pushBulletAccessTokenHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                    <label for="pushBulletNotificationTypes">Notification Types</label>
+                    <select multiple class="form-control" id="pushBulletNotificationTypes">
+                        <option>TMDB API Connection</option>
+                        <option>Plex Server Connection</option>
+                        <option>Plex Metadata Update</option>
+                        <option>Plex Library Update</option>
+                        <option>Gaps Missing Collections</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="pushBulletEnabled">
+                        <label class="form-check-label" for="pushBulletEnabled">
+                            Enabled
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <a class="btn btn-info" href="javascript:void(0)" id="testPushBullet" onclick="testPushBullet();"
+                       type="button">Test</a>
+                    <a class="btn btn-primary" href="javascript:void(0)" id="savePushBullet" onclick="savePushBullet();"
+                       type="button">Save</a>
+                </div>
+            </form>
+            <hr class="thin">
+            <h4>Gotify Notifications</h4>
+            <form class="needs-validation" id="gotifyConfiguration" novalidate>
+                <div class="form-group">
+                    <label for="gotifyAddress">Address</label>
+                    <input type="text" class="form-control" id="gotifyAddress" aria-describedby="gotifyAddressHelp"
+                           th:value="${plexProperties?.gotifyProperties?.address}">
+                    <small id="gotifyAddressHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                    <label for="gotifyToken">Token</label>
+                    <input type="text" class="form-control" id="gotifyToken" aria-describedby="gotifyTokenHelp"
+                           th:value="${plexProperties?.gotifyProperties?.token}">
+                    <small id="gotifyTokenHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                    <label for="gotifyNotificationTypes">Notification Types</label>
+                    <select multiple class="form-control" id="gotifyNotificationTypes">
+                        <option>TMDB API Connection</option>
+                        <option>Plex Server Connection</option>
+                        <option>Plex Metadata Update</option>
+                        <option>Plex Library Update</option>
+                        <option>Gaps Missing Collections</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="gotifyEnabled">
+                        <label class="form-check-label" for="gotifyEnabled">
+                            Enabled
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <a class="btn btn-info" href="javascript:void(0)" id="testGotify" onclick="testGotify();"
+                       type="button">Test</a>
+                    <a class="btn btn-primary" href="javascript:void(0)" id="saveGotify" onclick="saveGotify();"
+                       type="button">Save</a>
+                </div>
+            </form>
 
         </div>
         <div class="tab-pane fade top-margin" id="folders">

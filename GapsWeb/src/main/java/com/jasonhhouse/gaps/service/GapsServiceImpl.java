@@ -76,6 +76,12 @@ public class GapsServiceImpl implements GapsService {
         if (StringUtils.isNotEmpty(plexProperties.getPassword())) {
             this.plexProperties.setPassword(plexProperties.getPassword());
         }
+
+        this.plexProperties.setEmailProperties(plexProperties.getEmailProperties());
+        this.plexProperties.setGotifyProperties(plexProperties.getGotifyProperties());
+        this.plexProperties.setPushBulletProperties(plexProperties.getPushBulletProperties());
+        this.plexProperties.setSlackProperties(plexProperties.getSlackProperties());
+        this.plexProperties.setTelegramProperties(plexProperties.getTelegramProperties());
     }
 
     @Override
