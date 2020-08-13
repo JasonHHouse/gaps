@@ -42,27 +42,27 @@ public abstract class AbstractNotificationProperties implements NotificationProp
 
     @Override
     public @NotNull Boolean hasTmdbConnectionApi() {
-        return notificationTypes.contains(NotificationType.TEST_TMDB);
+        return notificationTypes.contains(NotificationType.TMDB_API_CONNECTION);
     }
 
     @Override
     public @NotNull Boolean hasPlexServerConnection() {
-        return notificationTypes.contains(NotificationType.TEST_PLEX_SERVER);
+        return notificationTypes.contains(NotificationType.PLEX_SERVER_CONNECTION);
     }
 
     @Override
     public @NotNull Boolean hasPlexMetadataUpdate() {
-        return notificationTypes.contains(NotificationType.SCAN_PLEX_SERVER);
+        return notificationTypes.contains(NotificationType.PLEX_METADATA_UPDATE);
     }
 
     @Override
     public @NotNull Boolean hasPlexLibraryUpdate() {
-        return notificationTypes.contains(NotificationType.SCAN_PLEX_LIBRARIES);
+        return notificationTypes.contains(NotificationType.PLEX_LIBRARY_UPDATE);
     }
 
     @Override
     public @NotNull Boolean hasGapsMissingCollections() {
-        return notificationTypes.contains(NotificationType.RECOMMENDED_MOVIES);
+        return notificationTypes.contains(NotificationType.GAPS_MISSING_COLLECTIONS);
     }
 
     @Override
