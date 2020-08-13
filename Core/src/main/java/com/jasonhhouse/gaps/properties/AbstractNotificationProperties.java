@@ -12,6 +12,7 @@ package com.jasonhhouse.gaps.properties;
 
 import com.jasonhhouse.gaps.NotificationType;
 import java.util.List;
+import org.apache.commons.lang3.BooleanUtils;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractNotificationProperties implements NotificationProperties {
@@ -30,13 +31,38 @@ public abstract class AbstractNotificationProperties implements NotificationProp
     @Override
     @NotNull
     public Boolean getEnabled() {
-        return enabled;
+        return BooleanUtils.isTrue(enabled);
     }
 
     @Override
     @NotNull
     public List<NotificationType> getNotificationTypes() {
         return notificationTypes;
+    }
+
+    @Override
+    public @NotNull Boolean hasTmdbConnectionApi() {
+        return notificationTypes.contains(NotificationType.TEST_TMDB);
+    }
+
+    @Override
+    public @NotNull Boolean hasPlexServerConnection() {
+        return notificationTypes.contains(NotificationType.TEST_PLEX_SERVER);
+    }
+
+    @Override
+    public @NotNull Boolean hasPlexMetadataUpdate() {
+        return notificationTypes.contains(NotificationType.SCAN_PLEX_SERVER);
+    }
+
+    @Override
+    public @NotNull Boolean hasPlexLibraryUpdate() {
+        return notificationTypes.contains(NotificationType.SCAN_PLEX_LIBRARIES);
+    }
+
+    @Override
+    public @NotNull Boolean hasGapsMissingCollections() {
+        return notificationTypes.contains(NotificationType.RECOMMENDED_MOVIES);
     }
 
     @Override

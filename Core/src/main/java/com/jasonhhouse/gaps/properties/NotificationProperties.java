@@ -22,4 +22,18 @@ public interface NotificationProperties {
     @NotNull
     List<NotificationType> getNotificationTypes();
 
+    @NotNull
+    Boolean hasTmdbConnectionApi();
+
+    @NotNull
+    Boolean hasPlexServerConnection();
+
+    @NotNull
+    Boolean hasPlexMetadataUpdate();
+
+    @NotNull
+    Boolean hasPlexLibraryUpdate();
+
+    @NotNull
+    Boolean hasGapsMissingCollections();
 }
