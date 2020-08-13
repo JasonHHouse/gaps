@@ -324,13 +324,15 @@
                     <label for="telegramBotId">Bot ID</label>
                     <input type="text" class="form-control" id="telegramBotId" aria-describedby="telegramBotIdHelp"
                            th:value="${plexProperties?.telegramProperties?.botId}">
-                    <!--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                        else.</small>
                 </div>
                 <div class="form-group">
                     <label for="telegramChatId">Chat ID</label>
                     <input type="text" class="form-control" id="telegramChatId" aria-describedby="telegramChatIdHelp"
                            th:value="${plexProperties?.telegramProperties?.chatId}">
-                    <!--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                        else.</small>
                 </div>
                 <div class="form-group">
                     <label>Notification Types</label>
@@ -380,7 +382,8 @@
                     <select class="form-control" id="telegramEnabled">
                         <option th:value="false">Disabled
                         </option>
-                        <option th:value="true" th:selected="${plexProperties?.telegramProperties?.getEnabled() ?: false}">Enabled
+                        <option th:value="true"
+                                th:selected="${plexProperties?.telegramProperties?.getEnabled() ?: false}">Enabled
                         </option>
                     </select>
                 </div>
@@ -404,35 +407,40 @@
                 <div class="form-group">
                     <label>Notification Types</label>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value=""
+                        <input class="form-check-input" type="checkbox"
+                               th:checked="${plexProperties?.slackProperties?.hasTmdbConnectionApi()}"
                                id="slackTmdbApiConnectionNotification">
                         <label class="form-check-label" for="slackTmdbApiConnectionNotification">
                             TMDB API Connection
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value=""
+                        <input class="form-check-input" type="checkbox"
+                               th:checked="${plexProperties?.slackProperties?.hasPlexServerConnection()}"
                                id="slackPlexServerConnectionNotification">
                         <label class="form-check-label" for="slackPlexServerConnectionNotification">
                             Plex Server Connection
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value=""
+                        <input class="form-check-input" type="checkbox"
+                               th:checked="${plexProperties?.slackProperties?.hasPlexMetadataUpdate()}"
                                id="slackPlexMetadataUpdateNotification">
                         <label class="form-check-label" for="slackPlexMetadataUpdateNotification">
                             Plex Metadata Update
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value=""
+                        <input class="form-check-input" type="checkbox"
+                               th:checked="${plexProperties?.slackProperties?.hasPlexLibraryUpdate()}"
                                id="slackPlexLibraryUpdateNotification">
                         <label class="form-check-label" for="slackPlexLibraryUpdateNotification">
                             Plex Library Update
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value=""
+                        <input class="form-check-input" type="checkbox"
+                               th:checked="${plexProperties?.slackProperties?.hasGapsMissingCollections()}"
                                id="slackGapsMissingCollectionsNotification">
                         <label class="form-check-label" for="slackGapsMissingCollectionsNotification">
                             Gaps Missing Collections
@@ -442,8 +450,11 @@
                 <div class="form-group">
                     <label for="slackEnabled">Notification Agent</label>
                     <select class="form-control" id="slackEnabled">
-                        <option>Disabled</option>
-                        <option>Enabled</option>
+                        <option th:value="false">Disabled
+                        </option>
+                        <option th:value="true" th:selected="${plexProperties?.slackProperties?.getEnabled() ?: false}">
+                            Enabled
+                        </option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -475,35 +486,40 @@
                 <div class="form-group">
                     <label>Notification Types</label>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value=""
+                        <input class="form-check-input" type="checkbox"
+                               th:checked="${plexProperties?.pushBulletProperties?.hasTmdbConnectionApi()}"
                                id="pushBulletTmdbApiConnectionNotification">
                         <label class="form-check-label" for="pushBulletTmdbApiConnectionNotification">
                             TMDB API Connection
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value=""
+                        <input class="form-check-input" type="checkbox"
+                               th:checked="${plexProperties?.pushBulletProperties?.hasPlexServerConnection()}"
                                id="pushBulletPlexServerConnectionNotification">
                         <label class="form-check-label" for="pushBulletPlexServerConnectionNotification">
                             Plex Server Connection
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value=""
+                        <input class="form-check-input" type="checkbox"
+                               th:checked="${plexProperties?.pushBulletProperties?.hasPlexMetadataUpdate()}"
                                id="pushBulletPlexMetadataUpdateNotification">
                         <label class="form-check-label" for="pushBulletPlexMetadataUpdateNotification">
                             Plex Metadata Update
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value=""
+                        <input class="form-check-input" type="checkbox"
+                               th:checked="${plexProperties?.pushBulletProperties?.hasPlexLibraryUpdate()}"
                                id="pushBulletPlexLibraryUpdateNotification">
                         <label class="form-check-label" for="pushBulletPlexLibraryUpdateNotification">
                             Plex Library Update
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value=""
+                        <input class="form-check-input" type="checkbox"
+                               th:checked="${plexProperties?.pushBulletProperties?.hasGapsMissingCollections()}"
                                id="pushBulletGapsMissingCollectionsNotification">
                         <label class="form-check-label" for="pushBulletGapsMissingCollectionsNotification">
                             Gaps Missing Collections
@@ -513,10 +529,11 @@
                 <div class="form-group">
                     <label for="pushBulletEnabled">Notification Agent</label>
                     <select class="form-control" id="pushBulletEnabled">
-                        <option th:value="false">
-                            Disabled
+                        <option th:value="false">Disabled
                         </option>
-                        <option th:value="true" th:selected="${plexProperties?.pushBulletProperties?.getEnabled() ?: false}">Enabled
+                        <option th:value="true"
+                                th:selected="${plexProperties?.pushBulletProperties?.getEnabled() ?: false}">
+                            Enabled
                         </option>
                     </select>
                 </div>
@@ -547,35 +564,40 @@
                 <div class="form-group">
                     <label>Notification Types</label>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value=""
+                        <input class="form-check-input" type="checkbox"
+                               th:checked="${plexProperties?.gotifyProperties?.hasTmdbConnectionApi()}"
                                id="gotifyTmdbApiConnectionNotification">
                         <label class="form-check-label" for="gotifyTmdbApiConnectionNotification">
                             TMDB API Connection
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value=""
+                        <input class="form-check-input" type="checkbox"
+                               th:checked="${plexProperties?.gotifyProperties?.hasPlexServerConnection()}"
                                id="gotifyPlexServerConnectionNotification">
                         <label class="form-check-label" for="gotifyPlexServerConnectionNotification">
                             Plex Server Connection
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value=""
+                        <input class="form-check-input" type="checkbox"
+                               th:checked="${plexProperties?.gotifyProperties?.hasPlexMetadataUpdate()}"
                                id="gotifyPlexMetadataUpdateNotification">
                         <label class="form-check-label" for="gotifyPlexMetadataUpdateNotification">
                             Plex Metadata Update
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value=""
+                        <input class="form-check-input" type="checkbox"
+                               th:checked="${plexProperties?.gotifyProperties?.hasPlexLibraryUpdate()}"
                                id="gotifyPlexLibraryUpdateNotification">
                         <label class="form-check-label" for="gotifyPlexLibraryUpdateNotification">
                             Plex Library Update
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value=""
+                        <input class="form-check-input" type="checkbox"
+                               th:checked="${plexProperties?.gotifyProperties?.hasGapsMissingCollections()}"
                                id="gotifyGapsMissingCollectionsNotification">
                         <label class="form-check-label" for="gotifyGapsMissingCollectionsNotification">
                             Gaps Missing Collections
@@ -585,8 +607,12 @@
                 <div class="form-group">
                     <label for="gotifyEnabled">Notification Agent</label>
                     <select class="form-control" id="gotifyEnabled">
-                        <option>Disabled</option>
-                        <option>Enabled</option>
+                        <option th:value="false">Disabled
+                        </option>
+                        <option th:value="true"
+                                th:selected="${plexProperties?.gotifyProperties?.getEnabled() ?: false}">
+                            Enabled
+                        </option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -659,42 +685,51 @@
                 <div class="form-group">
                     <label for="emailSmtpTlsEnabled">SMTP TLS Enabled</label>
                     <select class="form-control" id="emailSmtpTlsEnabled">
-                        <option>Disabled</option>
-                        <option>Enabled</option>
+                        <option th:value="false">Disabled
+                        </option>
+                        <option th:value="true"
+                                th:selected="${plexProperties?.emailProperties?.getMailSmtpTlsEnabled() ?: false}">
+                            Enabled
+                        </option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Notification Types</label>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value=""
+                        <input class="form-check-input" type="checkbox"
+                               th:checked="${plexProperties?.emailProperties?.hasTmdbConnectionApi()}"
                                id="emailTmdbApiConnectionNotification">
                         <label class="form-check-label" for="emailTmdbApiConnectionNotification">
                             TMDB API Connection
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value=""
+                        <input class="form-check-input" type="checkbox"
+                               th:checked="${plexProperties?.emailProperties?.hasPlexServerConnection()}"
                                id="emailPlexServerConnectionNotification">
                         <label class="form-check-label" for="emailPlexServerConnectionNotification">
                             Plex Server Connection
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value=""
+                        <input class="form-check-input" type="checkbox"
+                               th:checked="${plexProperties?.emailProperties?.hasPlexMetadataUpdate()}"
                                id="emailPlexMetadataUpdateNotification">
                         <label class="form-check-label" for="emailPlexMetadataUpdateNotification">
                             Plex Metadata Update
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value=""
+                        <input class="form-check-input" type="checkbox"
+                               th:checked="${plexProperties?.emailProperties?.hasPlexLibraryUpdate()}"
                                id="emailPlexLibraryUpdateNotification">
                         <label class="form-check-label" for="emailPlexLibraryUpdateNotification">
                             Plex Library Update
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value=""
+                        <input class="form-check-input" type="checkbox"
+                               th:checked="${plexProperties?.emailProperties?.hasGapsMissingCollections()}"
                                id="emailGapsMissingCollectionsNotification">
                         <label class="form-check-label" for="emailGapsMissingCollectionsNotification">
                             Gaps Missing Collections
@@ -704,8 +739,12 @@
                 <div class="form-group">
                     <label for="emailEnabled">Notification Agent</label>
                     <select class="form-control" id="emailEnabled">
-                        <option>Disabled</option>
-                        <option>Enabled</option>
+                        <option th:value="false">Disabled
+                        </option>
+                        <option th:value="true"
+                                th:selected="${plexProperties?.emailProperties?.getEnabled() ?: false}">
+                            Enabled
+                        </option>
                     </select>
                 </div>
                 <div class="form-group">
