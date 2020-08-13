@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 public final class PushBulletProperties extends AbstractNotificationProperties {
     @NotNull
-    private final String channelTag;
+    private final String channel_tag;
 
     @NotNull
     private final String accessToken;
@@ -26,16 +26,16 @@ public final class PushBulletProperties extends AbstractNotificationProperties {
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public PushBulletProperties(@JsonProperty(value = "enabled", required = true) @NotNull Boolean enabled,
                                 @JsonProperty(value = "notificationTypes", required = true) @NotNull List<NotificationType> notificationTypes,
-                                @JsonProperty(value = "channel_tag", required = true) @NotNull String channelTag,
+                                @JsonProperty(value = "channel_tag", required = true) @NotNull String channel_tag,
                                 @JsonProperty(value = "accessToken", required = true) @NotNull String accessToken) {
         super(enabled, notificationTypes);
-        this.channelTag = channelTag;
+        this.channel_tag = channel_tag;
         this.accessToken = accessToken;
     }
 
     @NotNull
-    public String getChannelTag() {
-        return channelTag;
+    public String getChannel_tag() {
+        return channel_tag;
     }
 
     @NotNull
@@ -46,7 +46,7 @@ public final class PushBulletProperties extends AbstractNotificationProperties {
     @Override
     public String toString() {
         return "PushBulletProperties{" +
-                "channel_tag='" + channelTag + '\'' +
+                "channel_tag='" + channel_tag + '\'' +
                 ", accessToken='" + accessToken + '\'' +
                 ", enabled=" + enabled +
                 ", notificationTypes=" + notificationTypes +

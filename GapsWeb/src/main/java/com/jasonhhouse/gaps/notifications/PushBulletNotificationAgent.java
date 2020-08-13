@@ -80,7 +80,7 @@ public class PushBulletNotificationAgent extends AbstractNotificationAgent<PushB
                 .add("Access-Token", t.getAccessToken())
                 .build();
         
-        PushBullet pushBullet = new PushBullet(t.getChannelTag(), title, message);
+        PushBullet pushBullet = new PushBullet(t.getChannel_tag(), title, message);
 
         String pushBulletMessage = "";
         try {
