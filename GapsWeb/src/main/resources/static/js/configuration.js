@@ -11,7 +11,7 @@
 'use strict';
 
 import {Payload} from '/js/modules/payload.min.js';
-import {saveTelegramNotifications} from '/js/modules/telegram-notifications.min.js'
+import {saveTelegramNotifications, testTelegramNotifications} from '/js/modules/telegram-notifications.min.js'
 
 let plexSpinner, plexSaveSuccess, plexSaveError, plexTestSuccess, plexTestError, plexDeleteSuccess, plexDeleteError,
     plexDuplicateError;
@@ -101,6 +101,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //Exposing function for onClick() from module
     window.saveTelegram = saveTelegramNotifications;
+    window.testTelegram = testTelegramNotifications;
 });
 
 function testTmdbKey() {

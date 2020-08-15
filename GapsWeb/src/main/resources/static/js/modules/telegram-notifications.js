@@ -10,38 +10,23 @@
 
 import {getNotificationTypes} from '/js/modules/notification-types.min.js';
 
-export function testTelegram() {
+export async function testTelegramNotifications() {
     'use strict';
 
-    getUserAsync('yourUsernameHere').then(data => console.log(data));
-
-    $.ajax({
-        type: "PUT",
-        url: `/configuration/test/plex/${machineIdentifier}`,
-        dataType: "json",
-        success: function (result) {
-            hideAllAlertsAndSpinners();
-            if (result && result.success) {
-                plexTestSuccess.show();
-            } else {
-                plexTestError.show();
-            }
-        }, error: function () {
-            hideAllAlertsAndSpinners();
-            plexTestError.show();
-        }
-    });
-}
-
-async function testTelegramNotifications() {
     let response = await fetch('/notifications/test/0', {
         method: 'put',
     });
     let data = await response.json()
-    return data;
+    if (response.ok) {
+        //Good
+    } else {
+        //Show errors
+    }
 }
 
 export async function saveTelegramNotifications() {
+    'use strict';
+
     const body = {};
     body.botId = document.getElementById('telegramBotId').value;
     body.chatId = document.getElementById('telegramChatId').value;
@@ -60,12 +45,11 @@ export async function saveTelegramNotifications() {
         },
         body: JSON.stringify(body)
     });
-
+    let data = await response.json()
     if (response.ok) {
         //Good
     } else {
         //Show errors
     }
-    let data = await response.json()
-    return data;
+
 }
