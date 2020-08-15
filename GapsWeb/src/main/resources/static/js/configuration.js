@@ -11,6 +11,7 @@
 'use strict';
 
 import {Payload} from '/js/modules/payload.min.js';
+import {saveTelegramNotifications} from '/js/modules/telegram-notifications.min.js'
 
 let plexSpinner, plexSaveSuccess, plexSaveError, plexTestSuccess, plexTestError, plexDeleteSuccess, plexDeleteError,
     plexDuplicateError;
@@ -97,6 +98,9 @@ document.addEventListener('DOMContentLoaded', function () {
     window.saveSchedule = saveSchedule;
     window.setDeleteAllEnabledOrDisabled = setDeleteAllEnabledOrDisabled;
     window.nuke = nuke;
+
+    //Exposing function for onClick() from module
+    window.saveTelegram = saveTelegramNotifications;
 });
 
 function testTmdbKey() {

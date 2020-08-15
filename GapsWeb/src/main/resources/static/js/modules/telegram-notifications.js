@@ -8,11 +8,10 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import {getNotificationTypes} from '/js/modules/notification-types.min.js';
+
 export function testTelegram() {
     'use strict';
-
-
-
 
     getUserAsync('yourUsernameHere').then(data => console.log(data));
 
@@ -42,16 +41,31 @@ async function testTelegramNotifications() {
     return data;
 }
 
-async function saveTelegramNotifications(name) {
+export async function saveTelegramNotifications() {
     const body = {};
-    body.botId = document.getElementById('telegramBotId');
-    body.chatId = document.getElementById('telegramChatId');
-    body.enabled = document.getElementById('telegramEnabled')
+    body.botId = document.getElementById('telegramBotId').value;
+    body.chatId = document.getElementById('telegramChatId').value;
+    body.enabled = document.getElementById('telegramEnabled').value;
+    body.notificationTypes = getNotificationTypes(document.getElementById('telegramTmdbApiConnectionNotification').checked,
+        document.getElementById('telegramPlexServerConnectionNotification').checked,
+        document.getElementById('telegramPlexMetadataUpdateNotification').checked,
+        document.getElementById('telegramPlexLibraryUpdateNotification').checked,
+        document.getElementById('telegramGapsMissingCollectionsNotification').checked);
 
     let response = await fetch(`/notifications/telegram`, {
         method: 'put',
-        body: {}
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
     });
+
+    if (response.ok) {
+        //Good
+    } else {
+        //Show errors
+    }
     let data = await response.json()
     return data;
 }
