@@ -21,6 +21,7 @@
     "uglifyjs-recommended-js": "uglifyjs GapsWeb/src/main/resources/static/js/recommended.js --compress --output GapsWeb/src/main/resources/static/js/recommended.min.js",
     "uglifyjs-common-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/common.js --compress --output GapsWeb/src/main/resources/static/js/modules/common.min.js",
     "uglifyjs-payload-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/payload.js --compress --output GapsWeb/src/main/resources/static/js/modules/payload.min.js",
+    "uglifyjs-alerts-manager-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/alerts-manager.js --compress --output GapsWeb/src/main/resources/static/js/modules/alerts-manager.min.js",
     "uglifyjs-mislabeled-js": "uglifyjs GapsWeb/src/main/resources/static/js/mislabeled.js --compress --output GapsWeb/src/main/resources/static/js/mislabeled.min.js",
     "uglifyjs-notification-types-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/notification-types.js --compress --output GapsWeb/src/main/resources/static/js/modules/notification-types.min.js",
     "uglifyjs-telegram-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/telegram-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/telegram-notifications.min.js"

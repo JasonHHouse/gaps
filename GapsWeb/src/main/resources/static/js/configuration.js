@@ -12,6 +12,7 @@
 
 import {Payload} from '/js/modules/payload.min.js';
 import {saveTelegramNotifications, testTelegramNotifications} from '/js/modules/telegram-notifications.min.js'
+import {hideAllAlertsAndSpinners} from "./modules/alerts-manager.min.js";
 
 let plexSpinner, plexSaveSuccess, plexSaveError, plexTestSuccess, plexTestError, plexDeleteSuccess, plexDeleteError,
     plexDuplicateError;
@@ -307,30 +308,6 @@ function nuke() {
             deleteAllError.show();
         }
     });
-}
-
-function hideAllAlertsAndSpinners() {
-    //Spinners
-    plexSpinner.hide();
-    tmdbSpinner.hide();
-
-    //Plex Alerts
-    plexTestSuccess.hide();
-    plexTestError.hide();
-    plexSaveSuccess.hide();
-    plexSaveError.hide();
-    plexDeleteSuccess.hide();
-    plexDeleteError.hide();
-
-    //TMDB Alerts
-    tmdbTestSuccess.hide();
-    tmdbTestError.hide();
-    tmdbSaveSuccess.hide();
-    tmdbSaveError.hide();
-
-    //Advanced
-    deleteAllSuccess.hide();
-    deleteAllError.hide();
 }
 
 $(function () {

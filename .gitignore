@@ -38,6 +38,5 @@ cypress/screenshots
 cypress/videos
 Plex/target/
 
-GapsWeb/src/main/resources/static/css/*.min.css
-GapsWeb/src/main/resources/static/js/*.min.js
-GapsWeb/src/main/resources/static/js/modules/*.min.js
+*.min.css
+*.min.js

@@ -1,0 +1,135 @@
+<!--
+  ~
+  ~  Copyright 2020 Jason H House
+  ~  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+  ~  
+  ~  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+  ~  
+  ~  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="telegram">
+    <h4>Telegram Notifications</h4>
+    <form class="needs-validation" id="telegramConfiguration" novalidate>
+        <div class="form-group">
+            <label for="telegramBotId">Bot ID</label>
+            <input type="text" class="form-control" id="telegramBotId" aria-describedby="telegramBotIdHelp"
+                   th:value="${plexProperties?.telegramProperties?.botId}">
+            <small id="telegramBotIdHelp" class="form-text text-muted">We'll never share your email with
+                anyone
+                else.</small>
+        </div>
+        <div class="form-group">
+            <label for="telegramChatId">Chat ID</label>
+            <input type="text" class="form-control" id="telegramChatId"
+                   aria-describedby="telegramChatIdHelp"
+                   th:value="${plexProperties?.telegramProperties?.chatId}">
+            <small id="telegramChatIdHelp" class="form-text text-muted">We'll never share your email with
+                anyone
+                else.</small>
+        </div>
+        <div class="form-group">
+            <label>Notification Types</label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.telegramProperties?.hasTmdbConnectionApi()}"
+                       id="telegramTmdbApiConnectionNotification">
+                <label class="form-check-label" for="telegramTmdbApiConnectionNotification">
+                    TMDB API Connection
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.telegramProperties?.hasPlexServerConnection()}"
+                       id="telegramPlexServerConnectionNotification">
+                <label class="form-check-label" for="telegramPlexServerConnectionNotification">
+                    Plex Server Connection
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.telegramProperties?.hasPlexMetadataUpdate()}"
+                       id="telegramPlexMetadataUpdateNotification">
+                <label class="form-check-label" for="telegramPlexMetadataUpdateNotification">
+                    Plex Metadata Update
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.telegramProperties?.hasPlexLibraryUpdate()}"
+                       id="telegramPlexLibraryUpdateNotification">
+                <label class="form-check-label" for="telegramPlexLibraryUpdateNotification">
+                    Plex Library Update
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.telegramProperties?.hasGapsMissingCollections()}"
+                       id="telegramGapsMissingCollectionsNotification">
+                <label class="form-check-label" for="telegramGapsMissingCollectionsNotification">
+                    Gaps Missing Collections
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="telegramEnabled">Notification Agent</label>
+            <select class="form-control" id="telegramEnabled">
+                <option th:value="false">Disabled
+                </option>
+                <option th:value="true"
+                        th:selected="${plexProperties?.telegramProperties?.getEnabled() ?: false}">Enabled
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <a class="btn btn-primary" href="javascript:void(0)" id="saveTelegram" onclick="saveTelegram();"
+               type="button">Save</a>
+            <a class="btn btn-info" href="javascript:void(0)" id="testTelegram" onclick="testTelegram();"
+               type="button">Test</a>
+        </div>
+    </form>
+
+    <div class="spinner-border text-primary gaps-hide top-margin" id="telegramSpinner" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+
+    <div class="alert alert-dismissible alert-danger gaps-hide top-margin" id="telegramTestError">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Error!</h4>
+        <p class="mb-0">Could not connect to Telegram. Check the key and logs and try again.</p>
+    </div>
+
+    <div class="alert alert-dismissible alert-success gaps-hide top-margin" id="telegramTestSuccess">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Success!</h4>
+        <p class="mb-0">Telegram message sent.</p>
+    </div>
+
+    <div class="alert alert-dismissible alert-danger gaps-hide top-margin" id="telegramSaveError">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Error!</h4>
+        <p class="mb-0">Could not save your Telegram notification. Check the logs and try again.</p>
+    </div>
+
+    <div class="alert alert-dismissible alert-success gaps-hide top-margin" id="telegramSaveSuccess">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Success!</h4>
+        <p class="mb-0">Your Telegram notification saved successfully.</p>
+    </div>
+</header>
+
+<nav th:fragment="menu">
+    <a th:href="@{/}">Homepage</a>
+    <a th:href="@{/about}">About Me</a>
+    <a th:href="@{/blog}">Blog</a>
+    <a th:href="@{/contact}">Contact</a>
+</nav>
+
+<footer th:fragment="footer">
+    <p>&copy; 2020 attacomsian.com</p>
+</footer>
+</body>
+</html>
