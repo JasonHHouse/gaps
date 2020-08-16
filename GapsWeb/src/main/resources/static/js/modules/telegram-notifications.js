@@ -9,6 +9,7 @@
  */
 
 import {getNotificationTypes} from '/js/modules/notification-types.min.js';
+import {Payload} from "/js/modules/payload.min.js";
 import {hideAllAlertsAndSpinners} from "/js/modules/alerts-manager.min.js";
 
 export async function testTelegramNotifications() {
@@ -19,8 +20,8 @@ export async function testTelegramNotifications() {
     let response = await fetch('/notifications/test/0', {
         method: 'put',
     });
-    await response.json();
-    if (response.ok) {
+    const put = await response.json();
+    if (put.code && put.code === Payload.NOTIFICATION_TEST_SUCCEEDED) {
         hideAllAlertsAndSpinners();
         document.getElementById('telegramTestSuccess').style.display = 'block';
     } else {
@@ -50,11 +51,11 @@ export async function saveTelegramNotifications() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(body)
-    });
-    await response.json();
-    if (response.ok) {
-        hideAllAlertsAndSpinners();
-        document.getElementById('telegramSaveSuccess').style.display = 'block';
+    })
+    const put = await response.json();
+    if (put.code && put.code === Payload.TELEGRAM_NOTIFICATION_UPDATE_SUCCEEDED) {
+            hideAllAlertsAndSpinners();
+            document.getElementById('telegramSaveSuccess').style.display = 'block';
     } else {
         hideAllAlertsAndSpinners();
         document.getElementById('telegramSaveError').style.display = 'block';

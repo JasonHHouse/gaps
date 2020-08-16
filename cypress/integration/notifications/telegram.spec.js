@@ -154,13 +154,13 @@ describe('Check Telegram Notification Agent', function () {
 
         cy.get('#telegramBotId')
             .clear()
-            .type('botId')
-            .should('have.value', 'botId');
+            .type(atob('MTMwMjEzOTExOTpBQUV1cGh0RXVvcFhhVHBpdGlHbFdDWS0zbDMzU0JrUGUybw=='))
+            .should('have.value', atob('MTMwMjEzOTExOTpBQUV1cGh0RXVvcFhhVHBpdGlHbFdDWS0zbDMzU0JrUGUybw=='));
 
         cy.get('#telegramChatId')
             .clear()
-            .type('chatId')
-            .should('have.value', 'chatId');
+            .type(atob('MTA0MTA4MTMxNw=='))
+            .should('have.value', atob('MTA0MTA4MTMxNw=='));
 
         cy.get('#telegramTmdbApiConnectionNotification')
             .click();
@@ -206,6 +206,76 @@ describe('Check Telegram Notification Agent', function () {
 
         cy.get('#telegramTestError')
             .should(notBeVisible);
+
+        cy.get('#telegramSaveSuccess')
+            .should(notBeVisible);
+
+        cy.get('#telegramSaveError')
+            .should(notBeVisible);
+
+        cy.get('#telegramSpinner')
+            .should(notBeVisible);
+    });
+
+    it('Check Successful Saving and Failure Testing Telegram Notification', () => {
+
+        cy.visit('/configuration');
+
+        cy.get('#notificationTab')
+            .click();
+
+        checkElements('', '', notBeChecked, notBeChecked, notBeChecked, notBeChecked, notBeChecked, 'false');
+
+        cy.get('#telegramBotId')
+            .clear();
+
+        cy.get('#telegramChatId')
+            .clear();
+
+        cy.get('#telegramTmdbApiConnectionNotification')
+            .click();
+
+        cy.get('#telegramPlexServerConnectionNotification')
+            .click();
+
+        cy.get('#telegramPlexMetadataUpdateNotification')
+            .click();
+
+        cy.get('#telegramPlexLibraryUpdateNotification')
+            .click();
+
+        cy.get('#telegramGapsMissingCollectionsNotification')
+            .click();
+
+        cy.get('#telegramEnabled')
+            .select('Enabled');
+
+        cy.get('#saveTelegram')
+            .click();
+
+        cy.get('#telegramTestSuccess')
+            .should(notBeVisible);
+
+        cy.get('#telegramTestError')
+            .should(notBeVisible);
+
+        cy.get('#telegramSaveSuccess')
+            .should(beVisible);
+
+        cy.get('#telegramSaveError')
+            .should(notBeVisible);
+
+        cy.get('#telegramSpinner')
+            .should(notBeVisible);
+
+        cy.get('#testTelegram')
+            .click();
+
+        cy.get('#telegramTestSuccess')
+            .should(notBeVisible);
+
+        cy.get('#telegramTestError')
+            .should(beVisible);
 
         cy.get('#telegramSaveSuccess')
             .should(notBeVisible);
