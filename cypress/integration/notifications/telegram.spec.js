@@ -1,7 +1,12 @@
 import {nuke} from "../common";
 
+const notBeChecked = 'not.be.checked';
+const beChecked = 'be.checked';
+const notBeVisible = 'not.be.visible';
+const beVisible = 'be.visible';
+
 describe('Check Telegram Notification Agent', function () {
-    before(nuke);
+    beforeEach(nuke);
 
     it('Check for Empty Telegram Notification Agent Settings', () => {
 
@@ -16,42 +21,20 @@ describe('Check Telegram Notification Agent', function () {
                 cy.get('#notificationTab')
                     .click();
 
-                cy.get('#telegramBotId')
-                    .should('have.value', '');
-
-                cy.get('#telegramChatId')
-                    .should('have.value', '');
-
-                cy.get('#telegramTmdbApiConnectionNotification')
-                    .should('not.be.checked');
-
-                cy.get('#telegramPlexServerConnectionNotification')
-                    .should('not.be.checked');
-
-                cy.get('#telegramPlexMetadataUpdateNotification')
-                    .should('not.be.checked');
-
-                cy.get('#telegramPlexLibraryUpdateNotification')
-                    .should('not.be.checked');
-
-                cy.get('#telegramGapsMissingCollectionsNotification')
-                    .should('not.be.checked');
-
-                cy.get('#telegramEnabled')
-                    .should('have.value', 'false');
+                checkElements('', '', notBeChecked, notBeChecked, notBeChecked, notBeChecked, notBeChecked, 'false');
             });
     });
 
     it('Set Telegram Notification Agent Settings', () => {
 
         let object = {
-            "enabled" : true,
-            "notificationTypes" : ["TEST", "TMDB_API_CONNECTION", "PLEX_SERVER_CONNECTION", "PLEX_METADATA_UPDATE", "PLEX_LIBRARY_UPDATE", "GAPS_MISSING_COLLECTIONS"],
-            "chatId" : "chatId",
-            "botId" : "botId"
+            "enabled": true,
+            "notificationTypes": ["TEST", "TMDB_API_CONNECTION", "PLEX_SERVER_CONNECTION", "PLEX_METADATA_UPDATE", "PLEX_LIBRARY_UPDATE", "GAPS_MISSING_COLLECTIONS"],
+            "chatId": "chatId",
+            "botId": "botId"
         };
 
-        cy.request('PUT', '/notifications/telegram',object)
+        cy.request('PUT', '/notifications/telegram', object)
             .then((resp) => {
                 let body = resp.body;
                 expect(body.code).to.eq(80);
@@ -69,42 +52,20 @@ describe('Check Telegram Notification Agent', function () {
                 cy.get('#notificationTab')
                     .click();
 
-                cy.get('#telegramBotId')
-                    .should('have.value', 'botId');
-
-                cy.get('#telegramChatId')
-                    .should('have.value', 'chatId');
-
-                cy.get('#telegramTmdbApiConnectionNotification')
-                    .should('be.checked');
-
-                cy.get('#telegramPlexServerConnectionNotification')
-                    .should('be.checked');
-
-                cy.get('#telegramPlexMetadataUpdateNotification')
-                    .should('be.checked');
-
-                cy.get('#telegramPlexLibraryUpdateNotification')
-                    .should('be.checked');
-
-                cy.get('#telegramGapsMissingCollectionsNotification')
-                    .should('be.checked');
-
-                cy.get('#telegramEnabled')
-                    .should('have.value', 'true');
+                checkElements('botId', 'chatId', beChecked, beChecked, beChecked, beChecked, beChecked, 'true');
             });
     });
 
     it('Set TMDB Only Telegram Notification Agent Settings', () => {
 
         let object = {
-            "enabled" : true,
-            "notificationTypes" : ["TMDB_API_CONNECTION"],
-            "chatId" : "chatId",
-            "botId" : "botId"
+            "enabled": true,
+            "notificationTypes": ["TMDB_API_CONNECTION"],
+            "chatId": "chatId",
+            "botId": "botId"
         };
 
-        cy.request('PUT', '/notifications/telegram',object)
+        cy.request('PUT', '/notifications/telegram', object)
             .then((resp) => {
                 let body = resp.body;
                 expect(body.code).to.eq(80);
@@ -122,31 +83,163 @@ describe('Check Telegram Notification Agent', function () {
                 cy.get('#notificationTab')
                     .click();
 
-                cy.get('#telegramBotId')
-                    .should('have.value', 'botId');
-
-                cy.get('#telegramChatId')
-                    .should('have.value', 'chatId');
-
-                cy.get('#telegramTmdbApiConnectionNotification')
-                    .should('be.checked');
-
-                cy.get('#telegramPlexServerConnectionNotification')
-                    .should('not.be.checked');
-
-                cy.get('#telegramPlexMetadataUpdateNotification')
-                    .should('not.be.checked');
-
-                cy.get('#telegramPlexLibraryUpdateNotification')
-                    .should('not.be.checked');
-
-                cy.get('#telegramGapsMissingCollectionsNotification')
-                    .should('not.be.checked');
-
-                cy.get('#telegramEnabled')
-                    .should('have.value', 'true');
+                checkElements('botId', 'chatId', beChecked, notBeChecked, notBeChecked, notBeChecked, notBeChecked, 'true');
             });
     });
 
+    it('Check saving Telegram Notification', () => {
 
+        cy.visit('/configuration');
+
+        cy.get('#notificationTab')
+            .click();
+
+        checkElements('', '', notBeChecked, notBeChecked, notBeChecked, notBeChecked, notBeChecked, 'false');
+
+        cy.get('#telegramBotId')
+            .clear()
+            .type('botId')
+            .should('have.value', 'botId');
+
+        cy.get('#telegramChatId')
+            .clear()
+            .type('chatId')
+            .should('have.value', 'chatId');
+
+        cy.get('#telegramTmdbApiConnectionNotification')
+            .click();
+
+        cy.get('#telegramPlexServerConnectionNotification')
+            .click();
+
+        cy.get('#telegramPlexMetadataUpdateNotification')
+            .click();
+
+        cy.get('#telegramPlexLibraryUpdateNotification')
+            .click();
+
+        cy.get('#telegramGapsMissingCollectionsNotification')
+            .click();
+
+        cy.get('#telegramEnabled')
+            .select('Enabled');
+
+        cy.get('#saveTelegram')
+            .click();
+
+        cy.get('#telegramTestSuccess')
+            .should(notBeVisible);
+
+        cy.get('#telegramTestError')
+            .should(notBeVisible);
+
+        cy.get('#telegramSaveSuccess')
+            .should(beVisible);
+
+        cy.get('#telegramSaveError')
+            .should(notBeVisible);
+
+        cy.get('#telegramSpinner')
+            .should(notBeVisible);
+    });
+
+    it('Check saving and test Telegram Notification', () => {
+
+        cy.visit('/configuration');
+
+        cy.get('#notificationTab')
+            .click();
+
+        checkElements('', '', notBeChecked, notBeChecked, notBeChecked, notBeChecked, notBeChecked, 'false');
+
+        cy.get('#telegramBotId')
+            .clear()
+            .type('botId')
+            .should('have.value', 'botId');
+
+        cy.get('#telegramChatId')
+            .clear()
+            .type('chatId')
+            .should('have.value', 'chatId');
+
+        cy.get('#telegramTmdbApiConnectionNotification')
+            .click();
+
+        cy.get('#telegramPlexServerConnectionNotification')
+            .click();
+
+        cy.get('#telegramPlexMetadataUpdateNotification')
+            .click();
+
+        cy.get('#telegramPlexLibraryUpdateNotification')
+            .click();
+
+        cy.get('#telegramGapsMissingCollectionsNotification')
+            .click();
+
+        cy.get('#telegramEnabled')
+            .select('Enabled');
+
+        cy.get('#saveTelegram')
+            .click();
+
+        cy.get('#telegramTestSuccess')
+            .should(notBeVisible);
+
+        cy.get('#telegramTestError')
+            .should(notBeVisible);
+
+        cy.get('#telegramSaveSuccess')
+            .should(beVisible);
+
+        cy.get('#telegramSaveError')
+            .should(notBeVisible);
+
+        cy.get('#telegramSpinner')
+            .should(notBeVisible);
+
+        cy.get('#testTelegram')
+            .click();
+
+        cy.get('#telegramTestSuccess')
+            .should(beVisible);
+
+        cy.get('#telegramTestError')
+            .should(notBeVisible);
+
+        cy.get('#telegramSaveSuccess')
+            .should(notBeVisible);
+
+        cy.get('#telegramSaveError')
+            .should(notBeVisible);
+
+        cy.get('#telegramSpinner')
+            .should(notBeVisible);
+    });
 });
+
+function checkElements(botId, chatId, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
+    cy.get('#telegramBotId')
+        .should('have.value', botId);
+
+    cy.get('#telegramChatId')
+        .should('have.value', chatId);
+
+    cy.get('#telegramTmdbApiConnectionNotification')
+        .should(tmdbApi);
+
+    cy.get('#telegramPlexServerConnectionNotification')
+        .should(plexServer);
+
+    cy.get('#telegramPlexMetadataUpdateNotification')
+        .should(plexMetadata);
+
+    cy.get('#telegramPlexLibraryUpdateNotification')
+        .should(plexLibrary);
+
+    cy.get('#telegramGapsMissingCollectionsNotification')
+        .should(gapsCollections);
+
+    cy.get('#telegramEnabled')
+        .should('have.value', enabled);
+}
