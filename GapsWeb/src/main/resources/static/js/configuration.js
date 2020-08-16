@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 $('#plexToken').val('');
                 $('#address').val('');
-                $('#port').val('32400');
+                $('#port').val(atob('MzI0MDA='));
 
                 const plexServerCard = $("#plexServerCard").html();
                 const theTemplate = Handlebars.compile(plexServerCard);

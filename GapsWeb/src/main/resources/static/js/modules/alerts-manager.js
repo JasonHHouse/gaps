@@ -31,6 +31,7 @@ export function hidePlexAlertsAndSpinners() {
     document.getElementById('plexSpinner').style.display = 'none';
     document.getElementById('plexSaveSuccess').style.display = 'none';
     document.getElementById('plexSaveError').style.display = 'none';
+    document.getElementById('plexTestSuccess').style.display = 'none';
     document.getElementById('plexTestError').style.display = 'none';
     document.getElementById('plexDeleteSuccess').style.display = 'none';
     document.getElementById('plexDeleteError').style.display = 'none';

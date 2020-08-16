@@ -65,18 +65,18 @@ describe('Plex Configuration Tests', function () {
     it('Test valid new Plex Server', () => {
         cy.get('#address')
             .clear()
-            .type('192.168.1.9')
-            .should('have.value', '192.168.1.9');
+            .type(atob('MTkyLjE2OC4xLjk='))
+            .should('have.value', atob('MTkyLjE2OC4xLjk='));
 
         cy.get('#port')
             .clear()
-            .type('32400')
-            .should('have.value', '32400');
+            .type(atob('MzI0MDA='))
+            .should('have.value', atob('MzI0MDA='));
 
         cy.get('#plexToken')
             .clear()
-            .type('mQw4uawxTyYEmqNUrvBz')
-            .should('have.value', 'mQw4uawxTyYEmqNUrvBz');
+            .type(atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='))
+            .should('have.value', atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
 
         cy.get('#testPlexServer')
             .click();
@@ -157,18 +157,18 @@ describe('Plex Configuration Tests', function () {
     it('Save valid Plex Server', () => {
         cy.get('#address')
             .clear()
-            .type('192.168.1.9')
-            .should('have.value', '192.168.1.9');
+            .type(atob('MTkyLjE2OC4xLjk='))
+            .should('have.value', atob('MTkyLjE2OC4xLjk='));
 
         cy.get('#port')
             .clear()
-            .type('32400')
-            .should('have.value', '32400');
+            .type(atob('MzI0MDA='))
+            .should('have.value', atob('MzI0MDA='));
 
         cy.get('#plexToken')
             .clear()
-            .type('mQw4uawxTyYEmqNUrvBz')
-            .should('have.value', 'mQw4uawxTyYEmqNUrvBz');
+            .type(atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='))
+            .should('have.value', atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
 
         cy.get('#addPlexServer')
             .click();
@@ -272,18 +272,18 @@ describe('Plex Configuration Tests', function () {
     it('Save duplicate valid Plex Server', () => {
         cy.get('#address')
             .clear()
-            .type('192.168.1.9')
-            .should('have.value', '192.168.1.9');
+            .type(atob('MTkyLjE2OC4xLjk='))
+            .should('have.value', atob('MTkyLjE2OC4xLjk='));
 
         cy.get('#port')
             .clear()
-            .type('32400')
-            .should('have.value', '32400');
+            .type(atob('MzI0MDA='))
+            .should('have.value', atob('MzI0MDA='));
 
         cy.get('#plexToken')
             .clear()
-            .type('mQw4uawxTyYEmqNUrvBz')
-            .should('have.value', 'mQw4uawxTyYEmqNUrvBz');
+            .type(atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='))
+            .should('have.value', atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
 
         cy.get('#addPlexServer')
             .click();
@@ -332,13 +332,13 @@ describe('Plex Configuration Tests', function () {
 
         cy.get('#port')
             .clear()
-            .type('32400')
-            .should('have.value', '32400');
+            .type(atob('MzI0MDA='))
+            .should('have.value', atob('MzI0MDA='));
 
         cy.get('#plexToken')
             .clear()
-            .type('mQw4uawxTyYEmqNUrvBz')
-            .should('have.value', 'mQw4uawxTyYEmqNUrvBz');
+            .type(atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='))
+            .should('have.value', atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
 
         cy.get('#addPlexServer')
             .click();
