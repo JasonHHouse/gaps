@@ -10,3 +10,4 @@ npm run uglifyjs-mislabeled-js
 npm run uglifyjs-alerts-manager-js
 npm run uglifyjs-notification-types-js
 npm run uglifyjs-telegram-notifications-js
+npm run uglifyjs-slack-notifications-js

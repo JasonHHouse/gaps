@@ -24,7 +24,8 @@
     "uglifyjs-alerts-manager-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/alerts-manager.js --compress --output GapsWeb/src/main/resources/static/js/modules/alerts-manager.min.js",
     "uglifyjs-mislabeled-js": "uglifyjs GapsWeb/src/main/resources/static/js/mislabeled.js --compress --output GapsWeb/src/main/resources/static/js/mislabeled.min.js",
     "uglifyjs-notification-types-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/notification-types.js --compress --output GapsWeb/src/main/resources/static/js/modules/notification-types.min.js",
-    "uglifyjs-telegram-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/telegram-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/telegram-notifications.min.js"
+    "uglifyjs-telegram-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/telegram-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/telegram-notifications.min.js",
+    "uglifyjs-slack-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/slack-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/slack-notifications.min.js"
   },
   "repository": {
     "type": "git",

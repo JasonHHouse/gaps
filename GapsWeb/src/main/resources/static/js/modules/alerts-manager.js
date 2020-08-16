@@ -46,10 +46,19 @@ export function hideTelegramAlertsAndSpinners() {
     document.getElementById('telegramSpinner').style.display = 'none';
 }
 
+export function hideSlackAlertsAndSpinners() {
+    document.getElementById('slackTestSuccess').style.display = 'none';
+    document.getElementById('slackTestError').style.display = 'none';
+    document.getElementById('slackSaveSuccess').style.display = 'none';
+    document.getElementById('slackSaveError').style.display = 'none';
+    document.getElementById('slackSpinner').style.display = 'none';
+}
+
 export function hideAllAlertsAndSpinners() {
     hideTmdbAlertsAndSpinners();
     hideDeleteAlertsAndSpinners();
     hideScheduleAlertsAndSpinners();
     hidePlexAlertsAndSpinners();
     hideTelegramAlertsAndSpinners();
+    hideSlackAlertsAndSpinners();
 }

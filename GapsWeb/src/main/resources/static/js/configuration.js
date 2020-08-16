@@ -12,6 +12,7 @@
 
 import {Payload} from '/js/modules/payload.min.js';
 import {saveTelegramNotifications, testTelegramNotifications} from '/js/modules/telegram-notifications.min.js'
+import {saveSlackNotifications, testSlackNotifications} from '/js/modules/slack-notifications.min.js'
 import {hideAllAlertsAndSpinners} from "./modules/alerts-manager.min.js";
 
 let plexSpinner, plexSaveSuccess, plexSaveError, plexTestSuccess, plexTestError, plexDeleteSuccess, plexDeleteError,
@@ -103,6 +104,8 @@ document.addEventListener('DOMContentLoaded', function () {
     //Exposing function for onClick() from module
     window.saveTelegram = saveTelegramNotifications;
     window.testTelegram = testTelegramNotifications;
+    window.saveSlack = saveSlackNotifications;
+    window.testSlack = testSlackNotifications;
 });
 
 function testTmdbKey() {

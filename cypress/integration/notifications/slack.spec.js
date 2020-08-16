@@ -1,7 +1,12 @@
 import {nuke} from "../common";
 
+const notBeChecked = 'not.be.checked';
+const beChecked = 'be.checked';
+const notBeVisible = 'not.be.visible';
+const beVisible = 'be.visible';
+
 describe('Check Slack Notification Agent', function () {
-    before(nuke);
+    beforeEach(nuke);
 
     it('Check for Empty Slack Notification Agent Settings', () => {
 
@@ -42,12 +47,12 @@ describe('Check Slack Notification Agent', function () {
     it('Set Slack Notification Agent Settings', () => {
 
         let object = {
-            "enabled" : true,
-            "notificationTypes" : ["TEST", "TMDB_API_CONNECTION", "PLEX_SERVER_CONNECTION", "PLEX_METADATA_UPDATE", "PLEX_LIBRARY_UPDATE", "GAPS_MISSING_COLLECTIONS"],
-            "webHookUrl" : "webHookUrl"
+            "enabled": true,
+            "notificationTypes": ["TEST", "TMDB_API_CONNECTION", "PLEX_SERVER_CONNECTION", "PLEX_METADATA_UPDATE", "PLEX_LIBRARY_UPDATE", "GAPS_MISSING_COLLECTIONS"],
+            "webHookUrl": "webHookUrl"
         };
 
-        cy.request('PUT', '/notifications/slack',object)
+        cy.request('PUT', '/notifications/slack', object)
             .then((resp) => {
                 let body = resp.body;
                 expect(body.code).to.eq(90);
@@ -86,17 +91,16 @@ describe('Check Slack Notification Agent', function () {
                     .should('have.value', 'true');
             });
     });
-
 
     it('Set TMDB Only Slack Notification Agent Settings', () => {
 
         let object = {
-            "enabled" : true,
-            "notificationTypes" : ["TMDB_API_CONNECTION"],
-            "webHookUrl" : "webHookUrl"
+            "enabled": true,
+            "notificationTypes": ["TMDB_API_CONNECTION"],
+            "webHookUrl": "webHookUrl"
         };
 
-        cy.request('PUT', '/notifications/slack',object)
+        cy.request('PUT', '/notifications/slack', object)
             .then((resp) => {
                 let body = resp.body;
                 expect(body.code).to.eq(90);
@@ -135,4 +139,216 @@ describe('Check Slack Notification Agent', function () {
                     .should('have.value', 'true');
             });
     });
+
+
+    it('Check saving Slack Notification', () => {
+
+        cy.visit('/configuration');
+
+        cy.get('#notificationTab')
+            .click();
+
+        checkElements('', notBeChecked, notBeChecked, notBeChecked, notBeChecked, notBeChecked, 'false');
+
+        cy.get('#slackWebHookUrl')
+            .clear()
+            .type('slackWebHookUrl')
+            .should('have.value', 'slackWebHookUrl');
+
+        cy.get('#slackTmdbApiConnectionNotification')
+            .click();
+
+        cy.get('#slackPlexServerConnectionNotification')
+            .click();
+
+        cy.get('#slackPlexMetadataUpdateNotification')
+            .click();
+
+        cy.get('#slackPlexLibraryUpdateNotification')
+            .click();
+
+        cy.get('#slackGapsMissingCollectionsNotification')
+            .click();
+
+        cy.get('#slackEnabled')
+            .select('Enabled');
+
+        cy.get('#saveSlack')
+            .click();
+
+        cy.get('#slackTestSuccess')
+            .should(notBeVisible);
+
+        cy.get('#slackTestError')
+            .should(notBeVisible);
+
+        cy.get('#slackSaveSuccess')
+            .should(beVisible);
+
+        cy.get('#slackSaveError')
+            .should(notBeVisible);
+
+        cy.get('#slackSpinner')
+            .should(notBeVisible);
+    });
+
+    it('Check saving and test Slack Notification', () => {
+
+        cy.visit('/configuration');
+
+        cy.get('#notificationTab')
+            .click();
+
+        checkElements('', notBeChecked, notBeChecked, notBeChecked, notBeChecked, notBeChecked, 'false');
+
+        cy.get('#slackWebHookUrl')
+            .clear()
+            .type(atob('aHR0cHM6Ly9ob29rcy5zbGFjay5jb20vc2VydmljZXMvVDAxN1hSMEJNUlYvQjAxOEs0TkE3NjAvemsxcVVWMno1N0w4c3lqQ0ExUU8xRFFE'))
+            .should('have.value', atob('aHR0cHM6Ly9ob29rcy5zbGFjay5jb20vc2VydmljZXMvVDAxN1hSMEJNUlYvQjAxOEs0TkE3NjAvemsxcVVWMno1N0w4c3lqQ0ExUU8xRFFE'));
+
+        cy.get('#slackTmdbApiConnectionNotification')
+            .click();
+
+        cy.get('#slackPlexServerConnectionNotification')
+            .click();
+
+        cy.get('#slackPlexMetadataUpdateNotification')
+            .click();
+
+        cy.get('#slackPlexLibraryUpdateNotification')
+            .click();
+
+        cy.get('#slackGapsMissingCollectionsNotification')
+            .click();
+
+        cy.get('#slackEnabled')
+            .select('Enabled');
+
+        cy.get('#saveSlack')
+            .click();
+
+        cy.get('#slackTestSuccess')
+            .should(notBeVisible);
+
+        cy.get('#slackTestError')
+            .should(notBeVisible);
+
+        cy.get('#slackSaveSuccess')
+            .should(beVisible);
+
+        cy.get('#slackSaveError')
+            .should(notBeVisible);
+
+        cy.get('#slackSpinner')
+            .should(notBeVisible);
+
+        cy.get('#testSlack')
+            .click();
+
+        cy.get('#slackTestSuccess')
+            .should(beVisible);
+
+        cy.get('#slackTestError')
+            .should(notBeVisible);
+
+        cy.get('#slackSaveSuccess')
+            .should(notBeVisible);
+
+        cy.get('#slackSaveError')
+            .should(notBeVisible);
+
+        cy.get('#slackSpinner')
+            .should(notBeVisible);
+    });
+
+    it('Check Successful Saving and Failure Testing Slack Notification', () => {
+
+        cy.visit('/configuration');
+
+        cy.get('#notificationTab')
+            .click();
+
+        checkElements('', notBeChecked, notBeChecked, notBeChecked, notBeChecked, notBeChecked, 'false');
+
+        cy.get('#slackWebHookUrl')
+            .clear();
+
+        cy.get('#slackTmdbApiConnectionNotification')
+            .click();
+
+        cy.get('#slackPlexServerConnectionNotification')
+            .click();
+
+        cy.get('#slackPlexMetadataUpdateNotification')
+            .click();
+
+        cy.get('#slackPlexLibraryUpdateNotification')
+            .click();
+
+        cy.get('#slackGapsMissingCollectionsNotification')
+            .click();
+
+        cy.get('#slackEnabled')
+            .select('Enabled');
+
+        cy.get('#saveSlack')
+            .click();
+
+        cy.get('#slackTestSuccess')
+            .should(notBeVisible);
+
+        cy.get('#slackTestError')
+            .should(notBeVisible);
+
+        cy.get('#slackSaveSuccess')
+            .should(beVisible);
+
+        cy.get('#slackSaveError')
+            .should(notBeVisible);
+
+        cy.get('#slackSpinner')
+            .should(notBeVisible);
+
+        cy.get('#testSlack')
+            .click();
+
+        cy.get('#slackTestSuccess')
+            .should(notBeVisible);
+
+        cy.get('#slackTestError')
+            .should(beVisible);
+
+        cy.get('#slackSaveSuccess')
+            .should(notBeVisible);
+
+        cy.get('#slackSaveError')
+            .should(notBeVisible);
+
+        cy.get('#slackSpinner')
+            .should(notBeVisible);
+    });
 });
+
+
+function checkElements(slackWebHookUrl, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
+    cy.get('#slackWebHookUrl')
+        .should('have.value', slackWebHookUrl);
+
+    cy.get('#slackTmdbApiConnectionNotification')
+        .should(tmdbApi);
+
+    cy.get('#slackPlexServerConnectionNotification')
+        .should(plexServer);
+
+    cy.get('#slackPlexMetadataUpdateNotification')
+        .should(plexMetadata);
+
+    cy.get('#slackPlexLibraryUpdateNotification')
+        .should(plexLibrary);
+
+    cy.get('#slackGapsMissingCollectionsNotification')
+        .should(gapsCollections);
+
+    cy.get('#slackEnabled')
+        .should('have.value', enabled);
+}

@@ -121,15 +121,104 @@
     </div>
 </header>
 
-<nav th:fragment="menu">
-    <a th:href="@{/}">Homepage</a>
-    <a th:href="@{/about}">About Me</a>
-    <a th:href="@{/blog}">Blog</a>
-    <a th:href="@{/contact}">Contact</a>
-</nav>
+<header th:fragment="slack">
+    <h4>Slack Notifications</h4>
+    <form class="needs-validation" id="slackConfiguration" novalidate>
+        <div class="form-group">
+            <label for="slackWebHookUrl">Bot ID</label>
+            <input type="text" class="form-control" id="slackWebHookUrl" aria-describedby="slackWebHookUrlHelp"
+                   th:value="${plexProperties?.slackProperties?.webHookUrl}">
+            <small id="slackWebHookUrlHelp" class="form-text text-muted">We'll never share your email with
+                anyone else.</small>
+        </div>
+        <div class="form-group">
+            <label>Notification Types</label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.slackProperties?.hasTmdbConnectionApi()}"
+                       id="slackTmdbApiConnectionNotification">
+                <label class="form-check-label" for="slackTmdbApiConnectionNotification">
+                    TMDB API Connection
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.slackProperties?.hasPlexServerConnection()}"
+                       id="slackPlexServerConnectionNotification">
+                <label class="form-check-label" for="slackPlexServerConnectionNotification">
+                    Plex Server Connection
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.slackProperties?.hasPlexMetadataUpdate()}"
+                       id="slackPlexMetadataUpdateNotification">
+                <label class="form-check-label" for="slackPlexMetadataUpdateNotification">
+                    Plex Metadata Update
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.slackProperties?.hasPlexLibraryUpdate()}"
+                       id="slackPlexLibraryUpdateNotification">
+                <label class="form-check-label" for="slackPlexLibraryUpdateNotification">
+                    Plex Library Update
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.slackProperties?.hasGapsMissingCollections()}"
+                       id="slackGapsMissingCollectionsNotification">
+                <label class="form-check-label" for="slackGapsMissingCollectionsNotification">
+                    Gaps Missing Collections
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="slackEnabled">Notification Agent</label>
+            <select class="form-control" id="slackEnabled">
+                <option th:value="false">Disabled
+                </option>
+                <option th:value="true" th:selected="${plexProperties?.slackProperties?.getEnabled() ?: false}">
+                    Enabled
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <a class="btn btn-primary" href="javascript:void(0)" id="saveSlack" onclick="saveSlack();"
+               type="button">Save</a>
+            <a class="btn btn-info" href="javascript:void(0)" id="testSlack" onclick="testSlack();"
+               type="button">Test</a>
+        </div>
+    </form>
 
-<footer th:fragment="footer">
-    <p>&copy; 2020 attacomsian.com</p>
-</footer>
+    <div class="spinner-border text-primary gaps-hide top-margin" id="slackSpinner" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+
+    <div class="alert alert-dismissible alert-danger gaps-hide top-margin" id="slackTestError">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Error!</h4>
+        <p class="mb-0">Could not connect to Slack. Check the key and logs and try again.</p>
+    </div>
+
+    <div class="alert alert-dismissible alert-success gaps-hide top-margin" id="slackTestSuccess">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Success!</h4>
+        <p class="mb-0">Slack message sent.</p>
+    </div>
+
+    <div class="alert alert-dismissible alert-danger gaps-hide top-margin" id="slackSaveError">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Error!</h4>
+        <p class="mb-0">Could not save your Slack notification. Check the logs and try again.</p>
+    </div>
+
+    <div class="alert alert-dismissible alert-success gaps-hide top-margin" id="slackSaveSuccess">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Success!</h4>
+        <p class="mb-0">Your Slack notification saved successfully.</p>
+    </div>
+</header>
 </body>
 </html>
