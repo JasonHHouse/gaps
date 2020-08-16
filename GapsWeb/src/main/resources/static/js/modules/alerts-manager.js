@@ -37,9 +37,18 @@ export function hidePlexAlertsAndSpinners() {
     document.getElementById('plexDuplicateError').style.display = 'none';
 }
 
+export function hideTelegramAlertsAndSpinners() {
+    document.getElementById('telegramTestSuccess').style.display = 'none';
+    document.getElementById('telegramTestError').style.display = 'none';
+    document.getElementById('telegramSaveSuccess').style.display = 'none';
+    document.getElementById('telegramSaveError').style.display = 'none';
+    document.getElementById('telegramSpinner').style.display = 'none';
+}
+
 export function hideAllAlertsAndSpinners() {
     hideTmdbAlertsAndSpinners();
     hideDeleteAlertsAndSpinners();
     hideScheduleAlertsAndSpinners();
     hidePlexAlertsAndSpinners();
+    hideTelegramAlertsAndSpinners();
 }

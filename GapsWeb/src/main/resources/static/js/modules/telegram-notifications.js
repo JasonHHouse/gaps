@@ -9,23 +9,29 @@
  */
 
 import {getNotificationTypes} from '/js/modules/notification-types.min.js';
+import {hideAllAlertsAndSpinners} from "/js/modules/alerts-manager.min.js";
 
 export async function testTelegramNotifications() {
     'use strict';
+    hideAllAlertsAndSpinners();
+    document.getElementById('telegramSpinner').style.display = 'block';
 
     let response = await fetch('/notifications/test/0', {
         method: 'put',
     });
-    let data = await response.json()
+    await response.json();
     if (response.ok) {
-        //Good
+        hideAllAlertsAndSpinners();
+        document.getElementById('telegramTestSuccess').style.display = 'block';
     } else {
-        //Show errors
+        hideAllAlertsAndSpinners();
+        document.getElementById('telegramTestError').style.display = 'block';
     }
 }
 
 export async function saveTelegramNotifications() {
     'use strict';
+    hideAllAlertsAndSpinners();
 
     const body = {};
     body.botId = document.getElementById('telegramBotId').value;
@@ -45,11 +51,12 @@ export async function saveTelegramNotifications() {
         },
         body: JSON.stringify(body)
     });
-    let data = await response.json()
+    await response.json();
     if (response.ok) {
-        //Good
+        hideAllAlertsAndSpinners();
+        document.getElementById('telegramSaveSuccess').style.display = 'block';
     } else {
-        //Show errors
+        hideAllAlertsAndSpinners();
+        document.getElementById('telegramSaveError').style.display = 'block';
     }
-
 }
