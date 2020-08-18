@@ -1,9 +1,4 @@
-import {nuke} from "../common";
-
-const notBeChecked = 'not.be.checked';
-const beChecked = 'be.checked';
-const notBeVisible = 'not.be.visible';
-const beVisible = 'be.visible';
+import {CYPRESS_VALUES, nuke} from "../common";
 
 describe('Check Telegram Notification Agent', function () {
     beforeEach(nuke);
@@ -83,7 +78,7 @@ describe('Check Telegram Notification Agent', function () {
                 cy.get('#notificationTab')
                     .click();
 
-                checkElements('botId', 'chatId', beChecked, notBeChecked, notBeChecked, notBeChecked, notBeChecked, 'true');
+                checkElements('botId', 'chatId', CYPRESS_VALUES.beChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, 'true');
             });
     });
 
@@ -94,7 +89,7 @@ describe('Check Telegram Notification Agent', function () {
         cy.get('#notificationTab')
             .click();
 
-        checkElements('', '', notBeChecked, notBeChecked, notBeChecked, notBeChecked, notBeChecked, 'false');
+        checkElements('', '', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, 'false');
 
         cy.get('#telegramBotId')
             .clear()
@@ -128,19 +123,19 @@ describe('Check Telegram Notification Agent', function () {
             .click();
 
         cy.get('#telegramTestSuccess')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#telegramTestError')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#telegramSaveSuccess')
-            .should(beVisible);
+            .should(CYPRESS_VALUES.beVisible);
 
         cy.get('#telegramSaveError')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#telegramSpinner')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
     });
 
     it('Check saving and test Telegram Notification', () => {
@@ -150,7 +145,7 @@ describe('Check Telegram Notification Agent', function () {
         cy.get('#notificationTab')
             .click();
 
-        checkElements('', '', notBeChecked, notBeChecked, notBeChecked, notBeChecked, notBeChecked, 'false');
+        checkElements('', '', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, 'false');
 
         cy.get('#telegramBotId')
             .clear()
@@ -184,37 +179,37 @@ describe('Check Telegram Notification Agent', function () {
             .click();
 
         cy.get('#telegramTestSuccess')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#telegramTestError')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#telegramSaveSuccess')
-            .should(beVisible);
+            .should(CYPRESS_VALUES.beVisible);
 
         cy.get('#telegramSaveError')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#telegramSpinner')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#testTelegram')
             .click();
 
         cy.get('#telegramTestSuccess')
-            .should(beVisible);
+            .should(CYPRESS_VALUES.beVisible);
 
         cy.get('#telegramTestError')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#telegramSaveSuccess')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#telegramSaveError')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#telegramSpinner')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
     });
 
     it('Check Successful Saving and Failure Testing Telegram Notification', () => {
@@ -224,7 +219,7 @@ describe('Check Telegram Notification Agent', function () {
         cy.get('#notificationTab')
             .click();
 
-        checkElements('', '', notBeChecked, notBeChecked, notBeChecked, notBeChecked, notBeChecked, 'false');
+        checkElements('', '',CYPRESS_VALUES. notBeChecked, CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
 
         cy.get('#telegramBotId')
             .clear();
@@ -254,37 +249,37 @@ describe('Check Telegram Notification Agent', function () {
             .click();
 
         cy.get('#telegramTestSuccess')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#telegramTestError')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#telegramSaveSuccess')
-            .should(beVisible);
+            .should(CYPRESS_VALUES.beVisible);
 
         cy.get('#telegramSaveError')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#telegramSpinner')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#testTelegram')
             .click();
 
         cy.get('#telegramTestSuccess')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#telegramTestError')
-            .should(beVisible);
+            .should(CYPRESS_VALUES.beVisible);
 
         cy.get('#telegramSaveSuccess')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#telegramSaveError')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#telegramSpinner')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
     });
 });
 

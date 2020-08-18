@@ -1,5 +1,12 @@
 let appHasStarted;
 
+export const CYPRESS_VALUES = {
+    notBeChecked: 'not.be.checked',
+    beChecked: 'be.checked',
+    notBeVisible: 'not.be.visible',
+    beVisible: 'be.visible'
+};
+
 export function spyOnAddEventListener(win) {
     // win = window object in our application
     const addListener = win.EventTarget.prototype.addEventListener;

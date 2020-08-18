@@ -1,9 +1,4 @@
-import {nuke} from "../common";
-
-const notBeChecked = 'not.be.checked';
-const beChecked = 'be.checked';
-const notBeVisible = 'not.be.visible';
-const beVisible = 'be.visible';
+import {CYPRESS_VALUES, nuke} from "../common";
 
 describe('Check Slack Notification Agent', function () {
     beforeEach(nuke);
@@ -148,7 +143,7 @@ describe('Check Slack Notification Agent', function () {
         cy.get('#notificationTab')
             .click();
 
-        checkElements('', notBeChecked, notBeChecked, notBeChecked, notBeChecked, notBeChecked, 'false');
+        checkElements('',CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, 'false');
 
         cy.get('#slackWebHookUrl')
             .clear()
@@ -177,19 +172,19 @@ describe('Check Slack Notification Agent', function () {
             .click();
 
         cy.get('#slackTestSuccess')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#slackTestError')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#slackSaveSuccess')
-            .should(beVisible);
+            .should(CYPRESS_VALUES.beVisible);
 
         cy.get('#slackSaveError')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#slackSpinner')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
     });
 
     it('Check saving and test Slack Notification', () => {
@@ -199,7 +194,7 @@ describe('Check Slack Notification Agent', function () {
         cy.get('#notificationTab')
             .click();
 
-        checkElements('', notBeChecked, notBeChecked, notBeChecked, notBeChecked, notBeChecked, 'false');
+        checkElements('', CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, 'false');
 
         cy.get('#slackWebHookUrl')
             .clear()
@@ -228,37 +223,37 @@ describe('Check Slack Notification Agent', function () {
             .click();
 
         cy.get('#slackTestSuccess')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#slackTestError')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#slackSaveSuccess')
-            .should(beVisible);
+            .should(CYPRESS_VALUES.beVisible);
 
         cy.get('#slackSaveError')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#slackSpinner')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#testSlack')
             .click();
 
         cy.get('#slackTestSuccess')
-            .should(beVisible);
+            .should(CYPRESS_VALUES.beVisible);
 
         cy.get('#slackTestError')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#slackSaveSuccess')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#slackSaveError')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#slackSpinner')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
     });
 
     it('Check Successful Saving and Failure Testing Slack Notification', () => {
@@ -268,7 +263,7 @@ describe('Check Slack Notification Agent', function () {
         cy.get('#notificationTab')
             .click();
 
-        checkElements('', notBeChecked, notBeChecked, notBeChecked, notBeChecked, notBeChecked, 'false');
+        checkElements('', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
 
         cy.get('#slackWebHookUrl')
             .clear();
@@ -295,37 +290,37 @@ describe('Check Slack Notification Agent', function () {
             .click();
 
         cy.get('#slackTestSuccess')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#slackTestError')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#slackSaveSuccess')
-            .should(beVisible);
+            .should(CYPRESS_VALUES.beVisible);
 
         cy.get('#slackSaveError')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#slackSpinner')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#testSlack')
             .click();
 
         cy.get('#slackTestSuccess')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#slackTestError')
-            .should(beVisible);
+            .should(CYPRESS_VALUES.beVisible);
 
         cy.get('#slackSaveSuccess')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#slackSaveError')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
 
         cy.get('#slackSpinner')
-            .should(notBeVisible);
+            .should(CYPRESS_VALUES.notBeVisible);
     });
 });
 

@@ -45,7 +45,7 @@ export async function savePushBulletNotifications() {
         document.getElementById('pushBulletPlexLibraryUpdateNotification').checked,
         document.getElementById('pushBulletGapsMissingCollectionsNotification').checked);
 
-    let response = await fetch(`/notifications/pushBullet`, {
+    let response = await fetch(`/notifications/pushbullet`, {
         method: 'put',
         headers: {
             'Accept': 'application/json',
