@@ -18,18 +18,18 @@
             <label for="telegramBotId">Bot ID</label>
             <input type="text" class="form-control" id="telegramBotId" aria-describedby="telegramBotIdHelp"
                    th:value="${plexProperties?.telegramProperties?.botId}">
-            <small id="telegramBotIdHelp" class="form-text text-muted">We'll never share your email with
+            <!--<small id="telegramBotIdHelp" class="form-text text-muted">We'll never share your email with
                 anyone
-                else.</small>
+                else.</small>-->
         </div>
         <div class="form-group">
             <label for="telegramChatId">Chat ID</label>
             <input type="text" class="form-control" id="telegramChatId"
                    aria-describedby="telegramChatIdHelp"
                    th:value="${plexProperties?.telegramProperties?.chatId}">
-            <small id="telegramChatIdHelp" class="form-text text-muted">We'll never share your email with
+            <!--<small id="telegramChatIdHelp" class="form-text text-muted">We'll never share your email with
                 anyone
-                else.</small>
+                else.</small>-->
         </div>
         <div class="form-group">
             <label>Notification Types</label>
@@ -128,8 +128,8 @@
             <label for="slackWebHookUrl">Bot ID</label>
             <input type="text" class="form-control" id="slackWebHookUrl" aria-describedby="slackWebHookUrlHelp"
                    th:value="${plexProperties?.slackProperties?.webHookUrl}">
-            <small id="slackWebHookUrlHelp" class="form-text text-muted">We'll never share your email with
-                anyone else.</small>
+            <!--<small id="slackWebHookUrlHelp" class="form-text text-muted">We'll never share your email with
+                anyone else.</small>-->
         </div>
         <div class="form-group">
             <label>Notification Types</label>
@@ -229,16 +229,16 @@
             <input type="text" class="form-control" id="pushBulletChannelTag"
                    aria-describedby="pushBulletChannelTagHelp"
                    th:value="${plexProperties?.pushBulletProperties?.channel_tag}">
-            <small id="pushBulletChannelTagHelp" class="form-text text-muted">We'll never share your email with
-                anyone else.</small>
+        <!--    <small id="pushBulletChannelTagHelp" class="form-text text-muted">We'll never share your email with
+                anyone else.</small>-->
         </div>
         <div class="form-group">
             <label for="pushBulletAccessToken">Access Token</label>
             <input type="text" class="form-control" id="pushBulletAccessToken"
                    aria-describedby="pushBulletAccessTokenHelp"
                    th:value="${plexProperties?.pushBulletProperties?.accessToken}">
-            <small id="pushBulletAccessTokenHelp" class="form-text text-muted">We'll never share your email with
-                anyone else.</small>
+            <!--<small id="pushBulletAccessTokenHelp" class="form-text text-muted">We'll never share your email with
+                anyone else.</small>-->
         </div>
         <div class="form-group">
             <label>Notification Types</label>
@@ -338,15 +338,15 @@
             <label for="gotifyAddress">Address</label>
             <input type="text" class="form-control" id="gotifyAddress" aria-describedby="gotifyAddressHelp"
                    th:value="${plexProperties?.gotifyProperties?.address}">
-            <small id="gotifyAddressHelp" class="form-text text-muted">We'll never share your email with anyone
-                else.</small>
+       <!--     <small id="gotifyAddressHelp" class="form-text text-muted">We'll never share your email with anyone
+                else.</small>-->
         </div>
         <div class="form-group">
             <label for="gotifyToken">Token</label>
             <input type="text" class="form-control" id="gotifyToken" aria-describedby="gotifyTokenHelp"
                    th:value="${plexProperties?.gotifyProperties?.token}">
-            <small id="gotifyTokenHelp" class="form-text text-muted">We'll never share your email with anyone
-                else.</small>
+            <!--<small id="gotifyTokenHelp" class="form-text text-muted">We'll never share your email with anyone
+                else.</small>-->
         </div>
         <div class="form-group">
             <label>Notification Types</label>
@@ -446,58 +446,58 @@
             <label for="emailUsername">Username</label>
             <input type="text" class="form-control" id="emailUsername" aria-describedby="emailUsernameHelp"
                    th:value="${plexProperties?.emailProperties?.username}">
-            <small id="emailUsernameHelp" class="form-text text-muted">We'll never share your email with anyone
-                else.</small>
+         <!--   <small id="emailUsernameHelp" class="form-text text-muted">We'll never share your email with anyone
+                else.</small>-->
         </div>
         <div class="form-group">
             <label for="emailPassword">Password</label>
             <input type="password" class="form-control" id="emailPassword" aria-describedby="emailPasswordHelp"
                    th:value="${plexProperties?.emailProperties?.password}">
-            <small id="emailPasswordHelp" class="form-text text-muted">We'll never share your email with anyone
-                else.</small>
+            <!--<small id="emailPasswordHelp" class="form-text text-muted">We'll never share your email with anyone
+                else.</small>-->
         </div>
         <div class="form-group">
             <label for="emailMailTo">Mail To</label>
             <input type="email" class="form-control" id="emailMailTo" aria-describedby="emailMailToHelp"
                    th:value="${plexProperties?.emailProperties?.mailTo}">
-            <small id="emailMailToHelp" class="form-text text-muted">We'll never share your email with anyone
-                else.</small>
+            <!--<small id="emailMailToHelp" class="form-text text-muted">We'll never share your email with anyone
+                else.</small>-->
         </div>
         <div class="form-group">
             <label for="emailMailFrom">Mail From</label>
             <input type="email" class="form-control" id="emailMailFrom" aria-describedby="emailMailFromHelp"
                    th:value="${plexProperties?.emailProperties?.mailFrom}">
-            <small id="emailMailFromHelp" class="form-text text-muted">We'll never share your email with anyone
-                else.</small>
+            <!--<small id="emailMailFromHelp" class="form-text text-muted">We'll never share your email with anyone
+                else.</small>-->
         </div>
         <div class="form-group">
             <label for="emailServer">Mail Server</label>
             <input type="url" class="form-control" id="emailServer" aria-describedby="emailServerHelp"
                    th:value="${plexProperties?.emailProperties?.mailServer}">
-            <small id="emailServerHelp" class="form-text text-muted">We'll never share your email with anyone
-                else.</small>
+            <!--<small id="emailServerHelp" class="form-text text-muted">We'll never share your email with anyone
+                else.</small>-->
         </div>
         <div class="form-group">
             <label for="emailPort">Mail Port</label>
             <input type="number" class="form-control" id="emailPort" aria-describedby="emailPortHelp"
                    th:value="${plexProperties?.emailProperties?.mailPort}">
-            <small id="emailPortHelp" class="form-text text-muted">We'll never share your email with anyone
-                else.</small>
+            <!--<small id="emailPortHelp" class="form-text text-muted">We'll never share your email with anyone
+                else.</small>-->
         </div>
         <div class="form-group">
             <label for="emailTransportProtocol">Transport Protocol</label>
             <input type="text" class="form-control" id="emailTransportProtocol"
                    aria-describedby="emailTransportProtocolHelp"
                    th:value="${plexProperties?.emailProperties?.mailTransportProtocol}">
-            <small id="emailTransportProtocolHelp" class="form-text text-muted">We'll never share your email
-                with anyone else.</small>
+         <!--   <small id="emailTransportProtocolHelp" class="form-text text-muted">We'll never share your email
+                with anyone else.</small>-->
         </div>
         <div class="form-group">
             <label for="emailSmtpAuth">SMTP Auth</label>
             <input type="text" class="form-control" id="emailSmtpAuth" aria-describedby="emailSmtpAuthHelp"
                    th:value="${plexProperties?.emailProperties?.mailSmtpAuth}">
-            <small id="emailSmtpAuthHelp" class="form-text text-muted">We'll never share your email with anyone
-                else.</small>
+            <!--<small id="emailSmtpAuthHelp" class="form-text text-muted">We'll never share your email with anyone
+                else.</small>-->
         </div>
         <div class="form-group">
             <label for="emailSmtpTlsEnabled">SMTP TLS Enabled</label>
