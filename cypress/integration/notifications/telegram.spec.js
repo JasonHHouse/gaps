@@ -16,7 +16,7 @@ describe('Check Telegram Notification Agent', function () {
                 cy.get('#notificationTab')
                     .click();
 
-                checkElements('', '', notBeChecked, notBeChecked, notBeChecked, notBeChecked, notBeChecked, 'false');
+                checkElements('', '', CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, 'false');
             });
     });
 
@@ -47,7 +47,7 @@ describe('Check Telegram Notification Agent', function () {
                 cy.get('#notificationTab')
                     .click();
 
-                checkElements('botId', 'chatId', beChecked, beChecked, beChecked, beChecked, beChecked, 'true');
+                checkElements('botId', 'chatId', CYPRESS_VALUES.beChecked, CYPRESS_VALUES.beChecked,CYPRESS_VALUES. beChecked,CYPRESS_VALUES. beChecked,CYPRESS_VALUES. beChecked, 'true');
             });
     });
 

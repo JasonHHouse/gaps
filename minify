@@ -12,3 +12,4 @@ npm run uglifyjs-notification-types-js
 npm run uglifyjs-telegram-notifications-js
 npm run uglifyjs-slack-notifications-js
 npm run uglifyjs-push-bullet-notifications-js
+npm run uglifyjs-gotify-notifications-js

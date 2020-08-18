@@ -62,6 +62,14 @@ export function hidePushBulletAlertsAndSpinners() {
     document.getElementById('pushBulletSpinner').style.display = 'none';
 }
 
+export function hideGotifyAlertsAndSpinners() {
+    document.getElementById('gotifyTestSuccess').style.display = 'none';
+    document.getElementById('gotifyTestError').style.display = 'none';
+    document.getElementById('gotifySaveSuccess').style.display = 'none';
+    document.getElementById('gotifySaveError').style.display = 'none';
+    document.getElementById('gotifySpinner').style.display = 'none';
+}
+
 export function hideAllAlertsAndSpinners() {
     hideTmdbAlertsAndSpinners();
     hideDeleteAlertsAndSpinners();
@@ -70,4 +78,5 @@ export function hideAllAlertsAndSpinners() {
     hideTelegramAlertsAndSpinners();
     hideSlackAlertsAndSpinners();
     hidePushBulletAlertsAndSpinners();
+    hideGotifyAlertsAndSpinners();
 }

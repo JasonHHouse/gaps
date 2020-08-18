@@ -330,5 +330,113 @@
         <p class="mb-0">Your PushBullet notification saved successfully.</p>
     </div>
 </header>
+
+<header th:fragment="gotify">
+    <h4>Gotify Notifications</h4>
+    <form class="needs-validation" id="gotifyConfiguration" novalidate>
+        <div class="form-group">
+            <label for="gotifyAddress">Address</label>
+            <input type="text" class="form-control" id="gotifyAddress" aria-describedby="gotifyAddressHelp"
+                   th:value="${plexProperties?.gotifyProperties?.address}">
+            <small id="gotifyAddressHelp" class="form-text text-muted">We'll never share your email with anyone
+                else.</small>
+        </div>
+        <div class="form-group">
+            <label for="gotifyToken">Token</label>
+            <input type="text" class="form-control" id="gotifyToken" aria-describedby="gotifyTokenHelp"
+                   th:value="${plexProperties?.gotifyProperties?.token}">
+            <small id="gotifyTokenHelp" class="form-text text-muted">We'll never share your email with anyone
+                else.</small>
+        </div>
+        <div class="form-group">
+            <label>Notification Types</label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.gotifyProperties?.hasTmdbConnectionApi()}"
+                       id="gotifyTmdbApiConnectionNotification">
+                <label class="form-check-label" for="gotifyTmdbApiConnectionNotification">
+                    TMDB API Connection
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.gotifyProperties?.hasPlexServerConnection()}"
+                       id="gotifyPlexServerConnectionNotification">
+                <label class="form-check-label" for="gotifyPlexServerConnectionNotification">
+                    Plex Server Connection
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.gotifyProperties?.hasPlexMetadataUpdate()}"
+                       id="gotifyPlexMetadataUpdateNotification">
+                <label class="form-check-label" for="gotifyPlexMetadataUpdateNotification">
+                    Plex Metadata Update
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.gotifyProperties?.hasPlexLibraryUpdate()}"
+                       id="gotifyPlexLibraryUpdateNotification">
+                <label class="form-check-label" for="gotifyPlexLibraryUpdateNotification">
+                    Plex Library Update
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.gotifyProperties?.hasGapsMissingCollections()}"
+                       id="gotifyGapsMissingCollectionsNotification">
+                <label class="form-check-label" for="gotifyGapsMissingCollectionsNotification">
+                    Gaps Missing Collections
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="gotifyEnabled">Notification Agent</label>
+            <select class="form-control" id="gotifyEnabled">
+                <option th:value="false">Disabled
+                </option>
+                <option th:value="true"
+                        th:selected="${plexProperties?.gotifyProperties?.getEnabled() ?: false}">
+                    Enabled
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <a class="btn btn-primary" href="javascript:void(0)" id="saveGotify" onclick="saveGotify();"
+               type="button">Save</a>
+            <a class="btn btn-info" href="javascript:void(0)" id="testGotify" onclick="testGotify();"
+               type="button">Test</a>
+        </div>
+    </form>
+
+    <div class="spinner-border text-primary gaps-hide top-margin" id="gotifySpinner" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+
+    <div class="alert alert-dismissible alert-danger gaps-hide top-margin" id="gotifyTestError">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Error!</h4>
+        <p class="mb-0">Could not connect to Gotify. Check the key and logs and try again.</p>
+    </div>
+
+    <div class="alert alert-dismissible alert-success gaps-hide top-margin" id="gotifyTestSuccess">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Success!</h4>
+        <p class="mb-0">Gotify message sent.</p>
+    </div>
+
+    <div class="alert alert-dismissible alert-danger gaps-hide top-margin" id="gotifySaveError">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Error!</h4>
+        <p class="mb-0">Could not save your Gotify notification. Check the logs and try again.</p>
+    </div>
+
+    <div class="alert alert-dismissible alert-success gaps-hide top-margin" id="gotifySaveSuccess">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Success!</h4>
+        <p class="mb-0">Your Gotify notification saved successfully.</p>
+    </div>
+</header>
 </body>
 </html>

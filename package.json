@@ -26,7 +26,8 @@
     "uglifyjs-notification-types-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/notification-types.js --compress --output GapsWeb/src/main/resources/static/js/modules/notification-types.min.js",
     "uglifyjs-telegram-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/telegram-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/telegram-notifications.min.js",
     "uglifyjs-slack-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/slack-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/slack-notifications.min.js",
-    "uglifyjs-push-bullet-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/push-bullet-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/push-bullet-notifications.min.js"
+    "uglifyjs-push-bullet-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/push-bullet-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/push-bullet-notifications.min.js",
+    "uglifyjs-gotify-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/gotify-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/gotify-notifications.min.js"
   },
   "repository": {
     "type": "git",
