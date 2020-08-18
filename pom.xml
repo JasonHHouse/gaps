@@ -23,6 +23,8 @@
     <properties>
         <java.version>11</java.version>
         <jaxb.api.version>2.3.0</jaxb.api.version>
+        <sonar.sources>.</sonar.sources>
+        <sonar.inclusions>src/main/**</sonar.inclusions>
     </properties>
 
     <dependencyManagement>

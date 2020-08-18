@@ -8,9 +8,9 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import {getNotificationTypes} from '/js/modules/notification-types.min.js';
-import {Payload} from "/js/modules/payload.min.js";
-import {hideAllAlertsAndSpinners} from "/js/modules/alerts-manager.min.js";
+import {getNotificationTypes} from './notification-types.min.js';
+import {Payload} from "./payload.min.js";
+import {hideAllAlertsAndSpinners} from "./alerts-manager.min.js";
 
 export async function testTelegramNotifications() {
     'use strict';

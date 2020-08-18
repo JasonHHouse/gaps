@@ -10,11 +10,11 @@
 
 'use strict';
 
-import {Payload} from '/js/modules/payload.min.js';
-import {saveTelegramNotifications, testTelegramNotifications} from '/js/modules/telegram-notifications.min.js'
-import {saveSlackNotifications, testSlackNotifications} from '/js/modules/slack-notifications.min.js'
+import {Payload} from './modules/payload.min.js';
+import {saveTelegramNotifications, testTelegramNotifications} from './modules/telegram-notifications.min.js'
+import {saveSlackNotifications, testSlackNotifications} from './modules/slack-notifications.min.js'
 import {hideAllAlertsAndSpinners} from "./modules/alerts-manager.min.js";
-import {savePushBulletNotifications, testPushBulletNotifications} from "./modules/push-bullet-notifications";
+import {savePushBulletNotifications, testPushBulletNotifications} from "./modules/push-bullet-notifications.min.js";
 
 let plexSpinner, plexSaveSuccess, plexSaveError, plexTestSuccess, plexTestError, plexDeleteSuccess, plexDeleteError,
     plexDuplicateError;

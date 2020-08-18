@@ -9,9 +9,9 @@
  */
 
 
-import {getNotificationTypes} from '/js/modules/notification-types.min.js';
-import {Payload} from "/js/modules/payload.min.js";
-import {hideAllAlertsAndSpinners} from "/js/modules/alerts-manager.min.js";
+import {getNotificationTypes} from './notification-types.min.js';
+import {Payload} from "./payload.min.js";
+import {hideAllAlertsAndSpinners} from "./alerts-manager.min.js";
 
 export async function testPushBulletNotifications() {
     'use strict';
