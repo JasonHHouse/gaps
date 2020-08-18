@@ -438,5 +438,167 @@
         <p class="mb-0">Your Gotify notification saved successfully.</p>
     </div>
 </header>
+
+<header th:fragment="email">
+    <h4>Email Notifications</h4>
+    <form class="needs-validation" id="emailConfiguration" novalidate>
+        <div class="form-group">
+            <label for="emailUsername">Username</label>
+            <input type="text" class="form-control" id="emailUsername" aria-describedby="emailUsernameHelp"
+                   th:value="${plexProperties?.emailProperties?.username}">
+            <small id="emailUsernameHelp" class="form-text text-muted">We'll never share your email with anyone
+                else.</small>
+        </div>
+        <div class="form-group">
+            <label for="emailPassword">Password</label>
+            <input type="password" class="form-control" id="emailPassword" aria-describedby="emailPasswordHelp"
+                   th:value="${plexProperties?.emailProperties?.password}">
+            <small id="emailPasswordHelp" class="form-text text-muted">We'll never share your email with anyone
+                else.</small>
+        </div>
+        <div class="form-group">
+            <label for="emailMailTo">Mail To</label>
+            <input type="email" class="form-control" id="emailMailTo" aria-describedby="emailMailToHelp"
+                   th:value="${plexProperties?.emailProperties?.mailTo}">
+            <small id="emailMailToHelp" class="form-text text-muted">We'll never share your email with anyone
+                else.</small>
+        </div>
+        <div class="form-group">
+            <label for="emailMailFrom">Mail From</label>
+            <input type="email" class="form-control" id="emailMailFrom" aria-describedby="emailMailFromHelp"
+                   th:value="${plexProperties?.emailProperties?.mailFrom}">
+            <small id="emailMailFromHelp" class="form-text text-muted">We'll never share your email with anyone
+                else.</small>
+        </div>
+        <div class="form-group">
+            <label for="emailServer">Mail Server</label>
+            <input type="url" class="form-control" id="emailServer" aria-describedby="emailServerHelp"
+                   th:value="${plexProperties?.emailProperties?.mailServer}">
+            <small id="emailServerHelp" class="form-text text-muted">We'll never share your email with anyone
+                else.</small>
+        </div>
+        <div class="form-group">
+            <label for="emailPort">Mail Port</label>
+            <input type="number" class="form-control" id="emailPort" aria-describedby="emailPortHelp"
+                   th:value="${plexProperties?.emailProperties?.mailPort}">
+            <small id="emailPortHelp" class="form-text text-muted">We'll never share your email with anyone
+                else.</small>
+        </div>
+        <div class="form-group">
+            <label for="emailTransportProtocol">Transport Protocol</label>
+            <input type="text" class="form-control" id="emailTransportProtocol"
+                   aria-describedby="emailTransportProtocolHelp"
+                   th:value="${plexProperties?.emailProperties?.mailTransportProtocol}">
+            <small id="emailTransportProtocolHelp" class="form-text text-muted">We'll never share your email
+                with anyone else.</small>
+        </div>
+        <div class="form-group">
+            <label for="emailSmtpAuth">SMTP Auth</label>
+            <input type="text" class="form-control" id="emailSmtpAuth" aria-describedby="emailSmtpAuthHelp"
+                   th:value="${plexProperties?.emailProperties?.mailSmtpAuth}">
+            <small id="emailSmtpAuthHelp" class="form-text text-muted">We'll never share your email with anyone
+                else.</small>
+        </div>
+        <div class="form-group">
+            <label for="emailSmtpTlsEnabled">SMTP TLS Enabled</label>
+            <select class="form-control" id="emailSmtpTlsEnabled">
+                <option th:value="false">Disabled
+                </option>
+                <option th:value="true"
+                        th:selected="${plexProperties?.emailProperties?.getMailSmtpTlsEnabled() ?: false}">
+                    Enabled
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Notification Types</label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.emailProperties?.hasTmdbConnectionApi()}"
+                       id="emailTmdbApiConnectionNotification">
+                <label class="form-check-label" for="emailTmdbApiConnectionNotification">
+                    TMDB API Connection
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.emailProperties?.hasPlexServerConnection()}"
+                       id="emailPlexServerConnectionNotification">
+                <label class="form-check-label" for="emailPlexServerConnectionNotification">
+                    Plex Server Connection
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.emailProperties?.hasPlexMetadataUpdate()}"
+                       id="emailPlexMetadataUpdateNotification">
+                <label class="form-check-label" for="emailPlexMetadataUpdateNotification">
+                    Plex Metadata Update
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.emailProperties?.hasPlexLibraryUpdate()}"
+                       id="emailPlexLibraryUpdateNotification">
+                <label class="form-check-label" for="emailPlexLibraryUpdateNotification">
+                    Plex Library Update
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.emailProperties?.hasGapsMissingCollections()}"
+                       id="emailGapsMissingCollectionsNotification">
+                <label class="form-check-label" for="emailGapsMissingCollectionsNotification">
+                    Gaps Missing Collections
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="emailEnabled">Notification Agent</label>
+            <select class="form-control" id="emailEnabled">
+                <option th:value="false">Disabled
+                </option>
+                <option th:value="true"
+                        th:selected="${plexProperties?.emailProperties?.getEnabled() ?: false}">
+                    Enabled
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <a class="btn btn-primary" href="javascript:void(0)" id="saveEmail" onclick="saveEmail();"
+               type="button">Save</a>
+            <a class="btn btn-info" href="javascript:void(0)" id="testEmail" onclick="testEmail();"
+               type="button">Test</a>
+        </div>
+    </form>
+    
+    <div class="spinner-border text-primary gaps-hide top-margin" id="emailSpinner" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+
+    <div class="alert alert-dismissible alert-danger gaps-hide top-margin" id="emailTestError">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Error!</h4>
+        <p class="mb-0">Could not connect to Email. Check the key and logs and try again.</p>
+    </div>
+
+    <div class="alert alert-dismissible alert-success gaps-hide top-margin" id="emailTestSuccess">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Success!</h4>
+        <p class="mb-0">Email message sent.</p>
+    </div>
+
+    <div class="alert alert-dismissible alert-danger gaps-hide top-margin" id="emailSaveError">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Error!</h4>
+        <p class="mb-0">Could not save your Email notification. Check the logs and try again.</p>
+    </div>
+
+    <div class="alert alert-dismissible alert-success gaps-hide top-margin" id="emailSaveSuccess">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Success!</h4>
+        <p class="mb-0">Your Email notification saved successfully.</p>
+    </div>
+</header>
 </body>
 </html>
