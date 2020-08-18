@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class PlexTest {
+class PlexTest {
 
     @Test
     void PlexObjectsTest() {
@@ -37,7 +37,7 @@ public class PlexTest {
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             mediaContainer = (MediaContainer) jaxbUnmarshaller.unmarshal(inputStream);
 
-            assertEquals(mediaContainer.getVideos().size(), 3, "Should find three videos");
+            assertEquals(3, mediaContainer.getVideos().size(),"Should find three videos");
 
         } catch (IOException e) {
             fail("Failed to read plex videos xml file");

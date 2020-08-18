@@ -27,7 +27,6 @@ describe('Searched RSS', function () {
             .then((resp) => {
                 const result = resp.body;
                 expect(result).to.have.lengthOf(7);
-                expect(result[0].imdb_id).to.eq('tt3348730')
             });
     })
 });

@@ -51,11 +51,11 @@ public class PlexMovieListController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<List<Movie>> getPlexMovies(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
-        LOGGER.info("getPlexMovies( " + machineIdentifier + ", " + key + " )");
+        LOGGER.info("getPlexMovies( {}, {} )", machineIdentifier, key);
 
         Set<Movie> everyMovie = ioService.readMovieIdsFromFile();
         Map<Pair<String, Integer>, Movie> previousMovies = generateOwnedMovieMap(everyMovie);
-        String url = generatePlexUrl(machineIdentifier, key);
+        String url = generatePlexMovieUrl(machineIdentifier, key);
         List<Movie> ownedMovies = plexQuery.findAllPlexMovies(previousMovies, url);
 
         //Update Owned Movies
@@ -67,26 +67,21 @@ public class PlexMovieListController {
         Map<Pair<String, Integer>, Movie> previousMovies = new HashMap<>();
 
         gapsService
-                .getPlexSearch()
+                .getPlexProperties()
                 .getPlexServers()
                 .forEach(plexServer -> plexServer
                         .getPlexLibraries()
                         .stream()
                         .filter(PlexLibrary::getSelected)
-                        .forEach(plexLibrary -> {
-                            everyMovie
-                                    .forEach(movie -> {
-                                        previousMovies.put(new Pair<>(movie.getName(), movie.getYear()), movie);
-                                    });
-                        }));
+                        .forEach(plexLibrary -> everyMovie.forEach(movie -> previousMovies.put(new Pair<>(movie.getName(), movie.getYear()), movie))));
 
         return previousMovies;
     }
 
-    private String generatePlexUrl(String machineIdentifier, Integer key) {
-        LOGGER.info("generatePlexUrl( " + machineIdentifier + ", " + key + " )");
+    private String generatePlexMovieUrl(String machineIdentifier, Integer key) {
+        LOGGER.info("generatePlexUrl( {}, {} )", machineIdentifier, key);
         return gapsService
-                .getPlexSearch()
+                .getPlexProperties()
                 .getPlexServers()
                 .stream()
                 .filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier))

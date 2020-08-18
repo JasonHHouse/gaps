@@ -12,5 +12,4 @@ describe('Not Searched Yet RSS', function () {
         cy.get('.card-body')
             .should('be.visible');
     });
-
 });

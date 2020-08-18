@@ -10,14 +10,17 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsSearch;
+import com.jasonhhouse.gaps.SearchStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
@@ -40,13 +43,26 @@ public class SearchController {
 
     /**
      * Main REST call to start Gaps searching for missing movies
+     *
+     * @deprecated No long used to do search
      */
-    @RequestMapping(value = "startSearching", method = RequestMethod.POST)
+    @PostMapping(value = "startSearching")
     @ResponseStatus(value = HttpStatus.OK)
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public void postStartSearching() {
-        LOGGER.info("postStartSearching( )");
+        LOGGER.info("postStartSearching()");
+        LOGGER.warn("Deprecated Method");
 
         throw new IllegalStateException("Need to pass in machineIdentifier and plex key");
     }
+
+    @GetMapping(value = "/searchStatus",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SearchStatus> getIsSearching() {
+        LOGGER.info("getSearchStatus()");
+
+        SearchStatus searchStatus = new SearchStatus(gapsSearch.isSearching());
+        return ResponseEntity.ok().body(searchStatus);
+    }
+
 }

@@ -11,7 +11,7 @@ package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.PlexSearch;
+import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
 import java.io.IOException;
 import org.apache.commons.collections4.CollectionUtils;
@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -52,17 +51,17 @@ public class GapsController {
     public ModelAndView getIndexOnClick() {
         LOGGER.info("getIndexOnClick()");
 
-        PlexSearch plexSearch = null;
+        PlexProperties plexProperties = null;
         try {
-            plexSearch = ioService.readProperties();
-            plexSearch.getPlexServers().addAll(ioService.readPlexConfiguration());
-            gapsService.updatePlexSearch(plexSearch);
+            plexProperties = ioService.readProperties();
+            plexProperties.getPlexServers().addAll(ioService.readPlexConfiguration());
+            gapsService.updatePlexProperties(plexProperties);
         } catch (IOException e) {
             LOGGER.warn("Failed to read gaps properties.", e);
         }
 
         ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
+        modelAndView.addObject("plexProperties", gapsService.getPlexProperties());
         return modelAndView;
     }
 
@@ -70,23 +69,23 @@ public class GapsController {
     public ModelAndView getIndex() {
         LOGGER.info("getIndex()");
 
-        PlexSearch plexSearch = null;
+        PlexProperties plexProperties = null;
         try {
-            plexSearch = ioService.readProperties();
-            plexSearch.getPlexServers().addAll(ioService.readPlexConfiguration());
-            gapsService.updatePlexSearch(plexSearch);
+            plexProperties = ioService.readProperties();
+            plexProperties.getPlexServers().addAll(ioService.readPlexConfiguration());
+            gapsService.updatePlexProperties(plexProperties);
         } catch (IOException e) {
             LOGGER.warn("Failed to read gaps properties.", e);
         }
 
         //If configuration is filled in, jump to libraries page
-        if (plexSearch != null && StringUtils.isNotEmpty(plexSearch.getMovieDbApiKey()) && CollectionUtils.isNotEmpty(plexSearch.getPlexServers())) {
+        if (plexProperties != null && StringUtils.isNotEmpty(plexProperties.getMovieDbApiKey()) && CollectionUtils.isNotEmpty(plexProperties.getPlexServers())) {
             return new ModelAndView("redirect:/libraries");
         }
 
 
         ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("plexSearch", gapsService.getPlexSearch());
+        modelAndView.addObject("plexProperties", gapsService.getPlexProperties());
         return modelAndView;
     }
 
@@ -98,13 +97,12 @@ public class GapsController {
         LOGGER.info("Deleting all local files");
         Payload payload = ioService.nuke();
         if (payload.getCode() == Payload.NUKE_SUCCESSFUL.getCode()) {
-            gapsService.nukePlexSearch();
+            gapsService.nukePlexProperties();
         }
         return ResponseEntity.ok().body(payload);
     }
 
-    @RequestMapping(method = RequestMethod.GET,
-            value = "/about",
+    @GetMapping(value = "/about",
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getAbout() {
         LOGGER.info("getAbout()");

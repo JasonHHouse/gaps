@@ -29,24 +29,24 @@ public class PlexServerValidator implements Validator {
 
     @Override
     public void validate(@NotNull Object obj, @NotNull Errors errors) {
-        LOGGER.info("validate( " + obj + ", " + errors + " )");
+        LOGGER.info("validate( {}, {} )", obj, errors);
 
-        PlexServer plexSearch = (PlexServer) obj;
-        if (StringUtils.isEmpty(plexSearch.getAddress())) {
+        PlexServer plexServer = (PlexServer) obj;
+        if (StringUtils.isEmpty(plexServer.getAddress())) {
             errors.rejectValue("address", "address.empty");
         }
 
-        if (plexSearch.getPort() == null) {
+        if (plexServer.getPort() == null) {
             errors.rejectValue("port", "port.empty");
-        } else if (plexSearch.getPort() < 0) {
+        } else if (plexServer.getPort() < 0) {
             errors.rejectValue("port", "port.belowRange");
         }
 
-        if (plexSearch.getPort() > 65536) {
+        if (plexServer.getPort() > 65536) {
             errors.rejectValue("port", "port.aboveRange");
         }
 
-        if (StringUtils.isEmpty(plexSearch.getPlexToken())) {
+        if (StringUtils.isEmpty(plexServer.getPlexToken())) {
             errors.rejectValue("plexToken", "plexToken.empty");
         }
     }

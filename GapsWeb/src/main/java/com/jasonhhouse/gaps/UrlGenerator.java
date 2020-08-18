@@ -61,4 +61,13 @@ public interface UrlGenerator {
      * @return query
      */
     @Nullable HttpUrl generatePlexUrl(String plexUrl);
+
+    /**
+     * Using plex token, address, and port, create a plex library url to query for all plex movies
+     *
+     * @param plexServer  The PlexServer to query
+     * @param plexLibrary The PlexLibrary to query
+     * @return query
+     */
+    @Nullable HttpUrl generatePlexLibraryUrl(PlexServer plexServer, PlexLibrary plexLibrary);
 }

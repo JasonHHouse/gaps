@@ -15,3 +15,5 @@ else
       java -jar -Dspring.profiles.active=no-ssl-no-login $JAR_FILE
     fi
 fi
+
+# -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005

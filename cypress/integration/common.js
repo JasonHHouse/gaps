@@ -1,5 +1,12 @@
 let appHasStarted;
 
+export const CYPRESS_VALUES = {
+    notBeChecked: 'not.be.checked',
+    beChecked: 'be.checked',
+    notBeVisible: 'not.be.visible',
+    beVisible: 'be.visible'
+};
+
 export function spyOnAddEventListener(win) {
     // win = window object in our application
     const addListener = win.EventTarget.prototype.addEventListener;
@@ -33,6 +40,19 @@ export function searchPlexForMoviesFromSaw(cy) {
         .should('have.text', 'Showing 1 to 1 of 1 entries');
 }
 
+export function searchPlexForMoviesFromBestMovies(cy) {
+    cy.get('#dropdownMenuLink')
+        .click();
+
+    cy.get('[data-key="5"]')
+        .click();
+
+    cy.get('.card-body > .btn')
+        .click();
+
+    //Wait for timeout from clearing data
+    cy.wait(5000);
+}
 
 export function searchPlexForMoviesFromMovies(cy) {
     cy.get('#dropdownMenuLink')
@@ -46,10 +66,10 @@ export function searchPlexForMoviesFromMovies(cy) {
 
     cy.get('label > input')
         .clear()
-        .type('2001 A Space');
+        .type('Gods');
 
     cy.get('#movies_info')
-        .should('have.text', 'Showing 1 to 1 of 1 entries (filtered from 4 total entries)');
+        .should('have.text', 'Showing 1 to 1 of 1 entries (filtered from 21 total entries)');
 }
 
 export function nuke() {
@@ -81,18 +101,18 @@ export function redLibraryBefore() {
 
     cy.get('#address')
         .clear()
-        .type('192.168.1.9')
-        .should('have.value', '192.168.1.9');
+        .type(atob('MTkyLjE2OC4xLjk='))
+        .should('have.value', atob('MTkyLjE2OC4xLjk='));
 
     cy.get('#port')
         .clear()
-        .type('32400')
-        .should('have.value', '32400');
+        .type(atob('MzI0MDA='))
+        .should('have.value', atob('MzI0MDA='));
 
     cy.get('#plexToken')
         .clear()
-        .type('mQw4uawxTyYEmqNUrvBz')
-        .should('have.value', 'mQw4uawxTyYEmqNUrvBz');
+        .type(atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='))
+        .should('have.value', atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
 
     cy.get('#addPlexServer')
         .click();
@@ -159,13 +179,13 @@ export function jokerLibraryBefore() {
 
     cy.get('#port')
         .clear()
-        .type('32400')
-        .should('have.value', '32400');
+        .type(atob('MzI0MDA='))
+        .should('have.value', atob('MzI0MDA='));
 
     cy.get('#plexToken')
         .clear()
-        .type('mQw4uawxTyYEmqNUrvBz')
-        .should('have.value', 'mQw4uawxTyYEmqNUrvBz');
+        .type(atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='))
+        .should('have.value', atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
 
     cy.get('#addPlexServer')
         .click();

@@ -6,6 +6,10 @@ LABEL github="https://github.com/JasonHHouse/Gaps"
 
 EXPOSE 32400
 
+RUN apt-get -y update
+
+RUN apt-get -y upgrade
+
 ENV JAR_FILE gaps.jar
 
 ENV ENABLE_SSL false
@@ -20,7 +24,7 @@ RUN mkdir -p /usr/app && chmod 777 /usr/data
 
 WORKDIR /usr/app
 
-COPY GapsWeb/target/GapsWeb-0.4.8.jar /usr/app/gaps.jar
+COPY GapsWeb/target/GapsWeb-0.5.0.jar /usr/app/gaps.jar
 
 COPY start.sh /usr/app/
 

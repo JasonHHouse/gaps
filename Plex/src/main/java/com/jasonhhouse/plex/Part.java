@@ -10,9 +10,13 @@
 package com.jasonhhouse.plex;
 
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAttribute;
 
+@Entity
 public final class Part {
+    @Id
     private Integer id;
     private String key;
     private Long duration;
@@ -20,9 +24,6 @@ public final class Part {
     private Long size;
     private String container;
     private String videoProfile;
-
-    public Part() {
-    }
 
     public Integer getId() {
         return id;

@@ -11,10 +11,14 @@ package com.jasonhhouse.plex;
 
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
+@Entity
 public final class Media {
+
+    @Id
     private Integer id;
     private Integer duration;
     private Integer bitrate;
@@ -27,10 +31,8 @@ public final class Media {
     private String videoResolution;
     private String container;
     private String videoProfile;
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Part> parts;
-
-    public Media() {
-    }
 
     public Integer getId() {
         return id;

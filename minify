@@ -7,3 +7,10 @@ npm run uglifyjs-recommended-js
 npm run uglifyjs-common-js
 npm run uglifyjs-payload-js
 npm run uglifyjs-mislabeled-js
+npm run uglifyjs-alerts-manager-js
+npm run uglifyjs-notification-types-js
+npm run uglifyjs-telegram-notifications-js
+npm run uglifyjs-slack-notifications-js
+npm run uglifyjs-push-bullet-notifications-js
+npm run uglifyjs-gotify-notifications-js
+npm run uglifyjs-email-notifications-js
