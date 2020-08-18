@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=0.5.0
+VERSION=0.5.1
 JAR_VERSION="GapsWeb/target/GapsWeb-$VERSION.jar"
 ZIP_VERSION="Gaps-$VERSION.zip"
 npm run minify-input-css

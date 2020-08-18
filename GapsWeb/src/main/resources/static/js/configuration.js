@@ -101,7 +101,6 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addPlexServer = addPlexServer;
     window.testExistingPlexServer = testExistingPlexServer;
     window.removePlexServer = removePlexServer;
-    window.saveSchedule = saveSchedule;
     window.setDeleteAllEnabledOrDisabled = setDeleteAllEnabledOrDisabled;
     window.nuke = nuke;
 
