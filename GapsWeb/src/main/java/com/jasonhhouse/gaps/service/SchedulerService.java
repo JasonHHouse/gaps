@@ -16,7 +16,9 @@ import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.GapsUrlGenerator;
 import com.jasonhhouse.gaps.PlexQuery;
 import com.jasonhhouse.gaps.Schedule;
+import com.jasonhhouse.gaps.SchedulePayload;
 import com.jasonhhouse.gaps.SearchGapsTask;
+import com.jasonhhouse.gaps.properties.PlexProperties;
 import java.io.IOException;
 import java.util.List;
 import java.util.TimeZone;
@@ -51,11 +53,14 @@ public class SchedulerService {
         this.searchGapsTask = new SearchGapsTask(gapsService, gapsSearch, tmdbService, ioService, plexQuery, gapsUrlGenerator, notificationService);
     }
 
-    public void setSchedule(int intSchedule) throws IOException {
-        LOGGER.info("setSchedule( {} )", intSchedule);
-        Schedule schedule = Schedule.getSchedule(intSchedule);
+    public void setSchedule(SchedulePayload schedulePayload) throws IOException {
+        LOGGER.info("setSchedule( {} )", schedulePayload);
+        PlexProperties plexProperties = ioService.readProperties();
+        Schedule schedule = Schedule.getSchedule(schedulePayload.getSchedule());
+        schedule.setEnabled(schedulePayload.getEnabled());
+        plexProperties.setSchedule(schedule);
         gapsService.getPlexProperties().setSchedule(schedule);
-        ioService.writeProperties(gapsService.getPlexProperties());
+        ioService.writeProperties(plexProperties);
         setTaskForScheduler(schedule);
     }
 
@@ -77,6 +82,11 @@ public class SchedulerService {
     private void setTaskForScheduler(Schedule schedule) {
         if (scheduledFuture != null) {
             scheduledFuture.cancel(true);
+        }
+
+        if (!schedule.getEnabled()) {
+            LOGGER.info("Schedule not enabled");
+            return;
         }
 
         scheduledFuture = scheduler.schedule(searchGapsTask, new CronTrigger(schedule.getCron(), TimeZone.getTimeZone(TimeZone.getDefault().getID())));

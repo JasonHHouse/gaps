@@ -1,6 +1,5 @@
 #!/bin/bash
-VERSION=0.5.0
-DOCKER_LATEST="housewrecker/gaps:latest"
+VERSION=0.5.1
 JAR_VERSION="GapsWeb/target/GapsWeb-$VERSION.jar"
 ZIP_VERSION="Gaps-$VERSION.zip"
 npm run minify-input-css
@@ -11,9 +10,17 @@ npm run uglifyjs-recommended-js
 npm run uglifyjs-common-js
 npm run uglifyjs-payload-js
 npm run uglifyjs-mislabeled-js
-mvn clean install deploy
-docker build -f Dockerfile -t $DOCKER_LATEST .
-cypress run
+npm run uglifyjs-alerts-manager-js
+npm run uglifyjs-notification-types-js
+npm run uglifyjs-telegram-notifications-js
+npm run uglifyjs-slack-notifications-js
+npm run uglifyjs-push-bullet-notifications-js
+npm run uglifyjs-gotify-notifications-js
+npm run uglifyjs-email-notifications-js
+npm run uglifyjs-schedule-js
+mvn clean install spotbugs:spotbugs pmd:pmd checkstyle:checkstyle sonar:sonar deploy
+#docker build -f Dockerfile -t $DOCKER_LATEST .
+#cypress run
 docker buildx build --platform linux/ppc64le,linux/s390x,linux/amd64 -t housewrecker/gaps:latest -f Dockerfile --push .
 docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t housewrecker/gaps:arm-latest -f Dockerfile.arm64 --push .
 mkdir -p GapsOnWindows

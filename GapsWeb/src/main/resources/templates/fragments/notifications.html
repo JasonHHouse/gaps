@@ -18,18 +18,21 @@
             <label for="telegramBotId">Bot ID</label>
             <input type="text" class="form-control" id="telegramBotId" aria-describedby="telegramBotIdHelp"
                    th:value="${plexProperties?.telegramProperties?.botId}">
-            <!--<small id="telegramBotIdHelp" class="form-text text-muted">We'll never share your email with
-                anyone
-                else.</small>-->
+            <small id="telegramBotIdHelp" class="form-text text-muted"><a href="https://telegram.me/botfather" target="_blank">BotFather</a> is the one bot to rule them all.
+
+                1. Make a bot using BotFather
+                2. Paste the bot token in this field
+                3. Message the bot via Telegram (either via a direct message or a message via a group)
+                4. Test the bot
+
+                * To reset the notifications receiving user or group, run rm /boot/config/plugins/dynamix/telegram/chatid in the terminal and re-run steps 3. and 4.</small>
         </div>
         <div class="form-group">
             <label for="telegramChatId">Chat ID</label>
             <input type="text" class="form-control" id="telegramChatId"
                    aria-describedby="telegramChatIdHelp"
                    th:value="${plexProperties?.telegramProperties?.chatId}">
-            <!--<small id="telegramChatIdHelp" class="form-text text-muted">We'll never share your email with
-                anyone
-                else.</small>-->
+            <small id="telegramChatIdHelp" class="form-text text-muted">Add IDBot and ask it /getid</small>
         </div>
         <div class="form-group">
             <label>Notification Types</label>
@@ -128,8 +131,8 @@
             <label for="slackWebHookUrl">Bot ID</label>
             <input type="text" class="form-control" id="slackWebHookUrl" aria-describedby="slackWebHookUrlHelp"
                    th:value="${plexProperties?.slackProperties?.webHookUrl}">
-            <!--<small id="slackWebHookUrlHelp" class="form-text text-muted">We'll never share your email with
-                anyone else.</small>-->
+            <small id="slackWebHookUrlHelp" class="form-text text-muted">Get your WebHook as explained <a href="https://api.slack.com/incoming-webhooks"
+                                                                                                          target="_blank">here.</a></small>
         </div>
         <div class="form-group">
             <label>Notification Types</label>
@@ -229,16 +232,15 @@
             <input type="text" class="form-control" id="pushBulletChannelTag"
                    aria-describedby="pushBulletChannelTagHelp"
                    th:value="${plexProperties?.pushBulletProperties?.channel_tag}">
-        <!--    <small id="pushBulletChannelTagHelp" class="form-text text-muted">We'll never share your email with
-                anyone else.</small>-->
+            <small id="pushBulletChannelTagHelp" class="form-text text-muted">The channel name to send a message to.</a></small>
         </div>
         <div class="form-group">
             <label for="pushBulletAccessToken">Access Token</label>
             <input type="text" class="form-control" id="pushBulletAccessToken"
                    aria-describedby="pushBulletAccessTokenHelp"
                    th:value="${plexProperties?.pushBulletProperties?.accessToken}">
-            <!--<small id="pushBulletAccessTokenHelp" class="form-text text-muted">We'll never share your email with
-                anyone else.</small>-->
+            <small id="pushBulletAccessTokenHelp" class="form-text text-muted">The Access Token can be found <a href="https://www.pushbullet.com/account"
+                                                                                                               target="_blank">here.</a></small>
         </div>
         <div class="form-group">
             <label>Notification Types</label>
@@ -338,15 +340,13 @@
             <label for="gotifyAddress">Address</label>
             <input type="text" class="form-control" id="gotifyAddress" aria-describedby="gotifyAddressHelp"
                    th:value="${plexProperties?.gotifyProperties?.address}">
-       <!--     <small id="gotifyAddressHelp" class="form-text text-muted">We'll never share your email with anyone
-                else.</small>-->
+            <small id="gotifyAddressHelp" class="form-text text-muted">The full server base URL including protocol and port. eg: https://example.com:8888/</small>
         </div>
         <div class="form-group">
             <label for="gotifyToken">Token</label>
             <input type="text" class="form-control" id="gotifyToken" aria-describedby="gotifyTokenHelp"
                    th:value="${plexProperties?.gotifyProperties?.token}">
-            <!--<small id="gotifyTokenHelp" class="form-text text-muted">We'll never share your email with anyone
-                else.</small>-->
+            <small id="gotifyTokenHelp" class="form-text text-muted">The App Token to use.</small>
         </div>
         <div class="form-group">
             <label>Notification Types</label>
@@ -446,58 +446,50 @@
             <label for="emailUsername">Username</label>
             <input type="text" class="form-control" id="emailUsername" aria-describedby="emailUsernameHelp"
                    th:value="${plexProperties?.emailProperties?.username}">
-         <!--   <small id="emailUsernameHelp" class="form-text text-muted">We'll never share your email with anyone
-                else.</small>-->
         </div>
         <div class="form-group">
             <label for="emailPassword">Password</label>
             <input type="password" class="form-control" id="emailPassword" aria-describedby="emailPasswordHelp"
                    th:value="${plexProperties?.emailProperties?.password}">
-            <!--<small id="emailPasswordHelp" class="form-text text-muted">We'll never share your email with anyone
-                else.</small>-->
+            <small id="emailPasswordHelp" class="form-text text-muted">Enter the username and password to login to your email account. Be aware that the password is stored
+                unencrypted in the email configuration file.</small>
         </div>
         <div class="form-group">
             <label for="emailMailTo">Mail To</label>
             <input type="email" class="form-control" id="emailMailTo" aria-describedby="emailMailToHelp"
                    th:value="${plexProperties?.emailProperties?.mailTo}">
-            <!--<small id="emailMailToHelp" class="form-text text-muted">We'll never share your email with anyone
-                else.</small>-->
+            <small id="emailMailToHelp" class="form-text text-muted">Recipient of status and error notifications. Specify one email address.</small>
         </div>
         <div class="form-group">
             <label for="emailMailFrom">Mail From</label>
             <input type="email" class="form-control" id="emailMailFrom" aria-describedby="emailMailFromHelp"
                    th:value="${plexProperties?.emailProperties?.mailFrom}">
-            <!--<small id="emailMailFromHelp" class="form-text text-muted">We'll never share your email with anyone
-                else.</small>-->
+            <small id="emailMailFromHelp" class="form-text text-muted">Email address of your mail account. This address is used as sender of the notifications.</small>
         </div>
         <div class="form-group">
             <label for="emailServer">Mail Server</label>
             <input type="url" class="form-control" id="emailServer" aria-describedby="emailServerHelp"
                    th:value="${plexProperties?.emailProperties?.mailServer}">
-            <!--<small id="emailServerHelp" class="form-text text-muted">We'll never share your email with anyone
-                else.</small>-->
+            <small id="emailServerHelp" class="form-text text-muted">Specify the name of the email server.</small>
         </div>
         <div class="form-group">
             <label for="emailPort">Mail Port</label>
             <input type="number" class="form-control" id="emailPort" aria-describedby="emailPortHelp"
                    th:value="${plexProperties?.emailProperties?.mailPort}">
-            <!--<small id="emailPortHelp" class="form-text text-muted">We'll never share your email with anyone
-                else.</small>-->
+            <small id="emailPortHelp" class="form-text text-muted">Specify the port of the email server.</small>
         </div>
         <div class="form-group">
             <label for="emailTransportProtocol">Transport Protocol</label>
             <input type="text" class="form-control" id="emailTransportProtocol"
                    aria-describedby="emailTransportProtocolHelp"
-                   th:value="${plexProperties?.emailProperties?.mailTransportProtocol}">
-         <!--   <small id="emailTransportProtocolHelp" class="form-text text-muted">We'll never share your email
-                with anyone else.</small>-->
+                   th:value="${plexProperties?.emailProperties?.mailTransportProtocol ?: 'smtp'}">
+            <small id="emailTransportProtocolHelp" class="form-text text-muted">The email servers transport protocol. E.g. smtp.</small>
         </div>
         <div class="form-group">
-            <label for="emailSmtpAuth">SMTP Auth</label>
+            <label for="emailSmtpAuth">SMTP Authorization</label>
             <input type="text" class="form-control" id="emailSmtpAuth" aria-describedby="emailSmtpAuthHelp"
-                   th:value="${plexProperties?.emailProperties?.mailSmtpAuth}">
-            <!--<small id="emailSmtpAuthHelp" class="form-text text-muted">We'll never share your email with anyone
-                else.</small>-->
+                   th:value="${plexProperties?.emailProperties?.mailSmtpAuth ?: 'true'}">
+            <small id="emailSmtpAuthHelp" class="form-text text-muted">Use Smtp Auth. E.g. true</small>
         </div>
         <div class="form-group">
             <label for="emailSmtpTlsEnabled">SMTP TLS Enabled</label>
@@ -571,7 +563,7 @@
                type="button">Test</a>
         </div>
     </form>
-    
+
     <div class="spinner-border text-primary gaps-hide top-margin" id="emailSpinner" role="status">
         <span class="sr-only">Loading...</span>
     </div>
