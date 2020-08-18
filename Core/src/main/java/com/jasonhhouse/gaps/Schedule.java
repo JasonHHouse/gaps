@@ -30,6 +30,7 @@ public enum Schedule {
 
     public static final String ID = "id";
     public static final String MESSAGE = "message";
+    public static final String ENABLED = "enabled";
 
     @NotNull
     private final String message;
@@ -40,10 +41,14 @@ public enum Schedule {
     @NotNull
     private final Integer id;
 
+    @NotNull
+    private Boolean enabled;
+
     Schedule(@NotNull String message, @NotNull String cron, @NotNull Integer id) {
         this.message = message;
         this.cron = cron;
         this.id = id;
+        this.enabled = true;
     }
 
     public static Schedule getSchedule(@NotNull Integer id) {
@@ -79,12 +84,23 @@ public enum Schedule {
         return id;
     }
 
+    @NotNull
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public Schedule setEnabled(@NotNull Boolean enabled) {
+        this.enabled = enabled;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "Schedule{" +
                 "message='" + message + '\'' +
                 ", cron='" + cron + '\'' +
                 ", id=" + id +
+                ", enabled=" + enabled +
                 '}';
     }
 }

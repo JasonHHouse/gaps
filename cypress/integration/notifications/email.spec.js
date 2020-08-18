@@ -35,10 +35,10 @@ describe('Check Email Notification Agent', function () {
                     .should('have.value', '');
 
                 cy.get('#emailTransportProtocol')
-                    .should('have.value', '');
+                    .should('have.value', 'smtp');
 
                 cy.get('#emailSmtpAuth')
-                    .should('have.value', '');
+                    .should('have.value', 'true');
 
                 cy.get('#emailSmtpTlsEnabled')
                     .should('have.value', 'false');
@@ -236,7 +236,7 @@ describe('Check Email Notification Agent', function () {
         cy.get('#notificationTab')
             .click();
 
-        checkElements('', '', '', '', '', '', '', '', 'false', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
+        checkElements('', '', '', '', '', '', 'smtp', 'true', 'false', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
 
         cy.get('#emailUsername')
             .clear()
@@ -326,7 +326,7 @@ describe('Check Email Notification Agent', function () {
         cy.get('#notificationTab')
             .click();
 
-        checkElements('', '', '', '', '', '', '', '', 'false',  CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
+        checkElements('', '', '', '', '', '', 'smtp', 'true', 'false',  CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
 
         cy.get('#emailUsername')
             .clear()
@@ -434,7 +434,7 @@ describe('Check Email Notification Agent', function () {
         cy.get('#notificationTab')
             .click();
 
-        checkElements('', '', '', '', '', '', '', '', 'false', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
+        checkElements('', '', '', '', '', '', 'smtp', 'true', 'false', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
 
         cy.get('#emailUsername')
             .clear();

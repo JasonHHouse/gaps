@@ -17,6 +17,7 @@ import {hideAllAlertsAndSpinners} from "./modules/alerts-manager.min.js";
 import {savePushBulletNotifications, testPushBulletNotifications} from "./modules/push-bullet-notifications.min.js";
 import {saveGotifyNotifications, testGotifyNotifications} from "./modules/gotify-notifications.min.js";
 import {saveEmailNotifications, testEmailNotifications} from "./modules/email-notifications.min.js";
+import {saveSchedule} from "./modules/schedule.min.js";
 
 let plexSpinner, plexSaveSuccess, plexSaveError, plexTestSuccess, plexTestError, plexDeleteSuccess, plexDeleteError,
     plexDuplicateError;
@@ -100,7 +101,6 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addPlexServer = addPlexServer;
     window.testExistingPlexServer = testExistingPlexServer;
     window.removePlexServer = removePlexServer;
-    window.saveSchedule = saveSchedule;
     window.setDeleteAllEnabledOrDisabled = setDeleteAllEnabledOrDisabled;
     window.nuke = nuke;
 
@@ -115,6 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
     window.saveGotify = saveGotifyNotifications;
     window.testEmail = testEmailNotifications;
     window.saveEmail = saveEmailNotifications;
+    window.saveSchedule = saveSchedule;
 });
 
 function testTmdbKey() {
@@ -270,29 +271,6 @@ function removePlexServer(machineIdentifier) {
         error: function () {
             hideAllAlertsAndSpinners();
             plexDeleteError.show();
-        }
-    });
-}
-
-function saveSchedule() {
-    hideAllAlertsAndSpinners();
-
-    const id = $('#setSchedule').val();
-
-    $.ajax({
-        type: "PUT",
-        url: `/schedule/${id}`,
-        success: function (result) {
-            hideAllAlertsAndSpinners();
-            if (result && result.code === Payload.SCHEDULE_UPDATED) {
-                scheduleSaveSuccess.show();
-            } else {
-                scheduleSaveError.show();
-            }
-        },
-        error: function () {
-            hideAllAlertsAndSpinners();
-            scheduleSaveError.show();
         }
     });
 }

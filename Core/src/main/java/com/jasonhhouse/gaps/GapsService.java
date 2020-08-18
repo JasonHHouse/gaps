@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Blackboard service interface for storing the PlexProperties object controllers
  */
+@Deprecated
 public interface GapsService {
 
     /**

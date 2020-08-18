@@ -84,9 +84,11 @@
             <a class="nav-link" data-toggle="tab" href="#plex" id="plexTab">Plex</a>
         </li>
         <li class="nav-item">
+            <span class="badge badge-pill badge-primary" style="float:right;margin-bottom:-10px;">New</span>
             <a class="nav-link" data-toggle="tab" href="#schedule" id="scheduleTab">Schedule</a>
         </li>
         <li class="nav-item">
+            <span class="badge badge-pill badge-primary" style="float:right;margin-bottom:-10px;">New</span>
             <a class="nav-link" data-toggle="tab" href="#notification" id="notificationTab">Notifications</a>
         </li>
         <li class="nav-item" hidden>
@@ -283,15 +285,15 @@
                     <label for="setSchedule">Set Schedule</label>
                     <select class="form-control" id="setSchedule">
                         <div th:each="schedule : ${schedules}" th:remove="tag">
-                            <option th:value="${schedule.id}" th:text="${schedule.message}"></option>
+                            <option th:value="${schedule.id}" th:text="${schedule.message}"  th:selected="${plexProperties?.schedule?.getId().equals(schedule.id)?: false}"></option>
                         </div>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="scheduleEnabled">Schedule Agent</label>
                     <select class="form-control" id="scheduleEnabled">
-                        <option>Disabled</option>
-                        <option>Enabled</option>
+                        <option value="false">Disabled</option>
+                        <option value="true" th:selected="${plexProperties?.schedule?.getEnabled() ?: false}">Enabled</option>
                     </select>
                 </div>
                 <div class="form-group">
