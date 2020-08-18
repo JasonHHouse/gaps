@@ -9,15 +9,21 @@
  */
 package com.jasonhhouse.plex;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
+import java.util.List;
 
+@Entity
 @XmlRootElement(name = "MediaContainer")
 public final class MediaContainer {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Video> videos;
     private Integer size;
     private String allowSync;
@@ -34,8 +40,12 @@ public final class MediaContainer {
     private String viewGroup;
     private Integer viewMode;
 
-    public MediaContainer() {
-        videos = new ArrayList<>();
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getSize() {

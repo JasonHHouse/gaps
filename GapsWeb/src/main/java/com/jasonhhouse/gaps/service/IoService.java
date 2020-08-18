@@ -14,10 +14,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.PlexSearch;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.Rss;
 import com.jasonhhouse.gaps.YamlConfig;
+import com.jasonhhouse.gaps.properties.PlexProperties;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,7 +25,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -34,10 +33,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,13 +52,10 @@ public class IoService {
     private static final String OWNED_MOVIES = "ownedMovies.json";
     private static final String RECOMMENDED_MOVIES = "recommendedMovies.json";
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private final String STORAGE_FOLDER;
-
-    private final YamlConfig yamlConfig;
+    private final String storageFolder;
 
     @Autowired
     public IoService(YamlConfig yamlConfig) {
-        this.yamlConfig = yamlConfig;
         //Look for properties file for file locations
         String os = System.getProperty("os.name");
         if (os.contains("Windows")) {
@@ -70,19 +64,19 @@ public class IoService {
             String path = new File(new File(new File(IoService.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParent()).getParent()).getParent();
             decodedPath = URLDecoder.decode(path, StandardCharsets.UTF_8);
             decodedPath = decodedPath.startsWith("file:\\") ? decodedPath.substring("file:\\".length()) : decodedPath;
-            STORAGE_FOLDER = decodedPath + "\\";
+            storageFolder = decodedPath + "\\";
         } else {
-            STORAGE_FOLDER = "/usr/data/";
+            storageFolder = "/usr/data/";
         }
     }
 
     public @NotNull List<Movie> readRecommendedMovies(String machineIdentifier, int key) {
-        LOGGER.info("readRecommendedMovies( " + machineIdentifier + ", " + key + " )");
+        LOGGER.info("readRecommendedMovies({}, {} )", machineIdentifier, key);
 
-        final File ownedMovieFile = new File(STORAGE_FOLDER + machineIdentifier + File.separator + key + File.separator + RECOMMENDED_MOVIES);
+        final File ownedMovieFile = new File(storageFolder + machineIdentifier + File.separator + key + File.separator + RECOMMENDED_MOVIES);
 
         if (!ownedMovieFile.exists()) {
-            LOGGER.warn(ownedMovieFile + " does not exist");
+            LOGGER.warn("{} does not exist", ownedMovieFile);
             return Collections.emptyList();
         }
 
@@ -93,24 +87,24 @@ public class IoService {
                 fullFile.append(line);
             }
 
-            return objectMapper.readValue(fullFile.toString(), new TypeReference<List<Movie>>() {
+            return objectMapper.readValue(fullFile.toString(), new TypeReference<>() {
             });
         } catch (FileNotFoundException e) {
-            LOGGER.error("Can't find file " + ownedMovieFile, e);
+            LOGGER.error(String.format("Can't find file %s", ownedMovieFile), e);
         } catch (IOException e) {
-            LOGGER.error("Can't read the file " + ownedMovieFile, e);
+            LOGGER.error(String.format("Can't read the file %s", ownedMovieFile), e);
         }
 
         return Collections.emptyList();
     }
 
     public boolean doesRssFileExist(String machineIdentifier, int key) {
-        return new File(STORAGE_FOLDER + machineIdentifier + File.separator + key + File.separator + RSS_FEED_JSON_FILE).exists();
+        return new File(storageFolder + machineIdentifier + File.separator + key + File.separator + RSS_FEED_JSON_FILE).exists();
     }
 
     public @NotNull String getRssFile(String machineIdentifier, int key) {
         try {
-            Path path = new File(STORAGE_FOLDER + machineIdentifier + File.separator + key + File.separator + RSS_FEED_JSON_FILE).toPath();
+            Path path = new File(storageFolder + machineIdentifier + File.separator + key + File.separator + RSS_FEED_JSON_FILE).toPath();
             return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
         } catch (IOException e) {
             LOGGER.error("Check for RSS file next time", e);
@@ -124,12 +118,12 @@ public class IoService {
      * @param recommended The recommended movies. (IMDB ID is required.)
      */
     public void writeRssFile(String machineIdentifier, int key, Set<Movie> recommended) {
-        File file = new File(STORAGE_FOLDER + machineIdentifier + File.separator + key + File.separator + RSS_FEED_JSON_FILE);
+        File file = new File(storageFolder + machineIdentifier + File.separator + key + File.separator + RSS_FEED_JSON_FILE);
 
         if (file.exists()) {
             boolean deleted = file.delete();
             if (!deleted) {
-                LOGGER.error("Can't delete existing file " + file.getPath());
+                LOGGER.error("Can't delete existing file {}", file.getPath());
                 return;
             }
         }
@@ -137,11 +131,11 @@ public class IoService {
         try {
             boolean created = file.createNewFile();
             if (!created) {
-                LOGGER.error("Can't create file " + file.getPath());
+                LOGGER.error("Can't create file {}", file.getPath());
                 return;
             }
         } catch (IOException e) {
-            LOGGER.error("Can't create file " + file.getPath(), e);
+            LOGGER.error(String.format("Can't create file %s", file.getPath()), e);
             return;
         }
 
@@ -151,9 +145,9 @@ public class IoService {
             byte[] output = objectMapper.writeValueAsBytes(rssList);
             outputStream.write(output);
         } catch (FileNotFoundException e) {
-            LOGGER.error("Can't find file " + RECOMMENDED_MOVIES, e);
+            LOGGER.error(String.format("Can't find file %s", RECOMMENDED_MOVIES), e);
         } catch (IOException e) {
-            LOGGER.error("Can't write to file " + RECOMMENDED_MOVIES, e);
+            LOGGER.error(String.format("Can't write to file %s", RECOMMENDED_MOVIES), e);
         }
     }
 
@@ -162,7 +156,7 @@ public class IoService {
      */
     public void writeRecommendedToFile(Set<Movie> recommended, String machineIdentifier, Integer key) {
         LOGGER.info("writeRecommendedToFile()");
-        final String fileName = STORAGE_FOLDER + machineIdentifier + File.separator + key + File.separator + RECOMMENDED_MOVIES;
+        final String fileName = storageFolder + machineIdentifier + File.separator + key + File.separator + RECOMMENDED_MOVIES;
 
         makeFolder(machineIdentifier, key);
 
@@ -175,7 +169,7 @@ public class IoService {
      */
     public void writeOwnedMoviesToFile(List<Movie> ownedMovies, String machineIdentifier, int key) {
         LOGGER.info("writeOwnedMoviesToFile()");
-        final String fileName = STORAGE_FOLDER + machineIdentifier + File.separator + key + File.separator + OWNED_MOVIES;
+        final String fileName = storageFolder + machineIdentifier + File.separator + key + File.separator + OWNED_MOVIES;
 
         makeFolder(machineIdentifier, key);
 
@@ -184,22 +178,22 @@ public class IoService {
     }
 
     private void makeFolder(String machineIdentifier, int key) {
-        File folder = new File(STORAGE_FOLDER + machineIdentifier + File.separator + key);
+        File folder = new File(storageFolder + machineIdentifier + File.separator + key);
         if (!folder.exists()) {
             boolean isCreated = folder.mkdirs();
             if (isCreated) {
-                LOGGER.info("Folder created: " + folder);
+                LOGGER.info("Folder created: {}", folder);
             } else {
-                LOGGER.warn("Folder not created: " + folder);
+                LOGGER.warn("Folder not created: {}", folder);
             }
         }
 
     }
 
     public List<Movie> readOwnedMovies(String machineIdentifier, Integer key) {
-        LOGGER.info("readOwnedMovies( " + machineIdentifier + ", " + key + " )");
+        LOGGER.info("readOwnedMovies( {}, {} )", machineIdentifier, key);
 
-        final File ownedMovieFile = new File(STORAGE_FOLDER + machineIdentifier + File.separator + key + File.separator + OWNED_MOVIES);
+        final File ownedMovieFile = new File(storageFolder + machineIdentifier + File.separator + key + File.separator + OWNED_MOVIES);
 
         if (!ownedMovieFile.exists()) {
             LOGGER.warn(ownedMovieFile + " does not exist");
@@ -216,9 +210,9 @@ public class IoService {
             return objectMapper.readValue(fullFile.toString(), new TypeReference<>() {
             });
         } catch (FileNotFoundException e) {
-            LOGGER.error("Can't find file " + ownedMovieFile, e);
+            LOGGER.error(String.format("Can't find file %s", ownedMovieFile), e);
         } catch (IOException e) {
-            LOGGER.error("Can't read the file " + ownedMovieFile, e);
+            LOGGER.error(String.format("Can't read the file %s", ownedMovieFile), e);
         }
 
         return Collections.emptyList();
@@ -229,7 +223,7 @@ public class IoService {
      */
     public void writeMovieIdsToFile(Set<Movie> everyMovie) {
         LOGGER.info("writeMovieIdsToFile()");
-        final String fileName = STORAGE_FOLDER + STORAGE;
+        final String fileName = storageFolder + STORAGE;
         File file = new File(fileName);
         writeMovieIdsToFile(everyMovie, file);
     }
@@ -238,7 +232,7 @@ public class IoService {
         if (file.exists()) {
             boolean deleted = file.delete();
             if (!deleted) {
-                LOGGER.error("Can't delete existing file " + file.getName());
+                LOGGER.error("Can't delete existing file {}", file.getName());
                 return;
             }
         }
@@ -246,11 +240,11 @@ public class IoService {
         try {
             boolean created = file.createNewFile();
             if (!created) {
-                LOGGER.error("Can't create file " + file.getAbsolutePath());
+                LOGGER.error("Can't create file {}", file.getAbsolutePath());
                 return;
             }
         } catch (IOException e) {
-            LOGGER.error("Can't create file " + file.getAbsolutePath(), e);
+            LOGGER.error(String.format("Can't create file %s", file.getAbsolutePath()), e);
             return;
         }
 
@@ -258,19 +252,19 @@ public class IoService {
             byte[] output = objectMapper.writeValueAsBytes(everyMovie);
             outputStream.write(output);
         } catch (FileNotFoundException e) {
-            LOGGER.error("Can't find file " + file.getAbsolutePath(), e);
+            LOGGER.error(String.format("Can't find file %s", file.getAbsolutePath()), e);
         } catch (IOException e) {
-            LOGGER.error("Can't write to file " + file.getAbsolutePath(), e);
+            LOGGER.error(String.format("Can't write to file %s", file.getAbsolutePath()), e);
         }
     }
 
     public void writePlexConfiguration(Set<PlexServer> plexServers) {
-        final String fileName = STORAGE_FOLDER + PLEX_CONFIGURATION;
+        final String fileName = storageFolder + PLEX_CONFIGURATION;
         File file = new File(fileName);
         if (file.exists()) {
             boolean deleted = file.delete();
             if (!deleted) {
-                LOGGER.error("Can't delete existing file " + file.getName());
+                LOGGER.error("Can't delete existing file {}", file.getName());
                 return;
             }
         }
@@ -278,11 +272,11 @@ public class IoService {
         try {
             boolean created = file.createNewFile();
             if (!created) {
-                LOGGER.error("Can't create file " + file.getAbsolutePath());
+                LOGGER.error("Can't create file {}", file.getAbsolutePath());
                 return;
             }
         } catch (IOException e) {
-            LOGGER.error("Can't create file " + file.getAbsolutePath(), e);
+            LOGGER.error(String.format("Can't create file %s", file.getAbsolutePath()), e);
             return;
         }
 
@@ -290,18 +284,18 @@ public class IoService {
             byte[] output = objectMapper.writeValueAsBytes(plexServers);
             outputStream.write(output);
         } catch (FileNotFoundException e) {
-            LOGGER.error("Can't find file " + file.getAbsolutePath(), e);
+            LOGGER.error(String.format("Can't find file %s", file.getAbsolutePath()), e);
         } catch (IOException e) {
-            LOGGER.error("Can't write to file " + file.getAbsolutePath(), e);
+            LOGGER.error(String.format("Can't write to file %s", file.getAbsolutePath()), e);
         }
     }
 
     public @NotNull List<PlexServer> readPlexConfiguration() {
-        final String fileName = STORAGE_FOLDER + PLEX_CONFIGURATION;
+        final String fileName = storageFolder + PLEX_CONFIGURATION;
         File file = new File(fileName);
         List<PlexServer> plexServers = new ArrayList<>();
         if (!file.exists()) {
-            LOGGER.warn("Can't find json file '" + fileName + "'. Most likely first run.");
+            LOGGER.warn("Can't find json file '{}'. Most likely first run.", fileName);
             return plexServers;
         }
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
@@ -312,13 +306,13 @@ public class IoService {
             }
 
             LOGGER.info(fullFile.toString());
-            plexServers = objectMapper.readValue(fullFile.toString(), new TypeReference<List<PlexServer>>() {
+            plexServers = objectMapper.readValue(fullFile.toString(), new TypeReference<>() {
             });
             LOGGER.info(plexServers.toString());
         } catch (FileNotFoundException e) {
-            LOGGER.error("Can't find file " + fileName, e);
+            LOGGER.error(String.format("Can't find file %s", fileName), e);
         } catch (IOException e) {
-            LOGGER.error("Can't read file " + fileName, e);
+            LOGGER.error(String.format("Can't read file %s", fileName), e);
         }
 
         return plexServers;
@@ -329,10 +323,10 @@ public class IoService {
      */
     public Set<Movie> readMovieIdsFromFile() {
         Set<Movie> everyMovie = Collections.emptySet();
-        final String fileName = STORAGE_FOLDER + STORAGE;
+        final String fileName = storageFolder + STORAGE;
         File file = new File(fileName);
         if (!file.exists()) {
-            LOGGER.warn("Can't find json file '" + fileName + "'. Most likely first run.");
+            LOGGER.warn("Can't find json file '{}'. Most likely first run.", fileName);
             return everyMovie;
         }
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
@@ -342,85 +336,81 @@ public class IoService {
                 fullFile.append(line);
             }
 
-            everyMovie = objectMapper.readValue(fullFile.toString(), new TypeReference<Set<Movie>>() {
+            everyMovie = objectMapper.readValue(fullFile.toString(), new TypeReference<>() {
             });
-            LOGGER.info("everyMovie.size():" + everyMovie.size());
+            LOGGER.info("everyMovie.size():{}", everyMovie.size());
         } catch (FileNotFoundException e) {
-            LOGGER.error("Can't find file " + fileName, e);
+            LOGGER.error(String.format("Can't find file %s", fileName), e);
         } catch (IOException e) {
-            LOGGER.error("Can't write to file " + fileName, e);
+            LOGGER.error(String.format("Can't write to file %s", fileName), e);
         }
 
         return everyMovie;
     }
 
-    public void writeProperties(PlexSearch plexSearch) throws IOException {
-        LOGGER.info("writeProperties( " + plexSearch + " )");
-        Properties properties = new Properties();
+    public void writeProperties(PlexProperties plexProperties) throws IOException {
+        LOGGER.info("writeProperties( {} )", plexProperties);
 
-        if (StringUtils.isNotEmpty(plexSearch.getMovieDbApiKey())) {
-            properties.setProperty(PlexSearch.MOVIE_DB_API_KEY, plexSearch.getMovieDbApiKey());
-        }
-
-        properties.setProperty(PlexSearch.VERSION_KEY, yamlConfig.getVersion());
-        properties.setProperty(PlexSearch.USERNAME_KEY, PlexSearch.USERNAME_VALUE);
-
-        if (StringUtils.isNotEmpty(plexSearch.getPassword())) {
-            properties.setProperty(PlexSearch.PASSWORD, plexSearch.getPassword());
-        }
-
-        try (FileOutputStream fileOutputStream = new FileOutputStream(STORAGE_FOLDER + PROPERTIES)) {
-            try (OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8)) {
-                properties.store(outputStreamWriter, "");
+        final String properties = storageFolder + PROPERTIES;
+        File propertiesFile = new File(properties);
+        if (propertiesFile.exists()) {
+            try {
+                Files.delete(propertiesFile.toPath());
+            } catch (IOException e) {
+                LOGGER.error(String.format("Can't delete existing file %s", propertiesFile.getName()), e);
+                return;
             }
-        } catch (FileNotFoundException e) {
-            LOGGER.warn(STORAGE_FOLDER + PROPERTIES + " does not exist");
-            throw e;
-        } catch (IOException e) {
-            LOGGER.warn(STORAGE_FOLDER + PROPERTIES + " failed to parse");
-            throw e;
         }
 
+        try {
+            boolean created = propertiesFile.createNewFile();
+            if (!created) {
+                LOGGER.error("Can't create file {}", propertiesFile.getAbsolutePath());
+                return;
+            }
+        } catch (IOException e) {
+            LOGGER.error(String.format("Can't create file %s", propertiesFile.getAbsolutePath()), e);
+            return;
+        }
+
+        try (FileOutputStream outputStream = new FileOutputStream(propertiesFile)) {
+            byte[] output = objectMapper.writeValueAsBytes(plexProperties);
+            outputStream.write(output);
+        } catch (FileNotFoundException e) {
+            LOGGER.error(String.format("Can't find file %s", propertiesFile.getAbsolutePath()), e);
+        } catch (IOException e) {
+            LOGGER.error(String.format("Can't write to file %s", propertiesFile.getAbsolutePath()), e);
+        }
     }
 
-    public PlexSearch readProperties() throws IOException {
+    public PlexProperties readProperties() throws IOException {
         LOGGER.info("readProperties()");
-        File file = new File(STORAGE_FOLDER + PROPERTIES);
-        PlexSearch plexSearch = new PlexSearch();
 
-        LOGGER.info("Can Read " + file + ": " + file.canRead());
-        LOGGER.info("Can Write " + file + ": " + file.canWrite());
-        LOGGER.info("Can Execute " + file + ": " + file.canExecute());
-
-        Properties properties = new Properties();
-        try (FileInputStream fileInputStream = new FileInputStream(file)) {
-            try (InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, StandardCharsets.UTF_8)) {
-                properties.load(inputStreamReader);
-
-                if (properties.containsKey(PlexSearch.MOVIE_DB_API_KEY)) {
-                    String movieDbApiKey = properties.getProperty(PlexSearch.MOVIE_DB_API_KEY);
-                    plexSearch.setMovieDbApiKey(movieDbApiKey);
-                }
-
-                if (properties.containsKey(PlexSearch.PASSWORD)) {
-                    String password = properties.getProperty(PlexSearch.PASSWORD);
-                    plexSearch.setPassword(password);
-                }
-            }
-        } catch (FileNotFoundException e) {
-            LOGGER.warn(file + " does not exist");
-            return plexSearch;
-        } catch (IOException e) {
-            LOGGER.warn(file + " failed to parse");
-            return plexSearch;
+        File file = new File(storageFolder + PROPERTIES);
+        if (!file.exists()) {
+            LOGGER.warn("Can't find json file '{}'. Most likely first run.", file);
+            return new PlexProperties();
         }
-        LOGGER.info("plexSearch: " + plexSearch);
-        return plexSearch;
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+            StringBuilder fullFile = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                fullFile.append(line);
+            }
+
+            return objectMapper.readValue(fullFile.toString(), PlexProperties.class);
+        } catch (FileNotFoundException e) {
+            LOGGER.error(String.format("Can't find file %s", file), e);
+            return new PlexProperties();
+        } catch (IOException e) {
+            LOGGER.error(String.format("Can't read file %s", file), e);
+            return new PlexProperties();
+        }
     }
 
     public Payload nuke() {
         LOGGER.info("nuke()");
-        File folder = new File(STORAGE_FOLDER);
+        File folder = new File(storageFolder);
         try {
             nuke(folder);
             return Payload.NUKE_SUCCESSFUL;
@@ -431,7 +421,7 @@ public class IoService {
     }
 
     private void nuke(File file) {
-        LOGGER.info("nuke( " + file + " )");
+        LOGGER.info("nuke( {} )", file);
         if (!file.isFile()) {
             File[] files = file.listFiles();
             if (files == null) {
@@ -443,9 +433,9 @@ public class IoService {
         } else {
             boolean isDeleted = file.delete();
             if (isDeleted) {
-                LOGGER.info("File deleted: " + file);
+                LOGGER.info("File deleted: {}", file);
             } else {
-                LOGGER.warn("File not deleted: " + file);
+                LOGGER.warn("File not deleted: {}", file);
             }
         }
     }

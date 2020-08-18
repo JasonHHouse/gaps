@@ -10,18 +10,19 @@
 
 package com.jasonhhouse.gaps;
 
+import com.jasonhhouse.gaps.properties.PlexProperties;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Blackboard service interface for storing the PlexSearch object controllers
+ * Blackboard service interface for storing the PlexProperties object controllers
  */
 public interface GapsService {
 
     /**
-     * @return Returns the PlexSearch instance as a singleton
+     * @return Returns the PlexProperties instance as a singleton
      */
-    PlexSearch getPlexSearch();
+    PlexProperties getPlexProperties();
 
     /**
      * Updates PlexLibrary's to add them if not added and set them selected or unselected if added
@@ -31,14 +32,14 @@ public interface GapsService {
     void updateLibrarySelections(@NotNull List<String> selectedLibraries);
 
     /**
-     * Updates the plex search object itself to the singleton object
+     * Updates the plex properties object itself to the singleton object
      *
-     * @param plexSearch The object to copy into the plex search singleton
+     * @param plexProperties The object to copy into the plex properties singleton
      */
-    void updatePlexSearch(PlexSearch plexSearch);
+    void updatePlexProperties(PlexProperties plexProperties);
 
     /**
-     * Resets the plex search object itself to the singleton object
+     * Resets the plex properties object itself to the singleton object
      */
-    void nukePlexSearch();
+    void nukePlexProperties();
 }

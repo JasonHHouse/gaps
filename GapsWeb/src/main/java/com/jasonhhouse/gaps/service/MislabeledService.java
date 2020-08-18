@@ -23,8 +23,10 @@ import org.springframework.stereotype.Service;
 public class MislabeledService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MislabeledService.class);
+    private static final LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
 
     public List<Mislabeled> findMatchPercentage(MediaContainer mediaContainer, Double percentage) {
+        LOGGER.info("findMatchPercentage( {} )", percentage);
         List<Mislabeled> mislabeled = new ArrayList<>();
         for (Video video : mediaContainer.getVideos()) {
             String file = video.getMedia().get(0).getParts().get(0).getFile();
@@ -35,9 +37,7 @@ public class MislabeledService {
             }
             file = file.substring(file.lastIndexOf('/') + 1);
             String title = video.getTitle();
-            title = title.replaceAll(":", "");
-            LOGGER.info("title:" + title);
-            LOGGER.info("file:" + file);
+            title = title.replace(":", "");
             Double matchPercentage = similarity(title, file);
             if (matchPercentage < percentage) {
                 Mislabeled mislabeledItem = new Mislabeled(file, title, matchPercentage);
@@ -48,7 +48,8 @@ public class MislabeledService {
     }
 
     private Double similarity(String s1, String s2) {
-        String longer = s1.toLowerCase(), shorter = s2.toLowerCase();
+        String longer = s1.toLowerCase();
+        String shorter = s2.toLowerCase();
         if (s1.length() < s2.length()) { // longer should always have greater length
             longer = s2;
             shorter = s1;
@@ -57,7 +58,7 @@ public class MislabeledService {
         if (longerLength == 0) {
             return 1.0; /* both strings are zero length */
         }
-        LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
+
         return (longerLength - levenshteinDistance.apply(longer, shorter)) / (double) longerLength;
     }
 

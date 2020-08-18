@@ -10,6 +10,7 @@
 package com.jasonhhouse.gaps;
 
 
+import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
 import java.io.IOException;
 import java.util.UUID;
@@ -50,10 +51,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        LOGGER.info("Name: " + myConfig.getName());
-        LOGGER.info("Description: " + myConfig.getDescription());
-        LOGGER.info("Version: " + myConfig.getVersion());
-        LOGGER.info("LoginEnabled: " + myConfig.getLoginEnabled());
+        LOGGER.info("Name: {}", myConfig.getName());
+        LOGGER.info("Description: {}", myConfig.getDescription());
+        LOGGER.info("Version: {}", myConfig.getVersion());
+        LOGGER.info("LoginEnabled: {}", myConfig.getLoginEnabled());
 
         if (myConfig.getLoginEnabled() && myConfig.getSslEnabled()) {
             LOGGER.info("Login Enabled. Configuring site security with ssl.");
@@ -74,7 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                     .logout()
                     .permitAll();
-        } else if (myConfig.getLoginEnabled() && !myConfig.getSslEnabled()) {
+        } else if (Boolean.TRUE.equals(myConfig.getLoginEnabled()) && !myConfig.getSslEnabled()) {
             LOGGER.info("Login Enabled. Configuring site security without ssl.");
 
             http.cors().and().csrf().disable()
@@ -104,30 +105,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public UserDetailsService userDetailsService() {
         LOGGER.info("userDetailsService()");
-        if (myConfig.getLoginEnabled()) {
+        if (Boolean.TRUE.equals(myConfig.getLoginEnabled())) {
 
-            PlexSearch plexSearch = null;
+            PlexProperties plexProperties = null;
             try {
-                plexSearch = ioService.readProperties();
+                plexProperties = ioService.readProperties();
             } catch (IOException e) {
                 LOGGER.warn("No properties found to get password. Generating new password");
             }
 
             String password;
-            if (plexSearch == null || StringUtils.isEmpty(plexSearch.getPassword())) {
+            if (plexProperties == null || StringUtils.isEmpty(plexProperties.getPassword())) {
                 password = UUID.randomUUID().toString();
-                plexSearch = new PlexSearch();
-                plexSearch.setPassword(password);
-                LOGGER.info("Gaps Password: " + password);
+                plexProperties = new PlexProperties();
+                plexProperties.setPassword(password);
+                LOGGER.info("Gaps Password: {}", password);
                 try {
-                    ioService.writeProperties(plexSearch);
-                    gapsService.updatePlexSearch(plexSearch);
+                    ioService.writeProperties(plexProperties);
+                    gapsService.updatePlexProperties(plexProperties);
                 } catch (IOException e) {
                     LOGGER.error("Failed to write out password to properties file.");
                 }
             } else {
                 LOGGER.info("Using password from /usr/data/gaps.properties");
-                password = plexSearch.getPassword();
+                password = plexProperties.getPassword();
             }
 
             PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();

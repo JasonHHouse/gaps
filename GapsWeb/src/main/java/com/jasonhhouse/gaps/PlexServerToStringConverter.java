@@ -24,7 +24,7 @@ public class PlexServerToStringConverter implements Converter<PlexServer, String
 
     @Override
     public String convert(@NotNull PlexServer plexServer) {
-        LOGGER.info("print( " + plexServer + " )");
+        LOGGER.info("print( {} )", plexServer);
         ObjectMapper mapper = new ObjectMapper();
 
         try {

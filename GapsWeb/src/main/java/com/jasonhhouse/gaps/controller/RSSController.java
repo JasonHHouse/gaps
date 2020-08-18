@@ -46,14 +46,14 @@ public class RSSController {
     @GetMapping(path = "/rss/{machineIdentifier}/{libraryKey}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public String getRss(@PathVariable("machineIdentifier") String machineIdentifier, @PathVariable("libraryKey") Integer libraryKey) {
-        LOGGER.info("getRss( " + machineIdentifier + ", " + libraryKey + " )");
+        LOGGER.info("getRss( {}, {} )", machineIdentifier, libraryKey);
 
         String rss = null;
         if (ioService.doesRssFileExist(machineIdentifier, libraryKey)) {
             rss = ioService.getRssFile(machineIdentifier, libraryKey);
         }
 
-        LOGGER.info("rss:" + rss);
+        LOGGER.info("rss:{}", rss);
 
         if (StringUtils.isEmpty(rss)) {
             //Show empty page
@@ -70,7 +70,7 @@ public class RSSController {
 
         ModelAndView modelAndView = new ModelAndView("rssCheck");
         Map<PlexLibrary, PlexServer> map = rssService.foundAnyRssFeeds();
-        modelAndView.addObject("plexServers", gapsService.getPlexSearch().getPlexServers());
+        modelAndView.addObject("plexServers", gapsService.getPlexProperties().getPlexServers());
         modelAndView.addObject("plexServerMap", map);
         modelAndView.addObject("foundPlexLibraries", MapUtils.isNotEmpty(map));
         return modelAndView;

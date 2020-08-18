@@ -25,7 +25,7 @@ public class MapToStringConverter implements Converter<Map<?, ?>, String> {
 
     @Override
     public String convert(@NotNull Map<?, ?> map) {
-        LOGGER.info("print( " + map + " )");
+        LOGGER.info("print( {} )", map);
         ObjectMapper mapper = new ObjectMapper();
 
         try {

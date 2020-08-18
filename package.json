@@ -1,6 +1,6 @@
 {
   "name": "gaps",
-  "version": "0.4.8",
+  "version": "0.5.0",
   "description": "Gaps searches through your Plex Server or local folders for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.",
   "main": "/",
   "dependencies": {
@@ -10,7 +10,7 @@
     "uglify-js": "^3.10.0"
   },
   "devDependencies": {
-    "cypress": "^4.11.0"
+    "cypress": "^4.12.1"
   },
   "scripts": {
     "e2e": "cypress open",
@@ -21,7 +21,14 @@
     "uglifyjs-recommended-js": "uglifyjs GapsWeb/src/main/resources/static/js/recommended.js --compress --output GapsWeb/src/main/resources/static/js/recommended.min.js",
     "uglifyjs-common-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/common.js --compress --output GapsWeb/src/main/resources/static/js/modules/common.min.js",
     "uglifyjs-payload-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/payload.js --compress --output GapsWeb/src/main/resources/static/js/modules/payload.min.js",
-    "uglifyjs-mislabeled-js": "uglifyjs GapsWeb/src/main/resources/static/js/mislabeled.js --compress --output GapsWeb/src/main/resources/static/js/mislabeled.min.js"
+    "uglifyjs-alerts-manager-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/alerts-manager.js --compress --output GapsWeb/src/main/resources/static/js/modules/alerts-manager.min.js",
+    "uglifyjs-mislabeled-js": "uglifyjs GapsWeb/src/main/resources/static/js/mislabeled.js --compress --output GapsWeb/src/main/resources/static/js/mislabeled.min.js",
+    "uglifyjs-notification-types-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/notification-types.js --compress --output GapsWeb/src/main/resources/static/js/modules/notification-types.min.js",
+    "uglifyjs-telegram-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/telegram-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/telegram-notifications.min.js",
+    "uglifyjs-slack-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/slack-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/slack-notifications.min.js",
+    "uglifyjs-push-bullet-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/push-bullet-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/push-bullet-notifications.min.js",
+    "uglifyjs-gotify-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/gotify-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/gotify-notifications.min.js",
+    "uglifyjs-email-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/email-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/email-notifications.min.js"
   },
   "repository": {
     "type": "git",

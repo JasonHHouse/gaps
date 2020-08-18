@@ -2,8 +2,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>console</headerType>
-  <jar>/Users/jhouse/Code/Gaps/GapsWeb/target/GapsWeb-0.4.8.jar</jar>
-  <outfile>/Users/jhouse/Desktop/Gaps-v0.4.8.exe</outfile>
+  <jar>/Users/jhouse/Code/Gaps/GapsWeb/target/GapsWeb-0.5.0.jar</jar>
+  <outfile>/Users/jhouse/Desktop/Gaps-v0.5.0.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
@@ -28,16 +28,16 @@
     <runtimeBits>64/32</runtimeBits>
   </jre>
   <versionInfo>
-    <fileVersion>0.4.8.0</fileVersion>
+    <fileVersion>0.5.0.0</fileVersion>
     <txtFileVersion>Free Form</txtFileVersion>
     <fileDescription>Gaps</fileDescription>
     <copyright>2019</copyright>
-    <productVersion>0.4.8.0</productVersion>
+    <productVersion>0.5.0.0</productVersion>
     <txtProductVersion>Free Form</txtProductVersion>
     <productName>Gaps</productName>
     <companyName></companyName>
     <internalName>Gaps</internalName>
-    <originalFilename>Gaps-0.4.8.exe</originalFilename>
+    <originalFilename>Gaps-0.5.0.exe</originalFilename>
     <trademarks></trademarks>
     <language>ENGLISH_US</language>
   </versionInfo>

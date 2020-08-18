@@ -38,4 +38,10 @@ cypress/screenshots
 cypress/videos
 Plex/target/
 
-GapsWeb/src/main/resources/static/css/input.min.css
+### Ignore local minified files
+*.min.css
+*.min.js
+
+### Do not ignore min library files
+!**/libraries/*.min.css
+!**/libraries/*.min.js

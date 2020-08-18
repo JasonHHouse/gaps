@@ -8,11 +8,20 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import {Payload} from '/js/modules/payload.min.js';
+'use strict';
+
+import {Payload} from './modules/payload.min.js';
+import {saveTelegramNotifications, testTelegramNotifications} from './modules/telegram-notifications.min.js'
+import {saveSlackNotifications, testSlackNotifications} from './modules/slack-notifications.min.js'
+import {hideAllAlertsAndSpinners} from "./modules/alerts-manager.min.js";
+import {savePushBulletNotifications, testPushBulletNotifications} from "./modules/push-bullet-notifications.min.js";
+import {saveGotifyNotifications, testGotifyNotifications} from "./modules/gotify-notifications.min.js";
+import {saveEmailNotifications, testEmailNotifications} from "./modules/email-notifications.min.js";
 
 let plexSpinner, plexSaveSuccess, plexSaveError, plexTestSuccess, plexTestError, plexDeleteSuccess, plexDeleteError,
     plexDuplicateError;
 let tmdbSpinner, tmdbSaveSuccess, tmdbSaveError, tmdbTestSuccess, tmdbTestError;
+let scheduleSpinner, scheduleSaveSuccess, scheduleSaveError;
 let deleteAllError, deleteAllSuccess;
 
 window.addEventListener('load', function () {
@@ -45,6 +54,9 @@ document.addEventListener('DOMContentLoaded', function () {
     tmdbTestSuccess = $('#tmdbTestSuccess');
     tmdbTestError = $('#tmdbTestError');
     plexDuplicateError = $('#plexDuplicateError');
+    scheduleSpinner = $('#scheduleSpinner');
+    scheduleSaveSuccess = $('#scheduleSaveSuccess');
+    scheduleSaveError = $('#scheduleSaveError');
 
     deleteAllError = $('#deleteAllError');
     deleteAllSuccess = $('#deleteAllSuccess');
@@ -64,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 $('#plexToken').val('');
                 $('#address').val('');
-                $('#port').val('32400');
+                $('#port').val(atob('MzI0MDA='));
 
                 const plexServerCard = $("#plexServerCard").html();
                 const theTemplate = Handlebars.compile(plexServerCard);
@@ -88,8 +100,21 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addPlexServer = addPlexServer;
     window.testExistingPlexServer = testExistingPlexServer;
     window.removePlexServer = removePlexServer;
+    window.saveSchedule = saveSchedule;
     window.setDeleteAllEnabledOrDisabled = setDeleteAllEnabledOrDisabled;
     window.nuke = nuke;
+
+    //Exposing function for onClick() from module
+    window.saveTelegram = saveTelegramNotifications;
+    window.testTelegram = testTelegramNotifications;
+    window.saveSlack = saveSlackNotifications;
+    window.testSlack = testSlackNotifications;
+    window.savePushBullet = savePushBulletNotifications;
+    window.testPushBullet = testPushBulletNotifications;
+    window.testGotify = testGotifyNotifications;
+    window.saveGotify = saveGotifyNotifications;
+    window.testEmail = testEmailNotifications;
+    window.saveEmail = saveEmailNotifications;
 });
 
 function testTmdbKey() {
@@ -249,6 +274,29 @@ function removePlexServer(machineIdentifier) {
     });
 }
 
+function saveSchedule() {
+    hideAllAlertsAndSpinners();
+
+    const id = $('#setSchedule').val();
+
+    $.ajax({
+        type: "PUT",
+        url: `/schedule/${id}`,
+        success: function (result) {
+            hideAllAlertsAndSpinners();
+            if (result && result.code === Payload.SCHEDULE_UPDATED) {
+                scheduleSaveSuccess.show();
+            } else {
+                scheduleSaveError.show();
+            }
+        },
+        error: function () {
+            hideAllAlertsAndSpinners();
+            scheduleSaveError.show();
+        }
+    });
+}
+
 function setDeleteAllEnabledOrDisabled() {
     $('#deleteAll').prop("disabled", !$('#confirmDeleteAll').is(":checked"));
 }
@@ -272,30 +320,6 @@ function nuke() {
             deleteAllError.show();
         }
     });
-}
-
-function hideAllAlertsAndSpinners() {
-    //Spinners
-    plexSpinner.hide();
-    tmdbSpinner.hide();
-
-    //Plex Alerts
-    plexTestSuccess.hide();
-    plexTestError.hide();
-    plexSaveSuccess.hide();
-    plexSaveError.hide();
-    plexDeleteSuccess.hide();
-    plexDeleteError.hide();
-
-    //TMDB Alerts
-    tmdbTestSuccess.hide();
-    tmdbTestError.hide();
-    tmdbSaveSuccess.hide();
-    tmdbSaveError.hide();
-
-    //Advanced
-    deleteAllSuccess.hide();
-    deleteAllError.hide();
 }
 
 $(function () {

@@ -12,9 +12,11 @@ package com.jasonhhouse.gaps.controller;
 import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Mislabeled;
 import com.jasonhhouse.gaps.PlexQuery;
+import com.jasonhhouse.gaps.service.MediaContainerService;
 import com.jasonhhouse.gaps.service.MislabeledService;
 import com.jasonhhouse.plex.MediaContainer;
 import java.util.List;
+import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +37,14 @@ public class MislabeledController {
     private final GapsService gapsService;
     private final PlexQuery plexQuery;
     private final MislabeledService mislabeledService;
+    private final MediaContainerService mediaContainerService;
 
     @Autowired
-    public MislabeledController(GapsService gapsService, PlexQuery plexQuery, MislabeledService mislabeledService) {
+    public MislabeledController(GapsService gapsService, PlexQuery plexQuery, MislabeledService mislabeledService, MediaContainerService mediaContainerService) {
         this.gapsService = gapsService;
         this.plexQuery = plexQuery;
         this.mislabeledService = mislabeledService;
+        this.mediaContainerService = mediaContainerService;
     }
 
     @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
@@ -50,23 +54,68 @@ public class MislabeledController {
         return new ModelAndView("mislabeled");
     }
 
+    @GetMapping(value = "/{machineIdentifier}/{key}")
+    @ResponseBody
+    public ResponseEntity<String> getMisMatched(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
+        LOGGER.info("getPlexMovies( {}, {} )", machineIdentifier, key);
+
+        StopWatch watch = new StopWatch();
+        watch.start();
+
+        String url = generatePlexUrl(machineIdentifier, key);
+        MediaContainer mediaContainer = plexQuery.findAllPlexVideos(url);
+        mediaContainerService.deleteAll();
+        mediaContainerService.save(mediaContainer);
+
+        watch.stop();
+        LOGGER.info("SQLite3 Update {}", watch.getNanoTime());
+
+        return ResponseEntity.ok().body("Success");
+    }
+
     @GetMapping(value = "/{machineIdentifier}/{key}/{percentage}")
     @ResponseBody
     public ResponseEntity<List<Mislabeled>> getMisMatched(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key,
                                                           @PathVariable("percentage") final Double percentage) {
-        LOGGER.info("getPlexMovies( " + machineIdentifier + ", " + key + ", " + percentage + " )");
+        LOGGER.info("getPlexMovies( {}, {}, {} )", machineIdentifier, key, percentage);
+
+        StopWatch watch = new StopWatch();
+        watch.start();
+
+        //ToDo Hardcoded
+        MediaContainer mediaContainer = mediaContainerService.list().get(0);
+        mediaContainerService.save(mediaContainer);
+        List<Mislabeled> mislabeled = mislabeledService.findMatchPercentage(mediaContainer, percentage);
+
+        watch.stop();
+        LOGGER.info("SQLite3 Find All {}", watch.getNanoTime());
+
+        return ResponseEntity.ok().body(mislabeled);
+    }
+
+    @GetMapping(value = "/plex/{machineIdentifier}/{key}/{percentage}")
+    @ResponseBody
+    public ResponseEntity<List<Mislabeled>> getPlexMisMatched(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key,
+                                                              @PathVariable("percentage") final Double percentage) {
+        LOGGER.info("getPlexMovies( {}, {}, {} )", machineIdentifier, key, percentage);
+
+        StopWatch watch = new StopWatch();
+        watch.start();
 
         String url = generatePlexUrl(machineIdentifier, key);
         MediaContainer mediaContainer = plexQuery.findAllPlexVideos(url);
         List<Mislabeled> mislabeled = mislabeledService.findMatchPercentage(mediaContainer, percentage);
 
+        watch.stop();
+        LOGGER.info("Plex Runtime {}", watch.getNanoTime());
+
         return ResponseEntity.ok().body(mislabeled);
     }
 
     private String generatePlexUrl(String machineIdentifier, Integer key) {
-        LOGGER.info("generatePlexUrl( " + machineIdentifier + ", " + key + " )");
+        LOGGER.info("generatePlexUrl( {}, {} )", machineIdentifier, key);
         return gapsService
-                .getPlexSearch()
+                .getPlexProperties()
                 .getPlexServers()
                 .stream()
                 .filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier))

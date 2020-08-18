@@ -23,6 +23,15 @@ spring:
         max-age: 120
         must-revalidate: true
         cache-public: true
+  jpa:
+    database-platform: com.jasonhhouse.gaps.sql.SQLDialect
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:sqlite:/usr/data/gaps.db
+    driver-class-name: org.sqlite.JDBC
+    username: admin
+    password: admin
 server:
   http2:
     enabled: true
@@ -38,4 +47,4 @@ info:
   app:
     name: Gaps
     description: Gaps searches through your Plex Server or local folders for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.
-    version: 0.4.8
+    version: 0.5.0

@@ -12,10 +12,10 @@ package com.jasonhhouse.gaps;
 
 import com.jasonhhouse.gaps.service.GapsServiceImpl;
 import java.util.concurrent.Executor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,21 +23,19 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * Search for all missing movies in your plex collection by MovieDB collection.
  */
 @SpringBootApplication
+@EntityScan("com.jasonhhouse.plex")
 @EnableAsync
 public class GapsApplication {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(GapsApplication.class);
-
-    public GapsApplication() {
-    }
 
     public static void main(String[] args) {
         SpringApplication.run(GapsApplication.class, args);
@@ -69,11 +67,17 @@ public class GapsApplication {
         return messageSource;
     }
 
+    @Bean
+    @Qualifier("Gaps")
+    public TaskScheduler taskScheduler() {
+        return new ThreadPoolTaskScheduler();
+    }
+
     @Configuration
     static class MyConfig implements WebMvcConfigurer {
         @Override
         public void addFormatters(FormatterRegistry registry) {
-            registry.addFormatter(new PlexSearchFormatter());
+            registry.addFormatter(new PlexPropertiesFormatter());
         }
     }
 }
