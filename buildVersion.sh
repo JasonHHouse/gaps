@@ -11,7 +11,15 @@ npm run uglifyjs-recommended-js
 npm run uglifyjs-common-js
 npm run uglifyjs-payload-js
 npm run uglifyjs-mislabeled-js
-mvn clean install spotbugs:check
+npm run uglifyjs-alerts-manager-js
+npm run uglifyjs-notification-types-js
+npm run uglifyjs-telegram-notifications-js
+npm run uglifyjs-slack-notifications-js
+npm run uglifyjs-push-bullet-notifications-js
+npm run uglifyjs-gotify-notifications-js
+npm run uglifyjs-email-notifications-js
+npm run uglifyjs-schedule-js
+mvn clean install spotbugs:spotbugs pmd:pmd checkstyle:checkstyle sonar:sonar deploy
 docker build -f Dockerfile -t $DOCKER_LATEST .
 docker run -p 8484:8484 --name gaps-dev -v /home/jason/gaps:/usr/data:Z gaps-dev
 #cypress run

@@ -12,6 +12,7 @@ package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.Schedule;
+import com.jasonhhouse.gaps.SchedulePayload;
 import com.jasonhhouse.gaps.service.SchedulerService;
 import java.io.IOException;
 import java.util.List;
@@ -24,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,14 +43,13 @@ public class SchedulerController {
         this.schedulerService = schedulerService;
     }
 
-    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,
-            value = "/{schedule}")
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<Payload> putSchedule(@PathVariable("schedule") final Integer schedule) {
-        LOGGER.info("putSchedule( {} )", schedule);
+    public ResponseEntity<Payload> putSchedule(@RequestBody final SchedulePayload schedulePayload) {
+        LOGGER.info("putSchedule( {} )", schedulePayload);
 
         try {
-            schedulerService.setSchedule(schedule);
+            schedulerService.setSchedule(schedulePayload);
         } catch (IOException e) {
             LOGGER.error("Failed to get JSON Schedule", e);
             ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Payload.SCHEDULE_NOT_UPDATED);

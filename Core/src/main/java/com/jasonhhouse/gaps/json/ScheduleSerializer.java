@@ -30,6 +30,7 @@ public class ScheduleSerializer extends StdSerializer<Schedule> {
         jsonGenerator.writeStartObject();
         jsonGenerator.writeNumberField(Schedule.ID, value.getId());
         jsonGenerator.writeStringField(Schedule.MESSAGE, value.getMessage());
+        jsonGenerator.writeBooleanField("enabled", value.getEnabled());
         jsonGenerator.writeEndObject();
     }
 }

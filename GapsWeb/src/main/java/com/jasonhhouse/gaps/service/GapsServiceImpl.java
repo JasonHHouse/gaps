@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
+@Deprecated
 public class GapsServiceImpl implements GapsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GapsServiceImpl.class);
