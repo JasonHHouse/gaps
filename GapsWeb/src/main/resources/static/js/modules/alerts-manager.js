@@ -54,6 +54,14 @@ export function hideSlackAlertsAndSpinners() {
     document.getElementById('slackSpinner').style.display = 'none';
 }
 
+export function hidePushBulletAlertsAndSpinners() {
+    document.getElementById('pushBulletTestSuccess').style.display = 'none';
+    document.getElementById('pushBulletTestError').style.display = 'none';
+    document.getElementById('pushBulletSaveSuccess').style.display = 'none';
+    document.getElementById('pushBulletSaveError').style.display = 'none';
+    document.getElementById('pushBulletSpinner').style.display = 'none';
+}
+
 export function hideAllAlertsAndSpinners() {
     hideTmdbAlertsAndSpinners();
     hideDeleteAlertsAndSpinners();
@@ -61,4 +69,5 @@ export function hideAllAlertsAndSpinners() {
     hidePlexAlertsAndSpinners();
     hideTelegramAlertsAndSpinners();
     hideSlackAlertsAndSpinners();
+    hidePushBulletAlertsAndSpinners();
 }

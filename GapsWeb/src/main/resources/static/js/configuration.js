@@ -14,6 +14,7 @@ import {Payload} from '/js/modules/payload.min.js';
 import {saveTelegramNotifications, testTelegramNotifications} from '/js/modules/telegram-notifications.min.js'
 import {saveSlackNotifications, testSlackNotifications} from '/js/modules/slack-notifications.min.js'
 import {hideAllAlertsAndSpinners} from "./modules/alerts-manager.min.js";
+import {savePushBulletNotifications, testPushBulletNotifications} from "./modules/push-bullet-notifications";
 
 let plexSpinner, plexSaveSuccess, plexSaveError, plexTestSuccess, plexTestError, plexDeleteSuccess, plexDeleteError,
     plexDuplicateError;
@@ -106,6 +107,8 @@ document.addEventListener('DOMContentLoaded', function () {
     window.testTelegram = testTelegramNotifications;
     window.saveSlack = saveSlackNotifications;
     window.testSlack = testSlackNotifications;
+    window.savePushBullet = savePushBulletNotifications;
+    window.testPushBullet = testPushBulletNotifications;
 });
 
 function testTmdbKey() {
