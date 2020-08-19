@@ -46,14 +46,15 @@ public abstract class AbstractNotificationAgent<T extends NotificationProperties
         t = getNotificationProperties();
 
         if (t == null) {
-            return false;
+            LOGGER.warn("Notification Properties are null");
+            return true;
         }
 
-        if (!t.getNotificationTypes().contains(notificationType)) {
+        if (!notificationType.equals(NotificationType.TEST) && !t.getNotificationTypes().contains(notificationType)) {
             LOGGER.info(AGENT_NOT_ENABLED_FOR_NOTIFICATION_TYPE, getName(), notificationType);
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 }
