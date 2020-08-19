@@ -411,6 +411,8 @@ describe('Check Email Notification Agent', function () {
         cy.get('#testEmail')
             .click();
 
+        cy.wait(1000);
+
         cy.get('#emailTestSuccess')
             .should(CYPRESS_VALUES.beVisible);
 
