@@ -13,7 +13,7 @@
 <body>
 <header th:fragment="telegram">
     <h4>Telegram Notifications</h4>
-    <form class="needs-validation" id="telegramConfiguration" novalidate>
+    <form id="telegramConfiguration">
         <div class="form-group">
             <label for="telegramBotId">Bot ID</label>
             <input type="text" class="form-control" id="telegramBotId" aria-describedby="telegramBotIdHelp"
@@ -126,7 +126,7 @@
 
 <header th:fragment="slack">
     <h4>Slack Notifications</h4>
-    <form class="needs-validation" id="slackConfiguration" novalidate>
+    <form id="slackConfiguration">
         <div class="form-group">
             <label for="slackWebHookUrl">Bot ID</label>
             <input type="text" class="form-control" id="slackWebHookUrl" aria-describedby="slackWebHookUrlHelp"
@@ -226,7 +226,7 @@
 
 <header th:fragment="push-bullet">
     <h4>PushBullet Notifications</h4>
-    <form class="needs-validation" id="pushBulletConfiguration" novalidate>
+    <form id="pushBulletConfiguration">
         <div class="form-group">
             <label for="pushBulletChannelTag">Channel Tag</label>
             <input type="text" class="form-control" id="pushBulletChannelTag"
@@ -335,7 +335,7 @@
 
 <header th:fragment="gotify">
     <h4>Gotify Notifications</h4>
-    <form class="needs-validation" id="gotifyConfiguration" novalidate>
+    <form id="gotifyConfiguration">
         <div class="form-group">
             <label for="gotifyAddress">Address</label>
             <input type="text" class="form-control" id="gotifyAddress" aria-describedby="gotifyAddressHelp"
@@ -441,7 +441,7 @@
 
 <header th:fragment="email">
     <h4>Email Notifications</h4>
-    <form class="needs-validation" id="emailConfiguration" novalidate>
+    <form id="emailConfiguration">
         <div class="form-group">
             <label for="emailUsername">Username</label>
             <input type="text" class="form-control" id="emailUsername" aria-describedby="emailUsernameHelp"
