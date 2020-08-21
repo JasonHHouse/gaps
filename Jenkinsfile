@@ -1,11 +1,17 @@
 pipeline {
   agent any
+  tools {
+          maven 'Maven'
+          jdk 'Open 9 - JDK 11'
+      }
   stages {
     stage('Minify') {
       steps {
-        sh 'npm install'
-        sh 'npm ci'
-        sh './minify'
+        nodejs(nodeJSInstallationName: 'Node 14.x') {
+            sh 'npm install'
+            sh 'npm ci'
+            sh './minify'
+        }
       }
     }
     stage('Build Jars') {

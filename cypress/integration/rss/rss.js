@@ -1,7 +1,6 @@
-import {nuke, redLibraryBefore, searchPlexForMoviesFromSaw, spyOnAddEventListener} from "../common";
+import {redLibraryBefore, searchPlexForMoviesFromSaw, spyOnAddEventListener} from "../common";
 
 describe('Searched RSS', function () {
-    before(nuke)
     before(redLibraryBefore);
 
     it('Get full RSS for Red', () => {

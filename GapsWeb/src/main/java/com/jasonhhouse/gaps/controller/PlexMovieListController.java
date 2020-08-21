@@ -10,11 +10,11 @@
 
 package com.jasonhhouse.gaps.controller;
 
-import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Pair;
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexQuery;
+import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
 import java.util.HashMap;
 import java.util.List;
@@ -37,13 +37,11 @@ public class PlexMovieListController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PlexMovieListController.class);
 
     private final IoService ioService;
-    private final GapsService gapsService;
     private final PlexQuery plexQuery;
 
     @Autowired
-    public PlexMovieListController(IoService ioService, GapsService gapsService, PlexQuery plexQuery) {
+    public PlexMovieListController(IoService ioService, PlexQuery plexQuery) {
         this.ioService = ioService;
-        this.gapsService = gapsService;
         this.plexQuery = plexQuery;
     }
 
@@ -53,9 +51,10 @@ public class PlexMovieListController {
     public ResponseEntity<List<Movie>> getPlexMovies(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("getPlexMovies( {}, {} )", machineIdentifier, key);
 
+        PlexProperties plexProperties = ioService.readProperties();
         Set<Movie> everyMovie = ioService.readMovieIdsFromFile();
-        Map<Pair<String, Integer>, Movie> previousMovies = generateOwnedMovieMap(everyMovie);
-        String url = generatePlexMovieUrl(machineIdentifier, key);
+        Map<Pair<String, Integer>, Movie> previousMovies = generateOwnedMovieMap(plexProperties, everyMovie);
+        String url = generatePlexMovieUrl(plexProperties, machineIdentifier, key);
         List<Movie> ownedMovies = plexQuery.findAllPlexMovies(previousMovies, url);
 
         //Update Owned Movies
@@ -63,11 +62,10 @@ public class PlexMovieListController {
         return ResponseEntity.ok().body(ownedMovies);
     }
 
-    private Map<Pair<String, Integer>, Movie> generateOwnedMovieMap(Set<Movie> everyMovie) {
+    private Map<Pair<String, Integer>, Movie> generateOwnedMovieMap(PlexProperties plexProperties, Set<Movie> everyMovie) {
         Map<Pair<String, Integer>, Movie> previousMovies = new HashMap<>();
 
-        gapsService
-                .getPlexProperties()
+        plexProperties
                 .getPlexServers()
                 .forEach(plexServer -> plexServer
                         .getPlexLibraries()
@@ -78,10 +76,9 @@ public class PlexMovieListController {
         return previousMovies;
     }
 
-    private String generatePlexMovieUrl(String machineIdentifier, Integer key) {
+    private String generatePlexMovieUrl(PlexProperties plexProperties, String machineIdentifier, Integer key) {
         LOGGER.info("generatePlexUrl( {}, {} )", machineIdentifier, key);
-        return gapsService
-                .getPlexProperties()
+        return plexProperties
                 .getPlexServers()
                 .stream()
                 .filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier))

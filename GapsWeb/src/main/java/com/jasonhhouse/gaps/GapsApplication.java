@@ -10,7 +10,6 @@
 
 package com.jasonhhouse.gaps;
 
-import com.jasonhhouse.gaps.service.GapsServiceImpl;
 import java.util.concurrent.Executor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
@@ -19,8 +18,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.scheduling.TaskScheduler;
@@ -39,13 +36,6 @@ public class GapsApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(GapsApplication.class, args);
-    }
-
-    @Bean
-    @Primary
-    @Scope("singleton")
-    public GapsService getGapsService() {
-        return new GapsServiceImpl();
     }
 
     @Bean

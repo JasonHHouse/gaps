@@ -14,7 +14,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.Rss;
 import com.jasonhhouse.gaps.YamlConfig;
 import com.jasonhhouse.gaps.properties.PlexProperties;
@@ -29,7 +28,6 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -258,66 +256,6 @@ public class IoService {
         }
     }
 
-    public void writePlexConfiguration(Set<PlexServer> plexServers) {
-        final String fileName = storageFolder + PLEX_CONFIGURATION;
-        File file = new File(fileName);
-        if (file.exists()) {
-            boolean deleted = file.delete();
-            if (!deleted) {
-                LOGGER.error("Can't delete existing file {}", file.getName());
-                return;
-            }
-        }
-
-        try {
-            boolean created = file.createNewFile();
-            if (!created) {
-                LOGGER.error("Can't create file {}", file.getAbsolutePath());
-                return;
-            }
-        } catch (IOException e) {
-            LOGGER.error(String.format("Can't create file %s", file.getAbsolutePath()), e);
-            return;
-        }
-
-        try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            byte[] output = objectMapper.writeValueAsBytes(plexServers);
-            outputStream.write(output);
-        } catch (FileNotFoundException e) {
-            LOGGER.error(String.format("Can't find file %s", file.getAbsolutePath()), e);
-        } catch (IOException e) {
-            LOGGER.error(String.format("Can't write to file %s", file.getAbsolutePath()), e);
-        }
-    }
-
-    public @NotNull List<PlexServer> readPlexConfiguration() {
-        final String fileName = storageFolder + PLEX_CONFIGURATION;
-        File file = new File(fileName);
-        List<PlexServer> plexServers = new ArrayList<>();
-        if (!file.exists()) {
-            LOGGER.warn("Can't find json file '{}'. Most likely first run.", fileName);
-            return plexServers;
-        }
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
-            StringBuilder fullFile = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {
-                fullFile.append(line);
-            }
-
-            LOGGER.info(fullFile.toString());
-            plexServers = objectMapper.readValue(fullFile.toString(), new TypeReference<>() {
-            });
-            LOGGER.info(plexServers.toString());
-        } catch (FileNotFoundException e) {
-            LOGGER.error(String.format("Can't find file %s", fileName), e);
-        } catch (IOException e) {
-            LOGGER.error(String.format("Can't read file %s", fileName), e);
-        }
-
-        return plexServers;
-    }
-
     /**
      * Prints out all recommended files to a text file called gaps_recommended_movies.txt
      */
@@ -348,7 +286,7 @@ public class IoService {
         return everyMovie;
     }
 
-    public void writeProperties(PlexProperties plexProperties) throws IOException {
+    public void writeProperties(@NotNull PlexProperties plexProperties) {
         LOGGER.info("writeProperties( {} )", plexProperties);
 
         final String properties = storageFolder + PROPERTIES;
@@ -383,7 +321,8 @@ public class IoService {
         }
     }
 
-    public PlexProperties readProperties() throws IOException {
+    @NotNull
+    public PlexProperties readProperties() {
         LOGGER.info("readProperties()");
 
         File file = new File(storageFolder + PROPERTIES);

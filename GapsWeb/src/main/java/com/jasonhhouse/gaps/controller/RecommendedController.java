@@ -10,11 +10,11 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsSearch;
-import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexServer;
+import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
 import java.util.List;
 import java.util.Map;
@@ -45,13 +45,11 @@ public class RecommendedController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RecommendedController.class);
 
     private final IoService ioService;
-    private final GapsService gapsService;
     private final GapsSearch gapsSearch;
 
     @Autowired
-    public RecommendedController(IoService ioService, GapsService gapsService, GapsSearch gapsSearch) {
+    public RecommendedController(IoService ioService, GapsSearch gapsSearch) {
         this.ioService = ioService;
-        this.gapsService = gapsService;
         this.gapsSearch = gapsSearch;
     }
 
@@ -59,22 +57,24 @@ public class RecommendedController {
     public ModelAndView getRecommended() {
         LOGGER.info("getRecommended()");
 
+        PlexProperties plexProperties = ioService.readProperties();
         PlexServer plexServer;
         PlexLibrary plexLibrary;
-        if (CollectionUtils.isNotEmpty(gapsService.getPlexProperties().getPlexServers())) {
+
+        if (CollectionUtils.isNotEmpty(plexProperties.getPlexServers())) {
             //Read first plex servers movies
-            plexServer = gapsService.getPlexProperties().getPlexServers().stream().findFirst().orElse(new PlexServer());
+            plexServer = plexProperties.getPlexServers().stream().findFirst().orElse(new PlexServer());
             plexLibrary = plexServer.getPlexLibraries().stream().findFirst().orElse(new PlexLibrary());
         } else {
             plexServer = new PlexServer();
             plexLibrary = new PlexLibrary();
         }
 
-        Map<String, PlexServer> plexServerMap = gapsService.getPlexProperties().getPlexServers().stream().collect(Collectors.toMap(PlexServer::getMachineIdentifier, Function.identity()));
+        Map<String, PlexServer> plexServerMap = plexProperties.getPlexServers().stream().collect(Collectors.toMap(PlexServer::getMachineIdentifier, Function.identity()));
 
         ModelAndView modelAndView = new ModelAndView("recommended");
         modelAndView.addObject("plexServers", plexServerMap);
-        modelAndView.addObject("plexProperties", gapsService.getPlexProperties());
+        modelAndView.addObject("plexProperties", plexProperties);
         modelAndView.addObject("plexServer", plexServer);
         modelAndView.addObject("plexLibrary", plexLibrary);
         return modelAndView;

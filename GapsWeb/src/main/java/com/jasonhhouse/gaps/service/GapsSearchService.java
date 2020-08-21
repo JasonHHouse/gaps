@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.jasonhhouse.gaps.GapsSearch;
-import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.MovieFromCollection;
 import com.jasonhhouse.gaps.Payload;
@@ -25,6 +24,7 @@ import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.SearchCancelledException;
 import com.jasonhhouse.gaps.SearchResults;
 import com.jasonhhouse.gaps.UrlGenerator;
+import com.jasonhhouse.gaps.properties.PlexProperties;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -92,15 +92,12 @@ public class GapsSearchService implements GapsSearch {
 
     private final TmdbService tmdbService;
 
-    private final GapsService gapsService;
-
     private final NotificationService notificationService;
 
     @Autowired
-    public GapsSearchService(@Qualifier("real") UrlGenerator urlGenerator, SimpMessagingTemplate template, IoService ioService, TmdbService tmdbService, GapsService gapsService, NotificationService notificationService) {
+    public GapsSearchService(@Qualifier("real") UrlGenerator urlGenerator, SimpMessagingTemplate template, IoService ioService, TmdbService tmdbService, NotificationService notificationService) {
         this.template = template;
         this.tmdbService = tmdbService;
-        this.gapsService = gapsService;
         this.urlGenerator = urlGenerator;
         this.ioService = ioService;
         this.notificationService = notificationService;
@@ -113,7 +110,8 @@ public class GapsSearchService implements GapsSearch {
     public void run(String machineIdentifier, Integer key) {
         LOGGER.info("run( {}, {} )", machineIdentifier, key);
 
-        Optional<PlexServer> optionalPlexServer = gapsService.getPlexProperties().getPlexServers().stream().filter(tempPlexServer -> tempPlexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst();
+        PlexProperties plexProperties = ioService.readProperties();
+        Optional<PlexServer> optionalPlexServer = plexProperties.getPlexServers().stream().filter(tempPlexServer -> tempPlexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst();
         PlexServer plexServer;
         if (optionalPlexServer.isPresent()) {
             plexServer = optionalPlexServer.get();
@@ -134,8 +132,8 @@ public class GapsSearchService implements GapsSearch {
 
         notificationService.recommendedMoviesSearchStarted(plexServer, plexLibrary);
 
-        if (StringUtils.isEmpty(gapsService.getPlexProperties().getMovieDbApiKey())) {
-            Payload payload = tmdbService.testTmdbKey(gapsService.getPlexProperties().getMovieDbApiKey());
+        if (StringUtils.isEmpty(plexProperties.getMovieDbApiKey())) {
+            Payload payload = tmdbService.testTmdbKey(plexProperties.getMovieDbApiKey());
             if (payload != Payload.TMDB_KEY_VALID) {
                 LOGGER.error(payload.getReason());
                 template.convertAndSend(FINISHED_SEARCHING_URL, payload);
@@ -161,7 +159,7 @@ public class GapsSearchService implements GapsSearch {
         try {
             StopWatch watch = new StopWatch();
             watch.start();
-            searchForMovies(machineIdentifier, key, ownedMovies, everyMovie, recommended, searched, searchedMovieCount);
+            searchForMovies(plexProperties, machineIdentifier, key, ownedMovies, everyMovie, recommended, searched, searchedMovieCount);
             watch.stop();
             LOGGER.info("Time Elapsed: {} seconds.", TimeUnit.MILLISECONDS.toSeconds(watch.getTime()));
             LOGGER.info("Times used TVDB ID: {}", tempTvdbCounter);
@@ -217,15 +215,15 @@ public class GapsSearchService implements GapsSearch {
      * don't re-query collections again and again.
      */
     @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    private void searchForMovies(String machineIdentifier, Integer key, List<Movie> ownedMovies, List<Movie> everyMovie, Set<Movie> recommended, List<Movie> searched,
+    private void searchForMovies(PlexProperties plexProperties, String machineIdentifier, Integer key, List<Movie> ownedMovies, List<Movie> everyMovie, Set<Movie> recommended, List<Movie> searched,
                                  AtomicInteger searchedMovieCount) throws SearchCancelledException, IOException {
         LOGGER.info("searchForMovies()");
         OkHttpClient client = new OkHttpClient();
 
-        if (StringUtils.isEmpty(gapsService.getPlexProperties().getMovieDbApiKey())) {
-            gapsService.updatePlexProperties(ioService.readProperties());
+        if (StringUtils.isEmpty(plexProperties.getMovieDbApiKey())) {
+            plexProperties = ioService.readProperties();
 
-            if (StringUtils.isEmpty(gapsService.getPlexProperties().getMovieDbApiKey())) {
+            if (StringUtils.isEmpty(plexProperties.getMovieDbApiKey())) {
                 final String error = "No MovieDb Key found. Need to configure key first.";
                 LOGGER.error(error);
                 throw new IllegalStateException(error);
@@ -259,21 +257,21 @@ public class GapsSearchService implements GapsSearch {
                 if (movie.getTvdbId() != -1 && movie.getCollectionId() != -1) {
                     LOGGER.info("Used Collection ID to get {}", movie.getName());
                     tempTvdbCounter.incrementAndGet();
-                    handleCollection(machineIdentifier, key, ownedMovies, everyMovie, recommended, searched, searchedMovieCount, movie, client, languageCode);
+                    handleCollection(plexProperties, machineIdentifier, key, ownedMovies, everyMovie, recommended, searched, searchedMovieCount, movie, client, languageCode);
                     continue;
                 } else if (movie.getTvdbId() != -1) {
                     LOGGER.info("Used TVDB ID to get {}", movie.getName());
                     tempTvdbCounter.incrementAndGet();
-                    searchMovieDetails(machineIdentifier, key, ownedMovies, everyMovie, recommended, searched, searchedMovieCount, movie, client, languageCode);
+                    searchMovieDetails(plexProperties, machineIdentifier, key, ownedMovies, everyMovie, recommended, searched, searchedMovieCount, movie, client, languageCode);
                     continue;
                 } else if (StringUtils.isNotBlank(movie.getImdbId())) {
                     LOGGER.info("Used 'find' to search for {}", movie.getName());
                     String imdbId = URLEncoder.encode(movie.getImdbId(), StandardCharsets.UTF_8);
-                    searchMovieUrl = urlGenerator.generateFindMovieUrl(gapsService.getPlexProperties().getMovieDbApiKey(), imdbId, languageCode);
+                    searchMovieUrl = urlGenerator.generateFindMovieUrl(plexProperties.getMovieDbApiKey(), imdbId, languageCode);
                 } else {
                     LOGGER.info("Used 'search' to search for {}", movie.getName());
                     String name = URLEncoder.encode(movie.getName(), StandardCharsets.UTF_8);
-                    searchMovieUrl = urlGenerator.generateSearchMovieUrl(gapsService.getPlexProperties().getMovieDbApiKey(), name, String.valueOf(movie.getYear()), languageCode);
+                    searchMovieUrl = urlGenerator.generateSearchMovieUrl(plexProperties.getMovieDbApiKey(), name, String.valueOf(movie.getYear()), languageCode);
                 }
 
                 Request request = new Request.Builder()
@@ -339,7 +337,7 @@ public class GapsSearchService implements GapsSearch {
                         everyMovie.add(newMovie);
                     }
 
-                    searchMovieDetails(machineIdentifier, key, ownedMovies, everyMovie, recommended, searched, searchedMovieCount, movie, client, languageCode);
+                    searchMovieDetails(plexProperties, machineIdentifier, key, ownedMovies, everyMovie, recommended, searched, searchedMovieCount, movie, client, languageCode);
                 } catch (JsonProcessingException e) {
                     LOGGER.error(String.format("Error parsing movie %s.", movie), e);
                     LOGGER.error("URL: {}", searchMovieUrl);
@@ -365,10 +363,10 @@ public class GapsSearchService implements GapsSearch {
         }
     }
 
-    private void searchMovieDetails(String machineIdentifier, Integer key, List<Movie> ownedMovies, List<Movie> everyMovie, Set<Movie> recommended, List<Movie> searched,
+    private void searchMovieDetails(PlexProperties plexProperties, String machineIdentifier, Integer key, List<Movie> ownedMovies, List<Movie> everyMovie, Set<Movie> recommended, List<Movie> searched,
                                     AtomicInteger searchedMovieCount, Movie movie, OkHttpClient client, String languageCode) {
         LOGGER.info("searchMovieDetails()");
-        HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(gapsService.getPlexProperties().getMovieDbApiKey(), String.valueOf(movie.getTvdbId()), languageCode);
+        HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(plexProperties.getMovieDbApiKey(), String.valueOf(movie.getTvdbId()), languageCode);
 
         Request request = new Request.Builder()
                 .url(movieDetailUrl)
@@ -416,17 +414,17 @@ public class GapsSearchService implements GapsSearch {
                 everyMovie.add(newMovie);
             }
 
-            handleCollection(machineIdentifier, key, ownedMovies, everyMovie, recommended, searched, searchedMovieCount, movie, client, languageCode);
+            handleCollection(plexProperties, machineIdentifier, key, ownedMovies, everyMovie, recommended, searched, searchedMovieCount, movie, client, languageCode);
 
         } catch (IOException e) {
             LOGGER.error(String.format("Error getting movie details %s", movie), e);
         }
     }
 
-    private void handleCollection(String machineIdentifier, Integer key, List<Movie> ownedMovies, List<Movie> everyMovie, Set<Movie> recommended, List<Movie> searched,
+    private void handleCollection(PlexProperties plexProperties, String machineIdentifier, Integer key, List<Movie> ownedMovies, List<Movie> everyMovie, Set<Movie> recommended, List<Movie> searched,
                                   AtomicInteger searchedMovieCount, Movie movie, OkHttpClient client, String languageCode) {
         LOGGER.info("handleCollection()");
-        HttpUrl collectionUrl = urlGenerator.generateCollectionUrl(gapsService.getPlexProperties().getMovieDbApiKey(), String.valueOf(movie.getCollectionId()), languageCode);
+        HttpUrl collectionUrl = urlGenerator.generateCollectionUrl(plexProperties.getMovieDbApiKey(), String.valueOf(movie.getCollectionId()), languageCode);
 
         Request request = new Request.Builder()
                 .url(collectionUrl)
@@ -569,7 +567,7 @@ public class GapsSearchService implements GapsSearch {
                     LOGGER.info("Missing movie found: {}", movieFromCollection);
 
                     // Get recommended Movie details from MovieDB API
-                    HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(gapsService.getPlexProperties().getMovieDbApiKey(), String.valueOf(movieFromCollection.getTvdbId()), languageCode);
+                    HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(plexProperties.getMovieDbApiKey(), String.valueOf(movieFromCollection.getTvdbId()), languageCode);
 
                     Request newReq = new Request.Builder()
                             .url(movieDetailUrl)

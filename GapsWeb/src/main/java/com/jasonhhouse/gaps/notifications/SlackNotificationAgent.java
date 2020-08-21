@@ -29,7 +29,6 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.jasonhhouse.gaps.notifications.NotificationStatus.FAILED_TO_READ_PROPERTIES;
 import static com.jasonhhouse.gaps.notifications.NotificationStatus.TIMEOUT;
 
 public class SlackNotificationAgent extends AbstractNotificationAgent<SlackProperties> {
@@ -109,12 +108,7 @@ public class SlackNotificationAgent extends AbstractNotificationAgent<SlackPrope
     @Nullable
     @Override
     public SlackProperties getNotificationProperties() {
-        try {
-            return ioService.readProperties().getSlackProperties();
-        } catch (IOException e) {
-            LOGGER.error(String.format(FAILED_TO_READ_PROPERTIES, getName()), e);
-            return null;
-        }
+        return ioService.readProperties().getSlackProperties();
     }
 
     private static final class Slack {

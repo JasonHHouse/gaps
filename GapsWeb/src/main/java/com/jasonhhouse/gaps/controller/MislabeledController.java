@@ -9,9 +9,10 @@
  */
 package com.jasonhhouse.gaps.controller;
 
-import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Mislabeled;
 import com.jasonhhouse.gaps.PlexQuery;
+import com.jasonhhouse.gaps.properties.PlexProperties;
+import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.service.MediaContainerService;
 import com.jasonhhouse.gaps.service.MislabeledService;
 import com.jasonhhouse.plex.MediaContainer;
@@ -34,14 +35,14 @@ import org.springframework.web.servlet.ModelAndView;
 public class MislabeledController {
     private static final Logger LOGGER = LoggerFactory.getLogger(MislabeledController.class);
 
-    private final GapsService gapsService;
+    private final IoService ioService;
     private final PlexQuery plexQuery;
     private final MislabeledService mislabeledService;
     private final MediaContainerService mediaContainerService;
 
     @Autowired
-    public MislabeledController(GapsService gapsService, PlexQuery plexQuery, MislabeledService mislabeledService, MediaContainerService mediaContainerService) {
-        this.gapsService = gapsService;
+    public MislabeledController(IoService ioService, PlexQuery plexQuery, MislabeledService mislabeledService, MediaContainerService mediaContainerService) {
+        this.ioService = ioService;
         this.plexQuery = plexQuery;
         this.mislabeledService = mislabeledService;
         this.mediaContainerService = mediaContainerService;
@@ -62,7 +63,9 @@ public class MislabeledController {
         StopWatch watch = new StopWatch();
         watch.start();
 
-        String url = generatePlexUrl(machineIdentifier, key);
+        PlexProperties plexProperties = ioService.readProperties();
+
+        String url = generatePlexUrl(plexProperties, machineIdentifier, key);
         MediaContainer mediaContainer = plexQuery.findAllPlexVideos(url);
         mediaContainerService.deleteAll();
         mediaContainerService.save(mediaContainer);
@@ -102,7 +105,8 @@ public class MislabeledController {
         StopWatch watch = new StopWatch();
         watch.start();
 
-        String url = generatePlexUrl(machineIdentifier, key);
+        PlexProperties plexProperties = ioService.readProperties();
+        String url = generatePlexUrl(plexProperties, machineIdentifier, key);
         MediaContainer mediaContainer = plexQuery.findAllPlexVideos(url);
         List<Mislabeled> mislabeled = mislabeledService.findMatchPercentage(mediaContainer, percentage);
 
@@ -112,10 +116,9 @@ public class MislabeledController {
         return ResponseEntity.ok().body(mislabeled);
     }
 
-    private String generatePlexUrl(String machineIdentifier, Integer key) {
+    private String generatePlexUrl(PlexProperties plexProperties, String machineIdentifier, Integer key) {
         LOGGER.info("generatePlexUrl( {}, {} )", machineIdentifier, key);
-        return gapsService
-                .getPlexProperties()
+        return plexProperties
                 .getPlexServers()
                 .stream()
                 .filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier))

@@ -12,7 +12,6 @@ package com.jasonhhouse.gaps.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.GapsSearch;
-import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.GapsUrlGenerator;
 import com.jasonhhouse.gaps.PlexQuery;
 import com.jasonhhouse.gaps.Schedule;
@@ -40,17 +39,15 @@ public class SchedulerService {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private final IoService ioService;
-    private final GapsService gapsService;
     private final TaskScheduler scheduler;
     private final SearchGapsTask searchGapsTask;
     private ScheduledFuture<?> scheduledFuture;
 
     @Autowired
-    public SchedulerService(IoService ioService, TmdbService tmdbService, GapsService gapsService, GapsSearch gapsSearch, @Qualifier("Gaps") TaskScheduler scheduler, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator, NotificationService notificationService) {
+    public SchedulerService(IoService ioService, TmdbService tmdbService, GapsSearch gapsSearch, @Qualifier("Gaps") TaskScheduler scheduler, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator, NotificationService notificationService) {
         this.ioService = ioService;
-        this.gapsService = gapsService;
         this.scheduler = scheduler;
-        this.searchGapsTask = new SearchGapsTask(gapsService, gapsSearch, tmdbService, ioService, plexQuery, gapsUrlGenerator, notificationService);
+        this.searchGapsTask = new SearchGapsTask(gapsSearch, tmdbService, ioService, plexQuery, gapsUrlGenerator, notificationService);
     }
 
     public void setSchedule(SchedulePayload schedulePayload) throws IOException {
@@ -59,7 +56,6 @@ public class SchedulerService {
         Schedule schedule = Schedule.getSchedule(schedulePayload.getSchedule());
         schedule.setEnabled(schedulePayload.getEnabled());
         plexProperties.setSchedule(schedule);
-        gapsService.getPlexProperties().setSchedule(schedule);
         ioService.writeProperties(plexProperties);
         setTaskForScheduler(schedule);
     }

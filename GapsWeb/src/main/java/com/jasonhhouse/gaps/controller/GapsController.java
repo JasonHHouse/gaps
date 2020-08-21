@@ -9,11 +9,9 @@
  */
 package com.jasonhhouse.gaps.controller;
 
-import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
-import java.io.IOException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -37,31 +35,21 @@ public class GapsController {
     private static final Logger LOGGER = LoggerFactory.getLogger(GapsController.class);
 
     private final IoService ioService;
-    private final GapsService gapsService;
 
     @Autowired
-    public GapsController(IoService ioService, GapsService gapsService) {
+    public GapsController(IoService ioService) {
         this.ioService = ioService;
-        this.gapsService = gapsService;
     }
-
 
     @GetMapping(value = "/home",
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getIndexOnClick() {
         LOGGER.info("getIndexOnClick()");
 
-        PlexProperties plexProperties = null;
-        try {
-            plexProperties = ioService.readProperties();
-            plexProperties.getPlexServers().addAll(ioService.readPlexConfiguration());
-            gapsService.updatePlexProperties(plexProperties);
-        } catch (IOException e) {
-            LOGGER.warn("Failed to read gaps properties.", e);
-        }
+        PlexProperties plexProperties = ioService.readProperties();
 
         ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("plexProperties", gapsService.getPlexProperties());
+        modelAndView.addObject("plexProperties", plexProperties);
         return modelAndView;
     }
 
@@ -69,23 +57,16 @@ public class GapsController {
     public ModelAndView getIndex() {
         LOGGER.info("getIndex()");
 
-        PlexProperties plexProperties = null;
-        try {
-            plexProperties = ioService.readProperties();
-            plexProperties.getPlexServers().addAll(ioService.readPlexConfiguration());
-            gapsService.updatePlexProperties(plexProperties);
-        } catch (IOException e) {
-            LOGGER.warn("Failed to read gaps properties.", e);
-        }
+        PlexProperties plexProperties = ioService.readProperties();
 
         //If configuration is filled in, jump to libraries page
-        if (plexProperties != null && StringUtils.isNotEmpty(plexProperties.getMovieDbApiKey()) && CollectionUtils.isNotEmpty(plexProperties.getPlexServers())) {
+        if (StringUtils.isNotEmpty(plexProperties.getMovieDbApiKey()) && CollectionUtils.isNotEmpty(plexProperties.getPlexServers())) {
             return new ModelAndView("redirect:/libraries");
         }
 
 
         ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("plexProperties", gapsService.getPlexProperties());
+        modelAndView.addObject("plexProperties", plexProperties);
         return modelAndView;
     }
 
@@ -96,9 +77,6 @@ public class GapsController {
         LOGGER.info("putNuke()");
         LOGGER.info("Deleting all local files");
         Payload payload = ioService.nuke();
-        if (payload.getCode() == Payload.NUKE_SUCCESSFUL.getCode()) {
-            gapsService.nukePlexProperties();
-        }
         return ResponseEntity.ok().body(payload);
     }
 

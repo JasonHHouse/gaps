@@ -10,9 +10,9 @@
 
 package com.jasonhhouse.gaps.controller;
 
-import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexServer;
+import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.service.RssService;
 import java.util.Map;
@@ -34,13 +34,11 @@ public class RSSController {
 
     private final IoService ioService;
     private final RssService rssService;
-    private final GapsService gapsService;
 
     @Autowired
-    public RSSController(IoService ioService, RssService rssService, GapsService gapsService) {
+    public RSSController(IoService ioService, RssService rssService) {
         this.ioService = ioService;
         this.rssService = rssService;
-        this.gapsService = gapsService;
     }
 
     @GetMapping(path = "/rss/{machineIdentifier}/{libraryKey}",
@@ -68,9 +66,10 @@ public class RSSController {
     public ModelAndView getRssCheck() {
         LOGGER.info("getRssCheck()");
 
+        PlexProperties plexProperties = ioService.readProperties();
         ModelAndView modelAndView = new ModelAndView("rssCheck");
         Map<PlexLibrary, PlexServer> map = rssService.foundAnyRssFeeds();
-        modelAndView.addObject("plexServers", gapsService.getPlexProperties().getPlexServers());
+        modelAndView.addObject("plexServers", plexProperties.getPlexServers());
         modelAndView.addObject("plexServerMap", map);
         modelAndView.addObject("foundPlexLibraries", MapUtils.isNotEmpty(map));
         return modelAndView;

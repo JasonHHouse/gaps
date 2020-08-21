@@ -11,7 +11,6 @@
 package com.jasonhhouse.gaps;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Objects;
 
 public final class Rss {

@@ -28,7 +28,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static com.jasonhhouse.gaps.notifications.NotificationStatus.FAILED_TO_PARSE_JSON;
-import static com.jasonhhouse.gaps.notifications.NotificationStatus.FAILED_TO_READ_PROPERTIES;
 import static com.jasonhhouse.gaps.notifications.NotificationStatus.SEND_MESSAGE;
 import static com.jasonhhouse.gaps.notifications.NotificationStatus.TIMEOUT;
 
@@ -105,12 +104,7 @@ public class GotifyNotificationAgent extends AbstractNotificationAgent<GotifyPro
     @Nullable
     @Override
     public GotifyProperties getNotificationProperties() {
-        try {
-            return ioService.readProperties().getGotifyProperties();
-        } catch (IOException e) {
-            LOGGER.error(String.format(FAILED_TO_READ_PROPERTIES, getName()), e);
-            return null;
-        }
+        return ioService.readProperties().getGotifyProperties();
     }
 
     public static final class Gotify {
