@@ -15,7 +15,6 @@ import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;

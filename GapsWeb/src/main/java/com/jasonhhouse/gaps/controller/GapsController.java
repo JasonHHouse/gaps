@@ -12,7 +12,6 @@ package com.jasonhhouse.gaps.controller;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
-import java.io.IOException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

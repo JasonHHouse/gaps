@@ -16,7 +16,6 @@ import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.service.MediaContainerService;
 import com.jasonhhouse.gaps.service.MislabeledService;
 import com.jasonhhouse.plex.MediaContainer;
-import java.io.IOException;
 import java.util.List;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;

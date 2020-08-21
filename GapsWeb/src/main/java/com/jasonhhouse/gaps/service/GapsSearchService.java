@@ -95,7 +95,7 @@ public class GapsSearchService implements GapsSearch {
     private final NotificationService notificationService;
 
     @Autowired
-    public GapsSearchService(@Qualifier("real") UrlGenerator urlGenerator, SimpMessagingTemplate template, IoService ioService, TmdbService tmdbService,NotificationService notificationService) {
+    public GapsSearchService(@Qualifier("real") UrlGenerator urlGenerator, SimpMessagingTemplate template, IoService ioService, TmdbService tmdbService, NotificationService notificationService) {
         this.template = template;
         this.tmdbService = tmdbService;
         this.urlGenerator = urlGenerator;
