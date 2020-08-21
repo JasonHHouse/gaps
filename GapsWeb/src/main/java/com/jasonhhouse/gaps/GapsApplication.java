@@ -10,7 +10,6 @@
 
 package com.jasonhhouse.gaps;
 
-import com.jasonhhouse.gaps.service.GapsServiceImpl;
 import java.util.concurrent.Executor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
@@ -39,13 +38,6 @@ public class GapsApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(GapsApplication.class, args);
-    }
-
-    @Bean
-    @Primary
-    @Scope("singleton")
-    public GapsService getGapsService() {
-        return new GapsServiceImpl();
     }
 
     @Bean

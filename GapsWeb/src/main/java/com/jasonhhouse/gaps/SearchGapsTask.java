@@ -10,6 +10,7 @@
 
 package com.jasonhhouse.gaps;
 
+import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.service.NotificationService;
 import com.jasonhhouse.gaps.service.TmdbService;
@@ -28,7 +29,6 @@ public class SearchGapsTask implements Runnable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchGapsTask.class);
 
-    private final GapsService gapsService;
     private final GapsSearch gapsSearch;
     private final TmdbService tmdbService;
     private final IoService ioService;
@@ -36,8 +36,7 @@ public class SearchGapsTask implements Runnable {
     private final GapsUrlGenerator gapsUrlGenerator;
     private final NotificationService notificationService;
 
-    public SearchGapsTask(GapsService gapsService, GapsSearch gapsSearch, TmdbService tmdbService, IoService ioService, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator, NotificationService notificationService) {
-        this.gapsService = gapsService;
+    public SearchGapsTask(GapsSearch gapsSearch, TmdbService tmdbService, IoService ioService, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator, NotificationService notificationService) {
         this.gapsSearch = gapsSearch;
         this.tmdbService = tmdbService;
         this.ioService = ioService;
@@ -50,21 +49,28 @@ public class SearchGapsTask implements Runnable {
     public void run() {
         LOGGER.info("run()");
 
-        if (CollectionUtils.isEmpty(gapsService.getPlexProperties().getPlexServers())) {
-            LOGGER.warn("No Plex Servers Found. Canceling automatic search.");
+        PlexProperties plexProperties;
+        try {
+            plexProperties = ioService.readProperties();
+            if (CollectionUtils.isEmpty(plexProperties.getPlexServers())) {
+                LOGGER.warn("No Plex Servers Found. Canceling automatic search.");
+                return;
+            }
+        } catch (IOException e) {
+            LOGGER.error("Couldn't read properties file", e);
             return;
         }
 
         boolean tmdbResult = checkTmdbKey();
 
         if (tmdbResult) {
-            checkPlexServers();
+            checkPlexServers(plexProperties);
 
-            updatePlexLibraries();
+            updatePlexLibraries(plexProperties);
 
-            updateLibraryMovies();
+            updateLibraryMovies(plexProperties);
 
-            findRecommendedMovies();
+            findRecommendedMovies(plexProperties);
         }
     }
 
@@ -89,10 +95,10 @@ public class SearchGapsTask implements Runnable {
         }
     }
 
-    private void checkPlexServers() {
+    private void checkPlexServers(PlexProperties plexProperties) {
         LOGGER.info("checkPlexServers()");
 
-        for (PlexServer plexServer : gapsService.getPlexProperties().getPlexServers()) {
+        for (PlexServer plexServer : plexProperties.getPlexServers()) {
             Payload payload = plexQuery.queryPlexServer(plexServer);
             if (payload.getCode() == Payload.PLEX_CONNECTION_SUCCEEDED.getCode()) {
                 notificationService.plexServerConnectSuccessful(plexServer);
@@ -102,10 +108,10 @@ public class SearchGapsTask implements Runnable {
         }
     }
 
-    private void updatePlexLibraries() {
+    private void updatePlexLibraries(PlexProperties plexProperties) {
         LOGGER.info("updatePlexLibraries()");
         //Update each Plex Library from each Plex Server
-        for (PlexServer plexServer : gapsService.getPlexProperties().getPlexServers()) {
+        for (PlexServer plexServer : plexProperties.getPlexServers()) {
             Payload getLibrariesResults = plexQuery.getLibraries(plexServer);
             if (Payload.PLEX_LIBRARIES_FOUND == getLibrariesResults) {
                 LOGGER.info("Plex libraries found for Plex Server {}", plexServer.getFriendlyName());
@@ -115,13 +121,13 @@ public class SearchGapsTask implements Runnable {
         }
     }
 
-    private void updateLibraryMovies() {
+    private void updateLibraryMovies(PlexProperties plexProperties) {
         LOGGER.info("updateLibraryMovies()");
-        for (PlexServer plexServer : gapsService.getPlexProperties().getPlexServers()) {
+        for (PlexServer plexServer : plexProperties.getPlexServers()) {
             for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
                 HttpUrl url = gapsUrlGenerator.generatePlexLibraryUrl(plexServer, plexLibrary);
                 try {
-                    List<Movie> ownedMovies = plexQuery.findAllPlexMovies(generateOwnedMovieMap(), url);
+                    List<Movie> ownedMovies = plexQuery.findAllPlexMovies(generateOwnedMovieMap(plexProperties), url);
                     ioService.writeOwnedMoviesToFile(ownedMovies, plexLibrary.getMachineIdentifier(), plexLibrary.getKey());
                     notificationService.plexLibraryScanSuccessful(plexServer, plexLibrary);
                 } catch (ResponseStatusException e) {
@@ -131,21 +137,20 @@ public class SearchGapsTask implements Runnable {
         }
     }
 
-    private void findRecommendedMovies() {
+    private void findRecommendedMovies(PlexProperties plexProperties) {
         LOGGER.info("findRecommendedMovies()");
-        for (PlexServer plexServer : gapsService.getPlexProperties().getPlexServers()) {
+        for (PlexServer plexServer : plexProperties.getPlexServers()) {
             for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
                 gapsSearch.run(plexLibrary.getMachineIdentifier(), plexLibrary.getKey());
             }
         }
     }
 
-    private Map<Pair<String, Integer>, Movie> generateOwnedMovieMap() {
+    private Map<Pair<String, Integer>, Movie> generateOwnedMovieMap(PlexProperties plexProperties) {
         Set<Movie> everyMovie = ioService.readMovieIdsFromFile();
         Map<Pair<String, Integer>, Movie> previousMovies = new HashMap<>();
 
-        gapsService
-                .getPlexProperties()
+        plexProperties
                 .getPlexServers()
                 .forEach(plexServer -> plexServer
                         .getPlexLibraries()

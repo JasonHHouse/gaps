@@ -40,13 +40,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final IoService ioService;
 
-    private final GapsService gapsService;
-
     @Autowired
-    public WebSecurityConfig(YamlConfig myConfig, IoService ioService, GapsService gapsService) {
+    public WebSecurityConfig(YamlConfig myConfig, IoService ioService) {
         this.myConfig = myConfig;
         this.ioService = ioService;
-        this.gapsService = gapsService;
     }
 
     @Override
@@ -122,7 +119,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 LOGGER.info("Gaps Password: {}", password);
                 try {
                     ioService.writeProperties(plexProperties);
-                    gapsService.updatePlexProperties(plexProperties);
                 } catch (IOException e) {
                     LOGGER.error("Failed to write out password to properties file.");
                 }
