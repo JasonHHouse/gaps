@@ -2,7 +2,7 @@ pipeline {
   agent any
   tools {
           maven 'Maven'
-          jdk 'Open JDK 11'
+          jdk 'Open 9 - JDK 11'
       }
   stages {
     stage('Minify') {
