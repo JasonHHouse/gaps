@@ -106,7 +106,6 @@ public class ConfigurationController {
                 if (plexProperties.getPlexServers().size() == initialCount) {
                     template.convertAndSend(CONFIGURATION_PLEX + "/duplicate", Payload.DUPLICATE_PLEX_LIBRARY);
                 } else {
-                    ioService.writePlexConfiguration(plexProperties.getPlexServers());
                     ioService.writeProperties(plexProperties);
                     template.convertAndSend(CONFIGURATION_PLEX_COMPLETE, payload.setExtras(plexServer));
                 }
@@ -179,7 +178,6 @@ public class ConfigurationController {
                 objectNode.put(SUCCESS, false);
             } else {
                 plexProperties.getPlexServers().remove(returnedPlexServer);
-                ioService.writePlexConfiguration(plexProperties.getPlexServers());
                 ioService.writeProperties(plexProperties);
                 objectNode.put(SUCCESS, true);
             }

@@ -11,17 +11,23 @@ package com.jasonhhouse.gaps.service;
 
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexServer;
+import com.jasonhhouse.gaps.properties.PlexProperties;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.validation.constraints.NotNull;
 import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RssService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RssService.class);
 
     private final IoService ioService;
 
@@ -33,7 +39,16 @@ public class RssService {
     @NotNull
     public Map<PlexLibrary, PlexServer> foundAnyRssFeeds() {
         Map<PlexLibrary, PlexServer> plexServerMap = new HashMap<>();
-        List<PlexServer> plexServers = ioService.readPlexConfiguration();
+
+        PlexProperties plexProperties;
+        try {
+            plexProperties = ioService.readProperties();
+        } catch (IOException e) {
+            LOGGER.warn("Failed to read gaps properties. Probably first run.", e);
+            plexProperties = new PlexProperties();
+        }
+
+        Set<PlexServer> plexServers = plexProperties.getPlexServers();
         if (CollectionUtils.isEmpty(plexServers)) {
             return Collections.emptyMap();
         }
