@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.jasonhhouse.gaps.GapsSearch;
-import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.MovieFromCollection;
 import com.jasonhhouse.gaps.Payload;
@@ -93,15 +92,12 @@ public class GapsSearchService implements GapsSearch {
 
     private final TmdbService tmdbService;
 
-    //private final GapsService gapsService;
-
     private final NotificationService notificationService;
 
     @Autowired
-    public GapsSearchService(@Qualifier("real") UrlGenerator urlGenerator, SimpMessagingTemplate template, IoService ioService, TmdbService tmdbService, GapsService gapsService, NotificationService notificationService) {
+    public GapsSearchService(@Qualifier("real") UrlGenerator urlGenerator, SimpMessagingTemplate template, IoService ioService, TmdbService tmdbService,NotificationService notificationService) {
         this.template = template;
         this.tmdbService = tmdbService;
-        //this.gapsService = gapsService;
         this.urlGenerator = urlGenerator;
         this.ioService = ioService;
         this.notificationService = notificationService;

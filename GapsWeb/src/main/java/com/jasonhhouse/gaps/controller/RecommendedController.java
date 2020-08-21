@@ -10,7 +10,6 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsSearch;
-import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexLibrary;

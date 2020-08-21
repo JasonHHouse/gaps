@@ -10,7 +10,6 @@
 
 package com.jasonhhouse.gaps.controller;
 
-import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;

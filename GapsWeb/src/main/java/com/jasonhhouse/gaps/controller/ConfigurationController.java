@@ -11,7 +11,6 @@ package com.jasonhhouse.gaps.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
@@ -20,7 +19,6 @@ import com.jasonhhouse.gaps.service.PlexQueryImpl;
 import com.jasonhhouse.gaps.service.SchedulerService;
 import com.jasonhhouse.gaps.service.TmdbService;
 import java.io.IOException;
-import java.util.List;
 import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -55,15 +53,13 @@ public class ConfigurationController {
     private final TmdbService tmdbService;
     private final SimpMessagingTemplate template;
     private final PlexQueryImpl plexQuery;
-    private final GapsService gapsService;
     private final IoService ioService;
     private final SchedulerService schedulerService;
 
-    public ConfigurationController(TmdbService tmdbService, SimpMessagingTemplate template, PlexQueryImpl plexQuery, GapsService gapsService, IoService ioService, SchedulerService schedulerService) {
+    public ConfigurationController(TmdbService tmdbService, SimpMessagingTemplate template, PlexQueryImpl plexQuery, IoService ioService, SchedulerService schedulerService) {
         this.tmdbService = tmdbService;
         this.template = template;
         this.plexQuery = plexQuery;
-        this.gapsService = gapsService;
         this.ioService = ioService;
         this.schedulerService = schedulerService;
     }
@@ -72,18 +68,16 @@ public class ConfigurationController {
     public ModelAndView getConfiguration() {
         LOGGER.info("getConfiguration()");
 
+        PlexProperties plexProperties;
         try {
-            PlexProperties plexProperties = ioService.readProperties();
-            gapsService.updatePlexProperties(plexProperties);
-
-            List<PlexServer> plexServers = ioService.readPlexConfiguration();
-            gapsService.getPlexProperties().getPlexServers().addAll(plexServers);
+            plexProperties = ioService.readProperties();
         } catch (IOException e) {
-            LOGGER.warn("Failed to read gaps properties.", e);
+            LOGGER.warn("Failed to read gaps properties. Probably first run.", e);
+            plexProperties = new PlexProperties();
         }
 
         ModelAndView modelAndView = new ModelAndView("configuration");
-        modelAndView.addObject("plexProperties", gapsService.getPlexProperties());
+        modelAndView.addObject("plexProperties", plexProperties);
         modelAndView.addObject("schedules", schedulerService.getAllSchedules());
         return modelAndView;
     }
@@ -91,23 +85,29 @@ public class ConfigurationController {
     @PostMapping(value = "/add/plex",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public void postAddPlexServer(@Valid final PlexServer plexServer, BindingResult bindingResult) {
+    public void postAddPlexServer(@Valid final PlexServer plexServer) {
         LOGGER.info("postAddPlexServer( {} )", plexServer);
 
+        PlexProperties plexProperties;
         try {
-            PlexProperties plexProperties = ioService.readProperties();
-            gapsService.updatePlexProperties(plexProperties);
+            plexProperties = ioService.readProperties();
+        } catch (IOException ioException) {
+            LOGGER.warn("Failed to read gaps properties. Probably first run.", ioException);
+            plexProperties = new PlexProperties();
+        }
 
+        try {
             plexQuery.queryPlexServer(plexServer);
             Payload payload = plexQuery.getLibraries(plexServer);
 
             if (payload.getCode() == Payload.PLEX_LIBRARIES_FOUND.getCode()) {
-                int initialCount = gapsService.getPlexProperties().getPlexServers().size();
-                gapsService.getPlexProperties().addPlexServer(plexServer);
-                if (gapsService.getPlexProperties().getPlexServers().size() == initialCount) {
+                int initialCount = plexProperties.getPlexServers().size();
+                plexProperties.addPlexServer(plexServer);
+                if (plexProperties.getPlexServers().size() == initialCount) {
                     template.convertAndSend(CONFIGURATION_PLEX + "/duplicate", Payload.DUPLICATE_PLEX_LIBRARY);
                 } else {
-                    ioService.writePlexConfiguration(gapsService.getPlexProperties().getPlexServers());
+                    ioService.writePlexConfiguration(plexProperties.getPlexServers());
+                    ioService.writeProperties(plexProperties);
                     template.convertAndSend(CONFIGURATION_PLEX_COMPLETE, payload.setExtras(plexServer));
                 }
             } else {
@@ -144,10 +144,9 @@ public class ConfigurationController {
 
         try {
             PlexProperties plexProperties = ioService.readProperties();
-            gapsService.updatePlexProperties(plexProperties);
 
             ObjectNode objectNode = objectMapper.createObjectNode();
-            PlexServer returnedPlexServer = gapsService.getPlexProperties().getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
+            PlexServer returnedPlexServer = plexProperties.getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
 
             if (StringUtils.isEmpty(returnedPlexServer.getMachineIdentifier())) {
                 //Failed to find and delete
@@ -172,16 +171,16 @@ public class ConfigurationController {
 
         try {
             PlexProperties plexProperties = ioService.readProperties();
-            gapsService.updatePlexProperties(plexProperties);
 
             ObjectNode objectNode = objectMapper.createObjectNode();
-            PlexServer returnedPlexServer = gapsService.getPlexProperties().getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
+            PlexServer returnedPlexServer = plexProperties.getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
             if (StringUtils.isEmpty(returnedPlexServer.getMachineIdentifier())) {
                 //Failed to find and delete
                 objectNode.put(SUCCESS, false);
             } else {
-                gapsService.getPlexProperties().getPlexServers().remove(returnedPlexServer);
-                ioService.writePlexConfiguration(gapsService.getPlexProperties().getPlexServers());
+                plexProperties.getPlexServers().remove(returnedPlexServer);
+                ioService.writePlexConfiguration(plexProperties.getPlexServers());
+                ioService.writeProperties(plexProperties);
                 objectNode.put(SUCCESS, true);
             }
 
@@ -211,10 +210,9 @@ public class ConfigurationController {
         Payload payload;
         try {
             PlexProperties plexProperties = ioService.readProperties();
-            gapsService.updatePlexProperties(plexProperties);
-            gapsService.getPlexProperties().setMovieDbApiKey(tmdbKey);
+            plexProperties.setMovieDbApiKey(tmdbKey);
 
-            ioService.writeProperties(gapsService.getPlexProperties());
+            ioService.writeProperties(plexProperties);
             payload = Payload.TMDB_KEY_SAVE_SUCCESSFUL.setExtras(TMDB_KEY + tmdbKey);
         } catch (IOException e) {
             payload = Payload.TMDB_KEY_SAVE_UNSUCCESSFUL.setExtras(TMDB_KEY + tmdbKey);

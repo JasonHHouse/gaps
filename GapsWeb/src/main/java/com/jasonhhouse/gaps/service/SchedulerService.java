@@ -12,7 +12,6 @@ package com.jasonhhouse.gaps.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.GapsSearch;
-import com.jasonhhouse.gaps.GapsService;
 import com.jasonhhouse.gaps.GapsUrlGenerator;
 import com.jasonhhouse.gaps.PlexQuery;
 import com.jasonhhouse.gaps.Schedule;
