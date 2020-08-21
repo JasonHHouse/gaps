@@ -58,15 +58,9 @@ public class RecommendedController {
     public ModelAndView getRecommended() {
         LOGGER.info("getRecommended()");
 
-        PlexProperties plexProperties;
+        PlexProperties plexProperties = ioService.readProperties();
         PlexServer plexServer;
         PlexLibrary plexLibrary;
-        try {
-            plexProperties = ioService.readProperties();
-        } catch (IOException e) {
-            LOGGER.error("Failed to read PlexProperties. Probably first run.", e);
-            plexProperties = new PlexProperties();
-        }
 
         if (CollectionUtils.isNotEmpty(plexProperties.getPlexServers())) {
             //Read first plex servers movies

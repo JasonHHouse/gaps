@@ -288,7 +288,7 @@ public class IoService {
         return everyMovie;
     }
 
-    public void writeProperties(PlexProperties plexProperties) throws IOException {
+    public void writeProperties(@NotNull PlexProperties plexProperties) {
         LOGGER.info("writeProperties( {} )", plexProperties);
 
         final String properties = storageFolder + PROPERTIES;
@@ -323,7 +323,8 @@ public class IoService {
         }
     }
 
-    public PlexProperties readProperties() throws IOException {
+    @NotNull
+    public PlexProperties readProperties() {
         LOGGER.info("readProperties()");
 
         File file = new File(storageFolder + PROPERTIES);

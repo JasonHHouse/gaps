@@ -64,13 +64,7 @@ public class MislabeledController {
         StopWatch watch = new StopWatch();
         watch.start();
 
-        PlexProperties plexProperties;
-        try {
-            plexProperties = ioService.readProperties();
-        } catch (IOException e) {
-            LOGGER.error("Failed to read plex properties. Probably the first run.", e);
-            plexProperties = new PlexProperties();
-        }
+        PlexProperties plexProperties = ioService.readProperties();
 
         String url = generatePlexUrl(plexProperties, machineIdentifier, key);
         MediaContainer mediaContainer = plexQuery.findAllPlexVideos(url);
@@ -112,14 +106,7 @@ public class MislabeledController {
         StopWatch watch = new StopWatch();
         watch.start();
 
-        PlexProperties plexProperties;
-        try {
-            plexProperties = ioService.readProperties();
-        } catch (IOException e) {
-            LOGGER.error("Failed to read plex properties. Probably the first run.", e);
-            plexProperties = new PlexProperties();
-        }
-
+        PlexProperties plexProperties = ioService.readProperties();
         String url = generatePlexUrl(plexProperties, machineIdentifier, key);
         MediaContainer mediaContainer = plexQuery.findAllPlexVideos(url);
         List<Mislabeled> mislabeled = mislabeledService.findMatchPercentage(mediaContainer, percentage);

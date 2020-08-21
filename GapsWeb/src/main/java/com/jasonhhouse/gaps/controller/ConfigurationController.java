@@ -18,7 +18,6 @@ import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.service.PlexQueryImpl;
 import com.jasonhhouse.gaps.service.SchedulerService;
 import com.jasonhhouse.gaps.service.TmdbService;
-import java.io.IOException;
 import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -68,14 +67,7 @@ public class ConfigurationController {
     public ModelAndView getConfiguration() {
         LOGGER.info("getConfiguration()");
 
-        PlexProperties plexProperties;
-        try {
-            plexProperties = ioService.readProperties();
-        } catch (IOException e) {
-            LOGGER.warn("Failed to read gaps properties. Probably first run.", e);
-            plexProperties = new PlexProperties();
-        }
-
+        PlexProperties plexProperties = ioService.readProperties();
         ModelAndView modelAndView = new ModelAndView("configuration");
         modelAndView.addObject("plexProperties", plexProperties);
         modelAndView.addObject("schedules", schedulerService.getAllSchedules());
@@ -88,13 +80,7 @@ public class ConfigurationController {
     public void postAddPlexServer(@Valid final PlexServer plexServer) {
         LOGGER.info("postAddPlexServer( {} )", plexServer);
 
-        PlexProperties plexProperties;
-        try {
-            plexProperties = ioService.readProperties();
-        } catch (IOException ioException) {
-            LOGGER.warn("Failed to read gaps properties. Probably first run.", ioException);
-            plexProperties = new PlexProperties();
-        }
+        PlexProperties plexProperties = ioService.readProperties();
 
         try {
             plexQuery.queryPlexServer(plexServer);
@@ -141,25 +127,20 @@ public class ConfigurationController {
     public ResponseEntity<String> putTestPlexServerByMachineId(@PathVariable("machineIdentifier") final String machineIdentifier) {
         LOGGER.info("putTestPlexServerByMachineId( {} )", machineIdentifier);
 
-        try {
-            PlexProperties plexProperties = ioService.readProperties();
+        PlexProperties plexProperties = ioService.readProperties();
 
-            ObjectNode objectNode = objectMapper.createObjectNode();
-            PlexServer returnedPlexServer = plexProperties.getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        PlexServer returnedPlexServer = plexProperties.getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
 
-            if (StringUtils.isEmpty(returnedPlexServer.getMachineIdentifier())) {
-                //Failed to find and delete
-                objectNode.put(SUCCESS, false);
-            } else {
-                plexQuery.queryPlexServer(returnedPlexServer);
-                objectNode.put(SUCCESS, true);
-            }
-
-            return ResponseEntity.ok().body(objectNode.toString());
-        } catch (IOException e) {
-            LOGGER.error(FAILED_TO_READ_PLEX_PROPERTIES, e);
-            return ResponseEntity.status(500).body(FAILED_TO_READ_PLEX_PROPERTIES);
+        if (StringUtils.isEmpty(returnedPlexServer.getMachineIdentifier())) {
+            //Failed to find and delete
+            objectNode.put(SUCCESS, false);
+        } else {
+            plexQuery.queryPlexServer(returnedPlexServer);
+            objectNode.put(SUCCESS, true);
         }
+
+        return ResponseEntity.ok().body(objectNode.toString());
     }
 
     @DeleteMapping(value = "/delete/plex/{machineIdentifier}",
@@ -168,25 +149,20 @@ public class ConfigurationController {
     public ResponseEntity<String> deletePlexServer(@PathVariable("machineIdentifier") final String machineIdentifier) {
         LOGGER.info("deletePlexServer( {} )", machineIdentifier);
 
-        try {
-            PlexProperties plexProperties = ioService.readProperties();
+        PlexProperties plexProperties = ioService.readProperties();
 
-            ObjectNode objectNode = objectMapper.createObjectNode();
-            PlexServer returnedPlexServer = plexProperties.getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
-            if (StringUtils.isEmpty(returnedPlexServer.getMachineIdentifier())) {
-                //Failed to find and delete
-                objectNode.put(SUCCESS, false);
-            } else {
-                plexProperties.getPlexServers().remove(returnedPlexServer);
-                ioService.writeProperties(plexProperties);
-                objectNode.put(SUCCESS, true);
-            }
-
-            return ResponseEntity.ok().body(objectNode.toString());
-        } catch (IOException e) {
-            LOGGER.error(FAILED_TO_READ_PLEX_PROPERTIES, e);
-            return ResponseEntity.status(500).body(FAILED_TO_READ_PLEX_PROPERTIES);
+        ObjectNode objectNode = objectMapper.createObjectNode();
+        PlexServer returnedPlexServer = plexProperties.getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
+        if (StringUtils.isEmpty(returnedPlexServer.getMachineIdentifier())) {
+            //Failed to find and delete
+            objectNode.put(SUCCESS, false);
+        } else {
+            plexProperties.getPlexServers().remove(returnedPlexServer);
+            ioService.writeProperties(plexProperties);
+            objectNode.put(SUCCESS, true);
         }
+
+        return ResponseEntity.ok().body(objectNode.toString());
     }
 
     @PutMapping(value = "/test/tmdbKey/{tmdbKey}",
@@ -205,18 +181,10 @@ public class ConfigurationController {
     public ResponseEntity<Payload> postSaveTmdbKey(@PathVariable("tmdbKey") final String tmdbKey) {
         LOGGER.info("postSaveTmdbKey( {} )", tmdbKey);
 
-        Payload payload;
-        try {
-            PlexProperties plexProperties = ioService.readProperties();
-            plexProperties.setMovieDbApiKey(tmdbKey);
-
-            ioService.writeProperties(plexProperties);
-            payload = Payload.TMDB_KEY_SAVE_SUCCESSFUL.setExtras(TMDB_KEY + tmdbKey);
-        } catch (IOException e) {
-            payload = Payload.TMDB_KEY_SAVE_UNSUCCESSFUL.setExtras(TMDB_KEY + tmdbKey);
-            LOGGER.warn("Could not save TMDB key");
-        }
-
+        PlexProperties plexProperties = ioService.readProperties();
+        plexProperties.setMovieDbApiKey(tmdbKey);
+        ioService.writeProperties(plexProperties);
+        Payload payload = Payload.TMDB_KEY_SAVE_SUCCESSFUL.setExtras(TMDB_KEY + tmdbKey);
         return ResponseEntity.ok().body(payload);
     }
 

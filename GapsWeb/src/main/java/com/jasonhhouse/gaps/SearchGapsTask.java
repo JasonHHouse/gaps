@@ -14,7 +14,6 @@ import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.service.NotificationService;
 import com.jasonhhouse.gaps.service.TmdbService;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,15 +48,9 @@ public class SearchGapsTask implements Runnable {
     public void run() {
         LOGGER.info("run()");
 
-        PlexProperties plexProperties;
-        try {
-            plexProperties = ioService.readProperties();
-            if (CollectionUtils.isEmpty(plexProperties.getPlexServers())) {
-                LOGGER.warn("No Plex Servers Found. Canceling automatic search.");
-                return;
-            }
-        } catch (IOException e) {
-            LOGGER.error("Couldn't read properties file", e);
+        PlexProperties plexProperties = ioService.readProperties();
+        if (CollectionUtils.isEmpty(plexProperties.getPlexServers())) {
+            LOGGER.warn("No Plex Servers Found. Canceling automatic search.");
             return;
         }
 
@@ -77,20 +70,14 @@ public class SearchGapsTask implements Runnable {
     private boolean checkTmdbKey() {
         LOGGER.info("checkTmdbKey()");
 
-        try {
-            String tmdbKey = ioService.readProperties().getMovieDbApiKey();
-            Payload payload = tmdbService.testTmdbKey(tmdbKey);
+        String tmdbKey = ioService.readProperties().getMovieDbApiKey();
+        Payload payload = tmdbService.testTmdbKey(tmdbKey);
 
-            if (Payload.TMDB_KEY_VALID.getCode() == payload.getCode()) {
-                notificationService.tmdbConnectionSuccessful();
-                return true;
-            } else {
-                notificationService.tmdbConnectionFailed(payload.getReason());
-                return false;
-            }
-        } catch (IOException e) {
-            LOGGER.error("Failed to read properties for TMDB key", e);
-            notificationService.tmdbConnectionFailed(e.getMessage());
+        if (Payload.TMDB_KEY_VALID.getCode() == payload.getCode()) {
+            notificationService.tmdbConnectionSuccessful();
+            return true;
+        } else {
+            notificationService.tmdbConnectionFailed(payload.getReason());
             return false;
         }
     }

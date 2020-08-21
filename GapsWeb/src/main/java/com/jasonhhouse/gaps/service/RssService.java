@@ -40,14 +40,7 @@ public class RssService {
     public Map<PlexLibrary, PlexServer> foundAnyRssFeeds() {
         Map<PlexLibrary, PlexServer> plexServerMap = new HashMap<>();
 
-        PlexProperties plexProperties;
-        try {
-            plexProperties = ioService.readProperties();
-        } catch (IOException e) {
-            LOGGER.warn("Failed to read gaps properties. Probably first run.", e);
-            plexProperties = new PlexProperties();
-        }
-
+        PlexProperties plexProperties = ioService.readProperties();
         Set<PlexServer> plexServers = plexProperties.getPlexServers();
         if (CollectionUtils.isEmpty(plexServers)) {
             return Collections.emptyMap();

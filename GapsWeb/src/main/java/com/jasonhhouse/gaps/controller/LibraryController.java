@@ -51,14 +51,7 @@ public class LibraryController {
     public ModelAndView getLibraries() {
         LOGGER.info("getLibraries()");
 
-        PlexProperties plexProperties;
-        try {
-            plexProperties = ioService.readProperties();
-        } catch (IOException e) {
-            LOGGER.warn("Failed to read gaps properties. Probably first run.", e);
-            plexProperties = new PlexProperties();
-        }
-
+        PlexProperties plexProperties = ioService.readProperties();
         boolean plexServersFound;
         PlexServer plexServer;
         PlexLibrary plexLibrary;

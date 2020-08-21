@@ -13,7 +13,6 @@ package com.jasonhhouse.gaps.notifications;
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.properties.EmailProperties;
 import com.jasonhhouse.gaps.service.IoService;
-import java.io.IOException;
 import java.util.Properties;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -22,7 +21,6 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
-import static com.jasonhhouse.gaps.notifications.NotificationStatus.FAILED_TO_READ_PROPERTIES;
 import static com.jasonhhouse.gaps.notifications.NotificationStatus.SEND_MESSAGE;
 
 public class EmailNotificationAgent extends AbstractNotificationAgent<EmailProperties> {
@@ -70,12 +68,7 @@ public class EmailNotificationAgent extends AbstractNotificationAgent<EmailPrope
     @Nullable
     @Override
     public EmailProperties getNotificationProperties() {
-        try {
-            return ioService.readProperties().getEmailProperties();
-        } catch (IOException e) {
-            LOGGER.error(String.format(FAILED_TO_READ_PROPERTIES, getName()), e);
-            return null;
-        }
+        return ioService.readProperties().getEmailProperties();
     }
 
     private JavaMailSenderImpl getJavaMailSender() {

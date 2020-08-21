@@ -12,7 +12,6 @@ package com.jasonhhouse.gaps;
 
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
-import java.io.IOException;
 import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -104,24 +103,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         LOGGER.info("userDetailsService()");
         if (Boolean.TRUE.equals(myConfig.getLoginEnabled())) {
 
-            PlexProperties plexProperties = null;
-            try {
-                plexProperties = ioService.readProperties();
-            } catch (IOException e) {
-                LOGGER.warn("No properties found to get password. Generating new password");
-            }
+            PlexProperties plexProperties = ioService.readProperties();
 
             String password;
-            if (plexProperties == null || StringUtils.isEmpty(plexProperties.getPassword())) {
+            if (StringUtils.isEmpty(plexProperties.getPassword())) {
                 password = UUID.randomUUID().toString();
                 plexProperties = new PlexProperties();
                 plexProperties.setPassword(password);
                 LOGGER.info("Gaps Password: {}", password);
-                try {
-                    ioService.writeProperties(plexProperties);
-                } catch (IOException e) {
-                    LOGGER.error("Failed to write out password to properties file.");
-                }
+                ioService.writeProperties(plexProperties);
             } else {
                 LOGGER.info("Using password from /usr/data/gaps.properties");
                 password = plexProperties.getPassword();

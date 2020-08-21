@@ -67,14 +67,7 @@ public class RSSController {
     public ModelAndView getRssCheck() {
         LOGGER.info("getRssCheck()");
 
-        PlexProperties plexProperties;
-        try {
-            plexProperties = ioService.readProperties();
-        } catch (IOException e) {
-            LOGGER.error("Failed to read plex properties. Probably the first run.", e);
-            plexProperties = new PlexProperties();
-        }
-
+        PlexProperties plexProperties = ioService.readProperties();
         ModelAndView modelAndView = new ModelAndView("rssCheck");
         Map<PlexLibrary, PlexServer> map = rssService.foundAnyRssFeeds();
         modelAndView.addObject("plexServers", plexProperties.getPlexServers());

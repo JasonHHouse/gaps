@@ -47,13 +47,7 @@ public class GapsController {
     public ModelAndView getIndexOnClick() {
         LOGGER.info("getIndexOnClick()");
 
-        PlexProperties plexProperties;
-        try {
-            plexProperties = ioService.readProperties();
-        } catch (IOException e) {
-            LOGGER.error("Failed to read plex properties. Probably the first run.", e);
-            plexProperties = new PlexProperties();
-        }
+        PlexProperties plexProperties = ioService.readProperties();
 
         ModelAndView modelAndView = new ModelAndView("index");
         modelAndView.addObject("plexProperties", plexProperties);
@@ -64,16 +58,10 @@ public class GapsController {
     public ModelAndView getIndex() {
         LOGGER.info("getIndex()");
 
-        PlexProperties plexProperties;
-        try {
-            plexProperties = ioService.readProperties();
-        } catch (IOException e) {
-            LOGGER.error("Failed to read plex properties. Probably the first run.", e);
-            plexProperties = new PlexProperties();
-        }
+        PlexProperties plexProperties = ioService.readProperties();
 
         //If configuration is filled in, jump to libraries page
-        if (plexProperties != null && StringUtils.isNotEmpty(plexProperties.getMovieDbApiKey()) && CollectionUtils.isNotEmpty(plexProperties.getPlexServers())) {
+        if (StringUtils.isNotEmpty(plexProperties.getMovieDbApiKey()) && CollectionUtils.isNotEmpty(plexProperties.getPlexServers())) {
             return new ModelAndView("redirect:/libraries");
         }
 

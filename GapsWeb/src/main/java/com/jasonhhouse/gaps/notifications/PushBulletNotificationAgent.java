@@ -29,7 +29,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static com.jasonhhouse.gaps.notifications.NotificationStatus.FAILED_TO_PARSE_JSON;
-import static com.jasonhhouse.gaps.notifications.NotificationStatus.FAILED_TO_READ_PROPERTIES;
 import static com.jasonhhouse.gaps.notifications.NotificationStatus.SEND_MESSAGE;
 import static com.jasonhhouse.gaps.notifications.NotificationStatus.TIMEOUT;
 
@@ -79,7 +78,7 @@ public class PushBulletNotificationAgent extends AbstractNotificationAgent<PushB
                 .add("Content-Type", org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
                 .add("Access-Token", t.getAccessToken())
                 .build();
-        
+
         PushBullet pushBullet = new PushBullet(t.getChannel_tag(), title, message);
 
         String pushBulletMessage = "";
@@ -117,12 +116,7 @@ public class PushBulletNotificationAgent extends AbstractNotificationAgent<PushB
     @Nullable
     @Override
     public PushBulletProperties getNotificationProperties() {
-        try {
-            return ioService.readProperties().getPushBulletProperties();
-        } catch (IOException e) {
-            LOGGER.error(String.format(FAILED_TO_READ_PROPERTIES, getName()), e);
-            return null;
-        }
+        return ioService.readProperties().getPushBulletProperties();
     }
 
     public static final class PushBullet {

@@ -52,14 +52,7 @@ public class PlexMovieListController {
     public ResponseEntity<List<Movie>> getPlexMovies(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("getPlexMovies( {}, {} )", machineIdentifier, key);
 
-        PlexProperties plexProperties;
-        try {
-            plexProperties = ioService.readProperties();
-        } catch (IOException e) {
-            LOGGER.warn("Failed to read gaps properties. Probably first run.", e);
-            plexProperties = new PlexProperties();
-        }
-
+        PlexProperties plexProperties = ioService.readProperties();
         Set<Movie> everyMovie = ioService.readMovieIdsFromFile();
         Map<Pair<String, Integer>, Movie> previousMovies = generateOwnedMovieMap(plexProperties, everyMovie);
         String url = generatePlexMovieUrl(plexProperties, machineIdentifier, key);

@@ -105,12 +105,7 @@ public class GotifyNotificationAgent extends AbstractNotificationAgent<GotifyPro
     @Nullable
     @Override
     public GotifyProperties getNotificationProperties() {
-        try {
-            return ioService.readProperties().getGotifyProperties();
-        } catch (IOException e) {
-            LOGGER.error(String.format(FAILED_TO_READ_PROPERTIES, getName()), e);
-            return null;
-        }
+        return ioService.readProperties().getGotifyProperties();
     }
 
     public static final class Gotify {

@@ -110,14 +110,7 @@ public class GapsSearchService implements GapsSearch {
     public void run(String machineIdentifier, Integer key) {
         LOGGER.info("run( {}, {} )", machineIdentifier, key);
 
-        PlexProperties plexProperties;
-        try {
-            plexProperties = ioService.readProperties();
-        } catch (IOException e) {
-            LOGGER.error("Couldn't read properties file", e);
-            return;
-        }
-
+        PlexProperties plexProperties = ioService.readProperties();
         Optional<PlexServer> optionalPlexServer = plexProperties.getPlexServers().stream().filter(tempPlexServer -> tempPlexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst();
         PlexServer plexServer;
         if (optionalPlexServer.isPresent()) {
