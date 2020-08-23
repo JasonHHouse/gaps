@@ -10,7 +10,7 @@
     "uglify-js": "^3.10.0"
   },
   "devDependencies": {
-    "cypress": "^4.12.1"
+    "cypress": "^5.0.0"
   },
   "scripts": {
     "e2e": "cypress open",
