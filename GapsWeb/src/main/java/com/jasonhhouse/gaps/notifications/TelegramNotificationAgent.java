@@ -73,7 +73,7 @@ public class TelegramNotificationAgent extends AbstractNotificationAgent<Telegra
 
         Telegram telegram = new Telegram(t.getChatId(), String.format("<strong>%s</strong>%n%s", title, message), "HTML");
 
-        String telegramMessage = "";
+        String telegramMessage;
         try {
             telegramMessage = objectMapper.writeValueAsString(telegram);
         } catch (JsonProcessingException e) {

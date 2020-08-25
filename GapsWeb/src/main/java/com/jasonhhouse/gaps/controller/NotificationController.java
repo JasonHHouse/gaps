@@ -15,6 +15,7 @@ import com.jasonhhouse.gaps.properties.EmailProperties;
 import com.jasonhhouse.gaps.properties.GotifyProperties;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.properties.PushBulletProperties;
+import com.jasonhhouse.gaps.properties.PushOverProperties;
 import com.jasonhhouse.gaps.properties.SlackProperties;
 import com.jasonhhouse.gaps.properties.TelegramProperties;
 import com.jasonhhouse.gaps.service.IoService;
@@ -207,6 +208,39 @@ public class NotificationController {
         } catch (Exception e) {
             LOGGER.error(Payload.TELEGRAM_NOTIFICATION_NOT_FOUND.getReason(), e);
             return ResponseEntity.ok().body(Payload.TELEGRAM_NOTIFICATION_NOT_FOUND.setExtras(e.getMessage()));
+        }
+    }
+
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            value = "/pushOver")
+    @ResponseBody
+    public ResponseEntity<Payload> putPushOver(@RequestBody PushOverProperties pushOverProperties) {
+        LOGGER.info("putPushOver( {} )", pushOverProperties);
+
+        try {
+            PlexProperties plexProperties = ioService.readProperties();
+            plexProperties.setPushOverProperties(pushOverProperties);
+            ioService.writeProperties(plexProperties);
+            LOGGER.info("Telegram Properties Updated Successfully");
+            return ResponseEntity.ok().body(Payload.PUSH_OVER_NOTIFICATION_UPDATE_SUCCEEDED);
+        } catch (Exception e) {
+            LOGGER.error(Payload.PUSH_OVER_NOTIFICATION_UPDATE_FAILED.getReason(), e);
+            return ResponseEntity.ok().body(Payload.PUSH_OVER_NOTIFICATION_UPDATE_FAILED.setExtras(e.getMessage()));
+        }
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+            value = "/pushOver")
+    @ResponseBody
+    public ResponseEntity<Payload> getPushOver() {
+        LOGGER.info("getPushOver()");
+
+        try {
+            return ResponseEntity.ok().body(Payload.PUSH_OVER_NOTIFICATION_FOUND.setExtras(ioService.readProperties().getPushOverProperties()));
+        } catch (Exception e) {
+            LOGGER.error(Payload.PUSH_OVER_NOTIFICATION_NOT_FOUND.getReason(), e);
+            return ResponseEntity.ok().body(Payload.PUSH_OVER_NOTIFICATION_NOT_FOUND.setExtras(e.getMessage()));
         }
     }
 

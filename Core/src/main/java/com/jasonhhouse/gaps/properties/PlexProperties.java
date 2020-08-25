@@ -24,6 +24,7 @@ public final class PlexProperties {
     private EmailProperties emailProperties;
     private GotifyProperties gotifyProperties;
     private SlackProperties slackProperties;
+    private PushOverProperties pushOverProperties;
     private String movieDbApiKey;
     private String password;
 
@@ -99,6 +100,14 @@ public final class PlexProperties {
         this.password = password;
     }
 
+    public PushOverProperties getPushOverProperties() {
+        return pushOverProperties;
+    }
+
+    public void setPushOverProperties(PushOverProperties pushOverProperties) {
+        this.pushOverProperties = pushOverProperties;
+    }
+
     @NotNull
     public Schedule getSchedule() {
         return schedule;
@@ -117,6 +126,7 @@ public final class PlexProperties {
                 ", emailProperties=" + emailProperties +
                 ", gotifyProperties=" + gotifyProperties +
                 ", slackProperties=" + slackProperties +
+                ", pushOverProperties=" + pushOverProperties +
                 ", movieDbApiKey='" + movieDbApiKey + '\'' +
                 ", password='" + password + '\'' +
                 ", schedule=" + schedule +

@@ -13,6 +13,7 @@ package com.jasonhhouse.gaps;
 import com.jasonhhouse.gaps.notifications.EmailNotificationAgent;
 import com.jasonhhouse.gaps.notifications.GotifyNotificationAgent;
 import com.jasonhhouse.gaps.notifications.PushBulletNotificationAgent;
+import com.jasonhhouse.gaps.notifications.PushOverNotificationAgent;
 import com.jasonhhouse.gaps.notifications.SlackNotificationAgent;
 import com.jasonhhouse.gaps.notifications.TelegramNotificationAgent;
 import com.jasonhhouse.gaps.service.IoService;
@@ -51,5 +52,10 @@ public class NotificationConfiguration {
     @Bean
     public GotifyNotificationAgent getGotifyElement() {
         return new GotifyNotificationAgent(ioService);
+    }
+
+    @Bean
+    public PushOverNotificationAgent getPushOverElement() {
+        return new PushOverNotificationAgent(ioService);
     }
 }
