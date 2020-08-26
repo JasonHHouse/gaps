@@ -592,5 +592,125 @@
         <p class="mb-0">Your Email notification saved successfully.</p>
     </div>
 </header>
+
+<header th:fragment="push-over">
+    <h4>PushOver Notifications</h4>
+    <form id="pushOverConfiguration">
+        <div class="form-group">
+            <label for="pushOverBotId">Bot ID</label>
+            <input type="text" class="form-control" id="pushOverBotId" aria-describedby="pushOverBotIdHelp"
+                   th:value="${plexProperties?.pushOverProperties?.botId}">
+            <small id="pushOverBotIdHelp" class="form-text text-muted"></small>
+        </div>
+        <div class="form-group">
+            <label for="pushOverChatId">Chat ID</label>
+            <input type="text" class="form-control" id="pushOverChatId"
+                   aria-describedby="pushOverChatIdHelp"
+                   th:value="${plexProperties?.pushOverProperties?.chatId}">
+            <small id="pushOverChatIdHelp" class="form-text text-muted"></small>
+        </div>
+        <div class="form-group">
+            <label for="pushOverPriority">Priority</label>
+            <select class="form-control" id="pushOverPriority">
+                <option value="-2" th:selected="${plexProperties?.pushOverProperties?.getPriority().equals(-2) ? true : false}">No Notification/Alert</option>
+                <option value="-1" th:selected="${plexProperties?.pushOverProperties?.getPriority().equals(-1) ? true : false}">Quiet Notification</option>
+                <option value="1" th:selected="${plexProperties?.pushOverProperties?.getPriority().equals(1) ? true : false}">High-Priority</option>
+                <option value="2" th:selected="${plexProperties?.pushOverProperties?.getPriority().equals(2) ? true : false}">High-Priority with required user confirmation</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="pushOverSound">Sound</label>
+            <select class="form-control" id="pushOverSound">
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Notification Types</label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.pushOverProperties?.hasTmdbConnectionApi()}"
+                       id="pushOverTmdbApiConnectionNotification">
+                <label class="form-check-label" for="pushOverTmdbApiConnectionNotification">
+                    TMDB API Connection
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.pushOverProperties?.hasPlexServerConnection()}"
+                       id="pushOverPlexServerConnectionNotification">
+                <label class="form-check-label" for="pushOverPlexServerConnectionNotification">
+                    Plex Server Connection
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.pushOverProperties?.hasPlexMetadataUpdate()}"
+                       id="pushOverPlexMetadataUpdateNotification">
+                <label class="form-check-label" for="pushOverPlexMetadataUpdateNotification">
+                    Plex Metadata Update
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.pushOverProperties?.hasPlexLibraryUpdate()}"
+                       id="pushOverPlexLibraryUpdateNotification">
+                <label class="form-check-label" for="pushOverPlexLibraryUpdateNotification">
+                    Plex Library Update
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.pushOverProperties?.hasGapsMissingCollections()}"
+                       id="pushOverGapsMissingCollectionsNotification">
+                <label class="form-check-label" for="pushOverGapsMissingCollectionsNotification">
+                    Gaps Missing Collections
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="pushOverEnabled">Notification Agent</label>
+            <select class="form-control" id="pushOverEnabled">
+                <option th:value="false">Disabled
+                </option>
+                <option th:value="true"
+                        th:selected="${plexProperties?.pushOverProperties?.getEnabled() ?: false}">Enabled
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <a class="btn btn-primary" href="javascript:void(0)" id="savePushOver" onclick="savePushOver();"
+               type="button">Save</a>
+            <a class="btn btn-info" href="javascript:void(0)" id="testPushOver" onclick="testPushOver();"
+               type="button">Test</a>
+        </div>
+    </form>
+
+    <div class="spinner-border text-primary gaps-hide top-margin" id="pushOverSpinner" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+
+    <div class="alert alert-dismissible alert-danger gaps-hide top-margin" id="pushOverTestError">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Error!</h4>
+        <p class="mb-0">Could not connect to PushOver. Check the key and logs and try again.</p>
+    </div>
+
+    <div class="alert alert-dismissible alert-success gaps-hide top-margin" id="pushOverTestSuccess">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Success!</h4>
+        <p class="mb-0">PushOver message sent.</p>
+    </div>
+
+    <div class="alert alert-dismissible alert-danger gaps-hide top-margin" id="pushOverSaveError">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Error!</h4>
+        <p class="mb-0">Could not save your PushOver notification. Check the logs and try again.</p>
+    </div>
+
+    <div class="alert alert-dismissible alert-success gaps-hide top-margin" id="pushOverSaveSuccess">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Success!</h4>
+        <p class="mb-0">Your PushOver notification saved successfully.</p>
+    </div>
+</header>
 </body>
 </html>
