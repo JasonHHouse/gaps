@@ -5,7 +5,7 @@
     <parent>
         <artifactId>Gaps</artifactId>
         <groupId>com.jasonhhouse</groupId>
-        <version>0.5.4</version>
+        <version>0.6.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -21,13 +21,13 @@
         <dependency>
             <groupId>com.jasonhhouse</groupId>
             <artifactId>Core</artifactId>
-            <version>0.5.4</version>
+            <version>0.6.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.jasonhhouse</groupId>
             <artifactId>Plex</artifactId>
-            <version>0.5.4</version>
+            <version>0.6.0</version>
         </dependency>
 
         <dependency>
@@ -122,7 +122,7 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
-            <version>4.5.0</version>
+            <version>4.5.2</version>
         </dependency>
 
         <dependency>

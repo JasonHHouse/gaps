@@ -52,7 +52,11 @@ public enum Payload {
     EMAIL_NOTIFICATION_UPDATE_SUCCEEDED(120, "Email Notification Update Succeeded."),
     EMAIL_NOTIFICATION_UPDATE_FAILED(121, "Email Notification Update Failed."),
     EMAIL_NOTIFICATION_FOUND(122, "Email Notification Found."),
-    EMAIL_NOTIFICATION_NOT_FOUND(123, "Email Notification Not Found.");
+    EMAIL_NOTIFICATION_NOT_FOUND(123, "Email Notification Not Found."),
+    PUSH_OVER_NOTIFICATION_UPDATE_SUCCEEDED(130, "PushOver Notification Update Succeeded."),
+    PUSH_OVER_NOTIFICATION_UPDATE_FAILED(131, "PushOver Notification Update Failed."),
+    PUSH_OVER_NOTIFICATION_FOUND(132, "PushOver Notification Found."),
+    PUSH_OVER_NOTIFICATION_NOT_FOUND(133, "PushOver Notification Not Found.");
 
     private final int code;
     private final String reason;

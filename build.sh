@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=0.5.4
+VERSION=0.6.0
 JAR_VERSION="GapsWeb/target/GapsWeb-$VERSION.jar"
 ZIP_VERSION="Gaps-$VERSION.zip"
 npm run minify-input-css
@@ -17,6 +17,7 @@ npm run uglifyjs-slack-notifications-js
 npm run uglifyjs-push-bullet-notifications-js
 npm run uglifyjs-gotify-notifications-js
 npm run uglifyjs-email-notifications-js
+npm run uglifyjs-push-over-notifications-js
 npm run uglifyjs-schedule-js
 mvn clean install spotbugs:spotbugs pmd:pmd checkstyle:checkstyle sonar:sonar deploy
 #docker build -f Dockerfile -t $DOCKER_LATEST .
