@@ -38,7 +38,9 @@ public final class PushOverProperties extends AbstractNotificationProperties {
                               @JsonProperty(value = "token", required = true) @NotNull String token,
                               @JsonProperty(value = "user", required = true) @NotNull String user,
                               @JsonProperty(value = "priority", required = true) @NotNull Integer priority,
-                              @JsonProperty(value = "sound", required = true) @NotNull String sound, @NotNull Integer retry, @NotNull Integer expire) {
+                              @JsonProperty(value = "sound", required = true) @NotNull String sound,
+                              @JsonProperty(value = "retry", required = true) @NotNull Integer retry,
+                              @JsonProperty(value = "expire", required = true) @NotNull Integer expire) {
         super(enabled, notificationTypes);
         this.token = token;
         this.user = user;

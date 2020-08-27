@@ -13,15 +13,27 @@ import {Payload} from "./payload.min.js";
 import {hideAllAlertsAndSpinners} from "./alerts-manager.min.js";
 
 export async function getSoundOptions() {
-    let response = await fetch('/sounds', {
+    let defaultSound;
+    let pushOverResponse = await fetch('/notifications/pushOver', {
         method: 'get',
     });
-    const body = await response.json();
+    const pushOverBody = await pushOverResponse.json();
+    if(pushOverBody.code && pushOverBody.code === Payload.PUSH_OVER_NOTIFICATION_FOUND && pushOverBody.extras && pushOverBody.extras.sound) {
+        defaultSound = pushOverBody.extras.sound;
+    }
+
+    let soundsResponse = await fetch('/sounds', {
+        method: 'get',
+    });
+    const body = await soundsResponse.json();
     if (body.status && body.status === 1) {
         for(const sound in body.sounds) {
             const option = document.createElement('option');
             option.value = sound;
             option.text = body.sounds[sound];
+            if(defaultSound === sound) {
+                option.defaultSelected = true;
+            }
             document.getElementById('pushOverSound').appendChild(option);
         }
     } else {
@@ -59,6 +71,8 @@ export async function savePushOverNotifications() {
     body.user = document.getElementById('pushOverUser').value;
     body.priority = document.getElementById('pushOverPriority').value;
     body.sound = document.getElementById('pushOverSound').value;
+    body.retry = document.getElementById('pushOverRetry').value;
+    body.expire = document.getElementById('pushOverExpire').value;
     body.enabled = document.getElementById('pushOverEnabled').value;
     body.notificationTypes = getNotificationTypes(document.getElementById('pushOverTmdbApiConnectionNotification').checked,
         document.getElementById('pushOverPlexServerConnectionNotification').checked,

@@ -627,13 +627,13 @@
         <div class="form-group">
             <label for="pushOverRetry">Retry</label>
             <input type="number" class="form-control" id="pushOverRetry" aria-describedby="pushOverRetryHelp"
-                   value="60" th:value="${plexProperties?.pushOverProperties?.retry}">
+                   th:value="${plexProperties?.pushOverProperties?.retry ?: 60}">
             <small id="pushOverRetryHelp" class="form-text text-muted"></small>
         </div>
         <div class="form-group">
             <label for="pushOverExpire">Expire</label>
             <input type="number" class="form-control" id="pushOverExpire" aria-describedby="pushOverExpireHelp"
-                   value="3600" th:value="${plexProperties?.pushOverProperties?.expire}">
+                   th:value="${plexProperties?.pushOverProperties?.expire ?: 3600}">
             <small id="pushOverExpireHelp" class="form-text text-muted"></small>
         </div>
         <div class="form-group">
