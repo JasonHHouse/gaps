@@ -18,5 +18,5 @@ call npm run uglifyjs-schedule-js
 call mvn clean install
 del GapsOnWindows\*.jar
 del GapsOnWindows\README.md
-copy GapsWeb\target\GapsWeb-0.6.0.jar GapsOnWindows\gaps.jar
+copy GapsWeb\target\GapsWeb-0.6.1.jar GapsOnWindows\gaps.jar
 copy README.md GapsOnWindows\
