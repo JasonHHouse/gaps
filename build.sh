@@ -17,6 +17,7 @@ npm run uglifyjs-slack-notifications-js
 npm run uglifyjs-push-bullet-notifications-js
 npm run uglifyjs-gotify-notifications-js
 npm run uglifyjs-email-notifications-js
+npm run uglifyjs-push-over-notifications-js
 npm run uglifyjs-schedule-js
 mvn clean install spotbugs:spotbugs pmd:pmd checkstyle:checkstyle sonar:sonar deploy
 #docker build -f Dockerfile -t $DOCKER_LATEST .
