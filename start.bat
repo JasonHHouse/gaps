@@ -1,1 +1,0 @@
-java -jar -Dspring.profiles.active=windows GapsWeb\target\GapsWeb-0.6.0.jar

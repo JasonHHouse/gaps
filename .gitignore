@@ -45,3 +45,4 @@ Plex/target/
 ### Do not ignore min library files
 !**/libraries/*.min.css
 !**/libraries/*.min.js
+GapsOnWindows/gaps.db

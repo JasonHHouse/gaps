@@ -9,7 +9,7 @@
 spring:
   profiles: windows
   datasource:
-    url: jdbc:sqlite:C:\gaps\gaps.db
+    url: jdbc:sqlite:gaps.db
 info:
   app:
     loginEnabled: false

@@ -1,6 +1,6 @@
 FROM adoptopenjdk/openjdk11-openj9:jre-11.0.7_10_openj9-0.20.0
 
-LABEL maintainer="jason@gaps.tech"
+LABEL maintainer="jh5975@gmail.com"
 LABEL name="Jason House" 
 LABEL github="https://github.com/JasonHHouse/Gaps" 
 

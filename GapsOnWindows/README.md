@@ -1,52 +1,113 @@
-# Gaps on Windows
-Gaps searches through your Plex Server or local folders for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.
+<p align="center">
+  <a href="" rel="noopener">
+ <img style="background-color: black" width=320px height=180px src="https://github.com/JasonHHouse/gaps/blob/master/images/Final-Black.png" alt="Project logo"></a>
+</p>
 
-## Setup
-### Plex
-For Gaps to communicate with Plex you may need to adjust your network settings.
+<h3 align="center">Gaps</h3>
 
-    Network Settings | Secure connections set to Preferred
+<div align="center">
 
-![Plex Settings](images/Gaps_network-settings.png)
+  [![Status](https://github.com/JasonHHouse/gaps/blob/master/images/status.svg)]() 
+  [![GitHub Issues](https://github.com/JasonHHouse/gaps/blob/master/images/issues.svg)](https://github.com/JasonHHouse/Gaps/issues)
+  [![GitHub Pull Requests](https://github.com/JasonHHouse/gaps/blob/master/images/prs.svg)](https://github.com/JasonHHouse/Gaps/pulls)
+  [![License](https://github.com/JasonHHouse/gaps/blob/master/images/license.svg)](/LICENSE)
 
-### Windows
+</div>
 
-Run the jarx.exe.
+---
 
-## Usage
+<p align="center"> Gaps searches through your Plex Server or local folders for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.
+    <br> 
+</p>
 
-To see Gaps, open up your browser and navigate over to the ip address and port you set for Gaps.
+## 📝 Table of Contents
+- [About](#about)
+- [Getting Started](#getting_started)
+- [Deployment](#deployment)
+- [Usage](#usage)
+- [Built Using](#built_using)
+- [TODO](../TODO.md)
+- [Contributing](../CONTRIBUTING.md)
+- [Authors](#authors)
+- [Acknowledgments](#acknowledgement)
 
-If your browser is on the same machine running Docker and you did not change the port, then you can navigate to 
+## 🧐 About <a name = "about"></a>
+Gaps is a FOSS application. An example of Gaps running would be having a copy of 'Alien (1979)' and Gaps recommending 'Aliens (1986)' and 'Alien³ (1992)' to be added to your collection.
 
-    https://localhost:8484
-    
-Or
+## 🏁 Getting Started <a name = "getting_started"></a>
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
 
-    https://127.0.0.1:8484 
+### Prerequisites
+What things you need to install the software and how to install them.
 
-You should be presented with this screen
+#### Option 1 
+<code>
+Gaps can run in <a href="https://www.docker.com/">Docker</a>. If you choose to run this way, you'll need a Docker environment installed. Docker has a good write up on installing Docker CE. Check it out <a href="https://docs.docker.com/install/">here</a>. Once you get docker up and running
+</code>
 
-![Home Page](images/gaps-main.png)
+#### Option 2
+<code>
+Gaps can run as an exe on Windows. GapsOnWindows can be found on the <a href="https://github.com/JasonHHouse/gaps/releases">releases</a> page. Gaps-{version}.zip.
+</code>
 
+### Installing
+With Docker installed, you'll need to now pull down the latest Gaps image. The Gaps image is hosted [here](https://hub.docker.com/r/housewrecker/gaps). To pull the image, run the following command in a terminal
 
-### Landing Page
+If you are running an x86 machine, use this command.
 
-On this screen, you need to enter your Movie Database Api Key. The page has information on getting the key. The basics are that you'll need navigate over to [The Movie DB](https://www.themoviedb.org/settings/api), create an account, and make an API Key. Then you would copy that key into the Api Key field.
+```
+docker pull housewrecker/gaps:latest
+```
 
-*Note: Right now only searching via Plex is working. In time, I'll add back in searching by folder.*
+If you are running an ARM machine, use this command.
 
-Click the *Search via Plex* button and move on to the next page. 
+```
+docker pull housewrecker/gaps:arm-latest
+```
 
-### Plex Configuration
+With the image pulled, now you can run the container. 
 
-With your Movie DB key added, now we need to configure the information to connect to Plex.
+_Note: 8484 is used internally by gaps. Externally, any available host port can be used. This can be configured by changing -p {valid port number}:8484_
 
-![Plex Connection](images/plex_configuration.png)
+```
+docker run -d -p 8484:8484 --name mygaps --expose 32400 -v /{localFolder}/gaps:/usr/data housewrecker/gaps:latest
+```
 
-On this page, you'll need to configure how you connect to Plex. This includes three main things: the host/ip address of Plex, the port Plex uses, and your personal Plex Token.
+Open your browser and navigate to, http://{IP_ADDRESS}:8484
 
-The host/ip address and port are the same ones you use to connect to Plex via the web. It could look something like this
+If everything worked, you will be greeted by the gaps home page.
+
+![Home Page](https://github.com/JasonHHouse/gaps/blob/master/images/gaps-main.png)
+
+## 🎈 Usage <a name="usage"></a>
+
+### Home Page
+
+![Home Page](https://github.com/JasonHHouse/gaps/blob/master/images/gaps-main.png)
+
+Click the *Settings* tab to set up Gaps. 
+
+### Settings
+
+#### TMDB
+
+First, you need to enter your The Movie Database (TMDB) API Key. As noted on the page, to use Gaps, you'll need a MovieDB API key. Navigate over to [The Movie DB](https://www.themoviedb.org/settings/api), create an account, and make an API Key. Copy that key and paste it below.
+
+With your TMDB key added, now you need to configure the information to connect to Plex.
+
+Click the *Test* button to confirm your key works.
+
+Click the *Save* button to add your key.
+
+Click the *Plex* tab to set up Gaps. 
+
+#### Plex
+
+![Plex Connection](https://github.com/JasonHHouse/gaps/blob/master/images/plex-configuration.png)
+
+Now you'll need to configure how to connect Gaps to Plex. This includes three main things: the host/IP address of Plex, the port Plex uses, and your personal Plex Token.
+
+The host/IP address and port are the same ones you use to connect to Plex via the web. It could look something like this
 
     https://localhost:32400/web/index.html
     
@@ -58,38 +119,69 @@ If Plex and Gaps are both running in the same Docker, you may need to use the IP
 
     https://192.168.1.10:32400/web/index.html
 
-So, in the first case the host is localhost and the port 32400. In the second case, the host is 127.0.0.1 with the same port.
+So, in the first case, the host is localhost and the port 32400. In the second case, the host is 127.0.0.1 with the same port.
 
 Lastly, you'll need to get your personal Plex Token. If you do not know already it's easy to find. Plex has a great write up [here](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/) about how to find your token.
 
-Once you have those three, click next.
+Click the *Test* button to confirm your Plex server configuration works.
 
-*Note: In the title bar, if you ever need to jump back a bit, you can click any of the sections to make an edit.*
+Click the *Save* button to add your Plex server.
+
+#### Folders
+
+*Note: Right now only searching via Plex is working. In time, I'll add back in searching by folder.*
+
+#### Network
+
+![Plex Connection](https://github.com/JasonHHouse/gaps/blob/master/images/network-configuration.png)
+
+Increase the timeout if Plex connection is on a remote network and timeouts are occurring.
 
 ### Libraries
 
-On the Libraries page, Gaps will try to connect to Plex and if successful it will return the 'Movie' type libraries it found.
+Click the *Libraries* tab to set up Gaps.
 
-![Plex Movie Libraries](images/plex_libraries.png)
+*If you have more than one Movie Library or Plex Server, the dropdown lets you pick the Server and Library to search from.*  
 
-Select any or all of the movie libraries you want to search. You must select at least one.
+![Plex Movie Libraries](https://github.com/JasonHHouse/gaps/blob/master/images/plex-libraries-empty.png)
 
-### Results
+Click the *Search* button to find your Plex Movies.
+
+![Plex Movie Libraries](https://github.com/JasonHHouse/gaps/blob/master/images/plex-libraries.png)
+
+Gaps will display the movies found in the Plex Server Library.
+
+*Note: Rerun this step for each server you want Gaps to find the missing movies in.*
+
+Click the *Recommended* tab to set up Gaps.
+
+### Missing
 Once you've started searching, the movies will start populating on the final page.
 
-![Plex Movie Libraries](images/results.png) 
+![Gap Not Searched Missing Movies Yet](https://github.com/JasonHHouse/gaps/blob/master/images/recommended-empty.png) 
+
+Click the *Search* button to find your missing movies.
+
+![Gaps Recommended Movies](https://github.com/JasonHHouse/gaps/blob/master/images/recommended.png) 
+
+For large libraries, this can take a while to run. The results are stored and only need to be rerun when Plex updates. Missing movies are added as found. Do not navigate away. Gaps will still run but you'll have to check logs to know when it is complete. It is currently easier to just leave the page open. Fixes for this are coming soon.
 
 ### Recommended and RSS
-Once you've completed at least one search of your plex libraries, you can then view the history. Recommended is a user friendly version and RSS is for machine RSS feeds. 
 
-![Plex Recommended Movies](images/recommended.png) 
+![Gaps RSS Feed](https://github.com/JasonHHouse/gaps/blob/master/images/rss.png) 
 
-## License
-Copyright 2019 Jason H House
+Once you've completed at least one search of your plex libraries, you can then view and use the output as RSS.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+## ⛏️ Built Using <a name = "built_using"></a>
+- [jQuery](https://jquery.com/) - JS Framework
+- [Bootstrap](https://getbootstrap.com/) - UI Framework
+- [Spring Boot](https://spring.io/projects/spring-boot) - Server Framework
+- [NodeJs](https://nodejs.org/en/) - Testing and Build Environment
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+## ✍️ Authors <a name = "authors"></a>
+- [@JasonHHouse](https://github.com/JasonHHouse) - Idea & Initial work
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
+## 🎉 Acknowledgements <a name = "acknowledgement"></a>
+- [@Knoxie](https://github.com/knoxie) Developer, testing, and support
+- Inspiration
+    - A missing feature from Plex
