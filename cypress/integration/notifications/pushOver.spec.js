@@ -71,7 +71,7 @@ describe('Check PushOver Notification Agent', function () {
             "sound": "updown",
             "retry": 60,
             "expire": 3600
-        };;
+        };
 
         cy.request('PUT', '/notifications/pushOver', object)
             .then((resp) => {
