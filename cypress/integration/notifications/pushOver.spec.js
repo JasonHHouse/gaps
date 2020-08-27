@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 import {CYPRESS_VALUES, nuke} from "../common";
 
 describe('Check PushOver Notification Agent', function () {
