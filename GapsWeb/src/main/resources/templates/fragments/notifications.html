@@ -597,31 +597,44 @@
     <h4>PushOver Notifications</h4>
     <form id="pushOverConfiguration">
         <div class="form-group">
-            <label for="pushOverBotId">Bot ID</label>
-            <input type="text" class="form-control" id="pushOverBotId" aria-describedby="pushOverBotIdHelp"
-                   th:value="${plexProperties?.pushOverProperties?.botId}">
-            <small id="pushOverBotIdHelp" class="form-text text-muted"></small>
+            <label for="pushOverToken">Token</label>
+            <input type="text" class="form-control" id="pushOverToken" aria-describedby="pushOverTokenHelp"
+                   th:value="${plexProperties?.pushOverProperties?.token}">
+            <small id="pushOverTokenHelp" class="form-text text-muted"></small>
         </div>
         <div class="form-group">
-            <label for="pushOverChatId">Chat ID</label>
-            <input type="text" class="form-control" id="pushOverChatId"
-                   aria-describedby="pushOverChatIdHelp"
-                   th:value="${plexProperties?.pushOverProperties?.chatId}">
-            <small id="pushOverChatIdHelp" class="form-text text-muted"></small>
+            <label for="pushOverUser">User</label>
+            <input type="text" class="form-control" id="pushOverUser"
+                   aria-describedby="pushOverUserHelp"
+                   th:value="${plexProperties?.pushOverProperties?.user}">
+            <small id="pushOverUserHelp" class="form-text text-muted"></small>
         </div>
         <div class="form-group">
             <label for="pushOverPriority">Priority</label>
             <select class="form-control" id="pushOverPriority">
-                <option value="-2" th:selected="${plexProperties?.pushOverProperties?.getPriority().equals(-2) ? true : false}">No Notification/Alert</option>
-                <option value="-1" th:selected="${plexProperties?.pushOverProperties?.getPriority().equals(-1) ? true : false}">Quiet Notification</option>
-                <option value="1" th:selected="${plexProperties?.pushOverProperties?.getPriority().equals(1) ? true : false}">High-Priority</option>
-                <option value="2" th:selected="${plexProperties?.pushOverProperties?.getPriority().equals(2) ? true : false}">High-Priority with required user confirmation</option>
+                <option value="-2" th:selected="${T(org.apache.commons.lang3.math.NumberUtils).isCreatable(plexProperties?.pushOverProperties?.getPriority()) && plexProperties?.pushOverProperties?.getPriority()?.equals(-2) ? true : false}">No Notification/Alert</option>
+                <option value="-1" th:selected="${T(org.apache.commons.lang3.math.NumberUtils).isCreatable(plexProperties?.pushOverProperties?.getPriority()) && plexProperties?.pushOverProperties?.getPriority()?.equals(-1) ? true : false}">Quiet Notification</option>
+                <option value="0" th:selected="${T(org.apache.commons.lang3.math.NumberUtils).isCreatable(plexProperties?.pushOverProperties?.getPriority()) && plexProperties?.pushOverProperties?.getPriority()?.equals(0) ? true : false}">Normal Priority</option>
+                <option value="1" th:selected="${T(org.apache.commons.lang3.math.NumberUtils).isCreatable(plexProperties?.pushOverProperties?.getPriority()) &&  plexProperties?.pushOverProperties?.getPriority()?.equals(1) ? true : false}">High-Priority</option>
+                <option value="2" th:selected="${T(org.apache.commons.lang3.math.NumberUtils).isCreatable(plexProperties?.pushOverProperties?.getPriority()) &&  plexProperties?.pushOverProperties?.getPriority()?.equals(2) ? true : false}">High-Priority with required user confirmation</option>
             </select>
         </div>
         <div class="form-group">
             <label for="pushOverSound">Sound</label>
             <select class="form-control" id="pushOverSound">
             </select>
+        </div>
+        <div class="form-group">
+            <label for="pushOverRetry">Retry</label>
+            <input type="number" class="form-control" id="pushOverRetry" aria-describedby="pushOverRetryHelp"
+                   value="60" th:value="${plexProperties?.pushOverProperties?.retry}">
+            <small id="pushOverRetryHelp" class="form-text text-muted"></small>
+        </div>
+        <div class="form-group">
+            <label for="pushOverExpire">Expire</label>
+            <input type="number" class="form-control" id="pushOverExpire" aria-describedby="pushOverExpireHelp"
+                   value="3600" th:value="${plexProperties?.pushOverProperties?.expire}">
+            <small id="pushOverExpireHelp" class="form-text text-muted"></small>
         </div>
         <div class="form-group">
             <label>Notification Types</label>

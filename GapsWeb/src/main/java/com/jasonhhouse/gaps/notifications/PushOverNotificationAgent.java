@@ -73,7 +73,7 @@ public final class PushOverNotificationAgent extends AbstractNotificationAgent<P
                 .addPathSegment("messages.json")
                 .build();
 
-        PushOver pushOver = new PushOver(t.getToken(), t.getUser(), t.getPriority(), t.getSound(), title, message);
+        PushOver pushOver = new PushOver(t.getToken(), t.getUser(), t.getPriority(), t.getSound(), title, message, t.getRetry(), t.getExpire());
 
         String pushOverMessage;
         try {
@@ -120,14 +120,18 @@ public final class PushOverNotificationAgent extends AbstractNotificationAgent<P
         private final String sound;
         private final String title;
         private final String message;
+        private final Integer retry;
+        private final Integer expire;
 
-        public PushOver(String token, String user, Integer priority, String sound, String title, String message) {
+        public PushOver(String token, String user, Integer priority, String sound, String title, String message, Integer retry, Integer expire) {
             this.token = token;
             this.user = user;
             this.priority = priority;
             this.sound = sound;
             this.title = title;
             this.message = message;
+            this.retry = retry;
+            this.expire = expire;
         }
 
         public String getToken() {
@@ -152,6 +156,14 @@ public final class PushOverNotificationAgent extends AbstractNotificationAgent<P
 
         public String getMessage() {
             return message;
+        }
+
+        public Integer getRetry() {
+            return retry;
+        }
+
+        public Integer getExpire() {
+            return expire;
         }
     }
 }

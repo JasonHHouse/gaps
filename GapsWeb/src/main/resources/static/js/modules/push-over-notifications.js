@@ -13,7 +13,23 @@ import {Payload} from "./payload.min.js";
 import {hideAllAlertsAndSpinners} from "./alerts-manager.min.js";
 
 export async function getSoundOptions() {
-
+    let response = await fetch('/sounds', {
+        method: 'get',
+    });
+    const body = await response.json();
+    if (body.status && body.status === 1) {
+        for(const sound in body.sounds) {
+            const option = document.createElement('option');
+            option.value = sound;
+            option.text = body.sounds[sound];
+            document.getElementById('pushOverSound').appendChild(option);
+        }
+    } else {
+        const option = document.createElement('option');
+        option.value = "pushover";
+        option.text = "Pushover (default)";
+        document.getElementById('pushOverSound').appendChild(option);
+    }
 }
 
 export async function testPushOverNotifications() {

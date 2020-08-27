@@ -27,6 +27,10 @@ public final class PushOverProperties extends AbstractNotificationProperties {
     private final Integer priority;
     @NotNull
     private final String sound;
+    @NotNull
+    private final Integer retry;
+    @NotNull
+    private final Integer expire;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public PushOverProperties(@JsonProperty(value = "enabled", required = true) @NotNull Boolean enabled,
@@ -34,12 +38,14 @@ public final class PushOverProperties extends AbstractNotificationProperties {
                               @JsonProperty(value = "token", required = true) @NotNull String token,
                               @JsonProperty(value = "user", required = true) @NotNull String user,
                               @JsonProperty(value = "priority", required = true) @NotNull Integer priority,
-                              @JsonProperty(value = "sound", required = true) @NotNull String sound) {
+                              @JsonProperty(value = "sound", required = true) @NotNull String sound, @NotNull Integer retry, @NotNull Integer expire) {
         super(enabled, notificationTypes);
         this.token = token;
         this.user = user;
         this.priority = priority;
         this.sound = sound;
+        this.retry = retry;
+        this.expire = expire;
     }
 
     public @NotNull String getToken() {
@@ -58,6 +64,16 @@ public final class PushOverProperties extends AbstractNotificationProperties {
         return sound;
     }
 
+    @NotNull
+    public Integer getRetry() {
+        return retry;
+    }
+
+    @NotNull
+    public Integer getExpire() {
+        return expire;
+    }
+
     @Override
     public String toString() {
         return "PushOverProperties{" +
@@ -65,6 +81,8 @@ public final class PushOverProperties extends AbstractNotificationProperties {
                 ", user='" + user + '\'' +
                 ", priority=" + priority +
                 ", sound='" + sound + '\'' +
+                ", retry=" + retry +
+                ", expire=" + expire +
                 ", enabled=" + enabled +
                 ", notificationTypes=" + notificationTypes +
                 '}';

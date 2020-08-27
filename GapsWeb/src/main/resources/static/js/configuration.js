@@ -18,6 +18,7 @@ import {savePushBulletNotifications, testPushBulletNotifications} from "./module
 import {saveGotifyNotifications, testGotifyNotifications} from "./modules/gotify-notifications.min.js";
 import {saveEmailNotifications, testEmailNotifications} from "./modules/email-notifications.min.js";
 import {saveSchedule} from "./modules/schedule.min.js";
+import {getSoundOptions, savePushOverNotifications, testPushOverNotifications} from "./modules/push-over-notifications.min.js";
 
 let plexSpinner, plexSaveSuccess, plexSaveError, plexTestSuccess, plexTestError, plexDeleteSuccess, plexDeleteError,
     plexDuplicateError;
@@ -115,7 +116,11 @@ document.addEventListener('DOMContentLoaded', function () {
     window.saveGotify = saveGotifyNotifications;
     window.testEmail = testEmailNotifications;
     window.saveEmail = saveEmailNotifications;
+    window.testPushOver = testPushOverNotifications;
+    window.savePushOver = savePushOverNotifications;
     window.saveSchedule = saveSchedule;
+
+    getSoundOptions();
 });
 
 function testTmdbKey() {

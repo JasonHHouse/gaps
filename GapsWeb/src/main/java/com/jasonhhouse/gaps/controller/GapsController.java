@@ -12,6 +12,7 @@ package com.jasonhhouse.gaps.controller;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
+import java.io.IOException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -27,6 +28,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/")
@@ -84,7 +92,6 @@ public class GapsController {
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getAbout() {
         LOGGER.info("getAbout()");
-
         return new ModelAndView("about");
     }
 
@@ -92,7 +99,6 @@ public class GapsController {
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getLogin() {
         LOGGER.info("getLogin()");
-
         return new ModelAndView("login");
     }
 
@@ -100,8 +106,21 @@ public class GapsController {
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getUpdates() {
         LOGGER.info("getUpdates()");
-
         return new ModelAndView("updates");
+    }
+
+    @GetMapping(value = "/sounds",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Object getSounds() {
+        LOGGER.info("getSounds()");
+        Resource resource = new ClassPathResource("/static/json/sounds.json");
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(resource.getInputStream(), Object.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @InitBinder
