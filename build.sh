@@ -19,7 +19,7 @@ npm run uglifyjs-gotify-notifications-js
 npm run uglifyjs-email-notifications-js
 npm run uglifyjs-push-over-notifications-js
 npm run uglifyjs-schedule-js
-mvn clean install spotbugs:spotbugs pmd:pmd checkstyle:checkstyle sonar:sonar deploy
+mvn clean install deploy
 #docker build -f Dockerfile -t $DOCKER_LATEST .
 #cypress run
 docker buildx build --platform linux/ppc64le,linux/s390x,linux/amd64 -t housewrecker/gaps:latest -f Dockerfile --push .
@@ -27,7 +27,7 @@ docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t housewrec
 mkdir -p GapsOnWindows
 rm $ZIP_VERSION
 rm GapsOnWindows/*.jar
-rm README.md
+rm GapsOnWindows/README.md
 cp $JAR_VERSION GapsOnWindows/gaps.jar
 cp README.md GapsOnWindows/
 zip -r $ZIP_VERSION GapsOnWindows/
