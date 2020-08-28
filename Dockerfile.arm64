@@ -1,6 +1,6 @@
 FROM lsiobase/mono:arm64v8-LTS
 
-LABEL maintainer="jh5975@gmail.com" 
+LABEL maintainer="jason@gaps.tech"
 LABEL name="Jason House" 
 LABEL github="https://github.com/JasonHHouse/Gaps"
 
