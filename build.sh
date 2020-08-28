@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=0.6.0
+VERSION=0.6.1
 JAR_VERSION="GapsWeb/target/GapsWeb-$VERSION.jar"
 ZIP_VERSION="Gaps-$VERSION.zip"
 npm run minify-input-css
@@ -27,5 +27,7 @@ docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t housewrec
 mkdir -p GapsOnWindows
 rm $ZIP_VERSION
 rm GapsOnWindows/*.jar
-cp $JAR_VERSION GapsOnWindows/
+rm README.md
+cp $JAR_VERSION GapsOnWindows/gaps.jar
+cp README.md GapsOnWindows/
 zip -r $ZIP_VERSION GapsOnWindows/

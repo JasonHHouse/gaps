@@ -32,7 +32,6 @@ Core/target
 GapsWeb/target
 
 /rssFeed.json
-GapsOnWindows/*.jar
 *.zip
 cypress/screenshots
 cypress/videos
@@ -45,3 +44,7 @@ Plex/target/
 ### Do not ignore min library files
 !**/libraries/*.min.css
 !**/libraries/*.min.js
+
+### Ignore everything in Gaps on Windows except startup
+GapsOnWindows/*
+!GapsOnWindows/start.bat

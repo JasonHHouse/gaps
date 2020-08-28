@@ -1,6 +1,6 @@
 FROM adoptopenjdk/openjdk11-openj9:jre-11.0.7_10_openj9-0.20.0
 
-LABEL maintainer="jh5975@gmail.com" 
+LABEL maintainer="jh5975@gmail.com"
 LABEL name="Jason House" 
 LABEL github="https://github.com/JasonHHouse/Gaps" 
 
@@ -24,7 +24,7 @@ RUN mkdir -p /usr/app && chmod 777 /usr/data
 
 WORKDIR /usr/app
 
-COPY GapsWeb/target/GapsWeb-0.6.0.jar /usr/app/gaps.jar
+COPY GapsWeb/target/GapsWeb-0.6.1.jar /usr/app/gaps.jar
 
 COPY start.sh /usr/app/
 
