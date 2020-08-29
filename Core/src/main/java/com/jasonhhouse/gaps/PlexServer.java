@@ -9,6 +9,7 @@
  */
 package com.jasonhhouse.gaps;
 
+import com.jasonhhouse.plex.PlexLibrary;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;

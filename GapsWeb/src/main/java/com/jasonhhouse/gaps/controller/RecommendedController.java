@@ -12,7 +12,7 @@ package com.jasonhhouse.gaps.controller;
 import com.jasonhhouse.gaps.GapsSearch;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.PlexLibrary;
+import com.jasonhhouse.plex.PlexLibrary;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;

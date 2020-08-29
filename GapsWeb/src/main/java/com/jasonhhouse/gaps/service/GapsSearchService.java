@@ -19,7 +19,7 @@ import com.jasonhhouse.gaps.GapsSearch;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.MovieFromCollection;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.PlexLibrary;
+import com.jasonhhouse.plex.PlexLibrary;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.SearchCancelledException;
 import com.jasonhhouse.gaps.SearchResults;

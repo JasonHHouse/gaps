@@ -10,7 +10,7 @@
 package com.jasonhhouse.gaps.service;
 
 import com.jasonhhouse.gaps.NotificationType;
-import com.jasonhhouse.gaps.PlexLibrary;
+import com.jasonhhouse.plex.PlexLibrary;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.notifications.NotificationAgent;
 import com.jasonhhouse.gaps.properties.NotificationProperties;

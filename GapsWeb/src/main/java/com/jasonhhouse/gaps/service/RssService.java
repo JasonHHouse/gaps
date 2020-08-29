@@ -9,7 +9,7 @@
  */
 package com.jasonhhouse.gaps.service;
 
-import com.jasonhhouse.gaps.PlexLibrary;
+import com.jasonhhouse.plex.PlexLibrary;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import java.util.Collections;

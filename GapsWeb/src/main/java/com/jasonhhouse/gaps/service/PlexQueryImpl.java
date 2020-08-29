@@ -13,7 +13,7 @@ package com.jasonhhouse.gaps.service;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Pair;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.PlexLibrary;
+import com.jasonhhouse.plex.PlexLibrary;
 import com.jasonhhouse.gaps.PlexQuery;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.UrlGenerator;
@@ -139,7 +139,7 @@ public class PlexQueryImpl implements PlexQuery {
                         String title = titleNode.getNodeValue().replace(":", "");
                         Integer key = Integer.valueOf(keyNode.getNodeValue().trim());
 
-                        PlexLibrary plexLibrary = new PlexLibrary(key, title, plexServer.getMachineIdentifier(), false);
+                        PlexLibrary plexLibrary = new PlexLibrary(key, title, agent, scanner, language, plexServer.getMachineIdentifier(), false);
                         plexLibraries.add(plexLibrary);
                     }
                 }

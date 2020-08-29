@@ -14,6 +14,7 @@ import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.service.NotificationService;
 import com.jasonhhouse.gaps.service.TmdbService;
+import com.jasonhhouse.plex.PlexLibrary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
