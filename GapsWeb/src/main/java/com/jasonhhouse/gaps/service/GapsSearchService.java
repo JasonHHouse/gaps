@@ -24,7 +24,7 @@ import com.jasonhhouse.gaps.SearchCancelledException;
 import com.jasonhhouse.gaps.SearchResults;
 import com.jasonhhouse.gaps.UrlGenerator;
 import com.jasonhhouse.gaps.properties.PlexProperties;
-import com.jasonhhouse.plex.library.PlexLibrary;
+import com.jasonhhouse.plex.libs.PlexLibrary;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -120,7 +120,7 @@ public class GapsSearchService implements GapsSearch {
             return;
         }
 
-        Optional<PlexLibrary> optionalDirectoryType = plexServer.getPlexLibaries().stream().filter(tempDirectoryType -> tempDirectoryType.getKey().equals(key)).findAny();
+        Optional<PlexLibrary> optionalDirectoryType = plexServer.getPlexLibraries().stream().filter(tempDirectoryType -> tempDirectoryType.getKey().equals(key)).findAny();
 
         PlexLibrary plexLibrary;
         if (optionalDirectoryType.isPresent()) {

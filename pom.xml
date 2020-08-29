@@ -24,6 +24,7 @@
         <java.version>11</java.version>
         <jaxb.api.version>2.3.0</jaxb.api.version>
         <sonar.sources>.</sonar.sources>
+        <jackson.version>2.11.2</jackson.version>
         <sonar.inclusions>cypress/integration,src/main/**</sonar.inclusions>
     </properties>
 
@@ -104,7 +105,7 @@
                     <dependency>
                         <groupId>com.github.spotbugs</groupId>
                         <artifactId>spotbugs</artifactId>
-                        <version>4.1.1</version>
+                        <version>4.1.2</version>
                     </dependency>
                 </dependencies>
             </plugin>

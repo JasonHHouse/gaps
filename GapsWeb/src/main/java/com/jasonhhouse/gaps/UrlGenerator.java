@@ -9,7 +9,7 @@
  */
 package com.jasonhhouse.gaps;
 
-import com.jasonhhouse.plex.library.PlexLibrary;
+import com.jasonhhouse.plex.libs.PlexLibrary;
 import okhttp3.HttpUrl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

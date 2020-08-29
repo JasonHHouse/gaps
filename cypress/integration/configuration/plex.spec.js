@@ -205,7 +205,7 @@ describe('Plex Configuration Tests', function () {
             .should('have.text', 'Best Movies');
 
         cy.get('.list-group > :nth-child(2)')
-            .should('have.text', 'Movies');
+            .should('have.text', 'Movies with new Metadata');
 
         cy.get('.list-group > :nth-child(3)')
             .should('have.text', 'Saw');
@@ -320,7 +320,7 @@ describe('Plex Configuration Tests', function () {
             .should('have.text', 'Best Movies');
 
         cy.get('.list-group > :nth-child(2)')
-            .should('have.text', 'Movies');
+            .should('have.text', 'Movies with new Metadata');
 
         cy.get('.list-group > :nth-child(3)')
             .should('have.text', 'Saw');

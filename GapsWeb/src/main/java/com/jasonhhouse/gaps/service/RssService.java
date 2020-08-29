@@ -11,7 +11,7 @@ package com.jasonhhouse.gaps.service;
 
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
-import com.jasonhhouse.plex.library.PlexLibrary;
+import com.jasonhhouse.plex.libs.PlexLibrary;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,11 +45,11 @@ public class RssService {
         }
 
         for (PlexServer plexServer : plexServers) {
-            if (CollectionUtils.isEmpty(plexServer.getPlexLibaries())) {
+            if (CollectionUtils.isEmpty(plexServer.getPlexLibraries())) {
                 continue;
             }
 
-            for (PlexLibrary plexLibrary : plexServer.getPlexLibaries()) {
+            for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
                 if (ioService.doesRssFileExist(plexServer.getMachineIdentifier(), plexLibrary.getKey())) {
                     plexServerMap.put(plexLibrary, plexServer);
                 }

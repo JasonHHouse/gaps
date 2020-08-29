@@ -14,7 +14,7 @@ import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
-import com.jasonhhouse.plex.library.PlexLibrary;
+import com.jasonhhouse.plex.libs.PlexLibrary;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -57,7 +57,7 @@ public class LibraryController {
         if (CollectionUtils.isNotEmpty(plexProperties.getPlexServers())) {
             //Read first plex servers movies
             plexServer = plexProperties.getPlexServers().stream().findFirst().orElse(new PlexServer());
-            plexLibrary = plexServer.getPlexLibaries().stream().findFirst().orElse(new PlexLibrary());
+            plexLibrary = plexServer.getPlexLibraries().stream().findFirst().orElse(new PlexLibrary());
             plexServersFound = true;
         } else {
             plexServer = new PlexServer();
