@@ -49,8 +49,8 @@ public class SchedulerController {
 
         try {
             schedulerService.setSchedule(schedulePayload);
-        } catch (IOException e) {
-            LOGGER.error("Failed to get JSON Schedule", e);
+        } catch (Exception e) {
+            LOGGER.error("Failed to update Schedule", e);
             ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Payload.SCHEDULE_NOT_UPDATED);
         }
 
@@ -63,8 +63,8 @@ public class SchedulerController {
         try {
             return ResponseEntity.ok().body(schedulerService.getJsonSchedule());
         } catch (IOException e) {
-            LOGGER.error("Failed to read schedule from properties", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to read schedule from properties");
+            LOGGER.error("Failed to parse schedule into JSON", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to parse schedule into JSON");
         }
     }
 

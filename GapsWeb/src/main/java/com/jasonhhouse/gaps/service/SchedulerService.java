@@ -50,7 +50,7 @@ public class SchedulerService {
         this.searchGapsTask = new SearchGapsTask(gapsSearch, tmdbService, ioService, plexQuery, gapsUrlGenerator, notificationService);
     }
 
-    public void setSchedule(SchedulePayload schedulePayload) throws IOException {
+    public void setSchedule(SchedulePayload schedulePayload) {
         LOGGER.info("setSchedule( {} )", schedulePayload);
         PlexProperties plexProperties = ioService.readProperties();
         Schedule schedule = Schedule.getSchedule(schedulePayload.getSchedule());
@@ -60,7 +60,7 @@ public class SchedulerService {
         setTaskForScheduler(schedule);
     }
 
-    public Schedule getRawSchedule() throws IOException {
+    public Schedule getRawSchedule() {
         LOGGER.info("getRawSchedule()");
         return ioService.readProperties().getSchedule();
     }
@@ -78,13 +78,16 @@ public class SchedulerService {
     private void setTaskForScheduler(Schedule schedule) {
         if (scheduledFuture != null) {
             scheduledFuture.cancel(true);
+            LOGGER.info("ScheduledFuture is cancelled {}", scheduledFuture.isCancelled());
         }
 
         if (!schedule.getEnabled()) {
-            LOGGER.info("Schedule not enabled");
+            LOGGER.warn("Schedule not enabled");
             return;
         }
 
+        LOGGER.info("Setting schedule for {} as cron '{}'", schedule.getMessage(), schedule.getCron());
+        LOGGER.info("Cron TimeZone {}", TimeZone.getTimeZone(TimeZone.getDefault().getID()));
         scheduledFuture = scheduler.schedule(searchGapsTask, new CronTrigger(schedule.getCron(), TimeZone.getTimeZone(TimeZone.getDefault().getID())));
     }
 
