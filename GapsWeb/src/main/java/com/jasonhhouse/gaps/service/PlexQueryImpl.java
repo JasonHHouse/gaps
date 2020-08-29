@@ -265,7 +265,7 @@ public class PlexQueryImpl implements PlexQuery {
     }
 
     @Override
-    public List<Movie> findAllPlexMovies(Map<Pair<String, Integer>, Movie> previousMovies, @NotNull String url) {
+    public @NotNull List<Movie> findAllPlexMovies(@NotNull Map<Pair<String, Integer>, Movie> previousMovies, @NotNull String url) {
         LOGGER.info("findAllPlexMovies()");
 
         List<Movie> ownedMovies = new ArrayList<>();
@@ -385,7 +385,7 @@ public class PlexQueryImpl implements PlexQuery {
     }
 
     @Override
-    public @NotNull List<Movie> findAllPlexMovies(Map<Pair<String, Integer>, Movie> previousMovies, @NotNull HttpUrl url) {
+    public @NotNull List<Movie> findAllPlexMovies(@NotNull Map<Pair<String, Integer>, Movie> previousMovies, @NotNull HttpUrl url) {
         LOGGER.info("findAllPlexMovies()");
 
         List<Movie> ownedMovies = new ArrayList<>();
@@ -513,7 +513,7 @@ public class PlexQueryImpl implements PlexQuery {
         }
     }
 
-    private <T> T parseXml(Response response, HttpUrl url, String expression) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
+    private <T> T parseXml(@NotNull Response response, @NotNull HttpUrl url, @NotNull String expression) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
         ResponseBody responseBody = response.body();
         if (responseBody == null) {
             LOGGER.warn("Empty response body");

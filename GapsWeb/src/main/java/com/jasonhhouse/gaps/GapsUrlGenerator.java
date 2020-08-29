@@ -36,6 +36,7 @@ public class GapsUrlGenerator implements UrlGenerator {
     private static final String COLLECTION = "collection";
     private static final String LIBRARY = "library";
     private static final String SECTIONS = "sections";
+    private static final String METADATA = "metadata";
     private static final String ALL = "all";
     private static final String PLEX_TOKEN = "X-Plex-Token";
 
@@ -102,7 +103,7 @@ public class GapsUrlGenerator implements UrlGenerator {
     }
 
     @Override
-    public @Nullable HttpUrl generatePlexLibraryUrl(PlexServer plexServer, PlexLibrary plexLibrary) {
+    public @Nullable HttpUrl generatePlexLibraryUrl(@NotNull PlexServer plexServer,@NotNull  PlexLibrary plexLibrary) {
         return new HttpUrl.Builder()
                 .scheme(HTTP)
                 .host(plexServer.getAddress())
@@ -111,6 +112,19 @@ public class GapsUrlGenerator implements UrlGenerator {
                 .addPathSegment(SECTIONS)
                 .addPathSegment(plexLibrary.getKey().toString())
                 .addPathSegment(ALL)
+                .addQueryParameter(PLEX_TOKEN, plexServer.getPlexToken())
+                .build();
+    }
+
+    @Override
+    public @NotNull HttpUrl generatePlexMetadataUrl(@NotNull PlexServer plexServer, @NotNull PlexLibrary plexLibrary, @NotNull Integer ratingKey) {
+        return new HttpUrl.Builder()
+                .scheme(HTTP)
+                .host(plexServer.getAddress())
+                .port(plexServer.getPort())
+                .addPathSegment(LIBRARY)
+                .addPathSegment(METADATA)
+                .addPathSegment(ratingKey.toString())
                 .addQueryParameter(PLEX_TOKEN, plexServer.getPlexToken())
                 .build();
     }
