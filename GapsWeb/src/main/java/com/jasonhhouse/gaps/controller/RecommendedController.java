@@ -76,7 +76,7 @@ public class RecommendedController {
         modelAndView.addObject("plexServers", plexServerMap);
         modelAndView.addObject("plexProperties", plexProperties);
         modelAndView.addObject("plexServer", plexServer);
-        modelAndView.addObject("directoryType", plexLibrary);
+        modelAndView.addObject("plexLibrary", plexLibrary);
         return modelAndView;
     }
 

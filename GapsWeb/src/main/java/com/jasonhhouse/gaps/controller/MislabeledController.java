@@ -125,7 +125,7 @@ public class MislabeledController {
                 .map(plexServer -> plexServer
                         .getPlexLibraries()
                         .stream()
-                        .filter(directoryType -> directoryType.getKey().equals(key))
+                        .filter(plexLibrary -> plexLibrary.getKey().equals(key))
                         .map(plexLibrary -> "http://" + plexServer.getAddress() + ":" + plexServer.getPort() + "/library/sections/" + plexLibrary.getKey() + "/all/?X-Plex-Token=" + plexServer.getPlexToken())
                         .findFirst().orElse(null))
                 .findFirst()

@@ -142,7 +142,7 @@ public class SearchGapsTask implements Runnable {
                 .getPlexServers()
                 .forEach(plexServer -> plexServer
                         .getPlexLibraries()
-                        .forEach(directoryType -> everyMovie.forEach(movie -> previousMovies.put(new Pair<>(movie.getName(), movie.getYear()), movie))));
+                        .forEach(plexLibrary -> everyMovie.forEach(movie -> previousMovies.put(new Pair<>(movie.getName(), movie.getYear()), movie))));
 
         return previousMovies;
     }

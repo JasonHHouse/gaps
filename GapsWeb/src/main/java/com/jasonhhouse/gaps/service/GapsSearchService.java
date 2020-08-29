@@ -120,11 +120,11 @@ public class GapsSearchService implements GapsSearch {
             return;
         }
 
-        Optional<PlexLibrary> optionalDirectoryType = plexServer.getPlexLibraries().stream().filter(tempDirectoryType -> tempDirectoryType.getKey().equals(key)).findAny();
+        Optional<PlexLibrary> optionalPlexLibrary = plexServer.getPlexLibraries().stream().filter(tempPlexLibrary -> tempPlexLibrary.getKey().equals(key)).findAny();
 
         PlexLibrary plexLibrary;
-        if (optionalDirectoryType.isPresent()) {
-            plexLibrary = optionalDirectoryType.get();
+        if (optionalPlexLibrary.isPresent()) {
+            plexLibrary = optionalPlexLibrary.get();
         } else {
             LOGGER.error("Plex library not found with machineIdentifier {} and key {}", machineIdentifier, key);
             return;

@@ -80,9 +80,9 @@ public class MediaContainer {
      * 
      * 
      */
-    public List<PlexLibrary> getDirectory() {
+    public List<PlexLibrary> getPlexLibraries() {
         if (plexLibrary == null) {
-            plexLibrary = new ArrayList<PlexLibrary>();
+            plexLibrary = new ArrayList<>();
         }
         return this.plexLibrary;
     }

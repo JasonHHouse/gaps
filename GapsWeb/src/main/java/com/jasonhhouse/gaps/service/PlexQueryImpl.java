@@ -112,7 +112,7 @@ public class PlexQueryImpl implements PlexQuery {
                 MediaContainer mediaContainer = (MediaContainer) jaxbUnmarshaller.unmarshal(inputStream);
 
                 //Remove everything except movie folders
-                List<PlexLibrary> plexLibraries = mediaContainer.getDirectory().stream().filter(plexLibrary -> plexLibrary.getType().equalsIgnoreCase("movie")).collect(Collectors.toList());
+                List<PlexLibrary> plexLibraries = mediaContainer.getPlexLibraries().stream().filter(plexLibrary -> plexLibrary.getType().equalsIgnoreCase("movie")).collect(Collectors.toList());
 
                 LOGGER.info("{} Plex libraries found", plexLibraries.size());
                 plexServer.getPlexLibraries().addAll(plexLibraries);

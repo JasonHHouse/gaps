@@ -68,7 +68,7 @@ public class PlexMovieListController {
                 .getPlexServers()
                 .forEach(plexServer -> plexServer
                         .getPlexLibraries()
-                        .forEach(directoryType -> everyMovie.forEach(movie -> previousMovies.put(new Pair<>(movie.getName(), movie.getYear()), movie))));
+                        .forEach(plexLibrary -> everyMovie.forEach(movie -> previousMovies.put(new Pair<>(movie.getName(), movie.getYear()), movie))));
 
         return previousMovies;
     }
@@ -82,8 +82,8 @@ public class PlexMovieListController {
                 .map(plexServer -> plexServer
                         .getPlexLibraries()
                         .stream()
-                        .filter(directoryType -> directoryType.getKey().equals(key))
-                        .map(directoryType -> "http://" + plexServer.getAddress() + ":" + plexServer.getPort() + "/library/sections/" + directoryType.getKey() + "/all/?X-Plex-Token=" + plexServer.getPlexToken())
+                        .filter(plexLibrary -> plexLibrary.getKey().equals(key))
+                        .map(plexLibrary -> "http://" + plexServer.getAddress() + ":" + plexServer.getPort() + "/library/sections/" + plexLibrary.getKey() + "/all/?X-Plex-Token=" + plexServer.getPlexToken())
                         .findFirst().orElse(null))
                 .findFirst()
                 .orElse("");

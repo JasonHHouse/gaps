@@ -75,7 +75,7 @@ public class LibraryController {
         modelAndView.addObject("plexServers", plexServerMap);
         modelAndView.addObject("plexProperties", plexProperties);
         modelAndView.addObject("plexServer", plexServer);
-        modelAndView.addObject("directoryType", plexLibrary);
+        modelAndView.addObject("plexLibrary", plexLibrary);
         modelAndView.addObject("plexServersFound", plexServersFound);
         return modelAndView;
     }
