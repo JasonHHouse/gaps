@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~
+  ~  Copyright 2020 Jason H House
+  ~  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+  ~
+  ~  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+  ~
+  ~  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+    <xs:element name="MediaContainer" type="MediaContainerType"/>
+    <xs:complexType name="LocationType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="id" use="optional"/>
+                <xs:attribute type="xs:string" name="path" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="PlexLibrary">
+        <xs:sequence>
+            <xs:element type="LocationType" name="Location"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="allowSync" use="optional"/>
+        <xs:attribute type="xs:string" name="art" use="optional"/>
+        <xs:attribute type="xs:string" name="composite" use="optional"/>
+        <xs:attribute type="xs:string" name="filters" use="optional"/>
+        <xs:attribute type="xs:string" name="refreshing" use="optional"/>
+        <xs:attribute type="xs:string" name="thumb" use="optional"/>
+        <xs:attribute type="xs:string" name="key" use="optional"/>
+        <xs:attribute type="xs:string" name="type" use="optional"/>
+        <xs:attribute type="xs:string" name="title" use="optional"/>
+        <xs:attribute type="xs:string" name="agent" use="optional"/>
+        <xs:attribute type="xs:string" name="scanner" use="optional"/>
+        <xs:attribute type="xs:string" name="language" use="optional"/>
+        <xs:attribute type="xs:string" name="uuid" use="optional"/>
+        <xs:attribute type="xs:string" name="updatedAt" use="optional"/>
+        <xs:attribute type="xs:string" name="createdAt" use="optional"/>
+        <xs:attribute type="xs:string" name="scannedAt" use="optional"/>
+        <xs:attribute type="xs:string" name="content" use="optional"/>
+        <xs:attribute type="xs:string" name="directory" use="optional"/>
+        <xs:attribute type="xs:string" name="contentChangedAt" use="optional"/>
+        <xs:attribute type="xs:string" name="hidden" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="MediaContainerType">
+        <xs:sequence>
+            <xs:element type="DirectoryType" name="Directory" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="size"/>
+        <xs:attribute type="xs:string" name="allowSync"/>
+        <xs:attribute type="xs:string" name="identifier"/>
+        <xs:attribute type="xs:string" name="mediaTagPrefix"/>
+        <xs:attribute type="xs:string" name="mediaTagVersion"/>
+        <xs:attribute type="xs:string" name="title1"/>
+    </xs:complexType>
+</xs:schema>

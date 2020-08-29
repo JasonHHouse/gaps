@@ -1,7 +1,7 @@
 package com.jasonhhouse.gaps.service;
 
-import com.jasonhhouse.plex.PlexLibrary;
 import com.jasonhhouse.gaps.PlexServer;
+import com.jasonhhouse.plex.library.PlexLibrary;
 
 public interface Notification {
 

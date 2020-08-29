@@ -12,7 +12,6 @@ package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Pair;
-import com.jasonhhouse.plex.PlexLibrary;
 import com.jasonhhouse.gaps.PlexQuery;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
@@ -68,10 +67,8 @@ public class PlexMovieListController {
         plexProperties
                 .getPlexServers()
                 .forEach(plexServer -> plexServer
-                        .getPlexLibraries()
-                        .stream()
-                        .filter(PlexLibrary::getSelected)
-                        .forEach(plexLibrary -> everyMovie.forEach(movie -> previousMovies.put(new Pair<>(movie.getName(), movie.getYear()), movie))));
+                        .getPlexLibaries()
+                        .forEach(directoryType -> everyMovie.forEach(movie -> previousMovies.put(new Pair<>(movie.getName(), movie.getYear()), movie))));
 
         return previousMovies;
     }
@@ -83,10 +80,10 @@ public class PlexMovieListController {
                 .stream()
                 .filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier))
                 .map(plexServer -> plexServer
-                        .getPlexLibraries()
+                        .getPlexLibaries()
                         .stream()
-                        .filter(plexLibrary -> plexLibrary.getKey().equals(key))
-                        .map(plexLibrary -> "http://" + plexServer.getAddress() + ":" + plexServer.getPort() + "/library/sections/" + plexLibrary.getKey() + "/all/?X-Plex-Token=" + plexServer.getPlexToken())
+                        .filter(directoryType -> directoryType.getKey().equals(key))
+                        .map(directoryType -> "http://" + plexServer.getAddress() + ":" + plexServer.getPort() + "/library/sections/" + directoryType.getKey() + "/all/?X-Plex-Token=" + plexServer.getPlexToken())
                         .findFirst().orElse(null))
                 .findFirst()
                 .orElse("");

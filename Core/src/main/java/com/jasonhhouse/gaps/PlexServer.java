@@ -9,7 +9,7 @@
  */
 package com.jasonhhouse.gaps;
 
-import com.jasonhhouse.plex.PlexLibrary;
+import com.jasonhhouse.plex.library.PlexLibrary;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
@@ -52,7 +52,7 @@ public final class PlexServer {
         this.machineIdentifier = machineIdentifier;
     }
 
-    public Set<PlexLibrary> getPlexLibraries() {
+    public Set<PlexLibrary> getPlexLibaries() {
         return plexLibraries;
     }
 

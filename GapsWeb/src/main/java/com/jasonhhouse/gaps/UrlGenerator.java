@@ -9,7 +9,7 @@
  */
 package com.jasonhhouse.gaps;
 
-import com.jasonhhouse.plex.PlexLibrary;
+import com.jasonhhouse.plex.library.PlexLibrary;
 import okhttp3.HttpUrl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -66,8 +66,8 @@ public interface UrlGenerator {
     /**
      * Using plex token, address, and port, create a plex library url to query for all plex movies
      *
-     * @param plexServer  The PlexServer to query
-     * @param plexLibrary The PlexLibrary to query
+     * @param plexServer    The PlexServer to query
+     * @param plexLibrary The DirectoryType to query
      * @return query
      */
     @Nullable HttpUrl generatePlexLibraryUrl(PlexServer plexServer, PlexLibrary plexLibrary);

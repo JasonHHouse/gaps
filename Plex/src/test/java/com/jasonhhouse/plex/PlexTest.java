@@ -9,6 +9,7 @@
  */
 package com.jasonhhouse.plex;
 
+import com.jasonhhouse.plex.video.MediaContainer;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;

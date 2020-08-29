@@ -10,10 +10,10 @@
 package com.jasonhhouse.gaps.service;
 
 import com.jasonhhouse.gaps.NotificationType;
-import com.jasonhhouse.plex.PlexLibrary;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.notifications.NotificationAgent;
 import com.jasonhhouse.gaps.properties.NotificationProperties;
+import com.jasonhhouse.plex.library.PlexLibrary;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

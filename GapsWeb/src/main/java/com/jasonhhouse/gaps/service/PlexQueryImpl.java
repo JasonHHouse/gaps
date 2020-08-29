@@ -10,14 +10,15 @@
 
 package com.jasonhhouse.gaps.service;
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Pair;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.plex.PlexLibrary;
 import com.jasonhhouse.gaps.PlexQuery;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.UrlGenerator;
-import com.jasonhhouse.plex.MediaContainer;
+import com.jasonhhouse.plex.library.MediaContainerType;
+import com.jasonhhouse.plex.video.MediaContainer;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -91,15 +92,27 @@ public class PlexQueryImpl implements PlexQuery {
                 .writeTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
                 .build();
 
-        List<PlexLibrary> plexLibraries = new ArrayList<>();
-
         try {
             Request request = new Request.Builder()
                     .url(url)
                     .build();
 
             try (Response response = client.newCall(request).execute()) {
-                NodeList nodeList = parseXml(response, url, "/MediaContainer/Directory");
+                String body = response.body() != null ? response.body().string() : null;
+
+                if (StringUtils.isBlank(body)) {
+                    String reason = "Body returned empty from Plex";
+                    LOGGER.error(reason);
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason);
+                }
+
+                XmlMapper xmlMapper = new XmlMapper();
+                MediaContainerType mediaContainerType = xmlMapper.readValue(body, MediaContainerType.class);
+
+                LOGGER.info("{} Plex libraries found", mediaContainerType.getDirectory().size());
+                plexServer.getDirectoryTypes().addAll(mediaContainerType.getDirectory());
+                return Payload.PLEX_LIBRARIES_FOUND.setExtras("size():" + mediaContainerType.getDirectory().size());
+                /*NodeList nodeList = parseXml(response, url, "/MediaContainer/Directory");
 
                 if (nodeList.getLength() == 0) {
                     String reason = "No libraries found in url: " + url;
@@ -142,26 +155,23 @@ public class PlexQueryImpl implements PlexQuery {
                         PlexLibrary plexLibrary = new PlexLibrary(key, title, agent, scanner, language, plexServer.getMachineIdentifier(), false);
                         plexLibraries.add(plexLibrary);
                     }
-                }
+                }*/
 
             } catch (IOException e) {
                 String reason = String.format("Error connecting to Plex to get library list: %s", url);
                 LOGGER.error(reason, e);
                 return Payload.PLEX_CONNECTION_FAILED.setExtras("url:" + url);
-            } catch (ParserConfigurationException | XPathExpressionException | SAXException e) {
+            }/* catch (ParserConfigurationException | XPathExpressionException | SAXException e) {
                 String reason = "Error parsing XML from Plex: " + url;
                 LOGGER.error(reason, e);
                 return Payload.PARSING_PLEX_FAILED.setExtras("url:" + url);
-            }
+            }*/
         } catch (IllegalArgumentException e) {
             String reason = "Error with plex Url: " + url;
             LOGGER.error(reason, e);
             return Payload.PLEX_URL_ERROR.setExtras("url:" + url);
         }
 
-        LOGGER.info("{} Plex libraries found", plexLibraries.size());
-        plexServer.getPlexLibraries().addAll(plexLibraries);
-        return Payload.PLEX_LIBRARIES_FOUND.setExtras("size():" + plexLibraries.size());
     }
 
     @Override
@@ -439,7 +449,6 @@ public class PlexQueryImpl implements PlexQuery {
                     LOGGER.error(reason);
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason);
                 }
-
 
                 InputStream fileIS = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
                 DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();

@@ -9,9 +9,9 @@
  */
 package com.jasonhhouse.gaps.service;
 
-import com.jasonhhouse.plex.PlexLibrary;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
+import com.jasonhhouse.plex.library.PlexLibrary;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,12 +45,12 @@ public class RssService {
         }
 
         for (PlexServer plexServer : plexServers) {
-            if (CollectionUtils.isEmpty(plexServer.getPlexLibraries())) {
+            if (CollectionUtils.isEmpty(plexServer.getPlexLibaries())) {
                 continue;
             }
 
-            for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
-                if (ioService.doesRssFileExist(plexLibrary.getMachineIdentifier(), plexLibrary.getKey())) {
+            for (PlexLibrary plexLibrary : plexServer.getPlexLibaries()) {
+                if (ioService.doesRssFileExist(plexServer.getMachineIdentifier(), plexLibrary.getKey())) {
                     plexServerMap.put(plexLibrary, plexServer);
                 }
             }

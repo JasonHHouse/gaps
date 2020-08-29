@@ -14,7 +14,7 @@ import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.service.NotificationService;
 import com.jasonhhouse.gaps.service.TmdbService;
-import com.jasonhhouse.plex.PlexLibrary;
+import com.jasonhhouse.plex.library.PlexLibrary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,11 +112,11 @@ public class SearchGapsTask implements Runnable {
     private void updateLibraryMovies(PlexProperties plexProperties) {
         LOGGER.info("updateLibraryMovies()");
         for (PlexServer plexServer : plexProperties.getPlexServers()) {
-            for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
+            for (PlexLibrary plexLibrary : plexServer.getPlexLibaries()) {
                 HttpUrl url = gapsUrlGenerator.generatePlexLibraryUrl(plexServer, plexLibrary);
                 try {
                     List<Movie> ownedMovies = plexQuery.findAllPlexMovies(generateOwnedMovieMap(plexProperties), url);
-                    ioService.writeOwnedMoviesToFile(ownedMovies, plexLibrary.getMachineIdentifier(), plexLibrary.getKey());
+                    ioService.writeOwnedMoviesToFile(ownedMovies, plexServer.getMachineIdentifier(), plexLibrary.getKey());
                     notificationService.plexLibraryScanSuccessful(plexServer, plexLibrary);
                 } catch (ResponseStatusException e) {
                     notificationService.plexLibraryScanFailed(plexServer, plexLibrary, e.getMessage());
@@ -128,8 +128,8 @@ public class SearchGapsTask implements Runnable {
     private void findRecommendedMovies(PlexProperties plexProperties) {
         LOGGER.info("findRecommendedMovies()");
         for (PlexServer plexServer : plexProperties.getPlexServers()) {
-            for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
-                gapsSearch.run(plexLibrary.getMachineIdentifier(), plexLibrary.getKey());
+            for (PlexLibrary plexLibrary : plexServer.getPlexLibaries()) {
+                gapsSearch.run(plexServer.getMachineIdentifier(), plexLibrary.getKey());
             }
         }
     }
@@ -141,10 +141,8 @@ public class SearchGapsTask implements Runnable {
         plexProperties
                 .getPlexServers()
                 .forEach(plexServer -> plexServer
-                        .getPlexLibraries()
-                        .stream()
-                        .filter(PlexLibrary::getSelected)
-                        .forEach(plexLibrary -> everyMovie.forEach(movie -> previousMovies.put(new Pair<>(movie.getName(), movie.getYear()), movie))));
+                        .getPlexLibaries()
+                        .forEach(directoryType -> everyMovie.forEach(movie -> previousMovies.put(new Pair<>(movie.getName(), movie.getYear()), movie))));
 
         return previousMovies;
     }

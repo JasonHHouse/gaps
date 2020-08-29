@@ -15,7 +15,7 @@ import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.service.MediaContainerService;
 import com.jasonhhouse.gaps.service.MislabeledService;
-import com.jasonhhouse.plex.MediaContainer;
+import com.jasonhhouse.plex.video.MediaContainer;
 import java.util.List;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
@@ -123,9 +123,9 @@ public class MislabeledController {
                 .stream()
                 .filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier))
                 .map(plexServer -> plexServer
-                        .getPlexLibraries()
+                        .getPlexLibaries()
                         .stream()
-                        .filter(plexLibrary -> plexLibrary.getKey().equals(key))
+                        .filter(directoryType -> directoryType.getKey().equals(key))
                         .map(plexLibrary -> "http://" + plexServer.getAddress() + ":" + plexServer.getPort() + "/library/sections/" + plexLibrary.getKey() + "/all/?X-Plex-Token=" + plexServer.getPlexToken())
                         .findFirst().orElse(null))
                 .findFirst()

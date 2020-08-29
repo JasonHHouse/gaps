@@ -11,10 +11,10 @@ package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.plex.PlexLibrary;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.plex.library.PlexLibrary;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -57,7 +57,7 @@ public class LibraryController {
         if (CollectionUtils.isNotEmpty(plexProperties.getPlexServers())) {
             //Read first plex servers movies
             plexServer = plexProperties.getPlexServers().stream().findFirst().orElse(new PlexServer());
-            plexLibrary = plexServer.getPlexLibraries().stream().findFirst().orElse(new PlexLibrary());
+            plexLibrary = plexServer.getPlexLibaries().stream().findFirst().orElse(new PlexLibrary());
             plexServersFound = true;
         } else {
             plexServer = new PlexServer();
@@ -75,7 +75,7 @@ public class LibraryController {
         modelAndView.addObject("plexServers", plexServerMap);
         modelAndView.addObject("plexProperties", plexProperties);
         modelAndView.addObject("plexServer", plexServer);
-        modelAndView.addObject("plexLibrary", plexLibrary);
+        modelAndView.addObject("directoryType", plexLibrary);
         modelAndView.addObject("plexServersFound", plexServersFound);
         return modelAndView;
     }

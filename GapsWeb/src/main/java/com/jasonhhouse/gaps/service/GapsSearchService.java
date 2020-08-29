@@ -19,12 +19,12 @@ import com.jasonhhouse.gaps.GapsSearch;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.MovieFromCollection;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.plex.PlexLibrary;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.SearchCancelledException;
 import com.jasonhhouse.gaps.SearchResults;
 import com.jasonhhouse.gaps.UrlGenerator;
 import com.jasonhhouse.gaps.properties.PlexProperties;
+import com.jasonhhouse.plex.library.PlexLibrary;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -120,11 +120,11 @@ public class GapsSearchService implements GapsSearch {
             return;
         }
 
-        Optional<PlexLibrary> optionalPlexLibrary = plexServer.getPlexLibraries().stream().filter(tempPlexLibrary -> tempPlexLibrary.getKey().equals(key)).findAny();
+        Optional<PlexLibrary> optionalDirectoryType = plexServer.getPlexLibaries().stream().filter(tempDirectoryType -> tempDirectoryType.getKey().equals(key)).findAny();
 
         PlexLibrary plexLibrary;
-        if (optionalPlexLibrary.isPresent()) {
-            plexLibrary = optionalPlexLibrary.get();
+        if (optionalDirectoryType.isPresent()) {
+            plexLibrary = optionalDirectoryType.get();
         } else {
             LOGGER.error("Plex library not found with machineIdentifier {} and key {}", machineIdentifier, key);
             return;

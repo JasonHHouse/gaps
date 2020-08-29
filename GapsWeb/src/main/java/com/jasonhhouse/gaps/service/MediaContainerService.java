@@ -1,7 +1,7 @@
 package com.jasonhhouse.gaps.service;
 
 import com.jasonhhouse.gaps.sql.MediaContainerRepository;
-import com.jasonhhouse.plex.MediaContainer;
+import com.jasonhhouse.plex.video.MediaContainer;
 import java.util.List;
 import org.springframework.stereotype.Service;
 

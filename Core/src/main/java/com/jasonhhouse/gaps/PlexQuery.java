@@ -10,7 +10,7 @@
 
 package com.jasonhhouse.gaps;
 
-import com.jasonhhouse.plex.MediaContainer;
+import com.jasonhhouse.plex.video.MediaContainer;
 import java.util.List;
 import java.util.Map;
 import okhttp3.HttpUrl;

@@ -10,11 +10,11 @@
 
 package com.jasonhhouse.gaps.controller;
 
-import com.jasonhhouse.plex.PlexLibrary;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.service.RssService;
+import com.jasonhhouse.plex.library.PlexLibrary;
 import java.util.Map;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
