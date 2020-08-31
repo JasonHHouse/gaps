@@ -15,7 +15,7 @@ import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.service.MediaContainerService;
 import com.jasonhhouse.gaps.service.MislabeledService;
-import com.jasonhhouse.plex.MediaContainer;
+import com.jasonhhouse.plex.video.MediaContainer;
 import java.util.List;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;

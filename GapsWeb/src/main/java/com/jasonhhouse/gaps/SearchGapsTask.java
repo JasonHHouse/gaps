@@ -14,6 +14,7 @@ import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.service.NotificationService;
 import com.jasonhhouse.gaps.service.TmdbService;
+import com.jasonhhouse.plex.libs.PlexLibrary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,7 +116,8 @@ public class SearchGapsTask implements Runnable {
                 HttpUrl url = gapsUrlGenerator.generatePlexLibraryUrl(plexServer, plexLibrary);
                 try {
                     List<Movie> ownedMovies = plexQuery.findAllPlexMovies(generateOwnedMovieMap(plexProperties), url);
-                    ioService.writeOwnedMoviesToFile(ownedMovies, plexLibrary.getMachineIdentifier(), plexLibrary.getKey());
+                    plexQuery.findAllMovieIds(ownedMovies, plexServer, plexLibrary);
+                    ioService.writeOwnedMoviesToFile(ownedMovies, plexServer.getMachineIdentifier(), plexLibrary.getKey());
                     notificationService.plexLibraryScanSuccessful(plexServer, plexLibrary);
                 } catch (ResponseStatusException e) {
                     notificationService.plexLibraryScanFailed(plexServer, plexLibrary, e.getMessage());
@@ -128,7 +130,7 @@ public class SearchGapsTask implements Runnable {
         LOGGER.info("findRecommendedMovies()");
         for (PlexServer plexServer : plexProperties.getPlexServers()) {
             for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
-                gapsSearch.run(plexLibrary.getMachineIdentifier(), plexLibrary.getKey());
+                gapsSearch.run(plexServer.getMachineIdentifier(), plexLibrary.getKey());
             }
         }
     }
@@ -141,8 +143,6 @@ public class SearchGapsTask implements Runnable {
                 .getPlexServers()
                 .forEach(plexServer -> plexServer
                         .getPlexLibraries()
-                        .stream()
-                        .filter(PlexLibrary::getSelected)
                         .forEach(plexLibrary -> everyMovie.forEach(movie -> previousMovies.put(new Pair<>(movie.getName(), movie.getYear()), movie))));
 
         return previousMovies;

@@ -13,20 +13,21 @@ package com.jasonhhouse.gaps.service;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Pair;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.PlexLibrary;
 import com.jasonhhouse.gaps.PlexQuery;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.UrlGenerator;
-import com.jasonhhouse.plex.MediaContainer;
+import com.jasonhhouse.gaps.properties.PlexProperties;
+import com.jasonhhouse.plex.libs.MediaContainer;
+import com.jasonhhouse.plex.libs.PlexLibrary;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -91,64 +92,36 @@ public class PlexQueryImpl implements PlexQuery {
                 .writeTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
                 .build();
 
-        List<PlexLibrary> plexLibraries = new ArrayList<>();
-
         try {
             Request request = new Request.Builder()
                     .url(url)
                     .build();
 
             try (Response response = client.newCall(request).execute()) {
-                NodeList nodeList = parseXml(response, url, "/MediaContainer/Directory");
+                String body = response.body() != null ? response.body().string() : null;
 
-                if (nodeList.getLength() == 0) {
-                    String reason = "No libraries found in url: " + url;
-                    LOGGER.warn(reason);
+                if (StringUtils.isBlank(body)) {
+                    String reason = "Body returned empty from Plex";
+                    LOGGER.error(reason);
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason);
                 }
 
-                for (int i = 0; i < nodeList.getLength(); i++) {
-                    Node node = nodeList.item(i);
+                InputStream inputStream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
+                JAXBContext jaxbContext = JAXBContext.newInstance(MediaContainer.class);
+                Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+                MediaContainer mediaContainer = (MediaContainer) jaxbUnmarshaller.unmarshal(inputStream);
 
-                    NamedNodeMap map = node.getAttributes();
-                    Node namedItem = map.getNamedItem("type");
-                    if (namedItem == null) {
-                        String reason = "Error finding 'type' inside /MediaContainer/Directory";
-                        LOGGER.error(reason);
-                        throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason);
-                    }
+                //Remove everything except movie folders
+                List<PlexLibrary> plexLibraries = mediaContainer.getPlexLibraries().stream().filter(plexLibrary -> plexLibrary.getType().equalsIgnoreCase("movie")).collect(Collectors.toList());
 
-                    String type = namedItem.getNodeValue();
-
-                    if (type.equals("movie")) {
-                        NamedNodeMap attributes = node.getAttributes();
-                        Node titleNode = attributes.getNamedItem("title");
-                        Node keyNode = attributes.getNamedItem("key");
-
-                        if (titleNode == null) {
-                            String reason = "Error finding 'title' inside /MediaContainer/Directory";
-                            LOGGER.error(reason);
-                            throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason);
-                        }
-
-                        if (keyNode == null) {
-                            String reason = "Error finding 'key' inside /MediaContainer/Directory";
-                            LOGGER.error(reason);
-                            throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason);
-                        }
-
-                        String title = titleNode.getNodeValue().replace(":", "");
-                        Integer key = Integer.valueOf(keyNode.getNodeValue().trim());
-
-                        PlexLibrary plexLibrary = new PlexLibrary(key, title, plexServer.getMachineIdentifier(), false);
-                        plexLibraries.add(plexLibrary);
-                    }
-                }
-
+                LOGGER.info("{} Plex libraries found", plexLibraries.size());
+                plexServer.getPlexLibraries().addAll(plexLibraries);
+                return Payload.PLEX_LIBRARIES_FOUND.setExtras("size():" + plexLibraries.size());
             } catch (IOException e) {
                 String reason = String.format("Error connecting to Plex to get library list: %s", url);
                 LOGGER.error(reason, e);
                 return Payload.PLEX_CONNECTION_FAILED.setExtras("url:" + url);
-            } catch (ParserConfigurationException | XPathExpressionException | SAXException e) {
+            } catch (JAXBException e) {
                 String reason = "Error parsing XML from Plex: " + url;
                 LOGGER.error(reason, e);
                 return Payload.PARSING_PLEX_FAILED.setExtras("url:" + url);
@@ -159,9 +132,6 @@ public class PlexQueryImpl implements PlexQuery {
             return Payload.PLEX_URL_ERROR.setExtras("url:" + url);
         }
 
-        LOGGER.info("{} Plex libraries found", plexLibraries.size());
-        plexServer.getPlexLibraries().addAll(plexLibraries);
-        return Payload.PLEX_LIBRARIES_FOUND.setExtras("size():" + plexLibraries.size());
     }
 
     @Override
@@ -240,7 +210,7 @@ public class PlexQueryImpl implements PlexQuery {
     }
 
     @Override
-    public @NotNull MediaContainer findAllPlexVideos(@NotNull String url) {
+    public @NotNull com.jasonhhouse.plex.video.MediaContainer findAllPlexVideos(@NotNull String url) {
         LOGGER.info("findAllPlexVideos()");
 
         OkHttpClient client = new OkHttpClient.Builder()
@@ -251,10 +221,10 @@ public class PlexQueryImpl implements PlexQuery {
 
         if (StringUtils.isEmpty(url)) {
             LOGGER.info("No URL added to findAllPlexVideos().");
-            return new MediaContainer();
+            return new com.jasonhhouse.plex.video.MediaContainer();
         }
 
-        MediaContainer mediaContainer;
+        com.jasonhhouse.plex.video.MediaContainer mediaContainer;
         try {
             HttpUrl httpUrl = urlGenerator.generatePlexUrl(url);
 
@@ -272,9 +242,9 @@ public class PlexQueryImpl implements PlexQuery {
                 }
 
                 InputStream inputStream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
-                JAXBContext jaxbContext = JAXBContext.newInstance(MediaContainer.class);
+                JAXBContext jaxbContext = JAXBContext.newInstance(com.jasonhhouse.plex.video.MediaContainer.class);
                 Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-                mediaContainer = (MediaContainer) jaxbUnmarshaller.unmarshal(inputStream);
+                mediaContainer = (com.jasonhhouse.plex.video.MediaContainer) jaxbUnmarshaller.unmarshal(inputStream);
 
             } catch (IOException e) {
                 String reason = String.format("Error connecting to Plex to get Movie list: %s", url);
@@ -295,7 +265,115 @@ public class PlexQueryImpl implements PlexQuery {
     }
 
     @Override
-    public List<Movie> findAllPlexMovies(Map<Pair<String, Integer>, Movie> previousMovies, @NotNull String url) {
+    public void findAllMovieIds(@NotNull List<Movie> movies, @NotNull PlexServer plexServer, @NotNull PlexLibrary plexLibrary) {
+        LOGGER.info("findAllMovieIds( {}, {} )", plexServer, plexLibrary);
+
+        if(plexLibrary.getScanner().equals("Plex Movie Scanner")) {
+            LOGGER.info("PlexLibrary {} uses old scanner", plexLibrary.getTitle());
+            return;
+        }
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(180, TimeUnit.SECONDS)
+                .writeTimeout(180, TimeUnit.SECONDS)
+                .readTimeout(180, TimeUnit.SECONDS)
+                .build();
+
+        for (Movie movie : movies) {
+            if (movie.getRatingKey() == -1) {
+                LOGGER.info("No key found for the movie {}", movie.getName());
+                continue;
+            }
+
+            HttpUrl httpUrl = urlGenerator.generatePlexMetadataUrl(plexServer, plexLibrary, movie.getRatingKey());
+
+            Request request = new Request.Builder()
+                    .url(httpUrl)
+                    .build();
+
+            try (Response response = client.newCall(request).execute()) {
+                String body = response.body() != null ? response.body().string() : null;
+
+                if (StringUtils.isBlank(body)) {
+                    LOGGER.error("Body returned empty from Plex for the movie {}", movie.getName());
+                    continue;
+                }
+
+                InputStream fileIS = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
+                DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder builder = builderFactory.newDocumentBuilder();
+                Document xmlDocument = builder.parse(fileIS);
+                XPath xPath = XPathFactory.newInstance().newXPath();
+                String expression = "/MediaContainer/Video/Guid";
+                NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
+
+                if (nodeList.getLength() == 0) {
+                    LOGGER.warn("No guids found in url: {}", httpUrl);
+                    continue;
+                }
+
+                for (int i = 0; i < nodeList.getLength(); i++) {
+                    Node node = nodeList.item(i);
+
+                    Node nodeTitle = node.getAttributes().getNamedItem("id");
+
+                    if (nodeTitle == null) {
+                        LOGGER.error("Missing id from Guid element in Plex");
+                        continue;
+                    }
+
+                    //Files can't have : so need to remove to find matches correctly
+                    String urlId = nodeTitle.getNodeValue();
+                    String id = urlId.replaceAll("[A-Za-z]+://", "");
+                    if (urlId.contains("imdb")) {
+                        movie.setImdbId(id);
+                    } else if (urlId.contains("tmdb")) {
+                        movie.setTvdbId(Integer.parseInt(id));
+                    } else {
+                        LOGGER.warn("Can't find ID to match {}", urlId);
+                    }
+                }
+
+            } catch (IOException e) {
+                String reason = String.format("Error connecting to Plex to get Movie list: %s", httpUrl);
+                LOGGER.error(reason, e);
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason, e);
+            } catch (ParserConfigurationException | XPathExpressionException | SAXException e) {
+                String reason = String.format("Error parsing XML from Plex: %s", httpUrl);
+                LOGGER.error(reason, e);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
+            }
+
+        }
+
+    }
+
+    @Override
+    public @NotNull PlexServer getPlexServerFromMachineIdentifier(@NotNull PlexProperties plexProperties, @NotNull String machineIdentifier) throws IllegalArgumentException{
+        LOGGER.info("generatePlexUrl( {} )", machineIdentifier);
+        for(PlexServer plexServer : plexProperties.getPlexServers()) {
+            if(plexServer.getMachineIdentifier().equals(machineIdentifier)) {
+                return plexServer;
+            }
+        }
+
+        throw new IllegalArgumentException(String.format("No PlexServer matching machineIdentifier %s found", machineIdentifier));
+    }
+
+    @Override
+    public @NotNull PlexLibrary getPlexLibraryFromKey(@NotNull PlexServer plexServer,@NotNull Integer key) throws IllegalArgumentException {
+        for(PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
+            if(plexLibrary.getKey().equals(key)) {
+                return plexLibrary;
+            }
+        }
+
+        throw new IllegalArgumentException(String.format("No PlexLibrary matching key %s found", key));
+    }
+
+
+    @Override
+    public @NotNull List<Movie> findAllPlexMovies(@NotNull Map<Pair<String, Integer>, Movie> previousMovies, @NotNull String url) {
         LOGGER.info("findAllPlexMovies()");
 
         List<Movie> ownedMovies = new ArrayList<>();
@@ -327,7 +405,6 @@ public class PlexQueryImpl implements PlexQuery {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason);
                 }
 
-
                 InputStream fileIS = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
                 DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder builder = builderFactory.newDocumentBuilder();
@@ -360,9 +437,17 @@ public class PlexQueryImpl implements PlexQuery {
                     }
                     int year = Integer.parseInt(node.getAttributes().getNamedItem("year").getNodeValue());
 
-                    String guid = "";
+                    Integer tmdbId = -1;
+                    String imdbId = "";
                     if (node.getAttributes().getNamedItem("guid") != null) {
-                        guid = node.getAttributes().getNamedItem("guid").getNodeValue();
+                        String guid = node.getAttributes().getNamedItem("guid").getNodeValue();
+                        if (guid.contains("com.plexapp.agents.themoviedb")) {
+                            guid = guid.replaceAll("[A-Za-z\\.]+://", "");
+                            tmdbId = Integer.valueOf(guid.substring(0, guid.indexOf('?')));
+                        } else if (guid.contains("com.plexapp.agents.imdb")) {
+                            guid = guid.replaceAll("[A-Za-z\\.]+://", "");
+                            imdbId = guid.substring(0, guid.indexOf('?'));
+                        }
                     }
 
                     String thumbnail = "";
@@ -375,23 +460,17 @@ public class PlexQueryImpl implements PlexQuery {
                         summary = node.getAttributes().getNamedItem("summary").getNodeValue();
                     }
 
-                    Movie movie;
-                    if (guid.contains("com.plexapp.agents.themoviedb")) {
-                        //ToDo
-                        //Find out what it looks like in TMDB
-                        //language = ??
-                        guid = guid.substring(guid.indexOf(ID_IDX_START) + ID_IDX_START.length(), guid.indexOf(ID_IDX_END));
-                        movie = getOrCreateOwnedMovie(previousMovies, title, year, thumbnail, Integer.parseInt(guid), null, null, -1, null, summary);
-                    } else if (guid.contains("com.plexapp.agents.imdb://")) {
-                        String language = guid.substring(guid.indexOf("?lang=") + "?lang=".length());
-                        language = new Locale(language, "").getDisplayLanguage();
-                        guid = guid.substring(guid.indexOf(ID_IDX_START) + ID_IDX_START.length(), guid.indexOf(ID_IDX_END));
-                        movie = getOrCreateOwnedMovie(previousMovies, title, year, thumbnail, -1, guid, language, -1, null, summary);
-                    } else {
-                        LOGGER.warn("Cannot handle guid value of {}", guid);
-                        movie = getOrCreateOwnedMovie(previousMovies, title, year, thumbnail, -1, null, null, -1, null, summary);
+                    String key = "";
+                    if (node.getAttributes().getNamedItem("key") != null) {
+                        key = node.getAttributes().getNamedItem("key").getNodeValue();
                     }
 
+                    Integer ratingKey = -1;
+                    if (node.getAttributes().getNamedItem("ratingKey") != null) {
+                        ratingKey = Integer.valueOf(node.getAttributes().getNamedItem("ratingKey").getNodeValue());
+                    }
+
+                    Movie movie = getOrCreateOwnedMovie(previousMovies, title, year, tmdbId, imdbId, thumbnail, summary, ratingKey, key);
                     ownedMovies.add(movie);
                 }
                 LOGGER.info("{} movies found in plex", ownedMovies.size());
@@ -415,7 +494,7 @@ public class PlexQueryImpl implements PlexQuery {
     }
 
     @Override
-    public @NotNull List<Movie> findAllPlexMovies(Map<Pair<String, Integer>, Movie> previousMovies, @NotNull HttpUrl url) {
+    public @NotNull List<Movie> findAllPlexMovies(@NotNull Map<Pair<String, Integer>, Movie> previousMovies, @NotNull HttpUrl url) {
         LOGGER.info("findAllPlexMovies()");
 
         List<Movie> ownedMovies = new ArrayList<>();
@@ -440,7 +519,6 @@ public class PlexQueryImpl implements PlexQuery {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason);
                 }
 
-
                 InputStream fileIS = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
                 DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder builder = builderFactory.newDocumentBuilder();
@@ -473,9 +551,17 @@ public class PlexQueryImpl implements PlexQuery {
                     }
                     int year = Integer.parseInt(node.getAttributes().getNamedItem("year").getNodeValue());
 
-                    String guid = "";
+                    Integer tmdbId = -1;
+                    String imdbId = "";
                     if (node.getAttributes().getNamedItem("guid") != null) {
-                        guid = node.getAttributes().getNamedItem("guid").getNodeValue();
+                        String guid = node.getAttributes().getNamedItem("guid").getNodeValue();
+                        if (guid.contains("com.plexapp.agents.themoviedb")) {
+                            guid = guid.replaceAll("[A-Za-z\\.]+://", "");
+                            tmdbId = Integer.valueOf(guid.substring(0, guid.indexOf('?')));
+                        } else if (guid.contains("com.plexapp.agents.imdb")) {
+                            guid = guid.replaceAll("[A-Za-z\\.]+://", "");
+                            imdbId = guid.substring(0, guid.indexOf('?'));
+                        }
                     }
 
                     String thumbnail = "";
@@ -488,23 +574,17 @@ public class PlexQueryImpl implements PlexQuery {
                         summary = node.getAttributes().getNamedItem("summary").getNodeValue();
                     }
 
-                    Movie movie;
-                    if (guid.contains("com.plexapp.agents.themoviedb")) {
-                        //ToDo
-                        //Find out what it looks like in TMDB
-                        //language = ??
-                        guid = guid.substring(guid.indexOf(ID_IDX_START) + ID_IDX_START.length(), guid.indexOf(ID_IDX_END));
-                        movie = getOrCreateOwnedMovie(previousMovies, title, year, thumbnail, Integer.parseInt(guid), null, null, -1, null, summary);
-                    } else if (guid.contains("com.plexapp.agents.imdb://")) {
-                        String language = guid.substring(guid.indexOf("?lang=") + "?lang=".length());
-                        language = new Locale(language, "").getDisplayLanguage();
-                        guid = guid.substring(guid.indexOf(ID_IDX_START) + ID_IDX_START.length(), guid.indexOf(ID_IDX_END));
-                        movie = getOrCreateOwnedMovie(previousMovies, title, year, thumbnail, -1, guid, language, -1, null, summary);
-                    } else {
-                        LOGGER.warn("Cannot handle guid value of {}", guid);
-                        movie = getOrCreateOwnedMovie(previousMovies, title, year, thumbnail, -1, null, null, -1, null, summary);
+                    String key = "";
+                    if (node.getAttributes().getNamedItem("key") != null) {
+                        key = node.getAttributes().getNamedItem("key").getNodeValue();
                     }
 
+                    Integer ratingKey = -1;
+                    if (node.getAttributes().getNamedItem("ratingKey") != null) {
+                        ratingKey = Integer.valueOf(node.getAttributes().getNamedItem("ratingKey").getNodeValue());
+                    }
+
+                    Movie movie = getOrCreateOwnedMovie(previousMovies, title, year, tmdbId, imdbId, thumbnail, summary, ratingKey, key);
                     ownedMovies.add(movie);
                 }
                 LOGGER.info("{} movies found in plex", ownedMovies.size());
@@ -527,24 +607,34 @@ public class PlexQueryImpl implements PlexQuery {
         return ownedMovies;
     }
 
-    private Movie getOrCreateOwnedMovie(Map<Pair<String, Integer>, Movie> previousMovies, String title, int year, String thumbnail, int tvdbId, String imdbId, String language, int collection, String collectionName, String summary) {
+    private Movie getOrCreateOwnedMovie(Map<Pair<String, Integer>, Movie> previousMovies, @NotNull String title, int year, @NotNull Integer tmdbId, @NotNull String imdbId, @NotNull String thumbnail, @NotNull String summary, @NotNull Integer ratingKey, @NotNull String key) {
         Pair<String, Integer> moviePair = new Pair<>(title, year);
         if (previousMovies.containsKey(moviePair)) {
-            return previousMovies.get(moviePair);
+            Movie previousMovie = previousMovies.get(moviePair);
+            return new Movie.Builder(title, year)
+                    .setPosterUrl(thumbnail)
+                    .setOverview(summary)
+                    .setKey(key)
+                    .setRatingKey(ratingKey)
+                    .setImdbId(previousMovie.getImdbId())
+                    .setCollection(previousMovie.getCollection())
+                    .setLanguage(previousMovie.getLanguage())
+                    .setTvdbId(previousMovie.getTvdbId())
+                    .setCollectionId(previousMovie.getCollectionId())
+                    .build();
         } else {
             return new Movie.Builder(title, year)
                     .setPosterUrl(thumbnail)
-                    .setTvdbId(tvdbId)
-                    .setImdbId(imdbId)
-                    .setLanguage(language)
-                    .setCollectionId(collection)
-                    .setCollection(collectionName)
                     .setOverview(summary)
+                    .setKey(key)
+                    .setRatingKey(ratingKey)
+                    .setTvdbId(tmdbId)
+                    .setImdbId(imdbId)
                     .build();
         }
     }
 
-    private <T> T parseXml(Response response, HttpUrl url, String expression) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
+    private <T> T parseXml(@NotNull Response response, @NotNull HttpUrl url, @NotNull String expression) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
         ResponseBody responseBody = response.body();
         if (responseBody == null) {
             LOGGER.warn("Empty response body");

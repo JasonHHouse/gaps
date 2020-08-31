@@ -10,7 +10,9 @@
 
 package com.jasonhhouse.gaps;
 
-import com.jasonhhouse.plex.MediaContainer;
+import com.jasonhhouse.gaps.properties.PlexProperties;
+import com.jasonhhouse.plex.libs.PlexLibrary;
+import com.jasonhhouse.plex.video.MediaContainer;
 import java.util.List;
 import java.util.Map;
 import okhttp3.HttpUrl;
@@ -37,10 +39,15 @@ public interface PlexQuery {
      * Connect to plex via the URL and parse all the movies from the returned XML creating a HashSet of movies the
      * user has.
      */
-    List<Movie> findAllPlexMovies(Map<Pair<String, Integer>, Movie> previousMovies, @NotNull String url);
+    @NotNull List<Movie> findAllPlexMovies(@NotNull Map<Pair<String, Integer>, Movie> previousMovies, @NotNull String url);
 
-    @NotNull List<Movie> findAllPlexMovies(Map<Pair<String, Integer>, Movie> previousMovies, @NotNull HttpUrl url);
+    @NotNull List<Movie> findAllPlexMovies(@NotNull Map<Pair<String, Integer>, Movie> previousMovies, @NotNull HttpUrl url);
 
     @NotNull MediaContainer findAllPlexVideos(@NotNull String url);
 
+    void findAllMovieIds(@NotNull List<Movie> movies, @NotNull PlexServer plexServer, @NotNull PlexLibrary plexLibrary);
+
+    @NotNull PlexServer getPlexServerFromMachineIdentifier(@NotNull PlexProperties plexProperties,@NotNull String machineIdentifier) throws IllegalArgumentException;
+
+    @NotNull PlexLibrary getPlexLibraryFromKey(@NotNull PlexServer plexServer,@NotNull Integer key) throws IllegalArgumentException;
 }

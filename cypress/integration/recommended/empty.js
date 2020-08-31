@@ -13,7 +13,7 @@ describe('Not Searched Yet Recommended', function () {
             .click();
 
         cy.get('[data-key="1"]')
-            .should('have.text', 'Red - Movies');
+            .should('have.text', 'Red - Movies with new Metadata');
 
     });
 });

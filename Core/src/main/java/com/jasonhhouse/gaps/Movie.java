@@ -58,13 +58,17 @@ public final class Movie implements Comparable<Movie> {
     @JsonProperty("poster_url")
     private final String posterUrl;
     @Nullable
-    private final String imdbId;
+    private String imdbId;
     @Nullable
     private final String language;
     @Nullable
     private final String overview;
     @NotNull
     private final List<MovieFromCollection> moviesInCollection;
+    @NotNull
+    private final Integer ratingKey;
+    @NotNull
+    private final String key;
     @Nullable
     private String collection;
     @NotNull
@@ -73,7 +77,8 @@ public final class Movie implements Comparable<Movie> {
     private Integer tvdbId;
 
     private Movie(@NotNull String name, @NotNull Integer year, @Nullable String posterUrl, @Nullable String collection, @NotNull Integer collectionId, @NotNull Integer tvdbId,
-                  @Nullable String imdbId, @Nullable String language, @Nullable String overview, @NotNull List<MovieFromCollection> moviesInCollection) {
+                  @Nullable String imdbId, @Nullable String language, @Nullable String overview, @NotNull List<MovieFromCollection> moviesInCollection, @NotNull Integer ratingKey,
+                  @NotNull String key) {
         this.name = name;
         this.nameWithoutBadCharacters = name.replaceAll("[<>`~\\[\\]()*&^%$#@!|{}.,?\\-_=+:;]", "");
         this.year = year;
@@ -85,6 +90,8 @@ public final class Movie implements Comparable<Movie> {
         this.language = language;
         this.overview = overview;
         this.moviesInCollection = moviesInCollection;
+        this.ratingKey = ratingKey;
+        this.key = key;
     }
 
     public @NotNull Integer getCollectionId() {
@@ -101,6 +108,10 @@ public final class Movie implements Comparable<Movie> {
 
     public void setTvdbId(int tvdbId) {
         this.tvdbId = tvdbId;
+    }
+
+    public void setImdbId(@Nullable String imdbId) {
+        this.imdbId = imdbId;
     }
 
     @NotNull
@@ -144,6 +155,14 @@ public final class Movie implements Comparable<Movie> {
 
     public @NotNull String getNameWithoutBadCharacters() {
         return nameWithoutBadCharacters;
+    }
+
+    public Integer getRatingKey() {
+        return ratingKey;
+    }
+
+    public String getKey() {
+        return key;
     }
 
     @Override
@@ -190,10 +209,12 @@ public final class Movie implements Comparable<Movie> {
                 ", imdbId='" + imdbId + '\'' +
                 ", language='" + language + '\'' +
                 ", overview='" + overview + '\'' +
+                ", moviesInCollection=" + moviesInCollection +
                 ", collection='" + collection + '\'' +
                 ", collectionId=" + collectionId +
                 ", tvdbId=" + tvdbId +
-                ", moviesInCollection=" + moviesInCollection +
+                ", ratingKey=" + ratingKey +
+                ", key='" + key + '\'' +
                 '}';
     }
 
@@ -203,25 +224,38 @@ public final class Movie implements Comparable<Movie> {
 
     public static class Builder {
 
+        @NotNull
         private final String name;
 
         private final int year;
 
+        @NotNull
         private String posterUrl;
 
+        @NotNull
         private String collection;
 
         private int collectionId;
 
         private int tvdbId;
 
+        @NotNull
         private String imdbId;
 
+        @NotNull
         private String language;
 
+        @NotNull
         private String overview;
 
+        @NotNull
         private List<MovieFromCollection> moviesInCollection;
+
+        @NotNull
+        private Integer ratingKey;
+
+        @NotNull
+        private String key;
 
         public Builder(@NotNull String name, @NotNull Integer year) {
             this.name = name;
@@ -234,49 +268,71 @@ public final class Movie implements Comparable<Movie> {
             this.language = "en";
             this.overview = "";
             this.moviesInCollection = new ArrayList<>();
+            this.ratingKey = -1;
+            this.key = "";
         }
 
         public Movie build() {
-            return new Movie(name, year, posterUrl, collection, collectionId, tvdbId, imdbId, language, overview, moviesInCollection);
+            return new Movie(name, year, posterUrl, collection, collectionId, tvdbId, imdbId, language, overview, moviesInCollection, ratingKey, key);
         }
 
-        public Builder setPosterUrl(String posterUrl) {
+        @NotNull
+        public Builder setPosterUrl(@NotNull String posterUrl) {
             this.posterUrl = posterUrl;
             return this;
         }
 
-        public Builder setCollection(String collection) {
+        @NotNull
+        public Builder setCollection(@NotNull String collection) {
             this.collection = collection;
             return this;
         }
 
+        @NotNull
         public Builder setCollectionId(int collectionId) {
             this.collectionId = collectionId;
             return this;
         }
 
+        @NotNull
         public Builder setTvdbId(int tvdbId) {
             this.tvdbId = tvdbId;
             return this;
         }
 
-        public Builder setImdbId(String imdbId) {
+        @NotNull
+        public Builder setImdbId(@NotNull String imdbId) {
             this.imdbId = imdbId;
             return this;
         }
 
-        public Builder setLanguage(String language) {
+        @NotNull
+        public Builder setLanguage(@NotNull String language) {
             this.language = language;
             return this;
         }
 
-        public Builder setOverview(String overview) {
+        @NotNull
+        public Builder setOverview(@NotNull String overview) {
             this.overview = overview;
             return this;
         }
 
-        public Builder setMoviesInCollection(List<MovieFromCollection> moviesInCollection) {
+        @NotNull
+        public Builder setMoviesInCollection(@NotNull List<MovieFromCollection> moviesInCollection) {
             this.moviesInCollection = moviesInCollection;
+            return this;
+        }
+
+        @NotNull
+        public Builder setRatingKey(@NotNull Integer ratingKey) {
+            this.ratingKey = ratingKey;
+            return this;
+        }
+
+        @NotNull
+        public Builder setKey(@NotNull  String key) {
+            this.key = key;
             return this;
         }
     }

@@ -9,9 +9,10 @@
  */
 package com.jasonhhouse.gaps;
 
+import com.jasonhhouse.plex.libs.PlexLibrary;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.TreeSet;
 
 public final class PlexServer {
 
@@ -23,7 +24,7 @@ public final class PlexServer {
     private Integer port;
 
     public PlexServer() {
-        plexLibraries = new TreeSet<>();
+        plexLibraries = new LinkedHashSet<>();
     }
 
     public PlexServer(String friendlyName, String machineIdentifier, String plexToken, String address, Integer port) {
@@ -32,7 +33,7 @@ public final class PlexServer {
         this.plexToken = plexToken;
         this.address = address;
         this.port = port;
-        plexLibraries = new TreeSet<>();
+        plexLibraries = new LinkedHashSet<>();
     }
 
     public String getFriendlyName() {
