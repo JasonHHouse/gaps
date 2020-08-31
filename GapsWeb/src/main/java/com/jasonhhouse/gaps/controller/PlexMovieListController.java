@@ -13,12 +13,15 @@ package com.jasonhhouse.gaps.controller;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Pair;
 import com.jasonhhouse.gaps.PlexQuery;
+import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.plex.libs.PlexLibrary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +58,9 @@ public class PlexMovieListController {
         Map<Pair<String, Integer>, Movie> previousMovies = generateOwnedMovieMap(plexProperties, everyMovie);
         String url = generatePlexMovieUrl(plexProperties, machineIdentifier, key);
         List<Movie> ownedMovies = plexQuery.findAllPlexMovies(previousMovies, url);
+        PlexServer plexServer = plexQuery.getPlexServerFromMachineIdentifier(plexProperties, machineIdentifier);
+        PlexLibrary plexLibrary = plexQuery.getPlexLibraryFromKey(plexServer, key);
+        plexQuery.findAllMovieIds(ownedMovies, plexServer, plexLibrary);
 
         //Update Owned Movies
         ioService.writeOwnedMoviesToFile(ownedMovies, machineIdentifier, key);

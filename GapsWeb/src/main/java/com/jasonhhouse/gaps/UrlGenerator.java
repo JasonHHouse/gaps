@@ -73,4 +73,5 @@ public interface UrlGenerator {
     @Nullable HttpUrl generatePlexLibraryUrl(@NotNull PlexServer plexServer,@NotNull  PlexLibrary plexLibrary);
 
     @NotNull HttpUrl generatePlexMetadataUrl(@NotNull PlexServer plexServer, @NotNull PlexLibrary plexLibrary,@NotNull  Integer ratingKey);
+
 }

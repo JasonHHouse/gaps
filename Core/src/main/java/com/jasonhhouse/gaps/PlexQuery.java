@@ -10,6 +10,8 @@
 
 package com.jasonhhouse.gaps;
 
+import com.jasonhhouse.gaps.properties.PlexProperties;
+import com.jasonhhouse.plex.libs.PlexLibrary;
 import com.jasonhhouse.plex.video.MediaContainer;
 import java.util.List;
 import java.util.Map;
@@ -43,4 +45,9 @@ public interface PlexQuery {
 
     @NotNull MediaContainer findAllPlexVideos(@NotNull String url);
 
+    void findAllMovieIds(@NotNull List<Movie> movies, @NotNull PlexServer plexServer, @NotNull PlexLibrary plexLibrary);
+
+    @NotNull PlexServer getPlexServerFromMachineIdentifier(@NotNull PlexProperties plexProperties,@NotNull String machineIdentifier) throws IllegalArgumentException;
+
+    @NotNull PlexLibrary getPlexLibraryFromKey(@NotNull PlexServer plexServer,@NotNull Integer key) throws IllegalArgumentException;
 }

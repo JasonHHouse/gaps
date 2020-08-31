@@ -128,4 +128,5 @@ public class GapsUrlGenerator implements UrlGenerator {
                 .addQueryParameter(PLEX_TOKEN, plexServer.getPlexToken())
                 .build();
     }
+
 }
