@@ -10,6 +10,7 @@
 
 package com.jasonhhouse.gaps.controller;
 
+import com.jasonhhouse.gaps.GapsUrlGenerator;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Pair;
 import com.jasonhhouse.gaps.PlexQuery;
@@ -21,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.jetbrains.annotations.NotNull;
+import okhttp3.HttpUrl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,11 +41,13 @@ public class PlexMovieListController {
 
     private final IoService ioService;
     private final PlexQuery plexQuery;
+    private final GapsUrlGenerator gapsUrlGenerator;
 
     @Autowired
-    public PlexMovieListController(IoService ioService, PlexQuery plexQuery) {
+    public PlexMovieListController(IoService ioService, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator) {
         this.ioService = ioService;
         this.plexQuery = plexQuery;
+        this.gapsUrlGenerator = gapsUrlGenerator;
     }
 
     @GetMapping(value = "/movies/{machineIdentifier}/{key}",
@@ -56,10 +59,10 @@ public class PlexMovieListController {
         PlexProperties plexProperties = ioService.readProperties();
         Set<Movie> everyMovie = ioService.readMovieIdsFromFile();
         Map<Pair<String, Integer>, Movie> previousMovies = generateOwnedMovieMap(plexProperties, everyMovie);
-        String url = generatePlexMovieUrl(plexProperties, machineIdentifier, key);
-        List<Movie> ownedMovies = plexQuery.findAllPlexMovies(previousMovies, url);
         PlexServer plexServer = plexQuery.getPlexServerFromMachineIdentifier(plexProperties, machineIdentifier);
         PlexLibrary plexLibrary = plexQuery.getPlexLibraryFromKey(plexServer, key);
+        HttpUrl url = gapsUrlGenerator.generatePlexLibraryUrl(plexServer, plexLibrary);
+        List<Movie> ownedMovies = plexQuery.findAllPlexMovies(previousMovies, url);
         plexQuery.findAllMovieIds(ownedMovies, plexServer, plexLibrary);
 
         //Update Owned Movies
@@ -77,22 +80,6 @@ public class PlexMovieListController {
                         .forEach(plexLibrary -> everyMovie.forEach(movie -> previousMovies.put(new Pair<>(movie.getName(), movie.getYear()), movie))));
 
         return previousMovies;
-    }
-
-    private String generatePlexMovieUrl(PlexProperties plexProperties, String machineIdentifier, Integer key) {
-        LOGGER.info("generatePlexUrl( {}, {} )", machineIdentifier, key);
-        return plexProperties
-                .getPlexServers()
-                .stream()
-                .filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier))
-                .map(plexServer -> plexServer
-                        .getPlexLibraries()
-                        .stream()
-                        .filter(plexLibrary -> plexLibrary.getKey().equals(key))
-                        .map(plexLibrary -> "http://" + plexServer.getAddress() + ":" + plexServer.getPort() + "/library/sections/" + plexLibrary.getKey() + "/all/?X-Plex-Token=" + plexServer.getPlexToken())
-                        .findFirst().orElse(null))
-                .findFirst()
-                .orElse("");
     }
 
 }
