@@ -24,6 +24,15 @@ public class YamlConfig {
     private String version;
     private Boolean loginEnabled;
     private Boolean sslEnabled;
+    private String storageFolder;
+
+    public String getStorageFolder() {
+        return storageFolder;
+    }
+
+    public void setStorageFolder(String storageFolder) {
+        this.storageFolder = storageFolder;
+    }
 
     public String getName() {
         return name;
@@ -73,6 +82,7 @@ public class YamlConfig {
                 ", version='" + version + '\'' +
                 ", loginEnabled=" + loginEnabled +
                 ", sslEnabled=" + sslEnabled +
+                ", storagePath='" + storageFolder + '\'' +
                 '}';
     }
 }

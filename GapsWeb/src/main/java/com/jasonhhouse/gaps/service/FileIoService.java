@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.Rss;
+import com.jasonhhouse.gaps.YamlConfig;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,7 +24,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -49,29 +49,18 @@ public class FileIoService implements IO {
     private static final String OWNED_MOVIES = "ownedMovies.json";
     private static final String RECOMMENDED_MOVIES = "recommendedMovies.json";
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private final String storageFolder;
+    private final YamlConfig yamlConfig;
 
     @Autowired
-    public FileIoService() {
-        //Look for properties file for file locations
-        String os = System.getProperty("os.name");
-        if (os.contains("Windows")) {
-            //Default to the same folder as the jar
-            String decodedPath = "";
-            String path = new File(new File(new File(FileIoService.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParent()).getParent()).getParent();
-            decodedPath = URLDecoder.decode(path, StandardCharsets.UTF_8);
-            decodedPath = decodedPath.startsWith("file:\\") ? decodedPath.substring("file:\\".length()) : decodedPath;
-            storageFolder = decodedPath + "\\";
-        } else {
-            storageFolder = "/usr/data/";
-        }
+    public FileIoService(YamlConfig yamlConfig) {
+        this.yamlConfig = yamlConfig;
     }
 
     @Override
     public @NotNull List<Movie> readRecommendedMovies(@NotNull String machineIdentifier, @NotNull Integer key) {
         LOGGER.info("readRecommendedMovies({}, {} )", machineIdentifier, key);
 
-        final File ownedMovieFile = new File(storageFolder + machineIdentifier + File.separator + key + File.separator + RECOMMENDED_MOVIES);
+        final File ownedMovieFile = new File(yamlConfig.getStorageFolder() + machineIdentifier + File.separator + key + File.separator + RECOMMENDED_MOVIES);
 
         if (!ownedMovieFile.exists()) {
             LOGGER.warn("{} does not exist", ownedMovieFile);
@@ -98,13 +87,13 @@ public class FileIoService implements IO {
 
     @Override
     public @NotNull Boolean doesRssFileExist(@NotNull String machineIdentifier, @NotNull Integer key) {
-        return new File(storageFolder + machineIdentifier + File.separator + key + File.separator + RSS_FEED_JSON_FILE).exists();
+        return new File(yamlConfig.getStorageFolder() + machineIdentifier + File.separator + key + File.separator + RSS_FEED_JSON_FILE).exists();
     }
 
     @Override
     public @NotNull String getRssFile(String machineIdentifier, @NotNull Integer key) {
         try {
-            Path path = new File(storageFolder + machineIdentifier + File.separator + key + File.separator + RSS_FEED_JSON_FILE).toPath();
+            Path path = new File(yamlConfig.getStorageFolder() + machineIdentifier + File.separator + key + File.separator + RSS_FEED_JSON_FILE).toPath();
             return Files.readString(path);
         } catch (IOException e) {
             LOGGER.error("Check for RSS file next time", e);
@@ -114,7 +103,7 @@ public class FileIoService implements IO {
 
     @Override
     public void writeRssFile(@NotNull String machineIdentifier, @NotNull Integer key, @NotNull Set<Movie> recommended) {
-        File file = new File(storageFolder + machineIdentifier + File.separator + key + File.separator + RSS_FEED_JSON_FILE);
+        File file = new File(yamlConfig.getStorageFolder() + machineIdentifier + File.separator + key + File.separator + RSS_FEED_JSON_FILE);
 
         if (file.exists()) {
             boolean deleted = file.delete();
@@ -148,9 +137,9 @@ public class FileIoService implements IO {
     }
 
     @Override
-    public void writeRecommendedToFile(@NotNull Set<Movie> recommended,@NotNull String machineIdentifier, @NotNull Integer key) {
+    public void writeRecommendedToFile(@NotNull Set<Movie> recommended, @NotNull String machineIdentifier, @NotNull Integer key) {
         LOGGER.info("writeRecommendedToFile()");
-        final String fileName = storageFolder + machineIdentifier + File.separator + key + File.separator + RECOMMENDED_MOVIES;
+        final String fileName = yamlConfig.getStorageFolder() + machineIdentifier + File.separator + key + File.separator + RECOMMENDED_MOVIES;
 
         makeFolder(machineIdentifier, key);
 
@@ -161,7 +150,7 @@ public class FileIoService implements IO {
     @Override
     public void writeOwnedMoviesToFile(@NotNull List<Movie> ownedMovies, @NotNull String machineIdentifier, @NotNull Integer key) {
         LOGGER.info("writeOwnedMoviesToFile()");
-        final String fileName = storageFolder + machineIdentifier + File.separator + key + File.separator + OWNED_MOVIES;
+        final String fileName = yamlConfig.getStorageFolder() + machineIdentifier + File.separator + key + File.separator + OWNED_MOVIES;
 
         makeFolder(machineIdentifier, key);
 
@@ -170,7 +159,7 @@ public class FileIoService implements IO {
     }
 
     private void makeFolder(@NotNull String machineIdentifier, @NotNull Integer key) {
-        File folder = new File(storageFolder + machineIdentifier + File.separator + key);
+        File folder = new File(yamlConfig.getStorageFolder() + machineIdentifier + File.separator + key);
         if (!folder.exists()) {
             boolean isCreated = folder.mkdirs();
             if (isCreated) {
@@ -184,10 +173,10 @@ public class FileIoService implements IO {
 
     @Override
     @NotNull
-    public List<Movie> readOwnedMovies(@NotNull String machineIdentifier,@NotNull Integer key) {
+    public List<Movie> readOwnedMovies(@NotNull String machineIdentifier, @NotNull Integer key) {
         LOGGER.info("readOwnedMovies( {}, {} )", machineIdentifier, key);
 
-        final File ownedMovieFile = new File(storageFolder + machineIdentifier + File.separator + key + File.separator + OWNED_MOVIES);
+        final File ownedMovieFile = new File(yamlConfig.getStorageFolder() + machineIdentifier + File.separator + key + File.separator + OWNED_MOVIES);
 
         if (!ownedMovieFile.exists()) {
             LOGGER.warn(ownedMovieFile + " does not exist");
@@ -215,13 +204,13 @@ public class FileIoService implements IO {
     @Override
     public void writeMovieIdsToFile(@NotNull Set<Movie> everyMovie) {
         LOGGER.info("writeMovieIdsToFile()");
-        final String fileName = storageFolder + STORAGE;
+        final String fileName = yamlConfig.getStorageFolder() + STORAGE;
         File file = new File(fileName);
         writeMovieIdsToFile(everyMovie, file);
     }
 
     @Override
-    public void writeMovieIdsToFile(@NotNull Set<Movie> everyMovie,@NotNull File file) {
+    public void writeMovieIdsToFile(@NotNull Set<Movie> everyMovie, @NotNull File file) {
         if (file.exists()) {
             boolean deleted = file.delete();
             if (!deleted) {
@@ -255,7 +244,7 @@ public class FileIoService implements IO {
     @NotNull
     public Set<Movie> readMovieIdsFromFile() {
         Set<Movie> everyMovie = Collections.emptySet();
-        final String fileName = storageFolder + STORAGE;
+        final String fileName = yamlConfig.getStorageFolder() + STORAGE;
         File file = new File(fileName);
         if (!file.exists()) {
             LOGGER.warn("Can't find json file '{}'. Most likely first run.", fileName);
@@ -284,7 +273,7 @@ public class FileIoService implements IO {
     public void writeProperties(@NotNull PlexProperties plexProperties) {
         LOGGER.info("writeProperties( {} )", plexProperties);
 
-        final String properties = storageFolder + PROPERTIES;
+        final String properties = yamlConfig.getStorageFolder() + PROPERTIES;
         File propertiesFile = new File(properties);
         if (propertiesFile.exists()) {
             try {
@@ -321,7 +310,7 @@ public class FileIoService implements IO {
     public PlexProperties readProperties() {
         LOGGER.info("readProperties()");
 
-        File file = new File(storageFolder + PROPERTIES);
+        File file = new File(yamlConfig.getStorageFolder() + PROPERTIES);
         if (!file.exists()) {
             LOGGER.warn("Can't find json file '{}'. Most likely first run.", file);
             return new PlexProperties();
@@ -347,7 +336,7 @@ public class FileIoService implements IO {
     @NotNull
     public Payload nuke() {
         LOGGER.info("nuke()");
-        File folder = new File(storageFolder);
+        File folder = new File(yamlConfig.getStorageFolder());
         try {
             nuke(folder);
             return Payload.NUKE_SUCCESSFUL;

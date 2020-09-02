@@ -14,3 +14,4 @@ info:
   app:
     loginEnabled: false
     sslEnabled: false
+    storageFolder: ~
