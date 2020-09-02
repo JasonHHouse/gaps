@@ -10,12 +10,17 @@
 
 package com.jasonhhouse.gaps.properties;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.Schedule;
 import java.util.HashSet;
 import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public final class PlexProperties {
 
     private final Set<PlexServer> plexServers;
