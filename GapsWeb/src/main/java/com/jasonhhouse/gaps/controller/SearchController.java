@@ -9,7 +9,7 @@
  */
 package com.jasonhhouse.gaps.controller;
 
-import com.jasonhhouse.gaps.GapsSearch;
+import com.jasonhhouse.gaps.service.GapsSearch;
 import com.jasonhhouse.gaps.SearchStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
