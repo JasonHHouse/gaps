@@ -14,4 +14,7 @@ info:
   app:
     loginEnabled: false
     sslEnabled: false
-    storageFolder: ~
+    storageFolder: 'C:\Program Files (x86)\Gaps\data'
+logging:
+  file:
+    name: gaps.log

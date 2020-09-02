@@ -273,7 +273,7 @@ public class FileIoService implements IO {
     public void writeProperties(@NotNull PlexProperties plexProperties) {
         LOGGER.info("writeProperties( {} )", plexProperties);
 
-        final String properties = yamlConfig.getStorageFolder() + PROPERTIES;
+        final String properties = yamlConfig.getStorageFolder() + File.separator + PROPERTIES;
         File propertiesFile = new File(properties);
         if (propertiesFile.exists()) {
             try {
@@ -310,7 +310,7 @@ public class FileIoService implements IO {
     public PlexProperties readProperties() {
         LOGGER.info("readProperties()");
 
-        File file = new File(yamlConfig.getStorageFolder() + PROPERTIES);
+        File file = new File(yamlConfig.getStorageFolder() + File.separator + PROPERTIES);
         if (!file.exists()) {
             LOGGER.warn("Can't find json file '{}'. Most likely first run.", file);
             return new PlexProperties();
