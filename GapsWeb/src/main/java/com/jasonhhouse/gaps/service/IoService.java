@@ -40,7 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class IoService {
+public class IoService implements IO {
 
     public static final String RSS_FEED_JSON_FILE = "rssFeed.json";
     public static final String PLEX_CONFIGURATION = "plexConfiguration.json";
@@ -53,7 +53,7 @@ public class IoService {
     private final String storageFolder;
 
     @Autowired
-    public IoService(YamlConfig yamlConfig) {
+    public IoService() {
         //Look for properties file for file locations
         String os = System.getProperty("os.name");
         if (os.contains("Windows")) {
@@ -68,7 +68,8 @@ public class IoService {
         }
     }
 
-    public @NotNull List<Movie> readRecommendedMovies(String machineIdentifier, int key) {
+    @Override
+    public @NotNull List<Movie> readRecommendedMovies(@NotNull String machineIdentifier, @NotNull Integer key) {
         LOGGER.info("readRecommendedMovies({}, {} )", machineIdentifier, key);
 
         final File ownedMovieFile = new File(storageFolder + machineIdentifier + File.separator + key + File.separator + RECOMMENDED_MOVIES);
@@ -96,11 +97,13 @@ public class IoService {
         return Collections.emptyList();
     }
 
-    public boolean doesRssFileExist(String machineIdentifier, int key) {
+    @Override
+    public @NotNull Boolean doesRssFileExist(@NotNull String machineIdentifier, @NotNull Integer key) {
         return new File(storageFolder + machineIdentifier + File.separator + key + File.separator + RSS_FEED_JSON_FILE).exists();
     }
 
-    public @NotNull String getRssFile(String machineIdentifier, int key) {
+    @Override
+    public @NotNull String getRssFile(String machineIdentifier, @NotNull Integer key) {
         try {
             Path path = new File(storageFolder + machineIdentifier + File.separator + key + File.separator + RSS_FEED_JSON_FILE).toPath();
             return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
@@ -110,12 +113,8 @@ public class IoService {
         }
     }
 
-    /**
-     * Write the recommended movie list to the RSS file for endpoint to display.
-     *
-     * @param recommended The recommended movies. (IMDB ID is required.)
-     */
-    public void writeRssFile(String machineIdentifier, int key, Set<Movie> recommended) {
+    @Override
+    public void writeRssFile(@NotNull String machineIdentifier, @NotNull Integer key, @NotNull Set<Movie> recommended) {
         File file = new File(storageFolder + machineIdentifier + File.separator + key + File.separator + RSS_FEED_JSON_FILE);
 
         if (file.exists()) {
@@ -149,10 +148,8 @@ public class IoService {
         }
     }
 
-    /**
-     * Prints out all recommended movies to recommendedMovies.json
-     */
-    public void writeRecommendedToFile(Set<Movie> recommended, String machineIdentifier, Integer key) {
+    @Override
+    public void writeRecommendedToFile(@NotNull Set<Movie> recommended,@NotNull String machineIdentifier, @NotNull Integer key) {
         LOGGER.info("writeRecommendedToFile()");
         final String fileName = storageFolder + machineIdentifier + File.separator + key + File.separator + RECOMMENDED_MOVIES;
 
@@ -162,10 +159,8 @@ public class IoService {
         writeMovieIdsToFile(recommended, file);
     }
 
-    /**
-     * Prints out all recommended movies to recommendedMovies.json
-     */
-    public void writeOwnedMoviesToFile(List<Movie> ownedMovies, String machineIdentifier, int key) {
+    @Override
+    public void writeOwnedMoviesToFile(@NotNull List<Movie> ownedMovies, @NotNull String machineIdentifier, @NotNull Integer key) {
         LOGGER.info("writeOwnedMoviesToFile()");
         final String fileName = storageFolder + machineIdentifier + File.separator + key + File.separator + OWNED_MOVIES;
 
@@ -175,7 +170,7 @@ public class IoService {
         writeMovieIdsToFile(new HashSet<>(ownedMovies), file);
     }
 
-    private void makeFolder(String machineIdentifier, int key) {
+    private void makeFolder(@NotNull String machineIdentifier, @NotNull Integer key) {
         File folder = new File(storageFolder + machineIdentifier + File.separator + key);
         if (!folder.exists()) {
             boolean isCreated = folder.mkdirs();
@@ -188,7 +183,9 @@ public class IoService {
 
     }
 
-    public List<Movie> readOwnedMovies(String machineIdentifier, Integer key) {
+    @Override
+    @NotNull
+    public List<Movie> readOwnedMovies(@NotNull String machineIdentifier,@NotNull Integer key) {
         LOGGER.info("readOwnedMovies( {}, {} )", machineIdentifier, key);
 
         final File ownedMovieFile = new File(storageFolder + machineIdentifier + File.separator + key + File.separator + OWNED_MOVIES);
@@ -216,17 +213,16 @@ public class IoService {
         return Collections.emptyList();
     }
 
-    /**
-     * Prints out all movies to a text file movieIds.json
-     */
-    public void writeMovieIdsToFile(Set<Movie> everyMovie) {
+    @Override
+    public void writeMovieIdsToFile(@NotNull Set<Movie> everyMovie) {
         LOGGER.info("writeMovieIdsToFile()");
         final String fileName = storageFolder + STORAGE;
         File file = new File(fileName);
         writeMovieIdsToFile(everyMovie, file);
     }
 
-    public void writeMovieIdsToFile(Set<Movie> everyMovie, File file) {
+    @Override
+    public void writeMovieIdsToFile(@NotNull Set<Movie> everyMovie,@NotNull File file) {
         if (file.exists()) {
             boolean deleted = file.delete();
             if (!deleted) {
@@ -256,9 +252,8 @@ public class IoService {
         }
     }
 
-    /**
-     * Prints out all recommended files to a text file called gaps_recommended_movies.txt
-     */
+    @Override
+    @NotNull
     public Set<Movie> readMovieIdsFromFile() {
         Set<Movie> everyMovie = Collections.emptySet();
         final String fileName = storageFolder + STORAGE;
@@ -286,6 +281,7 @@ public class IoService {
         return everyMovie;
     }
 
+    @Override
     public void writeProperties(@NotNull PlexProperties plexProperties) {
         LOGGER.info("writeProperties( {} )", plexProperties);
 
@@ -321,6 +317,7 @@ public class IoService {
         }
     }
 
+    @Override
     @NotNull
     public PlexProperties readProperties() {
         LOGGER.info("readProperties()");
@@ -347,6 +344,8 @@ public class IoService {
         }
     }
 
+    @Override
+    @NotNull
     public Payload nuke() {
         LOGGER.info("nuke()");
         File folder = new File(storageFolder);

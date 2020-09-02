@@ -9,7 +9,7 @@
  *
  */
 
-package com.jasonhhouse.gaps;
+package com.jasonhhouse.gaps.service;
 
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Pair;

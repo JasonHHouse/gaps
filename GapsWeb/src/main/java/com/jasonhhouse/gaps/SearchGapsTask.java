@@ -11,8 +11,10 @@
 package com.jasonhhouse.gaps;
 
 import com.jasonhhouse.gaps.properties.PlexProperties;
+import com.jasonhhouse.gaps.service.GapsSearch;
 import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.service.NotificationService;
+import com.jasonhhouse.gaps.service.PlexQuery;
 import com.jasonhhouse.gaps.service.TmdbService;
 import com.jasonhhouse.plex.libs.PlexLibrary;
 import java.util.HashMap;

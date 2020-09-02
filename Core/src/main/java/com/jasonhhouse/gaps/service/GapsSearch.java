@@ -9,7 +9,7 @@
  *
  */
 
-package com.jasonhhouse.gaps;
+package com.jasonhhouse.gaps.service;
 
 /**
  * Handles the process of searching, movies, counts, and canceling

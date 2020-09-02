@@ -10,7 +10,7 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.Mislabeled;
-import com.jasonhhouse.gaps.PlexQuery;
+import com.jasonhhouse.gaps.service.PlexQuery;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.IoService;
 import com.jasonhhouse.gaps.service.MediaContainerService;
