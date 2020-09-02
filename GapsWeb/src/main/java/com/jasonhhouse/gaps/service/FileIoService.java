@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.Rss;
-import com.jasonhhouse.gaps.YamlConfig;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import java.io.BufferedReader;
 import java.io.File;
@@ -40,12 +39,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class IoService implements IO {
+public class FileIoService implements IO {
 
     public static final String RSS_FEED_JSON_FILE = "rssFeed.json";
     public static final String PLEX_CONFIGURATION = "plexConfiguration.json";
     public static final String PROPERTIES = "gaps.properties";
-    private static final Logger LOGGER = LoggerFactory.getLogger(IoService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileIoService.class);
     private static final String STORAGE = "movieIds.json";
     private static final String OWNED_MOVIES = "ownedMovies.json";
     private static final String RECOMMENDED_MOVIES = "recommendedMovies.json";
@@ -53,13 +52,13 @@ public class IoService implements IO {
     private final String storageFolder;
 
     @Autowired
-    public IoService() {
+    public FileIoService() {
         //Look for properties file for file locations
         String os = System.getProperty("os.name");
         if (os.contains("Windows")) {
             //Default to the same folder as the jar
             String decodedPath = "";
-            String path = new File(new File(new File(IoService.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParent()).getParent()).getParent();
+            String path = new File(new File(new File(FileIoService.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParent()).getParent()).getParent();
             decodedPath = URLDecoder.decode(path, StandardCharsets.UTF_8);
             decodedPath = decodedPath.startsWith("file:\\") ? decodedPath.substring("file:\\".length()) : decodedPath;
             storageFolder = decodedPath + "\\";
@@ -106,7 +105,7 @@ public class IoService implements IO {
     public @NotNull String getRssFile(String machineIdentifier, @NotNull Integer key) {
         try {
             Path path = new File(storageFolder + machineIdentifier + File.separator + key + File.separator + RSS_FEED_JSON_FILE).toPath();
-            return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
+            return Files.readString(path);
         } catch (IOException e) {
             LOGGER.error("Check for RSS file next time", e);
             return "";

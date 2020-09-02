@@ -18,7 +18,7 @@ import com.jasonhhouse.gaps.properties.PushBulletProperties;
 import com.jasonhhouse.gaps.properties.PushOverProperties;
 import com.jasonhhouse.gaps.properties.SlackProperties;
 import com.jasonhhouse.gaps.properties.TelegramProperties;
-import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.gaps.service.FileIoService;
 import com.jasonhhouse.gaps.service.NotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,11 +39,11 @@ public class NotificationController {
     private static final Logger LOGGER = LoggerFactory.getLogger(NotificationController.class);
 
     private final NotificationService notificationService;
-    private final IoService ioService;
+    private final FileIoService fileIoService;
 
-    public NotificationController(NotificationService notificationService, IoService ioService) {
+    public NotificationController(NotificationService notificationService, FileIoService fileIoService) {
         this.notificationService = notificationService;
-        this.ioService = ioService;
+        this.fileIoService = fileIoService;
     }
 
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,
@@ -54,9 +54,9 @@ public class NotificationController {
         LOGGER.info("putEmail( {} )", emailProperties);
 
         try {
-            PlexProperties plexProperties = ioService.readProperties();
+            PlexProperties plexProperties = fileIoService.readProperties();
             plexProperties.setEmailProperties(emailProperties);
-            ioService.writeProperties(plexProperties);
+            fileIoService.writeProperties(plexProperties);
             LOGGER.info("Email Properties Updated Successfully");
             return ResponseEntity.ok().body(Payload.EMAIL_NOTIFICATION_UPDATE_SUCCEEDED);
         } catch (Exception e) {
@@ -72,7 +72,7 @@ public class NotificationController {
         LOGGER.info("getEmail()");
 
         try {
-            return ResponseEntity.ok().body(Payload.EMAIL_NOTIFICATION_FOUND.setExtras(ioService.readProperties().getEmailProperties()));
+            return ResponseEntity.ok().body(Payload.EMAIL_NOTIFICATION_FOUND.setExtras(fileIoService.readProperties().getEmailProperties()));
         } catch (Exception e) {
             LOGGER.error(Payload.EMAIL_NOTIFICATION_NOT_FOUND.getReason(), e);
             return ResponseEntity.ok().body(Payload.EMAIL_NOTIFICATION_NOT_FOUND.setExtras(e.getMessage()));
@@ -87,9 +87,9 @@ public class NotificationController {
         LOGGER.info("putGotify( {} )", gotifyProperties);
 
         try {
-            PlexProperties plexProperties = ioService.readProperties();
+            PlexProperties plexProperties = fileIoService.readProperties();
             plexProperties.setGotifyProperties(gotifyProperties);
-            ioService.writeProperties(plexProperties);
+            fileIoService.writeProperties(plexProperties);
             LOGGER.info("Gotify Properties Updated Successfully");
             return ResponseEntity.ok().body(Payload.GOTIFY_NOTIFICATION_UPDATE_SUCCEEDED);
         } catch (Exception e) {
@@ -105,7 +105,7 @@ public class NotificationController {
         LOGGER.info("getGotify()");
 
         try {
-            return ResponseEntity.ok().body(Payload.GOTIFY_NOTIFICATION_FOUND.setExtras(ioService.readProperties().getGotifyProperties()));
+            return ResponseEntity.ok().body(Payload.GOTIFY_NOTIFICATION_FOUND.setExtras(fileIoService.readProperties().getGotifyProperties()));
         } catch (Exception e) {
             LOGGER.error(Payload.GOTIFY_NOTIFICATION_NOT_FOUND.getReason(), e);
             return ResponseEntity.ok().body(Payload.GOTIFY_NOTIFICATION_NOT_FOUND.setExtras(e.getMessage()));
@@ -120,9 +120,9 @@ public class NotificationController {
         LOGGER.info("putPushBullet( {} )", pushBulletProperties);
 
         try {
-            PlexProperties plexProperties = ioService.readProperties();
+            PlexProperties plexProperties = fileIoService.readProperties();
             plexProperties.setPushBulletProperties(pushBulletProperties);
-            ioService.writeProperties(plexProperties);
+            fileIoService.writeProperties(plexProperties);
             LOGGER.info("PushBullet Properties Updated Successfully");
             return ResponseEntity.ok().body(Payload.PUSH_BULLET_NOTIFICATION_UPDATE_SUCCEEDED);
         } catch (Exception e) {
@@ -138,7 +138,7 @@ public class NotificationController {
         LOGGER.info("getPushBullet()");
 
         try {
-            return ResponseEntity.ok().body(Payload.PUSH_BULLET_NOTIFICATION_FOUND.setExtras(ioService.readProperties().getPushBulletProperties()));
+            return ResponseEntity.ok().body(Payload.PUSH_BULLET_NOTIFICATION_FOUND.setExtras(fileIoService.readProperties().getPushBulletProperties()));
         } catch (Exception e) {
             LOGGER.error(Payload.PUSH_BULLET_NOTIFICATION_NOT_FOUND.getReason(), e);
             return ResponseEntity.ok().body(Payload.PUSH_BULLET_NOTIFICATION_NOT_FOUND.setExtras(e.getMessage()));
@@ -153,9 +153,9 @@ public class NotificationController {
         LOGGER.info("putSlack( {} )", slackProperties);
 
         try {
-            PlexProperties plexProperties = ioService.readProperties();
+            PlexProperties plexProperties = fileIoService.readProperties();
             plexProperties.setSlackProperties(slackProperties);
-            ioService.writeProperties(plexProperties);
+            fileIoService.writeProperties(plexProperties);
             LOGGER.info("Slack Properties Updated Successfully");
             return ResponseEntity.ok().body(Payload.SLACK_NOTIFICATION_UPDATE_SUCCEEDED);
         } catch (Exception e) {
@@ -171,7 +171,7 @@ public class NotificationController {
         LOGGER.info("getSlack()");
 
         try {
-            return ResponseEntity.ok().body(Payload.SLACK_NOTIFICATION_FOUND.setExtras(ioService.readProperties().getSlackProperties()));
+            return ResponseEntity.ok().body(Payload.SLACK_NOTIFICATION_FOUND.setExtras(fileIoService.readProperties().getSlackProperties()));
         } catch (Exception e) {
             LOGGER.error(Payload.SLACK_NOTIFICATION_NOT_FOUND.getReason(), e);
             return ResponseEntity.ok().body(Payload.SLACK_NOTIFICATION_NOT_FOUND.setExtras(e.getMessage()));
@@ -186,9 +186,9 @@ public class NotificationController {
         LOGGER.info("putTelegram( {} )", telegramProperties);
 
         try {
-            PlexProperties plexProperties = ioService.readProperties();
+            PlexProperties plexProperties = fileIoService.readProperties();
             plexProperties.setTelegramProperties(telegramProperties);
-            ioService.writeProperties(plexProperties);
+            fileIoService.writeProperties(plexProperties);
             LOGGER.info("Telegram Properties Updated Successfully");
             return ResponseEntity.ok().body(Payload.TELEGRAM_NOTIFICATION_UPDATE_SUCCEEDED);
         } catch (Exception e) {
@@ -204,7 +204,7 @@ public class NotificationController {
         LOGGER.info("getTelegram()");
 
         try {
-            return ResponseEntity.ok().body(Payload.TELEGRAM_NOTIFICATION_FOUND.setExtras(ioService.readProperties().getTelegramProperties()));
+            return ResponseEntity.ok().body(Payload.TELEGRAM_NOTIFICATION_FOUND.setExtras(fileIoService.readProperties().getTelegramProperties()));
         } catch (Exception e) {
             LOGGER.error(Payload.TELEGRAM_NOTIFICATION_NOT_FOUND.getReason(), e);
             return ResponseEntity.ok().body(Payload.TELEGRAM_NOTIFICATION_NOT_FOUND.setExtras(e.getMessage()));
@@ -219,9 +219,9 @@ public class NotificationController {
         LOGGER.info("putPushOver( {} )", pushOverProperties);
 
         try {
-            PlexProperties plexProperties = ioService.readProperties();
+            PlexProperties plexProperties = fileIoService.readProperties();
             plexProperties.setPushOverProperties(pushOverProperties);
-            ioService.writeProperties(plexProperties);
+            fileIoService.writeProperties(plexProperties);
             LOGGER.info("Telegram Properties Updated Successfully");
             return ResponseEntity.ok().body(Payload.PUSH_OVER_NOTIFICATION_UPDATE_SUCCEEDED);
         } catch (Exception e) {
@@ -237,7 +237,7 @@ public class NotificationController {
         LOGGER.info("getPushOver()");
 
         try {
-            return ResponseEntity.ok().body(Payload.PUSH_OVER_NOTIFICATION_FOUND.setExtras(ioService.readProperties().getPushOverProperties()));
+            return ResponseEntity.ok().body(Payload.PUSH_OVER_NOTIFICATION_FOUND.setExtras(fileIoService.readProperties().getPushOverProperties()));
         } catch (Exception e) {
             LOGGER.error(Payload.PUSH_OVER_NOTIFICATION_NOT_FOUND.getReason(), e);
             return ResponseEntity.ok().body(Payload.PUSH_OVER_NOTIFICATION_NOT_FOUND.setExtras(e.getMessage()));

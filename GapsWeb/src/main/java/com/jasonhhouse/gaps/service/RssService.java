@@ -27,18 +27,18 @@ import org.springframework.stereotype.Service;
 public class RssService {
     private static final Logger LOGGER = LoggerFactory.getLogger(RssService.class);
 
-    private final IoService ioService;
+    private final FileIoService fileIoService;
 
     @Autowired
-    public RssService(IoService ioService) {
-        this.ioService = ioService;
+    public RssService(FileIoService fileIoService) {
+        this.fileIoService = fileIoService;
     }
 
     @NotNull
     public Map<PlexLibrary, PlexServer> foundAnyRssFeeds() {
         Map<PlexLibrary, PlexServer> plexServerMap = new HashMap<>();
 
-        PlexProperties plexProperties = ioService.readProperties();
+        PlexProperties plexProperties = fileIoService.readProperties();
         Set<PlexServer> plexServers = plexProperties.getPlexServers();
         if (CollectionUtils.isEmpty(plexServers)) {
             return Collections.emptyMap();
@@ -50,7 +50,7 @@ public class RssService {
             }
 
             for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
-                if (ioService.doesRssFileExist(plexServer.getMachineIdentifier(), plexLibrary.getKey())) {
+                if (fileIoService.doesRssFileExist(plexServer.getMachineIdentifier(), plexLibrary.getKey())) {
                     plexServerMap.put(plexLibrary, plexServer);
                 }
             }

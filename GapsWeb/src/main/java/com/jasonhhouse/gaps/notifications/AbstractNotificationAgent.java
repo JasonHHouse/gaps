@@ -12,7 +12,7 @@ package com.jasonhhouse.gaps.notifications;
 
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.properties.NotificationProperties;
-import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.gaps.service.FileIoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,11 +22,11 @@ public abstract class AbstractNotificationAgent<T extends NotificationProperties
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractNotificationAgent.class);
 
-    protected final IoService ioService;
+    protected final FileIoService fileIoService;
     protected T t;
 
-    protected AbstractNotificationAgent(IoService ioService) {
-        this.ioService = ioService;
+    protected AbstractNotificationAgent(FileIoService fileIoService) {
+        this.fileIoService = fileIoService;
     }
 
     @Override

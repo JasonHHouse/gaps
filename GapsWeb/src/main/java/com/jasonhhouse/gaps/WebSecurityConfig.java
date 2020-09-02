@@ -11,7 +11,7 @@ package com.jasonhhouse.gaps;
 
 
 import com.jasonhhouse.gaps.properties.PlexProperties;
-import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.gaps.service.FileIoService;
 import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -37,12 +37,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final YamlConfig myConfig;
 
-    private final IoService ioService;
+    private final FileIoService fileIoService;
 
     @Autowired
-    public WebSecurityConfig(YamlConfig myConfig, IoService ioService) {
+    public WebSecurityConfig(YamlConfig myConfig, FileIoService fileIoService) {
         this.myConfig = myConfig;
-        this.ioService = ioService;
+        this.fileIoService = fileIoService;
     }
 
     @Override
@@ -103,7 +103,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         LOGGER.info("userDetailsService()");
         if (Boolean.TRUE.equals(myConfig.getLoginEnabled())) {
 
-            PlexProperties plexProperties = ioService.readProperties();
+            PlexProperties plexProperties = fileIoService.readProperties();
 
             String password;
             if (StringUtils.isEmpty(plexProperties.getPassword())) {
@@ -111,7 +111,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 plexProperties = new PlexProperties();
                 plexProperties.setPassword(password);
                 LOGGER.info("Gaps Password: {}", password);
-                ioService.writeProperties(plexProperties);
+                fileIoService.writeProperties(plexProperties);
             } else {
                 LOGGER.info("Using password from /usr/data/gaps.properties");
                 password = plexProperties.getPassword();

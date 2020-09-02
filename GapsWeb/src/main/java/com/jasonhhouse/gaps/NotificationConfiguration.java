@@ -16,46 +16,46 @@ import com.jasonhhouse.gaps.notifications.PushBulletNotificationAgent;
 import com.jasonhhouse.gaps.notifications.PushOverNotificationAgent;
 import com.jasonhhouse.gaps.notifications.SlackNotificationAgent;
 import com.jasonhhouse.gaps.notifications.TelegramNotificationAgent;
-import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.gaps.service.FileIoService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class NotificationConfiguration {
 
-    private final IoService ioService;
+    private final FileIoService fileIoService;
 
-    public NotificationConfiguration(IoService ioService) {
-        this.ioService = ioService;
+    public NotificationConfiguration(FileIoService fileIoService) {
+        this.fileIoService = fileIoService;
     }
 
     @Bean
     public TelegramNotificationAgent getTelegramElement() {
-        return new TelegramNotificationAgent(ioService);
+        return new TelegramNotificationAgent(fileIoService);
     }
 
     @Bean
     public PushBulletNotificationAgent getPushBulletElement() {
-        return new PushBulletNotificationAgent(ioService);
+        return new PushBulletNotificationAgent(fileIoService);
     }
 
     @Bean
     public SlackNotificationAgent getSlackElement() {
-        return new SlackNotificationAgent(ioService);
+        return new SlackNotificationAgent(fileIoService);
     }
 
     @Bean
     public EmailNotificationAgent getEmailElement() {
-        return new EmailNotificationAgent(ioService);
+        return new EmailNotificationAgent(fileIoService);
     }
 
     @Bean
     public GotifyNotificationAgent getGotifyElement() {
-        return new GotifyNotificationAgent(ioService);
+        return new GotifyNotificationAgent(fileIoService);
     }
 
     @Bean
     public PushOverNotificationAgent getPushOverElement() {
-        return new PushOverNotificationAgent(ioService);
+        return new PushOverNotificationAgent(fileIoService);
     }
 }

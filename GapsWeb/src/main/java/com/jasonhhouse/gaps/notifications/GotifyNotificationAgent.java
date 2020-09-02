@@ -14,7 +14,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.properties.GotifyProperties;
-import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.gaps.service.FileIoService;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import okhttp3.HttpUrl;
@@ -37,8 +37,8 @@ public class GotifyNotificationAgent extends AbstractNotificationAgent<GotifyPro
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private final OkHttpClient client;
 
-    public GotifyNotificationAgent(IoService ioService) {
-        super(ioService);
+    public GotifyNotificationAgent(FileIoService fileIoService) {
+        super(fileIoService);
 
         client = new OkHttpClient.Builder()
                 .connectTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
@@ -104,7 +104,7 @@ public class GotifyNotificationAgent extends AbstractNotificationAgent<GotifyPro
     @Nullable
     @Override
     public GotifyProperties getNotificationProperties() {
-        return ioService.readProperties().getGotifyProperties();
+        return fileIoService.readProperties().getGotifyProperties();
     }
 
     public static final class Gotify {

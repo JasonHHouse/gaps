@@ -12,7 +12,7 @@ package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
-import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.gaps.service.FileIoService;
 import com.jasonhhouse.gaps.service.RssService;
 import com.jasonhhouse.plex.libs.PlexLibrary;
 import java.util.Map;
@@ -32,12 +32,12 @@ public class RSSController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RSSController.class);
 
-    private final IoService ioService;
+    private final FileIoService fileIoService;
     private final RssService rssService;
 
     @Autowired
-    public RSSController(IoService ioService, RssService rssService) {
-        this.ioService = ioService;
+    public RSSController(FileIoService fileIoService, RssService rssService) {
+        this.fileIoService = fileIoService;
         this.rssService = rssService;
     }
 
@@ -47,8 +47,8 @@ public class RSSController {
         LOGGER.info("getRss( {}, {} )", machineIdentifier, libraryKey);
 
         String rss = null;
-        if (ioService.doesRssFileExist(machineIdentifier, libraryKey)) {
-            rss = ioService.getRssFile(machineIdentifier, libraryKey);
+        if (fileIoService.doesRssFileExist(machineIdentifier, libraryKey)) {
+            rss = fileIoService.getRssFile(machineIdentifier, libraryKey);
         }
 
         LOGGER.info("rss:{}", rss);
@@ -66,7 +66,7 @@ public class RSSController {
     public ModelAndView getRssCheck() {
         LOGGER.info("getRssCheck()");
 
-        PlexProperties plexProperties = ioService.readProperties();
+        PlexProperties plexProperties = fileIoService.readProperties();
         ModelAndView modelAndView = new ModelAndView("rssCheck");
         Map<PlexLibrary, PlexServer> map = rssService.foundAnyRssFeeds();
         modelAndView.addObject("plexServers", plexProperties.getPlexServers());

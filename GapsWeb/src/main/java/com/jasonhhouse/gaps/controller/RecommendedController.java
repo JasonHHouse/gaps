@@ -14,7 +14,7 @@ import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
-import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.gaps.service.FileIoService;
 import com.jasonhhouse.plex.libs.PlexLibrary;
 import java.util.List;
 import java.util.Map;
@@ -44,12 +44,12 @@ public class RecommendedController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RecommendedController.class);
 
-    private final IoService ioService;
+    private final FileIoService fileIoService;
     private final GapsSearch gapsSearch;
 
     @Autowired
-    public RecommendedController(IoService ioService, GapsSearch gapsSearch) {
-        this.ioService = ioService;
+    public RecommendedController(FileIoService fileIoService, GapsSearch gapsSearch) {
+        this.fileIoService = fileIoService;
         this.gapsSearch = gapsSearch;
     }
 
@@ -57,7 +57,7 @@ public class RecommendedController {
     public ModelAndView getRecommended() {
         LOGGER.info("getRecommended()");
 
-        PlexProperties plexProperties = ioService.readProperties();
+        PlexProperties plexProperties = fileIoService.readProperties();
         PlexServer plexServer;
         PlexLibrary plexLibrary;
 
@@ -86,14 +86,14 @@ public class RecommendedController {
     public ResponseEntity<Payload> getRecommended(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("getRecommended( {}, {} )", machineIdentifier, key);
 
-        final List<Movie> ownedMovies = ioService.readOwnedMovies(machineIdentifier, key);
+        final List<Movie> ownedMovies = fileIoService.readOwnedMovies(machineIdentifier, key);
         Payload payload;
 
         if (CollectionUtils.isEmpty(ownedMovies)) {
             payload = Payload.PLEX_LIBRARY_MOVIE_NOT_FOUND;
             LOGGER.warn(payload.getReason());
         } else {
-            List<Movie> movies = ioService.readRecommendedMovies(machineIdentifier, key);
+            List<Movie> movies = fileIoService.readRecommendedMovies(machineIdentifier, key);
             if (CollectionUtils.isEmpty(movies)) {
                 payload = Payload.RECOMMENDED_MOVIES_NOT_FOUND;
                 LOGGER.warn(payload.getReason());

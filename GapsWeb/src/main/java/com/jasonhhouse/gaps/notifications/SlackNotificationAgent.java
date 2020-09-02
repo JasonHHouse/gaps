@@ -15,7 +15,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.properties.SlackProperties;
-import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.gaps.service.FileIoService;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import okhttp3.Headers;
@@ -37,8 +37,8 @@ public class SlackNotificationAgent extends AbstractNotificationAgent<SlackPrope
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private final OkHttpClient client;
 
-    public SlackNotificationAgent(IoService ioService) {
-        super(ioService);
+    public SlackNotificationAgent(FileIoService fileIoService) {
+        super(fileIoService);
 
         client = new OkHttpClient.Builder()
                 .connectTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
@@ -108,7 +108,7 @@ public class SlackNotificationAgent extends AbstractNotificationAgent<SlackPrope
     @Nullable
     @Override
     public SlackProperties getNotificationProperties() {
-        return ioService.readProperties().getSlackProperties();
+        return fileIoService.readProperties().getSlackProperties();
     }
 
     private static final class Slack {

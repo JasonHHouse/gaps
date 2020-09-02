@@ -16,7 +16,7 @@ import com.jasonhhouse.gaps.Pair;
 import com.jasonhhouse.gaps.service.PlexQuery;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
-import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.gaps.service.FileIoService;
 import com.jasonhhouse.plex.libs.PlexLibrary;
 import java.util.HashMap;
 import java.util.List;
@@ -39,13 +39,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class PlexMovieListController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PlexMovieListController.class);
 
-    private final IoService ioService;
+    private final FileIoService fileIoService;
     private final PlexQuery plexQuery;
     private final GapsUrlGenerator gapsUrlGenerator;
 
     @Autowired
-    public PlexMovieListController(IoService ioService, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator) {
-        this.ioService = ioService;
+    public PlexMovieListController(FileIoService fileIoService, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator) {
+        this.fileIoService = fileIoService;
         this.plexQuery = plexQuery;
         this.gapsUrlGenerator = gapsUrlGenerator;
     }
@@ -56,8 +56,8 @@ public class PlexMovieListController {
     public ResponseEntity<List<Movie>> getPlexMovies(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("getPlexMovies( {}, {} )", machineIdentifier, key);
 
-        PlexProperties plexProperties = ioService.readProperties();
-        Set<Movie> everyMovie = ioService.readMovieIdsFromFile();
+        PlexProperties plexProperties = fileIoService.readProperties();
+        Set<Movie> everyMovie = fileIoService.readMovieIdsFromFile();
         Map<Pair<String, Integer>, Movie> previousMovies = generateOwnedMovieMap(plexProperties, everyMovie);
         PlexServer plexServer = plexQuery.getPlexServerFromMachineIdentifier(plexProperties, machineIdentifier);
         PlexLibrary plexLibrary = plexQuery.getPlexLibraryFromKey(plexServer, key);
@@ -66,7 +66,7 @@ public class PlexMovieListController {
         plexQuery.findAllMovieIds(ownedMovies, plexServer, plexLibrary);
 
         //Update Owned Movies
-        ioService.writeOwnedMoviesToFile(ownedMovies, machineIdentifier, key);
+        fileIoService.writeOwnedMoviesToFile(ownedMovies, machineIdentifier, key);
         return ResponseEntity.ok().body(ownedMovies);
     }
 

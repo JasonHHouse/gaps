@@ -15,7 +15,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.properties.PushOverProperties;
-import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.gaps.service.FileIoService;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import okhttp3.HttpUrl;
@@ -38,8 +38,8 @@ public final class PushOverNotificationAgent extends AbstractNotificationAgent<P
 
     private final OkHttpClient client;
 
-    public PushOverNotificationAgent(IoService ioService) {
-        super(ioService);
+    public PushOverNotificationAgent(FileIoService fileIoService) {
+        super(fileIoService);
 
         client = new OkHttpClient.Builder()
                 .connectTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
@@ -109,7 +109,7 @@ public final class PushOverNotificationAgent extends AbstractNotificationAgent<P
     @Nullable
     @Override
     public PushOverProperties getNotificationProperties() {
-        return ioService.readProperties().getPushOverProperties();
+        return fileIoService.readProperties().getPushOverProperties();
     }
 
     private static final class PushOver {

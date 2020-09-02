@@ -14,7 +14,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.properties.PushBulletProperties;
-import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.gaps.service.FileIoService;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import okhttp3.Headers;
@@ -38,8 +38,8 @@ public class PushBulletNotificationAgent extends AbstractNotificationAgent<PushB
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private final OkHttpClient client;
 
-    public PushBulletNotificationAgent(IoService ioService) {
-        super(ioService);
+    public PushBulletNotificationAgent(FileIoService fileIoService) {
+        super(fileIoService);
 
         client = new OkHttpClient.Builder()
                 .connectTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
@@ -116,7 +116,7 @@ public class PushBulletNotificationAgent extends AbstractNotificationAgent<PushB
     @Nullable
     @Override
     public PushBulletProperties getNotificationProperties() {
-        return ioService.readProperties().getPushBulletProperties();
+        return fileIoService.readProperties().getPushBulletProperties();
     }
 
     public static final class PushBullet {
