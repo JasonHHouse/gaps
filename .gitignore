@@ -48,3 +48,4 @@ Plex/target/
 ### Ignore everything in Gaps on Windows except startup
 GapsOnWindows/*
 !GapsOnWindows/start.bat
+!GapsOnWindows/gaps.nsi
