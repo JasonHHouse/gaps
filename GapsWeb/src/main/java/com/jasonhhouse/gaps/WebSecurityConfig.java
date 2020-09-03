@@ -11,7 +11,7 @@ package com.jasonhhouse.gaps;
 
 
 import com.jasonhhouse.gaps.properties.PlexProperties;
-import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.gaps.service.FileIoService;
 import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -35,14 +35,15 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSecurityConfig.class);
 
-    private final YamlConfig myConfig;
-
-    private final IoService ioService;
+    private final GapsConfiguration myConfig;
+    private final GapsConfiguration gapsConfiguration;
+    private final FileIoService fileIoService;
 
     @Autowired
-    public WebSecurityConfig(YamlConfig myConfig, IoService ioService) {
+    public WebSecurityConfig(GapsConfiguration myConfig, GapsConfiguration gapsConfiguration, FileIoService fileIoService) {
         this.myConfig = myConfig;
-        this.ioService = ioService;
+        this.gapsConfiguration = gapsConfiguration;
+        this.fileIoService = fileIoService;
     }
 
     @Override
@@ -103,7 +104,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         LOGGER.info("userDetailsService()");
         if (Boolean.TRUE.equals(myConfig.getLoginEnabled())) {
 
-            PlexProperties plexProperties = ioService.readProperties();
+            PlexProperties plexProperties = fileIoService.readProperties();
 
             String password;
             if (StringUtils.isEmpty(plexProperties.getPassword())) {
@@ -111,9 +112,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 plexProperties = new PlexProperties();
                 plexProperties.setPassword(password);
                 LOGGER.info("Gaps Password: {}", password);
-                ioService.writeProperties(plexProperties);
+                fileIoService.writeProperties(plexProperties);
             } else {
-                LOGGER.info("Using password from /usr/data/gaps.properties");
+                LOGGER.info("Using password from {}{}", gapsConfiguration.getStorageFolder(), gapsConfiguration.getProperties().getGapsProperties());
                 password = plexProperties.getPassword();
             }
 

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.Rss;
-import com.jasonhhouse.gaps.YamlConfig;
+import com.jasonhhouse.gaps.GapsConfiguration;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import java.io.BufferedReader;
 import java.io.File;
@@ -24,10 +24,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -40,38 +40,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class IoService {
+public class FileIoService implements IO {
 
-    public static final String RSS_FEED_JSON_FILE = "rssFeed.json";
-    public static final String PLEX_CONFIGURATION = "plexConfiguration.json";
-    public static final String PROPERTIES = "gaps.properties";
-    private static final Logger LOGGER = LoggerFactory.getLogger(IoService.class);
-    private static final String STORAGE = "movieIds.json";
-    private static final String OWNED_MOVIES = "ownedMovies.json";
-    private static final String RECOMMENDED_MOVIES = "recommendedMovies.json";
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileIoService.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private final String storageFolder;
+    private final GapsConfiguration gapsConfiguration;
 
     @Autowired
-    public IoService(YamlConfig yamlConfig) {
-        //Look for properties file for file locations
-        String os = System.getProperty("os.name");
-        if (os.contains("Windows")) {
-            //Default to the same folder as the jar
-            String decodedPath = "";
-            String path = new File(new File(new File(IoService.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParent()).getParent()).getParent();
-            decodedPath = URLDecoder.decode(path, StandardCharsets.UTF_8);
-            decodedPath = decodedPath.startsWith("file:\\") ? decodedPath.substring("file:\\".length()) : decodedPath;
-            storageFolder = decodedPath + "\\";
-        } else {
-            storageFolder = "/usr/data/";
-        }
+    public FileIoService(GapsConfiguration gapsConfiguration) {
+        this.gapsConfiguration = gapsConfiguration;
     }
 
-    public @NotNull List<Movie> readRecommendedMovies(String machineIdentifier, int key) {
+    @Override
+    public @NotNull List<Movie> readRecommendedMovies(@NotNull String machineIdentifier, @NotNull Integer key) {
         LOGGER.info("readRecommendedMovies({}, {} )", machineIdentifier, key);
 
-        final File ownedMovieFile = new File(storageFolder + machineIdentifier + File.separator + key + File.separator + RECOMMENDED_MOVIES);
+        final File ownedMovieFile = Paths.get(gapsConfiguration.getStorageFolder(), machineIdentifier, key.toString(), gapsConfiguration.getProperties().getRecommendedMovies()).toFile();
 
         if (!ownedMovieFile.exists()) {
             LOGGER.warn("{} does not exist", ownedMovieFile);
@@ -96,27 +80,25 @@ public class IoService {
         return Collections.emptyList();
     }
 
-    public boolean doesRssFileExist(String machineIdentifier, int key) {
-        return new File(storageFolder + machineIdentifier + File.separator + key + File.separator + RSS_FEED_JSON_FILE).exists();
+    @Override
+    public @NotNull Boolean doesRssFileExist(@NotNull String machineIdentifier, @NotNull Integer key) {
+        return Paths.get(gapsConfiguration.getStorageFolder(), machineIdentifier, key.toString(), gapsConfiguration.getProperties().getRssFeed()).toFile().exists();
     }
 
-    public @NotNull String getRssFile(String machineIdentifier, int key) {
+    @Override
+    public @NotNull String getRssFile(String machineIdentifier, @NotNull Integer key) {
         try {
-            Path path = new File(storageFolder + machineIdentifier + File.separator + key + File.separator + RSS_FEED_JSON_FILE).toPath();
-            return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
+            Path path = Paths.get(gapsConfiguration.getStorageFolder(), machineIdentifier, key.toString(), gapsConfiguration.getProperties().getRssFeed());
+            return Files.readString(path);
         } catch (IOException e) {
             LOGGER.error("Check for RSS file next time", e);
             return "";
         }
     }
 
-    /**
-     * Write the recommended movie list to the RSS file for endpoint to display.
-     *
-     * @param recommended The recommended movies. (IMDB ID is required.)
-     */
-    public void writeRssFile(String machineIdentifier, int key, Set<Movie> recommended) {
-        File file = new File(storageFolder + machineIdentifier + File.separator + key + File.separator + RSS_FEED_JSON_FILE);
+    @Override
+    public void writeRssFile(@NotNull String machineIdentifier, @NotNull Integer key, @NotNull Set<Movie> recommended) {
+        File file = Paths.get(gapsConfiguration.getStorageFolder(), machineIdentifier, key.toString(), gapsConfiguration.getProperties().getRssFeed()).toFile();
 
         if (file.exists()) {
             boolean deleted = file.delete();
@@ -143,40 +125,30 @@ public class IoService {
             byte[] output = objectMapper.writeValueAsBytes(rssList);
             outputStream.write(output);
         } catch (FileNotFoundException e) {
-            LOGGER.error(String.format("Can't find file %s", RECOMMENDED_MOVIES), e);
+            LOGGER.error(String.format("Can't find file %s", gapsConfiguration.getProperties().getRecommendedMovies()), e);
         } catch (IOException e) {
-            LOGGER.error(String.format("Can't write to file %s", RECOMMENDED_MOVIES), e);
+            LOGGER.error(String.format("Can't write to file %s", gapsConfiguration.getProperties().getRecommendedMovies()), e);
         }
     }
 
-    /**
-     * Prints out all recommended movies to recommendedMovies.json
-     */
-    public void writeRecommendedToFile(Set<Movie> recommended, String machineIdentifier, Integer key) {
+    @Override
+    public void writeRecommendedToFile(@NotNull Set<Movie> recommended, @NotNull String machineIdentifier, @NotNull Integer key) {
         LOGGER.info("writeRecommendedToFile()");
-        final String fileName = storageFolder + machineIdentifier + File.separator + key + File.separator + RECOMMENDED_MOVIES;
-
+        final File file = Paths.get(gapsConfiguration.getStorageFolder(), machineIdentifier, key.toString(), gapsConfiguration.getProperties().getRecommendedMovies()).toFile();
         makeFolder(machineIdentifier, key);
-
-        File file = new File(fileName);
         writeMovieIdsToFile(recommended, file);
     }
 
-    /**
-     * Prints out all recommended movies to recommendedMovies.json
-     */
-    public void writeOwnedMoviesToFile(List<Movie> ownedMovies, String machineIdentifier, int key) {
+    @Override
+    public void writeOwnedMoviesToFile(@NotNull List<Movie> ownedMovies, @NotNull String machineIdentifier, @NotNull Integer key) {
         LOGGER.info("writeOwnedMoviesToFile()");
-        final String fileName = storageFolder + machineIdentifier + File.separator + key + File.separator + OWNED_MOVIES;
-
+        final File file = Paths.get(gapsConfiguration.getStorageFolder(), machineIdentifier, key.toString(), gapsConfiguration.getProperties().getOwnedMovies()).toFile();
         makeFolder(machineIdentifier, key);
-
-        File file = new File(fileName);
         writeMovieIdsToFile(new HashSet<>(ownedMovies), file);
     }
 
-    private void makeFolder(String machineIdentifier, int key) {
-        File folder = new File(storageFolder + machineIdentifier + File.separator + key);
+    private void makeFolder(@NotNull String machineIdentifier, @NotNull Integer key) {
+        File folder = new File(gapsConfiguration.getStorageFolder() + File.separator + machineIdentifier + File.separator + key);
         if (!folder.exists()) {
             boolean isCreated = folder.mkdirs();
             if (isCreated) {
@@ -185,13 +157,14 @@ public class IoService {
                 LOGGER.warn("Folder not created: {}", folder);
             }
         }
-
     }
 
-    public List<Movie> readOwnedMovies(String machineIdentifier, Integer key) {
+    @Override
+    @NotNull
+    public List<Movie> readOwnedMovies(@NotNull String machineIdentifier, @NotNull Integer key) {
         LOGGER.info("readOwnedMovies( {}, {} )", machineIdentifier, key);
 
-        final File ownedMovieFile = new File(storageFolder + machineIdentifier + File.separator + key + File.separator + OWNED_MOVIES);
+        final File ownedMovieFile = Paths.get(gapsConfiguration.getStorageFolder(), machineIdentifier, key.toString(), gapsConfiguration.getProperties().getOwnedMovies()).toFile();
 
         if (!ownedMovieFile.exists()) {
             LOGGER.warn(ownedMovieFile + " does not exist");
@@ -216,17 +189,15 @@ public class IoService {
         return Collections.emptyList();
     }
 
-    /**
-     * Prints out all movies to a text file movieIds.json
-     */
-    public void writeMovieIdsToFile(Set<Movie> everyMovie) {
+    @Override
+    public void writeMovieIdsToFile(@NotNull Set<Movie> everyMovie) {
         LOGGER.info("writeMovieIdsToFile()");
-        final String fileName = storageFolder + STORAGE;
-        File file = new File(fileName);
+        File file = Paths.get(gapsConfiguration.getStorageFolder(), gapsConfiguration.getProperties().getMovieIds()).toFile();
         writeMovieIdsToFile(everyMovie, file);
     }
 
-    public void writeMovieIdsToFile(Set<Movie> everyMovie, File file) {
+    @Override
+    public void writeMovieIdsToFile(@NotNull Set<Movie> everyMovie, @NotNull File file) {
         if (file.exists()) {
             boolean deleted = file.delete();
             if (!deleted) {
@@ -256,15 +227,13 @@ public class IoService {
         }
     }
 
-    /**
-     * Prints out all recommended files to a text file called gaps_recommended_movies.txt
-     */
+    @Override
+    @NotNull
     public Set<Movie> readMovieIdsFromFile() {
         Set<Movie> everyMovie = Collections.emptySet();
-        final String fileName = storageFolder + STORAGE;
-        File file = new File(fileName);
+        final File file = Paths.get(gapsConfiguration.getStorageFolder(), gapsConfiguration.getProperties().getMovieIds()).toFile();
         if (!file.exists()) {
-            LOGGER.warn("Can't find json file '{}'. Most likely first run.", fileName);
+            LOGGER.warn("Can't find json file '{}'. Most likely first run.", file);
             return everyMovie;
         }
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
@@ -278,19 +247,19 @@ public class IoService {
             });
             LOGGER.info("everyMovie.size():{}", everyMovie.size());
         } catch (FileNotFoundException e) {
-            LOGGER.error(String.format("Can't find file %s", fileName), e);
+            LOGGER.error(String.format("Can't find file %s", file), e);
         } catch (IOException e) {
-            LOGGER.error(String.format("Can't write to file %s", fileName), e);
+            LOGGER.error(String.format("Can't write to file %s", file), e);
         }
 
         return everyMovie;
     }
 
+    @Override
     public void writeProperties(@NotNull PlexProperties plexProperties) {
         LOGGER.info("writeProperties( {} )", plexProperties);
 
-        final String properties = storageFolder + PROPERTIES;
-        File propertiesFile = new File(properties);
+        final File propertiesFile = Paths.get(gapsConfiguration.getStorageFolder(), gapsConfiguration.getProperties().getGapsProperties()).toFile();
         if (propertiesFile.exists()) {
             try {
                 Files.delete(propertiesFile.toPath());
@@ -321,11 +290,12 @@ public class IoService {
         }
     }
 
+    @Override
     @NotNull
     public PlexProperties readProperties() {
         LOGGER.info("readProperties()");
 
-        File file = new File(storageFolder + PROPERTIES);
+        final File file = Paths.get(gapsConfiguration.getStorageFolder(), gapsConfiguration.getProperties().getGapsProperties()).toFile();
         if (!file.exists()) {
             LOGGER.warn("Can't find json file '{}'. Most likely first run.", file);
             return new PlexProperties();
@@ -347,9 +317,11 @@ public class IoService {
         }
     }
 
+    @Override
+    @NotNull
     public Payload nuke() {
         LOGGER.info("nuke()");
-        File folder = new File(storageFolder);
+        File folder = new File(gapsConfiguration.getStorageFolder());
         try {
             nuke(folder);
             return Payload.NUKE_SUCCESSFUL;

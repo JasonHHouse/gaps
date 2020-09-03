@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
-import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.gaps.service.FileIoService;
 import com.jasonhhouse.gaps.service.PlexQueryImpl;
 import com.jasonhhouse.gaps.service.SchedulerService;
 import com.jasonhhouse.gaps.service.TmdbService;
@@ -52,14 +52,14 @@ public class ConfigurationController {
     private final TmdbService tmdbService;
     private final SimpMessagingTemplate template;
     private final PlexQueryImpl plexQuery;
-    private final IoService ioService;
+    private final FileIoService fileIoService;
     private final SchedulerService schedulerService;
 
-    public ConfigurationController(TmdbService tmdbService, SimpMessagingTemplate template, PlexQueryImpl plexQuery, IoService ioService, SchedulerService schedulerService) {
+    public ConfigurationController(TmdbService tmdbService, SimpMessagingTemplate template, PlexQueryImpl plexQuery, FileIoService fileIoService, SchedulerService schedulerService) {
         this.tmdbService = tmdbService;
         this.template = template;
         this.plexQuery = plexQuery;
-        this.ioService = ioService;
+        this.fileIoService = fileIoService;
         this.schedulerService = schedulerService;
     }
 
@@ -67,7 +67,7 @@ public class ConfigurationController {
     public ModelAndView getConfiguration() {
         LOGGER.info("getConfiguration()");
 
-        PlexProperties plexProperties = ioService.readProperties();
+        PlexProperties plexProperties = fileIoService.readProperties();
         ModelAndView modelAndView = new ModelAndView("configuration");
         modelAndView.addObject("plexProperties", plexProperties);
         modelAndView.addObject("schedules", schedulerService.getAllSchedules());
@@ -80,7 +80,7 @@ public class ConfigurationController {
     public void postAddPlexServer(@Valid final PlexServer plexServer) {
         LOGGER.info("postAddPlexServer( {} )", plexServer);
 
-        PlexProperties plexProperties = ioService.readProperties();
+        PlexProperties plexProperties = fileIoService.readProperties();
 
         try {
             plexQuery.queryPlexServer(plexServer);
@@ -92,7 +92,7 @@ public class ConfigurationController {
                 if (plexProperties.getPlexServers().size() == initialCount) {
                     template.convertAndSend(CONFIGURATION_PLEX + "/duplicate", Payload.DUPLICATE_PLEX_LIBRARY);
                 } else {
-                    ioService.writeProperties(plexProperties);
+                    fileIoService.writeProperties(plexProperties);
                     template.convertAndSend(CONFIGURATION_PLEX_COMPLETE, payload.setExtras(plexServer));
                 }
             } else {
@@ -127,7 +127,7 @@ public class ConfigurationController {
     public ResponseEntity<String> putTestPlexServerByMachineId(@PathVariable("machineIdentifier") final String machineIdentifier) {
         LOGGER.info("putTestPlexServerByMachineId( {} )", machineIdentifier);
 
-        PlexProperties plexProperties = ioService.readProperties();
+        PlexProperties plexProperties = fileIoService.readProperties();
 
         ObjectNode objectNode = objectMapper.createObjectNode();
         PlexServer returnedPlexServer = plexProperties.getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
@@ -149,7 +149,7 @@ public class ConfigurationController {
     public ResponseEntity<String> deletePlexServer(@PathVariable("machineIdentifier") final String machineIdentifier) {
         LOGGER.info("deletePlexServer( {} )", machineIdentifier);
 
-        PlexProperties plexProperties = ioService.readProperties();
+        PlexProperties plexProperties = fileIoService.readProperties();
 
         ObjectNode objectNode = objectMapper.createObjectNode();
         PlexServer returnedPlexServer = plexProperties.getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
@@ -158,7 +158,7 @@ public class ConfigurationController {
             objectNode.put(SUCCESS, false);
         } else {
             plexProperties.getPlexServers().remove(returnedPlexServer);
-            ioService.writeProperties(plexProperties);
+            fileIoService.writeProperties(plexProperties);
             objectNode.put(SUCCESS, true);
         }
 
@@ -181,9 +181,9 @@ public class ConfigurationController {
     public ResponseEntity<Payload> postSaveTmdbKey(@PathVariable("tmdbKey") final String tmdbKey) {
         LOGGER.info("postSaveTmdbKey( {} )", tmdbKey);
 
-        PlexProperties plexProperties = ioService.readProperties();
+        PlexProperties plexProperties = fileIoService.readProperties();
         plexProperties.setMovieDbApiKey(tmdbKey);
-        ioService.writeProperties(plexProperties);
+        fileIoService.writeProperties(plexProperties);
         Payload payload = Payload.TMDB_KEY_SAVE_SUCCESSFUL.setExtras(TMDB_KEY + tmdbKey);
         return ResponseEntity.ok().body(payload);
     }

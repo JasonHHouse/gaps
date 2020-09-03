@@ -10,9 +10,9 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.Mislabeled;
-import com.jasonhhouse.gaps.PlexQuery;
+import com.jasonhhouse.gaps.service.PlexQuery;
 import com.jasonhhouse.gaps.properties.PlexProperties;
-import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.gaps.service.FileIoService;
 import com.jasonhhouse.gaps.service.MediaContainerService;
 import com.jasonhhouse.gaps.service.MislabeledService;
 import com.jasonhhouse.plex.video.MediaContainer;
@@ -35,14 +35,14 @@ import org.springframework.web.servlet.ModelAndView;
 public class MislabeledController {
     private static final Logger LOGGER = LoggerFactory.getLogger(MislabeledController.class);
 
-    private final IoService ioService;
+    private final FileIoService fileIoService;
     private final PlexQuery plexQuery;
     private final MislabeledService mislabeledService;
     private final MediaContainerService mediaContainerService;
 
     @Autowired
-    public MislabeledController(IoService ioService, PlexQuery plexQuery, MislabeledService mislabeledService, MediaContainerService mediaContainerService) {
-        this.ioService = ioService;
+    public MislabeledController(FileIoService fileIoService, PlexQuery plexQuery, MislabeledService mislabeledService, MediaContainerService mediaContainerService) {
+        this.fileIoService = fileIoService;
         this.plexQuery = plexQuery;
         this.mislabeledService = mislabeledService;
         this.mediaContainerService = mediaContainerService;
@@ -63,7 +63,7 @@ public class MislabeledController {
         StopWatch watch = new StopWatch();
         watch.start();
 
-        PlexProperties plexProperties = ioService.readProperties();
+        PlexProperties plexProperties = fileIoService.readProperties();
 
         String url = generatePlexUrl(plexProperties, machineIdentifier, key);
         MediaContainer mediaContainer = plexQuery.findAllPlexVideos(url);
@@ -105,7 +105,7 @@ public class MislabeledController {
         StopWatch watch = new StopWatch();
         watch.start();
 
-        PlexProperties plexProperties = ioService.readProperties();
+        PlexProperties plexProperties = fileIoService.readProperties();
         String url = generatePlexUrl(plexProperties, machineIdentifier, key);
         MediaContainer mediaContainer = plexQuery.findAllPlexVideos(url);
         List<Mislabeled> mislabeled = mislabeledService.findMatchPercentage(mediaContainer, percentage);

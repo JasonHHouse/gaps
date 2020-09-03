@@ -13,7 +13,7 @@ import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
-import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.gaps.service.FileIoService;
 import com.jasonhhouse.plex.libs.PlexLibrary;
 import java.util.List;
 import java.util.Map;
@@ -39,18 +39,18 @@ public class LibraryController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LibraryController.class);
 
-    private final IoService ioService;
+    private final FileIoService fileIoService;
 
     @Autowired
-    public LibraryController(IoService ioService) {
-        this.ioService = ioService;
+    public LibraryController(FileIoService fileIoService) {
+        this.fileIoService = fileIoService;
     }
 
     @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getLibraries() {
         LOGGER.info("getLibraries()");
 
-        PlexProperties plexProperties = ioService.readProperties();
+        PlexProperties plexProperties = fileIoService.readProperties();
         boolean plexServersFound;
         PlexServer plexServer;
         PlexLibrary plexLibrary;
@@ -86,7 +86,7 @@ public class LibraryController {
     public ResponseEntity<Payload> getLibraries(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("getLibraries( {}, {} )", machineIdentifier, key);
 
-        List<Movie> movies = ioService.readOwnedMovies(machineIdentifier, key);
+        List<Movie> movies = fileIoService.readOwnedMovies(machineIdentifier, key);
         Payload payload;
 
         if (CollectionUtils.isEmpty(movies)) {

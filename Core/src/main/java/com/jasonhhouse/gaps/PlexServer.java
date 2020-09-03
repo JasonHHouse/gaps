@@ -9,11 +9,15 @@
  */
 package com.jasonhhouse.gaps;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.jasonhhouse.plex.libs.PlexLibrary;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public final class PlexServer {
 
     private final Set<PlexLibrary> plexLibraries;

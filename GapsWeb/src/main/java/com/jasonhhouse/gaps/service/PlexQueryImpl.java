@@ -13,7 +13,6 @@ package com.jasonhhouse.gaps.service;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.Pair;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.PlexQuery;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.UrlGenerator;
 import com.jasonhhouse.gaps.properties.PlexProperties;

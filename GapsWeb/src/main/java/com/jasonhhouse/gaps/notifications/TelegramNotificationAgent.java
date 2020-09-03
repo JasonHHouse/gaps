@@ -14,7 +14,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.properties.TelegramProperties;
-import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.gaps.service.FileIoService;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import okhttp3.HttpUrl;
@@ -36,8 +36,8 @@ public class TelegramNotificationAgent extends AbstractNotificationAgent<Telegra
 
     private final OkHttpClient client;
 
-    public TelegramNotificationAgent(IoService ioService) {
-        super(ioService);
+    public TelegramNotificationAgent(FileIoService fileIoService) {
+        super(fileIoService);
 
         client = new OkHttpClient.Builder()
                 .connectTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
@@ -106,7 +106,7 @@ public class TelegramNotificationAgent extends AbstractNotificationAgent<Telegra
 
     @Override
     public TelegramProperties getNotificationProperties() {
-        return ioService.readProperties().getTelegramProperties();
+        return fileIoService.readProperties().getTelegramProperties();
     }
 
     public static final class Telegram {

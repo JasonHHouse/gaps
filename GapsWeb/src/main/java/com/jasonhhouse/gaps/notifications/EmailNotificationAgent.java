@@ -12,7 +12,7 @@ package com.jasonhhouse.gaps.notifications;
 
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.properties.EmailProperties;
-import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.gaps.service.FileIoService;
 import java.util.Properties;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -27,8 +27,8 @@ public class EmailNotificationAgent extends AbstractNotificationAgent<EmailPrope
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailNotificationAgent.class);
 
-    public EmailNotificationAgent(IoService ioService) {
-        super(ioService);
+    public EmailNotificationAgent(FileIoService fileIoService) {
+        super(fileIoService);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class EmailNotificationAgent extends AbstractNotificationAgent<EmailPrope
     @Nullable
     @Override
     public EmailProperties getNotificationProperties() {
-        return ioService.readProperties().getEmailProperties();
+        return fileIoService.readProperties().getEmailProperties();
     }
 
     private JavaMailSenderImpl getJavaMailSender() {

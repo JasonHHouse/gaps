@@ -12,7 +12,7 @@ package com.jasonhhouse.gaps.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.properties.PlexProperties;
-import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.gaps.service.FileIoService;
 import java.io.IOException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -38,11 +38,11 @@ public class GapsController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GapsController.class);
 
-    private final IoService ioService;
+    private final FileIoService fileIoService;
 
     @Autowired
-    public GapsController(IoService ioService) {
-        this.ioService = ioService;
+    public GapsController(FileIoService fileIoService) {
+        this.fileIoService = fileIoService;
     }
 
     @GetMapping(value = "/home",
@@ -50,7 +50,7 @@ public class GapsController {
     public ModelAndView getIndexOnClick() {
         LOGGER.info("getIndexOnClick()");
 
-        PlexProperties plexProperties = ioService.readProperties();
+        PlexProperties plexProperties = fileIoService.readProperties();
 
         ModelAndView modelAndView = new ModelAndView("index");
         modelAndView.addObject("plexProperties", plexProperties);
@@ -61,7 +61,7 @@ public class GapsController {
     public ModelAndView getIndex() {
         LOGGER.info("getIndex()");
 
-        PlexProperties plexProperties = ioService.readProperties();
+        PlexProperties plexProperties = fileIoService.readProperties();
 
         //If configuration is filled in, jump to libraries page
         if (StringUtils.isNotEmpty(plexProperties.getMovieDbApiKey()) && CollectionUtils.isNotEmpty(plexProperties.getPlexServers())) {
@@ -80,7 +80,7 @@ public class GapsController {
     public ResponseEntity<Payload> putNuke() {
         LOGGER.info("putNuke()");
         LOGGER.info("Deleting all local files");
-        Payload payload = ioService.nuke();
+        Payload payload = fileIoService.nuke();
         return ResponseEntity.ok().body(payload);
     }
 

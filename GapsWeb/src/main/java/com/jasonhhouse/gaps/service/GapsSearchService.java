@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
-import com.jasonhhouse.gaps.GapsSearch;
 import com.jasonhhouse.gaps.Movie;
 import com.jasonhhouse.gaps.MovieFromCollection;
 import com.jasonhhouse.gaps.Payload;
@@ -88,18 +87,18 @@ public class GapsSearchService implements GapsSearch {
 
     private final AtomicInteger tempTvdbCounter;
 
-    private final IoService ioService;
+    private final FileIoService fileIoService;
 
     private final TmdbService tmdbService;
 
     private final NotificationService notificationService;
 
     @Autowired
-    public GapsSearchService(@Qualifier("real") UrlGenerator urlGenerator, SimpMessagingTemplate template, IoService ioService, TmdbService tmdbService, NotificationService notificationService) {
+    public GapsSearchService(@Qualifier("real") UrlGenerator urlGenerator, SimpMessagingTemplate template, FileIoService fileIoService, TmdbService tmdbService, NotificationService notificationService) {
         this.template = template;
         this.tmdbService = tmdbService;
         this.urlGenerator = urlGenerator;
-        this.ioService = ioService;
+        this.fileIoService = fileIoService;
         this.notificationService = notificationService;
 
         tempTvdbCounter = new AtomicInteger();
@@ -110,7 +109,7 @@ public class GapsSearchService implements GapsSearch {
     public void run(String machineIdentifier, Integer key) {
         LOGGER.info("run( {}, {} )", machineIdentifier, key);
 
-        PlexProperties plexProperties = ioService.readProperties();
+        PlexProperties plexProperties = fileIoService.readProperties();
         Optional<PlexServer> optionalPlexServer = plexProperties.getPlexServers().stream().filter(tempPlexServer -> tempPlexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst();
         PlexServer plexServer;
         if (optionalPlexServer.isPresent()) {
@@ -145,8 +144,8 @@ public class GapsSearchService implements GapsSearch {
 
         final Set<Movie> recommended = new LinkedHashSet<>();
         final List<Movie> searched = new ArrayList<>();
-        final List<Movie> everyMovie = new ArrayList<>(ioService.readMovieIdsFromFile());
-        final List<Movie> ownedMovies = new ArrayList<>(ioService.readOwnedMovies(machineIdentifier, key));
+        final List<Movie> everyMovie = new ArrayList<>(fileIoService.readMovieIdsFromFile());
+        final List<Movie> ownedMovies = new ArrayList<>(fileIoService.readOwnedMovies(machineIdentifier, key));
         final AtomicInteger searchedMovieCount = new AtomicInteger(0);
 
         if (CollectionUtils.isEmpty(ownedMovies)) {
@@ -182,8 +181,8 @@ public class GapsSearchService implements GapsSearch {
         notificationService.recommendedMoviesSearchFinished(plexServer, plexLibrary);
 
         //Always write to log
-        ioService.writeRecommendedToFile(recommended, machineIdentifier, key);
-        ioService.writeMovieIdsToFile(new TreeSet<>(everyMovie));
+        fileIoService.writeRecommendedToFile(recommended, machineIdentifier, key);
+        fileIoService.writeMovieIdsToFile(new TreeSet<>(everyMovie));
 
         template.convertAndSend(FINISHED_SEARCHING_URL, Payload.SEARCH_SUCCESSFUL);
 
@@ -221,7 +220,7 @@ public class GapsSearchService implements GapsSearch {
         OkHttpClient client = new OkHttpClient();
 
         if (StringUtils.isEmpty(plexProperties.getMovieDbApiKey())) {
-            plexProperties = ioService.readProperties();
+            plexProperties = fileIoService.readProperties();
 
             if (StringUtils.isEmpty(plexProperties.getMovieDbApiKey())) {
                 final String error = "No MovieDb Key found. Need to configure key first.";
@@ -622,7 +621,7 @@ public class GapsSearchService implements GapsSearch {
 
                         if (recommended.add(recommendedMovie)) {
                             // Write current list of recommended movies to file.
-                            ioService.writeRssFile(machineIdentifier, key, new HashSet<>(recommended));
+                            fileIoService.writeRssFile(machineIdentifier, key, new HashSet<>(recommended));
 
                             LOGGER.info("/newMovieFound:{}", recommendedMovie);
 

@@ -11,9 +11,7 @@
 package com.jasonhhouse.gaps.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jasonhhouse.gaps.GapsSearch;
 import com.jasonhhouse.gaps.GapsUrlGenerator;
-import com.jasonhhouse.gaps.PlexQuery;
 import com.jasonhhouse.gaps.Schedule;
 import com.jasonhhouse.gaps.SchedulePayload;
 import com.jasonhhouse.gaps.SearchGapsTask;
@@ -38,31 +36,31 @@ public class SchedulerService {
     private static final Logger LOGGER = LoggerFactory.getLogger(SchedulerService.class);
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private final IoService ioService;
+    private final FileIoService fileIoService;
     private final TaskScheduler scheduler;
     private final SearchGapsTask searchGapsTask;
     private ScheduledFuture<?> scheduledFuture;
 
     @Autowired
-    public SchedulerService(IoService ioService, TmdbService tmdbService, GapsSearch gapsSearch, @Qualifier("Gaps") TaskScheduler scheduler, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator, NotificationService notificationService) {
-        this.ioService = ioService;
+    public SchedulerService(FileIoService fileIoService, TmdbService tmdbService, GapsSearch gapsSearch, @Qualifier("Gaps") TaskScheduler scheduler, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator, NotificationService notificationService) {
+        this.fileIoService = fileIoService;
         this.scheduler = scheduler;
-        this.searchGapsTask = new SearchGapsTask(gapsSearch, tmdbService, ioService, plexQuery, gapsUrlGenerator, notificationService);
+        this.searchGapsTask = new SearchGapsTask(gapsSearch, tmdbService, fileIoService, plexQuery, gapsUrlGenerator, notificationService);
     }
 
     public void setSchedule(SchedulePayload schedulePayload) {
         LOGGER.info("setSchedule( {} )", schedulePayload);
-        PlexProperties plexProperties = ioService.readProperties();
+        PlexProperties plexProperties = fileIoService.readProperties();
         Schedule schedule = Schedule.getSchedule(schedulePayload.getSchedule());
         schedule.setEnabled(schedulePayload.getEnabled());
         plexProperties.setSchedule(schedule);
-        ioService.writeProperties(plexProperties);
+        fileIoService.writeProperties(plexProperties);
         setTaskForScheduler(schedule);
     }
 
     public Schedule getRawSchedule() {
         LOGGER.info("getRawSchedule()");
-        return ioService.readProperties().getSchedule();
+        return fileIoService.readProperties().getSchedule();
     }
 
     public List<Schedule> getAllSchedules() {
@@ -72,7 +70,7 @@ public class SchedulerService {
 
     public String getJsonSchedule() throws IOException {
         LOGGER.info("getJsonSchedule()");
-        return objectMapper.writeValueAsString(ioService.readProperties().getSchedule());
+        return objectMapper.writeValueAsString(fileIoService.readProperties().getSchedule());
     }
 
     private void setTaskForScheduler(Schedule schedule) {

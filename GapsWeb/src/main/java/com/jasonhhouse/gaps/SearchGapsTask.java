@@ -11,8 +11,10 @@
 package com.jasonhhouse.gaps;
 
 import com.jasonhhouse.gaps.properties.PlexProperties;
-import com.jasonhhouse.gaps.service.IoService;
+import com.jasonhhouse.gaps.service.GapsSearch;
+import com.jasonhhouse.gaps.service.FileIoService;
 import com.jasonhhouse.gaps.service.NotificationService;
+import com.jasonhhouse.gaps.service.PlexQuery;
 import com.jasonhhouse.gaps.service.TmdbService;
 import com.jasonhhouse.plex.libs.PlexLibrary;
 import java.util.HashMap;
@@ -31,15 +33,15 @@ public class SearchGapsTask implements Runnable {
 
     private final GapsSearch gapsSearch;
     private final TmdbService tmdbService;
-    private final IoService ioService;
+    private final FileIoService fileIoService;
     private final PlexQuery plexQuery;
     private final GapsUrlGenerator gapsUrlGenerator;
     private final NotificationService notificationService;
 
-    public SearchGapsTask(GapsSearch gapsSearch, TmdbService tmdbService, IoService ioService, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator, NotificationService notificationService) {
+    public SearchGapsTask(GapsSearch gapsSearch, TmdbService tmdbService, FileIoService fileIoService, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator, NotificationService notificationService) {
         this.gapsSearch = gapsSearch;
         this.tmdbService = tmdbService;
-        this.ioService = ioService;
+        this.fileIoService = fileIoService;
         this.plexQuery = plexQuery;
         this.gapsUrlGenerator = gapsUrlGenerator;
         this.notificationService = notificationService;
@@ -49,7 +51,7 @@ public class SearchGapsTask implements Runnable {
     public void run() {
         LOGGER.info("run()");
 
-        PlexProperties plexProperties = ioService.readProperties();
+        PlexProperties plexProperties = fileIoService.readProperties();
         if (CollectionUtils.isEmpty(plexProperties.getPlexServers())) {
             LOGGER.warn("No Plex Servers Found. Canceling automatic search.");
             return;
@@ -71,7 +73,7 @@ public class SearchGapsTask implements Runnable {
     private boolean checkTmdbKey() {
         LOGGER.info("checkTmdbKey()");
 
-        String tmdbKey = ioService.readProperties().getMovieDbApiKey();
+        String tmdbKey = fileIoService.readProperties().getMovieDbApiKey();
         Payload payload = tmdbService.testTmdbKey(tmdbKey);
 
         if (Payload.TMDB_KEY_VALID.getCode() == payload.getCode()) {
@@ -117,7 +119,7 @@ public class SearchGapsTask implements Runnable {
                 try {
                     List<Movie> ownedMovies = plexQuery.findAllPlexMovies(generateOwnedMovieMap(plexProperties), url);
                     plexQuery.findAllMovieIds(ownedMovies, plexServer, plexLibrary);
-                    ioService.writeOwnedMoviesToFile(ownedMovies, plexServer.getMachineIdentifier(), plexLibrary.getKey());
+                    fileIoService.writeOwnedMoviesToFile(ownedMovies, plexServer.getMachineIdentifier(), plexLibrary.getKey());
                     notificationService.plexLibraryScanSuccessful(plexServer, plexLibrary);
                 } catch (ResponseStatusException e) {
                     notificationService.plexLibraryScanFailed(plexServer, plexLibrary, e.getMessage());
@@ -136,7 +138,7 @@ public class SearchGapsTask implements Runnable {
     }
 
     private Map<Pair<String, Integer>, Movie> generateOwnedMovieMap(PlexProperties plexProperties) {
-        Set<Movie> everyMovie = ioService.readMovieIdsFromFile();
+        Set<Movie> everyMovie = fileIoService.readMovieIdsFromFile();
         Map<Pair<String, Integer>, Movie> previousMovies = new HashMap<>();
 
         plexProperties
