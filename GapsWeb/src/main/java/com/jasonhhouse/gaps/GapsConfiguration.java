@@ -12,8 +12,6 @@ package com.jasonhhouse.gaps;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
 
 @ConstructorBinding
@@ -66,6 +64,18 @@ public class GapsConfiguration {
         return properties;
     }
 
+    @Override
+    public String toString() {
+        return "YamlConfig{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", version='" + version + '\'' +
+                ", loginEnabled=" + loginEnabled +
+                ", sslEnabled=" + sslEnabled +
+                ", storagePath='" + storageFolder + '\'' +
+                '}';
+    }
+
     @ConstructorBinding
     public static final class Properties {
         private final String rssFeed;
@@ -101,17 +111,5 @@ public class GapsConfiguration {
         public String getRecommendedMovies() {
             return recommendedMovies;
         }
-    }
-
-    @Override
-    public String toString() {
-        return "YamlConfig{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", version='" + version + '\'' +
-                ", loginEnabled=" + loginEnabled +
-                ", sslEnabled=" + sslEnabled +
-                ", storagePath='" + storageFolder + '\'' +
-                '}';
     }
 }

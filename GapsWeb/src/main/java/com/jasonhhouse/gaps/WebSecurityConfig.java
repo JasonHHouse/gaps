@@ -12,7 +12,6 @@ package com.jasonhhouse.gaps;
 
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
-import java.nio.file.Paths;
 import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -115,7 +114,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 LOGGER.info("Gaps Password: {}", password);
                 fileIoService.writeProperties(plexProperties);
             } else {
-                LOGGER.info("Using password from {}", Paths.get(gapsConfiguration.getStorageFolder(), gapsConfiguration.getProperties().getGapsProperties()).toString());
+                LOGGER.info("Using password from {}{}", gapsConfiguration.getStorageFolder(), gapsConfiguration.getProperties().getGapsProperties());
                 password = plexProperties.getPassword();
             }
 
