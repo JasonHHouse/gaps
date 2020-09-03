@@ -15,6 +15,13 @@ info:
     description: Gaps searches through your Plex Server or local folders for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.
     version: 0.7.1
     loginEnabled: false
+    storageFolder: /usr/data
+    properties:
+      rssFeed: rssFeed.json
+      gapsProperties: gaps.properties
+      movieIds: movieIds.json
+      ownedMovies: ownedMovies.json
+      recommendedMovies: recommendedMovies.json
 spring:
   jpa:
     database-platform: com.jasonhhouse.gaps.sql.SQLDialect

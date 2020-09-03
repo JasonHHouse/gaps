@@ -12,6 +12,7 @@ package com.jasonhhouse.gaps;
 
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
+import java.nio.file.Paths;
 import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -35,13 +36,14 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSecurityConfig.class);
 
-    private final YamlConfig myConfig;
-
+    private final GapsConfiguration myConfig;
+    private final GapsConfiguration gapsConfiguration;
     private final FileIoService fileIoService;
 
     @Autowired
-    public WebSecurityConfig(YamlConfig myConfig, FileIoService fileIoService) {
+    public WebSecurityConfig(GapsConfiguration myConfig, GapsConfiguration gapsConfiguration, FileIoService fileIoService) {
         this.myConfig = myConfig;
+        this.gapsConfiguration = gapsConfiguration;
         this.fileIoService = fileIoService;
     }
 
@@ -113,7 +115,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 LOGGER.info("Gaps Password: {}", password);
                 fileIoService.writeProperties(plexProperties);
             } else {
-                LOGGER.info("Using password from /usr/data/gaps.properties");
+                LOGGER.info("Using password from {}", Paths.get(gapsConfiguration.getStorageFolder(), gapsConfiguration.getProperties().getGapsProperties()).toString());
                 password = plexProperties.getPassword();
             }
 
