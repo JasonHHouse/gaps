@@ -9,7 +9,10 @@ describe('Check Telegram Notification Agent', function () {
             .then((resp) => {
                 let body = resp.body;
                 expect(body.code).to.eq(82);
-                expect(body.extras).to.eq(null);
+                expect(body.extras.enabled).to.eq(false);
+                expect(body.extras.notificationTypes.length).to.eq(0);
+                expect(body.extras.botId).to.eq("");
+                expect(body.extras.chatId).to.eq("");
             })
             .visit('/configuration')
             .then((resp) => {

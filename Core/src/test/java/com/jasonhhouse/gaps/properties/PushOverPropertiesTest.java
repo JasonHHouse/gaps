@@ -38,10 +38,10 @@ public class PushOverPropertiesTest {
         assertTrue(telegramProperties.getEnabled());
         assertTrue(StringUtils.isEmpty(telegramProperties.getToken()));
         assertTrue(StringUtils.isEmpty(telegramProperties.getUser()));
-        assertEquals(Integer.MIN_VALUE, telegramProperties.getPriority());
+        assertEquals(0, telegramProperties.getPriority());
         assertTrue(StringUtils.isEmpty(telegramProperties.getSound()));
-        assertEquals(Integer.MIN_VALUE, telegramProperties.getRetry());
-        assertEquals(Integer.MIN_VALUE, telegramProperties.getExpire());
+        assertEquals(0, telegramProperties.getRetry());
+        assertEquals(0, telegramProperties.getExpire());
     }
 
     @Test
@@ -51,10 +51,10 @@ public class PushOverPropertiesTest {
         assertTrue(telegramProperties.getEnabled());
         assertEquals("123", telegramProperties.getToken());
         assertTrue(StringUtils.isEmpty(telegramProperties.getUser()));
-        assertEquals(Integer.MIN_VALUE, telegramProperties.getPriority());
+        assertEquals(0, telegramProperties.getPriority());
         assertTrue(StringUtils.isEmpty(telegramProperties.getSound()));
-        assertEquals(Integer.MIN_VALUE, telegramProperties.getRetry());
-        assertEquals(Integer.MIN_VALUE, telegramProperties.getExpire());
+        assertEquals(0, telegramProperties.getRetry());
+        assertEquals(0, telegramProperties.getExpire());
     }
 
     @Test

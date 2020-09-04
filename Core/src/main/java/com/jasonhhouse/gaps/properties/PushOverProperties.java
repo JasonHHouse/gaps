@@ -50,14 +50,14 @@ public final class PushOverProperties extends AbstractNotificationProperties {
         super(enabled, notificationTypes);
         this.token = token == null ? "" : token;
         this.user = user == null ? "" : user;
-        this.priority = priority == null ? Integer.MIN_VALUE : priority;
+        this.priority = priority == null ? 0 : priority;
         this.sound = sound == null ? "" : sound;
-        this.retry = retry == null ? Integer.MIN_VALUE : retry;
-        this.expire = expire == null ? Integer.MIN_VALUE : expire;
+        this.retry = retry == null ? 0 : retry;
+        this.expire = expire == null ? 0 : expire;
     }
 
     static PushOverProperties getDefault() {
-        return new PushOverProperties(false, Collections.emptyList(), "", "", Integer.MIN_VALUE, "", Integer.MIN_VALUE, Integer.MIN_VALUE);
+        return new PushOverProperties(false, Collections.emptyList(), "", "", 0, "", 0, 0);
     }
 
     public @NotNull String getToken() {

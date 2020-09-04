@@ -9,7 +9,17 @@ describe('Check Email Notification Agent', function () {
             .then((resp) => {
                 let body = resp.body;
                 expect(body.code).to.eq(122);
-                expect(body.extras).to.eq(null);
+                expect(body.extras.enabled).to.eq(false);
+                expect(body.extras.notificationTypes.length).to.eq(0);
+                expect(body.extras.username).to.eq("");
+                expect(body.extras.password).to.eq("");
+                expect(body.extras.mailTo).to.eq("");
+                expect(body.extras.mailFrom).to.eq("");
+                expect(body.extras.mailServer).to.eq("");
+                expect(body.extras.mailPort).to.eq(0);
+                expect(body.extras.mailTransportProtocol).to.eq("");
+                expect(body.extras.mailSmtpAuth).to.eq("");
+                expect(body.extras.mailSmtpTlsEnabled).to.eq(false);
             })
             .visit('/configuration')
             .then((resp) => {
@@ -32,7 +42,7 @@ describe('Check Email Notification Agent', function () {
                     .should('have.value', '');
 
                 cy.get('#emailPort')
-                    .should('have.value', '');
+                    .should('have.value', 0);
 
                 cy.get('#emailTransportProtocol')
                     .should('have.value', 'smtp');
@@ -236,7 +246,7 @@ describe('Check Email Notification Agent', function () {
         cy.get('#notificationTab')
             .click();
 
-        checkElements('', '', '', '', '', '', 'smtp', 'true', 'false', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
+        checkElements('', '', '', '', '', 0, 'smtp', 'true', 'false', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
 
         cy.get('#emailUsername')
             .clear()
@@ -326,7 +336,7 @@ describe('Check Email Notification Agent', function () {
         cy.get('#notificationTab')
             .click();
 
-        checkElements('', '', '', '', '', '', 'smtp', 'true', 'false',  CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
+        checkElements('', '', '', '', '', 0, 'smtp', 'true', 'false',  CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
 
         cy.get('#emailUsername')
             .clear()
@@ -436,7 +446,7 @@ describe('Check Email Notification Agent', function () {
         cy.get('#notificationTab')
             .click();
 
-        checkElements('', '', '', '', '', '', 'smtp', 'true', 'false', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
+        checkElements('', '', '', '', '', 0, 'smtp', 'true', 'false', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
 
         cy.get('#emailUsername')
             .clear();

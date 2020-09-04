@@ -69,14 +69,14 @@ public final class EmailProperties extends AbstractNotificationProperties {
         this.mailTo = mailTo == null ? "" : mailTo;
         this.mailFrom = mailFrom == null ? "" : mailFrom;
         this.mailServer = mailServer == null ? "" : mailServer;
-        this.mailPort = mailPort == null ? Integer.MIN_VALUE : mailPort;
+        this.mailPort = mailPort == null ? 0 : mailPort;
         this.mailTransportProtocol = mailTransportProtocol == null ? "" : mailTransportProtocol;
         this.mailSmtpAuth = mailSmtpAuth == null ? "" : mailSmtpAuth;
         this.mailSmtpTlsEnabled = mailSmtpTlsEnabled != null && mailSmtpTlsEnabled;
     }
 
     static EmailProperties getDefault() {
-        return new EmailProperties(false, Collections.emptyList(), "", "", "", "", "", Integer.MIN_VALUE, "", "", false);
+        return new EmailProperties(false, Collections.emptyList(), "", "", "", "", "", 0, "", "", false);
     }
 
     @NotNull

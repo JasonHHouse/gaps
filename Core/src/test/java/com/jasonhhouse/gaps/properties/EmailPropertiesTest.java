@@ -41,7 +41,7 @@ public class EmailPropertiesTest {
         assertTrue(StringUtils.isEmpty(telegramProperties.getPassword()));
         assertTrue(StringUtils.isEmpty(telegramProperties.getMailTo()));
         assertTrue(StringUtils.isEmpty(telegramProperties.getMailFrom()));
-        assertEquals(Integer.MIN_VALUE, telegramProperties.getMailPort());
+        assertEquals(0, telegramProperties.getMailPort());
         assertTrue(StringUtils.isEmpty(telegramProperties.getMailTransportProtocol()));
         assertTrue(StringUtils.isEmpty(telegramProperties.getMailSmtpAuth()));
         assertFalse(telegramProperties.getMailSmtpTlsEnabled());
@@ -56,7 +56,7 @@ public class EmailPropertiesTest {
         assertTrue(StringUtils.isEmpty(telegramProperties.getPassword()));
         assertTrue(StringUtils.isEmpty(telegramProperties.getMailTo()));
         assertTrue(StringUtils.isEmpty(telegramProperties.getMailFrom()));
-        assertEquals(Integer.MIN_VALUE, telegramProperties.getMailPort());
+        assertEquals(0, telegramProperties.getMailPort());
         assertTrue(StringUtils.isEmpty(telegramProperties.getMailTransportProtocol()));
         assertTrue(StringUtils.isEmpty(telegramProperties.getMailSmtpAuth()));
         assertFalse(telegramProperties.getMailSmtpTlsEnabled());
