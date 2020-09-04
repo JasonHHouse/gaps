@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jasonhhouse.gaps.NotificationType;
+import java.util.Collections;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
@@ -71,6 +72,10 @@ public final class EmailProperties extends AbstractNotificationProperties {
         this.mailTransportProtocol = mailTransportProtocol;
         this.mailSmtpAuth = mailSmtpAuth;
         this.mailSmtpTlsEnabled = mailSmtpTlsEnabled;
+    }
+
+    static EmailProperties getDefault() {
+        return new EmailProperties(false, Collections.emptyList(), "", "", "", "", "", Integer.MIN_VALUE, "", "", false);
     }
 
     @NotNull

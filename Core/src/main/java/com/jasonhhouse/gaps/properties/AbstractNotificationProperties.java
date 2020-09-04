@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public abstract class AbstractNotificationProperties implements NotificationProperties {
+abstract class AbstractNotificationProperties implements NotificationProperties {
 
     @NotNull
     protected final Boolean enabled;
