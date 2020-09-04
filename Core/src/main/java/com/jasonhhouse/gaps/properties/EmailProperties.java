@@ -18,6 +18,7 @@ import com.jasonhhouse.gaps.NotificationType;
 import java.util.Collections;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -53,25 +54,25 @@ public final class EmailProperties extends AbstractNotificationProperties {
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public EmailProperties(@JsonProperty(value = "enabled", required = true) @NotNull Boolean enabled,
                            @JsonProperty(value = "notificationTypes", required = true) @NotNull List<NotificationType> notificationTypes,
-                           @JsonProperty(value = "username", required = true) @NotNull String username,
-                           @JsonProperty(value = "password", required = true) @NotNull String password,
-                           @JsonProperty(value = "mailTo", required = true) @NotNull String mailTo,
-                           @JsonProperty(value = "mailFrom", required = true) @NotNull String mailFrom,
-                           @JsonProperty(value = "mailServer", required = true) @NotNull String mailServer,
-                           @JsonProperty(value = "mailPort", required = true) @NotNull Integer mailPort,
-                           @JsonProperty(value = "mailTransportProtocol", required = true) @NotNull String mailTransportProtocol,
-                           @JsonProperty(value = "mailSmtpAuth", required = true) @NotNull String mailSmtpAuth,
-                           @JsonProperty(value = "mailSmtpTlsEnabled", required = true) @NotNull Boolean mailSmtpTlsEnabled) {
+                           @JsonProperty(value = "username") @Nullable String username,
+                           @JsonProperty(value = "password") @Nullable String password,
+                           @JsonProperty(value = "mailTo") @Nullable String mailTo,
+                           @JsonProperty(value = "mailFrom") @Nullable String mailFrom,
+                           @JsonProperty(value = "mailServer") @Nullable String mailServer,
+                           @JsonProperty(value = "mailPort") @Nullable Integer mailPort,
+                           @JsonProperty(value = "mailTransportProtocol") @Nullable String mailTransportProtocol,
+                           @JsonProperty(value = "mailSmtpAuth") @Nullable String mailSmtpAuth,
+                           @JsonProperty(value = "mailSmtpTlsEnabled") @Nullable Boolean mailSmtpTlsEnabled) {
         super(enabled, notificationTypes);
-        this.username = username;
-        this.password = password;
-        this.mailTo = mailTo;
-        this.mailFrom = mailFrom;
-        this.mailServer = mailServer;
-        this.mailPort = mailPort;
-        this.mailTransportProtocol = mailTransportProtocol;
-        this.mailSmtpAuth = mailSmtpAuth;
-        this.mailSmtpTlsEnabled = mailSmtpTlsEnabled;
+        this.username = username == null ? "" : username;
+        this.password = password == null ? "" : password;
+        this.mailTo = mailTo == null ? "" : mailTo;
+        this.mailFrom = mailFrom == null ? "" : mailFrom;
+        this.mailServer = mailServer == null ? "" : mailServer;
+        this.mailPort = mailPort == null ? Integer.MIN_VALUE : mailPort;
+        this.mailTransportProtocol = mailTransportProtocol == null ? "" : mailTransportProtocol;
+        this.mailSmtpAuth = mailSmtpAuth == null ? "" : mailSmtpAuth;
+        this.mailSmtpTlsEnabled = mailSmtpTlsEnabled != null && mailSmtpTlsEnabled;
     }
 
     static EmailProperties getDefault() {
