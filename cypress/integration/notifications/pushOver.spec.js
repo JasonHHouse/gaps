@@ -10,14 +10,21 @@ describe('Check PushOver Notification Agent', function () {
             .then((resp) => {
                 let body = resp.body;
                 expect(body.code).to.eq(132);
-                expect(body.extras).to.eq(null);
+                expect(body.extras.enabled).to.eq(false);
+                expect(body.extras.notificationTypes.length).to.eq(0);
+                expect(body.extras.token).to.eq("");
+                expect(body.extras.user).to.eq("");
+                expect(body.extras.priority).to.eq(0);
+                expect(body.extras.sound).to.eq("");
+                expect(body.extras.retry).to.eq(0);
+                expect(body.extras.expire).to.eq(0);
             })
             .visit('/configuration')
             .then((resp) => {
                 cy.get('#notificationTab')
                     .click();
 
-                checkElements('', '',-2,'pushover', '60','3600', CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, 'false');
+                checkElements('', '',0,'pushover', '0','0', CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, 'false');
             });
     });
 
@@ -106,7 +113,7 @@ describe('Check PushOver Notification Agent', function () {
         cy.get('#notificationTab')
             .click();
 
-        checkElements('', '', -2,'pushover', '60','3600', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, 'false');
+        checkElements('', '', 0,'pushover', '0','0', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, 'false');
 
         cy.get('#pushOverToken')
             .clear()
@@ -180,7 +187,7 @@ describe('Check PushOver Notification Agent', function () {
         cy.get('#notificationTab')
             .click();
 
-        checkElements('', '',-2,'pushover', '60','3600',  CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, 'false');
+        checkElements('', '',0,'pushover', '0','0',  CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, 'false');
 
         cy.get('#pushOverToken')
             .clear()
@@ -272,7 +279,7 @@ describe('Check PushOver Notification Agent', function () {
         cy.get('#notificationTab')
             .click();
 
-        checkElements('', '',-2,'pushover', '60','3600',CYPRESS_VALUES. notBeChecked, CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
+        checkElements('', '',0,'pushover', '0','0',CYPRESS_VALUES. notBeChecked, CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
 
         cy.get('#pushOverToken')
             .clear();

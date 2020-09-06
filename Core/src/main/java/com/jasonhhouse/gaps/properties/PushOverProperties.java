@@ -16,8 +16,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jasonhhouse.gaps.NotificationType;
+import java.util.Collections;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,19 +41,23 @@ public final class PushOverProperties extends AbstractNotificationProperties {
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public PushOverProperties(@JsonProperty(value = "enabled", required = true) @NotNull Boolean enabled,
                               @JsonProperty(value = "notificationTypes", required = true) @NotNull List<NotificationType> notificationTypes,
-                              @JsonProperty(value = "token", required = true) @NotNull String token,
-                              @JsonProperty(value = "user", required = true) @NotNull String user,
-                              @JsonProperty(value = "priority", required = true) @NotNull Integer priority,
-                              @JsonProperty(value = "sound", required = true) @NotNull String sound,
-                              @JsonProperty(value = "retry", required = true) @NotNull Integer retry,
-                              @JsonProperty(value = "expire", required = true) @NotNull Integer expire) {
+                              @JsonProperty(value = "token") @Nullable String token,
+                              @JsonProperty(value = "user") @Nullable String user,
+                              @JsonProperty(value = "priority") @Nullable Integer priority,
+                              @JsonProperty(value = "sound") @Nullable String sound,
+                              @JsonProperty(value = "retry") @Nullable Integer retry,
+                              @JsonProperty(value = "expire") @Nullable Integer expire) {
         super(enabled, notificationTypes);
-        this.token = token;
-        this.user = user;
-        this.priority = priority;
-        this.sound = sound;
-        this.retry = retry;
-        this.expire = expire;
+        this.token = token == null ? "" : token;
+        this.user = user == null ? "" : user;
+        this.priority = priority == null ? 0 : priority;
+        this.sound = sound == null ? "" : sound;
+        this.retry = retry == null ? 0 : retry;
+        this.expire = expire == null ? 0 : expire;
+    }
+
+    static PushOverProperties getDefault() {
+        return new PushOverProperties(false, Collections.emptyList(), "", "", 0, "", 0, 0);
     }
 
     public @NotNull String getToken() {

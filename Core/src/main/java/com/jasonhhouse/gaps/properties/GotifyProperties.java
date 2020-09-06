@@ -15,12 +15,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jasonhhouse.gaps.NotificationType;
+import java.util.Collections;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class GotifyProperties extends AbstractNotificationProperties {
+public final class GotifyProperties extends AbstractNotificationProperties {
 
     @NotNull
     private final String address;
@@ -31,11 +33,15 @@ public class GotifyProperties extends AbstractNotificationProperties {
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public GotifyProperties(@JsonProperty(value = "enabled", required = true) @NotNull Boolean enabled,
                             @JsonProperty(value = "notificationTypes", required = true) @NotNull List<NotificationType> notificationTypes,
-                            @JsonProperty(value = "address", required = true) @NotNull String address,
-                            @JsonProperty(value = "token", required = true) @NotNull String token) {
+                            @JsonProperty(value = "address") @Nullable String address,
+                            @JsonProperty(value = "token") @Nullable String token) {
         super(enabled, notificationTypes);
-        this.address = address;
-        this.token = token;
+        this.address = address == null ? "" : address;
+        this.token = token == null ? "" : token;
+    }
+
+    static GotifyProperties getDefault() {
+        return new GotifyProperties(false, Collections.emptyList(), "", "");
     }
 
     @NotNull

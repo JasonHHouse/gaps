@@ -15,8 +15,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jasonhhouse.gaps.NotificationType;
+import java.util.Collections;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -30,11 +32,15 @@ public final class PushBulletProperties extends AbstractNotificationProperties {
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public PushBulletProperties(@JsonProperty(value = "enabled", required = true) @NotNull Boolean enabled,
                                 @JsonProperty(value = "notificationTypes", required = true) @NotNull List<NotificationType> notificationTypes,
-                                @JsonProperty(value = "channel_tag", required = true) @NotNull String channel_tag,
-                                @JsonProperty(value = "accessToken", required = true) @NotNull String accessToken) {
+                                @JsonProperty(value = "channel_tag") @Nullable String channel_tag,
+                                @JsonProperty(value = "accessToken") @Nullable String accessToken) {
         super(enabled, notificationTypes);
-        this.channel_tag = channel_tag;
-        this.accessToken = accessToken;
+        this.channel_tag = channel_tag == null ? "" : channel_tag;
+        this.accessToken = accessToken == null ? "" : accessToken;
+    }
+
+    static PushBulletProperties getDefault() {
+        return new PushBulletProperties(false, Collections.emptyList(), "", "");
     }
 
     @NotNull

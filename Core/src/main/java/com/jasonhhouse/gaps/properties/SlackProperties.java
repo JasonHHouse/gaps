@@ -15,12 +15,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jasonhhouse.gaps.NotificationType;
+import java.util.Collections;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SlackProperties extends AbstractNotificationProperties {
+public final class SlackProperties extends AbstractNotificationProperties {
 
     @NotNull
     private final String webHookUrl;
@@ -28,9 +30,13 @@ public class SlackProperties extends AbstractNotificationProperties {
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public SlackProperties(@JsonProperty(value = "enabled", required = true) @NotNull Boolean enabled,
                            @JsonProperty(value = "notificationTypes", required = true) @NotNull List<NotificationType> notificationTypes,
-                           @JsonProperty(value = "webHookUrl", required = true) @NotNull String webHookUrl) {
+                           @JsonProperty(value = "webHookUrl") @Nullable String webHookUrl) {
         super(enabled, notificationTypes);
-        this.webHookUrl = webHookUrl;
+        this.webHookUrl = webHookUrl == null ? "" : webHookUrl;
+    }
+
+    static SlackProperties getDefault() {
+        return new SlackProperties(false, Collections.emptyList(), "");
     }
 
     @Override

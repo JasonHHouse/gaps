@@ -9,7 +9,9 @@ describe('Check Slack Notification Agent', function () {
             .then((resp) => {
                 let body = resp.body;
                 expect(body.code).to.eq(92);
-                expect(body.extras).to.eq(null);
+                expect(body.extras.enabled).to.eq(false);
+                expect(body.extras.notificationTypes.length).to.eq(0);
+                expect(body.extras.webHookUrl).to.eq("");
             })
             .visit('/configuration')
             .then((resp) => {

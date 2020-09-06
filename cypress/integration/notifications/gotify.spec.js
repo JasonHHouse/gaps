@@ -9,7 +9,10 @@ describe('Check Gotify Notification Agent', function () {
             .then((resp) => {
                 let body = resp.body;
                 expect(body.code).to.eq(112);
-                expect(body.extras).to.eq(null);
+                expect(body.extras.enabled).to.eq(false);
+                expect(body.extras.notificationTypes.length).to.eq(0);
+                expect(body.extras.address).to.eq("");
+                expect(body.extras.token).to.eq("");
             })
             .visit('/configuration')
             .then((resp) => {
