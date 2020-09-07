@@ -1,4 +1,6 @@
 {
   "projectId": "3c7d5r",
-  "baseUrl": "http://localhost:8484"
+  "baseUrl": "http://localhost:8484",
+  "videoUploadOnPasses": false,
+  "videoCompression": false
 }

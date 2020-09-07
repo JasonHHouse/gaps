@@ -12,8 +12,8 @@ else
     if [ $ENABLE_LOGIN == true ]; then
       java -jar -Dspring.profiles.active=no-ssl $JAR_FILE
     else
-      #java -jar -Dspring.profiles.active=no-ssl-no-login $JAR_FILE
-      java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -jar -Dspring.profiles.active=no-ssl-no-login $JAR_FILE
+      java -jar -Dspring.profiles.active=no-ssl-no-login $JAR_FILE
+      #java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -jar -Dspring.profiles.active=no-ssl-no-login $JAR_FILE
     fi
 fi
 
