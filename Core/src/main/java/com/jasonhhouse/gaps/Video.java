@@ -13,7 +13,7 @@ package com.jasonhhouse.gaps;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
-public interface IMovie {
+public interface Video {
 
     /*
      * @return The title of the movie
