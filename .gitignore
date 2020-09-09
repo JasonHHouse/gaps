@@ -28,14 +28,16 @@
 gaps_recommended_movies.txt
 package-lock.json
 node_modules
-Core/target
-GapsWeb/target
+Core/target/
+GapsWeb/target/
+RadarrV3/target/
+Plex/target/
 
 /rssFeed.json
 *.zip
 cypress/screenshots
 cypress/videos
-Plex/target/
+
 
 ### Ignore local minified files
 *.min.css

@@ -12,4 +12,3 @@ rm GapsOnWindows/*.jar
 rm GapsOnWindows/README.md
 cp $JAR_VERSION GapsOnWindows/gaps.jar
 cp README.md GapsOnWindows/
-zip -r $ZIP_VERSION GapsOnWindows/
