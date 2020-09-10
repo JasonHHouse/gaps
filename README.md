@@ -180,6 +180,18 @@ Once you've completed at least one search of your plex libraries, you can then v
 - [Spring Boot](https://spring.io/projects/spring-boot) - Server Framework
 - [NodeJs](https://nodejs.org/en/) - Testing and Build Environment
 
+## Supporters
+
+This project would not be possible without the support by these amazing folks. [**Become a sponsor or backer**](https://opencollective.com/gaps) to help us out!
+
+### Sponsors
+
+[![Sponsors](https://opencollective.com/gaps/tiers/sponsor.svg)](https://opencollective.com/gaps/order/3851)
+
+### Backers
+
+[![Backers](https://opencollective.com/gaps/tiers/backer.svg?avatarHeight=48)](https://opencollective.com/gaps/order/3850)
+
 ## ✍️ Authors <a name = "authors"></a>
 - [@JasonHHouse](https://github.com/JasonHHouse) - Idea & Initial work
 
