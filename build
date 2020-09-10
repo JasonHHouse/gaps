@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=0.7.4
+VERSION=0.7.5
 JAR_VERSION="GapsWeb/target/GapsWeb-$VERSION.jar"
 ZIP_VERSION="Gaps-$VERSION.zip"
 ./minify
