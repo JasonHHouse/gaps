@@ -15,13 +15,13 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.jasonhhouse.gaps.Movie;
+import com.jasonhhouse.gaps.BasicMovie;
 import com.jasonhhouse.gaps.MovieFromCollection;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieDeserializer extends StdDeserializer<Movie> {
+public class MovieDeserializer extends StdDeserializer<BasicMovie> {
     public MovieDeserializer() {
         this(null);
     }
@@ -31,42 +31,42 @@ public class MovieDeserializer extends StdDeserializer<Movie> {
     }
 
     @Override
-    public Movie deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+    public BasicMovie deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
-        int tvdbId = (Integer) node.get(Movie.TVDB_ID).numberValue();
-        String imdbId = node.get(Movie.IMDB_ID).textValue();
-        String name = node.get(Movie.NAME).textValue();
-        int year = (Integer) node.get(Movie.YEAR).numberValue();
+        int tvdbId = (Integer) node.get(BasicMovie.TVDB_ID).numberValue();
+        String imdbId = node.get(BasicMovie.IMDB_ID).textValue();
+        String name = node.get(BasicMovie.NAME).textValue();
+        int year = (Integer) node.get(BasicMovie.YEAR).numberValue();
 
 
         int collectionId = -1;
-        if (node.has(Movie.COLLECTION_ID)) {
-            collectionId = (Integer) node.get(Movie.COLLECTION_ID).numberValue();
+        if (node.has(BasicMovie.COLLECTION_ID)) {
+            collectionId = (Integer) node.get(BasicMovie.COLLECTION_ID).numberValue();
         }
 
         String collection = null;
-        if (node.has(Movie.COLLECTION)) {
-            collection = node.get(Movie.COLLECTION).textValue();
+        if (node.has(BasicMovie.COLLECTION)) {
+            collection = node.get(BasicMovie.COLLECTION).textValue();
         }
 
         String posterUrl = null;
-        if (node.has(Movie.POSTER)) {
-            posterUrl = node.get(Movie.POSTER).textValue();
+        if (node.has(BasicMovie.POSTER)) {
+            posterUrl = node.get(BasicMovie.POSTER).textValue();
         }
 
         String language = null;
-        if (node.has(Movie.LANGUAGE)) {
-            language = node.get(Movie.LANGUAGE).textValue();
+        if (node.has(BasicMovie.LANGUAGE)) {
+            language = node.get(BasicMovie.LANGUAGE).textValue();
         }
 
         String overview = null;
-        if (node.has(Movie.OVERVIEW)) {
-            overview = node.get(Movie.OVERVIEW).textValue();
+        if (node.has(BasicMovie.OVERVIEW)) {
+            overview = node.get(BasicMovie.OVERVIEW).textValue();
         }
 
         List<MovieFromCollection> moviesInCollection = new ArrayList<>();
-        if (node.has(Movie.MOVIES_IN_COLLECTION)) {
-            ArrayNode arrayNode = (ArrayNode) node.get(Movie.MOVIES_IN_COLLECTION);
+        if (node.has(BasicMovie.MOVIES_IN_COLLECTION)) {
+            ArrayNode arrayNode = (ArrayNode) node.get(BasicMovie.MOVIES_IN_COLLECTION);
             if (arrayNode.isArray()) {
                 for (JsonNode jsonNode : arrayNode) {
                     moviesInCollection.add(new MovieFromCollection(jsonNode.get("title").textValue(), jsonNode.get("id").textValue(), jsonNode.get("owned").booleanValue()));
@@ -74,7 +74,7 @@ public class MovieDeserializer extends StdDeserializer<Movie> {
             }
         }
 
-        Movie.Builder builder = new Movie.Builder(name, year)
+        BasicMovie.Builder builder = new BasicMovie.Builder(name, year)
                 .setTvdbId(tvdbId)
                 .setImdbId(imdbId)
                 .setCollectionId(collectionId)

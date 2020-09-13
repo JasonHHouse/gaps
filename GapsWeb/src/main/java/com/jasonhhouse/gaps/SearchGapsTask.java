@@ -117,9 +117,9 @@ public class SearchGapsTask implements Runnable {
             for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
                 HttpUrl url = gapsUrlGenerator.generatePlexLibraryUrl(plexServer, plexLibrary);
                 try {
-                    List<Movie> ownedMovies = plexQuery.findAllPlexMovies(generateOwnedMovieMap(plexProperties), url);
-                    plexQuery.findAllMovieIds(ownedMovies, plexServer, plexLibrary);
-                    fileIoService.writeOwnedMoviesToFile(ownedMovies, plexServer.getMachineIdentifier(), plexLibrary.getKey());
+                    List<BasicMovie> ownedBasicMovies = plexQuery.findAllPlexMovies(generateOwnedMovieMap(plexProperties), url);
+                    plexQuery.findAllMovieIds(ownedBasicMovies, plexServer, plexLibrary);
+                    fileIoService.writeOwnedMoviesToFile(ownedBasicMovies, plexServer.getMachineIdentifier(), plexLibrary.getKey());
                     notificationService.plexLibraryScanSuccessful(plexServer, plexLibrary);
                 } catch (ResponseStatusException e) {
                     notificationService.plexLibraryScanFailed(plexServer, plexLibrary, e.getMessage());
@@ -137,15 +137,15 @@ public class SearchGapsTask implements Runnable {
         }
     }
 
-    private Map<Pair<String, Integer>, Movie> generateOwnedMovieMap(PlexProperties plexProperties) {
-        Set<Movie> everyMovie = fileIoService.readMovieIdsFromFile();
-        Map<Pair<String, Integer>, Movie> previousMovies = new HashMap<>();
+    private Map<Pair<String, Integer>, BasicMovie> generateOwnedMovieMap(PlexProperties plexProperties) {
+        Set<BasicMovie> everyBasicMovie = fileIoService.readMovieIdsFromFile();
+        Map<Pair<String, Integer>, BasicMovie> previousMovies = new HashMap<>();
 
         plexProperties
                 .getPlexServers()
                 .forEach(plexServer -> plexServer
                         .getPlexLibraries()
-                        .forEach(plexLibrary -> everyMovie.forEach(movie -> previousMovies.put(new Pair<>(movie.getName(), movie.getYear()), movie))));
+                        .forEach(plexLibrary -> everyBasicMovie.forEach(movie -> previousMovies.put(new Pair<>(movie.getTitle(), movie.getYear()), movie))));
 
         return previousMovies;
     }

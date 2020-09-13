@@ -13,33 +13,33 @@ package com.jasonhhouse.gaps.json;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.jasonhhouse.gaps.Movie;
+import com.jasonhhouse.gaps.BasicMovie;
 import com.jasonhhouse.gaps.MovieFromCollection;
 import java.io.IOException;
 
-public class MovieSerializer extends StdSerializer<Movie> {
+public class MovieSerializer extends StdSerializer<BasicMovie> {
     public MovieSerializer() {
         this(null);
     }
 
-    protected MovieSerializer(Class<Movie> t) {
+    protected MovieSerializer(Class<BasicMovie> t) {
         super(t);
     }
 
     @Override
-    public void serialize(Movie movie, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+    public void serialize(BasicMovie basicMovie, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         jsonGenerator.writeStartObject();
-        jsonGenerator.writeNumberField(Movie.TVDB_ID, movie.getTvdbId());
-        jsonGenerator.writeStringField(Movie.IMDB_ID, movie.getImdbId());
-        jsonGenerator.writeStringField(Movie.NAME, movie.getName());
-        jsonGenerator.writeNumberField(Movie.YEAR, movie.getYear());
-        jsonGenerator.writeStringField(Movie.POSTER, movie.getPosterUrl());
-        jsonGenerator.writeNumberField(Movie.COLLECTION_ID, movie.getCollectionId());
-        jsonGenerator.writeStringField(Movie.COLLECTION, movie.getCollection());
-        jsonGenerator.writeStringField(Movie.LANGUAGE, movie.getLanguage());
-        jsonGenerator.writeStringField(Movie.OVERVIEW, movie.getOverview());
-        jsonGenerator.writeArrayFieldStart(Movie.MOVIES_IN_COLLECTION);
-        for (MovieFromCollection movieInCollection : movie.getMoviesInCollection()) {
+        jsonGenerator.writeNumberField(BasicMovie.TVDB_ID, basicMovie.getTmdbId());
+        jsonGenerator.writeStringField(BasicMovie.IMDB_ID, basicMovie.getImdbId());
+        jsonGenerator.writeStringField(BasicMovie.NAME, basicMovie.getTitle());
+        jsonGenerator.writeNumberField(BasicMovie.YEAR, basicMovie.getYear());
+        jsonGenerator.writeStringField(BasicMovie.POSTER, basicMovie.getPosterUrl());
+        jsonGenerator.writeNumberField(BasicMovie.COLLECTION_ID, basicMovie.getCollectionId());
+        jsonGenerator.writeStringField(BasicMovie.COLLECTION, basicMovie.getCollectionTitle());
+        jsonGenerator.writeStringField(BasicMovie.LANGUAGE, basicMovie.getLanguage());
+        jsonGenerator.writeStringField(BasicMovie.OVERVIEW, basicMovie.getOverview());
+        jsonGenerator.writeArrayFieldStart(BasicMovie.MOVIES_IN_COLLECTION);
+        for (MovieFromCollection movieInCollection : basicMovie.getMoviesInCollection()) {
             jsonGenerator.writeStartObject();
             jsonGenerator.writeStringField("title", movieInCollection.getTitle());
             jsonGenerator.writeStringField("id", movieInCollection.getTmdbId());

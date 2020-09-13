@@ -10,7 +10,7 @@
 
 package com.jasonhhouse.gaps.service;
 
-import com.jasonhhouse.gaps.Movie;
+import com.jasonhhouse.gaps.BasicMovie;
 import com.jasonhhouse.gaps.Pair;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexServer;
@@ -264,7 +264,7 @@ public class PlexQueryImpl implements PlexQuery {
     }
 
     @Override
-    public void findAllMovieIds(@NotNull List<Movie> movies, @NotNull PlexServer plexServer, @NotNull PlexLibrary plexLibrary) {
+    public void findAllMovieIds(@NotNull List<BasicMovie> basicMovies, @NotNull PlexServer plexServer, @NotNull PlexLibrary plexLibrary) {
         LOGGER.info("findAllMovieIds( {}, {} )", plexServer, plexLibrary);
 
         if(plexLibrary.getScanner().equals("Plex Movie Scanner")) {
@@ -278,13 +278,13 @@ public class PlexQueryImpl implements PlexQuery {
                 .readTimeout(180, TimeUnit.SECONDS)
                 .build();
 
-        for (Movie movie : movies) {
-            if (movie.getRatingKey() == -1) {
-                LOGGER.info("No key found for the movie {}", movie.getName());
+        for (BasicMovie basicMovie : basicMovies) {
+            if (basicMovie.getRatingKey() == -1) {
+                LOGGER.info("No key found for the movie {}", basicMovie.getTitle());
                 continue;
             }
 
-            HttpUrl httpUrl = urlGenerator.generatePlexMetadataUrl(plexServer, plexLibrary, movie.getRatingKey());
+            HttpUrl httpUrl = urlGenerator.generatePlexMetadataUrl(plexServer, plexLibrary, basicMovie.getRatingKey());
 
             Request request = new Request.Builder()
                     .url(httpUrl)
@@ -294,7 +294,7 @@ public class PlexQueryImpl implements PlexQuery {
                 String body = response.body() != null ? response.body().string() : null;
 
                 if (StringUtils.isBlank(body)) {
-                    LOGGER.error("Body returned empty from Plex for the movie {}", movie.getName());
+                    LOGGER.error("Body returned empty from Plex for the movie {}", basicMovie.getTitle());
                     continue;
                 }
 
@@ -325,9 +325,9 @@ public class PlexQueryImpl implements PlexQuery {
                     String urlId = nodeTitle.getNodeValue();
                     String id = urlId.replaceAll("[A-Za-z]+://", "");
                     if (urlId.contains("imdb")) {
-                        movie.setImdbId(id);
+                        basicMovie.setImdbId(id);
                     } else if (urlId.contains("tmdb")) {
-                        movie.setTvdbId(Integer.parseInt(id));
+                        basicMovie.setTmdbId(Integer.parseInt(id));
                     } else {
                         LOGGER.warn("Can't find ID to match {}", urlId);
                     }
@@ -371,10 +371,10 @@ public class PlexQueryImpl implements PlexQuery {
     }
 
     @Override
-    public @NotNull List<Movie> findAllPlexMovies(@NotNull Map<Pair<String, Integer>, Movie> previousMovies, @NotNull HttpUrl url) {
+    public @NotNull List<BasicMovie> findAllPlexMovies(@NotNull Map<Pair<String, Integer>, BasicMovie> previousMovies, @NotNull HttpUrl url) {
         LOGGER.info("findAllPlexMovies()");
 
-        List<Movie> ownedMovies = new ArrayList<>();
+        List<BasicMovie> ownedBasicMovies = new ArrayList<>();
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(180, TimeUnit.SECONDS)
@@ -406,7 +406,7 @@ public class PlexQueryImpl implements PlexQuery {
 
                 if (nodeList.getLength() == 0) {
                     LOGGER.warn("No movies found in url: {}", url);
-                    return ownedMovies;
+                    return ownedBasicMovies;
                 }
 
                 for (int i = 0; i < nodeList.getLength(); i++) {
@@ -461,10 +461,10 @@ public class PlexQueryImpl implements PlexQuery {
                         ratingKey = Integer.valueOf(node.getAttributes().getNamedItem("ratingKey").getNodeValue());
                     }
 
-                    Movie movie = getOrCreateOwnedMovie(previousMovies, title, year, tmdbId, imdbId, thumbnail, summary, ratingKey, key);
-                    ownedMovies.add(movie);
+                    BasicMovie basicMovie = getOrCreateOwnedMovie(previousMovies, title, year, tmdbId, imdbId, thumbnail, summary, ratingKey, key);
+                    ownedBasicMovies.add(basicMovie);
                 }
-                LOGGER.info("{} movies found in plex", ownedMovies.size());
+                LOGGER.info("{} movies found in plex", ownedBasicMovies.size());
 
             } catch (IOException e) {
                 String reason = String.format("Error connecting to Plex to get Movie list: %s", url);
@@ -481,26 +481,26 @@ public class PlexQueryImpl implements PlexQuery {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason, e);
         }
 
-        return ownedMovies;
+        return ownedBasicMovies;
     }
 
-    private Movie getOrCreateOwnedMovie(Map<Pair<String, Integer>, Movie> previousMovies, @NotNull String title, int year, @NotNull Integer tmdbId, @NotNull String imdbId, @NotNull String thumbnail, @NotNull String summary, @NotNull Integer ratingKey, @NotNull String key) {
+    private BasicMovie getOrCreateOwnedMovie(Map<Pair<String, Integer>, BasicMovie> previousMovies, @NotNull String title, int year, @NotNull Integer tmdbId, @NotNull String imdbId, @NotNull String thumbnail, @NotNull String summary, @NotNull Integer ratingKey, @NotNull String key) {
         Pair<String, Integer> moviePair = new Pair<>(title, year);
         if (previousMovies.containsKey(moviePair)) {
-            Movie previousMovie = previousMovies.get(moviePair);
-            return new Movie.Builder(title, year)
+            BasicMovie previousBasicMovie = previousMovies.get(moviePair);
+            return new BasicMovie.Builder(title, year)
                     .setPosterUrl(thumbnail)
                     .setOverview(summary)
                     .setKey(key)
                     .setRatingKey(ratingKey)
-                    .setImdbId(previousMovie.getImdbId())
-                    .setCollection(previousMovie.getCollection())
-                    .setLanguage(previousMovie.getLanguage())
-                    .setTvdbId(previousMovie.getTvdbId())
-                    .setCollectionId(previousMovie.getCollectionId())
+                    .setImdbId(previousBasicMovie.getImdbId())
+                    .setCollection(previousBasicMovie.getCollectionTitle())
+                    .setLanguage(previousBasicMovie.getLanguage())
+                    .setTvdbId(previousBasicMovie.getTmdbId())
+                    .setCollectionId(previousBasicMovie.getCollectionId())
                     .build();
         } else {
-            return new Movie.Builder(title, year)
+            return new BasicMovie.Builder(title, year)
                     .setPosterUrl(thumbnail)
                     .setOverview(summary)
                     .setKey(key)

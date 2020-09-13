@@ -11,7 +11,7 @@
 
 package com.jasonhhouse.gaps.service;
 
-import com.jasonhhouse.gaps.Movie;
+import com.jasonhhouse.gaps.BasicMovie;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import java.io.File;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 public interface IO {
 
-    @NotNull List<Movie> readRecommendedMovies(@NotNull String machineIdentifier, @NotNull Integer key);
+    @NotNull List<BasicMovie> readRecommendedMovies(@NotNull String machineIdentifier, @NotNull Integer key);
 
     @NotNull Boolean doesRssFileExist(@NotNull String machineIdentifier, @NotNull Integer key);
 
@@ -32,31 +32,31 @@ public interface IO {
      *
      * @param recommended The recommended movies. (IMDB ID is required.)
      */
-    void writeRssFile(@NotNull String machineIdentifier, @NotNull Integer key, @NotNull Set<Movie> recommended);
+    void writeRssFile(@NotNull String machineIdentifier, @NotNull Integer key, @NotNull Set<BasicMovie> recommended);
 
     /**
      * Prints out all recommended movies to recommendedMovies.json
      */
-    void writeRecommendedToFile(@NotNull Set<Movie> recommended, @NotNull String machineIdentifier, @NotNull Integer key);
+    void writeRecommendedToFile(@NotNull Set<BasicMovie> recommended, @NotNull String machineIdentifier, @NotNull Integer key);
 
     /**
      * Prints out all owned movies to ownedMovies.json
      */
-    void writeOwnedMoviesToFile(@NotNull List<Movie> ownedMovies, @NotNull String machineIdentifier, @NotNull Integer key);
+    void writeOwnedMoviesToFile(@NotNull List<BasicMovie> ownedBasicMovies, @NotNull String machineIdentifier, @NotNull Integer key);
 
-    @NotNull List<Movie> readOwnedMovies(@NotNull String machineIdentifier, @NotNull Integer key);
+    @NotNull List<BasicMovie> readOwnedMovies(@NotNull String machineIdentifier, @NotNull Integer key);
 
     /**
      * Prints out all movies to a text file movieIds.json
      */
-    void writeMovieIdsToFile(@NotNull Set<Movie> everyMovie);
+    void writeMovieIdsToFile(@NotNull Set<BasicMovie> everyBasicMovie);
 
-    void writeMovieIdsToFile(@NotNull Set<Movie> everyMovie, @NotNull File file);
+    void writeMovieIdsToFile(@NotNull Set<BasicMovie> everyBasicMovie, @NotNull File file);
 
     /**
      * Prints out all recommended files to a text file called gaps_recommended_movies.txt
      */
-    @NotNull Set<Movie> readMovieIdsFromFile();
+    @NotNull Set<BasicMovie> readMovieIdsFromFile();
 
     void writeProperties(@NotNull PlexProperties plexProperties);
 

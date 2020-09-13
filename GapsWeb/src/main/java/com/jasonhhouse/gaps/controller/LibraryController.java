@@ -9,7 +9,7 @@
  */
 package com.jasonhhouse.gaps.controller;
 
-import com.jasonhhouse.gaps.Movie;
+import com.jasonhhouse.gaps.BasicMovie;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
@@ -86,17 +86,17 @@ public class LibraryController {
     public ResponseEntity<Payload> getLibraries(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("getLibraries( {}, {} )", machineIdentifier, key);
 
-        List<Movie> movies = fileIoService.readOwnedMovies(machineIdentifier, key);
+        List<BasicMovie> basicMovies = fileIoService.readOwnedMovies(machineIdentifier, key);
         Payload payload;
 
-        if (CollectionUtils.isEmpty(movies)) {
+        if (CollectionUtils.isEmpty(basicMovies)) {
             payload = Payload.PLEX_LIBRARY_MOVIE_NOT_FOUND;
             LOGGER.warn(payload.getReason());
         } else {
             payload = Payload.PLEX_LIBRARY_MOVIE_FOUND;
         }
 
-        payload.setExtras(movies);
+        payload.setExtras(basicMovies);
 
         return ResponseEntity.ok().body(payload);
     }

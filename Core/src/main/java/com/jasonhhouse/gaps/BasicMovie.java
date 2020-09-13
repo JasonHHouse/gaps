@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 @JsonSerialize(using = MovieSerializer.class)
 @JsonDeserialize(using = MovieDeserializer.class)
-public final class Movie implements Comparable<Movie> {
+public final class BasicMovie implements Comparable<BasicMovie>, Video {
 
     public static final String TVDB_ID = "tvdbId";
 
@@ -54,14 +54,14 @@ public final class Movie implements Comparable<Movie> {
     @NotNull
     private final String nameWithoutBadCharacters;
 
-    @Nullable
+    @NotNull
     @JsonProperty("poster_url")
     private final String posterUrl;
-    @Nullable
+    @NotNull
     private String imdbId;
-    @Nullable
+    @NotNull
     private final String language;
-    @Nullable
+    @NotNull
     private final String overview;
     @NotNull
     private final List<MovieFromCollection> moviesInCollection;
@@ -69,23 +69,32 @@ public final class Movie implements Comparable<Movie> {
     private final Integer ratingKey;
     @NotNull
     private final String key;
-    @Nullable
+    @NotNull
     private String collection;
     @NotNull
     private Integer collectionId;
     @NotNull
-    private Integer tvdbId;
+    private Integer tmdbId;
 
-    private Movie(@NotNull String name, @NotNull Integer year, @Nullable String posterUrl, @Nullable String collection, @NotNull Integer collectionId, @NotNull Integer tvdbId,
-                  @Nullable String imdbId, @Nullable String language, @Nullable String overview, @NotNull List<MovieFromCollection> moviesInCollection, @NotNull Integer ratingKey,
-                  @NotNull String key) {
+    private BasicMovie(@NotNull String name,
+                       @NotNull Integer year,
+                       @NotNull String posterUrl,
+                       @NotNull String collection,
+                       @NotNull Integer collectionId,
+                       @NotNull Integer tmdbId,
+                       @NotNull String imdbId,
+                       @NotNull String language,
+                       @NotNull String overview,
+                       @NotNull List<MovieFromCollection> moviesInCollection,
+                       @NotNull Integer ratingKey,
+                       @NotNull String key) {
         this.name = name;
         this.nameWithoutBadCharacters = name.replaceAll("[<>`~\\[\\]()*&^%$#@!|{}.,?\\-_=+:;]", "");
         this.year = year;
         this.posterUrl = posterUrl;
         this.collection = collection;
         this.collectionId = collectionId;
-        this.tvdbId = tvdbId;
+        this.tmdbId = tmdbId;
         this.imdbId = imdbId;
         this.language = language;
         this.overview = overview;
@@ -94,28 +103,22 @@ public final class Movie implements Comparable<Movie> {
         this.key = key;
     }
 
+    @Override
     public @NotNull Integer getCollectionId() {
         return collectionId;
     }
 
-    public void setCollectionId(int collectionId) {
+    @Override
+    public void setCollectionId(@NotNull Integer collectionId) {
         this.collectionId = collectionId;
     }
 
-    public @NotNull Integer getTvdbId() {
-        return tvdbId;
+    public void setTmdbId(int tmdbId) {
+        this.tmdbId = tmdbId;
     }
 
-    public void setTvdbId(int tvdbId) {
-        this.tvdbId = tvdbId;
-    }
-
-    public void setImdbId(@Nullable String imdbId) {
-        this.imdbId = imdbId;
-    }
-
-    @NotNull
-    public String getName() {
+    @Override
+    public @NotNull String getTitle() {
         return name;
     }
 
@@ -124,27 +127,45 @@ public final class Movie implements Comparable<Movie> {
         return year;
     }
 
-    @Nullable
-    public String getCollection() {
+    @Override
+    public @NotNull String getCollectionTitle() {
         return collection;
     }
 
-    public void setCollection(@Nullable String collection) {
+    @Override
+    public void setCollectionTitle(@NotNull String collectionTitle) {
+        this.collection = collectionTitle;
+    }
+
+    public void setCollection(@NotNull String collection) {
         this.collection = collection;
     }
 
-    @Nullable
+    @NotNull
     public String getImdbId() {
         return imdbId;
     }
 
-    @Nullable
-    public String getLanguage() {
+    @Override
+    public void setImdbId(@NotNull String imdbId) {
+        this.imdbId = imdbId;
+    }
+
+    @Override
+    public @NotNull Integer getTmdbId() {
+        return tmdbId;
+    }
+
+    @Override
+    public void setTmdbId(@NotNull Integer tmdbId) {
+        this.tmdbId = tmdbId;
+    }
+
+    public @NotNull String getLanguage() {
         return language;
     }
 
-    @Nullable
-    public String getOverview() {
+    public @NotNull String getOverview() {
         return overview;
     }
 
@@ -153,15 +174,20 @@ public final class Movie implements Comparable<Movie> {
         return moviesInCollection;
     }
 
+    @Override
+    public @NotNull String getTitleWithoutBadCharacters() {
+        return nameWithoutBadCharacters;
+    }
+
     public @NotNull String getNameWithoutBadCharacters() {
         return nameWithoutBadCharacters;
     }
 
-    public Integer getRatingKey() {
+    public @NotNull Integer getRatingKey() {
         return ratingKey;
     }
 
-    public String getKey() {
+    public @NotNull String getKey() {
         return key;
     }
 
@@ -173,20 +199,20 @@ public final class Movie implements Comparable<Movie> {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Movie movie = (Movie) o;
+        BasicMovie basicMovie = (BasicMovie) o;
 
         //Compare tvdb id first
-        if (tvdbId != -1 && tvdbId.equals(movie.tvdbId)) {
+        if (tmdbId != -1 && tmdbId.equals(basicMovie.tmdbId)) {
             return true;
         }
 
         //Compare imdb id next
-        if (StringUtils.isNotEmpty(imdbId) && imdbId.equals(movie.imdbId)) {
+        if (StringUtils.isNotEmpty(imdbId) && imdbId.equals(basicMovie.imdbId)) {
             return true;
         }
 
         //Fallback is year and title
-        return year.equals(movie.year) && nameWithoutBadCharacters.equals(movie.nameWithoutBadCharacters);
+        return year.equals(basicMovie.year) && nameWithoutBadCharacters.equals(basicMovie.nameWithoutBadCharacters);
     }
 
     @Override
@@ -212,13 +238,13 @@ public final class Movie implements Comparable<Movie> {
                 ", moviesInCollection=" + moviesInCollection +
                 ", collection='" + collection + '\'' +
                 ", collectionId=" + collectionId +
-                ", tvdbId=" + tvdbId +
+                ", tvdbId=" + tmdbId +
                 ", ratingKey=" + ratingKey +
                 ", key='" + key + '\'' +
                 '}';
     }
 
-    public int compareTo(Movie o) {
+    public int compareTo(BasicMovie o) {
         return getNameWithoutBadCharacters().compareTo(o.getNameWithoutBadCharacters());
     }
 
@@ -272,8 +298,8 @@ public final class Movie implements Comparable<Movie> {
             this.key = "";
         }
 
-        public Movie build() {
-            return new Movie(name, year, posterUrl, collection, collectionId, tvdbId, imdbId, language, overview, moviesInCollection, ratingKey, key);
+        public BasicMovie build() {
+            return new BasicMovie(name, year, posterUrl, collection, collectionId, tvdbId, imdbId, language, overview, moviesInCollection, ratingKey, key);
         }
 
         @NotNull
@@ -331,7 +357,7 @@ public final class Movie implements Comparable<Movie> {
         }
 
         @NotNull
-        public Builder setKey(@NotNull  String key) {
+        public Builder setKey(@NotNull String key) {
             this.key = key;
             return this;
         }

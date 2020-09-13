@@ -38,7 +38,7 @@ public interface Video {
     void setCollectionTitle(@NotNull String collectionTitle);
 
     /**
-     * @return The id of the collection the movie belogns too, -1 otherwise
+     * @return The id of the collection the movie belongs too, -1 otherwise
      */
     @NotNull Integer getCollectionId();
 
@@ -59,7 +59,7 @@ public interface Video {
      *
      * @param imdbId IMDB ID
      */
-    void setImdbId(@NotNull Integer imdbId);
+    void setImdbId(@NotNull String imdbId);
 
     /**
      * @return The TMDB ID of the movie, empty otherwise
@@ -71,7 +71,7 @@ public interface Video {
      *
      * @param tmdbId TMDB ID
      */
-    void setTmdbId(@NotNull String tmdbId);
+    void setTmdbId(@NotNull Integer tmdbId);
 
     /**
      * @return List of movies in the collection, empty otherwise

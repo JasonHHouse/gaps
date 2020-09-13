@@ -16,21 +16,21 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.jasonhhouse.gaps.Movie;
+import com.jasonhhouse.gaps.BasicMovie;
 import java.io.StringWriter;
 import java.io.Writer;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class MovieSerializerTest {
+class BasicMovieSerializerTest {
 
     @Test
     void serializeAndDeserialize() throws Exception {
         MovieSerializer movieSerializer = new MovieSerializer();
         MovieDeserializer movieDeserializer = new MovieDeserializer();
 
-        Movie movie = new Movie.Builder("Alien", 1979)
+        BasicMovie basicMovie = new BasicMovie.Builder("Alien", 1979)
                 .setTvdbId(1345)
                 .setCollection("Aliens Collection")
                 .setCollectionId(5423)
@@ -44,15 +44,15 @@ class MovieSerializerTest {
         JsonGenerator jsonGenerator = factory.createGenerator(jsonWriter);
         SerializerProvider serializerProvider = objectMapper.getSerializerProvider();
 
-        movieSerializer.serialize(movie, jsonGenerator, serializerProvider);
+        movieSerializer.serialize(basicMovie, jsonGenerator, serializerProvider);
         jsonGenerator.flush();
 
         JsonParser jsonParser = factory.createParser(jsonWriter.toString());
         DeserializationContext deserializationContext = objectMapper.getDeserializationContext();
         jsonParser.setCodec(objectMapper);
 
-        Movie movie1 = movieDeserializer.deserialize(jsonParser, deserializationContext);
-        assertEquals(movie1, movie, "Failed to serialize then deserialize a movie");
+        BasicMovie basicMovie1 = movieDeserializer.deserialize(jsonParser, deserializationContext);
+        assertEquals(basicMovie1, basicMovie, "Failed to serialize then deserialize a movie");
     }
 
     @Test
@@ -60,7 +60,7 @@ class MovieSerializerTest {
         MovieSerializer movieSerializer = new MovieSerializer();
         MovieDeserializer movieDeserializer = new MovieDeserializer();
 
-        Movie movie = new Movie.Builder("Alien", 1979)
+        BasicMovie basicMovie = new BasicMovie.Builder("Alien", 1979)
                 .setTvdbId(1345)
                 .setCollection("Aliens Collection")
                 .setCollectionId(5423)
@@ -74,14 +74,14 @@ class MovieSerializerTest {
         JsonGenerator jsonGenerator = factory.createGenerator(jsonWriter);
         SerializerProvider serializerProvider = objectMapper.getSerializerProvider();
 
-        movieSerializer.serialize(movie, jsonGenerator, serializerProvider);
+        movieSerializer.serialize(basicMovie, jsonGenerator, serializerProvider);
         jsonGenerator.flush();
 
         JsonParser jsonParser = factory.createParser(jsonWriter.toString());
         DeserializationContext deserializationContext = objectMapper.getDeserializationContext();
         jsonParser.setCodec(objectMapper);
 
-        Movie movie1 = movieDeserializer.deserialize(jsonParser, deserializationContext);
-        assertEquals(movie1, movie, "Failed to serialize then deserialize a movie with null poster url");
+        BasicMovie basicMovie1 = movieDeserializer.deserialize(jsonParser, deserializationContext);
+        assertEquals(basicMovie1, basicMovie, "Failed to serialize then deserialize a movie with null poster url");
     }
 }

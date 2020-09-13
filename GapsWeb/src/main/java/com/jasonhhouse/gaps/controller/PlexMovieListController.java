@@ -11,7 +11,7 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsUrlGenerator;
-import com.jasonhhouse.gaps.Movie;
+import com.jasonhhouse.gaps.BasicMovie;
 import com.jasonhhouse.gaps.Pair;
 import com.jasonhhouse.gaps.service.PlexQuery;
 import com.jasonhhouse.gaps.PlexServer;
@@ -53,31 +53,31 @@ public class PlexMovieListController {
     @GetMapping(value = "/movies/{machineIdentifier}/{key}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<List<Movie>> getPlexMovies(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
+    public ResponseEntity<List<BasicMovie>> getPlexMovies(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("getPlexMovies( {}, {} )", machineIdentifier, key);
 
         PlexProperties plexProperties = fileIoService.readProperties();
-        Set<Movie> everyMovie = fileIoService.readMovieIdsFromFile();
-        Map<Pair<String, Integer>, Movie> previousMovies = generateOwnedMovieMap(plexProperties, everyMovie);
+        Set<BasicMovie> everyBasicMovie = fileIoService.readMovieIdsFromFile();
+        Map<Pair<String, Integer>, BasicMovie> previousMovies = generateOwnedMovieMap(plexProperties, everyBasicMovie);
         PlexServer plexServer = plexQuery.getPlexServerFromMachineIdentifier(plexProperties, machineIdentifier);
         PlexLibrary plexLibrary = plexQuery.getPlexLibraryFromKey(plexServer, key);
         HttpUrl url = gapsUrlGenerator.generatePlexLibraryUrl(plexServer, plexLibrary);
-        List<Movie> ownedMovies = plexQuery.findAllPlexMovies(previousMovies, url);
-        plexQuery.findAllMovieIds(ownedMovies, plexServer, plexLibrary);
+        List<BasicMovie> ownedBasicMovies = plexQuery.findAllPlexMovies(previousMovies, url);
+        plexQuery.findAllMovieIds(ownedBasicMovies, plexServer, plexLibrary);
 
         //Update Owned Movies
-        fileIoService.writeOwnedMoviesToFile(ownedMovies, machineIdentifier, key);
-        return ResponseEntity.ok().body(ownedMovies);
+        fileIoService.writeOwnedMoviesToFile(ownedBasicMovies, machineIdentifier, key);
+        return ResponseEntity.ok().body(ownedBasicMovies);
     }
 
-    private Map<Pair<String, Integer>, Movie> generateOwnedMovieMap(PlexProperties plexProperties, Set<Movie> everyMovie) {
-        Map<Pair<String, Integer>, Movie> previousMovies = new HashMap<>();
+    private Map<Pair<String, Integer>, BasicMovie> generateOwnedMovieMap(PlexProperties plexProperties, Set<BasicMovie> everyBasicMovie) {
+        Map<Pair<String, Integer>, BasicMovie> previousMovies = new HashMap<>();
 
         plexProperties
                 .getPlexServers()
                 .forEach(plexServer -> plexServer
                         .getPlexLibraries()
-                        .forEach(plexLibrary -> everyMovie.forEach(movie -> previousMovies.put(new Pair<>(movie.getName(), movie.getYear()), movie))));
+                        .forEach(plexLibrary -> everyBasicMovie.forEach(movie -> previousMovies.put(new Pair<>(movie.getTitle(), movie.getYear()), movie))));
 
         return previousMovies;
     }
