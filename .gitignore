@@ -51,3 +51,5 @@ cypress/videos
 GapsOnWindows/*
 !GapsOnWindows/start.bat
 !GapsOnWindows/gaps.nsi
+
+GapsAsJar/*
