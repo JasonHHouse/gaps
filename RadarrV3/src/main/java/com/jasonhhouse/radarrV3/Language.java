@@ -10,7 +10,61 @@
 
 package com.jasonhhouse.radarrV3;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Language {
-    public int id;
-    public String name;
+    @NotNull
+    private final Integer id;
+    @NotNull
+    private final String name;
+
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    public Language(@JsonProperty(value = "id") @Nullable Integer id,
+                    @JsonProperty(value = "name") @Nullable String name) {
+        this.id = id == null ? -1 : id;
+        this.name = name == null ? "" : name;
+    }
+
+    public @NotNull Integer getId() {
+        return id;
+    }
+
+    public @NotNull String getName() {
+        return name;
+    }
+
+    @NotNull
+    static Language getDefault() {
+        return new Language(null, null);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Language language = (Language) o;
+        return id.equals(language.id) &&
+                name.equals(language.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
+
+    @Override
+    public String toString() {
+        return "Language{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

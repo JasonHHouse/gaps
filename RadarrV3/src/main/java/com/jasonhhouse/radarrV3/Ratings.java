@@ -21,9 +21,9 @@ import org.jetbrains.annotations.Nullable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public final class Ratings {
     @NotNull
-    public final Integer votes;
+    private final Integer votes;
     @NotNull
-    public final Double value;
+    private final Double value;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public Ratings(@JsonProperty(value = "votes") @Nullable Integer votes,
@@ -40,6 +40,11 @@ public final class Ratings {
     @NotNull
     public Double getValue() {
         return value;
+    }
+
+    @NotNull
+    static Ratings getDefault() {
+        return new Ratings(null, null);
     }
 
     @Override

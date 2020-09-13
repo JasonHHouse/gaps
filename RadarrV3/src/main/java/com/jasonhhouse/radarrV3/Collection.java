@@ -10,10 +10,73 @@
 
 package com.jasonhhouse.radarrV3;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Collection {
-    public String name;
-    public int tmdbId;
-    public List<Object> images;
+    @NotNull
+    private final String name;
+    @NotNull
+    private final Integer tmdbId;
+    @NotNull
+    private final List<Object> images;
+
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    public Collection(@JsonProperty(value = "name") @Nullable String name,
+                      @JsonProperty(value = "tmdbId") @Nullable Integer tmdbId,
+                      @JsonProperty(value = "images") @Nullable List<Object> images) {
+        this.name = name == null ? "" : name;
+        this.tmdbId = tmdbId == null ? -1 : tmdbId;
+        this.images = images == null ? Collections.emptyList() : images;
+    }
+
+    public @NotNull String getName() {
+        return name;
+    }
+
+    public @NotNull Integer getTmdbId() {
+        return tmdbId;
+    }
+
+    public @NotNull List<Object> getImages() {
+        return images;
+    }
+
+    @NotNull
+    static Collection getDefault() {
+        return new Collection(null, null, null);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Collection that = (Collection) o;
+        return name.equals(that.name) &&
+                tmdbId.equals(that.tmdbId) &&
+                images.equals(that.images);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, tmdbId, images);
+    }
+
+    @Override
+    public String toString() {
+        return "Collection{" +
+                "name='" + name + '\'' +
+                ", tmdbId=" + tmdbId +
+                ", images=" + images +
+                '}';
+    }
 }

@@ -21,15 +21,15 @@ import org.jetbrains.annotations.Nullable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public final class Quality2 {
     @NotNull
-    public final Integer id;
+    private final Integer id;
     @NotNull
-    public final String name;
+    private final String name;
     @NotNull
-    public final String source;
+    private final String source;
     @NotNull
-    public final Integer resolution;
+    private final Integer resolution;
     @NotNull
-    public final String modifier;
+    private final String modifier;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public Quality2(@JsonProperty(value = "id") @Nullable Integer id,
@@ -69,6 +69,7 @@ public final class Quality2 {
         return modifier;
     }
 
+    @NotNull
     static Quality2 getDefault() {
         return new Quality2(null, null, null, null, null);
     }

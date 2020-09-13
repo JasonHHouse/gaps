@@ -21,9 +21,9 @@ import org.jetbrains.annotations.Nullable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public final class Quality {
     @NotNull
-    public final Quality2 quality;
+    private final Quality2 quality;
     @NotNull
-    public final Revision revision;
+    private final Revision revision;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public Quality(@JsonProperty(value = "quality") @Nullable Quality2 quality,
@@ -40,6 +40,11 @@ public final class Quality {
     @NotNull
     public Revision getRevision() {
         return revision;
+    }
+
+    @NotNull
+    static Quality getDefault() {
+        return new Quality(null, null);
     }
 
     @Override

@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,27 +25,27 @@ import org.jetbrains.annotations.Nullable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public final class MovieFile {
     @NotNull
-    public final Integer movieId;
+    private final Integer movieId;
     @NotNull
-    public final String relativePath;
+    private final String relativePath;
     @NotNull
-    public final String path;
+    private final String path;
     @NotNull
-    public final Integer size;
+    private final Integer size;
     @NotNull
-    public final Date dateAdded;
+    private final Date dateAdded;
     @NotNull
-    public final Integer indexerFlags;
+    private final Integer indexerFlags;
     @NotNull
-    public final Quality quality;
+    private final Quality quality;
     @NotNull
-    public final MediaInfo mediaInfo;
+    private final MediaInfo mediaInfo;
     @NotNull
-    public final Boolean qualityCutoffNotMet;
+    private final Boolean qualityCutoffNotMet;
     @NotNull
-    public final List<Language2> languages;
+    private final List<Language> languages;
     @NotNull
-    public final Integer id;
+    private final Integer id;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public MovieFile(@JsonProperty(value = "movieId") @Nullable Integer movieId,
@@ -56,7 +57,7 @@ public final class MovieFile {
                      @JsonProperty(value = "quality") @Nullable Quality quality,
                      @JsonProperty(value = "mediaInfo") @Nullable MediaInfo mediaInfo,
                      @JsonProperty(value = "qualityCutoffNotMet") @Nullable Boolean qualityCutoffNotMet,
-                     @JsonProperty(value = "languages") @Nullable List<Language2> languages,
+                     @JsonProperty(value = "languages") @Nullable List<Language> languages,
                      @JsonProperty(value = "id") @Nullable Integer id) {
         this.movieId = movieId == null ? -1 : movieId;
         this.relativePath = relativePath == null ? "" : relativePath;
@@ -69,5 +70,94 @@ public final class MovieFile {
         this.qualityCutoffNotMet = qualityCutoffNotMet != null && qualityCutoffNotMet;
         this.languages = languages == null ? Collections.emptyList() : languages;
         this.id = id == null ? -1 : id;
+    }
+
+    public @NotNull Integer getMovieId() {
+        return movieId;
+    }
+
+    public @NotNull String getRelativePath() {
+        return relativePath;
+    }
+
+    public @NotNull String getPath() {
+        return path;
+    }
+
+    public @NotNull Integer getSize() {
+        return size;
+    }
+
+    public @NotNull Date getDateAdded() {
+        return dateAdded;
+    }
+
+    public @NotNull Integer getIndexerFlags() {
+        return indexerFlags;
+    }
+
+    public @NotNull Quality getQuality() {
+        return quality;
+    }
+
+    public @NotNull MediaInfo getMediaInfo() {
+        return mediaInfo;
+    }
+
+    public @NotNull Boolean getQualityCutoffNotMet() {
+        return qualityCutoffNotMet;
+    }
+
+    public @NotNull List<Language> getLanguages() {
+        return languages;
+    }
+
+    public @NotNull Integer getId() {
+        return id;
+    }
+
+    @NotNull
+    static MovieFile getDefault() {
+        return new MovieFile(null, null,null, null,null, null,null, null,null, null,null);
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MovieFile movieFile = (MovieFile) o;
+        return movieId.equals(movieFile.movieId) &&
+                relativePath.equals(movieFile.relativePath) &&
+                path.equals(movieFile.path) &&
+                size.equals(movieFile.size) &&
+                dateAdded.equals(movieFile.dateAdded) &&
+                indexerFlags.equals(movieFile.indexerFlags) &&
+                quality.equals(movieFile.quality) &&
+                mediaInfo.equals(movieFile.mediaInfo) &&
+                qualityCutoffNotMet.equals(movieFile.qualityCutoffNotMet) &&
+                languages.equals(movieFile.languages) &&
+                id.equals(movieFile.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(movieId, relativePath, path, size, dateAdded, indexerFlags, quality, mediaInfo, qualityCutoffNotMet, languages, id);
+    }
+
+    @Override
+    public String toString() {
+        return "MovieFile{" +
+                "movieId=" + movieId +
+                ", relativePath='" + relativePath + '\'' +
+                ", path='" + path + '\'' +
+                ", size=" + size +
+                ", dateAdded=" + dateAdded +
+                ", indexerFlags=" + indexerFlags +
+                ", quality=" + quality +
+                ", mediaInfo=" + mediaInfo +
+                ", qualityCutoffNotMet=" + qualityCutoffNotMet +
+                ", languages=" + languages +
+                ", id=" + id +
+                '}';
     }
 }

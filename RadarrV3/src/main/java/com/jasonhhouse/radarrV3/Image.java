@@ -10,8 +10,71 @@
 
 package com.jasonhhouse.radarrV3;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Image {
-    public String coverType;
-    public String url;
-    public String remoteUrl;
+    @NotNull
+    private final String coverType;
+    @NotNull
+    private final String url;
+    @NotNull
+    private final String remoteUrl;
+
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    public Image(@JsonProperty(value = "coverType") @Nullable String coverType,
+                 @JsonProperty(value = "url") @Nullable String url,
+                 @JsonProperty(value = "remoteUrl") @Nullable String remoteUrl) {
+        this.coverType = coverType == null ? "" : coverType;
+        this.url = url == null ? "" : url;
+        this.remoteUrl = remoteUrl == null ? "" : remoteUrl;
+    }
+
+    public @NotNull String getCoverType() {
+        return coverType;
+    }
+
+    public @NotNull String getUrl() {
+        return url;
+    }
+
+    public @NotNull String getRemoteUrl() {
+        return remoteUrl;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Image image = (Image) o;
+        return coverType.equals(image.coverType) &&
+                url.equals(image.url) &&
+                remoteUrl.equals(image.remoteUrl);
+    }
+
+    @NotNull
+    static Image getDefault() {
+        return new Image(null, null, null);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(coverType, url, remoteUrl);
+    }
+
+    @Override
+    public String toString() {
+        return "Image{" +
+                "coverType='" + coverType + '\'' +
+                ", url='" + url + '\'' +
+                ", remoteUrl='" + remoteUrl + '\'' +
+                '}';
+    }
 }

@@ -21,11 +21,11 @@ import org.jetbrains.annotations.Nullable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public final class Revision {
     @NotNull
-    public final Integer version;
+    private final Integer version;
     @NotNull
-    public final Integer real;
+    private final Integer real;
     @NotNull
-    public final Boolean isRepack;
+    private final Boolean isRepack;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public Revision(@JsonProperty(value = "version") @Nullable Integer version,
@@ -51,6 +51,7 @@ public final class Revision {
         return isRepack;
     }
 
+    @NotNull
     static Revision getDefault() {
         return new Revision(null, null, null);
     }
