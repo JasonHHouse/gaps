@@ -8,50 +8,65 @@
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.jasonhhouse.radarrV3;
+package com.jasonhhouse.radarr_v3;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public final class Quality {
+public final class Ratings {
     @NotNull
-    private final Quality2 quality;
+    private final Integer votes;
     @NotNull
-    private final Revision revision;
+    private final Double value;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public Quality(@JsonProperty(value = "quality") @Nullable Quality2 quality,
-                   @JsonProperty(value = "revision") @Nullable Revision revision) {
-        this.quality = quality == null ? Quality2.getDefault() : quality;
-        this.revision = revision == null ? Revision.getDefault() : revision;
+    public Ratings(@JsonProperty(value = "votes") @Nullable Integer votes,
+                   @JsonProperty(value = "value") @Nullable Double value) {
+        this.votes = votes == null ? -1 : votes;
+        this.value = value == null ? -1.0 : value;
     }
 
     @NotNull
-    public Quality2 getQuality() {
-        return quality;
+    static Ratings getDefault() {
+        return new Ratings(null, null);
     }
 
     @NotNull
-    public Revision getRevision() {
-        return revision;
+    public Integer getVotes() {
+        return votes;
     }
 
     @NotNull
-    static Quality getDefault() {
-        return new Quality(null, null);
+    public Double getValue() {
+        return value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ratings ratings = (Ratings) o;
+        return votes.equals(ratings.votes) &&
+                value.equals(ratings.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(votes, value);
     }
 
     @Override
     public String toString() {
-        return "Quality{" +
-                "quality=" + quality +
-                ", revision=" + revision +
+        return "Ratings{" +
+                "votes=" + votes +
+                ", value=" + value +
                 '}';
     }
 }

@@ -8,7 +8,7 @@
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.jasonhhouse.radarrV3;
+package com.jasonhhouse.radarr_v3;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -20,61 +20,51 @@ import org.jetbrains.annotations.Nullable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Image {
+public class Language {
     @NotNull
-    private final String coverType;
+    private final Integer id;
     @NotNull
-    private final String url;
-    @NotNull
-    private final String remoteUrl;
+    private final String name;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public Image(@JsonProperty(value = "coverType") @Nullable String coverType,
-                 @JsonProperty(value = "url") @Nullable String url,
-                 @JsonProperty(value = "remoteUrl") @Nullable String remoteUrl) {
-        this.coverType = coverType == null ? "" : coverType;
-        this.url = url == null ? "" : url;
-        this.remoteUrl = remoteUrl == null ? "" : remoteUrl;
+    public Language(@JsonProperty(value = "id") @Nullable Integer id,
+                    @JsonProperty(value = "name") @Nullable String name) {
+        this.id = id == null ? -1 : id;
+        this.name = name == null ? "" : name;
     }
 
-    public @NotNull String getCoverType() {
-        return coverType;
+    @NotNull
+    static Language getDefault() {
+        return new Language(null, null);
     }
 
-    public @NotNull String getUrl() {
-        return url;
+    public @NotNull Integer getId() {
+        return id;
     }
 
-    public @NotNull String getRemoteUrl() {
-        return remoteUrl;
+    public @NotNull String getName() {
+        return name;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Image image = (Image) o;
-        return coverType.equals(image.coverType) &&
-                url.equals(image.url) &&
-                remoteUrl.equals(image.remoteUrl);
-    }
-
-    @NotNull
-    static Image getDefault() {
-        return new Image(null, null, null);
+        Language language = (Language) o;
+        return id.equals(language.id) &&
+                name.equals(language.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(coverType, url, remoteUrl);
+        return Objects.hash(id, name);
     }
 
     @Override
     public String toString() {
-        return "Image{" +
-                "coverType='" + coverType + '\'' +
-                ", url='" + url + '\'' +
-                ", remoteUrl='" + remoteUrl + '\'' +
+        return "Language{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

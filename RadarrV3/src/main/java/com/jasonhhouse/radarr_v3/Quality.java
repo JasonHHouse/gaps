@@ -8,80 +8,65 @@
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.jasonhhouse.radarrV3;
+package com.jasonhhouse.radarr_v3;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public final class Quality2 {
+public final class Quality {
     @NotNull
-    private final Integer id;
+    private final Quality2 quality;
     @NotNull
-    private final String name;
-    @NotNull
-    private final String source;
-    @NotNull
-    private final Integer resolution;
-    @NotNull
-    private final String modifier;
+    private final Revision revision;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public Quality2(@JsonProperty(value = "id") @Nullable Integer id,
-                    @JsonProperty(value = "name") @Nullable String name,
-                    @JsonProperty(value = "source") @Nullable String source,
-                    @JsonProperty(value = "resolution") @Nullable Integer resolution,
-                    @JsonProperty(value = "modifier") @Nullable String modifier) {
-        this.id = id == null ? -1 : id;
-        this.name = name == null ? "" : name;
-        this.source = source == null ? "" : source;
-        this.resolution = resolution == null ? -1 : resolution;
-        this.modifier = modifier == null ? "" : modifier;
+    public Quality(@JsonProperty(value = "quality") @Nullable Quality2 quality,
+                   @JsonProperty(value = "revision") @Nullable Revision revision) {
+        this.quality = quality == null ? Quality2.getDefault() : quality;
+        this.revision = revision == null ? Revision.getDefault() : revision;
     }
 
     @NotNull
-    public Integer getId() {
-        return id;
+    static Quality getDefault() {
+        return new Quality(null, null);
     }
 
     @NotNull
-    public String getName() {
-        return name;
+    public Quality2 getQuality() {
+        return quality;
     }
 
     @NotNull
-    public String getSource() {
-        return source;
+    public Revision getRevision() {
+        return revision;
     }
 
-    @NotNull
-    public Integer getResolution() {
-        return resolution;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Quality quality1 = (Quality) o;
+        return quality.equals(quality1.quality) &&
+                revision.equals(quality1.revision);
     }
 
-    @NotNull
-    public String getModifier() {
-        return modifier;
-    }
-
-    @NotNull
-    static Quality2 getDefault() {
-        return new Quality2(null, null, null, null, null);
+    @Override
+    public int hashCode() {
+        return Objects.hash(quality, revision);
     }
 
     @Override
     public String toString() {
-        return "Quality2{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", source='" + source + '\'' +
-                ", resolution=" + resolution +
-                ", modifier='" + modifier + '\'' +
+        return "Quality{" +
+                "quality=" + quality +
+                ", revision=" + revision +
                 '}';
     }
 }

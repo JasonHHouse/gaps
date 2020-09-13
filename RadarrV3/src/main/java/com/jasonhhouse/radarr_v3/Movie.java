@@ -8,7 +8,7 @@
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.jasonhhouse.radarrV3;
+package com.jasonhhouse.radarr_v3;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -92,7 +92,7 @@ public final class Movie {
     private final Integer id;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public Movie(@JsonProperty(value = "id") @Nullable String title,
+    public Movie(@JsonProperty(value = "title") @Nullable String title,
                  @JsonProperty(value = "originalTitle") @Nullable String originalTitle,
                  @JsonProperty(value = "alternateTitles") @Nullable List<AlternateTitle> alternateTitles,
                  @JsonProperty(value = "secondaryYearSourceId") @Nullable Integer secondaryYearSourceId,

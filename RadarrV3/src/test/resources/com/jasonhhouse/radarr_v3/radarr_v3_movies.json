@@ -1,0 +1,232 @@
+{
+  "title": "Dragon Ball: Mystical Adventure",
+  "originalTitle": "DRAGON BALL 摩訶不思議大冒険",
+  "alternateTitles": [
+    {
+      "sourceType": "tmdb",
+      "movieId": 1,
+      "title": "Dragon Ball Movie 03: Son-Gokus erstes Turnier",
+      "sourceId": 0,
+      "votes": 0,
+      "voteCount": 0,
+      "language": {
+        "id": 4,
+        "name": "German"
+      },
+      "id": 16
+    },
+    {
+      "sourceType": "tmdb",
+      "movieId": 1,
+      "title": "Dragonball: Son-Gokus erstes Turnier",
+      "sourceId": 0,
+      "votes": 0,
+      "voteCount": 0,
+      "language": {
+        "id": 4,
+        "name": "German"
+      },
+      "id": 17
+    },
+    {
+      "sourceType": "tmdb",
+      "movieId": 1,
+      "title": "Bola de Drac: Aventura mística",
+      "sourceId": 0,
+      "votes": 0,
+      "voteCount": 0,
+      "language": {
+        "id": 3,
+        "name": "Spanish"
+      },
+      "id": 18
+    },
+    {
+      "sourceType": "tmdb",
+      "movieId": 1,
+      "title": "Bola de drac 03 Aventura mística (1988)",
+      "sourceId": 0,
+      "votes": 0,
+      "voteCount": 0,
+      "language": {
+        "id": 3,
+        "name": "Spanish"
+      },
+      "id": 19
+    },
+    {
+      "sourceType": "tmdb",
+      "movieId": 1,
+      "title": "Dragon Ball (03) - L’aventure mystique (1988)",
+      "sourceId": 0,
+      "votes": 0,
+      "voteCount": 0,
+      "language": {
+        "id": 2,
+        "name": "French"
+      },
+      "id": 20
+    },
+    {
+      "sourceType": "tmdb",
+      "movieId": 1,
+      "title": "Dragon Ball Movie 03 - Il torneo di Miifan",
+      "sourceId": 0,
+      "votes": 0,
+      "voteCount": 0,
+      "language": {
+        "id": 5,
+        "name": "Italian"
+      },
+      "id": 21
+    },
+    {
+      "sourceType": "tmdb",
+      "movieId": 1,
+      "title": "Doragon Bōru: Makafushigi Dai-Bōken",
+      "sourceId": 0,
+      "votes": 0,
+      "voteCount": 0,
+      "language": {
+        "id": 1,
+        "name": "English"
+      },
+      "id": 22
+    },
+    {
+      "sourceType": "tmdb",
+      "movieId": 1,
+      "title": "Dragon Ball: Makafushigi Daibouken",
+      "sourceId": 0,
+      "votes": 0,
+      "voteCount": 0,
+      "language": {
+        "id": 1,
+        "name": "English"
+      },
+      "id": 23
+    },
+    {
+      "sourceType": "tmdb",
+      "movieId": 1,
+      "title": "Makafushigi Dai-Bōken",
+      "sourceId": 0,
+      "votes": 0,
+      "voteCount": 0,
+      "language": {
+        "id": 1,
+        "name": "English"
+      },
+      "id": 24
+    },
+    {
+      "sourceType": "tmdb",
+      "movieId": 1,
+      "title": "Dragon Ball Movie 03 - Mystical Adventure",
+      "sourceId": 0,
+      "votes": 0,
+      "voteCount": 0,
+      "language": {
+        "id": 1,
+        "name": "English"
+      },
+      "id": 25
+    }
+  ],
+  "secondaryYearSourceId": 0,
+  "sortTitle": "dragon ball mystical adventure",
+  "sizeOnDisk": 709886828,
+  "status": "released",
+  "overview": "Master Roshi has succeeded at the one mission he valued most: to train Goku and Krillin to become ultimate fighters. So, he arranges for them to test their mettle at a competition hosted by Emperor Chiaotzu. Not everyone's playing by the rules, however, as a member of the ruler's household schemes to use the Dragonballs to extort money and power from the royal.",
+  "inCinemas": "1988-07-09T00:00:00Z",
+  "images": [
+    {
+      "coverType": "poster",
+      "url": "/MediaCover/1/poster.jpg?lastWrite=637350693409000810",
+      "remoteUrl": "https://image.tmdb.org/t/p/original/a2oMo9y1WtJsM0EUytKRtZlREE3.jpg"
+    },
+    {
+      "coverType": "fanart",
+      "url": "/MediaCover/1/fanart.jpg?lastWrite=637350693410080817",
+      "remoteUrl": "https://image.tmdb.org/t/p/original/99EYUBrUaefFLSI6ZLnOyAbOE6e.jpg"
+    }
+  ],
+  "website": "",
+  "year": 1988,
+  "hasFile": true,
+  "youTubeTrailerId": "DIjku6BtYW4",
+  "studio": "Toei Animation",
+  "path": "/movies/Dragon Ball Mystical Adventure (1988)",
+  "qualityProfileId": 1,
+  "monitored": true,
+  "minimumAvailability": "announced",
+  "isAvailable": true,
+  "folderName": "/movies/Dragon Ball Mystical Adventure (1988)",
+  "runtime": 48,
+  "cleanTitle": "dragonballmysticaladventure",
+  "imdbId": "tt0142248",
+  "tmdbId": 116776,
+  "titleSlug": "116776",
+  "genres": [
+    "Action",
+    "Animation"
+  ],
+  "tags": [],
+  "added": "2020-09-07T09:55:34.3416239Z",
+  "ratings": {
+    "votes": 116,
+    "value": 6.5
+  },
+  "movieFile": {
+    "movieId": 1,
+    "relativePath": "Dragon Ball Mystical Adventure (1988).mkv",
+    "path": "/movies/Dragon Ball Mystical Adventure (1988)/Dragon Ball Mystical Adventure (1988).mkv",
+    "size": 709886828,
+    "dateAdded": "2020-09-07T09:55:40.9899389Z",
+    "indexerFlags": 0,
+    "quality": {
+      "quality": {
+        "id": 8,
+        "name": "WEBDL-480p",
+        "source": "webdl",
+        "resolution": 480,
+        "modifier": "none"
+      },
+      "revision": {
+        "version": 1,
+        "real": 0,
+        "isRepack": false
+      }
+    },
+    "mediaInfo": {
+      "audioAdditionalFeatures": "",
+      "audioBitrate": 112001,
+      "audioChannels": 2.0,
+      "audioCodec": "Vorbis",
+      "audioLanguages": "English",
+      "audioStreamCount": 1,
+      "videoBitDepth": 8,
+      "videoBitrate": 2000000,
+      "videoCodec": "x264",
+      "videoFps": 23.976,
+      "resolution": "640x480",
+      "runTime": "45:17",
+      "scanType": "Progressive",
+      "subtitles": ""
+    },
+    "qualityCutoffNotMet": true,
+    "languages": [
+      {
+        "id": 1,
+        "name": "English"
+      }
+    ],
+    "id": 1
+  },
+  "collection": {
+    "name": "Dragon Ball Collection",
+    "tmdbId": 386410,
+    "images": []
+  },
+  "id": 1
+}

@@ -8,7 +8,7 @@
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.jasonhhouse.radarrV3;
+package com.jasonhhouse.radarr_v3;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -72,6 +72,11 @@ public final class MovieFile {
         this.id = id == null ? -1 : id;
     }
 
+    @NotNull
+    static MovieFile getDefault() {
+        return new MovieFile(null, null, null, null, null, null, null, null, null, null, null);
+    }
+
     public @NotNull Integer getMovieId() {
         return movieId;
     }
@@ -116,11 +121,6 @@ public final class MovieFile {
         return id;
     }
 
-    @NotNull
-    static MovieFile getDefault() {
-        return new MovieFile(null, null,null, null,null, null,null, null,null, null,null);
-    }
-    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
