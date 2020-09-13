@@ -280,7 +280,7 @@ public class PlexQueryImpl implements PlexQuery {
 
         for (BasicMovie basicMovie : basicMovies) {
             if (basicMovie.getRatingKey() == -1) {
-                LOGGER.info("No key found for the movie {}", basicMovie.getTitle());
+                LOGGER.info("No key found for the movie {}", basicMovie.getName());
                 continue;
             }
 
@@ -294,7 +294,7 @@ public class PlexQueryImpl implements PlexQuery {
                 String body = response.body() != null ? response.body().string() : null;
 
                 if (StringUtils.isBlank(body)) {
-                    LOGGER.error("Body returned empty from Plex for the movie {}", basicMovie.getTitle());
+                    LOGGER.error("Body returned empty from Plex for the movie {}", basicMovie.getName());
                     continue;
                 }
 
@@ -494,9 +494,9 @@ public class PlexQueryImpl implements PlexQuery {
                     .setKey(key)
                     .setRatingKey(ratingKey)
                     .setImdbId(previousBasicMovie.getImdbId())
-                    .setCollection(previousBasicMovie.getCollectionTitle())
+                    .setCollectionTitle(previousBasicMovie.getCollectionTitle())
                     .setLanguage(previousBasicMovie.getLanguage())
-                    .setTvdbId(previousBasicMovie.getTmdbId())
+                    .setTmdbId(previousBasicMovie.getTmdbId())
                     .setCollectionId(previousBasicMovie.getCollectionId())
                     .build();
         } else {
@@ -505,7 +505,7 @@ public class PlexQueryImpl implements PlexQuery {
                     .setOverview(summary)
                     .setKey(key)
                     .setRatingKey(ratingKey)
-                    .setTvdbId(tmdbId)
+                    .setTmdbId(tmdbId)
                     .setImdbId(imdbId)
                     .build();
         }

@@ -121,7 +121,7 @@ public class FileIoService implements IO {
 
         // Create writer that java will close for us.
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            List<Rss> rssList = recommended.stream().map(movie -> new Rss(movie.getImdbId(), movie.getYear(), movie.getTmdbId(), movie.getTitle(), movie.getPosterUrl())).collect(Collectors.toList());
+            List<Rss> rssList = recommended.stream().map(movie -> new Rss(movie.getImdbId(), movie.getYear(), movie.getTmdbId(), movie.getName(), movie.getPosterUrl())).collect(Collectors.toList());
             byte[] output = objectMapper.writeValueAsBytes(rssList);
             outputStream.write(output);
         } catch (FileNotFoundException e) {

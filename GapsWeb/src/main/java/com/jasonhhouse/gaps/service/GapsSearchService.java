@@ -254,22 +254,22 @@ public class GapsSearchService implements GapsSearch {
                 //Otherwise, fall back to movie title and year search
                 LOGGER.info(basicMovie.toString());
                 if (basicMovie.getTmdbId() != -1 && basicMovie.getCollectionId() != -1) {
-                    LOGGER.info("Used Collection ID to get {}", basicMovie.getTitle());
+                    LOGGER.info("Used Collection ID to get {}", basicMovie.getName());
                     tempTvdbCounter.incrementAndGet();
                     handleCollection(plexProperties, machineIdentifier, key, ownedBasicMovies, everyBasicMovie, recommended, searched, searchedMovieCount, basicMovie, client, languageCode);
                     continue;
                 } else if (basicMovie.getTmdbId() != -1) {
-                    LOGGER.info("Used TVDB ID to get {}", basicMovie.getTitle());
+                    LOGGER.info("Used TVDB ID to get {}", basicMovie.getName());
                     tempTvdbCounter.incrementAndGet();
                     searchMovieDetails(plexProperties, machineIdentifier, key, ownedBasicMovies, everyBasicMovie, recommended, searched, searchedMovieCount, basicMovie, client, languageCode);
                     continue;
                 } else if (StringUtils.isNotBlank(basicMovie.getImdbId())) {
-                    LOGGER.info("Used 'find' to search for {}", basicMovie.getTitle());
+                    LOGGER.info("Used 'find' to search for {}", basicMovie.getName());
                     String imdbId = URLEncoder.encode(basicMovie.getImdbId(), StandardCharsets.UTF_8);
                     searchMovieUrl = urlGenerator.generateFindMovieUrl(plexProperties.getMovieDbApiKey(), imdbId, languageCode);
                 } else {
-                    LOGGER.info("Used 'search' to search for {}", basicMovie.getTitle());
-                    String name = URLEncoder.encode(basicMovie.getTitle(), StandardCharsets.UTF_8);
+                    LOGGER.info("Used 'search' to search for {}", basicMovie.getName());
+                    String name = URLEncoder.encode(basicMovie.getName(), StandardCharsets.UTF_8);
                     searchMovieUrl = urlGenerator.generateSearchMovieUrl(plexProperties.getMovieDbApiKey(), name, String.valueOf(basicMovie.getYear()), languageCode);
                 }
 
@@ -327,10 +327,10 @@ public class GapsSearchService implements GapsSearch {
                         LOGGER.info("Merging movie data");
                         everyBasicMovie.get(indexOfMovie).setTmdbId(basicMovie.getTmdbId());
                     } else {
-                        BasicMovie newBasicMovie = new BasicMovie.Builder(basicMovie.getTitle(), basicMovie.getYear())
-                                .setTvdbId(basicMovie.getTmdbId())
+                        BasicMovie newBasicMovie = new BasicMovie.Builder(basicMovie.getName(), basicMovie.getYear())
+                                .setTmdbId(basicMovie.getTmdbId())
                                 .setImdbId(basicMovie.getImdbId())
-                                .setCollection(basicMovie.getCollectionTitle())
+                                .setCollectionTitle(basicMovie.getCollectionTitle())
                                 .setCollectionId(basicMovie.getCollectionId())
                                 .build();
                         everyBasicMovie.add(newBasicMovie);
@@ -379,7 +379,7 @@ public class GapsSearchService implements GapsSearch {
             }
 
             if (StringUtils.isEmpty(movieDetailJson)) {
-                LOGGER.error("Body returned null from TheMovieDB for details on {}", basicMovie.getTitle());
+                LOGGER.error("Body returned null from TheMovieDB for details on {}", basicMovie.getName());
                 return;
             }
 
@@ -387,7 +387,7 @@ public class GapsSearchService implements GapsSearch {
 
             if (!movieDetails.has(COLLECTION_ID) || movieDetails.get(COLLECTION_ID).isNull()) {
                 //No collection found, just add movie to searched and continue
-                LOGGER.info("No collection found for {}", basicMovie.getTitle());
+                LOGGER.info("No collection found for {}", basicMovie.getName());
                 searched.add(basicMovie);
                 return;
             }
@@ -395,19 +395,19 @@ public class GapsSearchService implements GapsSearch {
             int collectionId = movieDetails.get(COLLECTION_ID).get(ID).intValue();
             String collectionName = movieDetails.get(COLLECTION_ID).get(NAME).textValue();
             basicMovie.setCollectionId(collectionId);
-            basicMovie.setCollection(collectionName);
+            basicMovie.setCollectionTitle(collectionName);
 
             int indexOfMovie = everyBasicMovie.indexOf(basicMovie);
             if (indexOfMovie != -1) {
                 LOGGER.info("Merging movie data");
                 everyBasicMovie.get(indexOfMovie).setTmdbId(basicMovie.getTmdbId());
                 everyBasicMovie.get(indexOfMovie).setCollectionId(basicMovie.getCollectionId());
-                everyBasicMovie.get(indexOfMovie).setCollection(basicMovie.getCollectionTitle());
+                everyBasicMovie.get(indexOfMovie).setCollectionTitle(basicMovie.getCollectionTitle());
             } else {
-                BasicMovie newBasicMovie = new BasicMovie.Builder(basicMovie.getTitle(), basicMovie.getYear())
-                        .setTvdbId(basicMovie.getTmdbId())
+                BasicMovie newBasicMovie = new BasicMovie.Builder(basicMovie.getName(), basicMovie.getYear())
+                        .setTmdbId(basicMovie.getTmdbId())
                         .setImdbId(basicMovie.getImdbId())
-                        .setCollection(basicMovie.getCollectionTitle())
+                        .setCollectionTitle(basicMovie.getCollectionTitle())
                         .setCollectionId(basicMovie.getCollectionId())
                         .build();
                 everyBasicMovie.add(newBasicMovie);
@@ -437,7 +437,7 @@ public class GapsSearchService implements GapsSearch {
             }
 
             if (StringUtils.isEmpty(collectionJson)) {
-                LOGGER.error("Body returned null from TheMovieDB for collection information about {}", basicMovie.getTitle());
+                LOGGER.error("Body returned null from TheMovieDB for collection information about {}", basicMovie.getName());
                 return;
             }
 
@@ -485,18 +485,18 @@ public class GapsSearchService implements GapsSearch {
                 int id = collection.get(ID).intValue();
                 String name = collection.get(NAME).textValue();
                 everyBasicMovie.get(indexOfMovie).setCollectionId(id);
-                everyBasicMovie.get(indexOfMovie).setCollection(name);
-                basicMovie.setCollection(name);
+                everyBasicMovie.get(indexOfMovie).setCollectionTitle(name);
+                basicMovie.setCollectionTitle(name);
                 basicMovie.setCollectionId(id);
                 basicMovie.getMoviesInCollection().addAll(moviesInCollection);
             } else {
                 LOGGER.info("Movie not found: {}", basicMovie);
                 int collectionId = collection.get(ID).intValue();
                 String collectionName = collection.get(NAME).textValue();
-                BasicMovie newBasicMovie = new BasicMovie.Builder(basicMovie.getTitle(), basicMovie.getYear())
-                        .setTvdbId(basicMovie.getTmdbId())
+                BasicMovie newBasicMovie = new BasicMovie.Builder(basicMovie.getName(), basicMovie.getYear())
+                        .setTmdbId(basicMovie.getTmdbId())
                         .setImdbId(basicMovie.getImdbId())
-                        .setCollection(collectionName)
+                        .setCollectionTitle(collectionName)
                         .setCollectionId(collectionId)
                         .setMoviesInCollection(moviesInCollection)
                         .setLanguage(basicMovie.getLanguage())
@@ -505,7 +505,7 @@ public class GapsSearchService implements GapsSearch {
                         .build();
                 everyBasicMovie.add(newBasicMovie);
 
-                basicMovie.setCollection(collectionName);
+                basicMovie.setCollectionTitle(collectionName);
                 basicMovie.setCollectionId(collectionId);
             }
 
@@ -537,9 +537,9 @@ public class GapsSearchService implements GapsSearch {
                 }
 
                 BasicMovie basicMovieFromCollection = new BasicMovie.Builder(title, year)
-                        .setTvdbId(tmdbId)
+                        .setTmdbId(tmdbId)
                         .setCollectionId(basicMovie.getCollectionId())
-                        .setCollection(basicMovie.getCollectionTitle())
+                        .setCollectionTitle(basicMovie.getCollectionTitle())
                         .setPosterUrl(posterUrl)
                         .setMoviesInCollection(moviesInCollection)
                         .build();
@@ -582,7 +582,7 @@ public class GapsSearchService implements GapsSearch {
                         LOGGER.info(movieDetailJson);
 
                         if (StringUtils.isEmpty(movieDetailJson)) {
-                            LOGGER.error("Body returned null from TheMovieDB for details on {}", basicMovie.getTitle());
+                            LOGGER.error("Body returned null from TheMovieDB for details on {}", basicMovie.getName());
                             return;
                         }
 
@@ -599,16 +599,16 @@ public class GapsSearchService implements GapsSearch {
                         }
 
                         if (collection.has(NAME)) {
-                            basicMovie.setCollection(collection.get(NAME).textValue());
-                            basicMovieFromCollection.setCollection(collection.get(NAME).textValue());
+                            basicMovie.setCollectionTitle(collection.get(NAME).textValue());
+                            basicMovieFromCollection.setCollectionTitle(collection.get(NAME).textValue());
                         }
 
                         // Add movie with imbd_id and other details for RSS to recommended list
                         BasicMovie recommendedBasicMovie = new BasicMovie.Builder(movieDet.get(TITLE).textValue(), year)
-                                .setTvdbId(movieDet.get(ID).intValue())
+                                .setTmdbId(movieDet.get(ID).intValue())
                                 .setImdbId(movieDet.get("imdb_id").textValue())
                                 .setCollectionId(basicMovie.getCollectionId())
-                                .setCollection(basicMovie.getCollectionTitle())
+                                .setCollectionTitle(basicMovie.getCollectionTitle())
                                 .setPosterUrl("https://image.tmdb.org/t/p/w185/" + movieDet.get("poster_path").textValue())
                                 .setOverview(movieDet.get("overview").textValue())
                                 .setMoviesInCollection(moviesInCollection)

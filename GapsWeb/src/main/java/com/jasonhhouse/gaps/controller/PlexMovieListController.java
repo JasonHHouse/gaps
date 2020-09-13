@@ -77,7 +77,7 @@ public class PlexMovieListController {
                 .getPlexServers()
                 .forEach(plexServer -> plexServer
                         .getPlexLibraries()
-                        .forEach(plexLibrary -> everyBasicMovie.forEach(movie -> previousMovies.put(new Pair<>(movie.getTitle(), movie.getYear()), movie))));
+                        .forEach(plexLibrary -> everyBasicMovie.forEach(movie -> previousMovies.put(new Pair<>(movie.getName(), movie.getYear()), movie))));
 
         return previousMovies;
     }
