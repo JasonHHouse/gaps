@@ -10,10 +10,11 @@
 
 package com.jasonhhouse.radarr_v3;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -21,16 +22,17 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class MovieTest {
+public class MoviesTest {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static Movie movie;
+    private static List<Movie> movies;
 
     @BeforeAll
     static void loadJson() {
         try {
-            String json = IOUtils.toString(MovieTest.class.getResourceAsStream("radarr_v3_movie.json"), StandardCharsets.UTF_8);
-            movie = objectMapper.readValue(json, Movie.class);
+            String json = IOUtils.toString(MoviesTest.class.getResourceAsStream("radarr_v3_movies.json"), StandardCharsets.UTF_8);
+            movies = objectMapper.readValue(json, new TypeReference<>() {
+            });
         } catch (IOException e) {
             fail("Failed to read radarr v3 single movie JSON file", e);
         }
@@ -38,41 +40,7 @@ public class MovieTest {
 
     @Test
     void MovieTitle() {
-        assertEquals("Dragon Ball: Mystical Adventure", movie.getTitle(), "Should find Dragon Ball title");
+        assertEquals(23, movies.size(), "Should find 23 movies");
     }
 
-    @Test
-    void AlternateTitles() {
-        assertEquals(10, movie.getAlternateTitles().size(), "Should find 10 alternate titles");
-    }
-
-    @Test
-    void AlternateTitlesSourceType() {
-        assertEquals("tmdb", movie.getAlternateTitles().get(0).getSourceType(), "First alternate title source type should be tmdb");
-    }
-
-    @Test
-    void Images() {
-        assertEquals(2, movie.getImages().size(), "Should find 2 images");
-    }
-
-    @Test
-    void ImageCoverType() {
-        assertEquals("poster", movie.getImages().get(0).getCoverType(), "First covertype should be poster");
-    }
-
-    @Test
-    void Genres() {
-        assertEquals(Arrays.asList("Action", "Animation"), movie.getGenres(), "Genres should be Action and Animation");
-    }
-
-    @Test
-    void Ratings() {
-        assertEquals(new Ratings(116, 6.5), movie.getRatings(), "Ratings should be 116 votes and 6.5 value");
-    }
-
-    @Test
-    void MovieFileQualityQuality() {
-        assertEquals(new Quality2(8,"WEBDL-480p","webdl",480,"none"), movie.getMovieFile().getQuality().getQuality(), "Quality2 should be 8, WEBDL-480p, webdl, 480, none");
-    }
 }

@@ -31,7 +31,7 @@ public final class MovieFile {
     @NotNull
     private final String path;
     @NotNull
-    private final Integer size;
+    private final Long size;
     @NotNull
     private final Date dateAdded;
     @NotNull
@@ -51,7 +51,7 @@ public final class MovieFile {
     public MovieFile(@JsonProperty(value = "movieId") @Nullable Integer movieId,
                      @JsonProperty(value = "relativePath") @Nullable String relativePath,
                      @JsonProperty(value = "path") @Nullable String path,
-                     @JsonProperty(value = "size") @Nullable Integer size,
+                     @JsonProperty(value = "size") @Nullable Long size,
                      @JsonProperty(value = "dateAdded") @Nullable Date dateAdded,
                      @JsonProperty(value = "indexerFlags") @Nullable Integer indexerFlags,
                      @JsonProperty(value = "quality") @Nullable Quality quality,
@@ -89,7 +89,7 @@ public final class MovieFile {
         return path;
     }
 
-    public @NotNull Integer getSize() {
+    public @NotNull Long getSize() {
         return size;
     }
 

@@ -35,7 +35,7 @@ public final class Movie {
     @NotNull
     private final String sortTitle;
     @NotNull
-    private final Integer sizeOnDisk;
+    private final Long sizeOnDisk;
     @NotNull
     private final String status;
     @NotNull
@@ -97,7 +97,7 @@ public final class Movie {
                  @JsonProperty(value = "alternateTitles") @Nullable List<AlternateTitle> alternateTitles,
                  @JsonProperty(value = "secondaryYearSourceId") @Nullable Integer secondaryYearSourceId,
                  @JsonProperty(value = "sortTitle") @Nullable String sortTitle,
-                 @JsonProperty(value = "sizeOnDisk") @Nullable Integer sizeOnDisk,
+                 @JsonProperty(value = "sizeOnDisk") @Nullable Long sizeOnDisk,
                  @JsonProperty(value = "status") @Nullable String status,
                  @JsonProperty(value = "overview") @Nullable String overview,
                  @JsonProperty(value = "inCinemas") @Nullable Date inCinemas,
@@ -130,7 +130,7 @@ public final class Movie {
         this.alternateTitles = alternateTitles == null ? Collections.emptyList() : alternateTitles;
         this.secondaryYearSourceId = secondaryYearSourceId == null ? -1 : secondaryYearSourceId;
         this.sortTitle = sortTitle == null ? "" : sortTitle;
-        this.sizeOnDisk = sizeOnDisk == null ? -1 : sizeOnDisk;
+        this.sizeOnDisk = sizeOnDisk == null ? -1L : sizeOnDisk;
         this.status = status == null ? "" : status;
         this.overview = overview == null ? "" : overview;
         this.inCinemas = inCinemas == null ? new Date(0) : inCinemas;
@@ -180,7 +180,7 @@ public final class Movie {
         return sortTitle;
     }
 
-    public @NotNull Integer getSizeOnDisk() {
+    public @NotNull Long getSizeOnDisk() {
         return sizeOnDisk;
     }
 

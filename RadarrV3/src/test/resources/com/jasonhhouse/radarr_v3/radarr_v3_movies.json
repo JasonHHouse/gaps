@@ -1,232 +1,5549 @@
-{
-  "title": "Dragon Ball: Mystical Adventure",
-  "originalTitle": "DRAGON BALL 摩訶不思議大冒険",
-  "alternateTitles": [
-    {
-      "sourceType": "tmdb",
-      "movieId": 1,
-      "title": "Dragon Ball Movie 03: Son-Gokus erstes Turnier",
-      "sourceId": 0,
-      "votes": 0,
-      "voteCount": 0,
-      "language": {
-        "id": 4,
-        "name": "German"
-      },
-      "id": 16
-    },
-    {
-      "sourceType": "tmdb",
-      "movieId": 1,
-      "title": "Dragonball: Son-Gokus erstes Turnier",
-      "sourceId": 0,
-      "votes": 0,
-      "voteCount": 0,
-      "language": {
-        "id": 4,
-        "name": "German"
-      },
-      "id": 17
-    },
-    {
-      "sourceType": "tmdb",
-      "movieId": 1,
-      "title": "Bola de Drac: Aventura mística",
-      "sourceId": 0,
-      "votes": 0,
-      "voteCount": 0,
-      "language": {
-        "id": 3,
-        "name": "Spanish"
-      },
-      "id": 18
-    },
-    {
-      "sourceType": "tmdb",
-      "movieId": 1,
-      "title": "Bola de drac 03 Aventura mística (1988)",
-      "sourceId": 0,
-      "votes": 0,
-      "voteCount": 0,
-      "language": {
-        "id": 3,
-        "name": "Spanish"
-      },
-      "id": 19
-    },
-    {
-      "sourceType": "tmdb",
-      "movieId": 1,
-      "title": "Dragon Ball (03) - L’aventure mystique (1988)",
-      "sourceId": 0,
-      "votes": 0,
-      "voteCount": 0,
-      "language": {
-        "id": 2,
-        "name": "French"
-      },
-      "id": 20
-    },
-    {
-      "sourceType": "tmdb",
-      "movieId": 1,
-      "title": "Dragon Ball Movie 03 - Il torneo di Miifan",
-      "sourceId": 0,
-      "votes": 0,
-      "voteCount": 0,
-      "language": {
-        "id": 5,
-        "name": "Italian"
-      },
-      "id": 21
-    },
-    {
-      "sourceType": "tmdb",
-      "movieId": 1,
-      "title": "Doragon Bōru: Makafushigi Dai-Bōken",
-      "sourceId": 0,
-      "votes": 0,
-      "voteCount": 0,
-      "language": {
-        "id": 1,
-        "name": "English"
-      },
-      "id": 22
-    },
-    {
-      "sourceType": "tmdb",
-      "movieId": 1,
-      "title": "Dragon Ball: Makafushigi Daibouken",
-      "sourceId": 0,
-      "votes": 0,
-      "voteCount": 0,
-      "language": {
-        "id": 1,
-        "name": "English"
-      },
-      "id": 23
-    },
-    {
-      "sourceType": "tmdb",
-      "movieId": 1,
-      "title": "Makafushigi Dai-Bōken",
-      "sourceId": 0,
-      "votes": 0,
-      "voteCount": 0,
-      "language": {
-        "id": 1,
-        "name": "English"
-      },
-      "id": 24
-    },
-    {
-      "sourceType": "tmdb",
-      "movieId": 1,
-      "title": "Dragon Ball Movie 03 - Mystical Adventure",
-      "sourceId": 0,
-      "votes": 0,
-      "voteCount": 0,
-      "language": {
-        "id": 1,
-        "name": "English"
-      },
-      "id": 25
-    }
-  ],
-  "secondaryYearSourceId": 0,
-  "sortTitle": "dragon ball mystical adventure",
-  "sizeOnDisk": 709886828,
-  "status": "released",
-  "overview": "Master Roshi has succeeded at the one mission he valued most: to train Goku and Krillin to become ultimate fighters. So, he arranges for them to test their mettle at a competition hosted by Emperor Chiaotzu. Not everyone's playing by the rules, however, as a member of the ruler's household schemes to use the Dragonballs to extort money and power from the royal.",
-  "inCinemas": "1988-07-09T00:00:00Z",
-  "images": [
-    {
-      "coverType": "poster",
-      "url": "/MediaCover/1/poster.jpg?lastWrite=637350693409000810",
-      "remoteUrl": "https://image.tmdb.org/t/p/original/a2oMo9y1WtJsM0EUytKRtZlREE3.jpg"
-    },
-    {
-      "coverType": "fanart",
-      "url": "/MediaCover/1/fanart.jpg?lastWrite=637350693410080817",
-      "remoteUrl": "https://image.tmdb.org/t/p/original/99EYUBrUaefFLSI6ZLnOyAbOE6e.jpg"
-    }
-  ],
-  "website": "",
-  "year": 1988,
-  "hasFile": true,
-  "youTubeTrailerId": "DIjku6BtYW4",
-  "studio": "Toei Animation",
-  "path": "/movies/Dragon Ball Mystical Adventure (1988)",
-  "qualityProfileId": 1,
-  "monitored": true,
-  "minimumAvailability": "announced",
-  "isAvailable": true,
-  "folderName": "/movies/Dragon Ball Mystical Adventure (1988)",
-  "runtime": 48,
-  "cleanTitle": "dragonballmysticaladventure",
-  "imdbId": "tt0142248",
-  "tmdbId": 116776,
-  "titleSlug": "116776",
-  "genres": [
-    "Action",
-    "Animation"
-  ],
-  "tags": [],
-  "added": "2020-09-07T09:55:34.3416239Z",
-  "ratings": {
-    "votes": 116,
-    "value": 6.5
-  },
-  "movieFile": {
-    "movieId": 1,
-    "relativePath": "Dragon Ball Mystical Adventure (1988).mkv",
-    "path": "/movies/Dragon Ball Mystical Adventure (1988)/Dragon Ball Mystical Adventure (1988).mkv",
-    "size": 709886828,
-    "dateAdded": "2020-09-07T09:55:40.9899389Z",
-    "indexerFlags": 0,
-    "quality": {
-      "quality": {
-        "id": 8,
-        "name": "WEBDL-480p",
-        "source": "webdl",
-        "resolution": 480,
-        "modifier": "none"
-      },
-      "revision": {
-        "version": 1,
-        "real": 0,
-        "isRepack": false
-      }
-    },
-    "mediaInfo": {
-      "audioAdditionalFeatures": "",
-      "audioBitrate": 112001,
-      "audioChannels": 2.0,
-      "audioCodec": "Vorbis",
-      "audioLanguages": "English",
-      "audioStreamCount": 1,
-      "videoBitDepth": 8,
-      "videoBitrate": 2000000,
-      "videoCodec": "x264",
-      "videoFps": 23.976,
-      "resolution": "640x480",
-      "runTime": "45:17",
-      "scanType": "Progressive",
-      "subtitles": ""
-    },
-    "qualityCutoffNotMet": true,
-    "languages": [
+[
+  {
+    "title": "Dragon Ball: Mystical Adventure",
+    "originalTitle": "DRAGON BALL 摩訶不思議大冒険",
+    "alternateTitles": [
       {
-        "id": 1,
-        "name": "English"
+        "sourceType": "tmdb",
+        "movieId": 1,
+        "title": "Dragon Ball Movie 03: Son-Gokus erstes Turnier",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 4,
+          "name": "German"
+        },
+        "id": 16
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 1,
+        "title": "Dragonball: Son-Gokus erstes Turnier",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 4,
+          "name": "German"
+        },
+        "id": 17
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 1,
+        "title": "Bola de Drac: Aventura mística",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 18
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 1,
+        "title": "Bola de drac 03 Aventura mística (1988)",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 19
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 1,
+        "title": "Dragon Ball (03) - L’aventure mystique (1988)",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 2,
+          "name": "French"
+        },
+        "id": 20
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 1,
+        "title": "Dragon Ball Movie 03 - Il torneo di Miifan",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 5,
+          "name": "Italian"
+        },
+        "id": 21
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 1,
+        "title": "Doragon Bōru: Makafushigi Dai-Bōken",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 22
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 1,
+        "title": "Dragon Ball: Makafushigi Daibouken",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 23
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 1,
+        "title": "Makafushigi Dai-Bōken",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 24
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 1,
+        "title": "Dragon Ball Movie 03 - Mystical Adventure",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 25
       }
     ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dragon ball mystical adventure",
+    "sizeOnDisk": 709886828,
+    "status": "released",
+    "overview": "Master Roshi has succeeded at the one mission he valued most: to train Goku and Krillin to become ultimate fighters. So, he arranges for them to test their mettle at a competition hosted by Emperor Chiaotzu. Not everyone's playing by the rules, however, as a member of the ruler's household schemes to use the Dragonballs to extort money and power from the royal.",
+    "inCinemas": "1988-07-09T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/1/poster.jpg?lastWrite=637350693409000810",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/a2oMo9y1WtJsM0EUytKRtZlREE3.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/1/fanart.jpg?lastWrite=637350693410080817",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/99EYUBrUaefFLSI6ZLnOyAbOE6e.jpg"
+      }
+    ],
+    "website": "",
+    "year": 1988,
+    "hasFile": true,
+    "youTubeTrailerId": "DIjku6BtYW4",
+    "studio": "Toei Animation",
+    "path": "/movies/Dragon Ball Mystical Adventure (1988)",
+    "qualityProfileId": 1,
+    "monitored": true,
+    "minimumAvailability": "announced",
+    "isAvailable": true,
+    "folderName": "/movies/Dragon Ball Mystical Adventure (1988)",
+    "runtime": 48,
+    "cleanTitle": "dragonballmysticaladventure",
+    "imdbId": "tt0142248",
+    "tmdbId": 116776,
+    "titleSlug": "116776",
+    "genres": [
+      "Action",
+      "Animation"
+    ],
+    "tags": [],
+    "added": "2020-09-07T09:55:34.3416239Z",
+    "ratings": {
+      "votes": 116,
+      "value": 6.5
+    },
+    "movieFile": {
+      "movieId": 1,
+      "relativePath": "Dragon Ball Mystical Adventure (1988).mkv",
+      "path": "/movies/Dragon Ball Mystical Adventure (1988)/Dragon Ball Mystical Adventure (1988).mkv",
+      "size": 709886828,
+      "dateAdded": "2020-09-07T09:55:40.9899389Z",
+      "indexerFlags": 0,
+      "quality": {
+        "quality": {
+          "id": 8,
+          "name": "WEBDL-480p",
+          "source": "webdl",
+          "resolution": 480,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "mediaInfo": {
+        "audioAdditionalFeatures": "",
+        "audioBitrate": 112001,
+        "audioChannels": 2.0,
+        "audioCodec": "Vorbis",
+        "audioLanguages": "English",
+        "audioStreamCount": 1,
+        "videoBitDepth": 8,
+        "videoBitrate": 2000000,
+        "videoCodec": "x264",
+        "videoFps": 23.976,
+        "resolution": "640x480",
+        "runTime": "45:17",
+        "scanType": "Progressive",
+        "subtitles": ""
+      },
+      "qualityCutoffNotMet": true,
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        }
+      ],
+      "id": 1
+    },
+    "collection": {
+      "name": "Dragon Ball Collection",
+      "tmdbId": 386410,
+      "images": []
+    },
     "id": 1
   },
-  "collection": {
-    "name": "Dragon Ball Collection",
-    "tmdbId": 386410,
-    "images": []
+  {
+    "title": "Dragon Ball Super: Broly",
+    "originalTitle": "ドラゴンボール超スーパー ブロリー",
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieId": 2,
+        "title": "Dragon Ball Super: Broly - Il Film",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 5,
+          "name": "Italian"
+        },
+        "id": 11
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 2,
+        "title": "Doragon bôru chô: Burorî - Dragon Ball Super: Broly",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 12
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 2,
+        "title": "Dragon Ball 20th Movie Commemoration Project",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 13
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 2,
+        "title": "Dragon Ball Super: The Movie",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 14
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 2,
+        "title": "Dragon Ball Super: The Story of an Unknown Saiyan",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 15
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dragon ball super broly",
+    "sizeOnDisk": 2075656887,
+    "status": "released",
+    "overview": "Earth is peaceful following the Tournament of Power. Realizing that the universes still hold many more strong people yet to see, Goku spends all his days training to reach even greater heights. Then one day, Goku and Vegeta are faced by a Saiyan called 'Broly' who they've never seen before. The Saiyans were supposed to have been almost completely wiped out in the destruction of Planet Vegeta, so what's this one doing on Earth? This encounter between the three Saiyans who have followed completely different destinies turns into a stupendous battle, with even Frieza (back from Hell) getting caught up in the mix.",
+    "inCinemas": "2018-12-14T00:00:00Z",
+    "physicalRelease": "2019-05-24T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/2/poster.jpg?lastWrite=637350693410430819",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/f03YksE4NggUjG75toz4H1YAGRf.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/2/fanart.jpg?lastWrite=637350693411480825",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/6OTRuxpwUUGbmCX3MKP25dOmo59.jpg"
+      }
+    ],
+    "website": "http://www.dbmovie-20th.com/",
+    "year": 2018,
+    "hasFile": true,
+    "youTubeTrailerId": "FHgm89hKpXU",
+    "studio": "Toei Animation",
+    "path": "/movies/Dragon Ball Super Broly (2018)",
+    "qualityProfileId": 1,
+    "monitored": true,
+    "minimumAvailability": "announced",
+    "isAvailable": true,
+    "folderName": "/movies/Dragon Ball Super Broly (2018)",
+    "runtime": 101,
+    "cleanTitle": "dragonballsuperbroly",
+    "imdbId": "tt7961060",
+    "tmdbId": 503314,
+    "titleSlug": "503314",
+    "certification": "PG",
+    "genres": [
+      "Action",
+      "Science Fiction",
+      "Animation"
+    ],
+    "tags": [],
+    "added": "2020-09-07T09:55:34.3416239Z",
+    "ratings": {
+      "votes": 1549,
+      "value": 7.7
+    },
+    "movieFile": {
+      "movieId": 2,
+      "relativePath": "Dragon Ball Super Broly (2018).mp4",
+      "path": "/movies/Dragon Ball Super Broly (2018)/Dragon Ball Super Broly (2018).mp4",
+      "size": 2075656887,
+      "dateAdded": "2020-09-07T09:55:41.1253621Z",
+      "indexerFlags": 0,
+      "quality": {
+        "quality": {
+          "id": 9,
+          "name": "HDTV-1080p",
+          "source": "tv",
+          "resolution": 1080,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "mediaInfo": {
+        "audioAdditionalFeatures": "LC",
+        "audioBitrate": 224000,
+        "audioChannels": 5.1,
+        "audioCodec": "AAC",
+        "audioLanguages": "English",
+        "audioStreamCount": 1,
+        "videoBitDepth": 8,
+        "videoBitrate": 2500000,
+        "videoCodec": "x264",
+        "videoFps": 24.000,
+        "resolution": "1920x1080",
+        "runTime": "1:41:26",
+        "scanType": "Progressive",
+        "subtitles": ""
+      },
+      "qualityCutoffNotMet": false,
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        }
+      ],
+      "id": 2
+    },
+    "collection": {
+      "name": "Dragon Ball Super Collection",
+      "tmdbId": 620873,
+      "images": []
+    },
+    "id": 2
   },
-  "id": 1
-}
+  {
+    "title": "Dragon Ball: The Path to Power",
+    "originalTitle": "DRAGON BALL 最強への道",
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieId": 3,
+        "title": "Dragon Ball: Em Busca do Poder",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 1
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 3,
+        "title": "Bola de Drac: El camí cap al més fort",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 2
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 3,
+        "title": "Dragon Ball (04) - L'Armée du Ruban Rouge (1996)",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 2,
+          "name": "French"
+        },
+        "id": 3
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 3,
+        "title": "Dragon Ball - La nascita degli eroi",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 5,
+          "name": "Italian"
+        },
+        "id": 4
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 3,
+        "title": "Doragon Bōru: Saikyō e no Michi",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 5
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 3,
+        "title": "Dragon Ball Movie 4, Saikyou E No Michi",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 6
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 3,
+        "title": "Dragon Ball: Saikyou e no Michi",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 7
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 3,
+        "title": "Dragonball The Movies #14 ドラゴンボール 最強への道",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 8
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 3,
+        "title": "Dragon Ball 03 El camino hacia el mas fuerte",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 9
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 3,
+        "title": "Dragon Ball Movie 04 - The Path to Power",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 10
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dragon ball path to power",
+    "sizeOnDisk": 1051897481,
+    "status": "released",
+    "overview": "A retelling of Dragon Ball's origin with a different take on the meeting of Goku, Bulma, and Kame-Sen'nin. It also retells the Red Ribbon Army story; but this time they find Goku rather than Goku finding them.",
+    "inCinemas": "1996-03-02T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/3/poster.jpg?lastWrite=637350693408550808",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/wuW7jeE7pX7glnZpCcJZGfC0YSr.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/3/fanart.jpg?lastWrite=637350693409210812",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/naxWSD4XubEex8lJuAHGqtqgelE.jpg"
+      }
+    ],
+    "website": "",
+    "year": 1996,
+    "hasFile": true,
+    "youTubeTrailerId": "JyN86BcP3WY",
+    "studio": "Toei Animation",
+    "path": "/movies/Dragon Ball The Path to Power (1996)",
+    "qualityProfileId": 1,
+    "monitored": true,
+    "minimumAvailability": "announced",
+    "isAvailable": true,
+    "folderName": "/movies/Dragon Ball The Path to Power (1996)",
+    "runtime": 74,
+    "cleanTitle": "dragonballpathtopower",
+    "imdbId": "tt0142250",
+    "tmdbId": 39148,
+    "titleSlug": "39148",
+    "genres": [
+      "Action",
+      "Animation",
+      "Comedy"
+    ],
+    "tags": [],
+    "added": "2020-09-07T09:55:34.3416239Z",
+    "ratings": {
+      "votes": 149,
+      "value": 7.0
+    },
+    "movieFile": {
+      "movieId": 3,
+      "relativePath": "Dragon Ball The Path to Power (1996).mkv",
+      "path": "/movies/Dragon Ball The Path to Power (1996)/Dragon Ball The Path to Power (1996).mkv",
+      "size": 1051897481,
+      "dateAdded": "2020-09-07T09:55:40.9899411Z",
+      "indexerFlags": 0,
+      "quality": {
+        "quality": {
+          "id": 8,
+          "name": "WEBDL-480p",
+          "source": "webdl",
+          "resolution": 480,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "mediaInfo": {
+        "audioAdditionalFeatures": "",
+        "audioBitrate": 112001,
+        "audioChannels": 2.0,
+        "audioCodec": "Vorbis",
+        "audioLanguages": "English / Japanese",
+        "audioStreamCount": 2,
+        "videoBitDepth": 8,
+        "videoBitrate": 1575000,
+        "videoCodec": "x264",
+        "videoFps": 23.976,
+        "resolution": "640x480",
+        "runTime": "1:19:42",
+        "scanType": "Progressive",
+        "subtitles": "English"
+      },
+      "qualityCutoffNotMet": true,
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        },
+        {
+          "id": 8,
+          "name": "Japanese"
+        }
+      ],
+      "id": 3
+    },
+    "collection": {
+      "name": "Dragon Ball Collection",
+      "tmdbId": 386410,
+      "images": []
+    },
+    "id": 3
+  },
+  {
+    "title": "Dragon Ball Z: Bardock - The Father of Goku",
+    "originalTitle": "ドラゴンボールZ たったひとりの最終決戦〜フリーザに挑んだZ戦士 孫悟空の父〜",
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieId": 4,
+        "title": "A batalha de Freeza e Bardock",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 26
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 4,
+        "title": "Bola de Drac Z: El pare d'en Son Goku",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 27
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 4,
+        "title": "Bola de drac Z 14: El pare d'en Son Goku",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 28
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 4,
+        "title": "Dragon Ball Z - Baddack contre Freezer",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 2,
+          "name": "French"
+        },
+        "id": 29
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 4,
+        "title": "Dragon Ball Z - Le père de Sangoku",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 2,
+          "name": "French"
+        },
+        "id": 30
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 4,
+        "title": "Dragon Ball Z - Le père de Songoku",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 2,
+          "name": "French"
+        },
+        "id": 31
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 4,
+        "title": "Doragon bôru Z: Tatta hitori no saishuu kessen - Furiiza ni itonda Z senshi Kakarotto no chichi",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 32
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 4,
+        "title": "Dragon Ball Z Freezer contra el padre de Goku",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 33
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 4,
+        "title": "DBZ: A Final Solitary Battle! The Z Warrior Son Goku's Father Challenges Frieza",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 7,
+          "name": "Dutch"
+        },
+        "id": 34
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 4,
+        "title": "ドラゴンボールZ たったひとりの最終決戦〜フリーザに挑んだZ戦士 孫悟空の父〜",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 7,
+          "name": "Dutch"
+        },
+        "id": 35
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 4,
+        "title": "Dragon Ball Z - Baddack Versus Freezer",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 36
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 4,
+        "title": "Dragon Ball Z Special 01 - Bardock the Father of Goku",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 37
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 4,
+        "title": "Dragon Ball Z Special 1: Bardock - The Father of Goku",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 38
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dragon ball z bardock father goku",
+    "sizeOnDisk": 4696433631,
+    "status": "released",
+    "overview": "Bardock, Son Goku's father, is a low-ranking Saiyan soldier who was given the power to see into the future by the last remaining alien on a planet he just destroyed. He witnesses the destruction of his race and must now do his best to stop Frieza's impending massacre.",
+    "inCinemas": "1990-10-17T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/4/poster.jpg?lastWrite=637350693414980847",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/yCjp8HJ4XANcB0FxoOztq9cF1pS.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/4/fanart.jpg?lastWrite=637350693415760851",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/kJeDpRprUQgT60B1NA7CuyOMQWY.jpg"
+      }
+    ],
+    "website": "",
+    "year": 1990,
+    "hasFile": true,
+    "youTubeTrailerId": "A2gpattMh34",
+    "studio": "Bird Studios",
+    "path": "/movies/Dragon Ball Z Bardock - The Father of Goku (1990)",
+    "qualityProfileId": 1,
+    "monitored": true,
+    "minimumAvailability": "announced",
+    "isAvailable": true,
+    "folderName": "/movies/Dragon Ball Z Bardock - The Father of Goku (1990)",
+    "runtime": 48,
+    "cleanTitle": "dragonballzbardockfathergoku",
+    "imdbId": "tt0142245",
+    "tmdbId": 39323,
+    "titleSlug": "39323",
+    "certification": "NR",
+    "genres": [
+      "Animation",
+      "Action",
+      "Science Fiction"
+    ],
+    "tags": [],
+    "added": "2020-09-07T09:55:34.3416239Z",
+    "ratings": {
+      "votes": 325,
+      "value": 7.4
+    },
+    "movieFile": {
+      "movieId": 4,
+      "relativePath": "Dragon Ball Z Bardock - The Father of Goku (1990).mkv",
+      "path": "/movies/Dragon Ball Z Bardock - The Father of Goku (1990)/Dragon Ball Z Bardock - The Father of Goku (1990).mkv",
+      "size": 4696433631,
+      "dateAdded": "2020-09-07T09:55:41.5064082Z",
+      "indexerFlags": 0,
+      "quality": {
+        "quality": {
+          "id": 3,
+          "name": "WEBDL-1080p",
+          "source": "webdl",
+          "resolution": 1080,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "mediaInfo": {
+        "audioAdditionalFeatures": "",
+        "audioBitrate": 640000,
+        "audioChannels": 5.1,
+        "audioCodec": "AC3",
+        "audioLanguages": "English / Japanese",
+        "audioStreamCount": 2,
+        "videoBitDepth": 8,
+        "videoBitrate": 11833000,
+        "videoCodec": "x264",
+        "videoFps": 23.976,
+        "resolution": "1920x1080",
+        "runTime": "47:45",
+        "scanType": "Progressive",
+        "subtitles": "English"
+      },
+      "qualityCutoffNotMet": false,
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        },
+        {
+          "id": 8,
+          "name": "Japanese"
+        }
+      ],
+      "id": 4
+    },
+    "id": 4
+  },
+  {
+    "title": "Dragon Ball Z: Battle of Gods",
+    "originalTitle": "ドラゴンボールZ 神と神",
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieId": 5,
+        "title": "Dragonball Z - Movie 14 - Kampf der Götter",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 4,
+          "name": "German"
+        },
+        "id": 39
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 5,
+        "title": "Dragonball Z 14 - Kampf der Götter",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 4,
+          "name": "German"
+        },
+        "id": 40
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 5,
+        "title": "Bola de Drac Z: La batalla dels Déus",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 41
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 5,
+        "title": "Dragon Ball Z Movie 14 - La battaglia degli dei",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 5,
+          "name": "Italian"
+        },
+        "id": 42
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 5,
+        "title": "DRAGON BALL Z: Kami to Kami",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 43
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 5,
+        "title": "ドラゴンボールZ 神と神",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 44
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 5,
+        "title": "드래곤볼Z: 신들의 전쟁",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 45
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 5,
+        "title": "Dragon Ball Z: La batalla de los dioses",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 46
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 5,
+        "title": "Dragon Ball Z Movie 14 - Battle of Gods",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 47
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dragon ball z battle gods",
+    "sizeOnDisk": 17566626443,
+    "status": "released",
+    "overview": "The events of Battle of Gods take place some years after the battle with Majin Buu, which determined the fate of the entire universe. After awakening from a long slumber, Beerus, the God of Destruction is visited by Whis, his attendant and learns that the galactic overlord Frieza has been defeated by a Super Saiyan from the North Quadrant of the universe named Goku, who is also a former student of the North Kai. Ecstatic over the new challenge, Goku ignores King Kai's advice and battles Beerus, but he is easily overwhelmed and defeated. Beerus leaves, but his eerie remark of \"Is there nobody on Earth more worthy to destroy?\" lingers on. Now it is up to the heroes to stop the God of Destruction before all is lost.",
+    "inCinemas": "2013-03-30T00:00:00Z",
+    "physicalRelease": "2015-02-11T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/5/poster.jpg?lastWrite=637350693417610863",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/zpsArO4EkJpDIFh6sbQTwgwEQgy.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/5/fanart.jpg?lastWrite=637350693420070878",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/pWNUpRESGnzKqweHCB77JShPZ2i.jpg"
+      }
+    ],
+    "website": "http://www.dragonball2013.com/",
+    "year": 2013,
+    "hasFile": true,
+    "youTubeTrailerId": "sp60avoyT9k",
+    "studio": "Toei Animation",
+    "path": "/movies/Dragon Ball Z Battle of Gods (2013)",
+    "qualityProfileId": 1,
+    "monitored": true,
+    "minimumAvailability": "announced",
+    "isAvailable": true,
+    "folderName": "/movies/Dragon Ball Z Battle of Gods (2013)",
+    "runtime": 85,
+    "cleanTitle": "dragonballzbattlegods",
+    "imdbId": "tt2263944",
+    "tmdbId": 126963,
+    "titleSlug": "126963",
+    "certification": "PG-13",
+    "genres": [
+      "Animation",
+      "Action",
+      "Science Fiction"
+    ],
+    "tags": [],
+    "added": "2020-09-07T09:55:34.3416239Z",
+    "ratings": {
+      "votes": 950,
+      "value": 6.7
+    },
+    "movieFile": {
+      "movieId": 5,
+      "relativePath": "Dragon Ball Z Battle of Gods (2013).mkv",
+      "path": "/movies/Dragon Ball Z Battle of Gods (2013)/Dragon Ball Z Battle of Gods (2013).mkv",
+      "size": 17566626443,
+      "dateAdded": "2020-09-07T09:55:41.8170532Z",
+      "indexerFlags": 0,
+      "quality": {
+        "quality": {
+          "id": 3,
+          "name": "WEBDL-1080p",
+          "source": "webdl",
+          "resolution": 1080,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "mediaInfo": {
+        "audioAdditionalFeatures": "",
+        "audioBitrate": 0,
+        "audioChannels": 5.1,
+        "audioCodec": "TrueHD",
+        "audioLanguages": "English",
+        "audioStreamCount": 1,
+        "videoBitDepth": 8,
+        "videoBitrate": 0,
+        "videoCodec": "h264",
+        "videoFps": 23.976,
+        "resolution": "1920x1080",
+        "runTime": "1:45:2",
+        "scanType": "Progressive",
+        "subtitles": "English / English"
+      },
+      "qualityCutoffNotMet": false,
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        }
+      ],
+      "id": 5
+    },
+    "collection": {
+      "name": "Dragon Ball Z Movies Collection",
+      "tmdbId": 425164,
+      "images": []
+    },
+    "id": 5
+  },
+  {
+    "title": "Dragon Ball Z: Bio-Broly",
+    "originalTitle": "ドラゴンボールＺ 超戦士撃破!!勝のはオレだ",
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieId": 6,
+        "title": "Dragon Ball Z Filme 11 - O Combate Final, Bio-Broly",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 48
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 6,
+        "title": "Dragon Ball Z ¡La Derrota del Superguerrero! La Victoria será mía",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 49
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 6,
+        "title": "Bola de Drac Z: Bio Broli. La derrota del súper guerrer! La victòria serà meva",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 50
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 6,
+        "title": "Dragon Ball Z Movie 11 - L'irriducibile Bio-Combattente",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 5,
+          "name": "Italian"
+        },
+        "id": 51
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 6,
+        "title": "Dragon Ball Z: Chō Senshi Gekiha!! Katsu no wa Ore da",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 52
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 6,
+        "title": "Dragon Ball Z: Super Senshi Gekiha!! Katsu no wa Ore Da",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 53
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 6,
+        "title": "Dragon Ball Z El regreso del guerrero legendario",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 54
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dragon ball z bio broly",
+    "sizeOnDisk": 735449934,
+    "status": "released",
+    "overview": "Jaga Bada, Mr. Satan's old sparring partner, has invited Satan to his personal island to hold a grudge match. Trunks and Goten decide to come for the adventure and Android #18 is following Satan for the money he owes her. Little do they know that Jaga Bada's scientist have found a way to resurrect Broly, the legendary Super Saiyan.",
+    "inCinemas": "1994-07-09T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/6/poster.jpg?lastWrite=637350693416070853",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/zndqKR7TTDVWMgD0CSqARVugXoP.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/6/fanart.jpg?lastWrite=637350693416720857",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/1I8QhrrHKaxGE3e0f2S75kqrxd9.jpg"
+      }
+    ],
+    "website": "",
+    "year": 1994,
+    "hasFile": true,
+    "youTubeTrailerId": "QQS1n9VZuOg",
+    "studio": "Toei",
+    "path": "/movies/Dragon Ball Z Bio-Broly (1994)",
+    "qualityProfileId": 1,
+    "monitored": true,
+    "minimumAvailability": "announced",
+    "isAvailable": true,
+    "folderName": "/movies/Dragon Ball Z Bio-Broly (1994)",
+    "runtime": 50,
+    "cleanTitle": "dragonballzbiobroly",
+    "imdbId": "tt0142234",
+    "tmdbId": 39106,
+    "titleSlug": "39106",
+    "certification": "PG",
+    "genres": [
+      "Animation",
+      "Action",
+      "Science Fiction"
+    ],
+    "tags": [],
+    "added": "2020-09-07T09:55:34.3416239Z",
+    "ratings": {
+      "votes": 310,
+      "value": 5.7
+    },
+    "movieFile": {
+      "movieId": 6,
+      "relativePath": "Dragon Ball Z Bio-Broly (1994).avi",
+      "path": "/movies/Dragon Ball Z Bio-Broly (1994)/Dragon Ball Z Bio-Broly (1994).avi",
+      "size": 735449934,
+      "dateAdded": "2020-09-07T09:55:41.8832498Z",
+      "indexerFlags": 0,
+      "quality": {
+        "quality": {
+          "id": 1,
+          "name": "SDTV",
+          "source": "tv",
+          "resolution": 480,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "mediaInfo": {
+        "audioAdditionalFeatures": "",
+        "audioBitrate": 256000,
+        "audioChannels": 2.0,
+        "audioCodec": "AC3",
+        "audioLanguages": "",
+        "audioStreamCount": 1,
+        "videoBitDepth": 8,
+        "videoBitrate": 1829332,
+        "videoCodec": "DivX",
+        "videoFps": 29.970,
+        "resolution": "640x480",
+        "runTime": "46:45",
+        "scanType": "Progressive",
+        "subtitles": ""
+      },
+      "qualityCutoffNotMet": true,
+      "languages": [
+        {
+          "id": 8,
+          "name": "Japanese"
+        }
+      ],
+      "id": 6
+    },
+    "collection": {
+      "name": "Dragon Ball Z Movies Collection",
+      "tmdbId": 425164,
+      "images": []
+    },
+    "id": 6
+  },
+  {
+    "title": "Dragon Ball Z: Bojack Unbound",
+    "originalTitle": "ドラゴンボールZ 銀河ギリギリ!! ぶっちぎりの凄い奴",
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieId": 7,
+        "title": "Dragon Ball Z: A Batalha Nos Dois Mundos",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 55
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 7,
+        "title": "Dragon Ball Z: ¡La Vía Láctea al Límite! Un tipo super increíble",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 56
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 7,
+        "title": "Bola de Drac Z: Els guerrers de les galàxies",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 57
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 7,
+        "title": "Dragon Ball Z Movie 09 - La Minaccia Del Demone Malvagio",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 5,
+          "name": "Italian"
+        },
+        "id": 58
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 7,
+        "title": "Doragon Bōru Zetto: Ginga Giri-Giri!! Butchigiri no Sugoi Yatsu",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 59
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 7,
+        "title": "Dragon Ball Z: Ginga Girigiri!! Bucchigiri no Sugoi Yatsu",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 60
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 7,
+        "title": "Dragonball The Movies #09 ドラゴンボールZ 銀河ギリギリ!!ぶっちぎりの凄い奴",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 61
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 7,
+        "title": "O Super-Homem da Galáxia",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 18,
+          "name": "Portuguese"
+        },
+        "id": 62
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 7,
+        "title": "Dragon Ball Z Movie 09 - Bojack Unbound",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 63
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dragon ball z bojack unbound",
+    "sizeOnDisk": 748789760,
+    "status": "released",
+    "overview": "Mr. Money is holding another World Martial Arts Tournament and Mr. Satan invites everyone in the world to join in. Little does he know that Bojack, an ancient villain who has escaped his prison, is competing. Since Goku is currently dead, it is up to Gohan, Vegeta, and Trunks to defeat Bojack and his henchman.",
+    "inCinemas": "1993-07-10T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/7/poster.jpg?lastWrite=637350693421430886",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/iihTK9Af8G1ZzBjkIIAV4qQMkzF.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/7/fanart.jpg?lastWrite=637350693425970914",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/fkUqfd8jKoMO2kuYR9N2KSZL3nY.jpg"
+      }
+    ],
+    "website": "",
+    "year": 1993,
+    "hasFile": true,
+    "youTubeTrailerId": "DJZ3vjBqYFU",
+    "studio": "Toei Animation",
+    "path": "/movies/Dragon Ball Z Bojack Unbound (1993)",
+    "qualityProfileId": 1,
+    "monitored": true,
+    "minimumAvailability": "announced",
+    "isAvailable": true,
+    "folderName": "/movies/Dragon Ball Z Bojack Unbound (1993)",
+    "runtime": 51,
+    "cleanTitle": "dragonballzbojackunbound",
+    "imdbId": "tt0142238",
+    "tmdbId": 39105,
+    "titleSlug": "39105",
+    "genres": [
+      "Action",
+      "Animation",
+      "Science Fiction"
+    ],
+    "tags": [],
+    "added": "2020-09-07T09:55:34.3416239Z",
+    "ratings": {
+      "votes": 303,
+      "value": 6.9
+    },
+    "movieFile": {
+      "movieId": 7,
+      "relativePath": "Dragon Ball Z Bojack Unbound (1993).avi",
+      "path": "/movies/Dragon Ball Z Bojack Unbound (1993)/Dragon Ball Z Bojack Unbound (1993).avi",
+      "size": 748789760,
+      "dateAdded": "2020-09-07T09:55:42.1256995Z",
+      "indexerFlags": 0,
+      "quality": {
+        "quality": {
+          "id": 1,
+          "name": "SDTV",
+          "source": "tv",
+          "resolution": 480,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "mediaInfo": {
+        "audioAdditionalFeatures": "",
+        "audioBitrate": 224000,
+        "audioChannels": 2.0,
+        "audioCodec": "MP3",
+        "audioLanguages": "",
+        "audioStreamCount": 1,
+        "videoBitDepth": 8,
+        "videoBitrate": 1746733,
+        "videoCodec": "XviD",
+        "videoFps": 23.976,
+        "resolution": "640x480",
+        "runTime": "50:25",
+        "scanType": "Progressive",
+        "subtitles": ""
+      },
+      "qualityCutoffNotMet": true,
+      "languages": [
+        {
+          "id": 8,
+          "name": "Japanese"
+        }
+      ],
+      "id": 7
+    },
+    "collection": {
+      "name": "Dragon Ball Z Movies Collection",
+      "tmdbId": 425164,
+      "images": []
+    },
+    "id": 7
+  },
+  {
+    "title": "Dragon Ball Z: Broly – Second Coming",
+    "originalTitle": "ドラゴンボールＺ 危険なふたり！超戦士はねむれない",
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieId": 8,
+        "title": "Dragon Ball Z Filme 10 - Broly O Retorno do Guerreiro Lendário",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 64
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 8,
+        "title": "Dragon Ball Z: A Volta do Guerreiro",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 65
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 8,
+        "title": "Dragon Ball Z: ¡El Dúo Peligroso! Los Super Guerreros nunca duermen",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 66
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 8,
+        "title": "Bola de Drac Z: El duet perillós! Els súper guerrers no dormen mai",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 67
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 8,
+        "title": "Dragon Ball Z  Le Retour de Broly",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 2,
+          "name": "French"
+        },
+        "id": 68
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 8,
+        "title": "Dragon Ball Z 10 Movie - Sfida alla leggenda",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 5,
+          "name": "Italian"
+        },
+        "id": 69
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 8,
+        "title": "Dragon Ball Z: Kiken na Futari! Super Senshi wa Nemurenai",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 70
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 8,
+        "title": "드리곤볼Z : 위험한 두 사람 초사이어인은 잠들지 않는다",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 71
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 8,
+        "title": "Dragon Ball Z 10: Mischievous Partners! Super Warriors Never Rest",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 72
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 8,
+        "title": "Dragon Ball Z Movie 10 - Broly Second Coming",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 73
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dragon ball z broly second coming",
+    "sizeOnDisk": 733945856,
+    "status": "released",
+    "overview": "A Saiyan Space pod crash-lands on Earth out of which a wounded Saiyan crawls: Broly, the Legendary Super Saiyan. The wounded Broly shouts out in frustration and turns into normal form. The place soon freezes, trapping him in it and he falls into a coma.",
+    "inCinemas": "1994-03-12T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/8/poster.jpg?lastWrite=637350693427420922",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/4CkArpSqySpBQH95Oqr94ktU6rU.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/8/fanart.jpg?lastWrite=637350693428870931",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/d4RvwoV7vIG38BoHthnsLk03WgD.jpg"
+      }
+    ],
+    "website": "",
+    "year": 1994,
+    "hasFile": true,
+    "youTubeTrailerId": "ioU887K1Obk",
+    "studio": "Toei",
+    "path": "/movies/Dragon Ball Z Broly - Second Coming (1994)",
+    "qualityProfileId": 1,
+    "monitored": true,
+    "minimumAvailability": "announced",
+    "isAvailable": true,
+    "folderName": "/movies/Dragon Ball Z Broly - Second Coming (1994)",
+    "runtime": 48,
+    "cleanTitle": "dragonballzbrolysecondcoming",
+    "imdbId": "tt0142239",
+    "tmdbId": 44251,
+    "titleSlug": "44251",
+    "certification": "NR",
+    "genres": [
+      "Animation",
+      "Action",
+      "Science Fiction"
+    ],
+    "tags": [],
+    "added": "2020-09-07T09:55:34.3416239Z",
+    "ratings": {
+      "votes": 377,
+      "value": 6.6
+    },
+    "movieFile": {
+      "movieId": 8,
+      "relativePath": "Dragon Ball Z Broly - Second Coming (1994).avi",
+      "path": "/movies/Dragon Ball Z Broly - Second Coming (1994)/Dragon Ball Z Broly - Second Coming (1994).avi",
+      "size": 733945856,
+      "dateAdded": "2020-09-07T09:55:42.9092056Z",
+      "indexerFlags": 0,
+      "quality": {
+        "quality": {
+          "id": 1,
+          "name": "SDTV",
+          "source": "tv",
+          "resolution": 480,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "mediaInfo": {
+        "audioAdditionalFeatures": "",
+        "audioBitrate": 160000,
+        "audioChannels": 2.0,
+        "audioCodec": "MP3",
+        "audioLanguages": "",
+        "audioStreamCount": 1,
+        "videoBitDepth": 8,
+        "videoBitrate": 1706721,
+        "videoCodec": "XviD",
+        "videoFps": 25.000,
+        "resolution": "640x464",
+        "runTime": "52:9",
+        "scanType": "Progressive",
+        "subtitles": ""
+      },
+      "qualityCutoffNotMet": true,
+      "languages": [
+        {
+          "id": 8,
+          "name": "Japanese"
+        }
+      ],
+      "id": 8
+    },
+    "collection": {
+      "name": "Dragon Ball Z Movies Collection",
+      "tmdbId": 425164,
+      "images": []
+    },
+    "id": 8
+  },
+  {
+    "title": "Dragon Ball Z: Broly – The Legendary Super Saiyan",
+    "originalTitle": "ドラゴンボールＺ 燃え尽きろ!!熱戦・烈戦・超激戦",
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieId": 9,
+        "title": "Dragon Ball Z Filme 08 - Broly O Lendário Super Saiyajin",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 85
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 9,
+        "title": "Dragon Ball Z: ¡Arde! Una Ardiente, Intensa y Super Feroz Batalla",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 86
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 9,
+        "title": "龙珠Z：燃烧吧！热战！",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 87
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 9,
+        "title": "Bola de Drac Z: La batalla ardent",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 88
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 9,
+        "title": "Dragon Ball Z: Estalla el duelo",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 89
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 9,
+        "title": "Dragon Ball Z - Broly, Le Super Guerrier Légendaire",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 2,
+          "name": "French"
+        },
+        "id": 90
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 9,
+        "title": "Dragon Ball Z Movie 08 - Il Super Saiyan della Leggenda",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 5,
+          "name": "Italian"
+        },
+        "id": 91
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 9,
+        "title": "Dragon Ball Z: Burn Up!! A Close Fight - A Violent Fight - A Super Fierce Fight",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 92
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 9,
+        "title": "Dragon Ball Z: Moetsukiro!! Nessen - Hagesen - Chō Gekisen",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 93
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 9,
+        "title": "Dragon Ball Z: Moetsukiro!! Nessen, Ressen, Chougekisen",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 94
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 9,
+        "title": "Dragonball The Movies #08 ドラゴンボールZ 燃えつきろ!!熱戦・烈戦・超激戦",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 95
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 9,
+        "title": "Dragon Ball Z: El poder invencible",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 96
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 9,
+        "title": "Dragon Ball Z Movie 08 - Broly The Legendary Super Saiyan",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 97
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dragon ball z broly legendary super saiyan",
+    "sizeOnDisk": 736266240,
+    "status": "released",
+    "overview": "While the Saiyan Paragus persuades Vegeta to rule a new planet, King Kai alerts Goku of the South Galaxy's destruction by an unknown Super Saiyan.",
+    "inCinemas": "1993-03-06T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/9/poster.jpg?lastWrite=637350693428840931",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/6iO8TJCyLI4BiPYOvdwzPV2bhoV.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/9/fanart.jpg?lastWrite=637350693430480941",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/2GmSSCZ9WE00ti0TdwFQCYbhXuL.jpg"
+      }
+    ],
+    "website": "",
+    "year": 1993,
+    "hasFile": true,
+    "youTubeTrailerId": "61dVyIHK0NM",
+    "studio": "Toei",
+    "path": "/movies/Dragon Ball Z Broly - The Legendary Super Saiyan (1993)",
+    "qualityProfileId": 1,
+    "monitored": true,
+    "minimumAvailability": "announced",
+    "isAvailable": true,
+    "folderName": "/movies/Dragon Ball Z Broly - The Legendary Super Saiyan (1993)",
+    "runtime": 70,
+    "cleanTitle": "dragonballzbrolylegendarysupersaiyan",
+    "imdbId": "tt0142242",
+    "tmdbId": 34433,
+    "titleSlug": "34433",
+    "certification": "PG",
+    "genres": [
+      "Animation",
+      "Science Fiction",
+      "Action"
+    ],
+    "tags": [],
+    "added": "2020-09-07T09:55:34.3416239Z",
+    "ratings": {
+      "votes": 492,
+      "value": 7.2
+    },
+    "movieFile": {
+      "movieId": 9,
+      "relativePath": "Dragon Ball Z Broly - The Legendary Super Saiyan (1993).avi",
+      "path": "/movies/Dragon Ball Z Broly - The Legendary Super Saiyan (1993)/Dragon Ball Z Broly - The Legendary Super Saiyan (1993).avi",
+      "size": 736266240,
+      "dateAdded": "2020-09-07T09:55:43.0781569Z",
+      "indexerFlags": 0,
+      "quality": {
+        "quality": {
+          "id": 1,
+          "name": "SDTV",
+          "source": "tv",
+          "resolution": 480,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "mediaInfo": {
+        "audioAdditionalFeatures": "",
+        "audioBitrate": 160000,
+        "audioChannels": 2.0,
+        "audioCodec": "MP3",
+        "audioLanguages": "",
+        "audioStreamCount": 1,
+        "videoBitDepth": 8,
+        "videoBitrate": 1197875,
+        "videoCodec": "XviD",
+        "videoFps": 23.976,
+        "resolution": "576x432",
+        "runTime": "1:11:48",
+        "scanType": "Progressive",
+        "subtitles": ""
+      },
+      "qualityCutoffNotMet": true,
+      "languages": [
+        {
+          "id": 8,
+          "name": "Japanese"
+        }
+      ],
+      "id": 10
+    },
+    "collection": {
+      "name": "Dragon Ball Z Movies Collection",
+      "tmdbId": 425164,
+      "images": []
+    },
+    "id": 9
+  },
+  {
+    "title": "Dragon Ball Z: Cooler's Revenge",
+    "originalTitle": "Doragon bôru Z 5: Tobikkiri no saikyô tai saikyô",
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieId": 10,
+        "title": "Dragon Ball Z Filme 05 - Uma vinganca para Freeza",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 74
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 10,
+        "title": "Dragon Ball Z: El Más Poderoso contra el Más Poderoso",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 75
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 10,
+        "title": "Dragonball Z - Rache für Freezer",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 4,
+          "name": "German"
+        },
+        "id": 76
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 10,
+        "title": "Bola de Drac Z: Els rivals més forts",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 77
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 10,
+        "title": "Dragon Ball Z: Los increíblemente más poderosos contra el más poderoso",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 78
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 10,
+        "title": "Dragon Ball Z Movie 05 - Il destino dei Saiyan",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 5,
+          "name": "Italian"
+        },
+        "id": 79
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 10,
+        "title": "Dragon Ball Z: Tobikkiri no Saikyou Tai Saikyou",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 80
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 10,
+        "title": "Doragon Bôru Z 5: Tobikkiri no Saikyô tai Saikyô",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 7,
+          "name": "Dutch"
+        },
+        "id": 81
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 10,
+        "title": "Dragon Ball Z: The Best of Strongest versus Strongest",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 7,
+          "name": "Dutch"
+        },
+        "id": 82
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 10,
+        "title": "Dragon Ball Z: The Strongest Rivals",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 7,
+          "name": "Dutch"
+        },
+        "id": 83
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 10,
+        "title": "Dragon Ball Z Movie 05 - Cooler's Revenge",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 84
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dragon ball z cooler s revenge",
+    "sizeOnDisk": 719550464,
+    "status": "released",
+    "overview": "After defeating Frieza, Goku returns to Earth and goes on a camping trip with Gohan and Krillin. Everything is normal until Cooler - Frieza's brother - sends three henchmen after Goku. A long fight ensues between our heroes and Cooler, in which he transforms into the fourth stage of his evolution and has the edge in the fight... until Goku transforms into a Super Saiyan.",
+    "inCinemas": "1991-07-20T00:00:00Z",
+    "physicalRelease": "2002-09-16T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/10/poster.jpg?lastWrite=637350693428010926",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/ywZWtNVTO7rGSFvOAPWpdmZlO6k.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/10/fanart.jpg?lastWrite=637350693429350934",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/hph1RMsL4223xyqxfEx3OXodf5E.jpg"
+      }
+    ],
+    "website": "",
+    "year": 1991,
+    "hasFile": true,
+    "youTubeTrailerId": "Wk-9H-tNA8A",
+    "studio": "Toei Animation",
+    "path": "/movies/Dragon Ball Z Cooler's Revenge (1991)",
+    "qualityProfileId": 1,
+    "monitored": true,
+    "minimumAvailability": "announced",
+    "isAvailable": true,
+    "folderName": "/movies/Dragon Ball Z Cooler's Revenge (1991)",
+    "runtime": 48,
+    "cleanTitle": "dragonballzcoolersrevenge",
+    "imdbId": "tt1125254",
+    "tmdbId": 24752,
+    "titleSlug": "24752",
+    "certification": "PG",
+    "genres": [
+      "Action",
+      "Animation",
+      "Science Fiction"
+    ],
+    "tags": [],
+    "added": "2020-09-07T09:55:34.3416239Z",
+    "ratings": {
+      "votes": 342,
+      "value": 6.7
+    },
+    "movieFile": {
+      "movieId": 10,
+      "relativePath": "Dragon Ball Z Cooler's Revenge (1991).avi",
+      "path": "/movies/Dragon Ball Z Cooler's Revenge (1991)/Dragon Ball Z Cooler's Revenge (1991).avi",
+      "size": 719550464,
+      "dateAdded": "2020-09-07T09:55:42.9438558Z",
+      "indexerFlags": 0,
+      "quality": {
+        "quality": {
+          "id": 1,
+          "name": "SDTV",
+          "source": "tv",
+          "resolution": 480,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "mediaInfo": {
+        "audioAdditionalFeatures": "",
+        "audioBitrate": 188924,
+        "audioChannels": 2.0,
+        "audioCodec": "MP3",
+        "audioLanguages": "",
+        "audioStreamCount": 1,
+        "videoBitDepth": 8,
+        "videoBitrate": 1875803,
+        "videoCodec": "DivX",
+        "videoFps": 23.976,
+        "resolution": "576x432",
+        "runTime": "46:11",
+        "scanType": "Progressive",
+        "subtitles": ""
+      },
+      "qualityCutoffNotMet": true,
+      "languages": [
+        {
+          "id": 8,
+          "name": "Japanese"
+        }
+      ],
+      "id": 9
+    },
+    "collection": {
+      "name": "Dragon Ball Z Movies Collection",
+      "tmdbId": 425164,
+      "images": []
+    },
+    "id": 10
+  },
+  {
+    "title": "Dragon Ball Z: Dead Zone",
+    "originalTitle": "ドラゴンボールＺ オラの悟飯をかえせッ!!",
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieId": 11,
+        "title": "Dragon Ball Z - Die Todeszone des Garlic jr.",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 4,
+          "name": "German"
+        },
+        "id": 98
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 11,
+        "title": "01 Dragon Ball Z - Garlick Junior Inmortal",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 99
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 11,
+        "title": "Bola de Drac Z: En Garlick Junior inmortal",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 100
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 11,
+        "title": "Dragon Ball Z 01 - Garlick Junior inmortal",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 101
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 11,
+        "title": "Dragon Ball Z: Garlick Junior Inmortal",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 102
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 11,
+        "title": "Dragon Ball Z : À la poursuite de Garlic",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 2,
+          "name": "French"
+        },
+        "id": 103
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 11,
+        "title": "Dragon Ball Z Movie 01- La vendetta divina",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 5,
+          "name": "Italian"
+        },
+        "id": 104
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 11,
+        "title": "Dragon Ball Z: Ora no Gohan o Kaese!!",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 105
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 11,
+        "title": "Dragon Ball Z Devuelveme a mi Gohan",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 106
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 11,
+        "title": "¡Devuélvanme a mi Gohan!",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 107
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 11,
+        "title": "Devolva-me Gohan (Zona Mortal)",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 18,
+          "name": "Portuguese"
+        },
+        "id": 108
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 11,
+        "title": "Dead Zone",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 109
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 11,
+        "title": "Dead Zone: The Movie",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 110
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 11,
+        "title": "Dragon Ball Z Movie 01 - The Dead Zone",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 111
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dragon ball z dead zone",
+    "sizeOnDisk": 1076722718,
+    "status": "released",
+    "overview": "Gohan has been kidnapped! To make matters worse, the evil Garlic Jr. is gathering the Dragonballs to wish for immortality. Only then will Garlic Jr. be able to take over the Earth in order to gain revenge for the death of his father. Goku rushes to save Gohan, but arrives at the fortress just as Garlic Jr. summons the Eternal Dragon! Krillin and Piccolo try to help Goku, but their combined powers.",
+    "physicalRelease": "1997-12-17T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/11/poster.jpg?lastWrite=637350693436520978",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/ywtyEDTM2YO7qod7USNNwhrAfvA.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/11/fanart.jpg?lastWrite=637350693437580984",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/4dmEpmTdXJffmD0FM90WNY3vd3C.jpg"
+      }
+    ],
+    "website": "",
+    "year": 1989,
+    "hasFile": true,
+    "youTubeTrailerId": "eqIgKOSOTcQ",
+    "studio": "Toei Animation",
+    "path": "/movies/Dragon Ball Z Dead Zone (1989)",
+    "qualityProfileId": 1,
+    "monitored": true,
+    "minimumAvailability": "announced",
+    "isAvailable": true,
+    "folderName": "/movies/Dragon Ball Z Dead Zone (1989)",
+    "runtime": 45,
+    "cleanTitle": "dragonballzdeadzone",
+    "imdbId": "tt0142235",
+    "tmdbId": 28609,
+    "titleSlug": "28609",
+    "certification": "PG",
+    "genres": [
+      "Animation",
+      "Action",
+      "Adventure"
+    ],
+    "tags": [],
+    "added": "2020-09-07T09:55:34.3416239Z",
+    "ratings": {
+      "votes": 317,
+      "value": 6.5
+    },
+    "movieFile": {
+      "movieId": 11,
+      "relativePath": "Dragon Ball Z Dead Zone (1989).mkv",
+      "path": "/movies/Dragon Ball Z Dead Zone (1989)/Dragon Ball Z Dead Zone (1989).mkv",
+      "size": 1076722718,
+      "dateAdded": "2020-09-07T09:55:43.5960531Z",
+      "indexerFlags": 0,
+      "quality": {
+        "quality": {
+          "id": 8,
+          "name": "WEBDL-480p",
+          "source": "webdl",
+          "resolution": 480,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "mediaInfo": {
+        "audioAdditionalFeatures": "",
+        "audioBitrate": 177600,
+        "audioChannels": 2.0,
+        "audioCodec": "Vorbis",
+        "audioLanguages": "English / English / Japanese",
+        "audioStreamCount": 3,
+        "videoBitDepth": 8,
+        "videoBitrate": 2880431,
+        "videoCodec": "h264",
+        "videoFps": 23.976,
+        "resolution": "704x396",
+        "runTime": "41:13",
+        "scanType": "Progressive",
+        "subtitles": "English"
+      },
+      "qualityCutoffNotMet": true,
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        },
+        {
+          "id": 8,
+          "name": "Japanese"
+        }
+      ],
+      "id": 13
+    },
+    "collection": {
+      "name": "Dragon Ball Z Movies Collection",
+      "tmdbId": 425164,
+      "images": []
+    },
+    "id": 11
+  },
+  {
+    "title": "Dragon Ball Z: Fusion Reborn",
+    "originalTitle": "ドラゴンボールZ 復活のフュージョン!! 悟空とベジータ",
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieId": 12,
+        "title": "Dragon Ball Z Filme 12 - O Renascimento da Fusão! Goku e Vegeta!",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 112
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 12,
+        "title": "Dragon Ball Z: ¡El Renacimiento de la Fusión! Goku y Vegeta",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 113
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 12,
+        "title": "Bola de Drac Z: Fusió!",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 114
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 12,
+        "title": "DBZ  - La fusion de goku y vegeta",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 115
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 12,
+        "title": "Dragon Ball Z - Película 12 - ¡El renacer de la fusión!",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 116
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 12,
+        "title": "Dragon Ball Z - Fusions",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 2,
+          "name": "French"
+        },
+        "id": 117
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 12,
+        "title": "Dragon Ball Z Movie 12 - Il Diabolico Guerriero Degli Inferi",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 5,
+          "name": "Italian"
+        },
+        "id": 118
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 12,
+        "title": "Doragon Bōru Zetto: Fukkatsu no Fyūjon!! Gokū to Bejīta",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 119
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 12,
+        "title": "Dragon Ball Z: Fukkatsu no Fusion!! Gokuu to Vegeta",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 120
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 12,
+        "title": "Dragon Ball Z Movie 12 - Fusion reborn",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 121
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dragon ball z fusion reborn",
+    "sizeOnDisk": 713056256,
+    "status": "released",
+    "overview": "Not paying attention to his job, a young demon allows the evil cleansing machine to overflow and explode, turning the young demon into the infamous monster Janemba. Goku and Vegeta make solo attempts to defeat the monster, but realize their only option is fusion.",
+    "inCinemas": "1995-03-04T00:00:00Z",
+    "physicalRelease": "2006-03-28T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/12/poster.jpg?lastWrite=637350693434040963",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/7AHvaEAeQfkfJ4OqcBePxa2ao09.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/12/fanart.jpg?lastWrite=637350693435950974",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/m3GqDIJo3U1pjcBCbHadFYbrOMX.jpg"
+      }
+    ],
+    "website": "",
+    "year": 1995,
+    "hasFile": true,
+    "youTubeTrailerId": "rE95a4iC1dk",
+    "studio": "Toei",
+    "path": "/movies/Dragon Ball Z Fusion Reborn (1995)",
+    "qualityProfileId": 1,
+    "monitored": true,
+    "minimumAvailability": "announced",
+    "isAvailable": true,
+    "folderName": "/movies/Dragon Ball Z Fusion Reborn (1995)",
+    "runtime": 55,
+    "cleanTitle": "dragonballzfusionreborn",
+    "imdbId": "tt0142236",
+    "tmdbId": 39107,
+    "titleSlug": "39107",
+    "certification": "PG",
+    "genres": [
+      "Animation",
+      "Action",
+      "Fantasy"
+    ],
+    "tags": [],
+    "added": "2020-09-07T09:55:34.3416239Z",
+    "ratings": {
+      "votes": 486,
+      "value": 7.5
+    },
+    "movieFile": {
+      "movieId": 12,
+      "relativePath": "Dragon Ball Z Fusion Reborn (1995).avi",
+      "path": "/movies/Dragon Ball Z Fusion Reborn (1995)/Dragon Ball Z Fusion Reborn (1995).avi",
+      "size": 713056256,
+      "dateAdded": "2020-09-07T09:55:43.5954113Z",
+      "indexerFlags": 0,
+      "quality": {
+        "quality": {
+          "id": 1,
+          "name": "SDTV",
+          "source": "tv",
+          "resolution": 480,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "mediaInfo": {
+        "audioAdditionalFeatures": "",
+        "audioBitrate": 192000,
+        "audioChannels": 2.0,
+        "audioCodec": "MP3",
+        "audioLanguages": "",
+        "audioStreamCount": 1,
+        "videoBitDepth": 8,
+        "videoBitrate": 1665826,
+        "videoCodec": "XviD",
+        "videoFps": 23.976,
+        "resolution": "640x480",
+        "runTime": "50:49",
+        "scanType": "Progressive",
+        "subtitles": ""
+      },
+      "qualityCutoffNotMet": true,
+      "languages": [
+        {
+          "id": 8,
+          "name": "Japanese"
+        }
+      ],
+      "id": 12
+    },
+    "collection": {
+      "name": "Dragon Ball Z Movies Collection",
+      "tmdbId": 425164,
+      "images": []
+    },
+    "id": 12
+  },
+  {
+    "title": "Dragon Ball Z: Lord Slug",
+    "originalTitle": "ドラゴンボールゼット 超スーパーサイヤ人じんだ孫そん悟ご空くう",
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieId": 13,
+        "title": "Dragon Ball Z: Son Goku el Super Saiyan",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 122
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 13,
+        "title": "Dragon Ball Z Filme 04 - Goku o Super Sayajin",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 123
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 13,
+        "title": "Dragonball Z - Super-Saiyajin Son-Goku",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 4,
+          "name": "German"
+        },
+        "id": 124
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 13,
+        "title": "Bola de Drac Z: El superguerrer Son Goku",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 125
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 13,
+        "title": "Dragon Ball Z Movie 04 - La sfida dei guerrieri invincibili",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 5,
+          "name": "Italian"
+        },
+        "id": 126
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 13,
+        "title": "Dragon Ball Z: Super Saiya-jin Da Son Gokuu",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 127
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 13,
+        "title": "Doragon bôru Z 4: Super Saiyajin da Son Gokû",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 128
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 13,
+        "title": "Dragon Ball Z Movie 04 - Lord Slug",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 129
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dragon ball z lord slug",
+    "sizeOnDisk": 1082513655,
+    "status": "released",
+    "overview": "A Super Namekian named Slug comes to invade Earth. But the Z Warriors do their best to stop Slug and his gang.",
+    "inCinemas": "1991-03-19T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/13/poster.jpg?lastWrite=637350693436260976",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/1lmwZTsqwTtvd3m60pyQfhGM2Ut.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/13/fanart.jpg?lastWrite=637350693437610984",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/cyQK5IzMXDUS8o84HYbSIFQt1Vy.jpg"
+      }
+    ],
+    "website": "",
+    "year": 1991,
+    "hasFile": true,
+    "youTubeTrailerId": "qd017xX0Y2E",
+    "studio": "Toei Animation",
+    "path": "/movies/Dragon Ball Z Lord Slug (1991)",
+    "qualityProfileId": 1,
+    "monitored": true,
+    "minimumAvailability": "announced",
+    "isAvailable": true,
+    "folderName": "/movies/Dragon Ball Z Lord Slug (1991)",
+    "runtime": 52,
+    "cleanTitle": "dragonballzlordslug",
+    "imdbId": "tt0142244",
+    "tmdbId": 39102,
+    "titleSlug": "39102",
+    "genres": [
+      "Action",
+      "Animation",
+      "Science Fiction"
+    ],
+    "tags": [],
+    "added": "2020-09-07T09:55:34.3416239Z",
+    "ratings": {
+      "votes": 301,
+      "value": 6.3
+    },
+    "movieFile": {
+      "movieId": 13,
+      "relativePath": "Dragon Ball Z Lord Slug (1991).mkv",
+      "path": "/movies/Dragon Ball Z Lord Slug (1991)/Dragon Ball Z Lord Slug (1991).mkv",
+      "size": 1082513655,
+      "dateAdded": "2020-09-07T09:55:43.4943363Z",
+      "indexerFlags": 0,
+      "quality": {
+        "quality": {
+          "id": 8,
+          "name": "WEBDL-480p",
+          "source": "webdl",
+          "resolution": 480,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "mediaInfo": {
+        "audioAdditionalFeatures": "",
+        "audioBitrate": 198400,
+        "audioChannels": 2.0,
+        "audioCodec": "Vorbis",
+        "audioLanguages": "English / English / Japanese",
+        "audioStreamCount": 3,
+        "videoBitDepth": 8,
+        "videoBitrate": 2133812,
+        "videoCodec": "h264",
+        "videoFps": 23.976,
+        "resolution": "704x396",
+        "runTime": "51:50",
+        "scanType": "Progressive",
+        "subtitles": "English"
+      },
+      "qualityCutoffNotMet": true,
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        },
+        {
+          "id": 8,
+          "name": "Japanese"
+        }
+      ],
+      "id": 11
+    },
+    "collection": {
+      "name": "Dragon Ball Z Movies Collection",
+      "tmdbId": 425164,
+      "images": []
+    },
+    "id": 13
+  },
+  {
+    "title": "Dragon Ball Z: Resurrection 'F'",
+    "originalTitle": "ドラゴンボールZ 復活の「F」",
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieId": 14,
+        "title": "Dragon Ball Z: La resurección de Freezer",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 130
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 14,
+        "title": "Dragon Ball Z - O Renascimento de Freeza",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 131
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 14,
+        "title": "Dragon Ball Z 15 - O Renascimento de Freeza",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 132
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 14,
+        "title": "Bola de Drac Z: La resurrecció d'en F",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 133
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 14,
+        "title": "Dragon Ball Z: La resurrección de F",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 134
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 14,
+        "title": "Dragon Ball Z - La résurrection de F",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 2,
+          "name": "French"
+        },
+        "id": 135
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 14,
+        "title": "Dragon Ball Z Movie 15- La Resurrezione di 'F'",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 5,
+          "name": "Italian"
+        },
+        "id": 136
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 14,
+        "title": "Dragon Ball Z: Doragon bôru Z - Fukkatsu no 'F'",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 137
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 14,
+        "title": "Dragon Ball Z: Fukkatsu no F",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 138
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 14,
+        "title": "Dragon Ball Z: La resurrección de Freezer",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 139
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 14,
+        "title": "Doragon Bōru Zetto: Fukkatsu no Efu",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 7,
+          "name": "Dutch"
+        },
+        "id": 140
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 14,
+        "title": "Dragon Ball Z: Resurrection of Frieza",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 7,
+          "name": "Dutch"
+        },
+        "id": 141
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 14,
+        "title": "ドラゴンボールＺ復活の「Ｆ」",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 7,
+          "name": "Dutch"
+        },
+        "id": 142
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 14,
+        "title": "DBZ - La Resurreccion de Freezer",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 143
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 14,
+        "title": "Dragon Ball Z Movie 15 - Resurrection F",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 144
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dragon ball z resurrection f",
+    "sizeOnDisk": 17183367263,
+    "status": "released",
+    "overview": "One peaceful day on Earth, two remnants of Frieza's army named Sorbet and Tagoma arrive searching for the Dragon Balls with the aim of reviving Frieza. They succeed, and Frieza subsequently seeks revenge on the Saiyans.",
+    "inCinemas": "2015-04-18T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/14/poster.jpg?lastWrite=637350693440601003",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/soq3AxjALdBfdPAm8H7yuMmNL5Y.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/14/fanart.jpg?lastWrite=637350693442221012",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/kIgfFzjjBNgx6Tr2LCw8Zkq921s.jpg"
+      }
+    ],
+    "website": "http://www.dragonball2015.com/",
+    "year": 2015,
+    "hasFile": true,
+    "youTubeTrailerId": "WiONylGn8Xw",
+    "studio": "Fox International Productions",
+    "path": "/movies/Dragon Ball Z Resurrection 'F' (2015)",
+    "qualityProfileId": 1,
+    "monitored": true,
+    "minimumAvailability": "announced",
+    "isAvailable": true,
+    "folderName": "/movies/Dragon Ball Z Resurrection 'F' (2015)",
+    "runtime": 93,
+    "cleanTitle": "dragonballzresurrectionf",
+    "imdbId": "tt3819668",
+    "tmdbId": 303857,
+    "titleSlug": "303857",
+    "certification": "NR",
+    "genres": [
+      "Action",
+      "Animation",
+      "Science Fiction"
+    ],
+    "tags": [],
+    "added": "2020-09-07T09:55:34.3416239Z",
+    "ratings": {
+      "votes": 943,
+      "value": 6.9
+    },
+    "movieFile": {
+      "movieId": 14,
+      "relativePath": "Dragon Ball Z Resurrection 'F' (2015).mkv",
+      "path": "/movies/Dragon Ball Z Resurrection 'F' (2015)/Dragon Ball Z Resurrection 'F' (2015).mkv",
+      "size": 17183367263,
+      "dateAdded": "2020-09-07T09:55:44.0063149Z",
+      "indexerFlags": 0,
+      "quality": {
+        "quality": {
+          "id": 3,
+          "name": "WEBDL-1080p",
+          "source": "webdl",
+          "resolution": 1080,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "mediaInfo": {
+        "audioAdditionalFeatures": "",
+        "audioBitrate": 384000,
+        "audioChannels": 5.1,
+        "audioCodec": "AC3",
+        "audioLanguages": "English",
+        "audioStreamCount": 1,
+        "videoBitDepth": 8,
+        "videoBitrate": 23509959,
+        "videoCodec": "h264",
+        "videoFps": 23.976,
+        "resolution": "1920x1080",
+        "runTime": "1:33:58",
+        "scanType": "Progressive",
+        "subtitles": "English"
+      },
+      "qualityCutoffNotMet": false,
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        }
+      ],
+      "id": 14
+    },
+    "collection": {
+      "name": "Dragon Ball Z Movies Collection",
+      "tmdbId": 425164,
+      "images": []
+    },
+    "id": 14
+  },
+  {
+    "title": "Dragon Ball Z: The Return of Cooler",
+    "originalTitle": "ドラゴンボールZ 激突!!100億パワーの戦士たち",
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieId": 15,
+        "title": "Dragon Ball Z: ¡Choque! Los Guerreros de 10.000 Millones de Poder",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 145
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 15,
+        "title": "Dragonball Z - Coolers Rückkehr",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 4,
+          "name": "German"
+        },
+        "id": 146
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 15,
+        "title": "Bola de Drac Z: Lluita entre guerrers de força il·limitada",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 147
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 15,
+        "title": "Dragon Ball Z : Cent mille guerriers de métal",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 2,
+          "name": "French"
+        },
+        "id": 148
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 15,
+        "title": "Dragon Ball Z Movie 06 - L'invasione di Neo Namek",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 5,
+          "name": "Italian"
+        },
+        "id": 149
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 15,
+        "title": "Doragon Bôru Z 6: Gekitotsu! Hyakuoku powâ no senshitachi",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 150
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 15,
+        "title": "Doragon Bōru Zetto: Gekitotsu!! Hyaku-Oku Pawā no Senshi-tachi",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 151
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 15,
+        "title": "Dragon Ball Z: Clash!! The Power of 10 Billion Warriors",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 152
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 15,
+        "title": "Dragon Ball Z: Gekitotsu!! 100-oku Power no Senshi-tachi",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 153
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 15,
+        "title": "Dragonball The Movies #06ドラゴンボールZ 激突!!100億パワーの戦士たち",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 154
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 15,
+        "title": "Dragon Ball Z 6: Attack!! The Hundred-Million-Power Warriors",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 155
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 15,
+        "title": "Dragon Ball Z Movie 06 - The Return of Cooler",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 156
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dragon ball z return cooler",
+    "sizeOnDisk": 4695657552,
+    "status": "released",
+    "overview": "Cooler has resurrected himself as a robot and is enslaving the people of New Namek. Goku and the gang must help.",
+    "inCinemas": "1992-03-07T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/15/poster.jpg?lastWrite=637350693441681009",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/zJn14ySh0NTZCOIReQZiWE1fkje.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/15/fanart.jpg?lastWrite=637350693442681015",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/l1H7adqYhxBrBK45aKAzqm6nIVC.jpg"
+      }
+    ],
+    "website": "",
+    "year": 1992,
+    "hasFile": true,
+    "youTubeTrailerId": "sGqAtYAkwDo",
+    "studio": "Toei Company, Ltd.",
+    "path": "/movies/Dragon Ball Z Return of Cooler (1992)",
+    "qualityProfileId": 1,
+    "monitored": true,
+    "minimumAvailability": "announced",
+    "isAvailable": true,
+    "folderName": "/movies/Dragon Ball Z Return of Cooler (1992)",
+    "runtime": 46,
+    "cleanTitle": "dragonballzreturncooler",
+    "imdbId": "tt0142237",
+    "tmdbId": 39103,
+    "titleSlug": "39103",
+    "certification": "NR",
+    "genres": [
+      "Action",
+      "Animation",
+      "Science Fiction"
+    ],
+    "tags": [],
+    "added": "2020-09-07T09:55:34.3416239Z",
+    "ratings": {
+      "votes": 324,
+      "value": 6.7
+    },
+    "movieFile": {
+      "movieId": 15,
+      "relativePath": "Dragon Ball Z Return of Cooler (1992).mkv",
+      "path": "/movies/Dragon Ball Z Return of Cooler (1992)/Dragon Ball Z Return of Cooler (1992).mkv",
+      "size": 4695657552,
+      "dateAdded": "2020-09-07T09:55:44.0531285Z",
+      "indexerFlags": 0,
+      "quality": {
+        "quality": {
+          "id": 3,
+          "name": "WEBDL-1080p",
+          "source": "webdl",
+          "resolution": 1080,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "mediaInfo": {
+        "audioAdditionalFeatures": "",
+        "audioBitrate": 640000,
+        "audioChannels": 5.1,
+        "audioCodec": "AC3",
+        "audioLanguages": "English / Japanese",
+        "audioStreamCount": 2,
+        "videoBitDepth": 8,
+        "videoBitrate": 12378000,
+        "videoCodec": "x264",
+        "videoFps": 23.976,
+        "resolution": "1920x1080",
+        "runTime": "45:50",
+        "scanType": "Progressive",
+        "subtitles": "English"
+      },
+      "qualityCutoffNotMet": false,
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        },
+        {
+          "id": 8,
+          "name": "Japanese"
+        }
+      ],
+      "id": 15
+    },
+    "collection": {
+      "name": "Dragon Ball Z Movies Collection",
+      "tmdbId": 425164,
+      "images": []
+    },
+    "id": 15
+  },
+  {
+    "title": "Dragon Ball Z: Super Android 13!",
+    "originalTitle": "ドラゴンボールＺ 極限バトル！三大超サイヤ人",
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieId": 16,
+        "title": "Dragon Ball Z Filme 07 - O Retorno dos Androides",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 157
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 16,
+        "title": "Dragon Ball Z: ¡Batalla al Límite! Los tres Grandes Super Saiyans",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 158
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 16,
+        "title": "Dragonball Z - Angriff der Cyborgs",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 4,
+          "name": "German"
+        },
+        "id": 159
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 16,
+        "title": "Bola de Drac Z: La super batalla dels 3 superguerrers",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 160
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 16,
+        "title": "Dragon Ball Z Movie 07 - I tre super Saiyan",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 5,
+          "name": "Italian"
+        },
+        "id": 161
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 16,
+        "title": "Doragon bôru Z 7: Kyokugen batoru!! San dai sûpâ saiyajin",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 162
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 16,
+        "title": "Doragon bôru Z: Kyokugen batoru!! San dai sûpâ saiyajin",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 163
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 16,
+        "title": "Dragon Ball Z: Kyokugen Battle!! Sandai Super Saiya-jin",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 164
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 16,
+        "title": "Dragon Ball Z La pelea de los tres siyajins",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 165
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 16,
+        "title": "Dragon Ball Z Movie 07 - Super Android 13",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 166
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dragon ball z super android 13",
+    "sizeOnDisk": 733528064,
+    "status": "released",
+    "overview": "Dr. Gero's Androids #13, #14, and #15 are awakened by the laboratory computers and immediately head to the mall where Goku is shopping. After Goku, Trunks, and Vegeta defeat #14 and #15, #13 absorbs their inner computers and becomes a super being greater than the original three separately were. Now it is up to Goku to stop him.",
+    "inCinemas": "1992-07-11T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/16/poster.jpg?lastWrite=637350693444081024",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/uVJqC187rKxQ1sJsWlKjNfAzeTk.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/16/fanart.jpg?lastWrite=637350693445721034",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/mGr18hk6oDQyGjaSpbF7o5epoJV.jpg"
+      }
+    ],
+    "website": "",
+    "year": 1992,
+    "hasFile": true,
+    "youTubeTrailerId": "Ph2tugLEjpc",
+    "studio": "Toei Animation",
+    "path": "/movies/Dragon Ball Z Super Android 13 (1992)",
+    "qualityProfileId": 1,
+    "monitored": true,
+    "minimumAvailability": "announced",
+    "isAvailable": true,
+    "folderName": "/movies/Dragon Ball Z Super Android 13 (1992)",
+    "runtime": 46,
+    "cleanTitle": "dragonballzsuperandroid13",
+    "imdbId": "tt0142241",
+    "tmdbId": 39104,
+    "titleSlug": "39104",
+    "genres": [
+      "Action",
+      "Animation",
+      "Science Fiction"
+    ],
+    "tags": [],
+    "added": "2020-09-07T09:55:34.3416239Z",
+    "ratings": {
+      "votes": 282,
+      "value": 6.6
+    },
+    "movieFile": {
+      "movieId": 16,
+      "relativePath": "Dragon Ball Z Super Android 13 (1992).avi",
+      "path": "/movies/Dragon Ball Z Super Android 13 (1992)/Dragon Ball Z Super Android 13 (1992).avi",
+      "size": 733528064,
+      "dateAdded": "2020-09-07T09:55:44.660009Z",
+      "indexerFlags": 0,
+      "quality": {
+        "quality": {
+          "id": 1,
+          "name": "SDTV",
+          "source": "tv",
+          "resolution": 480,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "mediaInfo": {
+        "audioAdditionalFeatures": "",
+        "audioBitrate": 192000,
+        "audioChannels": 2.0,
+        "audioCodec": "AC3",
+        "audioLanguages": "",
+        "audioStreamCount": 1,
+        "videoBitDepth": 8,
+        "videoBitrate": 2010302,
+        "videoCodec": "XviD",
+        "videoFps": 23.976,
+        "resolution": "576x432",
+        "runTime": "44:13",
+        "scanType": "Progressive",
+        "subtitles": ""
+      },
+      "qualityCutoffNotMet": true,
+      "languages": [
+        {
+          "id": 8,
+          "name": "Japanese"
+        }
+      ],
+      "id": 18
+    },
+    "collection": {
+      "name": "Dragon Ball Z Movies Collection",
+      "tmdbId": 425164,
+      "images": []
+    },
+    "id": 16
+  },
+  {
+    "title": "Dragon Ball Z: The History of Trunks",
+    "originalTitle": "ドラゴンボールZ 絶望への反抗!!残された超戦士・悟飯とトランクス",
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieId": 17,
+        "title": "Bola de Drac Z: En Son Gohan i en Trunks",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 167
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 17,
+        "title": "Dragon Ball Z: Un futuro diferente",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 168
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 17,
+        "title": "Dragon Ball Z - L'histoire de Trunks",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 2,
+          "name": "French"
+        },
+        "id": 169
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 17,
+        "title": "Dragon Ball Z - Doragon bôru zetto: Zetsubô e no hankô!! Nokosareta chô senshi - Gohan to Torankusu",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 170
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 17,
+        "title": "Dragon Ball Z Los dos guerreros del futuro Gohan y Trunks",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 171
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 17,
+        "title": "Dragon Ball Z Special 02 - The History of Trunks",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 172
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dragon ball z history trunks",
+    "sizeOnDisk": 4694715271,
+    "status": "released",
+    "overview": "It has been thirteen years since the Androids began their killing rampage and Son Gohan is the only person fighting back. He takes Bulma's son Trunks as a student and even gives his own life to save Trunks's. Now Trunks must figure out a way to change this apocalyptic future",
+    "inCinemas": "1993-02-24T00:00:00Z",
+    "physicalRelease": "2000-10-24T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/17/poster.jpg?lastWrite=637350693445561033",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/AfUkiiR0UKeiPXPgTx9bRO4snTB.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/17/fanart.jpg?lastWrite=637350693447471044",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/7eMojyLGghtBIOlrUqChFpqcv1W.jpg"
+      }
+    ],
+    "website": "",
+    "year": 1993,
+    "hasFile": true,
+    "youTubeTrailerId": "43HmSc1Z-sM",
+    "studio": "Fuji Television Network",
+    "path": "/movies/Dragon Ball Z The History of Trunks (1993)",
+    "qualityProfileId": 1,
+    "monitored": true,
+    "minimumAvailability": "announced",
+    "isAvailable": true,
+    "folderName": "/movies/Dragon Ball Z The History of Trunks (1993)",
+    "runtime": 48,
+    "cleanTitle": "dragonballzhistorytrunks",
+    "imdbId": "tt0142247",
+    "tmdbId": 39324,
+    "titleSlug": "39324",
+    "certification": "NR",
+    "genres": [
+      "Animation",
+      "Action",
+      "Science Fiction"
+    ],
+    "tags": [],
+    "added": "2020-09-07T09:55:34.3416239Z",
+    "ratings": {
+      "votes": 242,
+      "value": 7.3
+    },
+    "movieFile": {
+      "movieId": 17,
+      "relativePath": "Dragon Ball Z The History of Trunks (1993).mkv",
+      "path": "/movies/Dragon Ball Z The History of Trunks (1993)/Dragon Ball Z The History of Trunks (1993).mkv",
+      "size": 4694715271,
+      "dateAdded": "2020-09-07T09:55:44.4559972Z",
+      "indexerFlags": 0,
+      "quality": {
+        "quality": {
+          "id": 3,
+          "name": "WEBDL-1080p",
+          "source": "webdl",
+          "resolution": 1080,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "mediaInfo": {
+        "audioAdditionalFeatures": "",
+        "audioBitrate": 640000,
+        "audioChannels": 5.1,
+        "audioCodec": "AC3",
+        "audioLanguages": "English / Japanese",
+        "audioStreamCount": 2,
+        "videoBitDepth": 8,
+        "videoBitrate": 11785000,
+        "videoCodec": "x264",
+        "videoFps": 23.976,
+        "resolution": "1920x1080",
+        "runTime": "47:55",
+        "scanType": "Progressive",
+        "subtitles": "English"
+      },
+      "qualityCutoffNotMet": false,
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        },
+        {
+          "id": 8,
+          "name": "Japanese"
+        }
+      ],
+      "id": 16
+    },
+    "id": 17
+  },
+  {
+    "title": "Dragon Ball Z: The Tree of Might",
+    "originalTitle": "ドラゴンボールZ 地球まるごと超決戦",
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieId": 18,
+        "title": "DRAGON BALL Z - A SUPER BATALHA NO MUNDO",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 173
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 18,
+        "title": "Dragon Ball Z Filme 03 - A Arvore do Poder",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 174
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 18,
+        "title": "Dragonball Z - Die Entscheidungsschlacht",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 4,
+          "name": "German"
+        },
+        "id": 175
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 18,
+        "title": "Bola de Drac Z: La superbatalla al món",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 176
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 18,
+        "title": "Dragon Ball Z Movie 03- La grande battaglia per il destino del mondo",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 5,
+          "name": "Italian"
+        },
+        "id": 177
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 18,
+        "title": "Doragon Bōru Zetto: Chikyū Marugoto Chōkessen",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 178
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 18,
+        "title": "Dragon Ball Z: Chikyuu Marugoto Choukessen",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 179
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 18,
+        "title": "Dragon Ball Z Movie 03 - Tree of Might",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 180
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 18,
+        "title": "Dragonball Z: Super Battle In The World",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 181
+      }
+    ],
+    "secondaryYear": 2000,
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dragon ball z tree might",
+    "sizeOnDisk": 1081002976,
+    "status": "released",
+    "overview": "Goku and friends must stop a band of space pirates from consuming fruit from the Tree of Might before it's destructive powers drain Earth's energy.",
+    "inCinemas": "1990-06-07T00:00:00Z",
+    "physicalRelease": "1990-07-07T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/18/poster.jpg?lastWrite=637350693446441038",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/fDX4Dp8IKvjBAaEb5MOJrGkxWX0.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/18/fanart.jpg?lastWrite=637350693447741046",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/s0XaJEApAfgMgKUBy6UfOnNTtwR.jpg"
+      }
+    ],
+    "website": "",
+    "year": 1990,
+    "hasFile": true,
+    "youTubeTrailerId": "6nkQu1l5Grs",
+    "studio": "Toei Animation",
+    "path": "/movies/Dragon Ball Z The Tree of Might (1990)",
+    "qualityProfileId": 1,
+    "monitored": true,
+    "minimumAvailability": "announced",
+    "isAvailable": true,
+    "folderName": "/movies/Dragon Ball Z The Tree of Might (1990)",
+    "runtime": 61,
+    "cleanTitle": "dragonballztreemight",
+    "imdbId": "tt0142233",
+    "tmdbId": 39101,
+    "titleSlug": "39101",
+    "certification": "PG",
+    "genres": [
+      "Action",
+      "Animation",
+      "Science Fiction"
+    ],
+    "tags": [],
+    "added": "2020-09-07T09:55:34.3416239Z",
+    "ratings": {
+      "votes": 310,
+      "value": 6.5
+    },
+    "movieFile": {
+      "movieId": 18,
+      "relativePath": "Dragon Ball Z The Tree of Might (1990).mkv",
+      "path": "/movies/Dragon Ball Z The Tree of Might (1990)/Dragon Ball Z The Tree of Might (1990).mkv",
+      "size": 1081002976,
+      "dateAdded": "2020-09-07T09:55:44.5736928Z",
+      "indexerFlags": 0,
+      "quality": {
+        "quality": {
+          "id": 8,
+          "name": "WEBDL-480p",
+          "source": "webdl",
+          "resolution": 480,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "mediaInfo": {
+        "audioAdditionalFeatures": "",
+        "audioBitrate": 198400,
+        "audioChannels": 2.0,
+        "audioCodec": "Vorbis",
+        "audioLanguages": "English / English / Japanese",
+        "audioStreamCount": 3,
+        "videoBitDepth": 8,
+        "videoBitrate": 1724653,
+        "videoCodec": "h264",
+        "videoFps": 23.976,
+        "resolution": "704x396",
+        "runTime": "1:0:53",
+        "scanType": "Progressive",
+        "subtitles": "English"
+      },
+      "qualityCutoffNotMet": true,
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        },
+        {
+          "id": 8,
+          "name": "Japanese"
+        }
+      ],
+      "id": 17
+    },
+    "collection": {
+      "name": "Dragon Ball Z Movies Collection",
+      "tmdbId": 425164,
+      "images": []
+    },
+    "id": 18
+  },
+  {
+    "title": "Dragon Ball Z: The World's Strongest",
+    "originalTitle": "ドラゴンボールZ この世で一番強いヤツ",
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieId": 19,
+        "title": "Dragon Ball Z Filme 02 - O Homem Mais Forte do Mundo",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 182
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 19,
+        "title": "Dragon Ball Z: El más fuerte del mundo",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 183
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 19,
+        "title": "Dragonball Z - Der Stärkste auf Erden",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 4,
+          "name": "German"
+        },
+        "id": 184
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 19,
+        "title": "Bola de Drac Z: El més fort del món",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 185
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 19,
+        "title": "Dragon Ball Z - Le Robot des Glaces",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 2,
+          "name": "French"
+        },
+        "id": 186
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 19,
+        "title": "Dragon Ball Z Movie 02- Il più forte del mondo",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 5,
+          "name": "Italian"
+        },
+        "id": 187
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 19,
+        "title": "Doragon Bōru Zetto: Kono yo de Ichiban Tsuyoi Yatsu",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 188
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 19,
+        "title": "Dragon Ball Z: Kono Yo de Ichiban Tsuyoi Yatsu",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 189
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 19,
+        "title": "Dragon Ball Z El más fuerte de este mundo",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 190
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 19,
+        "title": "Doragon bôru Z 2: Kono yo de ichiban tsuyoi yatsu",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 191
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 19,
+        "title": "Dragon Ball Z Movie 02 - The World's Strongest",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 192
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dragon ball z world s strongest",
+    "sizeOnDisk": 1081350297,
+    "status": "released",
+    "overview": "The evil Dr. Kochin uses the dragon balls to resurrect his mentor, Dr. Wheelo, in an effort to take over the world. Dr. Wheelo, his body having been destroyed by the avalanche that killed him fifty years before, desires the body of the strongest fighter in the world as his new vessel. Believing Roshi to be the world's strongest warrior, Dr. Kochin abducts Bulma and forces Roshi to surrender himself to save her. When Goku hears of their abduction, he goes to their rescue.",
+    "inCinemas": "1990-03-10T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/19/poster.jpg?lastWrite=637350693449081054",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/5elbm3iLgGQ6nA5vqUmi9vIojbF.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/19/fanart.jpg?lastWrite=637350693449901059",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/xVHgLL32VHlPMl1syvVMuZFSVLM.jpg"
+      }
+    ],
+    "website": "",
+    "year": 1990,
+    "hasFile": true,
+    "youTubeTrailerId": "RuViG2-w_To",
+    "studio": "Toei",
+    "path": "/movies/Dragon Ball Z The World's Strongest (1990)",
+    "qualityProfileId": 1,
+    "monitored": true,
+    "minimumAvailability": "announced",
+    "isAvailable": true,
+    "folderName": "/movies/Dragon Ball Z The World's Strongest (1990)",
+    "runtime": 60,
+    "cleanTitle": "dragonballzworldsstrongest",
+    "imdbId": "tt0142240",
+    "tmdbId": 39100,
+    "titleSlug": "39100",
+    "certification": "PG",
+    "genres": [
+      "Action",
+      "Animation",
+      "Science Fiction"
+    ],
+    "tags": [],
+    "added": "2020-09-07T09:55:34.3416239Z",
+    "ratings": {
+      "votes": 281,
+      "value": 6.3
+    },
+    "movieFile": {
+      "movieId": 19,
+      "relativePath": "Dragon Ball Z The World's Strongest (1990).mkv",
+      "path": "/movies/Dragon Ball Z The World's Strongest (1990)/Dragon Ball Z The World's Strongest (1990).mkv",
+      "size": 1081350297,
+      "dateAdded": "2020-09-07T09:55:44.9052584Z",
+      "indexerFlags": 0,
+      "quality": {
+        "quality": {
+          "id": 8,
+          "name": "WEBDL-480p",
+          "source": "webdl",
+          "resolution": 480,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "mediaInfo": {
+        "audioAdditionalFeatures": "",
+        "audioBitrate": 192000,
+        "audioChannels": 2.0,
+        "audioCodec": "Vorbis",
+        "audioLanguages": "English / English / Japanese",
+        "audioStreamCount": 3,
+        "videoBitDepth": 8,
+        "videoBitrate": 1805893,
+        "videoCodec": "x264",
+        "videoFps": 23.976,
+        "resolution": "704x396",
+        "runTime": "59:29",
+        "scanType": "Progressive",
+        "subtitles": "English"
+      },
+      "qualityCutoffNotMet": true,
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        },
+        {
+          "id": 8,
+          "name": "Japanese"
+        }
+      ],
+      "id": 19
+    },
+    "collection": {
+      "name": "Dragon Ball Z Movies Collection",
+      "tmdbId": 425164,
+      "images": []
+    },
+    "id": 19
+  },
+  {
+    "title": "Dragon Ball Z: Wrath of the Dragon",
+    "originalTitle": "ドラゴンボールZ 龍拳爆発!!悟空がやらねば誰がやる",
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieId": 20,
+        "title": "Dragon Ball Z Filme 13 - A Explosão do Punho do Dragão",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 202
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 20,
+        "title": "Bola de Drac Z: L'atac del puny del drac",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 203
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 20,
+        "title": "DBZ - El ataque del dragon",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 204
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 20,
+        "title": "Dragon Ball Z - Película 13 - ¡El renacer de la fusión!",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 205
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 20,
+        "title": "Doragon Bōru Zetto Ryū-Ken Bakuhatsu!! Gokū ga Yaraneba Dare ga Yaru",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 206
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 20,
+        "title": "Doragon bôru Z -  Ryûken bakuhatsu!! Gokû ga yaraneba dare ga yaru",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 207
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 20,
+        "title": "Dragon Ball Z: Ryuuken Bakuhatsu!! Gokuu ga Yaraneba Dare ga Yaru",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 208
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 20,
+        "title": "Dragonball The Movies #13 ドラゴンボールZ 龍拳爆発!!悟空がやらねば誰がやる",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 209
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 20,
+        "title": "드래곤볼 Z: 극장판 13기",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 210
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 20,
+        "title": "Dragon Ball Z Movie 13 - Wrath of the Dragon",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 211
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dragon ball z wrath dragon",
+    "sizeOnDisk": 734019584,
+    "status": "released",
+    "overview": "The Z Warriors discover an unopenable music box and are told to open it with the Dragon Balls. The contents turn out to be a warrior named Tapion who had sealed himself inside along with a monster called Hildegarn. Goku must now perfect a new technique to defeat the evil monster.",
+    "inCinemas": "1995-07-15T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/20/poster.jpg?lastWrite=637350693452471075",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/gd3argrGcs6mEHYPmnVHrP11sCG.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/20/fanart.jpg?lastWrite=637350693454441087",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/vv6HgFCq95kK32T3epDuvXKunjA.jpg"
+      }
+    ],
+    "website": "",
+    "year": 1995,
+    "hasFile": true,
+    "youTubeTrailerId": "52VKPAbEWug",
+    "studio": "Toei",
+    "path": "/movies/Dragon Ball Z Wrath of the Dragon (1995)",
+    "qualityProfileId": 1,
+    "monitored": true,
+    "minimumAvailability": "announced",
+    "isAvailable": true,
+    "folderName": "/movies/Dragon Ball Z Wrath of the Dragon (1995)",
+    "runtime": 51,
+    "cleanTitle": "dragonballzwrathdragon",
+    "imdbId": "tt0142243",
+    "tmdbId": 39108,
+    "titleSlug": "39108",
+    "certification": "PG",
+    "genres": [
+      "Animation",
+      "Action",
+      "Science Fiction"
+    ],
+    "tags": [],
+    "added": "2020-09-07T09:55:34.3416239Z",
+    "ratings": {
+      "votes": 387,
+      "value": 7.1
+    },
+    "movieFile": {
+      "movieId": 20,
+      "relativePath": "Dragon Ball Z Wrath of the Dragon (1995).avi",
+      "path": "/movies/Dragon Ball Z Wrath of the Dragon (1995)/Dragon Ball Z Wrath of the Dragon (1995).avi",
+      "size": 734019584,
+      "dateAdded": "2020-09-07T09:55:45.473224Z",
+      "indexerFlags": 0,
+      "quality": {
+        "quality": {
+          "id": 1,
+          "name": "SDTV",
+          "source": "tv",
+          "resolution": 480,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "mediaInfo": {
+        "audioAdditionalFeatures": "",
+        "audioBitrate": 128000,
+        "audioChannels": 2.0,
+        "audioCodec": "MP3",
+        "audioLanguages": "English",
+        "audioStreamCount": 1,
+        "videoBitDepth": 8,
+        "videoBitrate": 1741035,
+        "videoCodec": "XviD",
+        "videoFps": 29.970,
+        "resolution": "512x384",
+        "runTime": "51:55",
+        "scanType": "Progressive",
+        "subtitles": ""
+      },
+      "qualityCutoffNotMet": true,
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        }
+      ],
+      "id": 21
+    },
+    "collection": {
+      "name": "Dragon Ball Z Movies Collection",
+      "tmdbId": 425164,
+      "images": []
+    },
+    "id": 20
+  },
+  {
+    "title": "X-Men: Days of Future Past",
+    "originalTitle": "X-Men: Days of Future Past",
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieId": 21,
+        "title": "X-Men 5 - Dias de Um Futuro Melhor",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 193
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 21,
+        "title": "X-Men Días del futuro pasado Rogue Cut",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 194
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 21,
+        "title": "X-Men: Días Del Futuro Pasado",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 195
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 21,
+        "title": "X-מן: העתיד שהיה",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 196
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 21,
+        "title": "엑스맨: 데이즈 오브 퓨처 패스트",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 197
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 21,
+        "title": "X-Men 7 - Days of Future Past",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 198
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 21,
+        "title": "X-Men: Days of Future Past - The Rogue Cut",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 199
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 21,
+        "title": "X-Men: Days of Future Past 3D",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 200
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 21,
+        "title": "Iks-odamlar",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 201
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "x men days future past",
+    "sizeOnDisk": 26209856072,
+    "status": "released",
+    "overview": "The ultimate X-Men ensemble fights a war for the survival of the species across two time periods as they join forces with their younger selves in an epic battle that must change the past – to save our future.",
+    "inCinemas": "2014-05-15T00:00:00Z",
+    "physicalRelease": "2014-10-15T00:00:00Z",
+    "digitalRelease": "2017-09-04T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/21/poster.jpg?lastWrite=637350693451061066",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/bvN8iUpHyBIvniUk4e52SUZMA7Z.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/21/fanart.jpg?lastWrite=637350693451931072",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/AhEORlWOtrd4sL0tYlexMLNfkGq.jpg"
+      }
+    ],
+    "website": "http://www.x-menmovies.com/",
+    "year": 2014,
+    "hasFile": true,
+    "youTubeTrailerId": "pK2zYHWDZKo",
+    "studio": "Marvel Entertainment",
+    "path": "/movies/X-Men Days of Future Past (2014)",
+    "qualityProfileId": 1,
+    "monitored": true,
+    "minimumAvailability": "announced",
+    "isAvailable": true,
+    "folderName": "/movies/X-Men Days of Future Past (2014)",
+    "runtime": 132,
+    "cleanTitle": "xmendaysfuturepast",
+    "imdbId": "tt1877832",
+    "tmdbId": 127585,
+    "titleSlug": "127585",
+    "certification": "PG-13",
+    "genres": [
+      "Action",
+      "Adventure",
+      "Fantasy"
+    ],
+    "tags": [],
+    "added": "2020-09-07T09:55:34.3416239Z",
+    "ratings": {
+      "votes": 11726,
+      "value": 7.5
+    },
+    "movieFile": {
+      "movieId": 21,
+      "relativePath": "X-Men Days of Future Past (2014).mkv",
+      "path": "/movies/X-Men Days of Future Past (2014)/X-Men Days of Future Past (2014).mkv",
+      "size": 26209856072,
+      "dateAdded": "2020-09-07T09:55:45.1745365Z",
+      "indexerFlags": 0,
+      "quality": {
+        "quality": {
+          "id": 3,
+          "name": "WEBDL-1080p",
+          "source": "webdl",
+          "resolution": 1080,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "mediaInfo": {
+        "audioAdditionalFeatures": "ES XLL",
+        "audioBitrate": 0,
+        "audioChannels": 7.1,
+        "audioCodec": "DTS-HD MA",
+        "audioLanguages": "English / English / Spanish / French / English",
+        "audioStreamCount": 5,
+        "videoBitDepth": 8,
+        "videoBitrate": 0,
+        "videoCodec": "h264",
+        "videoFps": 23.976,
+        "resolution": "1920x1080",
+        "runTime": "2:28:45",
+        "scanType": "Progressive",
+        "subtitles": "English / Spanish / Spanish / French / French / English / English / English"
+      },
+      "qualityCutoffNotMet": false,
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        },
+        {
+          "id": 3,
+          "name": "Spanish"
+        },
+        {
+          "id": 2,
+          "name": "French"
+        }
+      ],
+      "id": 20
+    },
+    "collection": {
+      "name": "X-Men Collection",
+      "tmdbId": 748,
+      "images": []
+    },
+    "id": 21
+  },
+  {
+    "title": "X-Men",
+    "originalTitle": "X-Men",
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieId": 22,
+        "title": "X-Men 1 - O Filme",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 212
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 22,
+        "title": "X-mehed",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 213
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 22,
+        "title": "X-מן",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 214
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 22,
+        "title": "X-Men 1",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 5,
+          "name": "Italian"
+        },
+        "id": 215
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 22,
+        "title": "엑스맨 1",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 216
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 22,
+        "title": "Mozje X",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 217
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 22,
+        "title": "X-เม็น ศึกมนุษย์พลังเหนือโลก",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 218
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 22,
+        "title": "X-Men (2000)",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 219
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 22,
+        "title": "X-Men I",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 220
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 22,
+        "title": "X-Men: The Movie",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 221
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 22,
+        "title": "x man",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 222
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 22,
+        "title": "G'aroyib odamlar",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 223
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 22,
+        "title": "X-odamlar",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 224
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "x men",
+    "sizeOnDisk": 25367780688,
+    "status": "released",
+    "overview": "Two mutants, Rogue and Wolverine, come to a private academy for their kind whose resident superhero team, the X-Men, must oppose a terrorist organization with similar powers.",
+    "inCinemas": "2000-07-13T00:00:00Z",
+    "physicalRelease": "2000-08-15T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/22/poster.jpg?lastWrite=637355773734830575",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/bRDAc4GogyS9ci3ow7UnInOcriN.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/22/fanart.jpg?lastWrite=637350693459451117",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/a6MwSrIKmMjs5b8os7eEgQk05yx.jpg"
+      }
+    ],
+    "website": "",
+    "year": 2000,
+    "hasFile": true,
+    "youTubeTrailerId": "VNxwlx6etXI",
+    "studio": "Marvel Enterprises",
+    "path": "/movies/X-Men: The Movie (2000)",
+    "qualityProfileId": 1,
+    "monitored": true,
+    "minimumAvailability": "announced",
+    "isAvailable": true,
+    "folderName": "/movies/X-Men: The Movie (2000)",
+    "runtime": 104,
+    "cleanTitle": "xmen",
+    "imdbId": "tt0120903",
+    "tmdbId": 36657,
+    "titleSlug": "36657",
+    "certification": "PG-13",
+    "genres": [
+      "Adventure",
+      "Action",
+      "Science Fiction"
+    ],
+    "tags": [],
+    "added": "2020-09-07T09:55:34.3416239Z",
+    "ratings": {
+      "votes": 8172,
+      "value": 7.0
+    },
+    "movieFile": {
+      "movieId": 22,
+      "relativePath": "X-Men: The Movie 2000 Remux-2160p.mkv",
+      "path": "/movies/X-Men: The Movie (2000)/X-Men: The Movie 2000 Remux-2160p.mkv",
+      "size": 25367780688,
+      "dateAdded": "2020-09-07T09:55:45.9189278Z",
+      "indexerFlags": 0,
+      "quality": {
+        "quality": {
+          "id": 31,
+          "name": "Remux-2160p",
+          "source": "bluray",
+          "resolution": 2160,
+          "modifier": "remux"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "mediaInfo": {
+        "audioAdditionalFeatures": "XLL",
+        "audioBitrate": 0,
+        "audioChannels": 5.1,
+        "audioCodec": "DTS-HD MA",
+        "audioLanguages": "English / Spanish / French / Spanish / German / Italian / Japanese / Japanese / Czech / Polish / English",
+        "audioStreamCount": 11,
+        "videoBitDepth": 10,
+        "videoBitrate": 0,
+        "videoCodec": "h265",
+        "videoFps": 23.976,
+        "resolution": "3840x2160",
+        "runTime": "1:44:25",
+        "scanType": "",
+        "subtitles": "English / Spanish / French / Spanish / Danish / Dutch / Finnish / German / Italian / Japanese / Japanese / Japanese / Norwegian / Swedish / Chinese / Czech / Chinese / Polish / English / French / Spanish / Danish / Dutch / Finnish / German / Italian / Japa"
+      },
+      "qualityCutoffNotMet": false,
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        },
+        {
+          "id": 3,
+          "name": "Spanish"
+        },
+        {
+          "id": 2,
+          "name": "French"
+        },
+        {
+          "id": 4,
+          "name": "German"
+        },
+        {
+          "id": 5,
+          "name": "Italian"
+        },
+        {
+          "id": 8,
+          "name": "Japanese"
+        },
+        {
+          "id": 25,
+          "name": "Czech"
+        },
+        {
+          "id": 12,
+          "name": "Polish"
+        }
+      ],
+      "id": 23
+    },
+    "collection": {
+      "name": "X-Men Collection",
+      "tmdbId": 748,
+      "images": []
+    },
+    "id": 22
+  },
+  {
+    "title": "Dragon Ball: Curse of the Blood Rubies",
+    "originalTitle": "ドラゴンボール 神龍の伝説",
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieId": 23,
+        "title": "Dragon Ball: A Lenda de Shen Long",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 225
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 23,
+        "title": "Dragon Ball Movie 01: Die Legende von Shenlong",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 4,
+          "name": "German"
+        },
+        "id": 226
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 23,
+        "title": "Dragonball: Die Legende von Shenlong",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 4,
+          "name": "German"
+        },
+        "id": 227
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 23,
+        "title": "Bola de Drac: La llegenda del drac Sheron",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 228
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 23,
+        "title": "Bola de drac 01 La llegenda del drac Xeron (1986)",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 229
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 23,
+        "title": "Bola de drac La llegenda del dragó Shenlong",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 230
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 23,
+        "title": "Dragon Ball: La leyenda del dragón Xeron",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 231
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 23,
+        "title": "La llegenda del drac Sheron",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 3,
+          "name": "Spanish"
+        },
+        "id": 232
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 23,
+        "title": "Dragon Ball (01) La Légende de Shenron (1986)",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 2,
+          "name": "French"
+        },
+        "id": 233
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 23,
+        "title": "Dragon Ball - La leggenda del drago Shenron",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 5,
+          "name": "Italian"
+        },
+        "id": 234
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 23,
+        "title": "Dragon Ball Movie 1, Shen Long No Densetsu",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 235
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 23,
+        "title": "Dragon Ball: Shen Long no Densetsu",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 236
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 23,
+        "title": "Dragon Ball 01 La leyenda de Shen Long",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 237
+      },
+      {
+        "sourceType": "tmdb",
+        "movieId": 23,
+        "title": "Dragon Ball Movie 01 - The Legend of Shenlong",
+        "sourceId": 0,
+        "votes": 0,
+        "voteCount": 0,
+        "language": {
+          "id": 1,
+          "name": "English"
+        },
+        "id": 238
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dragon ball curse blood rubies",
+    "sizeOnDisk": 734610623,
+    "status": "released",
+    "overview": "The great King Gurumes is searching for the Dragon Balls in order to put a stop to his endless hunger. A young girl named Pansy who lives in the nearby village has had enough of the treachery and decides to seek Muten Rōshi for assistance. Can our heroes save the village and put a stop to the Gurumes Army?",
+    "inCinemas": "1986-12-20T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/23/poster.jpg?lastWrite=637350693457401105",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/dZCWRFJnwyxYOhzAhf7Xyru4moB.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/23/fanart.jpg?lastWrite=637350693460041121",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/3ZaiWLU8Z9M4tlY2hv95CTCKMAF.jpg"
+      }
+    ],
+    "website": "",
+    "year": 1986,
+    "hasFile": true,
+    "youTubeTrailerId": "0PNzQ_D8fjY",
+    "studio": "Bird Studios",
+    "path": "/movies/Dragon Ball The Legend of Shenron (1986)",
+    "qualityProfileId": 1,
+    "monitored": true,
+    "minimumAvailability": "announced",
+    "isAvailable": true,
+    "folderName": "/movies/Dragon Ball The Legend of Shenron (1986)",
+    "runtime": 50,
+    "cleanTitle": "dragonballcursebloodrubies",
+    "imdbId": "tt0142251",
+    "tmdbId": 39144,
+    "titleSlug": "39144",
+    "genres": [
+      "Action",
+      "Animation",
+      "Adventure"
+    ],
+    "tags": [],
+    "added": "2020-09-07T09:55:34.3416239Z",
+    "ratings": {
+      "votes": 149,
+      "value": 6.5
+    },
+    "movieFile": {
+      "movieId": 23,
+      "relativePath": "Dragon Ball The Legend of Shenron (1986).mkv",
+      "path": "/movies/Dragon Ball The Legend of Shenron (1986)/Dragon Ball The Legend of Shenron (1986).mkv",
+      "size": 734610623,
+      "dateAdded": "2020-09-07T09:55:45.7297485Z",
+      "indexerFlags": 0,
+      "quality": {
+        "quality": {
+          "id": 8,
+          "name": "WEBDL-480p",
+          "source": "webdl",
+          "resolution": 480,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "mediaInfo": {
+        "audioAdditionalFeatures": "",
+        "audioBitrate": 112001,
+        "audioChannels": 2.0,
+        "audioCodec": "Vorbis",
+        "audioLanguages": "Japanese",
+        "audioStreamCount": 1,
+        "videoBitDepth": 8,
+        "videoBitrate": 1862000,
+        "videoCodec": "x264",
+        "videoFps": 23.976,
+        "resolution": "704x396",
+        "runTime": "50:15",
+        "scanType": "Progressive",
+        "subtitles": "English"
+      },
+      "qualityCutoffNotMet": true,
+      "languages": [
+        {
+          "id": 8,
+          "name": "Japanese"
+        }
+      ],
+      "id": 22
+    },
+    "collection": {
+      "name": "Dragon Ball Collection",
+      "tmdbId": 386410,
+      "images": []
+    },
+    "id": 23
+  }
+]
