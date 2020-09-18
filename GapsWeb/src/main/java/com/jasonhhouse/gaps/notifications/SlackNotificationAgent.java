@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import static com.jasonhhouse.gaps.notifications.NotificationStatus.TIMEOUT;
 
-public class SlackNotificationAgent extends AbstractNotificationAgent<SlackProperties> {
+public final class SlackNotificationAgent extends AbstractNotificationAgent<SlackProperties> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SlackNotificationAgent.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();

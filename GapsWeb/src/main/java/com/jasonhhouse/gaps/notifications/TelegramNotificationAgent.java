@@ -30,7 +30,7 @@ import static com.jasonhhouse.gaps.notifications.NotificationStatus.FAILED_TO_PA
 import static com.jasonhhouse.gaps.notifications.NotificationStatus.SEND_MESSAGE;
 import static com.jasonhhouse.gaps.notifications.NotificationStatus.TIMEOUT;
 
-public class TelegramNotificationAgent extends AbstractNotificationAgent<TelegramProperties> {
+public final class TelegramNotificationAgent extends AbstractNotificationAgent<TelegramProperties> {
     private static final Logger LOGGER = LoggerFactory.getLogger(TelegramNotificationAgent.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
 

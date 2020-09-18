@@ -31,7 +31,7 @@ import static com.jasonhhouse.gaps.notifications.NotificationStatus.FAILED_TO_PA
 import static com.jasonhhouse.gaps.notifications.NotificationStatus.SEND_MESSAGE;
 import static com.jasonhhouse.gaps.notifications.NotificationStatus.TIMEOUT;
 
-public class GotifyNotificationAgent extends AbstractNotificationAgent<GotifyProperties> {
+public final class GotifyNotificationAgent extends AbstractNotificationAgent<GotifyProperties> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GotifyNotificationAgent.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();

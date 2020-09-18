@@ -10,11 +10,10 @@
 
 package com.jasonhhouse.gaps.notifications;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.NotificationType;
-import com.jasonhhouse.gaps.properties.SlackProperties;
+import com.jasonhhouse.gaps.properties.DiscordProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -31,7 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import static com.jasonhhouse.gaps.notifications.NotificationStatus.TIMEOUT;
 
-public class DiscordNotificationAgent extends AbstractNotificationAgent<SlackProperties> {
+public final class DiscordNotificationAgent extends AbstractNotificationAgent<DiscordProperties> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DiscordNotificationAgent.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -49,12 +48,12 @@ public class DiscordNotificationAgent extends AbstractNotificationAgent<SlackPro
 
     @Override
     public int getId() {
-        return 2;
+        return 6;
     }
 
     @Override
     public String getName() {
-        return "Slack Notification Agent";
+        return "Discord Notification Agent";
     }
 
     @Override
@@ -71,18 +70,18 @@ public class DiscordNotificationAgent extends AbstractNotificationAgent<SlackPro
                 .add("Content-Type", org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
-        Slack slack = new Slack(String.format("*%s*%n%s", title, message));
+        Discord discord = new Discord(title, message);
 
-        String slackMessage = "";
+        String discordMessage = "";
         try {
-            slackMessage = objectMapper.writeValueAsString(slack);
+            discordMessage = objectMapper.writeValueAsString(discord);
         } catch (JsonProcessingException e) {
-            LOGGER.error("Failed to turn Slack message into JSON", e);
+            LOGGER.error("Failed to turn Discord message into JSON", e);
             return false;
         }
 
-        LOGGER.info("slackMessage {}", slackMessage);
-        RequestBody body = RequestBody.create(slackMessage, MediaType.get(org.springframework.http.MediaType.APPLICATION_JSON_VALUE));
+        LOGGER.info("discordMessage {}", discordMessage);
+        RequestBody body = RequestBody.create(discordMessage, MediaType.get(org.springframework.http.MediaType.APPLICATION_JSON_VALUE));
 
         Request request = new Request.Builder()
                 .headers(headers)
@@ -92,72 +91,54 @@ public class DiscordNotificationAgent extends AbstractNotificationAgent<SlackPro
 
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
-                LOGGER.info("Slack message sent via {}", url);
+                LOGGER.info("Discord message sent via {}", url);
                 return true;
             } else {
-                LOGGER.error("Error with Slack Url: {} Body returned {}", url, response.body());
+                LOGGER.error("Error with Discord Url: {} Body returned {}", url, response.body());
                 return false;
             }
 
         } catch (IOException e) {
-            LOGGER.error(String.format("Error with Slack Url: %s", url), e);
+            LOGGER.error(String.format("Error with Discord Url: %s", url), e);
             return false;
         }
     }
 
     @Nullable
     @Override
-    public SlackProperties getNotificationProperties() {
-        return fileIoService.readProperties().getSlackProperties();
+    public DiscordProperties getNotificationProperties() {
+        return fileIoService.readProperties().getDiscordProperties();
     }
 
-    private static final class Slack {
-        private final Block[] blocks;
+    private static final class Discord {
+        private final Embeds embeds;
 
-        private Slack(String message) {
-            blocks = new Block[1];
-            blocks[0] = new DiscordNotificationAgent.Block(new Text(message));
+        private Discord(String title, String message) {
+            embeds = new Embeds(title, message);
         }
 
-        public Block[] getBlocks() {
-            return blocks;
+        public Embeds getEmbeds() {
+            return embeds;
+        }
+
+    }
+
+    private static final class Embeds {
+        private final String title;
+        private final String message;
+
+        private Embeds(String title, String message) {
+            this.title = title;
+            this.message = message;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getMessage() {
+            return message;
         }
     }
 
-    private static final class Block {
-        private final String type;
-        private final Text text;
-
-        private Block(Text text) {
-            this.type = "section";
-            this.text = text;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public Text getText() {
-            return text;
-        }
-    }
-
-    private static final class Text {
-        private final String type;
-        private final String value;
-
-        private Text(String value) {
-            this.type = "mrkdwn";
-            this.value = value;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        @JsonProperty("text")
-        public String getValue() {
-            return value;
-        }
-    }
 }

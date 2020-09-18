@@ -23,7 +23,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import static com.jasonhhouse.gaps.notifications.NotificationStatus.SEND_MESSAGE;
 
-public class EmailNotificationAgent extends AbstractNotificationAgent<EmailProperties> {
+public final class EmailNotificationAgent extends AbstractNotificationAgent<EmailProperties> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailNotificationAgent.class);
 
