@@ -33,17 +33,17 @@ public class SlackPropertiesTest {
 
     @Test
     void addingEnabledAndNotificationTypes() throws JsonProcessingException {
-        SlackProperties telegramProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[]}", SlackProperties.class);
-        assertTrue(CollectionUtils.isEmpty(telegramProperties.getNotificationTypes()));
-        assertTrue(telegramProperties.getEnabled());
-        assertTrue(StringUtils.isEmpty(telegramProperties.getWebHookUrl()));
+        SlackProperties slackProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[]}", SlackProperties.class);
+        assertTrue(CollectionUtils.isEmpty(slackProperties.getNotificationTypes()));
+        assertTrue(slackProperties.getEnabled());
+        assertTrue(StringUtils.isEmpty(slackProperties.getWebHookUrl()));
     }
 
     @Test
     void allValues() throws JsonProcessingException {
-        SlackProperties telegramProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[],\"webHookUrl\":\"http://\"}", SlackProperties.class);
-        assertTrue(CollectionUtils.isEmpty(telegramProperties.getNotificationTypes()));
-        assertTrue(telegramProperties.getEnabled());
-        assertEquals("http://", telegramProperties.getWebHookUrl());
+        SlackProperties slackProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[],\"webHookUrl\":\"http://\"}", SlackProperties.class);
+        assertTrue(CollectionUtils.isEmpty(slackProperties.getNotificationTypes()));
+        assertTrue(slackProperties.getEnabled());
+        assertEquals("http://", slackProperties.getWebHookUrl());
     }
 }

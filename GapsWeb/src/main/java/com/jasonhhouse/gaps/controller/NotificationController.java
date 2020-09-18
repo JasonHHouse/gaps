@@ -11,6 +11,7 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.Payload;
+import com.jasonhhouse.gaps.properties.DiscordProperties;
 import com.jasonhhouse.gaps.properties.EmailProperties;
 import com.jasonhhouse.gaps.properties.GotifyProperties;
 import com.jasonhhouse.gaps.properties.PlexProperties;
@@ -76,6 +77,39 @@ public class NotificationController {
         } catch (Exception e) {
             LOGGER.error(Payload.EMAIL_NOTIFICATION_NOT_FOUND.getReason(), e);
             return ResponseEntity.ok().body(Payload.EMAIL_NOTIFICATION_NOT_FOUND.setExtras(e.getMessage()));
+        }
+    }
+
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            value = "/discord")
+    @ResponseBody
+    public ResponseEntity<Payload> putDiscord(@RequestBody DiscordProperties discordProperties) {
+        LOGGER.info("putDiscord( {} )", discordProperties);
+
+        try {
+            PlexProperties plexProperties = fileIoService.readProperties();
+            plexProperties.setDiscordProperties(discordProperties);
+            fileIoService.writeProperties(plexProperties);
+            LOGGER.info("Discord Properties Updated Successfully");
+            return ResponseEntity.ok().body(Payload.SLACK_NOTIFICATION_UPDATE_SUCCEEDED);
+        } catch (Exception e) {
+            LOGGER.error(Payload.SLACK_NOTIFICATION_UPDATE_FAILED.getReason(), e);
+            return ResponseEntity.ok().body(Payload.SLACK_NOTIFICATION_UPDATE_FAILED.setExtras(e.getMessage()));
+        }
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+            value = "/discord")
+    @ResponseBody
+    public ResponseEntity<Payload> getDiscord() {
+        LOGGER.info("getDiscord()");
+
+        try {
+            return ResponseEntity.ok().body(Payload.SLACK_NOTIFICATION_FOUND.setExtras(fileIoService.readProperties().getDiscordProperties()));
+        } catch (Exception e) {
+            LOGGER.error(Payload.SLACK_NOTIFICATION_NOT_FOUND.getReason(), e);
+            return ResponseEntity.ok().body(Payload.SLACK_NOTIFICATION_NOT_FOUND.setExtras(e.getMessage()));
         }
     }
 

@@ -34,46 +34,46 @@ public class EmailPropertiesTest {
 
     @Test
     void addingEnabledAndNotificationTypes() throws JsonProcessingException {
-        EmailProperties telegramProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[]}", EmailProperties.class);
-        assertTrue(CollectionUtils.isEmpty(telegramProperties.getNotificationTypes()));
-        assertTrue(telegramProperties.getEnabled());
-        assertTrue(StringUtils.isEmpty(telegramProperties.getUsername()));
-        assertTrue(StringUtils.isEmpty(telegramProperties.getPassword()));
-        assertTrue(StringUtils.isEmpty(telegramProperties.getMailTo()));
-        assertTrue(StringUtils.isEmpty(telegramProperties.getMailFrom()));
-        assertEquals(0, telegramProperties.getMailPort());
-        assertTrue(StringUtils.isEmpty(telegramProperties.getMailTransportProtocol()));
-        assertTrue(StringUtils.isEmpty(telegramProperties.getMailSmtpAuth()));
-        assertFalse(telegramProperties.getMailSmtpTlsEnabled());
+        EmailProperties emailProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[]}", EmailProperties.class);
+        assertTrue(CollectionUtils.isEmpty(emailProperties.getNotificationTypes()));
+        assertTrue(emailProperties.getEnabled());
+        assertTrue(StringUtils.isEmpty(emailProperties.getUsername()));
+        assertTrue(StringUtils.isEmpty(emailProperties.getPassword()));
+        assertTrue(StringUtils.isEmpty(emailProperties.getMailTo()));
+        assertTrue(StringUtils.isEmpty(emailProperties.getMailFrom()));
+        assertEquals(0, emailProperties.getMailPort());
+        assertTrue(StringUtils.isEmpty(emailProperties.getMailTransportProtocol()));
+        assertTrue(StringUtils.isEmpty(emailProperties.getMailSmtpAuth()));
+        assertFalse(emailProperties.getMailSmtpTlsEnabled());
     }
 
     @Test
     void missingOneValue() throws JsonProcessingException {
-        EmailProperties telegramProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[],\"username\":\"123\"}", EmailProperties.class);
-        assertTrue(CollectionUtils.isEmpty(telegramProperties.getNotificationTypes()));
-        assertTrue(telegramProperties.getEnabled());
-        assertEquals("123", telegramProperties.getUsername());
-        assertTrue(StringUtils.isEmpty(telegramProperties.getPassword()));
-        assertTrue(StringUtils.isEmpty(telegramProperties.getMailTo()));
-        assertTrue(StringUtils.isEmpty(telegramProperties.getMailFrom()));
-        assertEquals(0, telegramProperties.getMailPort());
-        assertTrue(StringUtils.isEmpty(telegramProperties.getMailTransportProtocol()));
-        assertTrue(StringUtils.isEmpty(telegramProperties.getMailSmtpAuth()));
-        assertFalse(telegramProperties.getMailSmtpTlsEnabled());
+        EmailProperties emailProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[],\"username\":\"123\"}", EmailProperties.class);
+        assertTrue(CollectionUtils.isEmpty(emailProperties.getNotificationTypes()));
+        assertTrue(emailProperties.getEnabled());
+        assertEquals("123", emailProperties.getUsername());
+        assertTrue(StringUtils.isEmpty(emailProperties.getPassword()));
+        assertTrue(StringUtils.isEmpty(emailProperties.getMailTo()));
+        assertTrue(StringUtils.isEmpty(emailProperties.getMailFrom()));
+        assertEquals(0, emailProperties.getMailPort());
+        assertTrue(StringUtils.isEmpty(emailProperties.getMailTransportProtocol()));
+        assertTrue(StringUtils.isEmpty(emailProperties.getMailSmtpAuth()));
+        assertFalse(emailProperties.getMailSmtpTlsEnabled());
     }
 
     @Test
     void allValues() throws JsonProcessingException {
-        EmailProperties telegramProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[],\"username\":\"jason\",\"password\":\"password\",\"mailTo\":\"mail2\",\"mailFrom\":\"mailFrom\",\"mailPort\":4444,\"mailTransportProtocol\":\"TLS\",\"mailSmtpAuth\":\"AUTH\",\"mailSmtpTlsEnabled\":true}", EmailProperties.class);
-        assertTrue(CollectionUtils.isEmpty(telegramProperties.getNotificationTypes()));
-        assertTrue(telegramProperties.getEnabled());
-        assertEquals("jason", telegramProperties.getUsername());
-        assertEquals("password",telegramProperties.getPassword());
-        assertEquals("mail2", telegramProperties.getMailTo());
-        assertEquals("mailFrom", telegramProperties.getMailFrom());
-        assertEquals(4444, telegramProperties.getMailPort());
-        assertEquals("TLS", telegramProperties.getMailTransportProtocol());
-        assertEquals("AUTH", telegramProperties.getMailSmtpAuth());
-        assertTrue(telegramProperties.getMailSmtpTlsEnabled());
+        EmailProperties emailProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[],\"username\":\"jason\",\"password\":\"password\",\"mailTo\":\"mail2\",\"mailFrom\":\"mailFrom\",\"mailPort\":4444,\"mailTransportProtocol\":\"TLS\",\"mailSmtpAuth\":\"AUTH\",\"mailSmtpTlsEnabled\":true}", EmailProperties.class);
+        assertTrue(CollectionUtils.isEmpty(emailProperties.getNotificationTypes()));
+        assertTrue(emailProperties.getEnabled());
+        assertEquals("jason", emailProperties.getUsername());
+        assertEquals("password",emailProperties.getPassword());
+        assertEquals("mail2", emailProperties.getMailTo());
+        assertEquals("mailFrom", emailProperties.getMailFrom());
+        assertEquals(4444, emailProperties.getMailPort());
+        assertEquals("TLS", emailProperties.getMailTransportProtocol());
+        assertEquals("AUTH", emailProperties.getMailSmtpAuth());
+        assertTrue(emailProperties.getMailSmtpTlsEnabled());
     }
 }
