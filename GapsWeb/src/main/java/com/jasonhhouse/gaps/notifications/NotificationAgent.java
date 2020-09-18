@@ -12,6 +12,7 @@ package com.jasonhhouse.gaps.notifications;
 
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.properties.NotificationProperties;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public interface NotificationAgent<T extends NotificationProperties> {
@@ -24,6 +25,6 @@ public interface NotificationAgent<T extends NotificationProperties> {
 
     boolean sendMessage(NotificationType notificationType, String level, String title, String message);
 
-    @Nullable
+    @NotNull
     T getNotificationProperties();
 }

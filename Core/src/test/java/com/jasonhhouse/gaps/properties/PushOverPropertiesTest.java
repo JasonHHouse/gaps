@@ -33,40 +33,40 @@ public class PushOverPropertiesTest {
 
     @Test
     void addingEnabledAndNotificationTypes() throws JsonProcessingException {
-        PushOverProperties telegramProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[]}", PushOverProperties.class);
-        assertTrue(CollectionUtils.isEmpty(telegramProperties.getNotificationTypes()));
-        assertTrue(telegramProperties.getEnabled());
-        assertTrue(StringUtils.isEmpty(telegramProperties.getToken()));
-        assertTrue(StringUtils.isEmpty(telegramProperties.getUser()));
-        assertEquals(0, telegramProperties.getPriority());
-        assertTrue(StringUtils.isEmpty(telegramProperties.getSound()));
-        assertEquals(0, telegramProperties.getRetry());
-        assertEquals(0, telegramProperties.getExpire());
+        PushOverProperties pushOverProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[]}", PushOverProperties.class);
+        assertTrue(CollectionUtils.isEmpty(pushOverProperties.getNotificationTypes()));
+        assertTrue(pushOverProperties.getEnabled());
+        assertTrue(StringUtils.isEmpty(pushOverProperties.getToken()));
+        assertTrue(StringUtils.isEmpty(pushOverProperties.getUser()));
+        assertEquals(0, pushOverProperties.getPriority());
+        assertTrue(StringUtils.isEmpty(pushOverProperties.getSound()));
+        assertEquals(0, pushOverProperties.getRetry());
+        assertEquals(0, pushOverProperties.getExpire());
     }
 
     @Test
     void missingOneValue() throws JsonProcessingException {
-        PushOverProperties telegramProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[],\"token\":\"123\"}", PushOverProperties.class);
-        assertTrue(CollectionUtils.isEmpty(telegramProperties.getNotificationTypes()));
-        assertTrue(telegramProperties.getEnabled());
-        assertEquals("123", telegramProperties.getToken());
-        assertTrue(StringUtils.isEmpty(telegramProperties.getUser()));
-        assertEquals(0, telegramProperties.getPriority());
-        assertTrue(StringUtils.isEmpty(telegramProperties.getSound()));
-        assertEquals(0, telegramProperties.getRetry());
-        assertEquals(0, telegramProperties.getExpire());
+        PushOverProperties pushOverProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[],\"token\":\"123\"}", PushOverProperties.class);
+        assertTrue(CollectionUtils.isEmpty(pushOverProperties.getNotificationTypes()));
+        assertTrue(pushOverProperties.getEnabled());
+        assertEquals("123", pushOverProperties.getToken());
+        assertTrue(StringUtils.isEmpty(pushOverProperties.getUser()));
+        assertEquals(0, pushOverProperties.getPriority());
+        assertTrue(StringUtils.isEmpty(pushOverProperties.getSound()));
+        assertEquals(0, pushOverProperties.getRetry());
+        assertEquals(0, pushOverProperties.getExpire());
     }
 
     @Test
     void allValues() throws JsonProcessingException {
-        PushOverProperties telegramProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[],\"token\":\"token\",\"user\":\"user\",\"priority\":2,\"sound\":\"alien\",\"retry\":60,\"expire\":3600}", PushOverProperties.class);
-        assertTrue(CollectionUtils.isEmpty(telegramProperties.getNotificationTypes()));
-        assertTrue(telegramProperties.getEnabled());
-        assertEquals("token", telegramProperties.getToken());
-        assertEquals("user", telegramProperties.getUser());
-        assertEquals(2, telegramProperties.getPriority());
-        assertEquals("alien", telegramProperties.getSound());
-        assertEquals(60, telegramProperties.getRetry());
-        assertEquals(3600, telegramProperties.getExpire());
+        PushOverProperties pushOverProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[],\"token\":\"token\",\"user\":\"user\",\"priority\":2,\"sound\":\"alien\",\"retry\":60,\"expire\":3600}", PushOverProperties.class);
+        assertTrue(CollectionUtils.isEmpty(pushOverProperties.getNotificationTypes()));
+        assertTrue(pushOverProperties.getEnabled());
+        assertEquals("token", pushOverProperties.getToken());
+        assertEquals("user", pushOverProperties.getUser());
+        assertEquals(2, pushOverProperties.getPriority());
+        assertEquals("alien", pushOverProperties.getSound());
+        assertEquals(60, pushOverProperties.getRetry());
+        assertEquals(3600, pushOverProperties.getExpire());
     }
 }

@@ -23,6 +23,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +31,7 @@ import static com.jasonhhouse.gaps.notifications.NotificationStatus.FAILED_TO_PA
 import static com.jasonhhouse.gaps.notifications.NotificationStatus.SEND_MESSAGE;
 import static com.jasonhhouse.gaps.notifications.NotificationStatus.TIMEOUT;
 
-public class TelegramNotificationAgent extends AbstractNotificationAgent<TelegramProperties> {
+public final class TelegramNotificationAgent extends AbstractNotificationAgent<TelegramProperties> {
     private static final Logger LOGGER = LoggerFactory.getLogger(TelegramNotificationAgent.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -104,6 +105,7 @@ public class TelegramNotificationAgent extends AbstractNotificationAgent<Telegra
         }
     }
 
+    @NotNull
     @Override
     public TelegramProperties getNotificationProperties() {
         return fileIoService.readProperties().getTelegramProperties();

@@ -23,6 +23,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,7 @@ import static com.jasonhhouse.gaps.notifications.NotificationStatus.FAILED_TO_PA
 import static com.jasonhhouse.gaps.notifications.NotificationStatus.SEND_MESSAGE;
 import static com.jasonhhouse.gaps.notifications.NotificationStatus.TIMEOUT;
 
-public class GotifyNotificationAgent extends AbstractNotificationAgent<GotifyProperties> {
+public final class GotifyNotificationAgent extends AbstractNotificationAgent<GotifyProperties> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GotifyNotificationAgent.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -101,7 +102,7 @@ public class GotifyNotificationAgent extends AbstractNotificationAgent<GotifyPro
         }
     }
 
-    @Nullable
+    @NotNull
     @Override
     public GotifyProperties getNotificationProperties() {
         return fileIoService.readProperties().getGotifyProperties();

@@ -285,7 +285,7 @@
                     <label for="setSchedule">Set Schedule</label>
                     <select class="form-control" id="setSchedule">
                         <div th:each="schedule : ${schedules}" th:remove="tag">
-                            <option th:value="${schedule.id}" th:text="${schedule.message}"  th:selected="${plexProperties?.schedule?.getId().equals(schedule.id)?: false}"></option>
+                            <option th:value="${schedule.id}" th:text="${schedule.message}" th:selected="${plexProperties?.schedule?.getId().equals(schedule.id)?: false}"></option>
                         </div>
                     </select>
                 </div>
@@ -320,17 +320,19 @@
 
         </div>
         <div class="tab-pane fade top-margin" id="notification">
-            <div th:insert="fragments/notifications :: telegram"></div>
-            <hr class="thin">
-            <div th:insert="fragments/notifications :: slack"></div>
-            <hr class="thin">
-            <div th:insert="fragments/notifications :: push-bullet"></div>
-            <hr class="thin">
-            <div th:insert="fragments/notifications :: gotify"></div>
+            <div th:insert="fragments/notifications :: discord"></div>
             <hr class="thin">
             <div th:insert="fragments/notifications :: email"></div>
             <hr class="thin">
+            <div th:insert="fragments/notifications :: gotify"></div>
+            <hr class="thin">
+            <div th:insert="fragments/notifications :: push-bullet"></div>
+            <hr class="thin">
             <div th:insert="fragments/notifications :: push-over"></div>
+            <hr class="thin">
+            <div th:insert="fragments/notifications :: slack"></div>
+            <hr class="thin">
+            <div th:insert="fragments/notifications :: telegram"></div>
         </div>
         <div class="tab-pane fade top-margin" id="folders">
             <p>folders</p>

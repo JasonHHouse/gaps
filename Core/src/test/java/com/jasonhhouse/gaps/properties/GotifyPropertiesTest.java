@@ -33,28 +33,28 @@ public class GotifyPropertiesTest {
 
     @Test
     void addingEnabledAndNotificationTypes() throws JsonProcessingException {
-        GotifyProperties telegramProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[]}", GotifyProperties.class);
-        assertTrue(CollectionUtils.isEmpty(telegramProperties.getNotificationTypes()));
-        assertTrue(telegramProperties.getEnabled());
-        assertTrue(StringUtils.isEmpty(telegramProperties.getAddress()));
-        assertTrue(StringUtils.isEmpty(telegramProperties.getToken()));
+        GotifyProperties gotifyProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[]}", GotifyProperties.class);
+        assertTrue(CollectionUtils.isEmpty(gotifyProperties.getNotificationTypes()));
+        assertTrue(gotifyProperties.getEnabled());
+        assertTrue(StringUtils.isEmpty(gotifyProperties.getAddress()));
+        assertTrue(StringUtils.isEmpty(gotifyProperties.getToken()));
     }
 
     @Test
     void missingOneValue() throws JsonProcessingException {
-        GotifyProperties telegramProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[],\"address\":\"address\"}", GotifyProperties.class);
-        assertTrue(CollectionUtils.isEmpty(telegramProperties.getNotificationTypes()));
-        assertTrue(telegramProperties.getEnabled());
-        assertEquals("address", telegramProperties.getAddress());
-        assertTrue(StringUtils.isEmpty(telegramProperties.getToken()));
+        GotifyProperties gotifyProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[],\"address\":\"address\"}", GotifyProperties.class);
+        assertTrue(CollectionUtils.isEmpty(gotifyProperties.getNotificationTypes()));
+        assertTrue(gotifyProperties.getEnabled());
+        assertEquals("address", gotifyProperties.getAddress());
+        assertTrue(StringUtils.isEmpty(gotifyProperties.getToken()));
     }
 
     @Test
     void allValues() throws JsonProcessingException {
-        GotifyProperties telegramProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[\"TEST\"],\"address\":\"address\",\"token\":\"123qwe\"}", GotifyProperties.class);
-        assertTrue(CollectionUtils.isNotEmpty(telegramProperties.getNotificationTypes()));
-        assertTrue(telegramProperties.getEnabled());
-        assertEquals("address", telegramProperties.getAddress());
-        assertEquals("123qwe", telegramProperties.getToken());
+        GotifyProperties gotifyProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[\"TEST\"],\"address\":\"address\",\"token\":\"123qwe\"}", GotifyProperties.class);
+        assertTrue(CollectionUtils.isNotEmpty(gotifyProperties.getNotificationTypes()));
+        assertTrue(gotifyProperties.getEnabled());
+        assertEquals("address", gotifyProperties.getAddress());
+        assertEquals("123qwe", gotifyProperties.getToken());
     }
 }
