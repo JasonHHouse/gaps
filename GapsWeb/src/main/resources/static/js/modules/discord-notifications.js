@@ -53,7 +53,7 @@ export async function saveDiscordNotifications() {
         body: JSON.stringify(body)
     })
     const put = await response.json();
-    if (put.code && put.code === Payload.SLACK_NOTIFICATION_UPDATE_SUCCEEDED) {
+    if (put.code && put.code === Payload.DISCORD_NOTIFICATION_UPDATE_SUCCEEDED) {
         hideAllAlertsAndSpinners();
         document.getElementById('discordSaveSuccess').style.display = 'block';
     } else {

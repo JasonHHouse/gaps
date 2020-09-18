@@ -8,7 +8,7 @@ describe('Check Discord Notification Agent', function () {
         cy.request('/notifications/discord')
             .then((resp) => {
                 let body = resp.body;
-                expect(body.code).to.eq(92);
+                expect(body.code).to.eq(142);
                 expect(body.extras.enabled).to.eq(false);
                 expect(body.extras.notificationTypes.length).to.eq(0);
                 expect(body.extras.webHookUrl).to.eq("");
@@ -52,13 +52,13 @@ describe('Check Discord Notification Agent', function () {
         cy.request('PUT', '/notifications/discord', object)
             .then((resp) => {
                 let body = resp.body;
-                expect(body.code).to.eq(90);
+                expect(body.code).to.eq(140);
                 expect(body.extras).to.eq(null);
             })
             .request('/notifications/discord')
             .then((resp) => {
                 let body = resp.body;
-                expect(body.code).to.eq(92);
+                expect(body.code).to.eq(142);
                 expect(body.extras.webHookUrl).to.eq("webHookUrl");
             })
             .visit('/configuration')
@@ -100,13 +100,13 @@ describe('Check Discord Notification Agent', function () {
         cy.request('PUT', '/notifications/discord', object)
             .then((resp) => {
                 let body = resp.body;
-                expect(body.code).to.eq(90);
+                expect(body.code).to.eq(140);
                 expect(body.extras).to.eq(null);
             })
             .request('/notifications/discord')
             .then((resp) => {
                 let body = resp.body;
-                expect(body.code).to.eq(92);
+                expect(body.code).to.eq(142);
                 expect(body.extras.webHookUrl).to.eq("webHookUrl");
             })
             .visit('/configuration')
