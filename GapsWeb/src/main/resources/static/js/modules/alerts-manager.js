@@ -86,6 +86,14 @@ export function hidePushOverAlertsAndSpinners() {
     document.getElementById('pushOverSpinner').style.display = 'none';
 }
 
+export function hideDiscordAlertsAndSpinners() {
+    document.getElementById('discordTestSuccess').style.display = 'none';
+    document.getElementById('discordTestError').style.display = 'none';
+    document.getElementById('discordSaveSuccess').style.display = 'none';
+    document.getElementById('discordSaveError').style.display = 'none';
+    document.getElementById('discordSpinner').style.display = 'none';
+}
+
 export function hideAllAlertsAndSpinners() {
     hideTmdbAlertsAndSpinners();
     hideDeleteAlertsAndSpinners();
@@ -97,4 +105,5 @@ export function hideAllAlertsAndSpinners() {
     hideGotifyAlertsAndSpinners();
     hideEmailAlertsAndSpinners();
     hidePushOverAlertsAndSpinners();
+    hideDiscordAlertsAndSpinners();
 }

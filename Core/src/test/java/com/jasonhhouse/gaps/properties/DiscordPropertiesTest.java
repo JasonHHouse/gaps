@@ -22,39 +22,28 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PushBulletPropertiesTest {
+public class DiscordPropertiesTest {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     void emptyJson() {
-        Assertions.assertThrows(MismatchedInputException.class, () -> objectMapper.readValue("{}", PushBulletProperties.class));
+        Assertions.assertThrows(MismatchedInputException.class, () -> objectMapper.readValue("{}", DiscordProperties.class));
     }
 
     @Test
     void addingEnabledAndNotificationTypes() throws JsonProcessingException {
-        PushBulletProperties pushBulletProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[]}", PushBulletProperties.class);
-        assertTrue(CollectionUtils.isEmpty(pushBulletProperties.getNotificationTypes()));
-        assertTrue(pushBulletProperties.getEnabled());
-        assertTrue(StringUtils.isEmpty(pushBulletProperties.getChannel_tag()));
-        assertTrue(StringUtils.isEmpty(pushBulletProperties.getAccessToken()));
-    }
-
-    @Test
-    void missingOneValue() throws JsonProcessingException {
-        PushBulletProperties pushBulletProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[],\"channel_tag\":\"123\"}", PushBulletProperties.class);
-        assertTrue(CollectionUtils.isEmpty(pushBulletProperties.getNotificationTypes()));
-        assertTrue(pushBulletProperties.getEnabled());
-        assertEquals("123", pushBulletProperties.getChannel_tag());
-        assertTrue(StringUtils.isEmpty(pushBulletProperties.getAccessToken()));
+        DiscordProperties discordProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[]}", DiscordProperties.class);
+        assertTrue(CollectionUtils.isEmpty(discordProperties.getNotificationTypes()));
+        assertTrue(discordProperties.getEnabled());
+        assertTrue(StringUtils.isEmpty(discordProperties.getWebHookUrl()));
     }
 
     @Test
     void allValues() throws JsonProcessingException {
-        PushBulletProperties pushBulletProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[\"TEST\"],\"channel_tag\":\"123\",\"accessToken\":\"abc\"}", PushBulletProperties.class);
-        assertTrue(CollectionUtils.isNotEmpty(pushBulletProperties.getNotificationTypes()));
-        assertTrue(pushBulletProperties.getEnabled());
-        assertEquals("123", pushBulletProperties.getChannel_tag());
-        assertEquals("abc", pushBulletProperties.getAccessToken());
+        DiscordProperties discordProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[],\"webHookUrl\":\"http://\"}", DiscordProperties.class);
+        assertTrue(CollectionUtils.isEmpty(discordProperties.getNotificationTypes()));
+        assertTrue(discordProperties.getEnabled());
+        assertEquals("http://", discordProperties.getWebHookUrl());
     }
 }

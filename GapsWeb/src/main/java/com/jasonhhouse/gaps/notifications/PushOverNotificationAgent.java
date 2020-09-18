@@ -24,6 +24,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,7 +107,7 @@ public final class PushOverNotificationAgent extends AbstractNotificationAgent<P
         }
     }
 
-    @Nullable
+    @NotNull
     @Override
     public PushOverProperties getNotificationProperties() {
         return fileIoService.readProperties().getPushOverProperties();
