@@ -14,6 +14,7 @@ call npm run uglifyjs-push-bullet-notifications-js
 call npm run uglifyjs-gotify-notifications-js
 call npm run uglifyjs-email-notifications-js
 call npm run uglifyjs-push-over-notifications-js
+call npm run uglifyjs-discord-notifications-js
 call npm run uglifyjs-schedule-js
 call mvn clean install
 del GapsOnWindows\*.jar

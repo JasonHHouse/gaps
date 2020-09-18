@@ -92,10 +92,10 @@ public class NotificationController {
             plexProperties.setDiscordProperties(discordProperties);
             fileIoService.writeProperties(plexProperties);
             LOGGER.info("Discord Properties Updated Successfully");
-            return ResponseEntity.ok().body(Payload.SLACK_NOTIFICATION_UPDATE_SUCCEEDED);
+            return ResponseEntity.ok().body(Payload.DISCORD_NOTIFICATION_UPDATE_SUCCEEDED);
         } catch (Exception e) {
-            LOGGER.error(Payload.SLACK_NOTIFICATION_UPDATE_FAILED.getReason(), e);
-            return ResponseEntity.ok().body(Payload.SLACK_NOTIFICATION_UPDATE_FAILED.setExtras(e.getMessage()));
+            LOGGER.error(Payload.DISCORD_NOTIFICATION_UPDATE_FAILED.getReason(), e);
+            return ResponseEntity.ok().body(Payload.DISCORD_NOTIFICATION_UPDATE_FAILED.setExtras(e.getMessage()));
         }
     }
 
@@ -106,10 +106,10 @@ public class NotificationController {
         LOGGER.info("getDiscord()");
 
         try {
-            return ResponseEntity.ok().body(Payload.SLACK_NOTIFICATION_FOUND.setExtras(fileIoService.readProperties().getDiscordProperties()));
+            return ResponseEntity.ok().body(Payload.DISCORD_NOTIFICATION_FOUND.setExtras(fileIoService.readProperties().getDiscordProperties()));
         } catch (Exception e) {
-            LOGGER.error(Payload.SLACK_NOTIFICATION_NOT_FOUND.getReason(), e);
-            return ResponseEntity.ok().body(Payload.SLACK_NOTIFICATION_NOT_FOUND.setExtras(e.getMessage()));
+            LOGGER.error(Payload.DISCORD_NOTIFICATION_NOT_FOUND.getReason(), e);
+            return ResponseEntity.ok().body(Payload.DISCORD_NOTIFICATION_NOT_FOUND.setExtras(e.getMessage()));
         }
     }
 

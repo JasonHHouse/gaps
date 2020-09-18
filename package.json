@@ -29,6 +29,7 @@
     "uglifyjs-push-bullet-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/push-bullet-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/push-bullet-notifications.min.js",
     "uglifyjs-gotify-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/gotify-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/gotify-notifications.min.js",
     "uglifyjs-email-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/email-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/email-notifications.min.js",
+    "uglifyjs-discord-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/discord-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/discord-notifications.min.js",
     "uglifyjs-push-over-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/push-over-notifications.js --output GapsWeb/src/main/resources/static/js/modules/push-over-notifications.min.js",
     "uglifyjs-schedule-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/schedule.js --compress --output GapsWeb/src/main/resources/static/js/modules/schedule.min.js"
   },

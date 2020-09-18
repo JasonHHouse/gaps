@@ -56,7 +56,11 @@ public enum Payload {
     PUSH_OVER_NOTIFICATION_UPDATE_SUCCEEDED(130, "PushOver Notification Update Succeeded."),
     PUSH_OVER_NOTIFICATION_UPDATE_FAILED(131, "PushOver Notification Update Failed."),
     PUSH_OVER_NOTIFICATION_FOUND(132, "PushOver Notification Found."),
-    PUSH_OVER_NOTIFICATION_NOT_FOUND(133, "PushOver Notification Not Found.");
+    PUSH_OVER_NOTIFICATION_NOT_FOUND(133, "PushOver Notification Not Found."),
+    DISCORD_NOTIFICATION_UPDATE_SUCCEEDED(140, "Discord Notification Update Succeeded."),
+    DISCORD_NOTIFICATION_UPDATE_FAILED(141, "Discord Notification Update Failed."),
+    DISCORD_NOTIFICATION_FOUND(142, "Discord Notification Found."),
+    DISCORD_NOTIFICATION_NOT_FOUND(143, "Discord Notification Not Found.");
 
     private final int code;
     private final String reason;

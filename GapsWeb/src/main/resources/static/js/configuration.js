@@ -19,6 +19,7 @@ import {saveGotifyNotifications, testGotifyNotifications} from "./modules/gotify
 import {saveEmailNotifications, testEmailNotifications} from "./modules/email-notifications.min.js";
 import {saveSchedule} from "./modules/schedule.min.js";
 import {getSoundOptions, savePushOverNotifications, testPushOverNotifications} from "./modules/push-over-notifications.min.js";
+import {saveDiscordNotifications, testDiscordNotifications} from "./modules/discord-notifications.min.js";
 
 let plexSpinner, plexSaveSuccess, plexSaveError, plexTestSuccess, plexTestError, plexDeleteSuccess, plexDeleteError,
     plexDuplicateError;
@@ -110,6 +111,8 @@ document.addEventListener('DOMContentLoaded', function () {
     window.testTelegram = testTelegramNotifications;
     window.saveSlack = saveSlackNotifications;
     window.testSlack = testSlackNotifications;
+    window.saveDiscord = saveDiscordNotifications;
+    window.testDiscord = testDiscordNotifications;
     window.savePushBullet = savePushBulletNotifications;
     window.testPushBullet = testPushBulletNotifications;
     window.testGotify = testGotifyNotifications;

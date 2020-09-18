@@ -725,5 +725,105 @@
         <p class="mb-0">Your PushOver notification saved successfully.</p>
     </div>
 </header>
+
+<header th:fragment="discord">
+    <h4>Discord Notifications</h4>
+    <form id="discordConfiguration">
+        <div class="form-group">
+            <label for="discordWebHookUrl">Bot ID</label>
+            <input type="text" class="form-control" id="discordWebHookUrl" aria-describedby="discordWebHookUrlHelp"
+                   th:value="${plexProperties?.discordProperties?.webHookUrl}">
+            <small id="discordWebHookUrlHelp" class="form-text text-muted">Get your WebHook as explained <a href="https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks"
+                                                                                                          target="_blank">here.</a></small>
+        </div>
+        <div class="form-group">
+            <label>Notification Types</label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.discordProperties?.hasTmdbConnectionApi()}"
+                       id="discordTmdbApiConnectionNotification">
+                <label class="form-check-label" for="discordTmdbApiConnectionNotification">
+                    TMDB API Connection
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.discordProperties?.hasPlexServerConnection()}"
+                       id="discordPlexServerConnectionNotification">
+                <label class="form-check-label" for="discordPlexServerConnectionNotification">
+                    Plex Server Connection
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.discordProperties?.hasPlexMetadataUpdate()}"
+                       id="discordPlexMetadataUpdateNotification">
+                <label class="form-check-label" for="discordPlexMetadataUpdateNotification">
+                    Plex Metadata Update
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.discordProperties?.hasPlexLibraryUpdate()}"
+                       id="discordPlexLibraryUpdateNotification">
+                <label class="form-check-label" for="discordPlexLibraryUpdateNotification">
+                    Plex Library Update
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       th:checked="${plexProperties?.discordProperties?.hasGapsMissingCollections()}"
+                       id="discordGapsMissingCollectionsNotification">
+                <label class="form-check-label" for="discordGapsMissingCollectionsNotification">
+                    Gaps Missing Collections
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="discordEnabled">Notification Agent</label>
+            <select class="form-control" id="discordEnabled">
+                <option th:value="false">Disabled
+                </option>
+                <option th:value="true" th:selected="${plexProperties?.discordProperties?.getEnabled() ?: false}">
+                    Enabled
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <a class="btn btn-primary" href="javascript:void(0)" id="saveDiscord" onclick="saveDiscord();"
+               type="button">Save</a>
+            <a class="btn btn-info" href="javascript:void(0)" id="testDiscord" onclick="testDiscord();"
+               type="button">Test</a>
+        </div>
+    </form>
+
+    <div class="spinner-border text-primary gaps-hide top-margin" id="discordSpinner" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+
+    <div class="alert alert-dismissible alert-danger gaps-hide top-margin" id="discordTestError">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Error!</h4>
+        <p class="mb-0">Could not connect to Discord. Check the key and logs and try again.</p>
+    </div>
+
+    <div class="alert alert-dismissible alert-success gaps-hide top-margin" id="discordTestSuccess">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Success!</h4>
+        <p class="mb-0">Discord message sent.</p>
+    </div>
+
+    <div class="alert alert-dismissible alert-danger gaps-hide top-margin" id="discordSaveError">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Error!</h4>
+        <p class="mb-0">Could not save your Discord notification. Check the logs and try again.</p>
+    </div>
+
+    <div class="alert alert-dismissible alert-success gaps-hide top-margin" id="discordSaveSuccess">
+        <button class="close" data-hide="alert" type="button">&times;</button>
+        <h4 class="alert-heading">Success!</h4>
+        <p class="mb-0">Your Discord notification saved successfully.</p>
+    </div>
+</header>
 </body>
 </html>
