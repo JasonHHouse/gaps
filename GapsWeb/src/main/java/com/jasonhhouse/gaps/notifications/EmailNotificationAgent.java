@@ -14,6 +14,7 @@ import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.properties.EmailProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
 import java.util.Properties;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import static com.jasonhhouse.gaps.notifications.NotificationStatus.SEND_MESSAGE;
 
-public class EmailNotificationAgent extends AbstractNotificationAgent<EmailProperties> {
+public final class EmailNotificationAgent extends AbstractNotificationAgent<EmailProperties> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailNotificationAgent.class);
 
@@ -65,7 +66,7 @@ public class EmailNotificationAgent extends AbstractNotificationAgent<EmailPrope
         }
     }
 
-    @Nullable
+    @NotNull
     @Override
     public EmailProperties getNotificationProperties() {
         return fileIoService.readProperties().getEmailProperties();

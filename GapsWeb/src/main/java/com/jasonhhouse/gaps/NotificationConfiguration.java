@@ -10,6 +10,7 @@
 
 package com.jasonhhouse.gaps;
 
+import com.jasonhhouse.gaps.notifications.DiscordNotificationAgent;
 import com.jasonhhouse.gaps.notifications.EmailNotificationAgent;
 import com.jasonhhouse.gaps.notifications.GotifyNotificationAgent;
 import com.jasonhhouse.gaps.notifications.PushBulletNotificationAgent;
@@ -57,5 +58,10 @@ public class NotificationConfiguration {
     @Bean
     public PushOverNotificationAgent getPushOverElement() {
         return new PushOverNotificationAgent(fileIoService);
+    }
+
+    @Bean
+    public DiscordNotificationAgent getDiscordElement() {
+        return new DiscordNotificationAgent(fileIoService);
     }
 }

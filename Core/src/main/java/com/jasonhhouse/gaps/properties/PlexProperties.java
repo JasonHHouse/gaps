@@ -44,6 +44,8 @@ public final class PlexProperties {
     @NotNull
     private PushOverProperties pushOverProperties;
     @NotNull
+    private DiscordProperties discordProperties;
+    @NotNull
     private Schedule schedule;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -54,6 +56,7 @@ public final class PlexProperties {
                           @JsonProperty(value = "gotifyProperties") @Nullable GotifyProperties gotifyProperties,
                           @JsonProperty(value = "slackProperties") @Nullable SlackProperties slackProperties,
                           @JsonProperty(value = "pushOverProperties") @Nullable PushOverProperties pushOverProperties,
+                          @JsonProperty(value = "discordProperties") @Nullable DiscordProperties discordProperties,
                           @JsonProperty(value = "movieDbApiKey") @Nullable String movieDbApiKey,
                           @JsonProperty(value = "password") @Nullable String password,
                           @JsonProperty(value = "schedule") @Nullable Schedule schedule) {
@@ -64,6 +67,7 @@ public final class PlexProperties {
         this.gotifyProperties = gotifyProperties == null ? GotifyProperties.getDefault() : gotifyProperties;
         this.slackProperties = slackProperties == null ? SlackProperties.getDefault() : slackProperties;
         this.pushOverProperties = pushOverProperties == null ? PushOverProperties.getDefault() : pushOverProperties;
+        this.discordProperties = discordProperties == null ? DiscordProperties.getDefault() : discordProperties;
         this.movieDbApiKey = movieDbApiKey == null ? "" : movieDbApiKey;
         this.password = password == null ? "" : password;
         this.schedule = schedule == null ? Schedule.EVERY_MONDAY : schedule;
@@ -77,6 +81,7 @@ public final class PlexProperties {
         this.gotifyProperties = GotifyProperties.getDefault();
         this.slackProperties = SlackProperties.getDefault();
         this.pushOverProperties = PushOverProperties.getDefault();
+        this.discordProperties = DiscordProperties.getDefault();
         this.movieDbApiKey = "";
         this.password = "";
         this.schedule = Schedule.EVERY_MONDAY;
@@ -172,20 +177,28 @@ public final class PlexProperties {
         this.schedule = schedule;
     }
 
+    public @NotNull DiscordProperties getDiscordProperties() {
+        return discordProperties;
+    }
+
+    public void setDiscordProperties(@NotNull DiscordProperties discordProperties) {
+        this.discordProperties = discordProperties;
+    }
+
     @Override
     public String toString() {
         return "PlexProperties{" +
                 "plexServers=" + plexServers +
+                ", movieDbApiKey='" + movieDbApiKey + '\'' +
+                ", password='" + password + '\'' +
                 ", telegramProperties=" + telegramProperties +
                 ", pushBulletProperties=" + pushBulletProperties +
                 ", emailProperties=" + emailProperties +
                 ", gotifyProperties=" + gotifyProperties +
                 ", slackProperties=" + slackProperties +
                 ", pushOverProperties=" + pushOverProperties +
-                ", movieDbApiKey='" + movieDbApiKey + '\'' +
-                ", password='" + password + '\'' +
+                ", discordProperties=" + discordProperties +
                 ", schedule=" + schedule +
                 '}';
     }
-
 }

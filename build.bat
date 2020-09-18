@@ -14,11 +14,12 @@ call npm run uglifyjs-push-bullet-notifications-js
 call npm run uglifyjs-gotify-notifications-js
 call npm run uglifyjs-email-notifications-js
 call npm run uglifyjs-push-over-notifications-js
+call npm run uglifyjs-discord-notifications-js
 call npm run uglifyjs-schedule-js
 call mvn clean install
 del GapsOnWindows\*.jar
 del GapsOnWindows\README.md
-copy GapsWeb\target\GapsWeb-0.7.5.jar GapsOnWindows\gaps.jar
+copy GapsWeb\target\GapsWeb-0.8.0.jar GapsOnWindows\gaps.jar
 copy README.md GapsOnWindows\
 cd GapsOnWindows
 makensis gaps.nsi

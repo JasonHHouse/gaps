@@ -15,4 +15,5 @@ npm run uglifyjs-push-bullet-notifications-js
 npm run uglifyjs-gotify-notifications-js
 npm run uglifyjs-email-notifications-js
 npm run uglifyjs-push-over-notifications-js
+npm run uglifyjs-discord-notifications-js
 npm run uglifyjs-schedule-js
