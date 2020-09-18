@@ -16,6 +16,9 @@ import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.properties.DiscordProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
@@ -24,6 +27,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,20 +108,21 @@ public final class DiscordNotificationAgent extends AbstractNotificationAgent<Di
         }
     }
 
-    @Nullable
+    @NotNull
     @Override
     public DiscordProperties getNotificationProperties() {
         return fileIoService.readProperties().getDiscordProperties();
     }
 
     private static final class Discord {
-        private final Embeds embeds;
+        private final List<Embeds> embeds;
 
         private Discord(String title, String message) {
-            embeds = new Embeds(title, message);
+            Embeds embed = new Embeds(title, message);
+            embeds = Collections.singletonList(embed);
         }
 
-        public Embeds getEmbeds() {
+        public List<Embeds> getEmbeds() {
             return embeds;
         }
 
@@ -125,19 +130,19 @@ public final class DiscordNotificationAgent extends AbstractNotificationAgent<Di
 
     private static final class Embeds {
         private final String title;
-        private final String message;
+        private final String description;
 
-        private Embeds(String title, String message) {
+        private Embeds(String title, String description) {
             this.title = title;
-            this.message = message;
+            this.description = description;
         }
 
         public String getTitle() {
             return title;
         }
 
-        public String getMessage() {
-            return message;
+        public String getDescription() {
+            return description;
         }
     }
 
