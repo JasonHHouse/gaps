@@ -1,27 +1,28 @@
 /*
- * Copyright 2020 Jason H House
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *  Copyright 2020 Jason H House
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ *  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package com.jasonhhouse.gaps;
+package com.jasonhhouse.gaps.movie;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import com.jasonhhouse.gaps.MovieFromCollection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-@JsonDeserialize(builder = BasicMovie.Builder.class)
-public final class BasicMovie implements Comparable<BasicMovie> {
+@JsonDeserialize(builder = PlexMovie.Builder.class)
+public final class PlexMovie implements Comparable<PlexMovie>, GapsMovie {
 
     @NotNull
     private final String name;
@@ -50,18 +51,18 @@ public final class BasicMovie implements Comparable<BasicMovie> {
     @NotNull
     private Integer tmdbId;
 
-    private BasicMovie(@NotNull String name,
-                       @NotNull Integer year,
-                       @NotNull String posterUrl,
-                       @NotNull String collectionTitle,
-                       @NotNull Integer collectionId,
-                       @NotNull Integer tmdbId,
-                       @NotNull String imdbId,
-                       @NotNull String language,
-                       @NotNull String overview,
-                       @NotNull List<MovieFromCollection> moviesInCollection,
-                       @NotNull Integer ratingKey,
-                       @NotNull String key) {
+    private PlexMovie(@NotNull String name,
+                      @NotNull Integer year,
+                      @NotNull String posterUrl,
+                      @NotNull String collectionTitle,
+                      @NotNull Integer collectionId,
+                      @NotNull Integer tmdbId,
+                      @NotNull String imdbId,
+                      @NotNull String language,
+                      @NotNull String overview,
+                      @NotNull List<MovieFromCollection> moviesInCollection,
+                      @NotNull Integer ratingKey,
+                      @NotNull String key) {
         this.name = name;
         this.nameWithoutBadCharacters = name.replaceAll("[<>`~\\[\\]()*&^%$#@!|{}.,?\\-_=+:;]", "");
         this.year = year;
@@ -77,71 +78,83 @@ public final class BasicMovie implements Comparable<BasicMovie> {
         this.key = key;
     }
 
+    @Override
     public @NotNull Integer getCollectionId() {
         return collectionId;
     }
 
+    @Override
     public void setCollectionId(@NotNull Integer collectionId) {
         this.collectionId = collectionId;
     }
 
-    public void setTmdbId(int tmdbId) {
-        this.tmdbId = tmdbId;
-    }
-
+    @Override
     public @NotNull String getName() {
         return name;
     }
 
+    @Override
     public @NotNull Integer getYear() {
         return year;
     }
 
+    @Override
     public @NotNull String getCollectionTitle() {
         return collectionTitle;
     }
 
+    @Override
     public void setCollectionTitle(@NotNull String collectionTitle) {
         this.collectionTitle = collectionTitle;
     }
 
+    @Override
     public @NotNull String getImdbId() {
         return imdbId;
     }
 
+    @Override
     public void setImdbId(@NotNull String imdbId) {
         this.imdbId = imdbId;
     }
 
+    @Override
     public @NotNull Integer getTmdbId() {
         return tmdbId;
     }
 
+    @Override
     public void setTmdbId(@NotNull Integer tmdbId) {
         this.tmdbId = tmdbId;
     }
 
+    @Override
     public @NotNull String getLanguage() {
         return language;
     }
 
+    @Override
     public @NotNull String getOverview() {
         return overview;
     }
 
+    @Override
     public @NotNull List<MovieFromCollection> getMoviesInCollection() {
         return moviesInCollection;
     }
 
+    @Override
     @JsonIgnore
     public @NotNull String getNameWithoutBadCharacters() {
         return nameWithoutBadCharacters;
     }
 
+    @Override
     public @NotNull Integer getRatingKey() {
         return ratingKey;
     }
 
+    @Override
     public @NotNull String getKey() {
         return key;
     }
@@ -154,7 +167,7 @@ public final class BasicMovie implements Comparable<BasicMovie> {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        BasicMovie basicMovie = (BasicMovie) o;
+        PlexMovie basicMovie = (PlexMovie) o;
 
         //Compare tvdb id first
         if (tmdbId != -1 && tmdbId.equals(basicMovie.tmdbId)) {
@@ -198,7 +211,7 @@ public final class BasicMovie implements Comparable<BasicMovie> {
                 '}';
     }
 
-    public int compareTo(BasicMovie o) {
+    public int compareTo(PlexMovie o) {
         return getNameWithoutBadCharacters().compareTo(o.getNameWithoutBadCharacters());
     }
 
@@ -268,8 +281,8 @@ public final class BasicMovie implements Comparable<BasicMovie> {
             this.key = "";
         }
 
-        public @NotNull BasicMovie build() {
-            return new BasicMovie(name, year, posterUrl, collectionTitle, collectionId, tmdbId, imdbId, language, overview, moviesInCollection, ratingKey, key);
+        public @NotNull PlexMovie build() {
+            return new PlexMovie(name, year, posterUrl, collectionTitle, collectionId, tmdbId, imdbId, language, overview, moviesInCollection, ratingKey, key);
         }
 
         public @NotNull Builder setPosterUrl(@NotNull String posterUrl) {
@@ -287,7 +300,7 @@ public final class BasicMovie implements Comparable<BasicMovie> {
             return this;
         }
 
-        public @NotNull Builder setTmdbId(@NotNull  Integer tmdbId) {
+        public @NotNull Builder setTmdbId(@NotNull Integer tmdbId) {
             this.tmdbId = tmdbId;
             return this;
         }

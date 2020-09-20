@@ -10,6 +10,7 @@
 
 package com.jasonhhouse.gaps;
 
+import com.jasonhhouse.gaps.movie.BasicMovie;
 import java.util.Objects;
 
 public final class SearchResults {

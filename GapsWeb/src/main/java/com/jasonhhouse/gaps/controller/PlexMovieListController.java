@@ -11,7 +11,7 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsUrlGenerator;
-import com.jasonhhouse.gaps.BasicMovie;
+import com.jasonhhouse.gaps.movie.BasicMovie;
 import com.jasonhhouse.gaps.Pair;
 import com.jasonhhouse.gaps.service.PlexQuery;
 import com.jasonhhouse.gaps.PlexServer;

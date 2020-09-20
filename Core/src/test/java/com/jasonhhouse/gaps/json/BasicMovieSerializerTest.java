@@ -11,7 +11,7 @@
 package com.jasonhhouse.gaps.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jasonhhouse.gaps.BasicMovie;
+import com.jasonhhouse.gaps.movie.BasicMovie;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

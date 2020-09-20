@@ -10,6 +10,7 @@
 
 package com.jasonhhouse.gaps;
 
+import com.jasonhhouse.gaps.movie.BasicMovie;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.GapsSearch;
 import com.jasonhhouse.gaps.service.FileIoService;
