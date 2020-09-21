@@ -12,7 +12,7 @@ package com.jasonhhouse.gaps.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jasonhhouse.gaps.Movie;
+import com.jasonhhouse.gaps.BasicMovie;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.Rss;
 import com.jasonhhouse.gaps.GapsConfiguration;
@@ -52,7 +52,7 @@ public class FileIoService implements IO {
     }
 
     @Override
-    public @NotNull List<Movie> readRecommendedMovies(@NotNull String machineIdentifier, @NotNull Integer key) {
+    public @NotNull List<BasicMovie> readRecommendedMovies(@NotNull String machineIdentifier, @NotNull Integer key) {
         LOGGER.info("readRecommendedMovies({}, {} )", machineIdentifier, key);
 
         final File ownedMovieFile = Paths.get(gapsConfiguration.getStorageFolder(), machineIdentifier, key.toString(), gapsConfiguration.getProperties().getRecommendedMovies()).toFile();
@@ -97,7 +97,7 @@ public class FileIoService implements IO {
     }
 
     @Override
-    public void writeRssFile(@NotNull String machineIdentifier, @NotNull Integer key, @NotNull Set<Movie> recommended) {
+    public void writeRssFile(@NotNull String machineIdentifier, @NotNull Integer key, @NotNull Set<BasicMovie> recommended) {
         File file = Paths.get(gapsConfiguration.getStorageFolder(), machineIdentifier, key.toString(), gapsConfiguration.getProperties().getRssFeed()).toFile();
 
         if (file.exists()) {
@@ -121,7 +121,7 @@ public class FileIoService implements IO {
 
         // Create writer that java will close for us.
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            List<Rss> rssList = recommended.stream().map(movie -> new Rss(movie.getImdbId(), movie.getYear(), movie.getTvdbId(), movie.getName(), movie.getPosterUrl())).collect(Collectors.toList());
+            List<Rss> rssList = recommended.stream().map(movie -> new Rss(movie.getImdbId(), movie.getYear(), movie.getTmdbId(), movie.getName(), movie.getPosterUrl())).collect(Collectors.toList());
             byte[] output = objectMapper.writeValueAsBytes(rssList);
             outputStream.write(output);
         } catch (FileNotFoundException e) {
@@ -132,7 +132,7 @@ public class FileIoService implements IO {
     }
 
     @Override
-    public void writeRecommendedToFile(@NotNull Set<Movie> recommended, @NotNull String machineIdentifier, @NotNull Integer key) {
+    public void writeRecommendedToFile(@NotNull Set<BasicMovie> recommended, @NotNull String machineIdentifier, @NotNull Integer key) {
         LOGGER.info("writeRecommendedToFile()");
         final File file = Paths.get(gapsConfiguration.getStorageFolder(), machineIdentifier, key.toString(), gapsConfiguration.getProperties().getRecommendedMovies()).toFile();
         makeFolder(machineIdentifier, key);
@@ -140,11 +140,11 @@ public class FileIoService implements IO {
     }
 
     @Override
-    public void writeOwnedMoviesToFile(@NotNull List<Movie> ownedMovies, @NotNull String machineIdentifier, @NotNull Integer key) {
+    public void writeOwnedMoviesToFile(@NotNull List<BasicMovie> ownedBasicMovies, @NotNull String machineIdentifier, @NotNull Integer key) {
         LOGGER.info("writeOwnedMoviesToFile()");
         final File file = Paths.get(gapsConfiguration.getStorageFolder(), machineIdentifier, key.toString(), gapsConfiguration.getProperties().getOwnedMovies()).toFile();
         makeFolder(machineIdentifier, key);
-        writeMovieIdsToFile(new HashSet<>(ownedMovies), file);
+        writeMovieIdsToFile(new HashSet<>(ownedBasicMovies), file);
     }
 
     private void makeFolder(@NotNull String machineIdentifier, @NotNull Integer key) {
@@ -161,7 +161,7 @@ public class FileIoService implements IO {
 
     @Override
     @NotNull
-    public List<Movie> readOwnedMovies(@NotNull String machineIdentifier, @NotNull Integer key) {
+    public List<BasicMovie> readOwnedMovies(@NotNull String machineIdentifier, @NotNull Integer key) {
         LOGGER.info("readOwnedMovies( {}, {} )", machineIdentifier, key);
 
         final File ownedMovieFile = Paths.get(gapsConfiguration.getStorageFolder(), machineIdentifier, key.toString(), gapsConfiguration.getProperties().getOwnedMovies()).toFile();
@@ -190,14 +190,14 @@ public class FileIoService implements IO {
     }
 
     @Override
-    public void writeMovieIdsToFile(@NotNull Set<Movie> everyMovie) {
+    public void writeMovieIdsToFile(@NotNull Set<BasicMovie> everyBasicMovie) {
         LOGGER.info("writeMovieIdsToFile()");
         File file = Paths.get(gapsConfiguration.getStorageFolder(), gapsConfiguration.getProperties().getMovieIds()).toFile();
-        writeMovieIdsToFile(everyMovie, file);
+        writeMovieIdsToFile(everyBasicMovie, file);
     }
 
     @Override
-    public void writeMovieIdsToFile(@NotNull Set<Movie> everyMovie, @NotNull File file) {
+    public void writeMovieIdsToFile(@NotNull Set<BasicMovie> everyBasicMovie, @NotNull File file) {
         if (file.exists()) {
             boolean deleted = file.delete();
             if (!deleted) {
@@ -218,7 +218,7 @@ public class FileIoService implements IO {
         }
 
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            byte[] output = objectMapper.writeValueAsBytes(everyMovie);
+            byte[] output = objectMapper.writeValueAsBytes(everyBasicMovie);
             outputStream.write(output);
         } catch (FileNotFoundException e) {
             LOGGER.error(String.format("Can't find file %s", file.getAbsolutePath()), e);
@@ -229,12 +229,12 @@ public class FileIoService implements IO {
 
     @Override
     @NotNull
-    public Set<Movie> readMovieIdsFromFile() {
-        Set<Movie> everyMovie = Collections.emptySet();
+    public Set<BasicMovie> readMovieIdsFromFile() {
+        Set<BasicMovie> everyBasicMovie = Collections.emptySet();
         final File file = Paths.get(gapsConfiguration.getStorageFolder(), gapsConfiguration.getProperties().getMovieIds()).toFile();
         if (!file.exists()) {
             LOGGER.warn("Can't find json file '{}'. Most likely first run.", file);
-            return everyMovie;
+            return everyBasicMovie;
         }
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
             StringBuilder fullFile = new StringBuilder();
@@ -243,16 +243,16 @@ public class FileIoService implements IO {
                 fullFile.append(line);
             }
 
-            everyMovie = objectMapper.readValue(fullFile.toString(), new TypeReference<>() {
+            everyBasicMovie = objectMapper.readValue(fullFile.toString(), new TypeReference<>() {
             });
-            LOGGER.info("everyMovie.size():{}", everyMovie.size());
+            LOGGER.info("everyMovie.size():{}", everyBasicMovie.size());
         } catch (FileNotFoundException e) {
             LOGGER.error(String.format("Can't find file %s", file), e);
         } catch (IOException e) {
             LOGGER.error(String.format("Can't write to file %s", file), e);
         }
 
-        return everyMovie;
+        return everyBasicMovie;
     }
 
     @Override

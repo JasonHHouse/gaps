@@ -9,59 +9,33 @@
  */
 package com.jasonhhouse.gaps;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.jasonhhouse.gaps.json.MovieDeserializer;
-import com.jasonhhouse.gaps.json.MovieSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-@JsonSerialize(using = MovieSerializer.class)
-@JsonDeserialize(using = MovieDeserializer.class)
-public final class Movie implements Comparable<Movie> {
-
-    public static final String TVDB_ID = "tvdbId";
-
-    public static final String IMDB_ID = "imdbId";
-
-    public static final String NAME = "name";
-
-    public static final String YEAR = "year";
-
-    public static final String POSTER = "poster_url";
-
-    public static final String COLLECTION_ID = "collectionId";
-
-    public static final String COLLECTION = "collection";
-
-    public static final String LANGUAGE = "language";
-
-    public static final String OVERVIEW = "overview";
-
-    public static final String MOVIES_IN_COLLECTION = "movies_in_collection";
+@JsonDeserialize(builder = BasicMovie.Builder.class)
+public final class BasicMovie implements Comparable<BasicMovie> {
 
     @NotNull
     private final String name;
-
     @NotNull
     private final Integer year;
-
     @NotNull
     private final String nameWithoutBadCharacters;
-
-    @Nullable
-    @JsonProperty("poster_url")
+    @NotNull
     private final String posterUrl;
-    @Nullable
+    @NotNull
     private String imdbId;
-    @Nullable
+    @NotNull
     private final String language;
-    @Nullable
+    @NotNull
     private final String overview;
     @NotNull
     private final List<MovieFromCollection> moviesInCollection;
@@ -69,23 +43,32 @@ public final class Movie implements Comparable<Movie> {
     private final Integer ratingKey;
     @NotNull
     private final String key;
-    @Nullable
-    private String collection;
+    @NotNull
+    private String collectionTitle;
     @NotNull
     private Integer collectionId;
     @NotNull
-    private Integer tvdbId;
+    private Integer tmdbId;
 
-    private Movie(@NotNull String name, @NotNull Integer year, @Nullable String posterUrl, @Nullable String collection, @NotNull Integer collectionId, @NotNull Integer tvdbId,
-                  @Nullable String imdbId, @Nullable String language, @Nullable String overview, @NotNull List<MovieFromCollection> moviesInCollection, @NotNull Integer ratingKey,
-                  @NotNull String key) {
+    private BasicMovie(@NotNull String name,
+                       @NotNull Integer year,
+                       @NotNull String posterUrl,
+                       @NotNull String collectionTitle,
+                       @NotNull Integer collectionId,
+                       @NotNull Integer tmdbId,
+                       @NotNull String imdbId,
+                       @NotNull String language,
+                       @NotNull String overview,
+                       @NotNull List<MovieFromCollection> moviesInCollection,
+                       @NotNull Integer ratingKey,
+                       @NotNull String key) {
         this.name = name;
         this.nameWithoutBadCharacters = name.replaceAll("[<>`~\\[\\]()*&^%$#@!|{}.,?\\-_=+:;]", "");
         this.year = year;
         this.posterUrl = posterUrl;
-        this.collection = collection;
+        this.collectionTitle = collectionTitle;
         this.collectionId = collectionId;
-        this.tvdbId = tvdbId;
+        this.tmdbId = tmdbId;
         this.imdbId = imdbId;
         this.language = language;
         this.overview = overview;
@@ -98,70 +81,68 @@ public final class Movie implements Comparable<Movie> {
         return collectionId;
     }
 
-    public void setCollectionId(int collectionId) {
+    public void setCollectionId(@NotNull Integer collectionId) {
         this.collectionId = collectionId;
     }
 
-    public @NotNull Integer getTvdbId() {
-        return tvdbId;
+    public void setTmdbId(int tmdbId) {
+        this.tmdbId = tmdbId;
     }
 
-    public void setTvdbId(int tvdbId) {
-        this.tvdbId = tvdbId;
-    }
-
-    public void setImdbId(@Nullable String imdbId) {
-        this.imdbId = imdbId;
-    }
-
-    @NotNull
-    public String getName() {
+    public @NotNull String getName() {
         return name;
     }
 
-    @NotNull
-    public Integer getYear() {
+    public @NotNull Integer getYear() {
         return year;
     }
 
-    @Nullable
-    public String getCollection() {
-        return collection;
+    public @NotNull String getCollectionTitle() {
+        return collectionTitle;
     }
 
-    public void setCollection(@Nullable String collection) {
-        this.collection = collection;
+    public void setCollectionTitle(@NotNull String collectionTitle) {
+        this.collectionTitle = collectionTitle;
     }
 
-    @Nullable
-    public String getImdbId() {
+    public @NotNull String getImdbId() {
         return imdbId;
     }
 
-    @Nullable
-    public String getLanguage() {
+    public void setImdbId(@NotNull String imdbId) {
+        this.imdbId = imdbId;
+    }
+
+    public @NotNull Integer getTmdbId() {
+        return tmdbId;
+    }
+
+    public void setTmdbId(@NotNull Integer tmdbId) {
+        this.tmdbId = tmdbId;
+    }
+
+    public @NotNull String getLanguage() {
         return language;
     }
 
-    @Nullable
-    public String getOverview() {
+    public @NotNull String getOverview() {
         return overview;
     }
 
-    @NotNull
-    public List<MovieFromCollection> getMoviesInCollection() {
+    public @NotNull List<MovieFromCollection> getMoviesInCollection() {
         return moviesInCollection;
     }
 
+    @JsonIgnore
     public @NotNull String getNameWithoutBadCharacters() {
         return nameWithoutBadCharacters;
     }
 
-    public Integer getRatingKey() {
+    public @NotNull Integer getRatingKey() {
         return ratingKey;
     }
 
-    public String getKey() {
+    public @NotNull String getKey() {
         return key;
     }
 
@@ -173,20 +154,20 @@ public final class Movie implements Comparable<Movie> {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Movie movie = (Movie) o;
+        BasicMovie basicMovie = (BasicMovie) o;
 
         //Compare tvdb id first
-        if (tvdbId != -1 && tvdbId.equals(movie.tvdbId)) {
+        if (tmdbId != -1 && tmdbId.equals(basicMovie.tmdbId)) {
             return true;
         }
 
         //Compare imdb id next
-        if (StringUtils.isNotEmpty(imdbId) && imdbId.equals(movie.imdbId)) {
+        if (StringUtils.isNotEmpty(imdbId) && imdbId.equals(basicMovie.imdbId)) {
             return true;
         }
 
         //Fallback is year and title
-        return year.equals(movie.year) && nameWithoutBadCharacters.equals(movie.nameWithoutBadCharacters);
+        return year.equals(basicMovie.year) && nameWithoutBadCharacters.equals(basicMovie.nameWithoutBadCharacters);
     }
 
     @Override
@@ -194,8 +175,7 @@ public final class Movie implements Comparable<Movie> {
         return Objects.hash(nameWithoutBadCharacters, year);
     }
 
-    @Nullable
-    public String getPosterUrl() {
+    public @NotNull String getPosterUrl() {
         return posterUrl;
     }
 
@@ -210,59 +190,75 @@ public final class Movie implements Comparable<Movie> {
                 ", language='" + language + '\'' +
                 ", overview='" + overview + '\'' +
                 ", moviesInCollection=" + moviesInCollection +
-                ", collection='" + collection + '\'' +
+                ", collection='" + collectionTitle + '\'' +
                 ", collectionId=" + collectionId +
-                ", tvdbId=" + tvdbId +
+                ", tvdbId=" + tmdbId +
                 ", ratingKey=" + ratingKey +
                 ", key='" + key + '\'' +
                 '}';
     }
 
-    public int compareTo(Movie o) {
+    public int compareTo(BasicMovie o) {
         return getNameWithoutBadCharacters().compareTo(o.getNameWithoutBadCharacters());
     }
 
+    @JsonPOJOBuilder(withPrefix = "set")
     public static class Builder {
 
         @NotNull
         private final String name;
 
-        private final int year;
+        @NotNull
+        private final Integer year;
 
         @NotNull
+        @JsonProperty
         private String posterUrl;
 
         @NotNull
-        private String collection;
-
-        private int collectionId;
-
-        private int tvdbId;
+        @JsonProperty
+        private String collectionTitle;
 
         @NotNull
+        @JsonProperty
+        private Integer collectionId;
+
+        @NotNull
+        @JsonProperty
+        private Integer tmdbId;
+
+        @NotNull
+        @JsonProperty
         private String imdbId;
 
         @NotNull
+        @JsonProperty
         private String language;
 
         @NotNull
+        @JsonProperty
         private String overview;
 
         @NotNull
+        @JsonProperty
         private List<MovieFromCollection> moviesInCollection;
 
         @NotNull
+        @JsonProperty
         private Integer ratingKey;
 
         @NotNull
+        @JsonProperty
         private String key;
 
-        public Builder(@NotNull String name, @NotNull Integer year) {
+        @JsonCreator
+        public Builder(@JsonProperty(value = "name") @NotNull String name,
+                       @JsonProperty(value = "year") @NotNull Integer year) {
             this.name = name;
             this.year = year;
-            this.tvdbId = -1;
+            this.tmdbId = -1;
             this.imdbId = "";
-            this.collection = "";
+            this.collectionTitle = "";
             this.posterUrl = "";
             this.collectionId = -1;
             this.language = "en";
@@ -272,66 +268,56 @@ public final class Movie implements Comparable<Movie> {
             this.key = "";
         }
 
-        public Movie build() {
-            return new Movie(name, year, posterUrl, collection, collectionId, tvdbId, imdbId, language, overview, moviesInCollection, ratingKey, key);
+        public @NotNull BasicMovie build() {
+            return new BasicMovie(name, year, posterUrl, collectionTitle, collectionId, tmdbId, imdbId, language, overview, moviesInCollection, ratingKey, key);
         }
 
-        @NotNull
-        public Builder setPosterUrl(@NotNull String posterUrl) {
+        public @NotNull Builder setPosterUrl(@NotNull String posterUrl) {
             this.posterUrl = posterUrl;
             return this;
         }
 
-        @NotNull
-        public Builder setCollection(@NotNull String collection) {
-            this.collection = collection;
+        public @NotNull Builder setCollectionTitle(@NotNull String collectionTitle) {
+            this.collectionTitle = collectionTitle;
             return this;
         }
 
-        @NotNull
-        public Builder setCollectionId(int collectionId) {
+        public @NotNull Builder setCollectionId(@NotNull Integer collectionId) {
             this.collectionId = collectionId;
             return this;
         }
 
-        @NotNull
-        public Builder setTvdbId(int tvdbId) {
-            this.tvdbId = tvdbId;
+        public @NotNull Builder setTmdbId(@NotNull  Integer tmdbId) {
+            this.tmdbId = tmdbId;
             return this;
         }
 
-        @NotNull
-        public Builder setImdbId(@NotNull String imdbId) {
+        public @NotNull Builder setImdbId(@NotNull String imdbId) {
             this.imdbId = imdbId;
             return this;
         }
 
-        @NotNull
-        public Builder setLanguage(@NotNull String language) {
+        public @NotNull Builder setLanguage(@NotNull String language) {
             this.language = language;
             return this;
         }
 
-        @NotNull
-        public Builder setOverview(@NotNull String overview) {
+        public @NotNull Builder setOverview(@NotNull String overview) {
             this.overview = overview;
             return this;
         }
 
-        @NotNull
-        public Builder setMoviesInCollection(@NotNull List<MovieFromCollection> moviesInCollection) {
+        public @NotNull Builder setMoviesInCollection(@NotNull List<MovieFromCollection> moviesInCollection) {
             this.moviesInCollection = moviesInCollection;
             return this;
         }
 
-        @NotNull
-        public Builder setRatingKey(@NotNull Integer ratingKey) {
+        public @NotNull Builder setRatingKey(@NotNull Integer ratingKey) {
             this.ratingKey = ratingKey;
             return this;
         }
 
-        @NotNull
-        public Builder setKey(@NotNull  String key) {
+        public @NotNull Builder setKey(@NotNull String key) {
             this.key = key;
             return this;
         }

@@ -10,7 +10,7 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.service.GapsSearch;
-import com.jasonhhouse.gaps.Movie;
+import com.jasonhhouse.gaps.BasicMovie;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
@@ -86,21 +86,21 @@ public class RecommendedController {
     public ResponseEntity<Payload> getRecommended(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("getRecommended( {}, {} )", machineIdentifier, key);
 
-        final List<Movie> ownedMovies = fileIoService.readOwnedMovies(machineIdentifier, key);
+        final List<BasicMovie> ownedBasicMovies = fileIoService.readOwnedMovies(machineIdentifier, key);
         Payload payload;
 
-        if (CollectionUtils.isEmpty(ownedMovies)) {
+        if (CollectionUtils.isEmpty(ownedBasicMovies)) {
             payload = Payload.PLEX_LIBRARY_MOVIE_NOT_FOUND;
             LOGGER.warn(payload.getReason());
         } else {
-            List<Movie> movies = fileIoService.readRecommendedMovies(machineIdentifier, key);
-            if (CollectionUtils.isEmpty(movies)) {
+            List<BasicMovie> basicMovies = fileIoService.readRecommendedMovies(machineIdentifier, key);
+            if (CollectionUtils.isEmpty(basicMovies)) {
                 payload = Payload.RECOMMENDED_MOVIES_NOT_FOUND;
                 LOGGER.warn(payload.getReason());
             } else {
                 payload = Payload.RECOMMENDED_MOVIES_FOUND;
             }
-            payload.setExtras(movies);
+            payload.setExtras(basicMovies);
         }
 
         return ResponseEntity.ok().body(payload);

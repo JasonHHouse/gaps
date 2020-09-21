@@ -1,15 +1,19 @@
 #!/bin/bash
 VERSION=0.8.0
 JAR_VERSION="GapsWeb/target/GapsWeb-$VERSION.jar"
-ZIP_VERSION="Gaps-$VERSION.zip"
-./minify
-mvn clean install deploy
-docker buildx build --platform linux/ppc64le,linux/s390x,linux/amd64 -t housewrecker/gaps:latest -f Dockerfile --push .
-docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t housewrecker/gaps:arm-latest -f Dockerfile.arm64 --push .
-mkdir -p GapsOnWindows
-rm $ZIP_VERSION
-rm GapsOnWindows/*.jar
-rm GapsOnWindows/README.md
-cp $JAR_VERSION GapsOnWindows/gaps.jar
-cp README.md GapsOnWindows/
-zip -r $ZIP_VERSION GapsOnWindows/
+ZIP_VERSION="GapsAsJar-$VERSION.zip"
+#npm ci
+#./minify
+#mvn clean install
+#docker buildx build --platform linux/s390x,linux/amd64,linux/s390x -t housewrecker/gaps:latest -f Dockerfile --push .
+docker buildx build --platform linux/riscv64 -t housewrecker/gaps:risc-latest -f Dockerfile.riscv64 --push .
+docker buildx build --platform linux/ppc64le -t housewrecker/gaps:ppc64le-latest -f Dockerfile.ppc64le --push .
+docker buildx build --platform linux/arm64 -t housewrecker/gaps:arm-latest -f Dockerfile.arm64 --push .
+docker buildx build --platform linux/arm/v7,linux/arm/v6 -t housewrecker/gaps:raspbian-latest -f Dockerfile.raspbian --push .
+#mkdir -p GapsOnWindows
+#rm $ZIP_VERSION
+#rm GapsAsJar*.jar
+#rm GapsAsJar/README.md
+#cp $JAR_VERSION GapsAsJar/gaps.jar
+#cp README.md GapsAsJar/
+#zip -r $ZIP_VERSION GapsAsJar/
