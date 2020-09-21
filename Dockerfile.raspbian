@@ -1,4 +1,4 @@
-FROM lsiobase/mono:arm64v8-LTS
+FROM resin/rpi-raspbian:latest
 
 LABEL maintainer="jh5975@gmail.com"
 LABEL name="Jason House" 

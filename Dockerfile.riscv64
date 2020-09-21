@@ -1,4 +1,4 @@
-FROM lsiobase/mono:arm64v8-LTS
+FROM renefonseca/base-ubuntu-riscv32
 
 LABEL maintainer="jh5975@gmail.com"
 LABEL name="Jason House" 
