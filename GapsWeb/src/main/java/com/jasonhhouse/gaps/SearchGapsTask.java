@@ -12,11 +12,11 @@ package com.jasonhhouse.gaps;
 
 import com.jasonhhouse.gaps.movie.BasicMovie;
 import com.jasonhhouse.gaps.properties.PlexProperties;
-import com.jasonhhouse.gaps.service.GapsSearch;
 import com.jasonhhouse.gaps.service.FileIoService;
+import com.jasonhhouse.gaps.service.FullSearch;
 import com.jasonhhouse.gaps.service.NotificationService;
 import com.jasonhhouse.gaps.service.PlexQuery;
-import com.jasonhhouse.gaps.service.TmdbService;
+import com.jasonhhouse.gaps.service.TmdbQueryService;
 import com.jasonhhouse.plex.libs.PlexLibrary;
 import java.util.HashMap;
 import java.util.List;
@@ -32,16 +32,16 @@ public class SearchGapsTask implements Runnable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchGapsTask.class);
 
-    private final GapsSearch gapsSearch;
-    private final TmdbService tmdbService;
+    private final FullSearch fullSearch;
+    private final TmdbQueryService tmdbQueryService;
     private final FileIoService fileIoService;
     private final PlexQuery plexQuery;
     private final GapsUrlGenerator gapsUrlGenerator;
     private final NotificationService notificationService;
 
-    public SearchGapsTask(GapsSearch gapsSearch, TmdbService tmdbService, FileIoService fileIoService, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator, NotificationService notificationService) {
-        this.gapsSearch = gapsSearch;
-        this.tmdbService = tmdbService;
+    public SearchGapsTask(FullSearch fullSearch, TmdbQueryService tmdbQueryService, FileIoService fileIoService, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator, NotificationService notificationService) {
+        this.fullSearch = fullSearch;
+        this.tmdbQueryService = tmdbQueryService;
         this.fileIoService = fileIoService;
         this.plexQuery = plexQuery;
         this.gapsUrlGenerator = gapsUrlGenerator;
@@ -75,7 +75,7 @@ public class SearchGapsTask implements Runnable {
         LOGGER.info("checkTmdbKey()");
 
         String tmdbKey = fileIoService.readProperties().getMovieDbApiKey();
-        Payload payload = tmdbService.testTmdbKey(tmdbKey);
+        Payload payload = tmdbQueryService.testTmdbKey(tmdbKey);
 
         if (Payload.TMDB_KEY_VALID.getCode() == payload.getCode()) {
             notificationService.tmdbConnectionSuccessful();
@@ -133,7 +133,7 @@ public class SearchGapsTask implements Runnable {
         LOGGER.info("findRecommendedMovies()");
         for (PlexServer plexServer : plexProperties.getPlexServers()) {
             for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
-                gapsSearch.run(plexServer.getMachineIdentifier(), plexLibrary.getKey());
+                fullSearch.run(plexServer.getMachineIdentifier(), plexLibrary.getKey());
             }
         }
     }

@@ -10,30 +10,35 @@
 
 package com.jasonhhouse.gaps;
 
-import com.jasonhhouse.gaps.movie.BasicMovie;
+import com.jasonhhouse.gaps.movie.GapsMovie;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public final class SearchResults {
-    private final int searchedMovieCount;
-    private final int totalMovieCount;
-    private final BasicMovie nextBasicMovie;
+    @NotNull
+    private final Integer searchedMovieCount;
+    @NotNull
+    private final Integer totalMovieCount;
+    @Nullable
+    private final GapsMovie nextGapsMovie;
 
-    public SearchResults(int searchedMovieCount, int totalMovieCount, BasicMovie nextBasicMovie) {
+    public SearchResults(@NotNull Integer searchedMovieCount, @NotNull Integer totalMovieCount, @Nullable GapsMovie nextGapsMovie) {
         this.searchedMovieCount = searchedMovieCount;
         this.totalMovieCount = totalMovieCount;
-        this.nextBasicMovie = nextBasicMovie;
+        this.nextGapsMovie = nextGapsMovie;
     }
 
-    public int getSearchedMovieCount() {
+    public @NotNull Integer getSearchedMovieCount() {
         return searchedMovieCount;
     }
 
-    public int getTotalMovieCount() {
+    public @NotNull Integer getTotalMovieCount() {
         return totalMovieCount;
     }
 
-    public BasicMovie getNextMovie() {
-        return nextBasicMovie;
+    public @Nullable GapsMovie getNextGapsMovie() {
+        return nextGapsMovie;
     }
 
     @Override
@@ -41,13 +46,13 @@ public final class SearchResults {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SearchResults that = (SearchResults) o;
-        return searchedMovieCount == that.searchedMovieCount &&
-                totalMovieCount == that.totalMovieCount;
+        return searchedMovieCount.equals(that.searchedMovieCount) &&
+                totalMovieCount.equals(that.totalMovieCount);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(searchedMovieCount, totalMovieCount);
+        return Objects.hash(searchedMovieCount, totalMovieCount, nextGapsMovie);
     }
 
     @Override
@@ -55,7 +60,7 @@ public final class SearchResults {
         return "SearchResults{" +
                 "searchedMovieCount=" + searchedMovieCount +
                 ", totalMovieCount=" + totalMovieCount +
-                ", nextMovie=" + nextBasicMovie +
+                ", nextGapsMovie=" + nextGapsMovie +
                 '}';
     }
 }

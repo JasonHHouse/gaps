@@ -9,12 +9,12 @@
  */
 package com.jasonhhouse.gaps.controller;
 
-import com.jasonhhouse.gaps.service.GapsSearch;
-import com.jasonhhouse.gaps.movie.BasicMovie;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexServer;
+import com.jasonhhouse.gaps.movie.BasicMovie;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
+import com.jasonhhouse.gaps.service.FullSearch;
 import com.jasonhhouse.plex.libs.PlexLibrary;
 import java.util.List;
 import java.util.Map;
@@ -45,12 +45,12 @@ public class RecommendedController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RecommendedController.class);
 
     private final FileIoService fileIoService;
-    private final GapsSearch gapsSearch;
+    private final FullSearch fullSearch;
 
     @Autowired
-    public RecommendedController(FileIoService fileIoService, GapsSearch gapsSearch) {
+    public RecommendedController(FileIoService fileIoService, FullSearch fullSearch) {
         this.fileIoService = fileIoService;
-        this.gapsSearch = gapsSearch;
+        this.fullSearch = fullSearch;
     }
 
     @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
@@ -118,7 +118,7 @@ public class RecommendedController {
     public void putFindRecommencedMovies(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("putFindRecommencedMovies( {}, {} )", machineIdentifier, key);
 
-        gapsSearch.run(machineIdentifier, key);
+        fullSearch.run(machineIdentifier, key);
     }
 
     /**
@@ -130,7 +130,7 @@ public class RecommendedController {
     @MessageMapping("/cancel/{machineIdentifier}/{key}")
     public void cancelSearching(@DestinationVariable final String machineIdentifier, @DestinationVariable final Integer key) {
         LOGGER.info("cancelSearching( {}, {} )", machineIdentifier, key);
-        gapsSearch.cancelSearch();
+        fullSearch.cancelSearch();
     }
 
 

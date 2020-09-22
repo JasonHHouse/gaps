@@ -25,9 +25,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TmdbService {
+public class TmdbQueryService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TmdbService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TmdbQueryService.class);
 
     public @NotNull Payload testTmdbKey(String key) {
         LOGGER.info("testTmdbKey( {} )", key);

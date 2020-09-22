@@ -10,44 +10,249 @@
 
 package com.jasonhhouse.gaps.movie;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.jasonhhouse.gaps.MovieFromCollection;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import java.util.Objects;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-interface GapsMovie {
+public abstract class GapsMovie {
 
-    @NotNull Integer getCollectionId();
+    @NotNull
+    private final String name;
+    @NotNull
+    private final Integer year;
+    @NotNull
+    private final String nameWithoutBadCharacters;
+    @NotNull
+    private final String posterUrl;
+    @NotNull
+    private final String language;
+    @NotNull
+    private final String overview;
+    @NotNull
+    private String imdbId;
+    @NotNull
+    private String collectionTitle;
+    @NotNull
+    private Integer collectionId;
+    @NotNull
+    private Integer tmdbId;
 
-    void setCollectionId(@NotNull Integer collectionId);
+    protected GapsMovie(@NotNull String name,
+                         @NotNull Integer year,
+                         @NotNull String posterUrl,
+                         @NotNull String collectionTitle,
+                         @NotNull Integer collectionId,
+                         @NotNull Integer tmdbId,
+                         @NotNull String imdbId,
+                         @NotNull String language,
+                         @NotNull String overview) {
+        this.name = name;
+        this.nameWithoutBadCharacters = name.replaceAll("[<>`~\\[\\]()*&^%$#@!|{}.,?\\-_=+:;]", "");
+        this.year = year;
+        this.posterUrl = posterUrl;
+        this.collectionTitle = collectionTitle;
+        this.collectionId = collectionId;
+        this.tmdbId = tmdbId;
+        this.imdbId = imdbId;
+        this.language = language;
+        this.overview = overview;
+    }
 
-    @NotNull String getName();
+    public @NotNull String getName() {
+        return name;
+    }
 
-    @NotNull Integer getYear();
+    public @NotNull Integer getYear() {
+        return year;
+    }
 
-    @NotNull String getCollectionTitle();
+    public @NotNull String getNameWithoutBadCharacters() {
+        return nameWithoutBadCharacters;
+    }
 
-    void setCollectionTitle(@NotNull String collectionTitle);
+    public @NotNull String getPosterUrl() {
+        return posterUrl;
+    }
 
-    @NotNull String getImdbId();
+    public @NotNull String getImdbId() {
+        return imdbId;
+    }
 
-    void setImdbId(@NotNull String imdbId);
+    public void setImdbId(@NotNull String imdbId) {
+        this.imdbId = imdbId;
+    }
 
-    @NotNull Integer getTmdbId();
+    public @NotNull String getLanguage() {
+        return language;
+    }
 
-    void setTmdbId(@NotNull Integer tmdbId);
+    public @NotNull String getOverview() {
+        return overview;
+    }
 
-    @NotNull String getLanguage();
+    public @NotNull String getCollectionTitle() {
+        return collectionTitle;
+    }
 
-    @NotNull String getOverview();
+    public void setCollectionTitle(@NotNull String collectionTitle) {
+        this.collectionTitle = collectionTitle;
+    }
 
-    @NotNull List<MovieFromCollection> getMoviesInCollection();
+    public @NotNull Integer getCollectionId() {
+        return collectionId;
+    }
 
-    @JsonIgnore
-    @NotNull String getNameWithoutBadCharacters();
+    public void setCollectionId(@NotNull Integer collectionId) {
+        this.collectionId = collectionId;
+    }
 
-    @NotNull Integer getRatingKey();
+    public @NotNull Integer getTmdbId() {
+        return tmdbId;
+    }
 
-    @NotNull String getKey();
+    public void setTmdbId(@NotNull Integer tmdbId) {
+        this.tmdbId = tmdbId;
+    }
+
+    @Override
+    public String toString() {
+        return "InputMovie{" +
+                "name='" + name + '\'' +
+                ", year=" + year +
+                ", nameWithoutBadCharacters='" + nameWithoutBadCharacters + '\'' +
+                ", posterUrl='" + posterUrl + '\'' +
+                ", imdbId='" + imdbId + '\'' +
+                ", language='" + language + '\'' +
+                ", overview='" + overview + '\'' +
+                ", collectionTitle='" + collectionTitle + '\'' +
+                ", collectionId=" + collectionId +
+                ", tmdbId=" + tmdbId +
+                '}';
+    }
+
+    public int compareTo(PlexMovie o) {
+        return getNameWithoutBadCharacters().compareTo(o.getNameWithoutBadCharacters());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        GapsMovie gapsMovie = (GapsMovie) o;
+
+        //Compare tvdb id first
+        if (getTmdbId() != -1 && getTmdbId().equals(gapsMovie.getTmdbId())) {
+            return true;
+        }
+
+        //Compare imdb id next
+        if (StringUtils.isNotEmpty(getImdbId()) && getImdbId().equals(gapsMovie.getImdbId())) {
+            return true;
+        }
+
+        //Fallback is year and title
+        return getYear().equals(gapsMovie.getYear()) && getNameWithoutBadCharacters().equals(gapsMovie.getNameWithoutBadCharacters());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getNameWithoutBadCharacters(), getYear());
+    }
+
+    @JsonPOJOBuilder(withPrefix = "set")
+    public static abstract class Builder<T extends GapsMovie> {
+
+        @NotNull
+        protected String name;
+
+        @NotNull
+        protected Integer year;
+
+        @NotNull
+        @JsonProperty
+        protected String posterUrl;
+
+        @NotNull
+        @JsonProperty
+        protected String collectionTitle;
+
+        @NotNull
+        @JsonProperty
+        protected Integer collectionId;
+
+        @NotNull
+        @JsonProperty
+        protected Integer tmdbId;
+
+        @NotNull
+        @JsonProperty
+        protected String imdbId;
+
+        @NotNull
+        @JsonProperty
+        protected String language;
+
+        @NotNull
+        @JsonProperty
+        protected String overview;
+
+        @JsonCreator
+        public Builder(@JsonProperty(value = "name") @NotNull String name,
+                       @JsonProperty(value = "year") @NotNull Integer year) {
+            this.name = name;
+            this.year = year;
+            this.tmdbId = -1;
+            this.imdbId = "";
+            this.collectionTitle = "";
+            this.posterUrl = "";
+            this.collectionId = -1;
+            this.language = "en";
+            this.overview = "";
+        }
+
+        public abstract @NotNull T build();
+
+        public @NotNull Builder<T> setPosterUrl(@NotNull String posterUrl) {
+            this.posterUrl = posterUrl;
+            return this;
+        }
+
+        public @NotNull Builder<T> setCollectionTitle(@NotNull String collectionTitle) {
+            this.collectionTitle = collectionTitle;
+            return this;
+        }
+
+        public @NotNull Builder<T> setCollectionId(@NotNull Integer collectionId) {
+            this.collectionId = collectionId;
+            return this;
+        }
+
+        public @NotNull Builder<T> setTmdbId(@NotNull Integer tmdbId) {
+            this.tmdbId = tmdbId;
+            return this;
+        }
+
+        public @NotNull Builder<T> setImdbId(@NotNull String imdbId) {
+            this.imdbId = imdbId;
+            return this;
+        }
+
+        public @NotNull Builder<T> setLanguage(@NotNull String language) {
+            this.language = language;
+            return this;
+        }
+
+        public @NotNull Builder<T> setOverview(@NotNull String overview) {
+            this.overview = overview;
+            return this;
+        }
+    }
 
 }

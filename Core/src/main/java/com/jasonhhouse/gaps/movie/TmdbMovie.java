@@ -16,40 +16,14 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import com.jasonhhouse.gaps.MovieFromCollection;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 @JsonDeserialize(builder = TmdbMovie.Builder.class)
-public final class TmdbMovie implements Comparable<TmdbMovie>, GapsMovie {
-
-    @NotNull
-    private final String name;
-    @NotNull
-    private final Integer year;
-    @NotNull
-    private final String nameWithoutBadCharacters;
-    @NotNull
-    private final String posterUrl;
-    @NotNull
-    private String imdbId;
-    @NotNull
-    private final String language;
-    @NotNull
-    private final String overview;
-    @NotNull
-    private final List<MovieFromCollection> moviesInCollection;
-    @NotNull
-    private final Integer ratingKey;
-    @NotNull
-    private final String key;
-    @NotNull
-    private String collectionTitle;
-    @NotNull
-    private Integer collectionId;
-    @NotNull
-    private Integer tmdbId;
+public final class TmdbMovie extends OutputMovie {
 
     private TmdbMovie(@NotNull String name,
                       @NotNull Integer year,
@@ -60,278 +34,29 @@ public final class TmdbMovie implements Comparable<TmdbMovie>, GapsMovie {
                       @NotNull String imdbId,
                       @NotNull String language,
                       @NotNull String overview,
-                      @NotNull List<MovieFromCollection> moviesInCollection,
-                      @NotNull Integer ratingKey,
-                      @NotNull String key) {
-        this.name = name;
-        this.nameWithoutBadCharacters = name.replaceAll("[<>`~\\[\\]()*&^%$#@!|{}.,?\\-_=+:;]", "");
-        this.year = year;
-        this.posterUrl = posterUrl;
-        this.collectionTitle = collectionTitle;
-        this.collectionId = collectionId;
-        this.tmdbId = tmdbId;
-        this.imdbId = imdbId;
-        this.language = language;
-        this.overview = overview;
-        this.moviesInCollection = moviesInCollection;
-        this.ratingKey = ratingKey;
-        this.key = key;
-    }
-
-    @Override
-    public @NotNull Integer getCollectionId() {
-        return collectionId;
-    }
-
-    @Override
-    public void setCollectionId(@NotNull Integer collectionId) {
-        this.collectionId = collectionId;
-    }
-
-    @Override
-    public @NotNull String getName() {
-        return name;
-    }
-
-    @Override
-    public @NotNull Integer getYear() {
-        return year;
-    }
-
-    @Override
-    public @NotNull String getCollectionTitle() {
-        return collectionTitle;
-    }
-
-    @Override
-    public void setCollectionTitle(@NotNull String collectionTitle) {
-        this.collectionTitle = collectionTitle;
-    }
-
-    @Override
-    public @NotNull String getImdbId() {
-        return imdbId;
-    }
-
-    @Override
-    public void setImdbId(@NotNull String imdbId) {
-        this.imdbId = imdbId;
-    }
-
-    @Override
-    public @NotNull Integer getTmdbId() {
-        return tmdbId;
-    }
-
-    @Override
-    public void setTmdbId(@NotNull Integer tmdbId) {
-        this.tmdbId = tmdbId;
-    }
-
-    @Override
-    public @NotNull String getLanguage() {
-        return language;
-    }
-
-    @Override
-    public @NotNull String getOverview() {
-        return overview;
-    }
-
-    @Override
-    public @NotNull List<MovieFromCollection> getMoviesInCollection() {
-        return moviesInCollection;
-    }
-
-    @Override
-    @JsonIgnore
-    public @NotNull String getNameWithoutBadCharacters() {
-        return nameWithoutBadCharacters;
-    }
-
-    @Override
-    public @NotNull Integer getRatingKey() {
-        return ratingKey;
-    }
-
-    @Override
-    public @NotNull String getKey() {
-        return key;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        TmdbMovie basicMovie = (TmdbMovie) o;
-
-        //Compare tvdb id first
-        if (tmdbId != -1 && tmdbId.equals(basicMovie.tmdbId)) {
-            return true;
-        }
-
-        //Compare imdb id next
-        if (StringUtils.isNotEmpty(imdbId) && imdbId.equals(basicMovie.imdbId)) {
-            return true;
-        }
-
-        //Fallback is year and title
-        return year.equals(basicMovie.year) && nameWithoutBadCharacters.equals(basicMovie.nameWithoutBadCharacters);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(nameWithoutBadCharacters, year);
-    }
-
-    public @NotNull String getPosterUrl() {
-        return posterUrl;
-    }
-
-    @Override
-    public String toString() {
-        return "Movie{" +
-                "name='" + name + '\'' +
-                ", year=" + year +
-                ", nameWithoutBadCharacters='" + nameWithoutBadCharacters + '\'' +
-                ", posterUrl='" + posterUrl + '\'' +
-                ", imdbId='" + imdbId + '\'' +
-                ", language='" + language + '\'' +
-                ", overview='" + overview + '\'' +
-                ", moviesInCollection=" + moviesInCollection +
-                ", collection='" + collectionTitle + '\'' +
-                ", collectionId=" + collectionId +
-                ", tvdbId=" + tmdbId +
-                ", ratingKey=" + ratingKey +
-                ", key='" + key + '\'' +
-                '}';
-    }
-
-    public int compareTo(TmdbMovie o) {
-        return getNameWithoutBadCharacters().compareTo(o.getNameWithoutBadCharacters());
+                      @NotNull List<MovieFromCollection> movieFromCollections) {
+        super(name, year, posterUrl, collectionTitle, collectionId, tmdbId, imdbId, language, overview, movieFromCollections);
     }
 
     @JsonPOJOBuilder(withPrefix = "set")
-    public static class Builder {
-
-        @NotNull
-        private final String name;
-
-        @NotNull
-        private final Integer year;
+    public static class Builder extends GapsMovie.Builder<TmdbMovie> {
 
         @NotNull
         @JsonProperty
-        private String posterUrl;
+        private List<MovieFromCollection> movieFromCollections;
 
-        @NotNull
-        @JsonProperty
-        private String collectionTitle;
-
-        @NotNull
-        @JsonProperty
-        private Integer collectionId;
-
-        @NotNull
-        @JsonProperty
-        private Integer tmdbId;
-
-        @NotNull
-        @JsonProperty
-        private String imdbId;
-
-        @NotNull
-        @JsonProperty
-        private String language;
-
-        @NotNull
-        @JsonProperty
-        private String overview;
-
-        @NotNull
-        @JsonProperty
-        private List<MovieFromCollection> moviesInCollection;
-
-        @NotNull
-        @JsonProperty
-        private Integer ratingKey;
-
-        @NotNull
-        @JsonProperty
-        private String key;
-
-        @JsonCreator
-        public Builder(@JsonProperty(value = "name") @NotNull String name,
-                       @JsonProperty(value = "year") @NotNull Integer year) {
-            this.name = name;
-            this.year = year;
-            this.tmdbId = -1;
-            this.imdbId = "";
-            this.collectionTitle = "";
-            this.posterUrl = "";
-            this.collectionId = -1;
-            this.language = "en";
-            this.overview = "";
-            this.moviesInCollection = new ArrayList<>();
-            this.ratingKey = -1;
-            this.key = "";
+        public Builder(@NotNull String name, @NotNull Integer year) {
+            super(name, year);
+            movieFromCollections = Collections.emptyList();
         }
 
+        @Override
         public @NotNull TmdbMovie build() {
-            return new TmdbMovie(name, year, posterUrl, collectionTitle, collectionId, tmdbId, imdbId, language, overview, moviesInCollection, ratingKey, key);
+            return new TmdbMovie(name, year, posterUrl, collectionTitle, collectionId, tmdbId, imdbId, language, overview, movieFromCollections);
         }
 
-        public @NotNull Builder setPosterUrl(@NotNull String posterUrl) {
-            this.posterUrl = posterUrl;
-            return this;
-        }
-
-        public @NotNull Builder setCollectionTitle(@NotNull String collectionTitle) {
-            this.collectionTitle = collectionTitle;
-            return this;
-        }
-
-        public @NotNull Builder setCollectionId(@NotNull Integer collectionId) {
-            this.collectionId = collectionId;
-            return this;
-        }
-
-        public @NotNull Builder setTmdbId(@NotNull Integer tmdbId) {
-            this.tmdbId = tmdbId;
-            return this;
-        }
-
-        public @NotNull Builder setImdbId(@NotNull String imdbId) {
-            this.imdbId = imdbId;
-            return this;
-        }
-
-        public @NotNull Builder setLanguage(@NotNull String language) {
-            this.language = language;
-            return this;
-        }
-
-        public @NotNull Builder setOverview(@NotNull String overview) {
-            this.overview = overview;
-            return this;
-        }
-
-        public @NotNull Builder setMoviesInCollection(@NotNull List<MovieFromCollection> moviesInCollection) {
-            this.moviesInCollection = moviesInCollection;
-            return this;
-        }
-
-        public @NotNull Builder setRatingKey(@NotNull Integer ratingKey) {
-            this.ratingKey = ratingKey;
-            return this;
-        }
-
-        public @NotNull Builder setKey(@NotNull String key) {
-            this.key = key;
+        public @NotNull Builder setMoviesFromCollections(@NotNull List<MovieFromCollection> movieFromCollections) {
+            this.movieFromCollections = movieFromCollections;
             return this;
         }
     }

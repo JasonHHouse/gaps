@@ -42,10 +42,10 @@ public class SchedulerService {
     private ScheduledFuture<?> scheduledFuture;
 
     @Autowired
-    public SchedulerService(FileIoService fileIoService, TmdbService tmdbService, GapsSearch gapsSearch, @Qualifier("Gaps") TaskScheduler scheduler, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator, NotificationService notificationService) {
+    public SchedulerService(FileIoService fileIoService, TmdbQueryService tmdbQueryService, FullSearch fullSearch, @Qualifier("Gaps") TaskScheduler scheduler, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator, NotificationService notificationService) {
         this.fileIoService = fileIoService;
         this.scheduler = scheduler;
-        this.searchGapsTask = new SearchGapsTask(gapsSearch, tmdbService, fileIoService, plexQuery, gapsUrlGenerator, notificationService);
+        this.searchGapsTask = new SearchGapsTask(fullSearch, tmdbQueryService, fileIoService, plexQuery, gapsUrlGenerator, notificationService);
     }
 
     public void setSchedule(SchedulePayload schedulePayload) {

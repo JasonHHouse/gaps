@@ -15,6 +15,7 @@ import com.jasonhhouse.gaps.movie.BasicMovie;
 import com.jasonhhouse.gaps.Pair;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexServer;
+import com.jasonhhouse.gaps.movie.PlexMovie;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.plex.libs.PlexLibrary;
 import com.jasonhhouse.plex.video.MediaContainer;
@@ -44,11 +45,11 @@ public interface PlexQuery {
      * Connect to plex via the URL and parse all the movies from the returned XML creating a HashSet of movies the
      * user has.
      */
-    @NotNull List<BasicMovie> findAllPlexMovies(@NotNull Map<Pair<String, Integer>, BasicMovie> previousMovies, @NotNull HttpUrl url);
+    @NotNull List<PlexMovie> findAllPlexMovies(@NotNull Map<Pair<String, Integer>, PlexMovie> previousMovies, @NotNull HttpUrl url);
 
     @NotNull MediaContainer findAllPlexVideos(@NotNull String url);
 
-    void findAllMovieIds(@NotNull List<BasicMovie> basicMovies, @NotNull PlexServer plexServer, @NotNull PlexLibrary plexLibrary);
+    void findAllMovieIds(@NotNull List<PlexMovie> plexMovies, @NotNull PlexServer plexServer, @NotNull PlexLibrary plexLibrary);
 
     @NotNull PlexServer getPlexServerFromMachineIdentifier(@NotNull PlexProperties plexProperties,@NotNull String machineIdentifier) throws IllegalArgumentException;
 

@@ -11,35 +11,19 @@
 
 package com.jasonhhouse.gaps.service;
 
-import com.jasonhhouse.gaps.movie.BasicMovie;
-import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.movie.InputMovie;
-import com.jasonhhouse.gaps.movie.PlexMovie;
-import com.jasonhhouse.gaps.movie.TmdbMovie;
-import com.jasonhhouse.gaps.properties.PlexProperties;
 import java.io.File;
-import java.util.List;
-import java.util.Set;
+import java.nio.file.Paths;
 import org.jetbrains.annotations.NotNull;
 
-public interface IO {
+public class TmdbOutputFileConfig implements OutputFileConfig {
 
-/*    *//**
-     * Prints out all movies to a text file movieIds.json
-     *//*
-    void writeMovieIdsToFile(@NotNull Set<PlexMovie> everyBasicMovie);
+    @Override
+    public @NotNull File getJsonFile() {
+        return Paths.get("tmdb", "movies.json").toFile();
+    }
 
-    void writeMovieIdsToFile(@NotNull Set<PlexMovie> everyBasicMovie, @NotNull File file);
-
-    *//**
-     * Prints out all recommended files to a text file called gaps_recommended_movies.txt
-     *//*
-    @NotNull Set<PlexMovie> readMovieIdsFromFile();*/
-
-    void writeProperties(@NotNull PlexProperties plexProperties);
-
-    @NotNull PlexProperties readProperties();
-
-    @NotNull Payload nuke();
-
+    @Override
+    public @NotNull File getRssFile() {
+        return Paths.get("tmdb", "rss.json").toFile();
+    }
 }

@@ -9,37 +9,21 @@
  *
  */
 
-package com.jasonhhouse.gaps.service;
+package com.jasonhhouse.gaps.movie;
 
-import com.jasonhhouse.gaps.movie.BasicMovie;
-import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.movie.InputMovie;
-import com.jasonhhouse.gaps.movie.PlexMovie;
-import com.jasonhhouse.gaps.movie.TmdbMovie;
-import com.jasonhhouse.gaps.properties.PlexProperties;
-import java.io.File;
-import java.util.List;
-import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 
-public interface IO {
+public abstract class InputMovie extends GapsMovie implements Comparable<PlexMovie> {
 
-/*    *//**
-     * Prints out all movies to a text file movieIds.json
-     *//*
-    void writeMovieIdsToFile(@NotNull Set<PlexMovie> everyBasicMovie);
-
-    void writeMovieIdsToFile(@NotNull Set<PlexMovie> everyBasicMovie, @NotNull File file);
-
-    *//**
-     * Prints out all recommended files to a text file called gaps_recommended_movies.txt
-     *//*
-    @NotNull Set<PlexMovie> readMovieIdsFromFile();*/
-
-    void writeProperties(@NotNull PlexProperties plexProperties);
-
-    @NotNull PlexProperties readProperties();
-
-    @NotNull Payload nuke();
-
+    protected InputMovie(@NotNull String name,
+                         @NotNull Integer year,
+                         @NotNull String posterUrl,
+                         @NotNull String collectionTitle,
+                         @NotNull Integer collectionId,
+                         @NotNull Integer tmdbId,
+                         @NotNull String imdbId,
+                         @NotNull String language,
+                         @NotNull String overview) {
+        super(name, year, posterUrl, collectionTitle, collectionId, tmdbId, imdbId, language, overview);
+    }
 }

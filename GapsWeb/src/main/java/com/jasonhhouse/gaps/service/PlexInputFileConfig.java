@@ -11,35 +11,38 @@
 
 package com.jasonhhouse.gaps.service;
 
-import com.jasonhhouse.gaps.movie.BasicMovie;
-import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.movie.InputMovie;
-import com.jasonhhouse.gaps.movie.PlexMovie;
-import com.jasonhhouse.gaps.movie.TmdbMovie;
-import com.jasonhhouse.gaps.properties.PlexProperties;
 import java.io.File;
-import java.util.List;
-import java.util.Set;
+import java.nio.file.Paths;
 import org.jetbrains.annotations.NotNull;
 
-public interface IO {
+public class PlexInputFileConfig implements InputFileConfig {
 
-/*    *//**
-     * Prints out all movies to a text file movieIds.json
-     *//*
-    void writeMovieIdsToFile(@NotNull Set<PlexMovie> everyBasicMovie);
+    private final @NotNull String machineIdentifier;
+    private final @NotNull Integer key;
 
-    void writeMovieIdsToFile(@NotNull Set<PlexMovie> everyBasicMovie, @NotNull File file);
+    public PlexInputFileConfig(@NotNull String machineIdentifier, @NotNull Integer key) {
+        this.machineIdentifier = machineIdentifier;
+        this.key = key;
+    }
 
-    *//**
-     * Prints out all recommended files to a text file called gaps_recommended_movies.txt
-     *//*
-    @NotNull Set<PlexMovie> readMovieIdsFromFile();*/
+    @Override
+    public @NotNull File getJsonFile() {
+        return Paths.get(machineIdentifier, key.toString(), "movies.json").toFile();
+    }
 
-    void writeProperties(@NotNull PlexProperties plexProperties);
+    public @NotNull String getMachineIdentifier() {
+        return machineIdentifier;
+    }
 
-    @NotNull PlexProperties readProperties();
+    public @NotNull Integer getKey() {
+        return key;
+    }
 
-    @NotNull Payload nuke();
-
+    @Override
+    public String toString() {
+        return "PlexInputFileConfig{" +
+                "machineIdentifier='" + machineIdentifier + '\'' +
+                ", key=" + key +
+                '}';
+    }
 }

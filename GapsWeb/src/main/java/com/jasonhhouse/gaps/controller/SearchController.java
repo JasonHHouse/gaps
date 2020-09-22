@@ -9,8 +9,8 @@
  */
 package com.jasonhhouse.gaps.controller;
 
-import com.jasonhhouse.gaps.service.GapsSearch;
 import com.jasonhhouse.gaps.SearchStatus;
+import com.jasonhhouse.gaps.service.FullSearch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,17 +28,17 @@ public class SearchController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 
-    private final GapsSearch gapsSearch;
+    private final FullSearch fullSearch;
 
     @Autowired
-    SearchController(GapsSearch gapsSearch) {
-        this.gapsSearch = gapsSearch;
+    SearchController(FullSearch fullSearch) {
+        this.fullSearch = fullSearch;
     }
 
     @MessageMapping("/cancelSearching")
     public void cancelSearching() {
         LOGGER.info("cancelSearching()");
-        gapsSearch.cancelSearch();
+        fullSearch.cancelSearch();
     }
 
     /**
@@ -61,7 +61,7 @@ public class SearchController {
     public ResponseEntity<SearchStatus> getIsSearching() {
         LOGGER.info("getSearchStatus()");
 
-        SearchStatus searchStatus = new SearchStatus(gapsSearch.isSearching());
+        SearchStatus searchStatus = new SearchStatus(fullSearch.isSearching());
         return ResponseEntity.ok().body(searchStatus);
     }
 

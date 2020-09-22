@@ -103,7 +103,7 @@ public class GapsUrlGenerator implements UrlGenerator {
     }
 
     @Override
-    public @Nullable HttpUrl generatePlexLibraryUrl(@NotNull PlexServer plexServer,@NotNull  PlexLibrary plexLibrary) {
+    public @Nullable HttpUrl generatePlexLibraryUrl(@NotNull PlexServer plexServer, @NotNull PlexLibrary plexLibrary) {
         return new HttpUrl.Builder()
                 .scheme(HTTP)
                 .host(plexServer.getAddress())

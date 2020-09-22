@@ -25,7 +25,7 @@ public interface UrlGenerator {
      * @param year       movie release year
      * @return query
      */
-    @NotNull HttpUrl generateSearchMovieUrl(@NotNull String movieDbKey, @NotNull String query,@NotNull  String year, @NotNull String language);
+    @NotNull HttpUrl generateSearchMovieUrl(@NotNull String movieDbKey, @NotNull String query, @NotNull String year, @NotNull String language);
 
     /**
      * Better way to search from plex returning imdb id. Is exact in returning responses but may not be available to
@@ -35,7 +35,7 @@ public interface UrlGenerator {
      * @param imdbId     IMDB id
      * @return query
      */
-    @NotNull HttpUrl generateFindMovieUrl(@NotNull String movieDbKey,@NotNull  String imdbId,@NotNull  String language);
+    @NotNull HttpUrl generateFindMovieUrl(@NotNull String movieDbKey, @NotNull String imdbId, @NotNull String language);
 
     /**
      * Movie searches and finds don't contain collection information and a second detail per movie query must be run
@@ -44,7 +44,7 @@ public interface UrlGenerator {
      * @param movieId    TMDB id
      * @return query
      */
-    @NotNull HttpUrl generateMovieDetailUrl(@NotNull String movieDbKey,@NotNull  String movieId, @NotNull String language);
+    @NotNull HttpUrl generateMovieDetailUrl(@NotNull String movieDbKey, @NotNull String movieId, @NotNull String language);
 
     /**
      * With a collection id from a movie, then a user can search for collection details to get the other movies
@@ -53,7 +53,7 @@ public interface UrlGenerator {
      * @param collectionId collection id
      * @return query
      */
-    @NotNull HttpUrl generateCollectionUrl(@NotNull String movieDbKey, @NotNull String collectionId,@NotNull  String language);
+    @NotNull HttpUrl generateCollectionUrl(@NotNull String movieDbKey, @NotNull String collectionId, @NotNull String language);
 
     /**
      * Using plex token, address, and port, create a plex url to query for plex movie collections to select from
@@ -66,12 +66,12 @@ public interface UrlGenerator {
     /**
      * Using plex token, address, and port, create a plex library url to query for all plex movies
      *
-     * @param plexServer    The PlexServer to query
+     * @param plexServer  The PlexServer to query
      * @param plexLibrary The PlexLibrary to query
      * @return query
      */
-    @Nullable HttpUrl generatePlexLibraryUrl(@NotNull PlexServer plexServer,@NotNull  PlexLibrary plexLibrary);
+    @Nullable HttpUrl generatePlexLibraryUrl(@NotNull PlexServer plexServer, @NotNull PlexLibrary plexLibrary);
 
-    @NotNull HttpUrl generatePlexMetadataUrl(@NotNull PlexServer plexServer, @NotNull PlexLibrary plexLibrary,@NotNull  Integer ratingKey);
+    @NotNull HttpUrl generatePlexMetadataUrl(@NotNull PlexServer plexServer, @NotNull PlexLibrary plexLibrary, @NotNull Integer ratingKey);
 
 }

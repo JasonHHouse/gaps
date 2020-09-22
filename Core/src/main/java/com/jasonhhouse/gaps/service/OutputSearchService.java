@@ -11,23 +11,23 @@
 
 package com.jasonhhouse.gaps.service;
 
-/**
- * Handles the process of searching, movies, counts, and canceling
- */
-public interface GapsSearch {
+import com.jasonhhouse.gaps.exception.SearchCancelledException;
+import com.jasonhhouse.gaps.movie.GapsMovie;
+import com.jasonhhouse.gaps.movie.InputMovie;
+import com.jasonhhouse.gaps.movie.OutputMovie;
+import java.io.IOException;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.jetbrains.annotations.NotNull;
 
-    /**
-     * Kicks of searching for all missing movies
-     */
-    void run(String machineIdentifier, Integer key);
+public interface OutputSearchService {
 
-    /**
-     * Cancel the current search
-     */
-    void cancelSearch();
+    void searchForMovies(@NotNull List<InputMovie> ownedBasicMovies,
+                         @NotNull List<GapsMovie> everyBasicMovie,
+                         @NotNull Set<OutputMovie> recommended,
+                         @NotNull List<GapsMovie> searched,
+                         @NotNull AtomicInteger searchedMovieCount) throws SearchCancelledException, IOException;
 
-    /**
-     * @return Returns true if currently searching
-     */
-    boolean isSearching();
+    @NotNull Boolean writeRss(@NotNull Set<OutputMovie> recommended);
 }

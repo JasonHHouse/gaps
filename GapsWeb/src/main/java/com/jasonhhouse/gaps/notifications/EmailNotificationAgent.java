@@ -15,7 +15,6 @@ import com.jasonhhouse.gaps.properties.EmailProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
 import java.util.Properties;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.MailException;

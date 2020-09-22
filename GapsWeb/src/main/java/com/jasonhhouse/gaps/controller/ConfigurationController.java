@@ -17,7 +17,7 @@ import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
 import com.jasonhhouse.gaps.service.PlexQueryImpl;
 import com.jasonhhouse.gaps.service.SchedulerService;
-import com.jasonhhouse.gaps.service.TmdbService;
+import com.jasonhhouse.gaps.service.TmdbQueryService;
 import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -49,14 +49,14 @@ public class ConfigurationController {
     private static final String CONFIGURATION_PLEX = "/configuration/plex";
     private static final String CONFIGURATION_PLEX_COMPLETE = CONFIGURATION_PLEX + "/complete";
 
-    private final TmdbService tmdbService;
+    private final TmdbQueryService tmdbQueryService;
     private final SimpMessagingTemplate template;
     private final PlexQueryImpl plexQuery;
     private final FileIoService fileIoService;
     private final SchedulerService schedulerService;
 
-    public ConfigurationController(TmdbService tmdbService, SimpMessagingTemplate template, PlexQueryImpl plexQuery, FileIoService fileIoService, SchedulerService schedulerService) {
-        this.tmdbService = tmdbService;
+    public ConfigurationController(TmdbQueryService tmdbQueryService, SimpMessagingTemplate template, PlexQueryImpl plexQuery, FileIoService fileIoService, SchedulerService schedulerService) {
+        this.tmdbQueryService = tmdbQueryService;
         this.template = template;
         this.plexQuery = plexQuery;
         this.fileIoService = fileIoService;
@@ -171,7 +171,7 @@ public class ConfigurationController {
     public ResponseEntity<Payload> postTestTmdbKey(@PathVariable("tmdbKey") final String tmdbKey) {
         LOGGER.info("postTestTmdbKey( {} )", tmdbKey);
 
-        Payload payload = tmdbService.testTmdbKey(tmdbKey).setExtras(TMDB_KEY + tmdbKey);
+        Payload payload = tmdbQueryService.testTmdbKey(tmdbKey).setExtras(TMDB_KEY + tmdbKey);
         return ResponseEntity.ok().body(payload);
     }
 

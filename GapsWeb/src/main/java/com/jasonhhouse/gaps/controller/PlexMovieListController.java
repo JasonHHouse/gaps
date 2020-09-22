@@ -11,12 +11,12 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.GapsUrlGenerator;
-import com.jasonhhouse.gaps.movie.BasicMovie;
 import com.jasonhhouse.gaps.Pair;
-import com.jasonhhouse.gaps.service.PlexQuery;
 import com.jasonhhouse.gaps.PlexServer;
+import com.jasonhhouse.gaps.movie.BasicMovie;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
+import com.jasonhhouse.gaps.service.PlexQuery;
 import com.jasonhhouse.plex.libs.PlexLibrary;
 import java.util.HashMap;
 import java.util.List;

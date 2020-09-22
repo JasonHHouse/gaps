@@ -11,35 +11,25 @@
 
 package com.jasonhhouse.gaps.service;
 
-import com.jasonhhouse.gaps.movie.BasicMovie;
-import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.movie.InputMovie;
-import com.jasonhhouse.gaps.movie.PlexMovie;
-import com.jasonhhouse.gaps.movie.TmdbMovie;
-import com.jasonhhouse.gaps.properties.PlexProperties;
-import java.io.File;
-import java.util.List;
-import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 
-public interface IO {
+/**
+ * Handles the process of searching, movies, counts, and canceling
+ */
+public interface FullSearch {
 
-/*    *//**
-     * Prints out all movies to a text file movieIds.json
-     *//*
-    void writeMovieIdsToFile(@NotNull Set<PlexMovie> everyBasicMovie);
+    /**
+     * Kicks of searching for all missing movies
+     */
+    void run(@NotNull String machineIdentifier, @NotNull Integer key);
 
-    void writeMovieIdsToFile(@NotNull Set<PlexMovie> everyBasicMovie, @NotNull File file);
+    /**
+     * Cancel the current search
+     */
+    void cancelSearch();
 
-    *//**
-     * Prints out all recommended files to a text file called gaps_recommended_movies.txt
-     *//*
-    @NotNull Set<PlexMovie> readMovieIdsFromFile();*/
-
-    void writeProperties(@NotNull PlexProperties plexProperties);
-
-    @NotNull PlexProperties readProperties();
-
-    @NotNull Payload nuke();
-
+    /**
+     * @return Returns true if currently searching
+     */
+    @NotNull Boolean isSearching();
 }

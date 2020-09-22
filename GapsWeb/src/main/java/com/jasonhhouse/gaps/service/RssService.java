@@ -27,16 +27,20 @@ import org.springframework.stereotype.Service;
 public class RssService {
     private static final Logger LOGGER = LoggerFactory.getLogger(RssService.class);
 
-    private final FileIoService fileIoService;
+    @NotNull
+    private final TmdbFileOutputIo tmdbFileOutputIo;
 
     @Autowired
-    public RssService(FileIoService fileIoService) {
-        this.fileIoService = fileIoService;
+    public RssService(@NotNull TmdbFileOutputIo tmdbFileOutputIo) {
+        this.tmdbFileOutputIo = tmdbFileOutputIo;
     }
 
     @NotNull
     public Map<PlexLibrary, PlexServer> foundAnyRssFeeds() {
         Map<PlexLibrary, PlexServer> plexServerMap = new HashMap<>();
+
+        //ToDo
+        //Handle saving the RSS per plex properties instance
 
         PlexProperties plexProperties = fileIoService.readProperties();
         Set<PlexServer> plexServers = plexProperties.getPlexServers();

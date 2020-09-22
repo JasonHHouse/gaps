@@ -9,37 +9,13 @@
  *
  */
 
-package com.jasonhhouse.gaps.service;
+package com.jasonhhouse.gaps.movie;
 
-import com.jasonhhouse.gaps.movie.BasicMovie;
-import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.movie.InputMovie;
-import com.jasonhhouse.gaps.movie.PlexMovie;
-import com.jasonhhouse.gaps.movie.TmdbMovie;
-import com.jasonhhouse.gaps.properties.PlexProperties;
-import java.io.File;
-import java.util.List;
-import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 
-public interface IO {
+public interface AbstractFactory {
 
-/*    *//**
-     * Prints out all movies to a text file movieIds.json
-     *//*
-    void writeMovieIdsToFile(@NotNull Set<PlexMovie> everyBasicMovie);
+    <I extends InputMovie> @NotNull I createInputMovie(@NotNull String type);
 
-    void writeMovieIdsToFile(@NotNull Set<PlexMovie> everyBasicMovie, @NotNull File file);
-
-    *//**
-     * Prints out all recommended files to a text file called gaps_recommended_movies.txt
-     *//*
-    @NotNull Set<PlexMovie> readMovieIdsFromFile();*/
-
-    void writeProperties(@NotNull PlexProperties plexProperties);
-
-    @NotNull PlexProperties readProperties();
-
-    @NotNull Payload nuke();
-
+    <O extends OutputMovie> @NotNull O createOutputMovie(@NotNull String type);
 }
