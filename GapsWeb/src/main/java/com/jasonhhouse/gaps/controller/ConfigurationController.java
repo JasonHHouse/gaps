@@ -203,4 +203,12 @@ public class ConfigurationController {
         return ResponseEntity.ok().body(payload);
     }
 
+    @PutMapping(value = "/update/plex/library",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<Payload> putPlexLibrary(final Object object) {
+        LOGGER.info("putPlexLibrary( {} )", object);
+
+        return ResponseEntity.ok().body(Payload.PLEX_CONNECTION_SUCCEEDED);
+    }
 }

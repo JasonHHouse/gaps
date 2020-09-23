@@ -16,6 +16,7 @@ call npm run uglifyjs-email-notifications-js
 call npm run uglifyjs-push-over-notifications-js
 call npm run uglifyjs-discord-notifications-js
 call npm run uglifyjs-schedule-js
+call npm run uglifyjs-plex-configuration-js
 call mvn clean install
 del GapsOnWindows\*.jar
 del GapsOnWindows\README.md
