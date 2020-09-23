@@ -12,7 +12,7 @@ package com.jasonhhouse.gaps.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.PlexServer;
+import com.jasonhhouse.gaps.plex.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
 import com.jasonhhouse.gaps.service.PlexQueryImpl;
@@ -20,6 +20,7 @@ import com.jasonhhouse.gaps.service.SchedulerService;
 import com.jasonhhouse.gaps.service.TmdbService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import java.util.Collections;
 import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -80,13 +81,20 @@ public class ConfigurationController {
     @PostMapping(value = "/add/plex",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public void postAddPlexServer(@Parameter(description = "The details of the Plex Server to add.") @Valid final PlexServer plexServer) {
-        LOGGER.info("postAddPlexServer( {} )", plexServer);
+    public void postAddPlexServer(@Parameter(description = "The details of the Plex Server to add.") @Valid final PlexServer sentPlexServer) {
+        LOGGER.info("postAddPlexServer( {} )", sentPlexServer);
 
         PlexProperties plexProperties = fileIoService.readProperties();
 
         try {
-            plexQuery.queryPlexServer(plexServer);
+            PlexServer plexServer;
+            Payload plexServerPayload = plexQuery.queryPlexServer(sentPlexServer);
+            if (plexServerPayload.getCode() == Payload.PLEX_CONNECTION_SUCCEEDED.getCode()) {
+                plexServer = (PlexServer) plexServerPayload.getExtras();
+            } else {
+                plexServer = sentPlexServer;
+            }
+
             Payload payload = plexQuery.getLibraries(plexServer);
 
             if (payload.getCode() == Payload.PLEX_LIBRARIES_FOUND.getCode()) {
@@ -135,7 +143,8 @@ public class ConfigurationController {
         PlexProperties plexProperties = fileIoService.readProperties();
 
         ObjectNode objectNode = objectMapper.createObjectNode();
-        PlexServer returnedPlexServer = plexProperties.getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
+        PlexServer returnedPlexServer = plexProperties.getPlexServers().stream().filter(plexServer ->
+                plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer("", "", "", "", -1, Collections.emptySet()));
 
         if (StringUtils.isEmpty(returnedPlexServer.getMachineIdentifier())) {
             //Failed to find and delete
@@ -157,7 +166,8 @@ public class ConfigurationController {
         PlexProperties plexProperties = fileIoService.readProperties();
 
         ObjectNode objectNode = objectMapper.createObjectNode();
-        PlexServer returnedPlexServer = plexProperties.getPlexServers().stream().filter(plexServer -> plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer());
+        PlexServer returnedPlexServer = plexProperties.getPlexServers().stream().filter(plexServer ->
+                plexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst().orElse(new PlexServer("", "", "", "", -1, Collections.emptySet()));
         if (StringUtils.isEmpty(returnedPlexServer.getMachineIdentifier())) {
             //Failed to find and delete
             objectNode.put(SUCCESS, false);

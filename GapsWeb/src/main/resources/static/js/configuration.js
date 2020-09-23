@@ -44,6 +44,21 @@ window.addEventListener('load', function () {
 
 document.addEventListener('DOMContentLoaded', function () {
 
+    Handlebars.registerHelper({
+        isEnabled: function (value) {
+            return value.enabled && !value.defaultLibrary;
+        },
+        isDefaultLibrary: function (value) {
+            return !value.enabled && value.defaultLibrary;
+        },
+        isBoth: function (value) {
+            return value.enabled && value.defaultLibrary;
+        },
+        isNone: function (value) {
+            return !value.enabled && !value.defaultLibrary;
+        }
+    });
+
     plexSpinner = $('#plexSpinner');
     plexSaveSuccess = $('#plexSaveSuccess');
     plexSaveError = $('#plexSaveError');

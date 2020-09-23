@@ -7,7 +7,7 @@
  *
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package com.jasonhhouse.plex.video;
+package com.jasonhhouse.gaps.plex.video;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,11 +16,12 @@ import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAttribute;
 
 @Entity
-public final class Role {
+public final class Genre {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
     private String tag;
 
     public Integer getId() {
@@ -42,7 +43,7 @@ public final class Role {
 
     @Override
     public String toString() {
-        return "Role{" +
+        return "Genre{" +
                 "tag='" + tag + '\'' +
                 '}';
     }

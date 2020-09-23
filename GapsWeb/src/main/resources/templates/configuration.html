@@ -16,6 +16,7 @@
     <link href="images/gaps.ico" rel="shortcut icon"/>
     <link href="css/libraries/bootstrap.min.css" rel="stylesheet"/>
     <link href="css/input.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <!--Let browser know website is optimized for mobile-->
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -421,7 +422,18 @@
                 <div class="card-header">{{friendlyName}}</div>
                 <ul class="list-group list-group-flush">
                     {{#each plexLibraries}}
-                    <li class="list-group-item">{{title}}</li>
+                        {{#if (isEnabled this)}}
+                        <li class="list-group-item">{{title}}</li>
+                        {{/if}}
+                        {{#if (isDefaultLibrary this)}}
+                        <li class="list-group-item skip-searching-library">{{title}} <i class="material-icons green600">check</i></li>
+                        {{/if}}
+                        {{#if (isBoth this)}}
+                        <li class="list-group-item">{{title}} <i class="material-icons green600">check</i></li>
+                        {{/if}}
+                        {{#if (isNone this)}}
+                        <li class="list-group-item skip-searching-library">{{title}}</li>
+                        {{/if}}
                     {{/each}}
                 </ul>
                 <div class="card-body">

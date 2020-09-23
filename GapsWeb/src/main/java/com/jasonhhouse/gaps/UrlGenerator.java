@@ -9,7 +9,8 @@
  */
 package com.jasonhhouse.gaps;
 
-import com.jasonhhouse.plex.libs.PlexLibrary;
+import com.jasonhhouse.gaps.plex.PlexLibrary;
+import com.jasonhhouse.gaps.plex.PlexServer;
 import okhttp3.HttpUrl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -70,7 +71,7 @@ public interface UrlGenerator {
      * @param plexLibrary The PlexLibrary to query
      * @return query
      */
-    @Nullable HttpUrl generatePlexLibraryUrl(@NotNull PlexServer plexServer,@NotNull  PlexLibrary plexLibrary);
+    @Nullable HttpUrl generatePlexLibraryUrl(@NotNull PlexServer plexServer, @NotNull  PlexLibrary plexLibrary);
 
     @NotNull HttpUrl generatePlexMetadataUrl(@NotNull PlexServer plexServer, @NotNull PlexLibrary plexLibrary,@NotNull  Integer ratingKey);
 

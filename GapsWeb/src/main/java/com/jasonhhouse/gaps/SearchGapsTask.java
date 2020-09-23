@@ -10,13 +10,14 @@
 
 package com.jasonhhouse.gaps;
 
+import com.jasonhhouse.gaps.plex.PlexLibrary;
+import com.jasonhhouse.gaps.plex.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.GapsSearch;
 import com.jasonhhouse.gaps.service.FileIoService;
 import com.jasonhhouse.gaps.service.NotificationService;
 import com.jasonhhouse.gaps.service.PlexQuery;
 import com.jasonhhouse.gaps.service.TmdbService;
-import com.jasonhhouse.plex.libs.PlexLibrary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,7 +92,8 @@ public class SearchGapsTask implements Runnable {
         for (PlexServer plexServer : plexProperties.getPlexServers()) {
             Payload payload = plexQuery.queryPlexServer(plexServer);
             if (payload.getCode() == Payload.PLEX_CONNECTION_SUCCEEDED.getCode()) {
-                notificationService.plexServerConnectSuccessful(plexServer);
+                plexProperties.addPlexServer((PlexServer) payload.getExtras());
+                notificationService.plexServerConnectSuccessful((PlexServer) payload.getExtras());
             } else {
                 notificationService.plexServerConnectFailed(plexServer, payload.getReason());
             }
