@@ -9,16 +9,17 @@
  *
  */
 
-export function openPlexLibraryConfigurationModel(machineIdentifier, key) {
+export function openPlexLibraryConfigurationModel(title, machineIdentifier, key) {
     const obj = {
+        'title':title,
         'machineIdentifier': machineIdentifier,
         'key': key
     }
-    const plexLibraryButtonConfiguration = $("#plexLibraryButtonConfiguration").html();
-    const theTemplate = Handlebars.compile(plexLibraryButtonConfiguration);
+    const plexLibraryModalTemplate = $("#plexLibraryModalTemplate").html();
+    const theTemplate = Handlebars.compile(plexLibraryModalTemplate);
     const theCompiledHtml = theTemplate(obj);
-    const buttonHolder = document.getElementById('buttonHolder');
-    buttonHolder.innerHTML = theCompiledHtml;
+    const plexLibraryConfigurationModal = document.getElementById('plexLibraryConfigurationModal');
+    plexLibraryConfigurationModal.innerHTML = theCompiledHtml;
     $('#plexLibraryConfigurationModal').modal('show');
 }
 

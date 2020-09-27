@@ -416,10 +416,13 @@
 </div>
 
 <div class="modal fade" tabindex="-1" id="plexLibraryConfigurationModal">
+</div>
+
+<script id="plexLibraryModalTemplate" type="text/x-handlebars-template">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Plex Library Configuration</h5>
+                <h5 class="modal-title">{{title}} Library Configuration</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -440,14 +443,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <div id="buttonHolder"></div>
+                <button type="button" class="btn btn-primary" onclick="savePlexLibraryConfiguration('{{machineIdentifier}}', {{key}})">Save changes</button>
             </div>
         </div>
     </div>
-</div>
-
-<script id="plexLibraryButtonConfiguration" type="text/x-handlebars-template">
-    <button type="button" class="btn btn-primary" onclick="savePlexLibraryConfiguration('{{machineIdentifier}}', {{key}})">Save changes</button>
 </script>
 
 <script id="plexServerCard" type="text/x-handlebars-template">
@@ -458,18 +457,18 @@
                 <ul class="list-group list-group-flush">
                     {{#each plexLibraries}}
                         {{#if (isEnabled this)}}
-                            <li class="list-group-item" onclick="openPlexLibraryConfigurationModel('{{machineIdentifier}}', {{key}})">{{title}}</li>
+                            <li class="list-group-item" onclick="openPlexLibraryConfigurationModel('{{friendlyName}}', '{{machineIdentifier}}', {{key}})">{{title}}</li>
                         {{/if}}
                         {{#if (isDefaultLibrary this)}}
-                            <li class="list-group-item skip-searching-library" onclick="openPlexLibraryConfigurationModel('{{machineIdentifier}}', {{key}})">{{title}} <i
+                            <li class="list-group-item skip-searching-library" onclick="openPlexLibraryConfigurationModel('{{friendlyName}}', '{{machineIdentifier}}', {{key}})">{{title}} <i
                                     class="material-icons green600">check</i></li>
                         {{/if}}
                         {{#if (isBoth this)}}
-                            <li class="list-group-item" onclick="openPlexLibraryConfigurationModel('{{machineIdentifier}}', {{key}})">{{title}} <i class="material-icons green600">check</i>
+                            <li class="list-group-item" onclick="openPlexLibraryConfigurationModel('{{friendlyName}}', '{{machineIdentifier}}', {{key}})">{{title}} <i class="material-icons green600">check</i>
                             </li>
                         {{/if}}
                         {{#if (isNone this)}}
-                            <li class="list-group-item skip-searching-library" onclick="openPlexLibraryConfigurationModel('{{machineIdentifier}}', {{key}})">{{title}}</li>
+                            <li class="list-group-item skip-searching-library" onclick="openPlexLibraryConfigurationModel('{{friendlyName}}', '{{machineIdentifier}}', {{key}})">{{title}}</li>
                         {{/if}}
                     {{/each}}
                 </ul>
