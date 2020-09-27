@@ -83,14 +83,12 @@
             <version>3.32.3.2</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.zsoltfabok/sqlite-dialect -->
         <dependency>
             <groupId>com.zsoltfabok</groupId>
             <artifactId>sqlite-dialect</artifactId>
             <version>1.0</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -190,14 +188,12 @@
             <artifactId>annotations</artifactId>
         </dependency>
 
-        <!-- API, java.xml.bind module -->
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
             <version>2.3.2</version>
         </dependency>
 
-        <!-- Runtime, com.sun.xml.bind module -->
         <dependency>
             <groupId>org.glassfish.jaxb</groupId>
             <artifactId>jaxb-runtime</artifactId>
@@ -295,6 +291,42 @@
                 <configuration>
                     <mainClass>com.jasonhhouse.gaps.GapsApplication</mainClass>
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>jdeb</artifactId>
+                <groupId>org.vafer</groupId>
+                <version>1.8</version>
+                <configuration>
+                    <controlDir>${basedir}/src/deb/control</controlDir>
+                    <deb>${project.build.directory}/${build.finalName}.deb</deb>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jdeb</goal>
+                        </goals>
+                        <configuration>
+                            <dataSet>
+                                <data>
+                                    <src>${project.build.directory}/${build.finalName}.jar</src>
+                                    <type>file</type>
+                                    <mapper>
+                                        <type>perm</type>
+                                        <prefix>/var/${build.finalName}</prefix>
+                                        <filemode>755</filemode>
+                                    </mapper>
+                                </data>
+                                <data>
+                                    <type>link</type>
+                                    <symlink>true</symlink>
+                                    <linkName>/etc/init.d/${build.finalName}</linkName>
+                                    <linkTarget>/var/${build.finalName}/${build.finalName}.jar</linkTarget>
+                                </data>
+                            </dataSet>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

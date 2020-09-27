@@ -1,0 +1,9 @@
+Package: ${build.finalName}
+Version: ${project.version}
+Section: misc
+Priority: optional
+Architecture: all
+Depends: openjdk-11-jre
+Maintainer: Jason House <jh5975@gmail.com>
+Description: Gaps searches through your Plex Server or local folders for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.
+Distribution: production
