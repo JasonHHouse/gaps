@@ -1,5 +1,5 @@
-Package: ${build.finalName}
-Version: ${project.version}
+Package: Gaps
+Version: 0.8.0
 Section: misc
 Priority: optional
 Architecture: all

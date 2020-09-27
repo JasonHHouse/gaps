@@ -318,10 +318,25 @@
                                     </mapper>
                                 </data>
                                 <data>
+                                    <src>${user.dir}/start.sh</src>
+                                    <type>file</type>
+                                    <mapper>
+                                        <type>perm</type>
+                                        <prefix>/var/${build.finalName}</prefix>
+                                        <filemode>755</filemode>
+                                    </mapper>
+                                </data>
+                                <data>
                                     <type>link</type>
                                     <symlink>true</symlink>
                                     <linkName>/etc/init.d/${build.finalName}</linkName>
                                     <linkTarget>/var/${build.finalName}/${build.finalName}.jar</linkTarget>
+                                </data>
+                                <data>
+                                    <type>link</type>
+                                    <symlink>true</symlink>
+                                    <linkName>/etc/init.d/start}</linkName>
+                                    <linkTarget>${user.dir}/start.sh</linkTarget>
                                 </data>
                             </dataSet>
                         </configuration>
