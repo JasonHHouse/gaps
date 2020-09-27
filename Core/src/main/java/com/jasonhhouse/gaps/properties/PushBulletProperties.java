@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jasonhhouse.gaps.NotificationType;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Collections;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
@@ -23,10 +24,13 @@ import org.jetbrains.annotations.Nullable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public final class PushBulletProperties extends AbstractNotificationProperties {
+
     @NotNull
+    @Schema(required = true, description = "The channel tag to receive messages")
     private final String channel_tag;
 
     @NotNull
+    @Schema(required = true, description = "The API token connect to PushBullet")
     private final String accessToken;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)

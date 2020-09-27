@@ -25,7 +25,7 @@ public final class PlexServer {
     private final Set<PlexLibrary> plexLibraries;
     @Schema(description = "Human readable way to identify your Plex Server")
     private String friendlyName;
-    @Schema(description = "UUID to identify the Plex Server")
+    @Schema(description = "UID to identify the Plex Server")
     private String machineIdentifier;
     @Schema(required = true, description = "Token for your Plex Server. Found via Plex docs.")
     private String plexToken;

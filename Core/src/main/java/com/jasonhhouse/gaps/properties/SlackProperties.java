@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jasonhhouse.gaps.NotificationType;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Collections;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
@@ -25,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 public final class SlackProperties extends AbstractNotificationProperties {
 
     @NotNull
+    @Schema(required = true, description = "The full URL of your webhook to the Slack API")
     private final String webHookUrl;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
