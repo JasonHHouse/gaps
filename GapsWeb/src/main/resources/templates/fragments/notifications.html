@@ -12,8 +12,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
 <header th:fragment="telegram">
-    <h4>Telegram Notifications</h4>
-    <form id="telegramConfiguration">
+    <div class="row">
+        <h4 class="col-10">Telegram Notifications</h4>
+        <a class="btn btn-primary" data-toggle="collapse" href="#telegramConfiguration" role="button" aria-expanded="false" aria-controls="telegramConfiguration">
+            Show/Hide
+        </a>
+    </div>
+    <form id="telegramConfiguration" class="collapse">
         <div class="form-group">
             <label for="telegramBotId">Bot ID</label>
             <input type="text" class="form-control" id="telegramBotId" aria-describedby="telegramBotIdHelp"
@@ -125,8 +130,13 @@
 </header>
 
 <header th:fragment="slack">
-    <h4>Slack Notifications</h4>
-    <form id="slackConfiguration">
+    <div class="row">
+        <h4 class="col-10">Slack Notifications</h4>
+        <a class="btn btn-primary" data-toggle="collapse" href="#slackConfiguration" role="button" aria-expanded="false" aria-controls="slackConfiguration">
+            Show/Hide
+        </a>
+    </div>
+    <form id="slackConfiguration" class="collapse">
         <div class="form-group">
             <label for="slackWebHookUrl">Bot ID</label>
             <input type="text" class="form-control" id="slackWebHookUrl" aria-describedby="slackWebHookUrlHelp"
@@ -225,8 +235,13 @@
 </header>
 
 <header th:fragment="push-bullet">
-    <h4>PushBullet Notifications</h4>
-    <form id="pushBulletConfiguration">
+    <div class="row">
+        <h4 class="col-10">PushBullet Notifications</h4>
+        <a class="btn btn-primary" data-toggle="collapse" href="#pushBulletConfiguration" role="button" aria-expanded="false" aria-controls="pushBulletConfiguration">
+            Show/Hide
+        </a>
+    </div>
+    <form id="pushBulletConfiguration" class="collapse">
         <div class="form-group">
             <label for="pushBulletChannelTag">Channel Tag</label>
             <input type="text" class="form-control" id="pushBulletChannelTag"
@@ -334,8 +349,13 @@
 </header>
 
 <header th:fragment="gotify">
-    <h4>Gotify Notifications</h4>
-    <form id="gotifyConfiguration">
+    <div class="row">
+        <h4 class="col-10">Gotify Notifications</h4>
+        <a class="btn btn-primary" data-toggle="collapse" href="#gotifyConfiguration" role="button" aria-expanded="false" aria-controls="gotifyConfiguration">
+            Show/Hide
+        </a>
+    </div>
+    <form id="gotifyConfiguration" class="collapse">
         <div class="form-group">
             <label for="gotifyAddress">Address</label>
             <input type="text" class="form-control" id="gotifyAddress" aria-describedby="gotifyAddressHelp"
@@ -440,8 +460,13 @@
 </header>
 
 <header th:fragment="email">
-    <h4>Email Notifications</h4>
-    <form id="emailConfiguration">
+    <div class="row">
+        <h4 class="col-10">Email Notifications</h4>
+        <a class="btn btn-primary" data-toggle="collapse" href="#emailConfiguration" role="button" aria-expanded="false" aria-controls="emailConfiguration">
+            Show/Hide
+        </a>
+    </div>
+    <form id="emailConfiguration" class="collapse">
         <div class="form-group">
             <label for="emailUsername">Username</label>
             <input type="text" class="form-control" id="emailUsername" aria-describedby="emailUsernameHelp"
@@ -594,8 +619,13 @@
 </header>
 
 <header th:fragment="push-over">
-    <h4>PushOver Notifications</h4>
-    <form id="pushOverConfiguration">
+    <div class="row">
+        <h4 class="col-10">PushOver Notifications</h4>
+        <a class="btn btn-primary" data-toggle="collapse" href="#pushOverConfiguration" role="button" aria-expanded="false" aria-controls="pushOverConfiguration">
+            Show/Hide
+        </a>
+    </div>
+    <form id="pushOverConfiguration" class="collapse">
         <div class="form-group">
             <label for="pushOverToken">Token</label>
             <input type="text" class="form-control" id="pushOverToken" aria-describedby="pushOverTokenHelp"
@@ -727,8 +757,13 @@
 </header>
 
 <header th:fragment="discord">
-    <h4>Discord Notifications <span class="badge badge-pill badge-primary">New</span></h4>
-    <form id="discordConfiguration">
+    <div class="row">
+        <h4 class="col-10">Discord Notifications</h4>
+        <a class="btn btn-primary" data-toggle="collapse" href="#discordConfiguration" role="button" aria-expanded="false" aria-controls="discordConfiguration">
+            Show/Hide
+        </a>
+    </div>
+    <form id="discordConfiguration" class="collapse">
         <div class="form-group">
             <label for="discordWebHookUrl">WebHook Url</label>
             <input type="text" class="form-control" id="discordWebHookUrl" aria-describedby="discordWebHookUrlHelp"
