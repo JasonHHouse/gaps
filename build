@@ -10,6 +10,8 @@ docker buildx build --platform linux/riscv64 -t housewrecker/gaps:risc-latest -f
 docker buildx build --platform linux/ppc64le -t housewrecker/gaps:ppc64le-latest -f Dockerfile.ppc64le --push .
 docker buildx build --platform linux/arm64 -t housewrecker/gaps:arm-latest -f Dockerfile.arm64 --push .
 docker buildx build --platform linux/arm/v7,linux/arm/v6 -t housewrecker/gaps:raspbian-latest -f Dockerfile.raspbian --push .
+
+### Making Windows/Linux?mac Zip
 mkdir -p GapsOnWindows
 rm $ZIP_VERSION
 rm GapsAsJar/*.jar
@@ -17,5 +19,5 @@ rm GapsAsJar/README.md
 cp $JAR_VERSION GapsAsJar/gaps.jar
 cp README.md GapsAsJar/
 cp start.bat GapsAsJar/
-cp start.sh GapsAsJar/
+cp startOnLinuxAndMac.sh GapsAsJar/
 zip -r $ZIP_VERSION GapsAsJar/

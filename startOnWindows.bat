@@ -1,31 +1,36 @@
-#!/bin/bash
-enable_ssl=false
-enable_login=false
+@echo off
 
-while getopts s:l: flag
-do
-    case "${flag}" in
-        s) enable_ssl=${OPTARG};;
-        l) enable_login=${OPTARG};;
-        *) echo "usage: $0 [-s] [-l]" >&2
-          exit 1 ;;
-    esac
-done
+SET s=false
+SET l=false
 
-if [ "$enable_ssl" == true ]; then
-  if [ "$enable_login" == true ]; then
-    echo "Running with SSL and Login"
-    java -jar -Dspring.profiles.active=ssl gaps.jar
-  else
-    echo "Running with SSL and without Login"
-    java -jar -Dspring.profiles.active=ssl-no-login gaps.jar
-  fi
-else
-    if [ "$enable_login" == true ]; then
-      echo "Running without SSL and with Login"
-      java -jar -Dspring.profiles.active=no-ssl gaps.jar
-    else
-      echo "Running without SSL and without Login"
-      java -jar -Dspring.profiles.active=no-ssl-no-login gaps.jar
-    fi
-fi
+:initial
+if "%1"=="" goto done
+echo              %1
+set aux=%1
+if "%aux:~0,1%"=="-" (
+   set nome=%aux:~1,250%
+) else (
+   set "%nome%=%1"
+   set nome=
+)
+shift
+goto initial
+:done
+
+if %s% == true (
+    if %l% == true (
+        echo "Running with SSL and Login"
+        call java -jar -Dspring.profiles.active=ssl gaps.jar
+    ) else (
+        echo "Running with SSL and without Login"
+        call java -jar -Dspring.profiles.active=ssl-no-login gaps.jar
+    )
+) else (
+    if %l% == true (
+        echo "Running without SSL and with Login"
+        call java -jar -Dspring.profiles.active=no-ssl gaps.jar
+    ) else (
+        echo "Running without SSL and without Login"
+        call java -jar -Dspring.profiles.active=no-ssl-no-login gaps.jar
+    )
+)
