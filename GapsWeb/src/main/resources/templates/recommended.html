@@ -184,7 +184,7 @@
                         <span class="card-text">Owned</span><br>
                         {{#each movies_in_collection}}
                         {{#if this.owned}}
-                        <a href="https://www.themoviedb.org/movie/{{this.id}}" class="card-link" target="_blank" rel="noopener">{{this.title}}</a>
+                        <a href="https://www.themoviedb.org/movie/{{this.id}}" class="card-link" target="_blank" rel="noopener noreferrer">{{this.title}}</a>
                         {{/if}}
                         {{/each}}
                     </div>
@@ -193,7 +193,7 @@
                         <span class="card-text">Missing</span><br>
                         {{#each movies_in_collection}}
                         {{#if (isNotOwned this.owned)}}
-                        <a href="https://www.themoviedb.org/movie/{{this.id}}" class="card-link" target="_blank" rel="noopener">{{this.title}}</a>
+                        <a href="https://www.themoviedb.org/movie/{{this.id}}" class="card-link" target="_blank" rel="noopener noreferrer">{{this.title}}</a>
                         {{/if}}
                         {{/each}}
                     </div>
