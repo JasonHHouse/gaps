@@ -10,12 +10,12 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.Mislabeled;
+import com.jasonhhouse.gaps.plex.video.MediaContainer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
 import com.jasonhhouse.gaps.service.MediaContainerService;
 import com.jasonhhouse.gaps.service.MislabeledService;
 import com.jasonhhouse.gaps.service.PlexQuery;
-import com.jasonhhouse.plex.video.MediaContainer;
 import java.util.List;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;

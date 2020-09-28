@@ -9,9 +9,9 @@
  */
 package com.jasonhhouse.gaps.service;
 
-import com.jasonhhouse.gaps.PlexServer;
+import com.jasonhhouse.gaps.plex.PlexLibrary;
+import com.jasonhhouse.gaps.plex.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
-import com.jasonhhouse.plex.libs.PlexLibrary;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;

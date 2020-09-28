@@ -20,6 +20,7 @@ import {saveEmailNotifications, testEmailNotifications} from "./modules/email-no
 import {saveSchedule} from "./modules/schedule.min.js";
 import {getSoundOptions, savePushOverNotifications, testPushOverNotifications} from "./modules/push-over-notifications.min.js";
 import {saveDiscordNotifications, testDiscordNotifications} from "./modules/discord-notifications.min.js";
+import {openPlexLibraryConfigurationModel, savePlexLibraryConfiguration} from "./modules/plex-configuration.min.js"
 
 let plexSpinner, plexSaveSuccess, plexSaveError, plexTestSuccess, plexTestError, plexDeleteSuccess, plexDeleteError,
     plexDuplicateError;
@@ -43,6 +44,21 @@ window.addEventListener('load', function () {
 }, false);
 
 document.addEventListener('DOMContentLoaded', function () {
+
+    Handlebars.registerHelper({
+        isEnabled: function (value) {
+            return value.enabled && !value.defaultLibrary;
+        },
+        isDefaultLibrary: function (value) {
+            return !value.enabled && value.defaultLibrary;
+        },
+        isBoth: function (value) {
+            return value.enabled && value.defaultLibrary;
+        },
+        isNone: function (value) {
+            return !value.enabled && !value.defaultLibrary;
+        }
+    });
 
     plexSpinner = $('#plexSpinner');
     plexSaveSuccess = $('#plexSaveSuccess');
@@ -122,6 +138,8 @@ document.addEventListener('DOMContentLoaded', function () {
     window.testPushOver = testPushOverNotifications;
     window.savePushOver = savePushOverNotifications;
     window.saveSchedule = saveSchedule;
+    window.openPlexLibraryConfigurationModel = openPlexLibraryConfigurationModel;
+    window.savePlexLibraryConfiguration = savePlexLibraryConfiguration;
 
     getSoundOptions();
 });

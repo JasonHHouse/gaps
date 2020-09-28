@@ -1,0 +1,25 @@
+FROM adoptopenjdk/openjdk11-openj9:jre-11.0.8_10_openj9-0.21.0
+
+LABEL maintainer="jh5975@gmail.com"
+LABEL name="Jason House" 
+LABEL github="https://github.com/JasonHHouse/Gaps" 
+
+EXPOSE 32400
+
+RUN apt-get -y update
+
+RUN apt-get -y upgrade
+
+RUN mkdir -p /usr/data && chmod 777 /usr/data
+
+COPY movieIds.json /usr/data
+
+RUN mkdir -p /usr/app && chmod 777 /usr/data
+
+WORKDIR /usr/app
+
+COPY GapsWeb/target/GapsWeb-0.8.1.jar /usr/app/gaps.jar
+
+COPY startDebug.sh /usr/app/
+
+CMD ./startDebug.sh

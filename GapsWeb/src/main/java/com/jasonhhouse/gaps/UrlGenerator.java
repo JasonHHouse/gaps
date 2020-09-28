@@ -9,7 +9,8 @@
  */
 package com.jasonhhouse.gaps;
 
-import com.jasonhhouse.plex.libs.PlexLibrary;
+import com.jasonhhouse.gaps.plex.PlexLibrary;
+import com.jasonhhouse.gaps.plex.PlexServer;
 import okhttp3.HttpUrl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

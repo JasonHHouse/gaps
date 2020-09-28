@@ -1,0 +1,2 @@
+#!/bin/bash
+java -Xms150M -XX:+UseG1GC -XX:+HeapDumpOnOutOfMemoryError -XX:+UseStringDeduplication -XX:+UseStringCache -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -jar -Dspring.profiles.active=no-ssl-no-login gaps.jar

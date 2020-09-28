@@ -11,14 +11,13 @@
 
 package com.jasonhhouse.gaps.service;
 
-import com.jasonhhouse.gaps.movie.BasicMovie;
 import com.jasonhhouse.gaps.Pair;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.movie.PlexMovie;
+import com.jasonhhouse.gaps.plex.PlexLibrary;
+import com.jasonhhouse.gaps.plex.PlexServer;
+import com.jasonhhouse.gaps.plex.video.MediaContainer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
-import com.jasonhhouse.plex.libs.PlexLibrary;
-import com.jasonhhouse.plex.video.MediaContainer;
 import java.util.List;
 import java.util.Map;
 import okhttp3.HttpUrl;
@@ -51,7 +50,7 @@ public interface PlexQuery {
 
     void findAllMovieIds(@NotNull List<PlexMovie> plexMovies, @NotNull PlexServer plexServer, @NotNull PlexLibrary plexLibrary);
 
-    @NotNull PlexServer getPlexServerFromMachineIdentifier(@NotNull PlexProperties plexProperties,@NotNull String machineIdentifier) throws IllegalArgumentException;
+    @NotNull PlexServer getPlexServerFromMachineIdentifier(@NotNull PlexProperties plexProperties, @NotNull String machineIdentifier) throws IllegalArgumentException;
 
-    @NotNull PlexLibrary getPlexLibraryFromKey(@NotNull PlexServer plexServer,@NotNull Integer key) throws IllegalArgumentException;
+    @NotNull PlexLibrary getPlexLibraryFromKey(@NotNull PlexServer plexServer, @NotNull Integer key) throws IllegalArgumentException;
 }

@@ -71,6 +71,14 @@
     margin-right: auto;
 }
 
+.material-icons.green600 {
+    color: #43A047;
+}
+
+.skip-searching-library {
+    text-decoration: line-through;
+}
+
 .list-ul-default {
     background-color: #fafafa; /* defines the background color of the image */
     mask: url(/images/list-ul.svg) no-repeat center / contain;

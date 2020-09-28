@@ -38,6 +38,13 @@ export function searchPlexForMoviesFromSaw(cy) {
 
     cy.get('#movies_info')
         .should('have.text', 'Showing 1 to 1 of 1 entries');
+
+    cy.get('.card-img')
+        .should('be.visible')
+        .and(($img) => {
+            // "naturalWidth" and "naturalHeight" are set when the image loads
+            expect($img[0].naturalWidth).to.be.greaterThan(0)
+        });
 }
 
 export function searchPlexForMoviesFromBestMovies(cy) {
