@@ -14,51 +14,51 @@ import {Payload} from "./payload.min.js";
 import {hideAllAlertsAndSpinners} from "./alerts-manager.min.js";
 
 export async function testPushBulletNotifications() {
-    'use strict';
-    hideAllAlertsAndSpinners();
-    document.getElementById('pushBulletSpinner').style.display = 'block';
+  'use strict';
+  hideAllAlertsAndSpinners();
+  document.getElementById('pushBulletSpinner').style.display = 'block';
 
-    let response = await fetch('/notifications/test/1', {
-        method: 'put',
-    });
-    const put = await response.json();
-    if (put.code && put.code === Payload.NOTIFICATION_TEST_SUCCEEDED) {
-        hideAllAlertsAndSpinners();
-        document.getElementById('pushBulletTestSuccess').style.display = 'block';
-    } else {
-        hideAllAlertsAndSpinners();
-        document.getElementById('pushBulletTestError').style.display = 'block';
-    }
+  let response = await fetch('/notifications/test/1', {
+    method: 'put',
+  });
+  const put = await response.json();
+  if (put.code && put.code === Payload.NOTIFICATION_TEST_SUCCEEDED) {
+    hideAllAlertsAndSpinners();
+    document.getElementById('pushBulletTestSuccess').style.display = 'block';
+  } else {
+    hideAllAlertsAndSpinners();
+    document.getElementById('pushBulletTestError').style.display = 'block';
+  }
 }
 
 export async function savePushBulletNotifications() {
-    'use strict';
+  'use strict';
+  hideAllAlertsAndSpinners();
+
+  const body = {};
+  body.channel_tag = document.getElementById('pushBulletChannelTag').value;
+  body.accessToken = document.getElementById('pushBulletAccessToken').value;
+  body.enabled = document.getElementById('pushBulletEnabled').value;
+  body.notificationTypes = getNotificationTypes(document.getElementById('pushBulletTmdbApiConnectionNotification').checked,
+    document.getElementById('pushBulletPlexServerConnectionNotification').checked,
+    document.getElementById('pushBulletPlexMetadataUpdateNotification').checked,
+    document.getElementById('pushBulletPlexLibraryUpdateNotification').checked,
+    document.getElementById('pushBulletGapsMissingCollectionsNotification').checked);
+
+  let response = await fetch(`/notifications/pushbullet`, {
+    method: 'put',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  })
+  const put = await response.json();
+  if (put.code && put.code === Payload.PUSH_BULLET_NOTIFICATION_UPDATE_SUCCEEDED) {
     hideAllAlertsAndSpinners();
-
-    const body = {};
-    body.channel_tag = document.getElementById('pushBulletChannelTag').value;
-    body.accessToken = document.getElementById('pushBulletAccessToken').value;
-    body.enabled = document.getElementById('pushBulletEnabled').value;
-    body.notificationTypes = getNotificationTypes(document.getElementById('pushBulletTmdbApiConnectionNotification').checked,
-        document.getElementById('pushBulletPlexServerConnectionNotification').checked,
-        document.getElementById('pushBulletPlexMetadataUpdateNotification').checked,
-        document.getElementById('pushBulletPlexLibraryUpdateNotification').checked,
-        document.getElementById('pushBulletGapsMissingCollectionsNotification').checked);
-
-    let response = await fetch(`/notifications/pushbullet`, {
-        method: 'put',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-    })
-    const put = await response.json();
-    if (put.code && put.code === Payload.PUSH_BULLET_NOTIFICATION_UPDATE_SUCCEEDED) {
-        hideAllAlertsAndSpinners();
-        document.getElementById('pushBulletSaveSuccess').style.display = 'block';
-    } else {
-        hideAllAlertsAndSpinners();
-        document.getElementById('pushBulletSaveError').style.display = 'block';
-    }
+    document.getElementById('pushBulletSaveSuccess').style.display = 'block';
+  } else {
+    hideAllAlertsAndSpinners();
+    document.getElementById('pushBulletSaveError').style.display = 'block';
+  }
 }

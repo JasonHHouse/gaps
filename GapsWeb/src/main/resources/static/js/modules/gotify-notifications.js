@@ -14,51 +14,51 @@ import {Payload} from "./payload.min.js";
 import {hideAllAlertsAndSpinners} from "./alerts-manager.min.js";
 
 export async function testGotifyNotifications() {
-    'use strict';
-    hideAllAlertsAndSpinners();
-    document.getElementById('gotifySpinner').style.display = 'block';
+  'use strict';
+  hideAllAlertsAndSpinners();
+  document.getElementById('gotifySpinner').style.display = 'block';
 
-    let response = await fetch('/notifications/test/3', {
-        method: 'put',
-    });
-    const put = await response.json();
-    if (put.code && put.code === Payload.NOTIFICATION_TEST_SUCCEEDED) {
-        hideAllAlertsAndSpinners();
-        document.getElementById('gotifyTestSuccess').style.display = 'block';
-    } else {
-        hideAllAlertsAndSpinners();
-        document.getElementById('gotifyTestError').style.display = 'block';
-    }
+  let response = await fetch('/notifications/test/3', {
+    method: 'put',
+  });
+  const put = await response.json();
+  if (put.code && put.code === Payload.NOTIFICATION_TEST_SUCCEEDED) {
+    hideAllAlertsAndSpinners();
+    document.getElementById('gotifyTestSuccess').style.display = 'block';
+  } else {
+    hideAllAlertsAndSpinners();
+    document.getElementById('gotifyTestError').style.display = 'block';
+  }
 }
 
 export async function saveGotifyNotifications() {
-    'use strict';
+  'use strict';
+  hideAllAlertsAndSpinners();
+
+  const body = {};
+  body.address = document.getElementById('gotifyAddress').value;
+  body.token = document.getElementById('gotifyToken').value;
+  body.enabled = document.getElementById('gotifyEnabled').value;
+  body.notificationTypes = getNotificationTypes(document.getElementById('gotifyTmdbApiConnectionNotification').checked,
+    document.getElementById('gotifyPlexServerConnectionNotification').checked,
+    document.getElementById('gotifyPlexMetadataUpdateNotification').checked,
+    document.getElementById('gotifyPlexLibraryUpdateNotification').checked,
+    document.getElementById('gotifyGapsMissingCollectionsNotification').checked);
+
+  let response = await fetch(`/notifications/gotify`, {
+    method: 'put',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  })
+  const put = await response.json();
+  if (put.code && put.code === Payload.GOTIFY_NOTIFICATION_UPDATE_SUCCEEDED) {
     hideAllAlertsAndSpinners();
-
-    const body = {};
-    body.address = document.getElementById('gotifyAddress').value;
-    body.token = document.getElementById('gotifyToken').value;
-    body.enabled = document.getElementById('gotifyEnabled').value;
-    body.notificationTypes = getNotificationTypes(document.getElementById('gotifyTmdbApiConnectionNotification').checked,
-        document.getElementById('gotifyPlexServerConnectionNotification').checked,
-        document.getElementById('gotifyPlexMetadataUpdateNotification').checked,
-        document.getElementById('gotifyPlexLibraryUpdateNotification').checked,
-        document.getElementById('gotifyGapsMissingCollectionsNotification').checked);
-
-    let response = await fetch(`/notifications/gotify`, {
-        method: 'put',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-    })
-    const put = await response.json();
-    if (put.code && put.code === Payload.GOTIFY_NOTIFICATION_UPDATE_SUCCEEDED) {
-        hideAllAlertsAndSpinners();
-        document.getElementById('gotifySaveSuccess').style.display = 'block';
-    } else {
-        hideAllAlertsAndSpinners();
-        document.getElementById('gotifySaveError').style.display = 'block';
-    }
+    document.getElementById('gotifySaveSuccess').style.display = 'block';
+  } else {
+    hideAllAlertsAndSpinners();
+    document.getElementById('gotifySaveError').style.display = 'block';
+  }
 }

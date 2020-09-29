@@ -13,51 +13,51 @@ import {Payload} from "./payload.min.js";
 import {hideAllAlertsAndSpinners} from "./alerts-manager.min.js";
 
 export async function testTelegramNotifications() {
-    'use strict';
-    hideAllAlertsAndSpinners();
-    document.getElementById('telegramSpinner').style.display = 'block';
+  'use strict';
+  hideAllAlertsAndSpinners();
+  document.getElementById('telegramSpinner').style.display = 'block';
 
-    let response = await fetch('/notifications/test/0', {
-        method: 'put',
-    });
-    const put = await response.json();
-    if (put.code && put.code === Payload.NOTIFICATION_TEST_SUCCEEDED) {
-        hideAllAlertsAndSpinners();
-        document.getElementById('telegramTestSuccess').style.display = 'block';
-    } else {
-        hideAllAlertsAndSpinners();
-        document.getElementById('telegramTestError').style.display = 'block';
-    }
+  let response = await fetch('/notifications/test/0', {
+    method: 'put',
+  });
+  const put = await response.json();
+  if (put.code && put.code === Payload.NOTIFICATION_TEST_SUCCEEDED) {
+    hideAllAlertsAndSpinners();
+    document.getElementById('telegramTestSuccess').style.display = 'block';
+  } else {
+    hideAllAlertsAndSpinners();
+    document.getElementById('telegramTestError').style.display = 'block';
+  }
 }
 
 export async function saveTelegramNotifications() {
-    'use strict';
+  'use strict';
+  hideAllAlertsAndSpinners();
+
+  const body = {};
+  body.botId = document.getElementById('telegramBotId').value;
+  body.chatId = document.getElementById('telegramChatId').value;
+  body.enabled = document.getElementById('telegramEnabled').value;
+  body.notificationTypes = getNotificationTypes(document.getElementById('telegramTmdbApiConnectionNotification').checked,
+    document.getElementById('telegramPlexServerConnectionNotification').checked,
+    document.getElementById('telegramPlexMetadataUpdateNotification').checked,
+    document.getElementById('telegramPlexLibraryUpdateNotification').checked,
+    document.getElementById('telegramGapsMissingCollectionsNotification').checked);
+
+  let response = await fetch(`/notifications/telegram`, {
+    method: 'put',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  })
+  const put = await response.json();
+  if (put.code && put.code === Payload.TELEGRAM_NOTIFICATION_UPDATE_SUCCEEDED) {
     hideAllAlertsAndSpinners();
-
-    const body = {};
-    body.botId = document.getElementById('telegramBotId').value;
-    body.chatId = document.getElementById('telegramChatId').value;
-    body.enabled = document.getElementById('telegramEnabled').value;
-    body.notificationTypes = getNotificationTypes(document.getElementById('telegramTmdbApiConnectionNotification').checked,
-        document.getElementById('telegramPlexServerConnectionNotification').checked,
-        document.getElementById('telegramPlexMetadataUpdateNotification').checked,
-        document.getElementById('telegramPlexLibraryUpdateNotification').checked,
-        document.getElementById('telegramGapsMissingCollectionsNotification').checked);
-
-    let response = await fetch(`/notifications/telegram`, {
-        method: 'put',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-    })
-    const put = await response.json();
-    if (put.code && put.code === Payload.TELEGRAM_NOTIFICATION_UPDATE_SUCCEEDED) {
-            hideAllAlertsAndSpinners();
-            document.getElementById('telegramSaveSuccess').style.display = 'block';
-    } else {
-        hideAllAlertsAndSpinners();
-        document.getElementById('telegramSaveError').style.display = 'block';
-    }
+    document.getElementById('telegramSaveSuccess').style.display = 'block';
+  } else {
+    hideAllAlertsAndSpinners();
+    document.getElementById('telegramSaveError').style.display = 'block';
+  }
 }

@@ -10,31 +10,31 @@
 
 jQuery(function ($) {
 
-    $('#mislabeled').DataTable({
-        ajax: {
-            url: `mislabeled/c51c432ae94e316d52570550f915ecbcd71bede8/1/.75`,
-            dataSrc: ''
-        },
-        columns: [
-            {data: 'plexTitle'},
-            {data: 'filename'},
-            {data: 'percentageMatch'}
-        ],  columnDefs: [
-            {
-                type: "string",
-                targets: [0, 1]
-            },
-            {
-                targets: [2],
-                type: 'num-fmt',
-                render: function (data, type, row) {
-                    if (type === 'display') {
-                        return Math.floor(row.percentageMatch * 100) + '%';
-                    }
-                    return "";
-                }
-            }
-        ]
-    });
+  $('#mislabeled').DataTable({
+    ajax: {
+      url: `mislabeled/c51c432ae94e316d52570550f915ecbcd71bede8/1/.75`,
+      dataSrc: ''
+    },
+    columns: [
+      {data: 'plexTitle'},
+      {data: 'filename'},
+      {data: 'percentageMatch'}
+    ], columnDefs: [
+      {
+        type: "string",
+        targets: [0, 1]
+      },
+      {
+        targets: [2],
+        type: 'num-fmt',
+        render: function (data, type, row) {
+          if (type === 'display') {
+            return Math.floor(row.percentageMatch * 100) + '%';
+          }
+          return "";
+        }
+      }
+    ]
+  });
 
 });

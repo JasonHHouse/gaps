@@ -22,296 +22,313 @@ import {getSoundOptions, savePushOverNotifications, testPushOverNotifications} f
 import {saveDiscordNotifications, testDiscordNotifications} from "./modules/discord-notifications.min.js";
 
 let plexSpinner, plexSaveSuccess, plexSaveError, plexTestSuccess, plexTestError, plexDeleteSuccess, plexDeleteError,
-    plexDuplicateError;
+  plexDuplicateError;
 let tmdbSpinner, tmdbSaveSuccess, tmdbSaveError, tmdbTestSuccess, tmdbTestError;
 let scheduleSpinner, scheduleSaveSuccess, scheduleSaveError;
 let deleteAllError, deleteAllSuccess;
 
 window.addEventListener('load', function () {
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    const forms = document.getElementsByClassName('needs-validation');
-    // Loop over them and prevent submission
-    Array.prototype.filter.call(forms, function (form) {
-        form.addEventListener('click', function (event) {
-            if (form.checkValidity() === false) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-            form.classList.add('was-validated');
-        }, false);
-    });
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  const forms = document.getElementsByClassName('needs-validation');
+  // Loop over them and prevent submission
+  Array.prototype.filter.call(forms, function (form) {
+    form.addEventListener('click', function (event) {
+      if (form.checkValidity() === false) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      form.classList.add('was-validated');
+    }, false);
+  });
 }, false);
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    plexSpinner = $('#plexSpinner');
-    plexSaveSuccess = $('#plexSaveSuccess');
-    plexSaveError = $('#plexSaveError');
-    plexTestSuccess = $('#plexTestSuccess');
-    plexTestError = $('#plexTestError');
-    plexDeleteSuccess = $('#plexDeleteSuccess');
-    plexDeleteError = $('#plexDeleteError');
-    tmdbSpinner = $('#tmdbSpinner');
-    tmdbSaveSuccess = $('#tmdbSaveSuccess');
-    tmdbSaveError = $('#tmdbSaveError');
-    tmdbTestSuccess = $('#tmdbTestSuccess');
-    tmdbTestError = $('#tmdbTestError');
-    plexDuplicateError = $('#plexDuplicateError');
-    scheduleSpinner = $('#scheduleSpinner');
-    scheduleSaveSuccess = $('#scheduleSaveSuccess');
-    scheduleSaveError = $('#scheduleSaveError');
+  Handlebars.registerHelper({
+    isEnabled: function (value) {
+      return value.enabled && !value.defaultLibrary;
+    },
+    isDefaultLibrary: function (value) {
+      return !value.enabled && value.defaultLibrary;
+    },
+    isBoth: function (value) {
+      return value.enabled && value.defaultLibrary;
+    },
+    isNone: function (value) {
+      return !value.enabled && !value.defaultLibrary;
+    }
+  });
 
-    deleteAllError = $('#deleteAllError');
-    deleteAllSuccess = $('#deleteAllSuccess');
+  plexSpinner = $('#plexSpinner');
+  plexSaveSuccess = $('#plexSaveSuccess');
+  plexSaveError = $('#plexSaveError');
+  plexTestSuccess = $('#plexTestSuccess');
+  plexTestError = $('#plexTestError');
+  plexDeleteSuccess = $('#plexDeleteSuccess');
+  plexDeleteError = $('#plexDeleteError');
+  tmdbSpinner = $('#tmdbSpinner');
+  tmdbSaveSuccess = $('#tmdbSaveSuccess');
+  tmdbSaveError = $('#tmdbSaveError');
+  tmdbTestSuccess = $('#tmdbTestSuccess');
+  tmdbTestError = $('#tmdbTestError');
+  plexDuplicateError = $('#plexDuplicateError');
+  scheduleSpinner = $('#scheduleSpinner');
+  scheduleSaveSuccess = $('#scheduleSaveSuccess');
+  scheduleSaveError = $('#scheduleSaveError');
 
-    const socket = new SockJS('/gs-guide-websocket');
-    const stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
-        console.log('Connected: ' + frame);
-        stompClient.subscribe(`/configuration/plex/complete`, function (message) {
-            const payload = JSON.parse(message.body);
+  deleteAllError = $('#deleteAllError');
+  deleteAllSuccess = $('#deleteAllSuccess');
 
-            hideAllAlertsAndSpinners();
+  const socket = new SockJS('/gs-guide-websocket');
+  const stompClient = Stomp.over(socket);
+  stompClient.connect({}, function (frame) {
+    console.log('Connected: ' + frame);
+    stompClient.subscribe(`/configuration/plex/complete`, function (message) {
+      const payload = JSON.parse(message.body);
 
-            if (payload && payload.code === Payload.PLEX_LIBRARIES_FOUND) {
-                //Success
-                plexSaveSuccess.show();
+      hideAllAlertsAndSpinners();
 
-                $('#plexToken').val('');
-                $('#address').val('');
-                $('#port').val(atob('MzI0MDA='));
+      if (payload && payload.code === Payload.PLEX_LIBRARIES_FOUND) {
+        //Success
+        plexSaveSuccess.show();
 
-                const plexServerCard = $("#plexServerCard").html();
-                const theTemplate = Handlebars.compile(plexServerCard);
-                const theCompiledHtml = theTemplate(payload.extras);
-                $('#plexServers').append(theCompiledHtml);
-            } else {
-                //Failed
-                plexSaveError.show();
-            }
-        });
-        stompClient.subscribe(`/configuration/plex/duplicate`, function () {
-            hideAllAlertsAndSpinners();
-            plexDuplicateError.show();
-        });
+        $('#plexToken').val('');
+        $('#address').val('');
+        $('#port').val(atob('MzI0MDA='));
+
+        const plexServerCard = $("#plexServerCard").html();
+        const theTemplate = Handlebars.compile(plexServerCard);
+        const theCompiledHtml = theTemplate(payload.extras);
+        $('#plexServers').append(theCompiledHtml);
+      } else {
+        //Failed
+        plexSaveError.show();
+      }
     });
+    stompClient.subscribe(`/configuration/plex/duplicate`, function () {
+      hideAllAlertsAndSpinners();
+      plexDuplicateError.show();
+    });
+  });
 
-    //Exposing function for onClick()
-    window.testTmdbKey = testTmdbKey;
-    window.saveTmdbKey = saveTmdbKey;
-    window.testPlexServer = testPlexServer;
-    window.addPlexServer = addPlexServer;
-    window.testExistingPlexServer = testExistingPlexServer;
-    window.removePlexServer = removePlexServer;
-    window.setDeleteAllEnabledOrDisabled = setDeleteAllEnabledOrDisabled;
-    window.nuke = nuke;
+  //Exposing function for onClick()
+  window.testTmdbKey = testTmdbKey;
+  window.saveTmdbKey = saveTmdbKey;
+  window.testPlexServer = testPlexServer;
+  window.addPlexServer = addPlexServer;
+  window.testExistingPlexServer = testExistingPlexServer;
+  window.removePlexServer = removePlexServer;
+  window.setDeleteAllEnabledOrDisabled = setDeleteAllEnabledOrDisabled;
+  window.nuke = nuke;
 
-    //Exposing function for onClick() from module
-    window.saveTelegram = saveTelegramNotifications;
-    window.testTelegram = testTelegramNotifications;
-    window.saveSlack = saveSlackNotifications;
-    window.testSlack = testSlackNotifications;
-    window.saveDiscord = saveDiscordNotifications;
-    window.testDiscord = testDiscordNotifications;
-    window.savePushBullet = savePushBulletNotifications;
-    window.testPushBullet = testPushBulletNotifications;
-    window.testGotify = testGotifyNotifications;
-    window.saveGotify = saveGotifyNotifications;
-    window.testEmail = testEmailNotifications;
-    window.saveEmail = saveEmailNotifications;
-    window.testPushOver = testPushOverNotifications;
-    window.savePushOver = savePushOverNotifications;
-    window.saveSchedule = saveSchedule;
+  //Exposing function for onClick() from module
+  window.saveTelegram = saveTelegramNotifications;
+  window.testTelegram = testTelegramNotifications;
+  window.saveSlack = saveSlackNotifications;
+  window.testSlack = testSlackNotifications;
+  window.saveDiscord = saveDiscordNotifications;
+  window.testDiscord = testDiscordNotifications;
+  window.savePushBullet = savePushBulletNotifications;
+  window.testPushBullet = testPushBulletNotifications;
+  window.testGotify = testGotifyNotifications;
+  window.saveGotify = saveGotifyNotifications;
+  window.testEmail = testEmailNotifications;
+  window.saveEmail = saveEmailNotifications;
+  window.testPushOver = testPushOverNotifications;
+  window.savePushOver = savePushOverNotifications;
+  window.saveSchedule = saveSchedule;
+  window.openPlexLibraryConfigurationModel = openPlexLibraryConfigurationModel;
+  window.savePlexLibraryConfiguration = savePlexLibraryConfiguration;
 
-    getSoundOptions();
+  getSoundOptions();
 });
 
 function testTmdbKey() {
-    hideAllAlertsAndSpinners();
+  hideAllAlertsAndSpinners();
 
-    if (!$('#tmdbConfiguration')[0].checkValidity()) {
-        return false;
+  if (!$('#tmdbConfiguration')[0].checkValidity()) {
+    return false;
+  }
+
+  tmdbSpinner.show();
+
+  $.ajax({
+    type: "PUT",
+    url: `/configuration/test/tmdbKey/${$('#movieDbApiKey').val()}`,
+    contentType: "application/json",
+    dataType: "json",
+    success: function (result) {
+      hideAllAlertsAndSpinners();
+      if (result && result.code === Payload.TMDB_KEY_VALID) {
+        tmdbTestSuccess.show();
+      } else {
+        tmdbTestError.show();
+      }
+    }, error: function () {
+      hideAllAlertsAndSpinners();
+      tmdbTestError.show();
     }
-
-    tmdbSpinner.show();
-
-    $.ajax({
-        type: "PUT",
-        url: `/configuration/test/tmdbKey/${$('#movieDbApiKey').val()}`,
-        contentType: "application/json",
-        dataType: "json",
-        success: function (result) {
-            hideAllAlertsAndSpinners();
-            if (result && result.code === Payload.TMDB_KEY_VALID) {
-                tmdbTestSuccess.show();
-            } else {
-                tmdbTestError.show();
-            }
-        }, error: function () {
-            hideAllAlertsAndSpinners();
-            tmdbTestError.show();
-        }
-    });
+  });
 }
 
 
 function saveTmdbKey() {
-    hideAllAlertsAndSpinners();
+  hideAllAlertsAndSpinners();
 
-    if (!$('#tmdbConfiguration')[0].checkValidity()) {
-        return false;
+  if (!$('#tmdbConfiguration')[0].checkValidity()) {
+    return false;
+  }
+
+  tmdbSpinner.show();
+  $.ajax({
+    type: "POST",
+    url: `/configuration/save/tmdbKey/${$('#movieDbApiKey').val()}`,
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function (result) {
+      hideAllAlertsAndSpinners();
+      if (result && result.code === Payload.TMDB_KEY_SAVE_SUCCESSFUL) {
+        tmdbSaveSuccess.show();
+      } else {
+        tmdbSaveError.show();
+      }
+    }, error: function () {
+      hideAllAlertsAndSpinners();
+      tmdbSaveError.show();
     }
-
-    tmdbSpinner.show();
-    $.ajax({
-        type: "POST",
-        url: `/configuration/save/tmdbKey/${$('#movieDbApiKey').val()}`,
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (result) {
-            hideAllAlertsAndSpinners();
-            if (result && result.code === Payload.TMDB_KEY_SAVE_SUCCESSFUL) {
-                tmdbSaveSuccess.show();
-            } else {
-                tmdbSaveError.show();
-            }
-        }, error: function () {
-            hideAllAlertsAndSpinners();
-            tmdbSaveError.show();
-        }
-    });
+  });
 }
 
 function testPlexServer() {
-    hideAllAlertsAndSpinners();
+  hideAllAlertsAndSpinners();
 
-    if (!$('#plexConfiguration')[0].checkValidity()) {
-        return false;
+  if (!$('#plexConfiguration')[0].checkValidity()) {
+    return false;
+  }
+
+  plexSpinner.show();
+
+  $.ajax({
+    type: "PUT",
+    url: '/configuration/test/plex',
+    data: {
+      'plexToken': $('#plexToken').val(),
+      'address': $('#address').val(),
+      'port': $('#port').val()
+    },
+    dataType: "json",
+    success: function (result) {
+      hideAllAlertsAndSpinners();
+      if (result && result.code === Payload.PLEX_CONNECTION_SUCCEEDED) {
+        plexTestSuccess.show();
+      } else {
+        plexTestError.show();
+      }
+    }, error: function () {
+      hideAllAlertsAndSpinners();
+      plexTestError.show();
     }
-
-    plexSpinner.show();
-
-    $.ajax({
-        type: "PUT",
-        url: '/configuration/test/plex',
-        data: {
-            'plexToken': $('#plexToken').val(),
-            'address': $('#address').val(),
-            'port': $('#port').val()
-        },
-        dataType: "json",
-        success: function (result) {
-            hideAllAlertsAndSpinners();
-            if (result && result.code === Payload.PLEX_CONNECTION_SUCCEEDED) {
-                plexTestSuccess.show();
-            } else {
-                plexTestError.show();
-            }
-        }, error: function () {
-            hideAllAlertsAndSpinners();
-            plexTestError.show();
-        }
-    });
+  });
 }
 
 function addPlexServer() {
-    hideAllAlertsAndSpinners();
+  hideAllAlertsAndSpinners();
 
-    if (!$('#plexConfiguration')[0].checkValidity()) {
-        return false;
+  if (!$('#plexConfiguration')[0].checkValidity()) {
+    return false;
+  }
+
+  plexSpinner.show();
+
+  $.ajax({
+    type: "POST",
+    url: '/configuration/add/plex',
+    data: {
+      'plexToken': $('#plexToken').val(),
+      'address': $('#address').val(),
+      'port': $('#port').val()
+    },
+    error: function () {
+      hideAllAlertsAndSpinners();
+      plexSaveError.show();
     }
-
-    plexSpinner.show();
-
-    $.ajax({
-        type: "POST",
-        url: '/configuration/add/plex',
-        data: {
-            'plexToken': $('#plexToken').val(),
-            'address': $('#address').val(),
-            'port': $('#port').val()
-        },
-        error: function () {
-            hideAllAlertsAndSpinners();
-            plexSaveError.show();
-        }
-    });
+  });
 }
 
 function testExistingPlexServer(machineIdentifier) {
-    hideAllAlertsAndSpinners();
-    plexSpinner.show();
+  hideAllAlertsAndSpinners();
+  plexSpinner.show();
 
-    $.ajax({
-        type: "PUT",
-        url: `/configuration/test/plex/${machineIdentifier}`,
-        dataType: "json",
-        success: function (result) {
-            hideAllAlertsAndSpinners();
-            if (result && result.success) {
-                plexTestSuccess.show();
-            } else {
-                plexTestError.show();
-            }
-        }, error: function () {
-            hideAllAlertsAndSpinners();
-            plexTestError.show();
-        }
-    });
+  $.ajax({
+    type: "PUT",
+    url: `/configuration/test/plex/${machineIdentifier}`,
+    dataType: "json",
+    success: function (result) {
+      hideAllAlertsAndSpinners();
+      if (result && result.success) {
+        plexTestSuccess.show();
+      } else {
+        plexTestError.show();
+      }
+    }, error: function () {
+      hideAllAlertsAndSpinners();
+      plexTestError.show();
+    }
+  });
 }
 
 function removePlexServer(machineIdentifier) {
-    hideAllAlertsAndSpinners();
-    plexSpinner.show();
+  hideAllAlertsAndSpinners();
+  plexSpinner.show();
 
-    $.ajax({
-        type: "DELETE",
-        url: `/configuration/delete/plex/${machineIdentifier}`,
-        success: function (result) {
-            hideAllAlertsAndSpinners();
-            if (result && result.success) {
-                $('#' + machineIdentifier).remove();
-                plexDeleteSuccess.show();
-            } else {
-                plexDeleteError.show();
-            }
-        },
-        error: function () {
-            hideAllAlertsAndSpinners();
-            plexDeleteError.show();
-        }
-    });
+  $.ajax({
+    type: "DELETE",
+    url: `/configuration/delete/plex/${machineIdentifier}`,
+    success: function (result) {
+      hideAllAlertsAndSpinners();
+      if (result && result.success) {
+        $('#' + machineIdentifier).remove();
+        plexDeleteSuccess.show();
+      } else {
+        plexDeleteError.show();
+      }
+    },
+    error: function () {
+      hideAllAlertsAndSpinners();
+      plexDeleteError.show();
+    }
+  });
 }
 
 function setDeleteAllEnabledOrDisabled() {
-    $('#deleteAll').prop("disabled", !$('#confirmDeleteAll').is(":checked"));
+  $('#deleteAll').prop("disabled", !$('#confirmDeleteAll').is(":checked"));
 }
 
 function nuke() {
-    $.ajax({
-        type: 'PUT',
-        url: '/nuke',
-        success: function (result) {
-            hideAllAlertsAndSpinners();
-            if (result && result.code === Payload.NUKE_SUCCESSFUL) {
-                deleteAllSuccess.show();
-                $('#movieDbApiKey').val('');
-                $('#plexServers').html('');
-            } else {
-                deleteAllError.show();
-            }
-        },
-        error: function () {
-            hideAllAlertsAndSpinners();
-            deleteAllError.show();
-        }
-    });
+  $.ajax({
+    type: 'PUT',
+    url: '/nuke',
+    success: function (result) {
+      hideAllAlertsAndSpinners();
+      if (result && result.code === Payload.NUKE_SUCCESSFUL) {
+        deleteAllSuccess.show();
+        $('#movieDbApiKey').val('');
+        $('#plexServers').html('');
+      } else {
+        deleteAllError.show();
+      }
+    },
+    error: function () {
+      hideAllAlertsAndSpinners();
+      deleteAllError.show();
+    }
+  });
 }
 
 $(function () {
-    $("[data-hide]").on("click", function () {
-        //$("." + $(this).attr("data-hide")).hide();
-        // -or-, see below
-        $(this).closest("." + $(this).attr("data-hide")).hide();
-    });
+  $("[data-hide]").on("click", function () {
+    //$("." + $(this).attr("data-hide")).hide();
+    // -or-, see below
+    $(this).closest("." + $(this).attr("data-hide")).hide();
+  });
 });

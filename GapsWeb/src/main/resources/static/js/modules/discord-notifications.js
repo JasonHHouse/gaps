@@ -14,50 +14,50 @@ import {Payload} from "./payload.min.js";
 import {hideAllAlertsAndSpinners} from "./alerts-manager.min.js";
 
 export async function testDiscordNotifications() {
-    'use strict';
-    hideAllAlertsAndSpinners();
-    document.getElementById('discordSpinner').style.display = 'block';
+  'use strict';
+  hideAllAlertsAndSpinners();
+  document.getElementById('discordSpinner').style.display = 'block';
 
-    let response = await fetch('/notifications/test/6', {
-        method: 'put',
-    });
-    const put = await response.json();
-    if (put.code && put.code === Payload.NOTIFICATION_TEST_SUCCEEDED) {
-        hideAllAlertsAndSpinners();
-        document.getElementById('discordTestSuccess').style.display = 'block';
-    } else {
-        hideAllAlertsAndSpinners();
-        document.getElementById('discordTestError').style.display = 'block';
-    }
+  let response = await fetch('/notifications/test/6', {
+    method: 'put',
+  });
+  const put = await response.json();
+  if (put.code && put.code === Payload.NOTIFICATION_TEST_SUCCEEDED) {
+    hideAllAlertsAndSpinners();
+    document.getElementById('discordTestSuccess').style.display = 'block';
+  } else {
+    hideAllAlertsAndSpinners();
+    document.getElementById('discordTestError').style.display = 'block';
+  }
 }
 
 export async function saveDiscordNotifications() {
-    'use strict';
+  'use strict';
+  hideAllAlertsAndSpinners();
+
+  const body = {};
+  body.webHookUrl = document.getElementById('discordWebHookUrl').value;
+  body.enabled = document.getElementById('discordEnabled').value;
+  body.notificationTypes = getNotificationTypes(document.getElementById('discordTmdbApiConnectionNotification').checked,
+    document.getElementById('discordPlexServerConnectionNotification').checked,
+    document.getElementById('discordPlexMetadataUpdateNotification').checked,
+    document.getElementById('discordPlexLibraryUpdateNotification').checked,
+    document.getElementById('discordGapsMissingCollectionsNotification').checked);
+
+  let response = await fetch(`/notifications/discord`, {
+    method: 'put',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  })
+  const put = await response.json();
+  if (put.code && put.code === Payload.DISCORD_NOTIFICATION_UPDATE_SUCCEEDED) {
     hideAllAlertsAndSpinners();
-
-    const body = {};
-    body.webHookUrl = document.getElementById('discordWebHookUrl').value;
-    body.enabled = document.getElementById('discordEnabled').value;
-    body.notificationTypes = getNotificationTypes(document.getElementById('discordTmdbApiConnectionNotification').checked,
-        document.getElementById('discordPlexServerConnectionNotification').checked,
-        document.getElementById('discordPlexMetadataUpdateNotification').checked,
-        document.getElementById('discordPlexLibraryUpdateNotification').checked,
-        document.getElementById('discordGapsMissingCollectionsNotification').checked);
-
-    let response = await fetch(`/notifications/discord`, {
-        method: 'put',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-    })
-    const put = await response.json();
-    if (put.code && put.code === Payload.DISCORD_NOTIFICATION_UPDATE_SUCCEEDED) {
-        hideAllAlertsAndSpinners();
-        document.getElementById('discordSaveSuccess').style.display = 'block';
-    } else {
-        hideAllAlertsAndSpinners();
-        document.getElementById('discordSaveError').style.display = 'block';
-    }
+    document.getElementById('discordSaveSuccess').style.display = 'block';
+  } else {
+    hideAllAlertsAndSpinners();
+    document.getElementById('discordSaveError').style.display = 'block';
+  }
 }

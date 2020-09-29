@@ -14,50 +14,50 @@ import {Payload} from "./payload.min.js";
 import {hideAllAlertsAndSpinners} from "./alerts-manager.min.js";
 
 export async function testSlackNotifications() {
-    'use strict';
-    hideAllAlertsAndSpinners();
-    document.getElementById('slackSpinner').style.display = 'block';
+  'use strict';
+  hideAllAlertsAndSpinners();
+  document.getElementById('slackSpinner').style.display = 'block';
 
-    let response = await fetch('/notifications/test/2', {
-        method: 'put',
-    });
-    const put = await response.json();
-    if (put.code && put.code === Payload.NOTIFICATION_TEST_SUCCEEDED) {
-        hideAllAlertsAndSpinners();
-        document.getElementById('slackTestSuccess').style.display = 'block';
-    } else {
-        hideAllAlertsAndSpinners();
-        document.getElementById('slackTestError').style.display = 'block';
-    }
+  let response = await fetch('/notifications/test/2', {
+    method: 'put',
+  });
+  const put = await response.json();
+  if (put.code && put.code === Payload.NOTIFICATION_TEST_SUCCEEDED) {
+    hideAllAlertsAndSpinners();
+    document.getElementById('slackTestSuccess').style.display = 'block';
+  } else {
+    hideAllAlertsAndSpinners();
+    document.getElementById('slackTestError').style.display = 'block';
+  }
 }
 
 export async function saveSlackNotifications() {
-    'use strict';
+  'use strict';
+  hideAllAlertsAndSpinners();
+
+  const body = {};
+  body.webHookUrl = document.getElementById('slackWebHookUrl').value;
+  body.enabled = document.getElementById('slackEnabled').value;
+  body.notificationTypes = getNotificationTypes(document.getElementById('slackTmdbApiConnectionNotification').checked,
+    document.getElementById('slackPlexServerConnectionNotification').checked,
+    document.getElementById('slackPlexMetadataUpdateNotification').checked,
+    document.getElementById('slackPlexLibraryUpdateNotification').checked,
+    document.getElementById('slackGapsMissingCollectionsNotification').checked);
+
+  let response = await fetch(`/notifications/slack`, {
+    method: 'put',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  })
+  const put = await response.json();
+  if (put.code && put.code === Payload.SLACK_NOTIFICATION_UPDATE_SUCCEEDED) {
     hideAllAlertsAndSpinners();
-
-    const body = {};
-    body.webHookUrl = document.getElementById('slackWebHookUrl').value;
-    body.enabled = document.getElementById('slackEnabled').value;
-    body.notificationTypes = getNotificationTypes(document.getElementById('slackTmdbApiConnectionNotification').checked,
-        document.getElementById('slackPlexServerConnectionNotification').checked,
-        document.getElementById('slackPlexMetadataUpdateNotification').checked,
-        document.getElementById('slackPlexLibraryUpdateNotification').checked,
-        document.getElementById('slackGapsMissingCollectionsNotification').checked);
-
-    let response = await fetch(`/notifications/slack`, {
-        method: 'put',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-    })
-    const put = await response.json();
-    if (put.code && put.code === Payload.SLACK_NOTIFICATION_UPDATE_SUCCEEDED) {
-        hideAllAlertsAndSpinners();
-        document.getElementById('slackSaveSuccess').style.display = 'block';
-    } else {
-        hideAllAlertsAndSpinners();
-        document.getElementById('slackSaveError').style.display = 'block';
-    }
+    document.getElementById('slackSaveSuccess').style.display = 'block';
+  } else {
+    hideAllAlertsAndSpinners();
+    document.getElementById('slackSaveError').style.display = 'block';
+  }
 }

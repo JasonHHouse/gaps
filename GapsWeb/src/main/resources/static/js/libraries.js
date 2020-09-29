@@ -17,82 +17,82 @@ let moviesTable;
 let libraryKey;
 
 jQuery(function ($) {
-    libraryTitle = $('#libraryTitle');
-    noMovieContainer = $('#noMovieContainer');
-    movieContainer = $('#movieContainer');
-    movieSearchingContainer = $('#movieSearchingContainer');
-    plexServers = JSON.parse($('#plexServers').val());
-    plexServer = JSON.parse($('#plexServer').val());
-    libraryKey = $('#libraryKey').val();
+  libraryTitle = $('#libraryTitle');
+  noMovieContainer = $('#noMovieContainer');
+  movieContainer = $('#movieContainer');
+  movieSearchingContainer = $('#movieSearchingContainer');
+  plexServers = JSON.parse($('#plexServers').val());
+  plexServer = JSON.parse($('#plexServer').val());
+  libraryKey = $('#libraryKey').val();
 
-    moviesTable = $('#movies').DataTable({
-        deferRender: true,
-        ordering: false,
-        columns: [
-            {data: 'imdbId'},
-            {data: 'name'},
-            {data: 'year'},
-            {data: 'language'},
-            {data: 'overview'}
-        ],
-        columnDefs: [
-            {
-                targets: [0],
-                type: 'html',
-                searchable: false,
-                render: function (data, type, row) {
-                    if (type === 'display') {
-                        row.address = plexServer.address;
-                        row.port = plexServer.port;
-                        row.plexToken = plexServer.plexToken;
+  moviesTable = $('#movies').DataTable({
+    deferRender: true,
+    ordering: false,
+    columns: [
+      {data: 'imdbId'},
+      {data: 'name'},
+      {data: 'year'},
+      {data: 'language'},
+      {data: 'overview'}
+    ],
+    columnDefs: [
+      {
+        targets: [0],
+        type: 'html',
+        searchable: false,
+        render: function (data, type, row) {
+          if (type === 'display') {
+            row.address = plexServer.address;
+            row.port = plexServer.port;
+            row.plexToken = plexServer.plexToken;
 
-                        const plexServerCard = $("#movieCard").html();
-                        const theTemplate = Handlebars.compile(plexServerCard);
-                        return theTemplate(row);
-                    }
-                    return "";
-                }
-            },
-            {
-                targets: [1, 2, 3, 4],
-                visible: false
-            }
-        ]
-    });
+            const plexServerCard = $("#movieCard").html();
+            const theTemplate = Handlebars.compile(plexServerCard);
+            return theTemplate(row);
+          }
+          return "";
+        }
+      },
+      {
+        targets: [1, 2, 3, 4],
+        visible: false
+      }
+    ]
+  });
 
-    getOwnedMoviesForTable(`/libraries/${plexServer.machineIdentifier}/${libraryKey}`, movieContainer, noMovieContainer, moviesTable);
+  getOwnedMoviesForTable(`/libraries/${plexServer.machineIdentifier}/${libraryKey}`, movieContainer, noMovieContainer, moviesTable);
 
-    //Exposing function for onClick()
-    window.searchForMovies = searchForMovies;
-    window.switchPlexLibrary = switchPlexLibrary;
+  //Exposing function for onClick()
+  window.searchForMovies = searchForMovies;
+  window.switchPlexLibrary = switchPlexLibrary;
 });
 
 function switchPlexLibrary(machineIdentifier, key) {
-    libraryKey = key;
-    plexServer = plexServers[machineIdentifier];
-    const plexLibrary = plexServer.plexLibraries.find(plexServer => plexServer.key === parseInt(key));
-    libraryTitle.text(`${plexServer.friendlyName} - ${plexLibrary.title}`);
+  libraryKey = key;
+  plexServer = plexServers[machineIdentifier];
+  const plexLibrary = plexServer.plexLibraries.find(plexServer => plexServer.key === parseInt(key));
+  libraryTitle.text(`${plexServer.friendlyName} - ${plexLibrary.title}`);
 
-    moviesTable.data().clear();
-    moviesTable.rows().invalidate().draw();
+  moviesTable.data().clear();
+  moviesTable.rows().invalidate().draw();
 
-    getOwnedMoviesForTable(`/libraries/${machineIdentifier}/${libraryKey}`, movieContainer, noMovieContainer, moviesTable);
+  getOwnedMoviesForTable(`/libraries/${machineIdentifier}/${libraryKey}`, movieContainer, noMovieContainer, moviesTable);
 }
 
 function searchForMovies() {
-    movieSearchingContainer.show();
-    noMovieContainer.css({'display': 'none'});
-    moviesTable.data().clear();
-    moviesTable.rows().invalidate().draw();
+  movieSearchingContainer.show();
+  noMovieContainer.css({'display': 'none'});
+  moviesTable.data().clear();
+  moviesTable.rows().invalidate().draw();
 
-    $.ajax({
-        type: "GET",
-        url: `/plex/movies/${plexServer.machineIdentifier}/${libraryKey}`,
-        contentType: "application/json",
-        success: function (data) {
-            movieSearchingContainer.css({'display': 'none'});
-            moviesTable.rows.add(data).draw();
-            movieContainer.show(100);
-        }
-    });
+  $.ajax({
+    type: "GET",
+    url: `/plex/movies/${plexServer.machineIdentifier}/${libraryKey}`,
+    contentType: "application/json",
+    success: function (data) {
+      movieSearchingContainer.css({'display': 'none'});
+      moviesTable.rows.add(data).draw();
+      movieContainer.show(100);
+    }
+  });
 }

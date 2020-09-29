@@ -9,29 +9,29 @@
  */
 
 export function getNotificationTypes(tmdApiConnection, plexServerConnection, plexMetadataUpdate, plexLibraryUpdate, gapsMissingCollections) {
-    'use strict';
+  'use strict';
 
-    const notificationTypes = [];
+  const notificationTypes = [];
 
-    if(tmdApiConnection) {
-        notificationTypes.push("TMDB_API_CONNECTION");
-    }
+  if (tmdApiConnection) {
+    notificationTypes.push("TMDB_API_CONNECTION");
+  }
 
-    if(plexServerConnection) {
-        notificationTypes.push("PLEX_SERVER_CONNECTION");
-    }
+  if (plexServerConnection) {
+    notificationTypes.push("PLEX_SERVER_CONNECTION");
+  }
 
-    if(plexMetadataUpdate) {
-        notificationTypes.push("PLEX_METADATA_UPDATE");
-    }
+  if (plexMetadataUpdate) {
+    notificationTypes.push("PLEX_METADATA_UPDATE");
+  }
 
-    if(plexLibraryUpdate) {
-        notificationTypes.push("PLEX_LIBRARY_UPDATE");
-    }
+  if (plexLibraryUpdate) {
+    notificationTypes.push("PLEX_LIBRARY_UPDATE");
+  }
 
-    if(gapsMissingCollections) {
-        notificationTypes.push("GAPS_MISSING_COLLECTIONS");
-    }
+  if (gapsMissingCollections) {
+    notificationTypes.push("GAPS_MISSING_COLLECTIONS");
+  }
 
-    return notificationTypes;
+  return notificationTypes;
 }
