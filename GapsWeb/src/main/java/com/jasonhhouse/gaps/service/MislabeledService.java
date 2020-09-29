@@ -10,8 +10,8 @@
 package com.jasonhhouse.gaps.service;
 
 import com.jasonhhouse.gaps.Mislabeled;
-import com.jasonhhouse.plex.video.MediaContainer;
-import com.jasonhhouse.plex.video.Video;
+import com.jasonhhouse.gaps.plex.video.MediaContainer;
+import com.jasonhhouse.gaps.plex.video.Video;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.text.similarity.LevenshteinDistance;

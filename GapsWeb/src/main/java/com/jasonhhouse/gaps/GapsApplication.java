@@ -34,7 +34,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * Search for all missing movies in your plex collection by MovieDB collection.
  */
 @SpringBootApplication
-@EntityScan("com.jasonhhouse.plex")
+@EntityScan("com.jasonhhouse.gaps.plex")
 @EnableAsync
 @EnableConfigurationProperties
 @ConfigurationPropertiesScan
