@@ -92,6 +92,9 @@ describe('Check Telegram Notification Agent', function () {
         cy.get('#notificationTab')
             .click();
 
+        cy.get('#telegramShowHide')
+            .click();
+
         checkElements('', '', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, 'false');
 
         cy.get('#telegramBotId')
@@ -146,6 +149,9 @@ describe('Check Telegram Notification Agent', function () {
         cy.visit('/configuration');
 
         cy.get('#notificationTab')
+            .click();
+
+        cy.get('#telegramShowHide')
             .click();
 
         checkElements('', '', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, 'false');
@@ -220,6 +226,9 @@ describe('Check Telegram Notification Agent', function () {
         cy.visit('/configuration');
 
         cy.get('#notificationTab')
+            .click();
+
+        cy.get('#telegramShowHide')
             .click();
 
         checkElements('', '',CYPRESS_VALUES. notBeChecked, CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');

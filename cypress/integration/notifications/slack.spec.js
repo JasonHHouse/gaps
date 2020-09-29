@@ -145,6 +145,9 @@ describe('Check Slack Notification Agent', function () {
         cy.get('#notificationTab')
             .click();
 
+        cy.get('#slackShowHide')
+            .click();
+
         checkElements('',CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, 'false');
 
         cy.get('#slackWebHookUrl')
@@ -194,6 +197,9 @@ describe('Check Slack Notification Agent', function () {
         cy.visit('/configuration');
 
         cy.get('#notificationTab')
+            .click();
+
+        cy.get('#slackShowHide')
             .click();
 
         checkElements('', CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, 'false');
@@ -263,6 +269,9 @@ describe('Check Slack Notification Agent', function () {
         cy.visit('/configuration');
 
         cy.get('#notificationTab')
+            .click();
+
+        cy.get('#slackShowHide')
             .click();
 
         checkElements('', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');

@@ -113,6 +113,9 @@ describe('Check PushOver Notification Agent', function () {
         cy.get('#notificationTab')
             .click();
 
+        cy.get('#pushOverShowHide')
+            .click();
+
         checkElements('', '', 0,'pushover', '0','0', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, 'false');
 
         cy.get('#pushOverToken')
@@ -185,6 +188,9 @@ describe('Check PushOver Notification Agent', function () {
         cy.visit('/configuration');
 
         cy.get('#notificationTab')
+            .click();
+
+        cy.get('#pushOverShowHide')
             .click();
 
         checkElements('', '',0,'pushover', '0','0',  CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, 'false');
@@ -277,6 +283,9 @@ describe('Check PushOver Notification Agent', function () {
         cy.visit('/configuration');
 
         cy.get('#notificationTab')
+            .click();
+
+        cy.get('#pushOverShowHide')
             .click();
 
         checkElements('', '',0,'pushover', '0','0',CYPRESS_VALUES. notBeChecked, CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
