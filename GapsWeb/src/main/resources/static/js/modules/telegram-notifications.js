@@ -8,16 +8,15 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import {getNotificationTypes} from './notification-types.min.js';
-import {Payload} from "./payload.min.js";
-import {hideAllAlertsAndSpinners} from "./alerts-manager.min.js";
+import getNotificationTypes from './notification-types.min.js';
+import Payload from './payload.min.js';
+import hideAllAlertsAndSpinners from './alerts-manager.min.js';
 
 export async function testTelegramNotifications() {
-  'use strict';
   hideAllAlertsAndSpinners();
   document.getElementById('telegramSpinner').style.display = 'block';
 
-  let response = await fetch('/notifications/test/0', {
+  const response = await fetch('/notifications/test/0', {
     method: 'put',
   });
   const put = await response.json();
@@ -31,7 +30,6 @@ export async function testTelegramNotifications() {
 }
 
 export async function saveTelegramNotifications() {
-  'use strict';
   hideAllAlertsAndSpinners();
 
   const body = {};
@@ -44,14 +42,14 @@ export async function saveTelegramNotifications() {
     document.getElementById('telegramPlexLibraryUpdateNotification').checked,
     document.getElementById('telegramGapsMissingCollectionsNotification').checked);
 
-  let response = await fetch(`/notifications/telegram`, {
+  const response = await fetch('/notifications/telegram', {
     method: 'put',
     headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(body)
-  })
+    body: JSON.stringify(body),
+  });
   const put = await response.json();
   if (put.code && put.code === Payload.TELEGRAM_NOTIFICATION_UPDATE_SUCCEEDED) {
     hideAllAlertsAndSpinners();

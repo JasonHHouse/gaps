@@ -8,91 +8,100 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import {getOwnedMoviesForTable} from '/js/modules/common.min.js';
+/* global Handlebars */
+/* eslint no-undef: "error" */
 
-let libraryTitle, noMovieContainer, movieContainer, movieSearchingContainer;
+import { getOwnedMoviesForTable } from './modules/common.min.js';
+
+let libraryTitle;
+let noMovieContainer;
+let movieContainer;
+let movieSearchingContainer;
 let plexServers;
-let plexServer;
 let moviesTable;
-let libraryKey;
 
-jQuery(function ($) {
+function switchPlexLibrary(machineIdentifier, key) {
+  const plexServer = plexServers[machineIdentifier];
+  const plexLibrary = plexServer.plexLibraries.find((tempPlexLibrary) => tempPlexLibrary.key === parseInt(key, 10));
+  libraryTitle.text(`${plexServer.friendlyName} - ${plexLibrary.title}`);
+  libraryTitle.setAttribute('data-machineIdentifier', machineIdentifier);
+  libraryTitle.setAttribute('data-key', key);
+
+  moviesTable.data().clear();
+  moviesTable.rows().invalidate().draw();
+
+  getOwnedMoviesForTable(`/libraries/${machineIdentifier}/${key}`, movieContainer, noMovieContainer, moviesTable);
+}
+
+function searchForMovies() {
+  movieSearchingContainer.show();
+  noMovieContainer.css({ display: 'none' });
+  moviesTable.data().clear();
+  moviesTable.rows().invalidate().draw();
+
+  const machineIdentifier = libraryTitle.getAttribute('data-machineIdentifier');
+  const key = libraryTitle.getAttribute('data-key');
+
+  $.ajax({
+    type: 'GET',
+    url: `/plex/movies/${machineIdentifier}/${key}`,
+    contentType: 'application/json',
+    success(data) {
+      movieSearchingContainer.css({ display: 'none' });
+      moviesTable.rows.add(data).draw();
+      movieContainer.show(100);
+    },
+  });
+}
+
+jQuery(($) => {
   libraryTitle = $('#libraryTitle');
   noMovieContainer = $('#noMovieContainer');
   movieContainer = $('#movieContainer');
   movieSearchingContainer = $('#movieSearchingContainer');
   plexServers = JSON.parse($('#plexServers').val());
-  plexServer = JSON.parse($('#plexServer').val());
-  libraryKey = $('#libraryKey').val();
+  const plexServer = JSON.parse($('#plexServer').val());
+  const key = JSON.parse($('#libraryKey').val());
 
   moviesTable = $('#movies').DataTable({
     deferRender: true,
     ordering: false,
     columns: [
-      {data: 'imdbId'},
-      {data: 'name'},
-      {data: 'year'},
-      {data: 'language'},
-      {data: 'overview'}
+      { data: 'imdbId' },
+      { data: 'name' },
+      { data: 'year' },
+      { data: 'language' },
+      { data: 'overview' },
     ],
     columnDefs: [
       {
         targets: [0],
         type: 'html',
         searchable: false,
-        render: function (data, type, row) {
+        render(data, type, row) {
           if (type === 'display') {
-            row.address = plexServer.address;
-            row.port = plexServer.port;
-            row.plexToken = plexServer.plexToken;
+            const plexServerData = Object.assign(row);
+            plexServerData.address = plexServer.address;
+            plexServerData.port = plexServer.port;
+            plexServerData.plexToken = plexServer.plexToken;
 
-            const plexServerCard = $("#movieCard").html();
+            const plexServerCard = $('#movieCard').html();
             const theTemplate = Handlebars.compile(plexServerCard);
-            return theTemplate(row);
+            return theTemplate(plexServerData);
           }
-          return "";
-        }
+          return '';
+        },
       },
       {
         targets: [1, 2, 3, 4],
-        visible: false
-      }
-    ]
+        visible: false,
+      },
+    ],
   });
 
-  getOwnedMoviesForTable(`/libraries/${plexServer.machineIdentifier}/${libraryKey}`, movieContainer, noMovieContainer, moviesTable);
+  getOwnedMoviesForTable(`/libraries/${plexServer.machineIdentifier}/${key}`, movieContainer, noMovieContainer, moviesTable);
 
-  //Exposing function for onClick()
+  // Exposing function for onClick()
   window.searchForMovies = searchForMovies;
   window.switchPlexLibrary = switchPlexLibrary;
 });
-
-function switchPlexLibrary(machineIdentifier, key) {
-  libraryKey = key;
-  plexServer = plexServers[machineIdentifier];
-  const plexLibrary = plexServer.plexLibraries.find(plexServer => plexServer.key === parseInt(key));
-  libraryTitle.text(`${plexServer.friendlyName} - ${plexLibrary.title}`);
-
-  moviesTable.data().clear();
-  moviesTable.rows().invalidate().draw();
-
-  getOwnedMoviesForTable(`/libraries/${machineIdentifier}/${libraryKey}`, movieContainer, noMovieContainer, moviesTable);
-}
-
-function searchForMovies() {
-  movieSearchingContainer.show();
-  noMovieContainer.css({'display': 'none'});
-  moviesTable.data().clear();
-  moviesTable.rows().invalidate().draw();
-
-  $.ajax({
-    type: "GET",
-    url: `/plex/movies/${plexServer.machineIdentifier}/${libraryKey}`,
-    contentType: "application/json",
-    success: function (data) {
-      movieSearchingContainer.css({'display': 'none'});
-      moviesTable.rows.add(data).draw();
-      movieContainer.show(100);
-    }
-  });
-}

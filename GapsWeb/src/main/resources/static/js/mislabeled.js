@@ -8,33 +8,32 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-jQuery(function ($) {
-
+jQuery(($) => {
   $('#mislabeled').DataTable({
     ajax: {
-      url: `mislabeled/c51c432ae94e316d52570550f915ecbcd71bede8/1/.75`,
-      dataSrc: ''
+      url: 'mislabeled/c51c432ae94e316d52570550f915ecbcd71bede8/1/.75',
+      dataSrc: '',
     },
     columns: [
-      {data: 'plexTitle'},
-      {data: 'filename'},
-      {data: 'percentageMatch'}
-    ], columnDefs: [
+      { data: 'plexTitle' },
+      { data: 'filename' },
+      { data: 'percentageMatch' },
+    ],
+    columnDefs: [
       {
-        type: "string",
-        targets: [0, 1]
+        type: 'string',
+        targets: [0, 1],
       },
       {
         targets: [2],
         type: 'num-fmt',
-        render: function (data, type, row) {
+        render(data, type, row) {
           if (type === 'display') {
-            return Math.floor(row.percentageMatch * 100) + '%';
+            return `${Math.floor(row.percentageMatch * 100)}%`;
           }
-          return "";
-        }
-      }
-    ]
+          return '';
+        },
+      },
+    ],
   });
-
 });

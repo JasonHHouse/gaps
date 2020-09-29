@@ -9,17 +9,15 @@
  *
  */
 
-
-import {getNotificationTypes} from './notification-types.min.js';
-import {Payload} from "./payload.min.js";
-import {hideAllAlertsAndSpinners} from "./alerts-manager.min.js";
+import getNotificationTypes from './notification-types.min.js';
+import Payload from './payload.min.js';
+import hideAllAlertsAndSpinners from './alerts-manager.min.js';
 
 export async function testEmailNotifications() {
-  'use strict';
   hideAllAlertsAndSpinners();
   document.getElementById('emailSpinner').style.display = 'block';
 
-  let response = await fetch('/notifications/test/4', {
+  const response = await fetch('/notifications/test/4', {
     method: 'put',
   });
   const put = await response.json();
@@ -33,7 +31,6 @@ export async function testEmailNotifications() {
 }
 
 export async function saveEmailNotifications() {
-  'use strict';
   hideAllAlertsAndSpinners();
 
   const body = {};
@@ -54,14 +51,14 @@ export async function saveEmailNotifications() {
     document.getElementById('emailPlexLibraryUpdateNotification').checked,
     document.getElementById('emailGapsMissingCollectionsNotification').checked);
 
-  let response = await fetch(`/notifications/email`, {
+  const response = await fetch('/notifications/email', {
     method: 'put',
     headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(body)
-  })
+    body: JSON.stringify(body),
+  });
   const put = await response.json();
   if (put.code && put.code === Payload.EMAIL_NOTIFICATION_UPDATE_SUCCEEDED) {
     hideAllAlertsAndSpinners();

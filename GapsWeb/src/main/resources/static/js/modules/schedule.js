@@ -9,25 +9,24 @@
  *
  */
 
+import hideAllAlertsAndSpinners from './alerts-manager.min.js';
+import Payload from './payload.min.js';
 
-import {hideAllAlertsAndSpinners} from "./alerts-manager.min.js";
-import {Payload} from "./payload.min.js";
-
-export async function saveSchedule() {
+export default async function saveSchedule() {
   hideAllAlertsAndSpinners();
 
   const body = {};
   body.schedule = document.getElementById('setSchedule').value;
   body.enabled = document.getElementById('scheduleEnabled').value;
 
-  let response = await fetch(`/schedule`, {
+  const response = await fetch('/schedule', {
     method: 'put',
     headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(body)
-  })
+    body: JSON.stringify(body),
+  });
   const put = await response.json();
   if (put.code && put.code === Payload.SCHEDULE_UPDATED) {
     hideAllAlertsAndSpinners();

@@ -8,29 +8,27 @@
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-export function getNotificationTypes(tmdApiConnection, plexServerConnection, plexMetadataUpdate, plexLibraryUpdate, gapsMissingCollections) {
-  'use strict';
-
+export default function getNotificationTypes(tmdApiConnection, plexServerConnection, plexMetadataUpdate, plexLibraryUpdate, gapsMissingCollections) {
   const notificationTypes = [];
 
   if (tmdApiConnection) {
-    notificationTypes.push("TMDB_API_CONNECTION");
+    notificationTypes.push('TMDB_API_CONNECTION');
   }
 
   if (plexServerConnection) {
-    notificationTypes.push("PLEX_SERVER_CONNECTION");
+    notificationTypes.push('PLEX_SERVER_CONNECTION');
   }
 
   if (plexMetadataUpdate) {
-    notificationTypes.push("PLEX_METADATA_UPDATE");
+    notificationTypes.push('PLEX_METADATA_UPDATE');
   }
 
   if (plexLibraryUpdate) {
-    notificationTypes.push("PLEX_LIBRARY_UPDATE");
+    notificationTypes.push('PLEX_LIBRARY_UPDATE');
   }
 
   if (gapsMissingCollections) {
-    notificationTypes.push("GAPS_MISSING_COLLECTIONS");
+    notificationTypes.push('GAPS_MISSING_COLLECTIONS');
   }
 
   return notificationTypes;

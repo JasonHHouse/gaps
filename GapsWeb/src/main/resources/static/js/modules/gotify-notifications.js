@@ -9,16 +9,15 @@
  *
  */
 
-import {getNotificationTypes} from './notification-types.min.js';
-import {Payload} from "./payload.min.js";
-import {hideAllAlertsAndSpinners} from "./alerts-manager.min.js";
+import getNotificationTypes from './notification-types.min.js';
+import Payload from './payload.min.js';
+import hideAllAlertsAndSpinners from './alerts-manager.min.js';
 
 export async function testGotifyNotifications() {
-  'use strict';
   hideAllAlertsAndSpinners();
   document.getElementById('gotifySpinner').style.display = 'block';
 
-  let response = await fetch('/notifications/test/3', {
+  const response = await fetch('/notifications/test/3', {
     method: 'put',
   });
   const put = await response.json();
@@ -32,7 +31,6 @@ export async function testGotifyNotifications() {
 }
 
 export async function saveGotifyNotifications() {
-  'use strict';
   hideAllAlertsAndSpinners();
 
   const body = {};
@@ -45,14 +43,14 @@ export async function saveGotifyNotifications() {
     document.getElementById('gotifyPlexLibraryUpdateNotification').checked,
     document.getElementById('gotifyGapsMissingCollectionsNotification').checked);
 
-  let response = await fetch(`/notifications/gotify`, {
+  const response = await fetch('/notifications/gotify', {
     method: 'put',
     headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(body)
-  })
+    body: JSON.stringify(body),
+  });
   const put = await response.json();
   if (put.code && put.code === Payload.GOTIFY_NOTIFICATION_UPDATE_SUCCEEDED) {
     hideAllAlertsAndSpinners();

@@ -8,7 +8,7 @@
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-export function hideTmdbAlertsAndSpinners() {
+function hideTmdbAlertsAndSpinners() {
   document.getElementById('tmdbSaveSuccess').style.display = 'none';
   document.getElementById('tmdbSaveError').style.display = 'none';
   document.getElementById('tmdbTestSuccess').style.display = 'none';
@@ -16,18 +16,18 @@ export function hideTmdbAlertsAndSpinners() {
   document.getElementById('tmdbSpinner').style.display = 'none';
 }
 
-export function hideDeleteAlertsAndSpinners() {
+function hideDeleteAlertsAndSpinners() {
   document.getElementById('deleteAllError').style.display = 'none';
   document.getElementById('deleteAllSuccess').style.display = 'none';
 }
 
-export function hideScheduleAlertsAndSpinners() {
+function hideScheduleAlertsAndSpinners() {
   document.getElementById('scheduleSpinner').style.display = 'none';
   document.getElementById('scheduleSaveSuccess').style.display = 'none';
   document.getElementById('scheduleSaveError').style.display = 'none';
 }
 
-export function hidePlexAlertsAndSpinners() {
+function hidePlexAlertsAndSpinners() {
   document.getElementById('plexSpinner').style.display = 'none';
   document.getElementById('plexSaveSuccess').style.display = 'none';
   document.getElementById('plexSaveError').style.display = 'none';
@@ -38,7 +38,7 @@ export function hidePlexAlertsAndSpinners() {
   document.getElementById('plexDuplicateError').style.display = 'none';
 }
 
-export function hideTelegramAlertsAndSpinners() {
+function hideTelegramAlertsAndSpinners() {
   document.getElementById('telegramTestSuccess').style.display = 'none';
   document.getElementById('telegramTestError').style.display = 'none';
   document.getElementById('telegramSaveSuccess').style.display = 'none';
@@ -46,7 +46,7 @@ export function hideTelegramAlertsAndSpinners() {
   document.getElementById('telegramSpinner').style.display = 'none';
 }
 
-export function hideSlackAlertsAndSpinners() {
+function hideSlackAlertsAndSpinners() {
   document.getElementById('slackTestSuccess').style.display = 'none';
   document.getElementById('slackTestError').style.display = 'none';
   document.getElementById('slackSaveSuccess').style.display = 'none';
@@ -54,7 +54,7 @@ export function hideSlackAlertsAndSpinners() {
   document.getElementById('slackSpinner').style.display = 'none';
 }
 
-export function hidePushBulletAlertsAndSpinners() {
+function hidePushBulletAlertsAndSpinners() {
   document.getElementById('pushBulletTestSuccess').style.display = 'none';
   document.getElementById('pushBulletTestError').style.display = 'none';
   document.getElementById('pushBulletSaveSuccess').style.display = 'none';
@@ -62,7 +62,7 @@ export function hidePushBulletAlertsAndSpinners() {
   document.getElementById('pushBulletSpinner').style.display = 'none';
 }
 
-export function hideGotifyAlertsAndSpinners() {
+function hideGotifyAlertsAndSpinners() {
   document.getElementById('gotifyTestSuccess').style.display = 'none';
   document.getElementById('gotifyTestError').style.display = 'none';
   document.getElementById('gotifySaveSuccess').style.display = 'none';
@@ -70,7 +70,7 @@ export function hideGotifyAlertsAndSpinners() {
   document.getElementById('gotifySpinner').style.display = 'none';
 }
 
-export function hideEmailAlertsAndSpinners() {
+function hideEmailAlertsAndSpinners() {
   document.getElementById('emailTestSuccess').style.display = 'none';
   document.getElementById('emailTestError').style.display = 'none';
   document.getElementById('emailSaveSuccess').style.display = 'none';
@@ -78,7 +78,7 @@ export function hideEmailAlertsAndSpinners() {
   document.getElementById('emailSpinner').style.display = 'none';
 }
 
-export function hidePushOverAlertsAndSpinners() {
+function hidePushOverAlertsAndSpinners() {
   document.getElementById('pushOverTestSuccess').style.display = 'none';
   document.getElementById('pushOverTestError').style.display = 'none';
   document.getElementById('pushOverSaveSuccess').style.display = 'none';
@@ -86,7 +86,7 @@ export function hidePushOverAlertsAndSpinners() {
   document.getElementById('pushOverSpinner').style.display = 'none';
 }
 
-export function hideDiscordAlertsAndSpinners() {
+function hideDiscordAlertsAndSpinners() {
   document.getElementById('discordTestSuccess').style.display = 'none';
   document.getElementById('discordTestError').style.display = 'none';
   document.getElementById('discordSaveSuccess').style.display = 'none';
@@ -94,7 +94,7 @@ export function hideDiscordAlertsAndSpinners() {
   document.getElementById('discordSpinner').style.display = 'none';
 }
 
-export function hideAllAlertsAndSpinners() {
+export default function hideAllAlertsAndSpinners() {
   hideTmdbAlertsAndSpinners();
   hideDeleteAlertsAndSpinners();
   hideScheduleAlertsAndSpinners();

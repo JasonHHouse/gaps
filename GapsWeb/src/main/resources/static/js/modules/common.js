@@ -11,52 +11,54 @@
 export function getOwnedMoviesForTable(url, movieContainer, noMovieContainer, moviesTable) {
   $.ajax({
     type: 'GET',
-    url: url,
+    url,
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
-    success: function (result) {
+    success(result) {
       if (result.code === 40) {
         movieContainer.show(100);
-        noMovieContainer.css({'display': 'none'});
+        noMovieContainer.css({ display: 'none' });
         moviesTable.rows.add(result.extras).draw();
       } else {
-        movieContainer.css({'display': 'none'});
+        movieContainer.css({ display: 'none' });
         noMovieContainer.show(100);
       }
-    }, error: function () {
-      movieContainer.css({'display': 'none'});
+    },
+    error() {
+      movieContainer.css({ display: 'none' });
       noMovieContainer.show(100);
-      //Show error + error
-    }
+      // Show error + error
+    },
   });
 }
 
 export function getRecommendedMoviesForTable(url, movieContainer, noMovieContainer, notSearchedYetContainer, moviesTable) {
   $.ajax({
     type: 'GET',
-    url: url,
+    url,
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
-    success: function (result) {
+    success(result) {
       if (result.code === 50) {
         movieContainer.show(100);
-        noMovieContainer.css({'display': 'none'});
-        notSearchedYetContainer.css({'display': 'none'});
+        noMovieContainer.css({ display: 'none' });
+        notSearchedYetContainer.css({ display: 'none' });
         moviesTable.rows.add(result.extras).draw();
       } else if (result.code === 41) {
-        movieContainer.css({'display': 'none'});
-        notSearchedYetContainer.css({'display': 'none'});
+        movieContainer.css({ display: 'none' });
+        notSearchedYetContainer.css({ display: 'none' });
         noMovieContainer.show(100);
       } else {
-        movieContainer.css({'display': 'none'});
-        noMovieContainer.css({'display': 'none'});
+        movieContainer.css({ display: 'none' });
+        noMovieContainer.css({ display: 'none' });
         notSearchedYetContainer.show(100);
       }
-    }, error: function () {
-      movieContainer.css({'display': 'none'});
-      notSearchedYetContainer.css({'display': 'none'});
+    },
+    error() {
+      movieContainer.css({ display: 'none' });
+      notSearchedYetContainer.css({ display: 'none' });
       noMovieContainer.show(100);
-      //Show error + error
-    }
+      // Show error + error
+    },
   });
 }

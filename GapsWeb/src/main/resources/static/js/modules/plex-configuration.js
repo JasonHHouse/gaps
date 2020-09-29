@@ -9,13 +9,17 @@
  *
  */
 
+/* global Handlebars */
+
+/* eslint no-undef: "error" */
+
 export function openPlexLibraryConfigurationModel(title, machineIdentifier, key) {
   const obj = {
-    'title': title,
-    'machineIdentifier': machineIdentifier,
-    'key': key
-  }
-  const plexLibraryModalTemplate = $("#plexLibraryModalTemplate").html();
+    title,
+    machineIdentifier,
+    key,
+  };
+  const plexLibraryModalTemplate = $('#plexLibraryModalTemplate').html();
   const theTemplate = Handlebars.compile(plexLibraryModalTemplate);
   const theCompiledHtml = theTemplate(obj);
   const plexLibraryConfigurationModal = document.getElementById('plexLibraryConfigurationModal');
@@ -25,26 +29,27 @@ export function openPlexLibraryConfigurationModel(title, machineIdentifier, key)
 
 export async function savePlexLibraryConfiguration(machineIdentifier, key) {
   const obj = {
-    'machineIdentifier': machineIdentifier,
-    'key': key,
-    'enabled': document.getElementById('libraryEnabled').value,
-    'defaultLibrary': document.getElementById('defaultLibrary').value
-  }
+    machineIdentifier,
+    key,
+    enabled: document.getElementById('libraryEnabled').value,
+    defaultLibrary: document.getElementById('defaultLibrary').value,
+  };
 
-  let response = await fetch(`/configuration/update/plex/library`, {
+  const response = await fetch('/configuration/update/plex/library', {
     method: 'put',
     headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(obj)
-  })
-  const put = await response.json();
-  /*if (put.code && put.code === Payload.SCHEDULE_UPDATED) {
+    body: JSON.stringify(obj),
+  });
+  await response.json();
+  /* const put = await response.json(); */
+  /* if (put.code && put.code === Payload.SCHEDULE_UPDATED) {
       hideAllAlertsAndSpinners();
       document.getElementById('scheduleSaveSuccess').style.display = 'block';
   } else {
       hideAllAlertsAndSpinners();
       document.getElementById('scheduleSaveError').style.display = 'block';
-  }*/
+  } */
 }
