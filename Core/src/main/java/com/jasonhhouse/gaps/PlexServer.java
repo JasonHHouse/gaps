@@ -12,6 +12,7 @@ package com.jasonhhouse.gaps;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.jasonhhouse.plex.libs.PlexLibrary;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -20,11 +21,17 @@ import java.util.Set;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public final class PlexServer {
 
+    @Schema(description = "Libraries that are of type movie in your Plex Server")
     private final Set<PlexLibrary> plexLibraries;
+    @Schema(description = "Human readable way to identify your Plex Server")
     private String friendlyName;
+    @Schema(description = "UID to identify the Plex Server")
     private String machineIdentifier;
+    @Schema(required = true, description = "Token for your Plex Server. Found via Plex docs.")
     private String plexToken;
+    @Schema(required = true, defaultValue = "localhost", description = "Address of your Plex Server")
     private String address;
+    @Schema(required = true, defaultValue = "32400", description = "Port of your Plex Server")
     private Integer port;
 
     public PlexServer() {

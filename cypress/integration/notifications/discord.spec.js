@@ -145,6 +145,9 @@ describe('Check Discord Notification Agent', function () {
         cy.get('#notificationTab')
             .click();
 
+        cy.get('#discordShowHide')
+            .click();
+
         checkElements('',CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, 'false');
 
         cy.get('#discordWebHookUrl')
@@ -194,6 +197,9 @@ describe('Check Discord Notification Agent', function () {
         cy.visit('/configuration');
 
         cy.get('#notificationTab')
+            .click();
+
+        cy.get('#discordShowHide')
             .click();
 
         checkElements('', CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, 'false');
@@ -263,6 +269,9 @@ describe('Check Discord Notification Agent', function () {
         cy.visit('/configuration');
 
         cy.get('#notificationTab')
+            .click();
+
+        cy.get('#discordShowHide')
             .click();
 
         checkElements('', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');

@@ -246,6 +246,9 @@ describe('Check Email Notification Agent', function () {
         cy.get('#notificationTab')
             .click();
 
+        cy.get('#emailShowHide')
+            .click();
+
         checkElements('', '', '', '', '', 0, 'smtp', 'true', 'false', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
 
         cy.get('#emailUsername')
@@ -334,6 +337,9 @@ describe('Check Email Notification Agent', function () {
         cy.visit('/configuration');
 
         cy.get('#notificationTab')
+            .click();
+
+        cy.get('#emailShowHide')
             .click();
 
         checkElements('', '', '', '', '', 0, 'smtp', 'true', 'false',  CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
@@ -444,6 +450,9 @@ describe('Check Email Notification Agent', function () {
         cy.visit('/configuration');
 
         cy.get('#notificationTab')
+            .click();
+
+        cy.get('#emailShowHide')
             .click();
 
         checkElements('', '', '', '', '', 0, 'smtp', 'true', 'false', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');

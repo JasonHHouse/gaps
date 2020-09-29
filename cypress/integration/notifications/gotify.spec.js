@@ -158,6 +158,9 @@ describe('Check Gotify Notification Agent', function () {
         cy.get('#notificationTab')
             .click();
 
+        cy.get('#gotifyShowHide')
+            .click();
+
         checkElements('', '', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, 'false');
 
         cy.get('#gotifyAddress')
@@ -212,6 +215,9 @@ describe('Check Gotify Notification Agent', function () {
         cy.visit('/configuration');
 
         cy.get('#notificationTab')
+            .click();
+
+        cy.get('#gotifyShowHide')
             .click();
 
         checkElements('', '', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, 'false');
@@ -286,6 +292,9 @@ describe('Check Gotify Notification Agent', function () {
         cy.visit('/configuration');
 
         cy.get('#notificationTab')
+            .click();
+
+        cy.get('#gotifyShowHide')
             .click();
 
         checkElements('', '',CYPRESS_VALUES. notBeChecked, CYPRESS_VALUES.notBeChecked,CYPRESS_VALUES. notBeChecked,CYPRESS_VALUES. notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');

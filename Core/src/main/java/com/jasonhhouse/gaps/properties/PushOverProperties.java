@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jasonhhouse.gaps.NotificationType;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Collections;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
@@ -26,16 +27,21 @@ import org.jetbrains.annotations.Nullable;
 public final class PushOverProperties extends AbstractNotificationProperties {
 
     @NotNull
+    @Schema(required = true, description = "The API token connect to PushOver")
     private final String token;
     @NotNull
     private final String user;
     @NotNull
+    @Schema(required = true, description = "The priority of the notification. See <a href='https://pushover.net/api#priority'>here</a> for more information.")
     private final Integer priority;
     @NotNull
+    @Schema(required = true, description = "The sound of the notification. See <a href='https://pushover.net/api#sounds'>here</a> for more information.")
     private final String sound;
     @NotNull
+    @Schema(required = true, description = "The number of times to retry sending the notification. See <a href='https://pushover.net/api#priority'>here</a> for more information.")
     private final Integer retry;
     @NotNull
+    @Schema(required = true, description = "The length of time a notification is valid. See <a href='https://pushover.net/api#priority'>here</a> for more information.")
     private final Integer expire;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)

@@ -171,7 +171,7 @@
         <div class="row no-gutters">
             <div class="col-12 col-md-auto">
                 <img style="height: auto; width: 225px; display: block;"
-                     src="{{poster_url}}"
+                     src="{{posterUrl}}"
                      class="card-img" alt="Plex Poster">
             </div>
             <div class="col-12 col-md">
@@ -184,7 +184,7 @@
                         <span class="card-text">Owned</span><br>
                         {{#each movies_in_collection}}
                         {{#if this.owned}}
-                        <a href="https://www.themoviedb.org/movie/{{this.id}}" class="card-link" target="_blank">{{this.title}}</a>
+                        <a href="https://www.themoviedb.org/movie/{{this.id}}" class="card-link" target="_blank" rel="noopener noreferrer">{{this.title}}</a>
                         {{/if}}
                         {{/each}}
                     </div>
@@ -193,7 +193,7 @@
                         <span class="card-text">Missing</span><br>
                         {{#each movies_in_collection}}
                         {{#if (isNotOwned this.owned)}}
-                        <a href="https://www.themoviedb.org/movie/{{this.id}}" class="card-link" target="_blank">{{this.title}}</a>
+                        <a href="https://www.themoviedb.org/movie/{{this.id}}" class="card-link" target="_blank" rel="noopener noreferrer">{{this.title}}</a>
                         {{/if}}
                         {{/each}}
                     </div>

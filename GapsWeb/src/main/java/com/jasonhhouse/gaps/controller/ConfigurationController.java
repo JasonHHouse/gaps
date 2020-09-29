@@ -18,6 +18,8 @@ import com.jasonhhouse.gaps.service.FileIoService;
 import com.jasonhhouse.gaps.service.PlexQueryImpl;
 import com.jasonhhouse.gaps.service.SchedulerService;
 import com.jasonhhouse.gaps.service.TmdbService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -74,10 +76,11 @@ public class ConfigurationController {
         return modelAndView;
     }
 
+    @Operation(summary = "Adds new Plex Server")
     @PostMapping(value = "/add/plex",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public void postAddPlexServer(@Valid final PlexServer plexServer) {
+    public void postAddPlexServer(@Parameter(description = "The details of the Plex Server to add.") @Valid final PlexServer plexServer) {
         LOGGER.info("postAddPlexServer( {} )", plexServer);
 
         PlexProperties plexProperties = fileIoService.readProperties();
@@ -104,6 +107,7 @@ public class ConfigurationController {
         }
     }
 
+    @Operation(summary = "Tests connection to a single Plex Server")
     @PutMapping(value = "/test/plex",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -121,6 +125,7 @@ public class ConfigurationController {
         return ResponseEntity.ok().body(payload);
     }
 
+    @Operation(summary = "Tests connection to a single Plex Server")
     @PutMapping(value = "/test/plex/{machineIdentifier}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody

@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="" rel="noopener">
+  <a href="" rel="noopener noreferrer">
  <img style="background-color: black" width=320px height=180px src="https://github.com/JasonHHouse/gaps/blob/master/images/Final-Black.png" alt="Project logo"></a>
 </p>
 
