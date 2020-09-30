@@ -12,6 +12,7 @@
 /* eslint no-undef: "error" */
 
 import { CYPRESS_VALUES, nuke } from '../common.js';
+import faker from "faker";
 
 function checkElements(botId, chatId, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#telegramBotId')
@@ -62,14 +63,14 @@ describe('Check Telegram Notification Agent', () => {
   });
 
   it('Set Telegram Notification Agent Settings', () => {
-    const object = {
-      enabled: true,
+    const telegram = {
+      "enabled": faker.random.boolean(),
       notificationTypes: ['TEST', 'TMDB_API_CONNECTION', 'PLEX_SERVER_CONNECTION', 'PLEX_METADATA_UPDATE', 'PLEX_LIBRARY_UPDATE', 'GAPS_MISSING_COLLECTIONS'],
-      chatId: 'chatId',
-      botId: 'botId',
+      chatId: faker.random.alphaNumeric(),
+      botId: faker.random.alphaNumeric(),
     };
 
-    cy.request('PUT', '/notifications/telegram', object)
+    cy.request('PUT', '/notifications/telegram', telegram)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(80);
@@ -79,27 +80,27 @@ describe('Check Telegram Notification Agent', () => {
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(82);
-        expect(body.extras.chatId).to.eq('chatId');
-        expect(body.extras.botId).to.eq('botId');
+        expect(body.extras.chatId).to.eq(telegram.chatId);
+        expect(body.extras.botId).to.eq(telegram.botId);
       })
       .visit('/configuration')
       .then(() => {
         cy.get('#notificationTab')
           .click();
 
-        checkElements('botId', 'chatId', CYPRESS_VALUES.beChecked, CYPRESS_VALUES.beChecked, CYPRESS_VALUES.beChecked, CYPRESS_VALUES.beChecked, CYPRESS_VALUES.beChecked, 'true');
+        checkElements(telegram.botId, telegram.chatId, CYPRESS_VALUES.beChecked, CYPRESS_VALUES.beChecked, CYPRESS_VALUES.beChecked, CYPRESS_VALUES.beChecked, CYPRESS_VALUES.beChecked, telegram.enabled.toString());
       });
   });
 
   it('Set TMDB Only Telegram Notification Agent Settings', () => {
-    const object = {
-      enabled: true,
+    const telegram = {
+      "enabled": faker.random.boolean(),
       notificationTypes: ['TMDB_API_CONNECTION'],
-      chatId: 'chatId',
-      botId: 'botId',
+      chatId: faker.random.alphaNumeric(),
+      botId: faker.random.alphaNumeric()
     };
 
-    cy.request('PUT', '/notifications/telegram', object)
+    cy.request('PUT', '/notifications/telegram', telegram)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(80);
@@ -109,15 +110,15 @@ describe('Check Telegram Notification Agent', () => {
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(82);
-        expect(body.extras.chatId).to.eq('chatId');
-        expect(body.extras.botId).to.eq('botId');
+        expect(body.extras.chatId).to.eq(telegram.chatId);
+        expect(body.extras.botId).to.eq(telegram.botId);
       })
       .visit('/configuration')
       .then(() => {
         cy.get('#notificationTab')
           .click();
 
-        checkElements('botId', 'chatId', CYPRESS_VALUES.beChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'true');
+        checkElements(telegram.botId, telegram.chatId, CYPRESS_VALUES.beChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, telegram.enabled.toString());
       });
   });
 

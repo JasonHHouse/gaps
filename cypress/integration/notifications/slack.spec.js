@@ -78,13 +78,13 @@ describe('Check Slack Notification Agent', () => {
   });
 
   it('Set Slack Notification Agent Settings', () => {
-    const object = {
-      enabled: true,
+    const slack = {
+      "enabled": faker.random.boolean(),
       notificationTypes: ['TEST', 'TMDB_API_CONNECTION', 'PLEX_SERVER_CONNECTION', 'PLEX_METADATA_UPDATE', 'PLEX_LIBRARY_UPDATE', 'GAPS_MISSING_COLLECTIONS'],
-      webHookUrl: 'webHookUrl',
+      webHookUrl: faker.internet.url(),
     };
 
-    cy.request('PUT', '/notifications/slack', object)
+    cy.request('PUT', '/notifications/slack', slack)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(90);
@@ -94,44 +94,25 @@ describe('Check Slack Notification Agent', () => {
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(92);
-        expect(body.extras.webHookUrl).to.eq('webHookUrl');
+        expect(body.extras.webHookUrl).to.eq(slack.webHookUrl);
       })
       .visit('/configuration')
       .then(() => {
         cy.get('#notificationTab')
           .click();
 
-        cy.get('#slackWebHookUrl')
-          .should('have.value', 'webHookUrl');
-
-        cy.get('#slackTmdbApiConnectionNotification')
-          .should('be.checked');
-
-        cy.get('#slackPlexServerConnectionNotification')
-          .should('be.checked');
-
-        cy.get('#slackPlexMetadataUpdateNotification')
-          .should('be.checked');
-
-        cy.get('#slackPlexLibraryUpdateNotification')
-          .should('be.checked');
-
-        cy.get('#slackGapsMissingCollectionsNotification')
-          .should('be.checked');
-
-        cy.get('#slackEnabled')
-          .should('have.value', 'true');
+        checkElements(slack.webHookUrl, CYPRESS_VALUES.beChecked, CYPRESS_VALUES.beChecked, CYPRESS_VALUES.beChecked, CYPRESS_VALUES.beChecked, CYPRESS_VALUES.beChecked, slack.enabled.toString());
       });
   });
 
   it('Set TMDB Only Slack Notification Agent Settings', () => {
-    const object = {
-      enabled: true,
+    const slack = {
+      "enabled": faker.random.boolean(),
       notificationTypes: ['TMDB_API_CONNECTION'],
-      webHookUrl: 'webHookUrl',
+      webHookUrl: faker.internet.url(),
     };
 
-    cy.request('PUT', '/notifications/slack', object)
+    cy.request('PUT', '/notifications/slack', slack)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(90);
@@ -141,33 +122,14 @@ describe('Check Slack Notification Agent', () => {
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(92);
-        expect(body.extras.webHookUrl).to.eq('webHookUrl');
+        expect(body.extras.webHookUrl).to.eq(slack.webHookUrl);
       })
       .visit('/configuration')
       .then(() => {
         cy.get('#notificationTab')
           .click();
 
-        cy.get('#slackWebHookUrl')
-          .should('have.value', 'webHookUrl');
-
-        cy.get('#slackTmdbApiConnectionNotification')
-          .should('be.checked');
-
-        cy.get('#slackPlexServerConnectionNotification')
-          .should('not.be.checked');
-
-        cy.get('#slackPlexMetadataUpdateNotification')
-          .should('not.be.checked');
-
-        cy.get('#slackPlexLibraryUpdateNotification')
-          .should('not.be.checked');
-
-        cy.get('#slackGapsMissingCollectionsNotification')
-          .should('not.be.checked');
-
-        cy.get('#slackEnabled')
-          .should('have.value', 'true');
+        checkElements(slack.webHookUrl, CYPRESS_VALUES.beChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, slack.enabled.toString());
       });
   });
 
