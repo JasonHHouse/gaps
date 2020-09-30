@@ -12,6 +12,7 @@
 /* eslint no-undef: "error" */
 
 import { CYPRESS_VALUES, nuke } from '../common.js';
+import faker from "faker";
 
 function checkElements(token, user, priority, sound, retry, expire, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#pushOverToken')
@@ -78,18 +79,18 @@ describe('Check PushOver Notification Agent', () => {
   });
 
   it('Set PushOver Notification Agent Settings', () => {
-    const object = {
-      enabled: true,
+    const pushOver = {
+      enabled: faker.random.boolean(),
       notificationTypes: ['TEST', 'TMDB_API_CONNECTION', 'PLEX_SERVER_CONNECTION', 'PLEX_METADATA_UPDATE', 'PLEX_LIBRARY_UPDATE', 'GAPS_MISSING_COLLECTIONS'],
-      token: 'token',
-      user: 'user',
-      priority: 1,
+      token: faker.random.alphaNumeric(),
+      user: faker.internet.userName(),
+      priority: faker.random.number(2),
       sound: 'updown',
-      retry: 60,
-      expire: 3600,
+      retry: faker.random.number(100),
+      expire: faker.random.number(10000),
     };
 
-    cy.request('PUT', '/notifications/pushOver', object)
+    cy.request('PUT', '/notifications/pushOver', pushOver)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(130);
@@ -99,35 +100,35 @@ describe('Check PushOver Notification Agent', () => {
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(132);
-        expect(body.extras.token).to.eq('token');
-        expect(body.extras.user).to.eq('user');
-        expect(body.extras.priority).to.eq(1);
-        expect(body.extras.sound).to.eq('updown');
-        expect(body.extras.retry).to.eq(60);
-        expect(body.extras.expire).to.eq(3600);
+        expect(body.extras.token).to.eq(pushOver.token);
+        expect(body.extras.user).to.eq(pushOver.user);
+        expect(body.extras.priority).to.eq(pushOver.priority);
+        expect(body.extras.sound).to.eq(pushOver.sound);
+        expect(body.extras.retry).to.eq(pushOver.retry);
+        expect(body.extras.expire).to.eq(pushOver.expire);
       })
       .visit('/configuration')
       .then(() => {
         cy.get('#notificationTab')
           .click();
 
-        checkElements('token', 'user', 1, 'updown', '60', '3600', CYPRESS_VALUES.beChecked, CYPRESS_VALUES.beChecked, CYPRESS_VALUES.beChecked, CYPRESS_VALUES.beChecked, CYPRESS_VALUES.beChecked, 'true');
+        checkElements(pushOver.token, pushOver.user, pushOver.priority, pushOver.sound, pushOver.retry, pushOver.expire, CYPRESS_VALUES.beChecked, CYPRESS_VALUES.beChecked, CYPRESS_VALUES.beChecked, CYPRESS_VALUES.beChecked, CYPRESS_VALUES.beChecked, pushOver.enabled.toString());
       });
   });
 
   it('Set TMDB Only PushOver Notification Agent Settings', () => {
-    const object = {
-      enabled: true,
+    const pushOver = {
+      enabled: faker.random.boolean(),
       notificationTypes: ['TMDB_API_CONNECTION'],
-      token: 'token',
-      user: 'user',
-      priority: 1,
+      token: faker.random.alphaNumeric(),
+      user: faker.internet.userName(),
+      priority: faker.random.number(2),
       sound: 'updown',
-      retry: 60,
-      expire: 3600,
+      retry: faker.random.number(100),
+      expire: faker.random.number(10000),
     };
 
-    cy.request('PUT', '/notifications/pushOver', object)
+    cy.request('PUT', '/notifications/pushOver', pushOver)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(130);
@@ -137,19 +138,19 @@ describe('Check PushOver Notification Agent', () => {
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(132);
-        expect(body.extras.token).to.eq('token');
-        expect(body.extras.user).to.eq('user');
-        expect(body.extras.priority).to.eq(1);
-        expect(body.extras.sound).to.eq('updown');
-        expect(body.extras.retry).to.eq(60);
-        expect(body.extras.expire).to.eq(3600);
+        expect(body.extras.token).to.eq(pushOver.token);
+        expect(body.extras.user).to.eq(pushOver.user);
+        expect(body.extras.priority).to.eq(pushOver.priority);
+        expect(body.extras.sound).to.eq(pushOver.sound);
+        expect(body.extras.retry).to.eq(pushOver.retry);
+        expect(body.extras.expire).to.eq(pushOver.expire);
       })
       .visit('/configuration')
       .then(() => {
         cy.get('#notificationTab')
           .click();
 
-        checkElements('token', 'user', 1, 'updown', 60, 3600, CYPRESS_VALUES.beChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'true');
+        checkElements(pushOver.token, pushOver.user, pushOver.priority, pushOver.sound, pushOver.retry, pushOver.expire, CYPRESS_VALUES.beChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, pushOver.enabled.toString());
       });
   });
 

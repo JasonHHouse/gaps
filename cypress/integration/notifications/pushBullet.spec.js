@@ -12,6 +12,7 @@
 /* eslint no-undef: "error" */
 
 import { CYPRESS_VALUES, nuke } from '../common.js';
+import faker from "faker";
 
 function checkElements(channelTag, token, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#pushBulletChannelTag')
@@ -84,14 +85,14 @@ describe('Check PushBullet Notification Agent', () => {
   });
 
   it('Set PushBullet Notification Agent Settings', () => {
-    const object = {
-      enabled: true,
+    const pushBullet = {
+      enabled: faker.random.boolean(),
       notificationTypes: ['TEST', 'TMDB_API_CONNECTION', 'PLEX_SERVER_CONNECTION', 'PLEX_METADATA_UPDATE', 'PLEX_LIBRARY_UPDATE', 'GAPS_MISSING_COLLECTIONS'],
-      channel_tag: 'channel_tag',
-      accessToken: 'accessToken',
+      channel_tag: faker.random.alphaNumeric(),
+      accessToken: faker.random.alphaNumeric(),
     };
 
-    cy.request('PUT', '/notifications/pushbullet', object)
+    cy.request('PUT', '/notifications/pushbullet', pushBullet)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(100);
@@ -101,8 +102,8 @@ describe('Check PushBullet Notification Agent', () => {
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(102);
-        expect(body.extras.channel_tag).to.eq('channel_tag');
-        expect(body.extras.accessToken).to.eq('accessToken');
+        expect(body.extras.channel_tag).to.eq(pushBullet.channel_tag);
+        expect(body.extras.accessToken).to.eq(pushBullet.accessToken);
       })
       .visit('/configuration')
       .then(() => {
@@ -110,10 +111,10 @@ describe('Check PushBullet Notification Agent', () => {
           .click();
 
         cy.get('#pushBulletChannelTag')
-          .should('have.value', 'channel_tag');
+          .should('have.value', pushBullet.channel_tag);
 
         cy.get('#pushBulletAccessToken')
-          .should('have.value', 'accessToken');
+          .should('have.value', pushBullet.accessToken);
 
         cy.get('#pushBulletTmdbApiConnectionNotification')
           .should('be.checked');
@@ -131,19 +132,19 @@ describe('Check PushBullet Notification Agent', () => {
           .should('be.checked');
 
         cy.get('#pushBulletEnabled')
-          .should('have.value', 'true');
+          .should('have.value', pushBullet.enabled.toString());
       });
   });
 
   it('Set TMDB Only PushBullet Notification Agent Settings', () => {
-    const object = {
-      enabled: true,
+    const pushBullet = {
+      enabled: faker.random.boolean(),
       notificationTypes: ['TMDB_API_CONNECTION'],
-      channel_tag: 'channel_tag',
-      accessToken: 'accessToken',
+      channel_tag: faker.random.alphaNumeric(),
+      accessToken: faker.random.alphaNumeric(),
     };
 
-    cy.request('PUT', '/notifications/pushbullet', object)
+    cy.request('PUT', '/notifications/pushbullet', pushBullet)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(100);
@@ -153,8 +154,8 @@ describe('Check PushBullet Notification Agent', () => {
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(102);
-        expect(body.extras.channel_tag).to.eq('channel_tag');
-        expect(body.extras.accessToken).to.eq('accessToken');
+        expect(body.extras.channel_tag).to.eq(pushBullet.channel_tag);
+        expect(body.extras.accessToken).to.eq(pushBullet.accessToken);
       })
       .visit('/configuration')
       .then(() => {
@@ -162,10 +163,10 @@ describe('Check PushBullet Notification Agent', () => {
           .click();
 
         cy.get('#pushBulletChannelTag')
-          .should('have.value', 'channel_tag');
+          .should('have.value', pushBullet.channel_tag);
 
         cy.get('#pushBulletAccessToken')
-          .should('have.value', 'accessToken');
+          .should('have.value', pushBullet.accessToken);
 
         cy.get('#pushBulletTmdbApiConnectionNotification')
           .should('be.checked');
@@ -183,7 +184,7 @@ describe('Check PushBullet Notification Agent', () => {
           .should('not.be.checked');
 
         cy.get('#pushBulletEnabled')
-          .should('have.value', 'true');
+          .should('have.value', pushBullet.enabled.toString());
       });
   });
 
@@ -198,15 +199,18 @@ describe('Check PushBullet Notification Agent', () => {
 
     checkElements('', '', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
 
+    const channel_tag = faker.random.alphaNumeric();
+    const accessToken = faker.random.alphaNumeric();
+
     cy.get('#pushBulletChannelTag')
       .clear()
-      .type('channelTag')
-      .should('have.value', 'channelTag');
+      .type(channel_tag)
+      .should('have.value', channel_tag);
 
     cy.get('#pushBulletAccessToken')
       .clear()
-      .type('accessToken')
-      .should('have.value', 'accessToken');
+      .type(accessToken)
+      .should('have.value', accessToken);
 
     cy.get('#pushBulletTmdbApiConnectionNotification')
       .click();

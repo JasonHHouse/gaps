@@ -493,7 +493,7 @@ describe('Check Email Notification Agent', () => {
     cy.get('#testEmail')
       .click();
 
-    cy.wait(2000);
+    cy.wait(5000);
 
     cy.get('#emailTestSuccess')
       .should(CYPRESS_VALUES.beVisible);

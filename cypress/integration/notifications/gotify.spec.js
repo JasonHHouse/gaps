@@ -12,6 +12,7 @@
 /* eslint no-undef: "error" */
 
 import { CYPRESS_VALUES, nuke } from '../common.js';
+import faker from "faker";
 
 function checkElements(address, token, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#gotifyAddress')
@@ -84,14 +85,14 @@ describe('Check Gotify Notification Agent', () => {
   });
 
   it('Set Gotify Notification Agent Settings', () => {
-    const object = {
-      enabled: true,
+    const gotify = {
+      enabled: faker.random.boolean(),
       notificationTypes: ['TEST', 'TMDB_API_CONNECTION', 'PLEX_SERVER_CONNECTION', 'PLEX_METADATA_UPDATE', 'PLEX_LIBRARY_UPDATE', 'GAPS_MISSING_COLLECTIONS'],
-      address: 'address',
-      token: 'token',
+      address: faker.random.alphaNumeric(),
+      token: faker.random.alphaNumeric(),
     };
 
-    cy.request('PUT', '/notifications/gotify', object)
+    cy.request('PUT', '/notifications/gotify', gotify)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(110);
@@ -101,8 +102,8 @@ describe('Check Gotify Notification Agent', () => {
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(112);
-        expect(body.extras.address).to.eq('address');
-        expect(body.extras.token).to.eq('token');
+        expect(body.extras.address).to.eq(gotify.address);
+        expect(body.extras.token).to.eq(gotify.token);
       })
       .visit('/configuration')
       .then(() => {
@@ -110,10 +111,10 @@ describe('Check Gotify Notification Agent', () => {
           .click();
 
         cy.get('#gotifyAddress')
-          .should('have.value', 'address');
+          .should('have.value', gotify.address);
 
         cy.get('#gotifyToken')
-          .should('have.value', 'token');
+          .should('have.value', gotify.token);
 
         cy.get('#gotifyTmdbApiConnectionNotification')
           .should('be.checked');
@@ -131,19 +132,19 @@ describe('Check Gotify Notification Agent', () => {
           .should('be.checked');
 
         cy.get('#gotifyEnabled')
-          .should('have.value', 'true');
+          .should('have.value', gotify.enabled.toString());
       });
   });
 
   it('Set TMDB Only Gotify Notification Agent Settings', () => {
-    const object = {
-      enabled: true,
+    const gotify = {
+      enabled: faker.random.boolean(),
       notificationTypes: ['TMDB_API_CONNECTION'],
-      address: 'address',
-      token: 'token',
+      address: faker.random.alphaNumeric(),
+      token: faker.random.alphaNumeric(),
     };
 
-    cy.request('PUT', '/notifications/gotify', object)
+    cy.request('PUT', '/notifications/gotify', gotify)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(110);
@@ -153,8 +154,8 @@ describe('Check Gotify Notification Agent', () => {
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(112);
-        expect(body.extras.address).to.eq('address');
-        expect(body.extras.token).to.eq('token');
+        expect(body.extras.address).to.eq(gotify.address);
+        expect(body.extras.token).to.eq(gotify.token);
       })
       .visit('/configuration')
       .then(() => {
@@ -162,10 +163,10 @@ describe('Check Gotify Notification Agent', () => {
           .click();
 
         cy.get('#gotifyAddress')
-          .should('have.value', 'address');
+          .should('have.value', gotify.address);
 
         cy.get('#gotifyToken')
-          .should('have.value', 'token');
+          .should('have.value', gotify.token);
 
         cy.get('#gotifyTmdbApiConnectionNotification')
           .should('be.checked');
@@ -183,7 +184,7 @@ describe('Check Gotify Notification Agent', () => {
           .should('not.be.checked');
 
         cy.get('#gotifyEnabled')
-          .should('have.value', 'true');
+          .should('have.value', gotify.enabled.toString());
       });
   });
 
@@ -198,15 +199,18 @@ describe('Check Gotify Notification Agent', () => {
 
     checkElements('', '', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
 
+    const address = faker.random.alphaNumeric();
+    const token = faker.random.alphaNumeric();
+
     cy.get('#gotifyAddress')
       .clear()
-      .type('address')
-      .should('have.value', 'address');
+      .type(address)
+      .should('have.value', address);
 
     cy.get('#gotifyToken')
       .clear()
-      .type('token')
-      .should('have.value', 'token');
+      .type(token)
+      .should('have.value', token);
 
     cy.get('#gotifyTmdbApiConnectionNotification')
       .click();
