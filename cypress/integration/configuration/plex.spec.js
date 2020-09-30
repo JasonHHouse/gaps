@@ -12,6 +12,7 @@
 /* eslint no-undef: "error" */
 
 import { spyOnAddEventListener } from '../common.js';
+import faker from 'faker';
 
 describe('Plex Configuration Tests', () => {
   before(() => {
@@ -32,20 +33,24 @@ describe('Plex Configuration Tests', () => {
   });
 
   it('Test invalid new Plex Server', () => {
+    const ip = faker.internet.ip;
+    const port = faker.random.number(64000);
+    const token = faker.random.alphaNumeric(32);
+
     cy.get('#address')
       .clear()
-      .type('111.222.121.212')
-      .should('have.value', '111.222.121.212');
+      .type(ip)
+      .should('have.value', ip);
 
     cy.get('#port')
       .clear()
-      .type('11212')
-      .should('have.value', '11212');
+      .type(port)
+      .should('have.value', port);
 
     cy.get('#plexToken')
       .clear()
-      .type('123qwe')
-      .should('have.value', '123qwe');
+      .type(token)
+      .should('have.value', token);
 
     cy.get('#testPlexServer')
       .click();
@@ -120,20 +125,24 @@ describe('Plex Configuration Tests', () => {
   });
 
   it('Save invalid Plex Server', () => {
+    const ip = faker.internet.ip;
+    const port = faker.random.number(64000);
+    const token = faker.random.alphaNumeric(32);
+
     cy.get('#address')
       .clear()
-      .type('111.222.121.212')
-      .should('have.value', '111.222.121.212');
+      .type(ip)
+      .should('have.value', ip);
 
     cy.get('#port')
       .clear()
-      .type('11212')
-      .should('have.value', '11212');
+      .type(port)
+      .should('have.value', port);
 
     cy.get('#plexToken')
       .clear()
-      .type('123qwe')
-      .should('have.value', '123qwe');
+      .type(token)
+      .should('have.value', token);
 
     cy.get('#addPlexServer')
       .click();

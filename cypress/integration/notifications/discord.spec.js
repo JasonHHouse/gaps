@@ -43,12 +43,12 @@ describe('Check Discord Notification Agent', () => {
     cy.request('/notifications/discord')
       .then((resp) => {
         const { body } = resp;
-        cy.fixture('discord.json')
+        cy.fixture('discord.empty.json')
           .then((discord) => {
-            expect(body.code).to.eq(discord.empty.code);
-            expect(body.extras.enabled).to.eq(discord.empty.enabled);
-            expect(body.extras.notificationTypes.length).to.eq(discord.empty.notificationTypesLength);
-            expect(body.extras.webHookUrl).to.eq(discord.empty.webHookUrl);
+            expect(body.code).to.eq(discord.code);
+            expect(body.extras.enabled).to.eq(discord.enabled);
+            expect(body.extras.notificationTypes.length).to.eq(discord.notificationTypesLength);
+            expect(body.extras.webHookUrl).to.eq(discord.webHookUrl);
           })
       })
       .visit('/configuration')
