@@ -23,22 +23,6 @@ import { saveDiscordNotifications, testDiscordNotifications } from './modules/di
 import { getSoundOptions, savePushOverNotifications, testPushOverNotifications } from './modules/push-over-notifications.min.js';
 import { openPlexLibraryConfigurationModel, savePlexLibraryConfiguration } from './modules/plex-configuration.min.js';
 
-let plexSpinner;
-let plexSaveSuccess;
-let plexSaveError;
-let plexTestSuccess;
-let plexTestError;
-let plexDeleteSuccess;
-let plexDeleteError;
-let plexDuplicateError;
-let tmdbSpinner;
-let tmdbSaveSuccess;
-let tmdbSaveError;
-let tmdbTestSuccess;
-let tmdbTestError;
-let deleteAllError;
-let deleteAllSuccess;
-
 function testTmdbKey() {
   hideAllAlertsAndSpinners();
 
@@ -46,7 +30,7 @@ function testTmdbKey() {
     return false;
   }
 
-  tmdbSpinner.show();
+  document.getElementById('tmdbSpinner').style.display = 'block';
 
   $.ajax({
     type: 'PUT',
@@ -56,14 +40,14 @@ function testTmdbKey() {
     success(result) {
       hideAllAlertsAndSpinners();
       if (result && result.code === Payload.TMDB_KEY_VALID) {
-        tmdbTestSuccess.show();
+        document.getElementById('tmdbTestSuccess').style.display = 'block';
       } else {
-        tmdbTestError.show();
+        document.getElementById('tmdbTestError').style.display = 'block';
       }
     },
     error() {
       hideAllAlertsAndSpinners();
-      tmdbTestError.show();
+      document.getElementById('tmdbTestError').style.display = 'block';
     },
   });
   return true;
@@ -76,7 +60,8 @@ function saveTmdbKey() {
     return false;
   }
 
-  tmdbSpinner.show();
+  document.getElementById('tmdbSpinner').style.display = 'block';
+
   $.ajax({
     type: 'POST',
     url: `/configuration/save/tmdbKey/${$('#movieDbApiKey').val()}`,
@@ -85,14 +70,14 @@ function saveTmdbKey() {
     success(result) {
       hideAllAlertsAndSpinners();
       if (result && result.code === Payload.TMDB_KEY_SAVE_SUCCESSFUL) {
-        tmdbSaveSuccess.show();
+        document.getElementById('tmdbSaveSuccess').style.display = 'block';
       } else {
-        tmdbSaveError.show();
+        document.getElementById('tmdbSaveError').style.display = 'block';
       }
     },
     error() {
       hideAllAlertsAndSpinners();
-      tmdbSaveError.show();
+      document.getElementById('tmdbSaveError').style.display = 'block';
     },
   });
   return true;
@@ -105,7 +90,7 @@ function testPlexServer() {
     return false;
   }
 
-  plexSpinner.show();
+  document.getElementById('plexSpinner').style.display = 'block';
 
   $.ajax({
     type: 'PUT',
@@ -119,14 +104,14 @@ function testPlexServer() {
     success(result) {
       hideAllAlertsAndSpinners();
       if (result && result.code === Payload.PLEX_CONNECTION_SUCCEEDED) {
-        plexTestSuccess.show();
+        document.getElementById('plexTestSuccess').style.display = 'block';
       } else {
-        plexTestError.show();
+        document.getElementById('plexTestError').style.display = 'block';
       }
     },
     error() {
       hideAllAlertsAndSpinners();
-      plexTestError.show();
+      document.getElementById('plexTestError').style.display = 'block';
     },
   });
   return true;
@@ -139,7 +124,7 @@ function addPlexServer() {
     return false;
   }
 
-  plexSpinner.show();
+  document.getElementById('plexSpinner').style.display = 'block';
 
   $.ajax({
     type: 'POST',
@@ -151,7 +136,7 @@ function addPlexServer() {
     },
     error() {
       hideAllAlertsAndSpinners();
-      plexSaveError.show();
+      document.getElementById('plexSaveError').style.display = 'block';
     },
   });
   return true;
@@ -159,7 +144,7 @@ function addPlexServer() {
 
 function testExistingPlexServer(machineIdentifier) {
   hideAllAlertsAndSpinners();
-  plexSpinner.show();
+  document.getElementById('plexSpinner').style.display = 'block';
 
   $.ajax({
     type: 'PUT',
@@ -168,21 +153,21 @@ function testExistingPlexServer(machineIdentifier) {
     success(result) {
       hideAllAlertsAndSpinners();
       if (result && result.success) {
-        plexTestSuccess.show();
+        document.getElementById('plexTestSuccess').style.display = 'block';
       } else {
-        plexTestError.show();
+        document.getElementById('plexTestError').style.display = 'block';
       }
     },
     error() {
       hideAllAlertsAndSpinners();
-      plexTestError.show();
+      document.getElementById('plexTestError').style.display = 'block';
     },
   });
 }
 
 function removePlexServer(machineIdentifier) {
   hideAllAlertsAndSpinners();
-  plexSpinner.show();
+  document.getElementById('plexSpinner').style.display = 'block';
 
   $.ajax({
     type: 'DELETE',
@@ -191,14 +176,14 @@ function removePlexServer(machineIdentifier) {
       hideAllAlertsAndSpinners();
       if (result && result.success) {
         $(`#${machineIdentifier}`).remove();
-        plexDeleteSuccess.show();
+        document.getElementById('plexDeleteSuccess').style.display = 'block';
       } else {
-        plexDeleteError.show();
+        document.getElementById('plexDeleteError').style.display = 'block';
       }
     },
     error() {
       hideAllAlertsAndSpinners();
-      plexDeleteError.show();
+      document.getElementById('plexDeleteError').style.display = 'block';
     },
   });
 }
@@ -214,16 +199,16 @@ function nuke() {
     success(result) {
       hideAllAlertsAndSpinners();
       if (result && result.code === Payload.NUKE_SUCCESSFUL) {
-        deleteAllSuccess.show();
+        document.getElementById('deleteAllSuccess').style.display = 'block';
         $('#movieDbApiKey').val('');
         $('#plexServers').html('');
       } else {
-        deleteAllError.show();
+        document.getElementById('deleteAllError').style.display = 'block';
       }
     },
     error() {
       hideAllAlertsAndSpinners();
-      deleteAllError.show();
+      document.getElementById('deleteAllError').style.display = 'block';
     },
   });
 }
@@ -259,23 +244,6 @@ document.addEventListener('DOMContentLoaded', () => {
     },
   });
 
-  plexSpinner = $('#plexSpinner');
-  plexSaveSuccess = $('#plexSaveSuccess');
-  plexSaveError = $('#plexSaveError');
-  plexTestSuccess = $('#plexTestSuccess');
-  plexTestError = $('#plexTestError');
-  plexDeleteSuccess = $('#plexDeleteSuccess');
-  plexDeleteError = $('#plexDeleteError');
-  tmdbSpinner = $('#tmdbSpinner');
-  tmdbSaveSuccess = $('#tmdbSaveSuccess');
-  tmdbSaveError = $('#tmdbSaveError');
-  tmdbTestSuccess = $('#tmdbTestSuccess');
-  tmdbTestError = $('#tmdbTestError');
-  plexDuplicateError = $('#plexDuplicateError');
-
-  deleteAllError = $('#deleteAllError');
-  deleteAllSuccess = $('#deleteAllSuccess');
-
   const socket = new SockJS('/gs-guide-websocket');
   const stompClient = Stomp.over(socket);
   stompClient.connect({}, () => {
@@ -286,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (payload && payload.code === Payload.PLEX_LIBRARIES_FOUND) {
         // Success
-        plexSaveSuccess.show();
+        document.getElementById('plexSaveSuccess').style.display = 'block';
 
         $('#plexToken').val('');
         $('#address').val('');
@@ -298,12 +266,12 @@ document.addEventListener('DOMContentLoaded', () => {
         $('#plexServers').append(theCompiledHtml);
       } else {
         // Failed
-        plexSaveError.show();
+        document.getElementById('plexSaveError').style.display = 'block';
       }
     });
     stompClient.subscribe('/configuration/plex/duplicate', () => {
       hideAllAlertsAndSpinners();
-      plexDuplicateError.show();
+      document.getElementById('plexDuplicateError').style.display = 'block';
     });
   });
 

@@ -24,8 +24,8 @@ function switchPlexLibrary(machineIdentifier, key) {
   const plexServer = plexServers[machineIdentifier];
   const plexLibrary = plexServer.plexLibraries.find((tempPlexLibrary) => tempPlexLibrary.key === parseInt(key, 10));
   libraryTitle.text(`${plexServer.friendlyName} - ${plexLibrary.title}`);
-  libraryTitle.setAttribute('data-machineIdentifier', machineIdentifier);
-  libraryTitle.setAttribute('data-key', key);
+  libraryTitle.attr('data-machineIdentifier', machineIdentifier);
+  libraryTitle.attr('data-key', key);
 
   moviesTable.data().clear();
   moviesTable.rows().invalidate().draw();
@@ -39,8 +39,8 @@ function searchForMovies() {
   moviesTable.data().clear();
   moviesTable.rows().invalidate().draw();
 
-  const machineIdentifier = libraryTitle.getAttribute('data-machineIdentifier');
-  const key = libraryTitle.getAttribute('data-key');
+  const machineIdentifier = libraryTitle.attr('data-machineIdentifier');
+  const key = libraryTitle.attr('data-key');
 
   $.ajax({
     type: 'GET',

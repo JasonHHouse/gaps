@@ -1,153 +1,172 @@
-import {spyOnAddEventListener} from '../common.js';
+/*
+ * Copyright 2019 Jason H House
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 
-describe('TMDB Configuration Tests', function () {
-    before(function () {
-        cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
-    });
-    it('Test invalid TMDB Key', () => {
-        cy.get('#movieDbApiKey')
-            .clear()
-            .type('ABC123')
-            .should('have.value', 'ABC123');
+/* global cy, it, describe, before */
+/* eslint no-undef: "error" */
 
-        cy.get('#testTmdbKey')
-            .click();
+import { spyOnAddEventListener } from '../common.js';
+import faker from 'faker';
 
-        cy.get('#tmdbTestError')
-            .should('be.visible');
+describe('TMDB Configuration Tests', () => {
+  before(() => {
+    cy.visit('/configuration', { onBeforeLoad: spyOnAddEventListener });
+  });
+  it('Test invalid TMDB Key', () => {
+    const invalidKey = faker.random.alphaNumeric(16);
 
-        cy.get('#tmdbTestSuccess')
-            .should('not.be.visible');
+    cy.get('#movieDbApiKey')
+      .clear()
+      .type(invalidKey)
+      .should('have.value', invalidKey);
 
-        cy.get('#tmdbSaveError')
-            .should('not.be.visible');
+    cy.get('#testTmdbKey')
+      .click();
 
-        cy.get('#tmdbSaveSuccess')
-            .should('not.be.visible');
-    });
+    cy.wait(2000);
 
-    it('Test valid TMDB Key', () => {
-        cy.get('#movieDbApiKey')
-            .clear()
-            .type('723b4c763114904392ca441909aa0375')
-            .should('have.value', '723b4c763114904392ca441909aa0375');
+    cy.get('#tmdbTestError')
+      .should('be.visible');
 
-        cy.get('#testTmdbKey')
-            .click();
+    cy.get('#tmdbTestSuccess')
+      .should('not.be.visible');
 
-        cy.get('#tmdbTestError')
-            .should('not.be.visible');
+    cy.get('#tmdbSaveError')
+      .should('not.be.visible');
 
-        cy.get('#tmdbTestSuccess')
-            .should('be.visible');
+    cy.get('#tmdbSaveSuccess')
+      .should('not.be.visible');
+  });
 
-        cy.get('#tmdbSaveError')
-            .should('not.be.visible');
+  it('Test valid TMDB Key', () => {
+    cy.get('#movieDbApiKey')
+      .clear()
+      .type('723b4c763114904392ca441909aa0375')
+      .should('have.value', '723b4c763114904392ca441909aa0375');
 
-        cy.get('#tmdbSaveSuccess')
-            .should('not.be.visible');
-    });
+    cy.get('#testTmdbKey')
+      .click();
 
-    it('Save invalid TMDB Key', () => {
-        cy.get('#movieDbApiKey')
-            .clear()
-            .type('ABC123')
-            .should('have.value', 'ABC123');
+    cy.get('#tmdbTestError')
+      .should('not.be.visible');
 
-        cy.get('#saveTmdbKey')
-            .click();
+    cy.get('#tmdbTestSuccess')
+      .should('be.visible');
 
-        cy.get('#tmdbTestError')
-            .should('not.be.visible');
+    cy.get('#tmdbSaveError')
+      .should('not.be.visible');
 
-        cy.get('#tmdbTestSuccess')
-            .should('not.be.visible');
+    cy.get('#tmdbSaveSuccess')
+      .should('not.be.visible');
+  });
 
-        cy.get('#tmdbSaveError')
-            .should('not.be.visible');
+  it('Save invalid TMDB Key', () => {
+    const invalidKey = faker.random.alphaNumeric(16);
 
-        cy.get('#tmdbSaveSuccess')
-            .should('be.visible');
+    cy.get('#movieDbApiKey')
+      .clear()
+      .type(invalidKey)
+      .should('have.value', invalidKey);
 
-        cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
+    cy.get('#saveTmdbKey')
+      .click();
 
-        cy.get('#movieDbApiKey')
-            .should('have.value', 'ABC123');
-    });
+    cy.get('#tmdbTestError')
+      .should('not.be.visible');
 
-    it('Save valid TMDB Key', () => {
-        cy.get('#movieDbApiKey')
-            .clear()
-            .type('723b4c763114904392ca441909aa0375')
-            .should('have.value', '723b4c763114904392ca441909aa0375');
+    cy.get('#tmdbTestSuccess')
+      .should('not.be.visible');
 
-        cy.get('#saveTmdbKey')
-            .click();
+    cy.get('#tmdbSaveError')
+      .should('not.be.visible');
 
-        cy.get('#tmdbTestError')
-            .should('not.be.visible');
+    cy.get('#tmdbSaveSuccess')
+      .should('be.visible');
 
-        cy.get('#tmdbTestSuccess')
-            .should('not.be.visible');
+    cy.visit('/configuration', { onBeforeLoad: spyOnAddEventListener });
 
-        cy.get('#tmdbSaveError')
-            .should('not.be.visible');
+    cy.get('#movieDbApiKey')
+      .should('have.value', invalidKey);
+  });
 
-        cy.get('#tmdbSaveSuccess')
-            .should('be.visible');
+  it('Save valid TMDB Key', () => {
+    cy.get('#movieDbApiKey')
+      .clear()
+      .type('723b4c763114904392ca441909aa0375')
+      .should('have.value', '723b4c763114904392ca441909aa0375');
 
-        cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
+    cy.get('#saveTmdbKey')
+      .click();
 
-        cy.get('#movieDbApiKey')
-            .should('have.value', '723b4c763114904392ca441909aa0375');
-    });
+    cy.get('#tmdbTestError')
+      .should('not.be.visible');
 
-    it('Attempt to save empty TMDB Key', () => {
-        cy.get('#movieDbApiKey')
-            .clear()
-            .should('have.value', '');
+    cy.get('#tmdbTestSuccess')
+      .should('not.be.visible');
 
-        cy.get('#saveTmdbKey')
-            .click();
+    cy.get('#tmdbSaveError')
+      .should('not.be.visible');
 
-        cy.get('#emptyTmdbKeyLabel')
-            .should('be.visible');
+    cy.get('#tmdbSaveSuccess')
+      .should('be.visible');
 
-        cy.get('#tmdbTestError')
-            .should('not.be.visible');
+    cy.visit('/configuration', { onBeforeLoad: spyOnAddEventListener });
 
-        cy.get('#tmdbTestSuccess')
-            .should('not.be.visible');
+    cy.get('#movieDbApiKey')
+      .should('have.value', '723b4c763114904392ca441909aa0375');
+  });
 
-        cy.get('#tmdbSaveError')
-            .should('not.be.visible');
+  it('Attempt to save empty TMDB Key', () => {
+    cy.get('#movieDbApiKey')
+      .clear()
+      .should('have.value', '');
 
-        cy.get('#tmdbSaveSuccess')
-            .should('not.be.visible');
-    });
+    cy.get('#saveTmdbKey')
+      .click();
 
-    it('Attempt to test empty TMDB Key', () => {
-        cy.get('#movieDbApiKey')
-            .clear()
-            .should('have.value', '');
+    cy.get('#emptyTmdbKeyLabel')
+      .should('be.visible');
 
-        cy.get('#testTmdbKey')
-            .click();
+    cy.get('#tmdbTestError')
+      .should('not.be.visible');
 
-        cy.get('#emptyTmdbKeyLabel')
-            .should('be.visible');
+    cy.get('#tmdbTestSuccess')
+      .should('not.be.visible');
 
-        cy.get('#tmdbTestError')
-            .should('not.be.visible');
+    cy.get('#tmdbSaveError')
+      .should('not.be.visible');
 
-        cy.get('#tmdbTestSuccess')
-            .should('not.be.visible');
+    cy.get('#tmdbSaveSuccess')
+      .should('not.be.visible');
+  });
 
-        cy.get('#tmdbSaveError')
-            .should('not.be.visible');
+  it('Attempt to test empty TMDB Key', () => {
+    cy.get('#movieDbApiKey')
+      .clear()
+      .should('have.value', '');
 
-        cy.get('#tmdbSaveSuccess')
-            .should('not.be.visible');
-    });
+    cy.get('#testTmdbKey')
+      .click();
+
+    cy.get('#emptyTmdbKeyLabel')
+      .should('be.visible');
+
+    cy.get('#tmdbTestError')
+      .should('not.be.visible');
+
+    cy.get('#tmdbTestSuccess')
+      .should('not.be.visible');
+
+    cy.get('#tmdbSaveError')
+      .should('not.be.visible');
+
+    cy.get('#tmdbSaveSuccess')
+      .should('not.be.visible');
+  });
 });
-
