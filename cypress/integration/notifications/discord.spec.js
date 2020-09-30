@@ -12,6 +12,7 @@
 /* eslint no-undef: "error" */
 
 import { CYPRESS_VALUES, nuke } from '../common.js';
+import faker from 'faker';
 
 function checkElements(discordWebHookUrl, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#discordWebHookUrl')
@@ -81,7 +82,7 @@ describe('Check Discord Notification Agent', () => {
 
   it('Set Discord Notification Agent Settings', () => {
     const dummyAll = {
-      "enabled": true,
+      "enabled": faker.random.boolean(),
       "notificationTypes": [
         "TEST",
         "TMDB_API_CONNECTION",
@@ -90,7 +91,7 @@ describe('Check Discord Notification Agent', () => {
         "PLEX_LIBRARY_UPDATE",
         "GAPS_MISSING_COLLECTIONS"
       ],
-      "webHookUrl": "webHookUrl"
+      "webHookUrl": faker.internet.url()
     };
 
     cy.request('PUT', '/notifications/discord', dummyAll)
@@ -103,7 +104,7 @@ describe('Check Discord Notification Agent', () => {
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(142);
-        expect(body.extras.webHookUrl).to.eq('webHookUrl');
+        expect(body.extras.webHookUrl).to.eq(dummyAll.webHookUrl);
       })
       .visit('/configuration')
       .then(() => {
@@ -111,7 +112,7 @@ describe('Check Discord Notification Agent', () => {
           .click();
 
         cy.get('#discordWebHookUrl')
-          .should('have.value', 'webHookUrl');
+          .should('have.value', dummyAll.webHookUrl);
 
         cy.get('#discordTmdbApiConnectionNotification')
           .should('be.checked');
@@ -129,17 +130,17 @@ describe('Check Discord Notification Agent', () => {
           .should('be.checked');
 
         cy.get('#discordEnabled')
-          .should('have.value', 'true');
+          .should('have.value', dummyAll.enabled.toString());
       });
   });
 
   it('Set TMDB Only Discord Notification Agent Settings', () => {
     const tmdbOnly = {
-      "enabled": true,
+      "enabled": faker.random.boolean(),
       "notificationTypes": [
         "TMDB_API_CONNECTION"
       ],
-      "webHookUrl": "webHookUrl"
+      "webHookUrl": faker.internet.url()
     };
     cy.request('PUT', '/notifications/discord', tmdbOnly)
       .then((resp) => {
@@ -151,7 +152,7 @@ describe('Check Discord Notification Agent', () => {
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(142);
-        expect(body.extras.webHookUrl).to.eq('webHookUrl');
+        expect(body.extras.webHookUrl).to.eq(tmdbOnly.webHookUrl);
       })
       .visit('/configuration')
       .then(() => {
@@ -159,7 +160,7 @@ describe('Check Discord Notification Agent', () => {
           .click();
 
         cy.get('#discordWebHookUrl')
-          .should('have.value', 'webHookUrl');
+          .should('have.value', tmdbOnly.webHookUrl);
 
         cy.get('#discordTmdbApiConnectionNotification')
           .should('be.checked');
@@ -177,7 +178,7 @@ describe('Check Discord Notification Agent', () => {
           .should('not.be.checked');
 
         cy.get('#discordEnabled')
-          .should('have.value', 'true');
+          .should('have.value', tmdbOnly.enabled.toString());
       });
   });
 
@@ -192,10 +193,12 @@ describe('Check Discord Notification Agent', () => {
 
     checkElements('', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
 
+    const url = faker.internet.url();
+
     cy.get('#discordWebHookUrl')
       .clear()
-      .type('discordWebHookUrl')
-      .should('have.value', 'discordWebHookUrl');
+      .type(url)
+      .should('have.value', url);
 
     cy.get('#discordTmdbApiConnectionNotification')
       .click();

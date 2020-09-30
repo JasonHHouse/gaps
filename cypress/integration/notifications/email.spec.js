@@ -12,6 +12,7 @@
 /* eslint no-undef: "error" */
 
 import { CYPRESS_VALUES, nuke } from '../common.js';
+import faker from 'faker';
 
 function checkElements(username, password, mailTo, mailFrom, mailServer, mailPort, mailTransportProtocol, mailSmtpAuth, mailSmtpTlsEnabled, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#emailUsername')
@@ -133,21 +134,21 @@ describe('Check Email Notification Agent', () => {
   });
 
   it('Set Email Notification Agent Settings', () => {
-    const object = {
-      enabled: true,
+    const email = {
+      "enabled": faker.random.boolean(),
       notificationTypes: ['TEST', 'TMDB_API_CONNECTION', 'PLEX_SERVER_CONNECTION', 'PLEX_METADATA_UPDATE', 'PLEX_LIBRARY_UPDATE', 'GAPS_MISSING_COLLECTIONS'],
-      username: 'username',
-      password: 'password',
-      mailTo: 'mailTo',
-      mailFrom: 'mailFrom',
-      mailServer: 'mailServer',
-      mailPort: 12345,
-      mailTransportProtocol: 'mailTransportProtocol',
-      mailSmtpAuth: 'mailSmtpAuth',
-      mailSmtpTlsEnabled: true,
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+      mailTo: faker.internet.email(),
+      mailFrom: faker.internet.email(),
+      mailServer: faker.internet.url(),
+      mailPort: faker.random.number(64000),
+      mailTransportProtocol: faker.lorem.word(),
+      mailSmtpAuth: faker.lorem.word(),
+      mailSmtpTlsEnabled: faker.random.boolean(),
     };
 
-    cy.request('PUT', '/notifications/email', object)
+    cy.request('PUT', '/notifications/email', email)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(120);
@@ -157,10 +158,10 @@ describe('Check Email Notification Agent', () => {
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(122);
-        expect(body.extras.username).to.eq('username');
-        expect(body.extras.password).to.eq('password');
-        expect(body.extras.mailPort).to.eq(12345);
-        expect(body.extras.mailSmtpTlsEnabled).to.eq(true);
+        expect(body.extras.username).to.eq(email.username);
+        expect(body.extras.password).to.eq(email.password);
+        expect(body.extras.mailPort).to.eq(email.mailPort);
+        expect(body.extras.mailSmtpTlsEnabled).to.eq(email.mailSmtpTlsEnabled);
       })
       .visit('/configuration')
       .then(() => {
@@ -168,31 +169,31 @@ describe('Check Email Notification Agent', () => {
           .click();
 
         cy.get('#emailUsername')
-          .should('have.value', 'username');
+          .should('have.value', email.username);
 
         cy.get('#emailPassword')
-          .should('have.value', 'password');
+          .should('have.value', email.password);
 
         cy.get('#emailMailTo')
-          .should('have.value', 'mailTo');
+          .should('have.value', email.mailTo);
 
         cy.get('#emailMailFrom')
-          .should('have.value', 'mailFrom');
+          .should('have.value', email.mailFrom);
 
         cy.get('#emailServer')
-          .should('have.value', 'mailServer');
+          .should('have.value', email.mailServer);
 
         cy.get('#emailPort')
-          .should('have.value', '12345');
+          .should('have.value', email.mailPort);
 
         cy.get('#emailTransportProtocol')
-          .should('have.value', 'mailTransportProtocol');
+          .should('have.value', email.mailTransportProtocol);
 
         cy.get('#emailSmtpAuth')
-          .should('have.value', 'mailSmtpAuth');
+          .should('have.value', email.mailSmtpAuth);
 
         cy.get('#emailSmtpTlsEnabled')
-          .should('have.value', 'true');
+          .should('have.value', email.mailSmtpTlsEnabled.toString());
 
         cy.get('#emailTmdbApiConnectionNotification')
           .should('be.checked');
@@ -210,26 +211,26 @@ describe('Check Email Notification Agent', () => {
           .should('be.checked');
 
         cy.get('#emailEnabled')
-          .should('have.value', 'true');
+          .should('have.value', email.enabled.toString());
       });
   });
 
   it('Set TMDB Only Email Notification Agent Settings', () => {
-    const object = {
-      enabled: true,
+    const email = {
+      "enabled": faker.random.boolean(),
       notificationTypes: ['TMDB_API_CONNECTION'],
-      username: 'username',
-      password: 'password',
-      mailTo: 'mailTo',
-      mailFrom: 'mailFrom',
-      mailServer: 'mailServer',
-      mailPort: 12345,
-      mailTransportProtocol: 'mailTransportProtocol',
-      mailSmtpAuth: 'mailSmtpAuth',
-      mailSmtpTlsEnabled: true,
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+      mailTo: faker.internet.email(),
+      mailFrom: faker.internet.email(),
+      mailServer: faker.internet.url(),
+      mailPort: faker.random.number(64000),
+      mailTransportProtocol: faker.lorem.word(),
+      mailSmtpAuth: faker.lorem.word(),
+      mailSmtpTlsEnabled: faker.random.boolean(),
     };
 
-    cy.request('PUT', '/notifications/email', object)
+    cy.request('PUT', '/notifications/email', email)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(120);
@@ -239,10 +240,10 @@ describe('Check Email Notification Agent', () => {
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(122);
-        expect(body.extras.username).to.eq('username');
-        expect(body.extras.password).to.eq('password');
-        expect(body.extras.mailPort).to.eq(12345);
-        expect(body.extras.mailSmtpTlsEnabled).to.eq(true);
+        expect(body.extras.username).to.eq(email.username);
+        expect(body.extras.password).to.eq(email.password);
+        expect(body.extras.mailPort).to.eq(email.mailPort);
+        expect(body.extras.mailSmtpTlsEnabled).to.eq(email.mailSmtpTlsEnabled);
       })
       .visit('/configuration')
       .then(() => {
@@ -250,31 +251,31 @@ describe('Check Email Notification Agent', () => {
           .click();
 
         cy.get('#emailUsername')
-          .should('have.value', 'username');
+          .should('have.value', email.username);
 
         cy.get('#emailPassword')
-          .should('have.value', 'password');
+          .should('have.value', email.password);
 
         cy.get('#emailMailTo')
-          .should('have.value', 'mailTo');
+          .should('have.value', email.mailTo);
 
         cy.get('#emailMailFrom')
-          .should('have.value', 'mailFrom');
+          .should('have.value', email.mailFrom);
 
         cy.get('#emailServer')
-          .should('have.value', 'mailServer');
+          .should('have.value', email.mailServer);
 
         cy.get('#emailPort')
-          .should('have.value', '12345');
+          .should('have.value', email.mailPort);
 
         cy.get('#emailTransportProtocol')
-          .should('have.value', 'mailTransportProtocol');
+          .should('have.value', email.mailTransportProtocol);
 
         cy.get('#emailSmtpAuth')
-          .should('have.value', 'mailSmtpAuth');
+          .should('have.value', email.mailSmtpAuth);
 
         cy.get('#emailSmtpTlsEnabled')
-          .should('have.value', 'true');
+          .should('have.value', email.mailSmtpTlsEnabled.toString());
 
         cy.get('#emailTmdbApiConnectionNotification')
           .should('be.checked');
@@ -292,7 +293,7 @@ describe('Check Email Notification Agent', () => {
           .should('not.be.checked');
 
         cy.get('#emailEnabled')
-          .should('have.value', 'true');
+          .should('have.value', email.enabled.toString());
       });
   });
 
@@ -307,49 +308,59 @@ describe('Check Email Notification Agent', () => {
 
     checkElements('', '', '', '', '', 0, 'smtp', 'true', 'false', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
 
+    const username = faker.internet.userName();
+    const password = faker.internet.password();
+    const mailTo = faker.internet.email();
+    const mailFrom = faker.internet.email();
+    const mailServer = faker.internet.url();
+    const mailPort = faker.random.number(64000);
+    const mailTransportProtocol = faker.lorem.word();
+    const mailSmtpAuth = faker.lorem.word();
+    const mailSmtpTlsEnabled = faker.random.boolean();
+
     cy.get('#emailUsername')
       .clear()
-      .type('username')
-      .should('have.value', 'username');
+      .type(username)
+      .should('have.value', username);
 
     cy.get('#emailPassword')
       .clear()
-      .type('password')
-      .should('have.value', 'password');
+      .type(password)
+      .should('have.value', password);
 
     cy.get('#emailMailTo')
       .clear()
-      .type('mailTo')
-      .should('have.value', 'mailTo');
+      .type(mailTo)
+      .should('have.value', mailTo);
 
     cy.get('#emailMailFrom')
       .clear()
-      .type('MailFrom')
-      .should('have.value', 'MailFrom');
+      .type(mailFrom)
+      .should('have.value', mailFrom);
 
     cy.get('#emailServer')
       .clear()
-      .type('111.222.333.444')
-      .should('have.value', '111.222.333.444');
+      .type(mailServer)
+      .should('have.value', mailServer);
 
     cy.get('#emailPort')
       .clear()
-      .type('12345')
-      .should('have.value', '12345');
+      .type(mailPort)
+      .should('have.value', mailPort);
 
     cy.get('#emailTransportProtocol')
       .clear()
-      .type('etp')
-      .should('have.value', 'etp');
+      .type(mailTransportProtocol)
+      .should('have.value', mailTransportProtocol);
 
     cy.get('#emailSmtpAuth')
       .clear()
-      .type('smtp')
-      .should('have.value', 'smtp');
+      .type(mailSmtpAuth)
+      .should('have.value', mailSmtpAuth);
 
     cy.get('#emailSmtpTlsEnabled')
-      .select('true')
-      .should('have.value', 'true');
+      .select(mailSmtpTlsEnabled)
+      .should('have.value', mailSmtpTlsEnabled.toString());
 
     cy.get('#emailTmdbApiConnectionNotification')
       .click();
@@ -482,7 +493,7 @@ describe('Check Email Notification Agent', () => {
     cy.get('#testEmail')
       .click();
 
-    cy.wait(5000);
+    cy.wait(2000);
 
     cy.get('#emailTestSuccess')
       .should(CYPRESS_VALUES.beVisible);
@@ -574,7 +585,7 @@ describe('Check Email Notification Agent', () => {
     cy.get('#testEmail')
       .click();
 
-    cy.wait(5000);
+    cy.wait(2000);
 
     cy.get('#emailTestSuccess')
       .should(CYPRESS_VALUES.notBeVisible);

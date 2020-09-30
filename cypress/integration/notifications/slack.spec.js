@@ -12,6 +12,7 @@
 /* eslint no-undef: "error" */
 
 import { CYPRESS_VALUES, nuke } from '../common.js';
+import faker from "faker";
 
 function checkElements(slackWebHookUrl, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#slackWebHookUrl')
@@ -181,10 +182,12 @@ describe('Check Slack Notification Agent', () => {
 
     checkElements('', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
 
+    const url = faker.internet.url();
+
     cy.get('#slackWebHookUrl')
       .clear()
-      .type('slackWebHookUrl')
-      .should('have.value', 'slackWebHookUrl');
+      .type(url)
+      .should('have.value', url);
 
     cy.get('#slackTmdbApiConnectionNotification')
       .click();
