@@ -359,7 +359,7 @@ describe('Check Email Notification Agent', () => {
       .should('have.value', mailSmtpAuth);
 
     cy.get('#emailSmtpTlsEnabled')
-      .select(mailSmtpTlsEnabled)
+      .select(mailSmtpTlsEnabled.toString())
       .should('have.value', mailSmtpTlsEnabled.toString());
 
     cy.get('#emailTmdbApiConnectionNotification')
