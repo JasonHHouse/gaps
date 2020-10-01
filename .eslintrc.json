@@ -19,6 +19,7 @@
       {
         "js": "always"
       }
-    ]
+    ],
+    "prefer-rest-params": 0
   }
 }

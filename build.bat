@@ -1,3 +1,6 @@
+call npm ci
+call eslint cypress/integration
+call eslint GapsWeb/src/main/resources/static/js
 call npm run minify-input-css
 call npm run uglifyjs-modules
 call npm run uglifyjs-pages
