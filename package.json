@@ -22,8 +22,8 @@
     "minify-input-css": "postcss GapsWeb/src/main/resources/static/css/input.css > GapsWeb/src/main/resources/static/css/input.min.css",
     "uglifyjs-modules": "rm GapsWeb/src/main/resources/static/js/modules/*.min.js && uglifyjs-folder GapsWeb/src/main/resources/static/js/modules/ -eo GapsWeb/src/main/resources/static/js/modules/\n",
     "uglifyjs-pages": "rm GapsWeb/src/main/resources/static/js/page/*.min.js && uglifyjs-folder GapsWeb/src/main/resources/static/js/page/ -eo GapsWeb/src/main/resources/static/js/page/\n",
-    "eslint-cypress" : "eslint cypress/integration",
-    "eslint-gaps" : "eslint GapsWeb/src/main/resources/static/js"
+    "eslint-cypress" : "./node_modules/.bin/eslint cypress/integration",
+    "eslint-gaps" : "./node_modules/.bin/eslint GapsWeb/src/main/resources/static/js"
   },
   "repository": {
     "type": "git",
