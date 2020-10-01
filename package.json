@@ -1,6 +1,6 @@
 {
   "name": "gaps",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Gaps searches through your Plex Server or local folders for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.",
   "main": "/",
   "dependencies": {
@@ -20,12 +20,8 @@
   "scripts": {
     "e2e": "cypress open",
     "minify-input-css": "postcss GapsWeb/src/main/resources/static/css/input.css > GapsWeb/src/main/resources/static/css/input.min.css",
-    "uglifyjs-index-js": "uglifyjs GapsWeb/src/main/resources/static/js/index.js --compress --output GapsWeb/src/main/resources/static/js/index.min.js",
-    "uglifyjs-configuration-js": "uglifyjs GapsWeb/src/main/resources/static/js/configuration.js --compress --output GapsWeb/src/main/resources/static/js/configuration.min.js",
-    "uglifyjs-libraries-js": "uglifyjs GapsWeb/src/main/resources/static/js/libraries.js --compress --output GapsWeb/src/main/resources/static/js/libraries.min.js",
-    "uglifyjs-recommended-js": "uglifyjs GapsWeb/src/main/resources/static/js/recommended.js --compress --output GapsWeb/src/main/resources/static/js/recommended.min.js",
-    "uglifyjs-mislabeled-js": "uglifyjs GapsWeb/src/main/resources/static/js/mislabeled.js --compress --output GapsWeb/src/main/resources/static/js/mislabeled.min.js",
-    "uglifyjs-modules": "uglifyjs-folder GapsWeb/src/main/resources/static/js/modules/ -eo GapsWeb/src/main/resources/static/js/modules/ --pattern \"**/*.js,GapsWeb/src/main/resources/static/js/modules/ -eo GapsWeb/src/main/resources/static/js/modules/ --pattern \"**/*.js,GapsWeb/src/main/resources/static/js/modules/ -eo GapsWeb/src/main/resources/static/js/modules/*/*min.js\"*/*min.js\"\n"
+    "uglifyjs-modules": "rm GapsWeb/src/main/resources/static/js/modules/*.min.js && uglifyjs-folder GapsWeb/src/main/resources/static/js/modules/ -eo GapsWeb/src/main/resources/static/js/modules/\n",
+    "uglifyjs-pages": "rm GapsWeb/src/main/resources/static/js/page/*.min.js && uglifyjs-folder GapsWeb/src/main/resources/static/js/page/ -eo GapsWeb/src/main/resources/static/js/page/\n"
   },
   "repository": {
     "type": "git",

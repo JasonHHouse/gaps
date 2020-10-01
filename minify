@@ -1,10 +1,5 @@
 #!/bin/bash
+set -e
 npm run minify-input-css
-npm run uglifyjs-index-js
-npm run uglifyjs-configuration-js
-npm run uglifyjs-libraries-js
-npm run uglifyjs-recommended-js
-npm run uglifyjs-common-js
-npm run uglifyjs-payload-js
-npm run uglifyjs-mislabeled-js
 npm run uglifyjs-modules
+npm run uglifyjs-pages
