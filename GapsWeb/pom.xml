@@ -5,7 +5,7 @@
     <parent>
         <artifactId>Gaps</artifactId>
         <groupId>com.jasonhhouse</groupId>
-        <version>0.8.1</version>
+        <version>0.8.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -21,19 +21,19 @@
         <dependency>
             <groupId>com.jasonhhouse</groupId>
             <artifactId>Core</artifactId>
-            <version>0.8.1</version>
+            <version>0.8.2</version>
         </dependency>
 
         <dependency>
             <groupId>com.jasonhhouse</groupId>
             <artifactId>Plex</artifactId>
-            <version>0.8.1</version>
+            <version>0.8.2</version>
         </dependency>
 
         <dependency>
             <groupId>com.jasonhhouse</groupId>
             <artifactId>RadarrV3</artifactId>
-            <version>0.7.5</version>
+            <version>0.8.2</version>
         </dependency>
 
         <dependency>
@@ -80,7 +80,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.4.7</version>
+            <version>1.4.8</version>
         </dependency>
 
         <dependency>
@@ -252,7 +252,7 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>mockwebserver</artifactId>
-            <version>4.7.2</version>
+            <version>4.9.0</version>
             <scope>test</scope>
         </dependency>
 

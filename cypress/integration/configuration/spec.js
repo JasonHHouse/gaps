@@ -1,75 +1,71 @@
-import {nuke} from "../common";
+/*
+ * Copyright 2019 Jason H House
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 
-let appHasStarted;
+/* global cy, it, describe */
+/* eslint no-undef: "error" */
 
-function spyOnAddEventListener(win) {
-    // win = window object in our application
-    const addListener = win.EventTarget.prototype.addEventListener
-    win.EventTarget.prototype.addEventListener = function (name) {
-        if (name === 'change') {
-            // web app added an event listener to the input box -
-            // that means the web application has started
-            appHasStarted = true;
-            // restore the original event listener
-            win.EventTarget.prototype.addEventListener = addListener
-        }
-        return addListener.apply(this, arguments)
-    }
-}
+import { nuke, spyOnAddEventListener } from '../common.js';
 
-describe('Configuration Tests', function () {
-    it('Clean configuration page load', () => {
-        nuke();
+describe('Configuration Tests', () => {
+  it('Clean configuration page load', () => {
+    nuke();
 
-        cy.visit('/configuration', {onBeforeLoad: spyOnAddEventListener});
+    cy.visit('/configuration', { onBeforeLoad: spyOnAddEventListener });
 
-        cy.get('.active > .nav-link')
-            .should('have.attr', 'href', '/configuration')
-            .parent()
-            .should('have.attr', 'aria-current', 'page');
+    cy.get('.active > .nav-link')
+      .should('have.attr', 'href', '/configuration')
+      .parent()
+      .should('have.attr', 'aria-current', 'page');
 
-        cy.get('.navbar-nav > :nth-child(1) > .nav-link')
-            .should('have.attr', 'href', '/libraries')
-            .parent()
-            .should('not.have.attr', 'aria-current', 'page');
+    cy.get('.navbar-nav > :nth-child(1) > .nav-link')
+      .should('have.attr', 'href', '/libraries')
+      .parent()
+      .should('not.have.attr', 'aria-current', 'page');
 
-        cy.get('.navbar-nav > :nth-child(2) > .nav-link')
-            .should('have.attr', 'href', '/recommended')
-            .parent()
-            .should('not.have.attr', 'aria-current', 'page');
+    cy.get('.navbar-nav > :nth-child(2) > .nav-link')
+      .should('have.attr', 'href', '/recommended')
+      .parent()
+      .should('not.have.attr', 'aria-current', 'page');
 
-        cy.get('.navbar-nav > :nth-child(4) > .nav-link')
-            .should('have.attr', 'href', '/rssCheck')
-            .parent()
-            .should('not.have.attr', 'aria-current', 'page');
+    cy.get('.navbar-nav > :nth-child(4) > .nav-link')
+      .should('have.attr', 'href', '/rssCheck')
+      .parent()
+      .should('not.have.attr', 'aria-current', 'page');
 
-        cy.get('.navbar-nav > :nth-child(7) > .nav-link')
-            .should('have.attr', 'href', '/about')
-            .parent()
-            .should('not.have.attr', 'aria-current', 'page');
+    cy.get('.navbar-nav > :nth-child(7) > .nav-link')
+      .should('have.attr', 'href', '/about')
+      .parent()
+      .should('not.have.attr', 'aria-current', 'page');
 
-        cy.get('#tmdbTab')
-            .should('have.class', 'active');
+    cy.get('#tmdbTab')
+      .should('have.class', 'active');
 
-        cy.get('#plexTab')
-            .should('not.have.class', 'active');
+    cy.get('#plexTab')
+      .should('not.have.class', 'active');
 
-        cy.get('#scheduleTab')
-            .should('not.have.class', 'active');
+    cy.get('#scheduleTab')
+      .should('not.have.class', 'active');
 
-        cy.get('#folderTab')
-            .should('have.class', 'disabled');
+    cy.get('#folderTab')
+      .should('have.class', 'disabled');
 
-        cy.get('#tmdbTestError')
-            .should('not.be.visible');
+    cy.get('#tmdbTestError')
+      .should('not.be.visible');
 
-        cy.get('#tmdbTestSuccess')
-            .should('not.be.visible');
+    cy.get('#tmdbTestSuccess')
+      .should('not.be.visible');
 
-        cy.get('#tmdbSaveError')
-            .should('not.be.visible');
+    cy.get('#tmdbSaveError')
+      .should('not.be.visible');
 
-        cy.get('#tmdbSaveSuccess')
-            .should('not.be.visible');
-    });
+    cy.get('#tmdbSaveSuccess')
+      .should('not.be.visible');
+  });
 });

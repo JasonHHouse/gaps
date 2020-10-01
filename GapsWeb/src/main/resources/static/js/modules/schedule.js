@@ -9,31 +9,30 @@
  *
  */
 
+import hideAllAlertsAndSpinners from './alerts-manager.min.js';
+import Payload from './payload.min.js';
 
-import {hideAllAlertsAndSpinners} from "./alerts-manager.min.js";
-import {Payload} from "./payload.min.js";
+export default async function saveSchedule() {
+  hideAllAlertsAndSpinners();
 
-export async function saveSchedule() {
+  const body = {};
+  body.schedule = document.getElementById('setSchedule').value;
+  body.enabled = document.getElementById('scheduleEnabled').value;
+
+  const response = await fetch('/schedule', {
+    method: 'put',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+  const put = await response.json();
+  if (put.code && put.code === Payload.SCHEDULE_UPDATED) {
     hideAllAlertsAndSpinners();
-
-    const body = {};
-    body.schedule = document.getElementById('setSchedule').value;
-    body.enabled = document.getElementById('scheduleEnabled').value;
-
-    let response = await fetch(`/schedule`, {
-        method: 'put',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-    })
-    const put = await response.json();
-    if (put.code && put.code === Payload.SCHEDULE_UPDATED) {
-        hideAllAlertsAndSpinners();
-        document.getElementById('scheduleSaveSuccess').style.display = 'block';
-    } else {
-        hideAllAlertsAndSpinners();
-        document.getElementById('scheduleSaveError').style.display = 'block';
-    }
+    document.getElementById('scheduleSaveSuccess').style.display = 'block';
+  } else {
+    hideAllAlertsAndSpinners();
+    document.getElementById('scheduleSaveError').style.display = 'block';
+  }
 }
