@@ -10,8 +10,7 @@ pipeline {
         nodejs(nodeJSInstallationName: 'Node 14.x') {
             sh 'npm install'
             sh 'npm ci'
-            sh 'npm run eslint-cypress && npm run eslint-gaps'
-            sh 'npm run minify-input-css && npm run uglifyjs-modules && npm run uglifyjs-pages'
+            sh './minify'
         }
       }
     }
