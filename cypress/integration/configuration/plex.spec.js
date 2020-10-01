@@ -11,8 +11,8 @@
 /* global cy, it, describe, before */
 /* eslint no-undef: "error" */
 
-import { spyOnAddEventListener } from '../common.js';
 import faker from 'faker';
+import { spyOnAddEventListener } from '../common.js';
 
 describe('Plex Configuration Tests', () => {
   before(() => {

@@ -11,8 +11,8 @@
 /* global cy, describe, it, beforeEach, expect */
 /* eslint no-undef: "error" */
 
-import { CYPRESS_VALUES, nuke } from '../common.js';
 import faker from 'faker';
+import { CYPRESS_VALUES, nuke } from '../common.js';
 
 function checkElements(username, password, mailTo, mailFrom, mailServer, mailPort, mailTransportProtocol, mailSmtpAuth, mailSmtpTlsEnabled, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#emailUsername')
@@ -135,7 +135,7 @@ describe('Check Email Notification Agent', () => {
 
   it('Set Email Notification Agent Settings', () => {
     const email = {
-      "enabled": faker.random.boolean(),
+      enabled: faker.random.boolean(),
       notificationTypes: ['TEST', 'TMDB_API_CONNECTION', 'PLEX_SERVER_CONNECTION', 'PLEX_METADATA_UPDATE', 'PLEX_LIBRARY_UPDATE', 'GAPS_MISSING_COLLECTIONS'],
       username: faker.internet.userName(),
       password: faker.internet.password(),
@@ -217,7 +217,7 @@ describe('Check Email Notification Agent', () => {
 
   it('Set TMDB Only Email Notification Agent Settings', () => {
     const email = {
-      "enabled": faker.random.boolean(),
+      enabled: faker.random.boolean(),
       notificationTypes: ['TMDB_API_CONNECTION'],
       username: faker.internet.userName(),
       password: faker.internet.password(),

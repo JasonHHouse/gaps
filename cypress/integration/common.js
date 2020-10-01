@@ -18,7 +18,7 @@ export const CYPRESS_VALUES = {
   beVisible: 'be.visible',
 };
 
-export function spyOnAddEventListener(win) {
+export function spyOnAddEventListener(win, ...args) {
   const winObject = Object.assign(win);
   // win = window object in our application
   const addListener = winObject.EventTarget.prototype.addEventListener;
@@ -27,7 +27,7 @@ export function spyOnAddEventListener(win) {
       // restore the original event listener
       winObject.EventTarget.prototype.addEventListener = addListener;
     }
-    return addListener.apply(this, arguments);
+    return addListener.apply(this, args);
   };
 }
 

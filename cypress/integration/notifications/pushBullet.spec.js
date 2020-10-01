@@ -11,8 +11,8 @@
 /* global cy, describe, it, beforeEach, expect */
 /* eslint no-undef: "error" */
 
+import faker from 'faker';
 import { CYPRESS_VALUES, nuke } from '../common.js';
-import faker from "faker";
 
 function checkElements(channelTag, token, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#pushBulletChannelTag')
@@ -199,13 +199,13 @@ describe('Check PushBullet Notification Agent', () => {
 
     checkElements('', '', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
 
-    const channel_tag = faker.random.alphaNumeric();
+    const channelTag = faker.random.alphaNumeric();
     const accessToken = faker.random.alphaNumeric();
 
     cy.get('#pushBulletChannelTag')
       .clear()
-      .type(channel_tag)
-      .should('have.value', channel_tag);
+      .type(channelTag)
+      .should('have.value', channelTag);
 
     cy.get('#pushBulletAccessToken')
       .clear()

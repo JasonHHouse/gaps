@@ -11,8 +11,8 @@
 /* global cy, describe, it, beforeEach, expect */
 /* eslint no-undef: "error" */
 
-import { CYPRESS_VALUES, nuke } from '../common.js';
 import faker from 'faker';
+import { CYPRESS_VALUES, nuke } from '../common.js';
 
 function checkElements(discordWebHookUrl, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#discordWebHookUrl')
@@ -50,7 +50,7 @@ describe('Check Discord Notification Agent', () => {
             expect(body.extras.enabled).to.eq(discord.enabled);
             expect(body.extras.notificationTypes.length).to.eq(discord.notificationTypesLength);
             expect(body.extras.webHookUrl).to.eq(discord.webHookUrl);
-          })
+          });
       })
       .visit('/configuration')
       .then(() => {
@@ -82,16 +82,16 @@ describe('Check Discord Notification Agent', () => {
 
   it('Set Discord Notification Agent Settings', () => {
     const dummyAll = {
-      "enabled": faker.random.boolean(),
-      "notificationTypes": [
-        "TEST",
-        "TMDB_API_CONNECTION",
-        "PLEX_SERVER_CONNECTION",
-        "PLEX_METADATA_UPDATE",
-        "PLEX_LIBRARY_UPDATE",
-        "GAPS_MISSING_COLLECTIONS"
+      enabled: faker.random.boolean(),
+      notificationTypes: [
+        'TEST',
+        'TMDB_API_CONNECTION',
+        'PLEX_SERVER_CONNECTION',
+        'PLEX_METADATA_UPDATE',
+        'PLEX_LIBRARY_UPDATE',
+        'GAPS_MISSING_COLLECTIONS',
       ],
-      "webHookUrl": faker.internet.url()
+      webHookUrl: faker.internet.url(),
     };
 
     cy.request('PUT', '/notifications/discord', dummyAll)
@@ -136,11 +136,11 @@ describe('Check Discord Notification Agent', () => {
 
   it('Set TMDB Only Discord Notification Agent Settings', () => {
     const tmdbOnly = {
-      "enabled": faker.random.boolean(),
-      "notificationTypes": [
-        "TMDB_API_CONNECTION"
+      enabled: faker.random.boolean(),
+      notificationTypes: [
+        'TMDB_API_CONNECTION',
       ],
-      "webHookUrl": faker.internet.url()
+      webHookUrl: faker.internet.url(),
     };
     cy.request('PUT', '/notifications/discord', tmdbOnly)
       .then((resp) => {

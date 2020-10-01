@@ -11,8 +11,8 @@
 /* global cy, describe, it, beforeEach, expect */
 /* eslint no-undef: "error" */
 
+import faker from 'faker';
 import { CYPRESS_VALUES, nuke } from '../common.js';
-import faker from "faker";
 
 function checkElements(botId, chatId, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#telegramBotId')
@@ -64,7 +64,7 @@ describe('Check Telegram Notification Agent', () => {
 
   it('Set Telegram Notification Agent Settings', () => {
     const telegram = {
-      "enabled": faker.random.boolean(),
+      enabled: faker.random.boolean(),
       notificationTypes: ['TEST', 'TMDB_API_CONNECTION', 'PLEX_SERVER_CONNECTION', 'PLEX_METADATA_UPDATE', 'PLEX_LIBRARY_UPDATE', 'GAPS_MISSING_COLLECTIONS'],
       chatId: faker.random.alphaNumeric(),
       botId: faker.random.alphaNumeric(),
@@ -94,10 +94,10 @@ describe('Check Telegram Notification Agent', () => {
 
   it('Set TMDB Only Telegram Notification Agent Settings', () => {
     const telegram = {
-      "enabled": faker.random.boolean(),
+      enabled: faker.random.boolean(),
       notificationTypes: ['TMDB_API_CONNECTION'],
       chatId: faker.random.alphaNumeric(),
-      botId: faker.random.alphaNumeric()
+      botId: faker.random.alphaNumeric(),
     };
 
     cy.request('PUT', '/notifications/telegram', telegram)

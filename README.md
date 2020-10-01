@@ -179,6 +179,10 @@ Once you've completed at least one search of your plex libraries, you can then v
 - [Bootstrap](https://getbootstrap.com/) - UI Framework
 - [Spring Boot](https://spring.io/projects/spring-boot) - Server Framework
 - [NodeJs](https://nodejs.org/en/) - Testing and Build Environment
+- [Cypress](https://www.cypress.io/) - Fast, easy and reliable testing for anything that runs in a browser.
+- [ESLint](https://eslint.org/) - Find and fix problems in your JavaScript code
+- [Faker.js](https://github.com/marak/Faker.js/) - Generate massive amounts of fake data in the browser and node.js
+- [UglifyJS/ES](https://www.npmjs.com/package/uglify-js) - UglifyJS is a JavaScript parser, minifier, compressor and beautifier toolkit.
 
 ## Supporters
 
@@ -198,4 +202,4 @@ This project would not be possible without the support by these amazing folks. [
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 - [@Knoxie](https://github.com/knoxie) Developer, testing, and support
 - Inspiration
-    - A missing feature from Plex
+    - I'm an avid movie watcher and this is a missing feature from Plex

@@ -8,7 +8,8 @@
     "faker": "^5.1.0",
     "postcss-cli": "^7.1.1",
     "uglify-es": "^3.3.9",
-    "uglify-js": "^3.10.0"
+    "uglify-js": "^3.10.0",
+    "uglifyjs-folder": "^2.0.0"
   },
   "devDependencies": {
     "cypress": "^5.3.0",
@@ -23,19 +24,8 @@
     "uglifyjs-configuration-js": "uglifyjs GapsWeb/src/main/resources/static/js/configuration.js --compress --output GapsWeb/src/main/resources/static/js/configuration.min.js",
     "uglifyjs-libraries-js": "uglifyjs GapsWeb/src/main/resources/static/js/libraries.js --compress --output GapsWeb/src/main/resources/static/js/libraries.min.js",
     "uglifyjs-recommended-js": "uglifyjs GapsWeb/src/main/resources/static/js/recommended.js --compress --output GapsWeb/src/main/resources/static/js/recommended.min.js",
-    "uglifyjs-common-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/common.js --compress --output GapsWeb/src/main/resources/static/js/modules/common.min.js",
-    "uglifyjs-payload-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/payload.js --compress --output GapsWeb/src/main/resources/static/js/modules/payload.min.js",
-    "uglifyjs-alerts-manager-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/alerts-manager.js --compress --output GapsWeb/src/main/resources/static/js/modules/alerts-manager.min.js",
     "uglifyjs-mislabeled-js": "uglifyjs GapsWeb/src/main/resources/static/js/mislabeled.js --compress --output GapsWeb/src/main/resources/static/js/mislabeled.min.js",
-    "uglifyjs-notification-types-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/notification-types.js --compress --output GapsWeb/src/main/resources/static/js/modules/notification-types.min.js",
-    "uglifyjs-telegram-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/telegram-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/telegram-notifications.min.js",
-    "uglifyjs-slack-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/slack-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/slack-notifications.min.js",
-    "uglifyjs-push-bullet-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/push-bullet-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/push-bullet-notifications.min.js",
-    "uglifyjs-gotify-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/gotify-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/gotify-notifications.min.js",
-    "uglifyjs-email-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/email-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/email-notifications.min.js",
-    "uglifyjs-discord-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/discord-notifications.js --compress --output GapsWeb/src/main/resources/static/js/modules/discord-notifications.min.js",
-    "uglifyjs-push-over-notifications-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/push-over-notifications.js --output GapsWeb/src/main/resources/static/js/modules/push-over-notifications.min.js",
-    "uglifyjs-schedule-js": "uglifyjs GapsWeb/src/main/resources/static/js/modules/schedule.js --compress --output GapsWeb/src/main/resources/static/js/modules/schedule.min.js"
+    "uglifyjs-modules": "uglifyjs-folder GapsWeb/src/main/resources/static/js/modules/ -eo GapsWeb/src/main/resources/static/js/modules/ --pattern \"**/*.js,GapsWeb/src/main/resources/static/js/modules/ -eo GapsWeb/src/main/resources/static/js/modules/ --pattern \"**/*.js,GapsWeb/src/main/resources/static/js/modules/ -eo GapsWeb/src/main/resources/static/js/modules/*/*min.js\"*/*min.js\"\n"
   },
   "repository": {
     "type": "git",

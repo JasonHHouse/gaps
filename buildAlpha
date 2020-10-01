@@ -1,4 +1,7 @@
 #!/bin/bash
+set -e
+eslint cypress/integration
+eslint GapsWeb/src/main/resources/static/js
 ./minify && mvn clean install
 docker build -f Dockerfile -t "housewrecker/gaps:alpha" .
 docker push "housewrecker/gaps:alpha"

@@ -11,8 +11,8 @@
 /* global cy, describe, it, beforeEach, expect */
 /* eslint no-undef: "error" */
 
+import faker from 'faker';
 import { CYPRESS_VALUES, nuke } from '../common.js';
-import faker from "faker";
 
 function checkElements(token, user, priority, sound, retry, expire, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#pushOverToken')
