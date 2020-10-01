@@ -33,7 +33,7 @@
         <dependency>
             <groupId>com.jasonhhouse</groupId>
             <artifactId>RadarrV3</artifactId>
-            <version>0.7.5</version>
+            <version>0.8.2</version>
         </dependency>
 
         <dependency>
