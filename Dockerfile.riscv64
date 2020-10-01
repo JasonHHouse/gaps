@@ -6,8 +6,6 @@ LABEL github="https://github.com/JasonHHouse/Gaps"
 
 RUN apt-get update
 
-RUN apt-get upgrade
-
 RUN apt-get install -y openjdk-11-jre
 
 EXPOSE 32400

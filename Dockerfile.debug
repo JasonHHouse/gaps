@@ -8,7 +8,7 @@ EXPOSE 32400
 
 RUN apt-get -y update
 
-RUN apt-get -y upgrade
+RUN apt-get upgrade -y
 
 RUN mkdir -p /usr/data && chmod 777 /usr/data
 
