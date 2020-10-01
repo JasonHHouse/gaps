@@ -81,7 +81,9 @@
 
     <div th:if="${plexServersFound}" th:remove="tag">
         <h4 class="top-margin text-primary" id="libraryTitle"
-            th:text="${plexServer.friendlyName} + ' - ' + ${plexLibrary.title}"></h4>
+            th:text="${plexServer.friendlyName} + ' - ' + ${plexLibrary.title}"
+            th:data-key="*{plexLibrary.key}"
+            th:data-machineIdentifier="*{plexServer.machineIdentifier}"></h4>
 
         <div class="dropdown show">
             <a aria-expanded="false" aria-haspopup="true" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
@@ -160,7 +162,7 @@
             <div class="col-12 col-md-auto">
                 <img style="height: auto; width: 225px; display: block;"
                      src="http://{{address}}:{{port}}{{posterUrl}}/?X-Plex-Token={{plexToken}}"
-                     class="card-img" alt="Plex Poster">
+                class="card-img" alt="Plex Poster">
             </div>
             <div class="col-12 col-md">
                 <div class="card-body">
@@ -182,6 +184,6 @@
 <script src="/js/libraries/bootstrap.bundle.min.js" type="text/javascript"></script>
 <script src="/js/libraries/datatables.min.js" type="text/javascript"></script>
 <script src="/js/libraries/handlebars-v4.7.6.min.js" type="text/javascript"></script>
-<script type="module" src="/js/libraries.min.js"></script>
+<script type="module" src="/js/page/libraries.min.js"></script>
 </body>
 </html>

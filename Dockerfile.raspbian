@@ -1,14 +1,8 @@
-FROM resin/rpi-raspbian:latest
+FROM bellsoft/liberica-openjdk-alpine:11.0.7
 
 LABEL maintainer="jh5975@gmail.com"
 LABEL name="Jason House" 
 LABEL github="https://github.com/JasonHHouse/Gaps"
-
-RUN apt-get update
-
-RUN apt-get upgrade
-
-RUN apt-get install -y openjdk-11-jre
 
 EXPOSE 32400
 
@@ -26,7 +20,7 @@ RUN mkdir -p /usr/app && chmod 777 /usr/data
 
 WORKDIR /usr/app
 
-COPY GapsWeb/target/GapsWeb-0.8.1.jar /usr/app/gaps.jar
+COPY GapsWeb/target/GapsWeb-0.8.2.jar /usr/app/gaps.jar
 
 COPY start.sh /usr/app/
 

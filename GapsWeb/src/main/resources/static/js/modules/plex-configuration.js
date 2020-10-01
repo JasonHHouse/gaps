@@ -9,6 +9,10 @@
  *
  */
 
+/* global Handlebars */
+
+/* eslint no-undef: "error" */
+
 export function openPlexLibraryConfigurationModel(title, machineIdentifier, key) {
     const obj = {
         'title':title,

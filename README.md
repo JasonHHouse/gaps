@@ -55,7 +55,7 @@ Gaps can run as an exe on Windows. GapsOnWindows can be found on the <a href="ht
 ### Installing
 With Docker installed, you'll need to now pull down the latest Gaps image. The Gaps image is hosted [here](https://hub.docker.com/r/housewrecker/gaps). To pull the image, run the following command in a terminal
 
-If you are running an x86 machine, use this command.
+If you are running an x86 machine, use the folowing commands. Check out the wikis for how to build [ARM v8](https://github.com/JasonHHouse/gaps/wiki/Running-Gaps-in-Docker-on-ARM-v8), [ARM v7](https://github.com/JasonHHouse/gaps/wiki/Running-Gaps-in-Docker-on-ARM-v7), or [RISC](https://github.com/JasonHHouse/gaps/wiki/Running-Gaps-in-Docker-on-RISC).
 
 ```
 docker pull housewrecker/gaps:latest
@@ -179,6 +179,10 @@ Once you've completed at least one search of your plex libraries, you can then v
 - [Bootstrap](https://getbootstrap.com/) - UI Framework
 - [Spring Boot](https://spring.io/projects/spring-boot) - Server Framework
 - [NodeJs](https://nodejs.org/en/) - Testing and Build Environment
+- [Cypress](https://www.cypress.io/) - Fast, easy and reliable testing for anything that runs in a browser.
+- [ESLint](https://eslint.org/) - Find and fix problems in your JavaScript code
+- [Faker.js](https://github.com/marak/Faker.js/) - Generate massive amounts of fake data in the browser and node.js
+- [UglifyJS/ES](https://www.npmjs.com/package/uglify-js) - UglifyJS is a JavaScript parser, minifier, compressor and beautifier toolkit.
 
 ## Supporters
 
@@ -198,4 +202,4 @@ This project would not be possible without the support by these amazing folks. [
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 - [@Knoxie](https://github.com/knoxie) Developer, testing, and support
 - Inspiration
-    - A missing feature from Plex
+    - I'm an avid movie watcher and this is a missing feature from Plex

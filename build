@@ -1,15 +1,16 @@
 #!/bin/bash
-VERSION=0.8.1
+set -e
+VERSION=0.8.2
 JAR_VERSION="GapsWeb/target/GapsWeb-$VERSION.jar"
 ZIP_VERSION="GapsAsJar-$VERSION.zip"
 npm ci
 ./minify
 mvn clean install
-docker buildx build --platform linux/s390x,linux/amd64,linux/s390x -t housewrecker/gaps:latest -f Dockerfile --push .
+docker buildx build --platform linux/s390x,linux/amd64 -t housewrecker/gaps:latest -f Dockerfile --push .
 docker buildx build --platform linux/riscv64 -t housewrecker/gaps:risc-latest -f Dockerfile.riscv64 --push .
 docker buildx build --platform linux/ppc64le -t housewrecker/gaps:ppc64le-latest -f Dockerfile.ppc64le --push .
 docker buildx build --platform linux/arm64 -t housewrecker/gaps:arm-latest -f Dockerfile.arm64 --push .
-docker buildx build --platform linux/arm/v7,linux/arm/v6 -t housewrecker/gaps:raspbian-latest -f Dockerfile.raspbian --push .
+docker buildx build --platform linux/arm/v7 -t housewrecker/gaps:raspbian-latest -f Dockerfile.raspbian --push .
 
 ### Making Windows/Linux/Mac Zip
 mkdir -p GapsAsJar

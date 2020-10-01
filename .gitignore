@@ -49,7 +49,7 @@ cypress/videos
 
 ### Ignore everything in Gaps on Windows except startup
 GapsOnWindows/*
-!GapsOnWindows/start.bat
-!GapsOnWindows/gaps.nsi
+!GapsAsJar/start.bat
+!GapsAsJar/gaps.nsi
 
 GapsAsJar/*

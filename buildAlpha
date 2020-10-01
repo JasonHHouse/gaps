@@ -1,5 +1,6 @@
 #!/bin/bash
-npm ci
-./minify && mvn clean install
+set -e
+./minify
+mvn clean install
 docker build -f Dockerfile -t "housewrecker/gaps:alpha" .
 docker push "housewrecker/gaps:alpha"
