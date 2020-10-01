@@ -33,7 +33,7 @@ describe('Plex Configuration Tests', () => {
   });
 
   it('Test invalid new Plex Server', () => {
-    const ip = faker.internet.ip;
+    const ip = faker.internet.ip();
     const port = faker.random.number(64000);
     const token = faker.random.alphaNumeric(32);
 
@@ -125,7 +125,7 @@ describe('Plex Configuration Tests', () => {
   });
 
   it('Save invalid Plex Server', () => {
-    const ip = faker.internet.ip;
+    const ip = faker.internet.ip();
     const port = faker.random.number(64000);
     const token = faker.random.alphaNumeric(32);
 
