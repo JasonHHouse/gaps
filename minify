@@ -6,5 +6,5 @@ npm run uglifyjs-modules
 npm run uglifyjs-pages
 
 #Check valid JS
-npm run eslint-cypress
-npm run eslint-gaps
+#npm run eslint-cypress
+#npm run eslint-gaps

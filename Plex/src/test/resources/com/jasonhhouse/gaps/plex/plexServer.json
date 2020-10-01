@@ -1,0 +1,25 @@
+{
+  "friendlyName": "RED",
+  "machineIdentifier": "5b4e72f3-e5b4-4e04-9832-43a2412f8058",
+  "plexToken": "1c694525-74e5-4f28-9327-75d746eb800d",
+  "address": "192.168.1.1",
+  "port": 32400,
+  "plexLibraries": [
+    {
+      "key": 123412431,
+      "scanner": "SUPER SCANNER",
+      "title": "MY AWESOME title",
+      "type": "movie",
+      "enabled": false,
+      "defaultLibrary": true
+    },
+    {
+      "key": 987654321,
+      "scanner": "SUPER SCANNER2",
+      "title": "BLUE",
+      "type": "movie",
+      "enabled": true,
+      "defaultLibrary": false
+    }
+  ]
+}

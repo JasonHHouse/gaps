@@ -1,0 +1,8 @@
+{
+  "key": 123412431,
+  "scanner": "SUPER SCANNER",
+  "title": "MY AWESOME title",
+  "type": "movie",
+  "enabled": false,
+  "defaultLibrary": true
+}
