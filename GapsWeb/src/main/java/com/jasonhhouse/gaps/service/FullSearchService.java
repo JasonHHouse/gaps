@@ -72,34 +72,60 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class FullSearchService implements FullSearch {
 
+    @NotNull
     public static final String COLLECTION_ID = "belongs_to_collection";
+    @NotNull
     public static final String TITLE = "title";
+    @NotNull
     public static final String NAME = "name";
+    @NotNull
     public static final String ID = "id";
+    @NotNull
     public static final String RELEASE_DATE = "release_date";
+    @NotNull
     public static final String PARTS = "parts";
+    @NotNull
     public static final String MOVIE_RESULTS = "movie_results";
+    @NotNull
     public static final String FINISHED_SEARCHING_URL = "/finishedSearching";
+    @NotNull
     private static final Logger LOGGER = LoggerFactory.getLogger(FullSearchService.class);
+    @NotNull
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
+    @NotNull
     private final AtomicBoolean cancelSearch;
 
+    @NotNull
     private final UrlGenerator urlGenerator;
 
+    @NotNull
     private final SimpMessagingTemplate template;
 
+    @NotNull
     private final AtomicInteger tempTvdbCounter;
 
+    @NotNull
     private final FileIoService fileIoService;
 
+    @NotNull
+    private final PlexFileInputIo plexFileInputIo;
+
+    @NotNull
     private final TmdbQueryService tmdbQueryService;
 
+    @NotNull
     private final NotificationService notificationService;
 
     @Autowired
-    public FullSearchService(@Qualifier("real") UrlGenerator urlGenerator, SimpMessagingTemplate template, FileIoService fileIoService, TmdbQueryService tmdbQueryService, NotificationService notificationService) {
+    public FullSearchService(@NotNull @Qualifier("real") UrlGenerator urlGenerator,
+                             @NotNull SimpMessagingTemplate template,
+                             @NotNull FileIoService fileIoService,
+                             @NotNull PlexFileInputIo plexFileInputIo,
+                             @NotNull TmdbQueryService tmdbQueryService,
+                             @NotNull NotificationService notificationService) {
         this.template = template;
+        this.plexFileInputIo = plexFileInputIo;
         this.tmdbQueryService = tmdbQueryService;
         this.urlGenerator = urlGenerator;
         this.fileIoService = fileIoService;
@@ -149,7 +175,7 @@ public class FullSearchService implements FullSearch {
         final Set<OutputMovie> recommended = new LinkedHashSet<>();
         final List<InputMovie> searched = new ArrayList<>();
         final List<GapsMovie> everyBasicMovie = new ArrayList<>(fileIoService.readMovieIdsFromFile());
-        final List<InputMovie> ownedInputMovies = new ArrayList<>(fileIoService.readOwnedMovies(machineIdentifier, key));
+        final List<InputMovie> ownedInputMovies = new ArrayList<>(plexFileInputIo.readOwnedMovies(new PlexInputFileConfig(machineIdentifier, key)));
         final AtomicInteger searchedMovieCount = new AtomicInteger(0);
 
         if (CollectionUtils.isEmpty(ownedInputMovies)) {
@@ -185,8 +211,10 @@ public class FullSearchService implements FullSearch {
         notificationService.recommendedMoviesSearchFinished(plexServer, plexLibrary);
 
         //Always write to log
-        fileIoService.writeRecommendedToFile(recommended, machineIdentifier, key);
-        fileIoService.writeMovieIdsToFile(new TreeSet<>(everyBasicMovie));
+        plexFileInputIo.writeRecommendedToFile(recommended, machineIdentifier, key);
+        //ToDo
+        //Need a way to write every movie
+        //plexFileInputIo.writeOwnedMovies(new PlexInputFileConfig(machineIdentifier, key), new TreeSet<>(everyBasicMovie));
 
         template.convertAndSend(FINISHED_SEARCHING_URL, Payload.SEARCH_SUCCESSFUL);
 

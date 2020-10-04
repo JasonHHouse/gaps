@@ -23,6 +23,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Collections;
@@ -109,6 +111,22 @@ public class PlexFileInputIo implements FileInputIo<PlexInputFileConfig, PlexMov
         }
 
         return Collections.emptyList();
+    }
+
+    @Override
+    public @NotNull Boolean doesRssFileExist(@NotNull PlexInputFileConfig plexInputFileConfig) {
+        return Paths.get(gapsConfiguration.getStorageFolder(), plexInputFileConfig.getMachineIdentifier(), plexInputFileConfig.getKey().toString(), gapsConfiguration.getProperties().getRssFeed()).toFile().exists();
+    }
+
+    @Override
+    public @NotNull String getRssFile(@NotNull PlexInputFileConfig plexInputFileConfig) {
+        try {
+            Path path = Paths.get(gapsConfiguration.getStorageFolder(), plexInputFileConfig.getMachineIdentifier(), plexInputFileConfig.getKey().toString(), gapsConfiguration.getProperties().getRssFeed());
+            return Files.readString(path);
+        } catch (IOException e) {
+            LOGGER.error("Check for RSS file next time", e);
+            return "";
+        }
     }
 
     private void makeFolder(@NotNull String machineIdentifier, @NotNull Integer key) {

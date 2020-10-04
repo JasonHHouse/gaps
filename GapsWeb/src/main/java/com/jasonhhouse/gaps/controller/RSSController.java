@@ -14,10 +14,13 @@ import com.jasonhhouse.gaps.plex.PlexLibrary;
 import com.jasonhhouse.gaps.plex.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
+import com.jasonhhouse.gaps.service.PlexFileInputIo;
+import com.jasonhhouse.gaps.service.PlexInputFileConfig;
 import com.jasonhhouse.gaps.service.RssService;
 import java.util.Map;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +35,17 @@ public class RSSController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RSSController.class);
 
+    @NotNull
     private final FileIoService fileIoService;
+    @NotNull
+    private final PlexFileInputIo plexFileInputIo;
+    @NotNull
     private final RssService rssService;
 
     @Autowired
-    public RSSController(FileIoService fileIoService, RssService rssService) {
+    public RSSController(@NotNull FileIoService fileIoService, @NotNull PlexFileInputIo plexFileInputIo, @NotNull RssService rssService) {
         this.fileIoService = fileIoService;
+        this.plexFileInputIo = plexFileInputIo;
         this.rssService = rssService;
     }
 
@@ -47,8 +55,9 @@ public class RSSController {
         LOGGER.info("getRss( {}, {} )", machineIdentifier, libraryKey);
 
         String rss = null;
-        if (fileIoService.doesRssFileExist(machineIdentifier, libraryKey)) {
-            rss = fileIoService.getRssFile(machineIdentifier, libraryKey);
+        PlexInputFileConfig plexInputFileConfig = new PlexInputFileConfig(machineIdentifier, libraryKey);
+        if (plexFileInputIo.doesRssFileExist(plexInputFileConfig)) {
+            rss = plexFileInputIo.getRssFile(plexInputFileConfig);
         }
 
         LOGGER.info("rss:{}", rss);

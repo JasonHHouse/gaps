@@ -11,10 +11,13 @@ package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.movie.BasicMovie;
+import com.jasonhhouse.gaps.movie.PlexMovie;
 import com.jasonhhouse.gaps.plex.PlexLibrary;
 import com.jasonhhouse.gaps.plex.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
+import com.jasonhhouse.gaps.service.PlexFileInputIo;
+import com.jasonhhouse.gaps.service.PlexInputFileConfig;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +25,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,11 +44,16 @@ public class LibraryController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LibraryController.class);
 
+    @NotNull
     private final FileIoService fileIoService;
 
+    @NotNull
+    private final PlexFileInputIo plexFileInputIo;
+
     @Autowired
-    public LibraryController(FileIoService fileIoService) {
+    public LibraryController(@NotNull FileIoService fileIoService, @NotNull PlexFileInputIo plexFileInputIo) {
         this.fileIoService = fileIoService;
+        this.plexFileInputIo = plexFileInputIo;
     }
 
     @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
@@ -87,17 +96,17 @@ public class LibraryController {
     public ResponseEntity<Payload> getLibraries(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("getLibraries( {}, {} )", machineIdentifier, key);
 
-        List<BasicMovie> basicMovies = fileIoService.readOwnedMovies(machineIdentifier, key);
+        List<PlexMovie> ownedMovies = plexFileInputIo.readOwnedMovies(new PlexInputFileConfig(machineIdentifier, key));
         Payload payload;
 
-        if (CollectionUtils.isEmpty(basicMovies)) {
+        if (CollectionUtils.isEmpty(ownedMovies)) {
             payload = Payload.PLEX_LIBRARY_MOVIE_NOT_FOUND;
             LOGGER.warn(payload.getReason());
         } else {
             payload = Payload.PLEX_LIBRARY_MOVIE_FOUND;
         }
 
-        payload.setExtras(basicMovies);
+        payload.setExtras(ownedMovies);
 
         return ResponseEntity.ok().body(payload);
     }

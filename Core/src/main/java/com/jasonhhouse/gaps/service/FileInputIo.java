@@ -23,4 +23,8 @@ public interface FileInputIo<IFC extends InputFileConfig, IM extends InputMovie>
     @NotNull Boolean writeOwnedMovies(@NotNull IFC ifc, @NotNull Collection<IM> ownedBasicMovies);
 
     @NotNull List<IM> readOwnedMovies(@NotNull IFC ifc);
+
+    @NotNull Boolean doesRssFileExist(@NotNull IFC ifc);
+
+    @NotNull String getRssFile(@NotNull IFC ifc);
 }

@@ -13,10 +13,14 @@ package com.jasonhhouse.gaps.controller;
 import com.jasonhhouse.gaps.GapsUrlGenerator;
 import com.jasonhhouse.gaps.Pair;
 import com.jasonhhouse.gaps.movie.BasicMovie;
+import com.jasonhhouse.gaps.movie.GapsMovie;
+import com.jasonhhouse.gaps.movie.PlexMovie;
 import com.jasonhhouse.gaps.plex.PlexLibrary;
 import com.jasonhhouse.gaps.plex.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
+import com.jasonhhouse.gaps.service.PlexFileInputIo;
+import com.jasonhhouse.gaps.service.PlexInputFileConfig;
 import com.jasonhhouse.gaps.service.PlexQuery;
 import java.util.HashMap;
 import java.util.List;
@@ -40,12 +44,14 @@ public class PlexMovieListController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PlexMovieListController.class);
 
     private final FileIoService fileIoService;
+    private final PlexFileInputIo plexFileInputIo;
     private final PlexQuery plexQuery;
     private final GapsUrlGenerator gapsUrlGenerator;
 
     @Autowired
-    public PlexMovieListController(FileIoService fileIoService, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator) {
+    public PlexMovieListController(FileIoService fileIoService, PlexFileInputIo plexFileInputIo, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator) {
         this.fileIoService = fileIoService;
+        this.plexFileInputIo = plexFileInputIo;
         this.plexQuery = plexQuery;
         this.gapsUrlGenerator = gapsUrlGenerator;
     }
@@ -53,31 +59,27 @@ public class PlexMovieListController {
     @GetMapping(value = "/movies/{machineIdentifier}/{key}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<List<BasicMovie>> getPlexMovies(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
+    public ResponseEntity<List<PlexMovie>> getPlexMovies(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
         LOGGER.info("getPlexMovies( {}, {} )", machineIdentifier, key);
 
         PlexProperties plexProperties = fileIoService.readProperties();
-        Set<BasicMovie> everyBasicMovie = fileIoService.readMovieIdsFromFile();
-        Map<Pair<String, Integer>, BasicMovie> previousMovies = generateOwnedMovieMap(plexProperties, everyBasicMovie);
+        Set<GapsMovie> everyBasicMovie = fileIoService.readMovieIdsFromFile();
+        Map<Pair<String, Integer>, GapsMovie> previousMovies = generateOwnedMovieMap(everyBasicMovie);
         PlexServer plexServer = plexQuery.getPlexServerFromMachineIdentifier(plexProperties, machineIdentifier);
         PlexLibrary plexLibrary = plexQuery.getPlexLibraryFromKey(plexServer, key);
         HttpUrl url = gapsUrlGenerator.generatePlexLibraryUrl(plexServer, plexLibrary);
-        List<BasicMovie> ownedBasicMovies = plexQuery.findAllPlexMovies(previousMovies, url);
+        List<PlexMovie> ownedBasicMovies = plexQuery.findAllPlexMovies(previousMovies, url);
         plexQuery.findAllMovieIds(ownedBasicMovies, plexServer, plexLibrary);
 
         //Update Owned Movies
-        fileIoService.writeOwnedMoviesToFile(ownedBasicMovies, machineIdentifier, key);
+        plexFileInputIo.writeOwnedMovies(new PlexInputFileConfig(machineIdentifier, key), ownedBasicMovies);
         return ResponseEntity.ok().body(ownedBasicMovies);
     }
 
-    private Map<Pair<String, Integer>, BasicMovie> generateOwnedMovieMap(PlexProperties plexProperties, Set<BasicMovie> everyBasicMovie) {
-        Map<Pair<String, Integer>, BasicMovie> previousMovies = new HashMap<>();
+    private <T extends GapsMovie> Map<Pair<String, Integer>, T> generateOwnedMovieMap(Set<T> everyBasicMovie) {
+        Map<Pair<String, Integer>, T> previousMovies = new HashMap<>();
 
-        plexProperties
-                .getPlexServers()
-                .forEach(plexServer -> plexServer
-                        .getPlexLibraries()
-                        .forEach(plexLibrary -> everyBasicMovie.forEach(movie -> previousMovies.put(new Pair<>(movie.getName(), movie.getYear()), movie))));
+        everyBasicMovie.forEach(movie -> previousMovies.put(new Pair<>(movie.getName(), movie.getYear()), movie));
 
         return previousMovies;
     }

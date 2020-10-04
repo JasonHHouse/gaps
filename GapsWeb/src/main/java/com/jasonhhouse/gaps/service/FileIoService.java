@@ -16,6 +16,7 @@ import com.jasonhhouse.gaps.GapsConfiguration;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.Rss;
 import com.jasonhhouse.gaps.movie.BasicMovie;
+import com.jasonhhouse.gaps.movie.GapsMovie;
 import com.jasonhhouse.gaps.movie.PlexMovie;
 import com.jasonhhouse.gaps.movie.TmdbMovie;
 import com.jasonhhouse.gaps.properties.PlexProperties;
@@ -53,34 +54,9 @@ public class FileIoService implements IO {
         this.gapsConfiguration = gapsConfiguration;
     }
 
-/*
-    @Override
-    public void writeOwnedMoviesToFile(@NotNull List<PlexMovie> ownedBasicMovies, @NotNull String machineIdentifier, @NotNull Integer key) {
-        LOGGER.info("writeOwnedMoviesToFile()");
-        final File file = Paths.get(gapsConfiguration.getStorageFolder(), machineIdentifier, key.toString(), gapsConfiguration.getProperties().getOwnedMovies()).toFile();
-        makeFolder(machineIdentifier, key);
-        writeMovieIdsToFile(new HashSet<>(ownedBasicMovies), file);
-    }*/
-
-/*
-    private void makeFolder(@NotNull String machineIdentifier, @NotNull Integer key) {
-        File folder = new File(gapsConfiguration.getStorageFolder() + File.separator + machineIdentifier + File.separator + key);
-        if (!folder.exists()) {
-            boolean isCreated = folder.mkdirs();
-            if (isCreated) {
-                LOGGER.info("Folder created: {}", folder);
-            } else {
-                LOGGER.warn("Folder not created: {}", folder);
-            }
-        }
-    }
-*/
-
-/*
-    @Override
     @NotNull
-    public Set<PlexMovie> readMovieIdsFromFile() {
-        Set<PlexMovie> everyBasicMovie = Collections.emptySet();
+    public <T extends GapsMovie> Set<T> readMovieIdsFromFile() {
+        Set<T> everyBasicMovie = Collections.emptySet();
         final File file = Paths.get(gapsConfiguration.getStorageFolder(), gapsConfiguration.getProperties().getMovieIds()).toFile();
         if (!file.exists()) {
             LOGGER.warn("Can't find json file '{}'. Most likely first run.", file);
@@ -103,7 +79,7 @@ public class FileIoService implements IO {
         }
 
         return everyBasicMovie;
-    }*/
+    }
 
     @Override
     public void writeProperties(@NotNull PlexProperties plexProperties) {

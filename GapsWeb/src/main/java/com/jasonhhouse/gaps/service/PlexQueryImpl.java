@@ -12,6 +12,7 @@ package com.jasonhhouse.gaps.service;
 
 import com.jasonhhouse.gaps.Pair;
 import com.jasonhhouse.gaps.Payload;
+import com.jasonhhouse.gaps.movie.GapsMovie;
 import com.jasonhhouse.gaps.plex.PlexServer;
 import com.jasonhhouse.gaps.UrlGenerator;
 import com.jasonhhouse.gaps.movie.PlexMovie;
@@ -405,8 +406,9 @@ public class PlexQueryImpl implements PlexQuery {
         throw new IllegalArgumentException(String.format("No PlexLibrary matching key %s found", key));
     }
 
+
     @Override
-    public @NotNull List<PlexMovie> findAllPlexMovies(@NotNull Map<Pair<String, Integer>, PlexMovie> previousMovies, @NotNull HttpUrl url) {
+    public @NotNull <T extends GapsMovie> List<PlexMovie> findAllPlexMovies(@NotNull Map<Pair<String, Integer>, T> previousMovies, @NotNull HttpUrl url) {
         LOGGER.info("findAllPlexMovies()");
 
         List<PlexMovie> ownedPlexMovies = new ArrayList<>();
@@ -519,10 +521,10 @@ public class PlexQueryImpl implements PlexQuery {
         return ownedPlexMovies;
     }
 
-    private PlexMovie getOrCreateOwnedMovie(Map<Pair<String, Integer>, PlexMovie> previousMovies, @NotNull String title, int year, @NotNull Integer tmdbId, @NotNull String imdbId, @NotNull String thumbnail, @NotNull String summary, @NotNull Integer ratingKey, @NotNull String key) {
+    private <T extends GapsMovie> PlexMovie getOrCreateOwnedMovie(Map<Pair<String, Integer>, T> previousMovies, @NotNull String title, int year, @NotNull Integer tmdbId, @NotNull String imdbId, @NotNull String thumbnail, @NotNull String summary, @NotNull Integer ratingKey, @NotNull String key) {
         Pair<String, Integer> moviePair = new Pair<>(title, year);
         if (previousMovies.containsKey(moviePair)) {
-            PlexMovie previousBasicMovie = previousMovies.get(moviePair);
+            T previousBasicMovie = previousMovies.get(moviePair);
             return new PlexMovie.Builder(title, year)
                     .setKey(key)
                     .setRatingKey(ratingKey)

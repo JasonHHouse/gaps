@@ -13,6 +13,7 @@ package com.jasonhhouse.gaps.service;
 
 import com.jasonhhouse.gaps.Pair;
 import com.jasonhhouse.gaps.Payload;
+import com.jasonhhouse.gaps.movie.GapsMovie;
 import com.jasonhhouse.gaps.movie.PlexMovie;
 import com.jasonhhouse.gaps.plex.PlexLibrary;
 import com.jasonhhouse.gaps.plex.PlexServer;
@@ -44,7 +45,7 @@ public interface PlexQuery {
      * Connect to plex via the URL and parse all the movies from the returned XML creating a HashSet of movies the
      * user has.
      */
-    @NotNull List<PlexMovie> findAllPlexMovies(@NotNull Map<Pair<String, Integer>, PlexMovie> previousMovies, @NotNull HttpUrl url);
+    @NotNull <T extends GapsMovie> List<PlexMovie> findAllPlexMovies(@NotNull Map<Pair<String, Integer>, T> previousMovies, @NotNull HttpUrl url);
 
     @NotNull MediaContainer findAllPlexVideos(@NotNull String url);
 

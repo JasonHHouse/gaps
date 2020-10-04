@@ -10,13 +10,16 @@
 
 package com.jasonhhouse.gaps;
 
-import com.jasonhhouse.gaps.movie.BasicMovie;
+import com.jasonhhouse.gaps.movie.GapsMovie;
+import com.jasonhhouse.gaps.movie.PlexMovie;
 import com.jasonhhouse.gaps.plex.PlexLibrary;
 import com.jasonhhouse.gaps.plex.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
 import com.jasonhhouse.gaps.service.FullSearch;
 import com.jasonhhouse.gaps.service.NotificationService;
+import com.jasonhhouse.gaps.service.PlexFileInputIo;
+import com.jasonhhouse.gaps.service.PlexInputFileConfig;
 import com.jasonhhouse.gaps.service.PlexQuery;
 import com.jasonhhouse.gaps.service.TmdbQueryService;
 import java.util.HashMap;
@@ -36,14 +39,16 @@ public class SearchGapsTask implements Runnable {
     private final FullSearch fullSearch;
     private final TmdbQueryService tmdbQueryService;
     private final FileIoService fileIoService;
+    private final PlexFileInputIo plexFileInputIo;
     private final PlexQuery plexQuery;
     private final GapsUrlGenerator gapsUrlGenerator;
     private final NotificationService notificationService;
 
-    public SearchGapsTask(FullSearch fullSearch, TmdbQueryService tmdbQueryService, FileIoService fileIoService, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator, NotificationService notificationService) {
+    public SearchGapsTask(FullSearch fullSearch, TmdbQueryService tmdbQueryService, FileIoService fileIoService, PlexFileInputIo plexFileInputIo, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator, NotificationService notificationService) {
         this.fullSearch = fullSearch;
         this.tmdbQueryService = tmdbQueryService;
         this.fileIoService = fileIoService;
+        this.plexFileInputIo = plexFileInputIo;
         this.plexQuery = plexQuery;
         this.gapsUrlGenerator = gapsUrlGenerator;
         this.notificationService = notificationService;
@@ -120,9 +125,9 @@ public class SearchGapsTask implements Runnable {
             for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
                 HttpUrl url = gapsUrlGenerator.generatePlexLibraryUrl(plexServer, plexLibrary);
                 try {
-                    List<BasicMovie> ownedBasicMovies = plexQuery.findAllPlexMovies(generateOwnedMovieMap(plexProperties), url);
+                    List<PlexMovie> ownedBasicMovies = plexQuery.findAllPlexMovies(generateOwnedMovieMap(), url);
                     plexQuery.findAllMovieIds(ownedBasicMovies, plexServer, plexLibrary);
-                    fileIoService.writeOwnedMoviesToFile(ownedBasicMovies, plexServer.getMachineIdentifier(), plexLibrary.getKey());
+                    plexFileInputIo.writeOwnedMovies(new PlexInputFileConfig(plexServer.getMachineIdentifier(), plexLibrary.getKey()), ownedBasicMovies);
                     notificationService.plexLibraryScanSuccessful(plexServer, plexLibrary);
                 } catch (ResponseStatusException e) {
                     notificationService.plexLibraryScanFailed(plexServer, plexLibrary, e.getMessage());
@@ -140,16 +145,10 @@ public class SearchGapsTask implements Runnable {
         }
     }
 
-    private Map<Pair<String, Integer>, BasicMovie> generateOwnedMovieMap(PlexProperties plexProperties) {
-        Set<BasicMovie> everyBasicMovie = fileIoService.readMovieIdsFromFile();
-        Map<Pair<String, Integer>, BasicMovie> previousMovies = new HashMap<>();
-
-        plexProperties
-                .getPlexServers()
-                .forEach(plexServer -> plexServer
-                        .getPlexLibraries()
-                        .forEach(plexLibrary -> everyBasicMovie.forEach(movie -> previousMovies.put(new Pair<>(movie.getName(), movie.getYear()), movie))));
-
+    private <T extends GapsMovie> Map<Pair<String, Integer>, T> generateOwnedMovieMap() {
+        Set<T> everyBasicMovie = fileIoService.readMovieIdsFromFile();
+        Map<Pair<String, Integer>, T> previousMovies = new HashMap<>();
+        everyBasicMovie.forEach(movie -> previousMovies.put(new Pair<>(movie.getName(), movie.getYear()), movie));
         return previousMovies;
     }
 }

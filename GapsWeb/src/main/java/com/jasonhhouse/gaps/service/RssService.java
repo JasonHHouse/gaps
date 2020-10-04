@@ -30,9 +30,17 @@ public class RssService {
     @NotNull
     private final TmdbFileOutputIo tmdbFileOutputIo;
 
+    @NotNull
+    private final FileIoService fileIoService;
+
+    @NotNull
+    private final PlexFileInputIo plexFileInputIo;
+
     @Autowired
-    public RssService(@NotNull TmdbFileOutputIo tmdbFileOutputIo) {
+    public RssService(@NotNull TmdbFileOutputIo tmdbFileOutputIo, @NotNull FileIoService fileIoService, @NotNull PlexFileInputIo plexFileInputIo) {
         this.tmdbFileOutputIo = tmdbFileOutputIo;
+        this.fileIoService = fileIoService;
+        this.plexFileInputIo = plexFileInputIo;
     }
 
     @NotNull
@@ -54,7 +62,7 @@ public class RssService {
             }
 
             for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
-                if (fileIoService.doesRssFileExist(plexServer.getMachineIdentifier(), plexLibrary.getKey())) {
+                if (plexFileInputIo.doesRssFileExist(new PlexInputFileConfig(plexServer.getMachineIdentifier(), plexLibrary.getKey()))) {
                     plexServerMap.put(plexLibrary, plexServer);
                 }
             }

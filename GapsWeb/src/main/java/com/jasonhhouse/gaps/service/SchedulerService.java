@@ -37,15 +37,17 @@ public class SchedulerService {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private final FileIoService fileIoService;
+    private final PlexFileInputIo plexFileInputIo;
     private final TaskScheduler scheduler;
     private final SearchGapsTask searchGapsTask;
     private ScheduledFuture<?> scheduledFuture;
 
     @Autowired
-    public SchedulerService(FileIoService fileIoService, TmdbQueryService tmdbQueryService, FullSearch fullSearch, @Qualifier("Gaps") TaskScheduler scheduler, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator, NotificationService notificationService) {
+    public SchedulerService(FileIoService fileIoService, PlexFileInputIo plexFileInputIo, TmdbQueryService tmdbQueryService, FullSearch fullSearch, @Qualifier("Gaps") TaskScheduler scheduler, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator, NotificationService notificationService) {
         this.fileIoService = fileIoService;
+        this.plexFileInputIo = plexFileInputIo;
         this.scheduler = scheduler;
-        this.searchGapsTask = new SearchGapsTask(fullSearch, tmdbQueryService, fileIoService, plexQuery, gapsUrlGenerator, notificationService);
+        this.searchGapsTask = new SearchGapsTask(fullSearch, tmdbQueryService, fileIoService, this.plexFileInputIo, plexQuery, gapsUrlGenerator, notificationService);
     }
 
     public void setSchedule(SchedulePayload schedulePayload) {
