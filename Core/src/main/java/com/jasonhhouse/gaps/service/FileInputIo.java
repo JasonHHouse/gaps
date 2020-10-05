@@ -15,6 +15,7 @@ import com.jasonhhouse.gaps.movie.InputMovie;
 import com.jasonhhouse.gaps.movie.OutputMovie;
 import com.jasonhhouse.gaps.movie.PlexMovie;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,4 +28,6 @@ public interface FileInputIo<IFC extends InputFileConfig, IM extends InputMovie>
     @NotNull Boolean doesRssFileExist(@NotNull IFC ifc);
 
     @NotNull String getRssFile(@NotNull IFC ifc);
+
+    @NotNull <OM extends OutputMovie> Boolean writeRssFile(@NotNull IFC ifc, @NotNull Collection<OM> recommendedMovies);
 }

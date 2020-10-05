@@ -47,7 +47,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -70,7 +69,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class FullSearchService implements FullSearch {
+public class PlexSearchService implements FullSearch<PlexInputFileConfig, TmdbOutputFileConfig> {
 
     @NotNull
     public static final String COLLECTION_ID = "belongs_to_collection";
@@ -89,7 +88,7 @@ public class FullSearchService implements FullSearch {
     @NotNull
     public static final String FINISHED_SEARCHING_URL = "/finishedSearching";
     @NotNull
-    private static final Logger LOGGER = LoggerFactory.getLogger(FullSearchService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PlexSearchService.class);
     @NotNull
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -103,7 +102,7 @@ public class FullSearchService implements FullSearch {
     private final SimpMessagingTemplate template;
 
     @NotNull
-    private final AtomicInteger tempTvdbCounter;
+    private final AtomicInteger tempTmdbCounter;
 
     @NotNull
     private final FileIoService fileIoService;
@@ -118,7 +117,7 @@ public class FullSearchService implements FullSearch {
     private final NotificationService notificationService;
 
     @Autowired
-    public FullSearchService(@NotNull @Qualifier("real") UrlGenerator urlGenerator,
+    public PlexSearchService(@NotNull @Qualifier("real") UrlGenerator urlGenerator,
                              @NotNull SimpMessagingTemplate template,
                              @NotNull FileIoService fileIoService,
                              @NotNull PlexFileInputIo plexFileInputIo,
@@ -131,21 +130,21 @@ public class FullSearchService implements FullSearch {
         this.fileIoService = fileIoService;
         this.notificationService = notificationService;
 
-        tempTvdbCounter = new AtomicInteger();
+        tempTmdbCounter = new AtomicInteger();
         cancelSearch = new AtomicBoolean(true);
     }
 
     @Override
-    public void run(@NotNull String machineIdentifier, @NotNull Integer key) {
-        LOGGER.info("run( {}, {} )", machineIdentifier, key);
+    public void run(@NotNull PlexInputFileConfig plexInputFileConfig, @NotNull TmdbOutputFileConfig tmdbOutputFileConfig) {
+        LOGGER.info("run( {} )", plexInputFileConfig);
 
         PlexProperties plexProperties = fileIoService.readProperties();
-        Optional<PlexServer> optionalPlexServer = plexProperties.getPlexServers().stream().filter(tempPlexServer -> tempPlexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst();
+        Optional<PlexServer> optionalPlexServer = plexProperties.getPlexServers().stream().filter(tempPlexServer -> tempPlexServer.getMachineIdentifier().equals(plexInputFileConfig.getMachineIdentifier())).findFirst();
         PlexServer plexServer;
         if (optionalPlexServer.isPresent()) {
             plexServer = optionalPlexServer.get();
         } else {
-            LOGGER.error("Plex server not found with machineIdentifier {} and key {}", machineIdentifier, key);
+            LOGGER.error("Plex server not found with plexInputFileConfig {}", plexInputFileConfig);
             return;
         }
 
@@ -155,7 +154,7 @@ public class FullSearchService implements FullSearch {
         if (optionalPlexLibrary.isPresent()) {
             plexLibrary = optionalPlexLibrary.get();
         } else {
-            LOGGER.error("Plex library not found with machineIdentifier {} and key {}", machineIdentifier, key);
+            LOGGER.error("Plex library not found with machineIdentifier {}", plexInputFileConfig);
             return;
         }
 
@@ -175,7 +174,7 @@ public class FullSearchService implements FullSearch {
         final Set<OutputMovie> recommended = new LinkedHashSet<>();
         final List<InputMovie> searched = new ArrayList<>();
         final List<GapsMovie> everyBasicMovie = new ArrayList<>(fileIoService.readMovieIdsFromFile());
-        final List<InputMovie> ownedInputMovies = new ArrayList<>(plexFileInputIo.readOwnedMovies(new PlexInputFileConfig(machineIdentifier, key)));
+        final List<InputMovie> ownedInputMovies = new ArrayList<>(plexFileInputIo.readOwnedMovies(plexInputFileConfig));
         final AtomicInteger searchedMovieCount = new AtomicInteger(0);
 
         if (CollectionUtils.isEmpty(ownedInputMovies)) {
@@ -188,17 +187,17 @@ public class FullSearchService implements FullSearch {
         try {
             StopWatch watch = new StopWatch();
             watch.start();
-            searchForMovies(plexProperties, machineIdentifier, key, ownedInputMovies, everyBasicMovie, recommended, searched, searchedMovieCount);
+            searchForMovies(plexProperties, plexInputFileConfig, ownedInputMovies, everyBasicMovie, recommended, searched, searchedMovieCount);
             watch.stop();
             LOGGER.info("Time Elapsed: {} seconds.", TimeUnit.MILLISECONDS.toSeconds(watch.getTime()));
-            LOGGER.info("Times used TVDB ID: {}", tempTvdbCounter);
+            LOGGER.info("Times used TVDB ID: {}", tempTmdbCounter);
         } catch (SearchCancelledException e) {
             String reason = "Search cancelled";
             LOGGER.error(reason);
             template.convertAndSend(FINISHED_SEARCHING_URL, Payload.OWNED_MOVIES_CANNOT_BE_EMPTY);
             notificationService.recommendedMoviesSearchFailed(plexServer, plexLibrary, reason);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
-        } catch (IOException e) {
+        } catch (Exception e) {
             String reason = "Search failed";
             LOGGER.error(reason);
             template.convertAndSend(FINISHED_SEARCHING_URL, Payload.SEARCH_FAILED);
@@ -210,8 +209,6 @@ public class FullSearchService implements FullSearch {
 
         notificationService.recommendedMoviesSearchFinished(plexServer, plexLibrary);
 
-        //Always write to log
-        plexFileInputIo.writeRecommendedToFile(recommended, machineIdentifier, key);
         //ToDo
         //Need a way to write every movie
         //plexFileInputIo.writeOwnedMovies(new PlexInputFileConfig(machineIdentifier, key), new TreeSet<>(everyBasicMovie));
@@ -247,13 +244,12 @@ public class FullSearchService implements FullSearch {
      */
     @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private void searchForMovies(@NotNull PlexProperties plexProperties,
-                                 @NotNull String machineIdentifier,
-                                 @NotNull Integer key,
+                                 @NotNull PlexInputFileConfig plexInputFileConfig,
                                  @NotNull List<InputMovie> ownedBasicMovies,
                                  @NotNull List<GapsMovie> everyBasicMovie,
                                  @NotNull Set<OutputMovie> recommended,
                                  @NotNull List<InputMovie> searched,
-                                 @NotNull AtomicInteger searchedMovieCount) throws SearchCancelledException, IOException {
+                                 @NotNull AtomicInteger searchedMovieCount) throws SearchCancelledException {
         LOGGER.info("searchForMovies()");
         OkHttpClient client = new OkHttpClient();
 
@@ -293,13 +289,13 @@ public class FullSearchService implements FullSearch {
                 LOGGER.info(basicMovie.toString());
                 if (basicMovie.getTmdbId() != -1 && basicMovie.getCollectionId() != -1) {
                     LOGGER.info("Used Collection ID to get {}", basicMovie.getName());
-                    tempTvdbCounter.incrementAndGet();
-                    handleCollection(plexProperties, machineIdentifier, key, ownedBasicMovies, everyBasicMovie, recommended, searched, searchedMovieCount, basicMovie, client, languageCode);
+                    tempTmdbCounter.incrementAndGet();
+                    handleCollection(plexProperties, plexInputFileConfig, ownedBasicMovies, everyBasicMovie, recommended, searched, searchedMovieCount, basicMovie, client, languageCode);
                     continue;
                 } else if (basicMovie.getTmdbId() != -1) {
                     LOGGER.info("Used TVDB ID to get {}", basicMovie.getName());
-                    tempTvdbCounter.incrementAndGet();
-                    searchMovieDetails(plexProperties, machineIdentifier, key, ownedBasicMovies, everyBasicMovie, recommended, searched, searchedMovieCount, basicMovie, client, languageCode);
+                    tempTmdbCounter.incrementAndGet();
+                    searchMovieDetails(plexProperties, plexInputFileConfig, ownedBasicMovies, everyBasicMovie, recommended, searched, searchedMovieCount, basicMovie, client, languageCode);
                     continue;
                 } else if (StringUtils.isNotBlank(basicMovie.getImdbId())) {
                     LOGGER.info("Used 'find' to search for {}", basicMovie.getName());
@@ -374,7 +370,7 @@ public class FullSearchService implements FullSearch {
                         everyBasicMovie.add(newBasicMovie);
                     }
 
-                    searchMovieDetails(plexProperties, machineIdentifier, key, ownedBasicMovies, everyBasicMovie, recommended, searched, searchedMovieCount, basicMovie, client, languageCode);
+                    searchMovieDetails(plexProperties, plexInputFileConfig, ownedBasicMovies, everyBasicMovie, recommended, searched, searchedMovieCount, basicMovie, client, languageCode);
                 } catch (JsonProcessingException e) {
                     LOGGER.error(String.format("Error parsing movie %s.", basicMovie), e);
                     LOGGER.error("URL: {}", searchMovieUrl);
@@ -400,8 +396,16 @@ public class FullSearchService implements FullSearch {
         }
     }
 
-    private void searchMovieDetails(PlexProperties plexProperties, String machineIdentifier, Integer key, List<InputMovie> ownedInputMovies, List<GapsMovie> everyGapsMovie, Set<OutputMovie> recommended, List<InputMovie> searched,
-                                    AtomicInteger searchedMovieCount, InputMovie inputMovie, OkHttpClient client, String languageCode) {
+    private void searchMovieDetails(@NotNull PlexProperties plexProperties,
+                                    @NotNull PlexInputFileConfig plexInputFileConfig,
+                                    @NotNull List<InputMovie> ownedInputMovies,
+                                    @NotNull List<GapsMovie> everyGapsMovie,
+                                    @NotNull Set<OutputMovie> recommended,
+                                    @NotNull List<InputMovie> searched,
+                                    @NotNull AtomicInteger searchedMovieCount,
+                                    @NotNull InputMovie inputMovie,
+                                    @NotNull OkHttpClient client,
+                                    @NotNull String languageCode) {
         LOGGER.info("searchMovieDetails()");
         HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(plexProperties.getMovieDbApiKey(), String.valueOf(inputMovie.getTmdbId()), languageCode);
 
@@ -451,17 +455,25 @@ public class FullSearchService implements FullSearch {
                 everyGapsMovie.add(newBasicMovie);
             }
 
-            handleCollection(plexProperties, machineIdentifier, key, ownedInputMovies, everyGapsMovie, recommended, searched, searchedMovieCount, inputMovie, client, languageCode);
+            handleCollection(plexProperties, plexInputFileConfig, ownedInputMovies, everyGapsMovie, recommended, searched, searchedMovieCount, inputMovie, client, languageCode);
 
         } catch (IOException e) {
             LOGGER.error(String.format("Error getting movie details %s", inputMovie), e);
         }
     }
 
-    private void handleCollection(PlexProperties plexProperties, String machineIdentifier, Integer key, List<InputMovie> ownedInputMovies, List<GapsMovie> everyGapsMovie, Set<OutputMovie> recommended, List<InputMovie> searched,
-                                  AtomicInteger searchedMovieCount, BasicMovie basicMovie, OkHttpClient client, String languageCode) {
+    private void handleCollection(@NotNull PlexProperties plexProperties,
+                                  @NotNull PlexInputFileConfig plexInputFileConfig,
+                                  @NotNull List<InputMovie> ownedInputMovies,
+                                  @NotNull List<GapsMovie> everyGapsMovie,
+                                  @NotNull Set<OutputMovie> recommended,
+                                  @NotNull List<InputMovie> searched,
+                                  @NotNull AtomicInteger searchedMovieCount,
+                                  @NotNull InputMovie inputMovie,
+                                  @NotNull OkHttpClient client,
+                                  @NotNull String languageCode) {
         LOGGER.info("handleCollection()");
-        HttpUrl collectionUrl = urlGenerator.generateCollectionUrl(plexProperties.getMovieDbApiKey(), String.valueOf(basicMovie.getCollectionId()), languageCode);
+        HttpUrl collectionUrl = urlGenerator.generateCollectionUrl(plexProperties.getMovieDbApiKey(), String.valueOf(inputMovie.getCollectionId()), languageCode);
 
         Request request = new Request.Builder()
                 .url(collectionUrl)
@@ -475,7 +487,7 @@ public class FullSearchService implements FullSearch {
             }
 
             if (StringUtils.isEmpty(collectionJson)) {
-                LOGGER.error("Body returned null from TheMovieDB for collection information about {}", basicMovie.getName());
+                LOGGER.error("Body returned null from TheMovieDB for collection information about {}", inputMovie.getName());
                 return;
             }
 
@@ -486,7 +498,7 @@ public class FullSearchService implements FullSearch {
                 return;
             }
 
-            int indexOfMovie = everyGapsMovie.indexOf(basicMovie);
+            int indexOfMovie = everyGapsMovie.indexOf(inputMovie);
 
             List<MovieFromCollection> moviesInCollection = new ArrayList<>();
             if (collection.has(PARTS)) {
@@ -519,32 +531,32 @@ public class FullSearchService implements FullSearch {
             LOGGER.info("MoviesInCollection: {}", Arrays.toString(moviesInCollection.toArray()));
 
             if (indexOfMovie != -1) {
-                LOGGER.info("Movie found: {}", basicMovie);
+                LOGGER.info("Movie found: {}", inputMovie);
                 int id = collection.get(ID).intValue();
                 String name = collection.get(NAME).textValue();
                 everyGapsMovie.get(indexOfMovie).setCollectionId(id);
                 everyGapsMovie.get(indexOfMovie).setCollectionTitle(name);
-                basicMovie.setCollectionTitle(name);
-                basicMovie.setCollectionId(id);
-                basicMovie.getMoviesInCollection().addAll(moviesInCollection);
+                inputMovie.setCollectionTitle(name);
+                inputMovie.setCollectionId(id);
+                inputMovie.getMoviesInCollection().addAll(moviesInCollection);
             } else {
-                LOGGER.info("Movie not found: {}", basicMovie);
+                LOGGER.info("Movie not found: {}", inputMovie);
                 int collectionId = collection.get(ID).intValue();
                 String collectionName = collection.get(NAME).textValue();
-                BasicMovie newBasicMovie = new BasicMovie.Builder(basicMovie.getName(), basicMovie.getYear())
-                        .setTmdbId(basicMovie.getTmdbId())
-                        .setImdbId(basicMovie.getImdbId())
+                BasicMovie newBasicMovie = new BasicMovie.Builder(inputMovie.getName(), inputMovie.getYear())
+                        .setTmdbId(inputMovie.getTmdbId())
+                        .setImdbId(inputMovie.getImdbId())
                         .setCollectionTitle(collectionName)
                         .setCollectionId(collectionId)
                         .setMoviesInCollection(moviesInCollection)
-                        .setLanguage(basicMovie.getLanguage())
-                        .setOverview(basicMovie.getOverview())
-                        .setPosterUrl(basicMovie.getPosterUrl())
+                        .setLanguage(inputMovie.getLanguage())
+                        .setOverview(inputMovie.getOverview())
+                        .setPosterUrl(inputMovie.getPosterUrl())
                         .build();
                 everyGapsMovie.add(newBasicMovie);
 
-                basicMovie.setCollectionTitle(collectionName);
-                basicMovie.setCollectionId(collectionId);
+                inputMovie.setCollectionTitle(collectionName);
+                inputMovie.setCollectionId(collectionId);
             }
 
             ArrayNode parts = (ArrayNode) collection.get(PARTS);
@@ -576,8 +588,8 @@ public class FullSearchService implements FullSearch {
 
                 BasicMovie basicMovieFromCollection = new BasicMovie.Builder(title, year)
                         .setTmdbId(tmdbId)
-                        .setCollectionId(basicMovie.getCollectionId())
-                        .setCollectionTitle(basicMovie.getCollectionTitle())
+                        .setCollectionId(inputMovie.getCollectionId())
+                        .setCollectionTitle(inputMovie.getCollectionTitle())
                         .setPosterUrl(posterUrl)
                         .setMoviesInCollection(moviesInCollection)
                         .build();
@@ -620,7 +632,7 @@ public class FullSearchService implements FullSearch {
                         LOGGER.info(movieDetailJson);
 
                         if (StringUtils.isEmpty(movieDetailJson)) {
-                            LOGGER.error("Body returned null from TheMovieDB for details on {}", basicMovie.getName());
+                            LOGGER.error("Body returned null from TheMovieDB for details on {}", inputMovie.getName());
                             return;
                         }
 
@@ -637,7 +649,7 @@ public class FullSearchService implements FullSearch {
                         }
 
                         if (collection.has(NAME)) {
-                            basicMovie.setCollectionTitle(collection.get(NAME).textValue());
+                            inputMovie.setCollectionTitle(collection.get(NAME).textValue());
                             basicMovieFromCollection.setCollectionTitle(collection.get(NAME).textValue());
                         }
 
@@ -645,8 +657,8 @@ public class FullSearchService implements FullSearch {
                         OutputMovie recommendedOutputMovie = new OutputMovie.Builder(movieDet.get(TITLE).textValue(), year)
                                 .setTmdbId(movieDet.get(ID).intValue())
                                 .setImdbId(movieDet.get("imdb_id").textValue())
-                                .setCollectionId(basicMovie.getCollectionId())
-                                .setCollectionTitle(basicMovie.getCollectionTitle())
+                                .setCollectionId(inputMovie.getCollectionId())
+                                .setCollectionTitle(inputMovie.getCollectionTitle())
                                 .setPosterUrl("https://image.tmdb.org/t/p/w185/" + movieDet.get("poster_path").textValue())
                                 .setOverview(movieDet.get("overview").textValue())
                                 .setMoviesInCollection(moviesInCollection)
@@ -659,7 +671,7 @@ public class FullSearchService implements FullSearch {
 
                         if (recommended.add(recommendedOutputMovie)) {
                             // Write current list of recommended movies to file.
-                            fileIoService.writeRssFile(machineIdentifier, key, new HashSet<>(recommended));
+                            plexFileInputIo.writeRssFile(plexInputFileConfig, recommended);
 
                             LOGGER.info("/newMovieFound:{}", recommendedOutputMovie);
 
@@ -679,10 +691,10 @@ public class FullSearchService implements FullSearch {
             }
 
         } catch (IOException e) {
-            LOGGER.error(String.format("Error getting collections %s.", basicMovie), e);
+            LOGGER.error(String.format("Error getting collections %s.", inputMovie), e);
         }
 
-        searched.add(basicMovie);
+        searched.add(inputMovie);
     }
 
     private void sendEmptySearchUpdate(int totalMovieCount, AtomicInteger searchedMovieCount) throws JsonProcessingException {

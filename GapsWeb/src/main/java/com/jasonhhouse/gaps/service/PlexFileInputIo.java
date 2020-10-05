@@ -14,6 +14,8 @@ package com.jasonhhouse.gaps.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.GapsConfiguration;
+import com.jasonhhouse.gaps.Rss;
+import com.jasonhhouse.gaps.movie.OutputMovie;
 import com.jasonhhouse.gaps.movie.PlexMovie;
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,6 +31,7 @@ import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,6 +129,44 @@ public class PlexFileInputIo implements FileInputIo<PlexInputFileConfig, PlexMov
         } catch (IOException e) {
             LOGGER.error("Check for RSS file next time", e);
             return "";
+        }
+    }
+
+    @Override
+    public @NotNull <OM extends OutputMovie> Boolean writeRssFile(@NotNull PlexInputFileConfig plexInputFileConfig, @NotNull Collection<OM> recommendedMovies) {
+        File file = Paths.get(gapsConfiguration.getStorageFolder(), plexInputFileConfig.getMachineIdentifier(), plexInputFileConfig.getKey().toString(), gapsConfiguration.getProperties().getRssFeed()).toFile();
+
+        if (file.exists()) {
+            boolean deleted = file.delete();
+            if (!deleted) {
+                LOGGER.error("Can't delete existing file {}", file.getPath());
+                return false;
+            }
+        }
+
+        try {
+            boolean created = file.createNewFile();
+            if (!created) {
+                LOGGER.error("Can't create file {}", file.getPath());
+                return false;
+            }
+        } catch (IOException e) {
+            LOGGER.error(String.format("Can't create file %s", file.getPath()), e);
+            return false;
+        }
+
+        // Create writer that java will close for us.
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
+            List<Rss> rssList = recommendedMovies.stream().map(movie -> new Rss(movie.getImdbId(), movie.getYear(), movie.getTmdbId(), movie.getName(), movie.getPosterUrl())).collect(Collectors.toList());
+            byte[] output = objectMapper.writeValueAsBytes(rssList);
+            outputStream.write(output);
+            return true;
+        } catch (FileNotFoundException e) {
+            LOGGER.error(String.format("Can't find file %s", gapsConfiguration.getProperties().getRecommendedMovies()), e);
+            return false;
+        } catch (IOException e) {
+            LOGGER.error(String.format("Can't write to file %s", gapsConfiguration.getProperties().getRecommendedMovies()), e);
+            return false;
         }
     }
 

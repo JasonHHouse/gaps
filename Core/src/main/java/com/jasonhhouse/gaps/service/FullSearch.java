@@ -16,12 +16,12 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Handles the process of searching, movies, counts, and canceling
  */
-public interface FullSearch {
+public interface FullSearch<I extends InputFileConfig, O extends OutputFileConfig> {
 
     /**
      * Kicks of searching for all missing movies
      */
-    void run(@NotNull String machineIdentifier, @NotNull Integer key);
+    void run(@NotNull I i, @NotNull O o);
 
     /**
      * Cancel the current search
