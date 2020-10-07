@@ -47,7 +47,7 @@ export function redLibraryBefore() {
 
   cy.visit('/configuration', { onBeforeLoad: spyOnAddEventListener });
 
-  cy.get('#movieDbApiKey')
+  cy.get('[data-cy=movieDbApiKey]')
     .clear()
     .type('723b4c763114904392ca441909aa0375')
     .should('have.value', '723b4c763114904392ca441909aa0375');
@@ -123,7 +123,7 @@ export function redLibraryBefore() {
 export function jokerLibraryBefore() {
   cy.visit('/configuration', { onBeforeLoad: spyOnAddEventListener });
 
-  cy.get('#movieDbApiKey')
+  cy.get('[data-cy=movieDbApiKey]')
     .clear()
     .type('723b4c763114904392ca441909aa0375')
     .should('have.value', '723b4c763114904392ca441909aa0375');

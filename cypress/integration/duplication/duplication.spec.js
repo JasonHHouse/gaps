@@ -11,9 +11,7 @@
 /* global cy, it, describe, beforeEach, expect */
 /* eslint no-undef: "error" */
 
-import {
-  nuke, redLibraryBefore, spyOnAddEventListener,
-} from '../common.js';
+import { nuke, redLibraryBefore, spyOnAddEventListener } from '../common.js';
 
 function checkForDuplicates(ownedMovies, recommendedMovies) {
   cy.log(`recommendedMovies.length: ${recommendedMovies.length}`);
@@ -41,11 +39,10 @@ function checkForDuplicates(ownedMovies, recommendedMovies) {
 function searchBestMovieLibrary(cy) {
   cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
 
-  cy.get('#dropdownMenuLink')
+  cy.get('[data-cy=dropdownMenu]')
     .click();
 
   cy.get('[data-cy="Best Movies"]')
-    .first()
     .click();
 
   cy.get('[data-cy=searchForMovies]')
@@ -56,11 +53,10 @@ function searchBestMovieLibrary(cy) {
 
   cy.visit('/recommended', { onBeforeLoad: spyOnAddEventListener });
 
-  cy.get('#dropdownMenuLink')
+  cy.get('[data-cy=dropdownMenu]')
     .click();
 
   cy.get('[data-cy="Best Movies"]')
-    .first()
     .click();
 
   cy.get('[data-cy=searchForMovies]')
@@ -70,11 +66,10 @@ function searchBestMovieLibrary(cy) {
 function searchMovieWithNewMetadataLibrary(cy) {
   cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
 
-  cy.get('#dropdownMenuLink')
+  cy.get('[data-cy=dropdownMenu]')
     .click();
 
   cy.get('[data-cy="Movies with new Metadata"]')
-    .first()
     .click();
 
   cy.get('[data-cy=searchForMovies]')

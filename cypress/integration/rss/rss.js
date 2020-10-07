@@ -16,11 +16,10 @@ import { redLibraryBefore, spyOnAddEventListener } from '../common.js';
 function searchSawLibrary(cy) {
   cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
 
-  cy.get('#dropdownMenuLink')
+  cy.get('[data-cy=dropdownMenu]')
     .click();
 
   cy.get('[data-cy=Saw]')
-    .first()
     .click();
 
   cy.get('[data-cy=searchForMovies]')
@@ -42,11 +41,10 @@ describe('Searched RSS', () => {
   it('Get full RSS for Red', () => {
     searchSawLibrary(cy);
 
-    cy.get('#dropdownMenuLink')
+    cy.get('[data-cy=dropdownMenu]')
       .click();
 
     cy.get('[data-cy=Saw]')
-      .first()
       .click();
 
     cy.get('[data-cy=searchForMovies]')

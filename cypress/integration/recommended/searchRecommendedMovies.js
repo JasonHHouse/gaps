@@ -16,11 +16,10 @@ import { nuke, redLibraryBefore, spyOnAddEventListener } from '../common.js';
 function searchSawLibrary(cy) {
   cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
 
-  cy.get('#dropdownMenuLink')
+  cy.get('[data-cy=dropdownMenu]')
     .click();
 
   cy.get('[data-cy=Saw]')
-    .first()
     .click();
 
   cy.get('[data-cy=searchForMovies]')
@@ -43,14 +42,16 @@ describe('Search for Recommended', () => {
   it('Clean configuration page load', () => {
     searchSawLibrary(cy);
 
-    cy.get('#libraryTitle').then(($libraryTitle) => {
-      if ($libraryTitle.text() !== 'Joker - Saw') {
-        cy.get('#dropdownMenuLink').click();
-        cy.get('[data-cy=Saw]')
-          .first()
-          .click();
-      }
-    });
+    cy.get('[data-cy=libraryTitle]')
+      .then(($libraryTitle) => {
+        if ($libraryTitle.text() !== 'Joker - Saw') {
+          cy.get('[data-cy=dropdownMenu]')
+            .click();
+
+          cy.get('[data-cy=Saw]')
+            .click();
+        }
+      });
 
     cy.get('#noMovieContainer > .card > .card-img-top')
       .should('not.be.visible');
@@ -59,11 +60,10 @@ describe('Search for Recommended', () => {
   it('Search Movies', () => {
     searchSawLibrary(cy);
 
-    cy.get('#dropdownMenuLink')
+    cy.get('[data-cy=dropdownMenu]')
       .click();
 
     cy.get('[data-cy=Saw]')
-      .first()
       .click();
 
     cy.get('[data-cy=searchForMovies]')
@@ -78,11 +78,10 @@ describe('Search for Recommended', () => {
   it('Research Movies', () => {
     searchSawLibrary(cy);
 
-    cy.get('#dropdownMenuLink')
+    cy.get('[data-cy=dropdownMenu]')
       .click();
 
     cy.get('[data-cy=Saw]')
-      .first()
       .click();
 
     cy.get('[data-cy=searchForMovies]')

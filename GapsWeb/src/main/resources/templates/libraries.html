@@ -81,13 +81,14 @@
 
     <div th:if="${plexServersFound}" th:remove="tag">
         <h4 class="top-margin text-primary" id="libraryTitle"
+            data-cy="libraryTitle"
             th:text="${plexServer.friendlyName} + ' - ' + ${plexLibrary.title}"
             th:data-key="*{plexLibrary.key}"
             th:data-machineIdentifier="*{plexServer.machineIdentifier}"></h4>
 
         <div class="dropdown show">
             <a aria-expanded="false" aria-haspopup="true" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-               href="#" id="dropdownMenuLink" role="button">Libraries</a>
+               data-cy="dropdownMenu" href="#" id="dropdownMenuLink" role="button">Libraries</a>
 
             <div aria-labelledby="dropdownMenuLink" class="dropdown-menu">
                 <div th:each="instance : ${plexServers}" th:remove="tag">

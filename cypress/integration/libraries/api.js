@@ -11,18 +11,15 @@
 /* global cy, it, expect, describe, before, beforeEach */
 /* eslint no-undef: "error" */
 
-import {
-  nuke, redLibraryBefore, spyOnAddEventListener,
-} from '../common.js';
+import { nuke, redLibraryBefore, spyOnAddEventListener } from '../common.js';
 
 function searchSawLibrary(cy) {
   cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
 
-  cy.get('#dropdownMenuLink')
+  cy.get('[data-cy=dropdownMenu]')
     .click();
 
   cy.get('[data-cy=Saw]')
-    .first()
     .click();
 
   cy.get('[data-cy=searchForMovies]')

@@ -11,9 +11,7 @@
 /* global cy, it, expect, before, describe */
 /* eslint no-undef: "error" */
 
-import {
-  redLibraryBefore, nuke, spyOnAddEventListener,
-} from '../common.js';
+import { nuke, redLibraryBefore, spyOnAddEventListener } from '../common.js';
 
 describe('Find owned movies', () => {
   before(nuke);
@@ -22,11 +20,10 @@ describe('Find owned movies', () => {
   it('Find Saw Movies', () => {
     cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
 
-    cy.get('#dropdownMenuLink')
+    cy.get('[data-cy=dropdownMenu]')
       .click();
 
     cy.get('[data-cy=Saw]')
-      .first()
       .click();
 
     cy.get('[data-cy=searchForMovies]')
@@ -43,18 +40,16 @@ describe('Find owned movies', () => {
   it('Refresh Saw Movies', () => {
     cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
 
-    cy.get('#dropdownMenuLink')
+    cy.get('[data-cy=dropdownMenu]')
       .click();
 
     cy.get('[data-cy="Best Movies"]')
-      .first()
       .click();
 
-    cy.get('#dropdownMenuLink')
+    cy.get('[data-cy=dropdownMenu]')
       .click();
 
     cy.get('[data-cy=Saw]')
-      .first()
       .click();
 
     cy.get('label > input')
@@ -75,11 +70,10 @@ describe('Find owned movies', () => {
   it('Research Saw Movies', () => {
     cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
 
-    cy.get('#dropdownMenuLink')
+    cy.get('[data-cy=dropdownMenu]')
       .click();
 
     cy.get('[data-cy=Saw]')
-      .first()
       .click();
 
     cy.get('label > input')
@@ -106,7 +100,7 @@ describe('Find owned movies', () => {
   it('Movies with Metadata Empty', () => {
     cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
 
-    cy.get('#dropdownMenuLink')
+    cy.get('[data-cy=dropdownMenu]')
       .click();
 
     cy.get('[data-cy="Movies with new Metadata"]')

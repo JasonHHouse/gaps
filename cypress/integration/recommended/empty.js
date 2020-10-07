@@ -22,11 +22,10 @@ describe('Not Searched Yet Recommended', () => {
     cy.get('#noMovieContainer > .card > .card-img-top')
       .should('be.visible');
 
-    cy.get('#dropdownMenuLink')
+    cy.get('[data-cy=dropdownMenu]')
       .click();
 
     cy.get('[data-cy="Movies with new Metadata"]')
-      .first()
       .should('have.text', 'Joker - Movies with new Metadata');
   });
 });

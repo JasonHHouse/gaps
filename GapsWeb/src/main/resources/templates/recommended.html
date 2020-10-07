@@ -79,11 +79,12 @@
     <h3 class="top-margin">Missing Movies</h3>
 
     <h4 class="top-margin text-primary" id="libraryTitle"
+        data-cy="libraryTitle"
         th:text="${plexServer.friendlyName} + ' - ' + ${plexLibrary.title}"></h4>
 
     <div class="dropdown show">
         <a aria-expanded="false" aria-haspopup="true" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-           href="#"
+           href="#" data-cy="dropdownMenu"
            id="dropdownMenuLink" role="button">
             Recommended
         </a>
