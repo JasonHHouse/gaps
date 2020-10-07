@@ -20,14 +20,14 @@ describe('Not Searched Yet Library', () => {
     cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
 
     cy.get('#libraryTitle')
-      .contains('Red');
+      .contains('Joker');
 
     cy.get('#dropdownMenuLink')
       .should('have.text', 'Libraries');
 
-    cy.get('[data-key="1"]')
+    cy.get('[data-cy="Movies with new Metadata"]')
       .first()
-      .should('have.text', 'Red - Movies with new Metadata');
+      .should('have.text', 'Joker - Movies with new Metadata');
 
     cy.get('.card-img-top')
       .should('be.visible');

@@ -418,10 +418,10 @@
     <div id="{{machineIdentifier}}" class="col-lg-4">
         <div class="top-margin">
             <div class="card border-secondary mb-3" style="max-width: 20rem;">
-                <div class="card-header">{{friendlyName}}</div>
+                <div data-cy="{{friendlyName}}" class="card-header">{{friendlyName}}</div>
                 <ul class="list-group list-group-flush">
                     {{#each plexLibraries}}
-                    <li class="list-group-item">{{title}}</li>
+                    <li data-cy="{{title}}" class="list-group-item">{{title}}</li>
                     {{/each}}
                 </ul>
                 <div class="card-body">

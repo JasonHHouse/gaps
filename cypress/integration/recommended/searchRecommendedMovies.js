@@ -11,26 +11,42 @@
 /* global cy, describe, it, beforeEach */
 /* eslint no-undef: "error" */
 
-import { redLibraryBefore, searchPlexForMoviesFromSaw, spyOnAddEventListener } from '../common.js';
+import { nuke, redLibraryBefore, spyOnAddEventListener } from '../common.js';
 
 function searchSawLibrary(cy) {
   cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
 
-  searchPlexForMoviesFromSaw(cy);
+  cy.get('#dropdownMenuLink')
+    .click();
+
+  cy.get('[data-cy=Saw]')
+    .first()
+    .click();
+
+  cy.get('[data-cy=searchForMovies]')
+    .click();
+
+  cy.get('label > input')
+    .clear()
+    .type('Saw');
+
+  cy.get('#movies_info')
+    .should('have.text', 'Showing 1 to 1 of 1 entries');
 
   cy.visit('/recommended', { onBeforeLoad: spyOnAddEventListener });
 }
 
 describe('Search for Recommended', () => {
+  beforeEach(nuke);
   beforeEach(redLibraryBefore);
 
   it('Clean configuration page load', () => {
     searchSawLibrary(cy);
 
     cy.get('#libraryTitle').then(($libraryTitle) => {
-      if ($libraryTitle.text() !== 'Red - Saw') {
+      if ($libraryTitle.text() !== 'Joker - Saw') {
         cy.get('#dropdownMenuLink').click();
-        cy.get('[data-key="2"]')
+        cy.get('[data-cy=Saw]')
           .first()
           .click();
       }
@@ -46,11 +62,11 @@ describe('Search for Recommended', () => {
     cy.get('#dropdownMenuLink')
       .click();
 
-    cy.get('[data-key="2"]')
+    cy.get('[data-cy=Saw]')
       .first()
       .click();
 
-    cy.get('.card-body > .btn')
+    cy.get('[data-cy=searchForMovies]')
       .click();
 
     cy.wait(5000);
@@ -65,11 +81,11 @@ describe('Search for Recommended', () => {
     cy.get('#dropdownMenuLink')
       .click();
 
-    cy.get('[data-key="2"]')
+    cy.get('[data-cy=Saw]')
       .first()
       .click();
 
-    cy.get('.card-body > .btn')
+    cy.get('[data-cy=searchForMovies]')
       .click();
 
     cy.wait(5000);

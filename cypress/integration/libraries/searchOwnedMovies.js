@@ -12,32 +12,48 @@
 /* eslint no-undef: "error" */
 
 import {
-  jokerLibraryBefore, redLibraryBefore, searchPlexForMoviesFromSaw, spyOnAddEventListener,
+  redLibraryBefore, nuke, spyOnAddEventListener,
 } from '../common.js';
 
 describe('Find owned movies', () => {
+  before(nuke);
   before(redLibraryBefore);
 
-  it('Find Movies', () => {
-    cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
-
-    searchPlexForMoviesFromSaw(cy);
-  });
-
-  it('Refresh Movies', () => {
+  it('Find Saw Movies', () => {
     cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
 
     cy.get('#dropdownMenuLink')
       .click();
 
-    cy.get('[data-key="1"]')
+    cy.get('[data-cy=Saw]')
+      .first()
+      .click();
+
+    cy.get('[data-cy=searchForMovies]')
+      .click();
+
+    cy.get('label > input')
+      .clear()
+      .type('Saw');
+
+    cy.get('#movies_info')
+      .should('have.text', 'Showing 1 to 1 of 1 entries');
+  });
+
+  it('Refresh Saw Movies', () => {
+    cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
+
+    cy.get('#dropdownMenuLink')
+      .click();
+
+    cy.get('[data-cy="Best Movies"]')
       .first()
       .click();
 
     cy.get('#dropdownMenuLink')
       .click();
 
-    cy.get('[data-key="2"]')
+    cy.get('[data-cy=Saw]')
       .first()
       .click();
 
@@ -56,13 +72,13 @@ describe('Find owned movies', () => {
       });
   });
 
-  it('Research Movies', () => {
+  it('Research Saw Movies', () => {
     cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
 
     cy.get('#dropdownMenuLink')
       .click();
 
-    cy.get('[data-key="2"]')
+    cy.get('[data-cy=Saw]')
       .first()
       .click();
 
@@ -87,18 +103,16 @@ describe('Find owned movies', () => {
       });
   });
 
-  it('Regular Movies Empty', () => {
-    jokerLibraryBefore();
-
+  it('Movies with Metadata Empty', () => {
     cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
 
     cy.get('#dropdownMenuLink')
       .click();
 
-    cy.get('[data-key="1"][data-machineidentifier="721fee4db63634b88ed699f8b0a16d7682a7a0d9"]')
+    cy.get('[data-cy="Movies with new Metadata"]')
       .click();
 
-    cy.get('.card-body > .btn')
+    cy.get('[data-cy=searchForMovies]')
       .should('be.visible');
   });
 });

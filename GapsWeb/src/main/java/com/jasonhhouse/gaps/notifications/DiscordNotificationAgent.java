@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.properties.DiscordProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
+import com.jasonhhouse.gaps.service.IO;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,12 +37,15 @@ import static com.jasonhhouse.gaps.notifications.NotificationStatus.TIMEOUT;
 
 public final class DiscordNotificationAgent extends AbstractNotificationAgent<DiscordProperties> {
 
+    @NotNull
     private static final Logger LOGGER = LoggerFactory.getLogger(DiscordNotificationAgent.class);
+    @NotNull
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    @NotNull
     private final OkHttpClient client;
 
-    public DiscordNotificationAgent(FileIoService fileIoService) {
-        super(fileIoService);
+    public DiscordNotificationAgent(@NotNull IO ioService) {
+        super(ioService);
 
         client = new OkHttpClient.Builder()
                 .connectTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
@@ -51,17 +55,17 @@ public final class DiscordNotificationAgent extends AbstractNotificationAgent<Di
     }
 
     @Override
-    public int getId() {
+    public @NotNull Integer getId() {
         return 6;
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "Discord Notification Agent";
     }
 
     @Override
-    public boolean sendMessage(NotificationType notificationType, String level, String title, String message) {
+    public @NotNull Boolean sendMessage(@NotNull NotificationType notificationType, @NotNull String level, @NotNull String title, @NotNull String message) {
         LOGGER.info("sendMessage( {}, {}, {} )", level, title, message);
 
         if (sendPrepMessage(notificationType)) {
@@ -108,40 +112,42 @@ public final class DiscordNotificationAgent extends AbstractNotificationAgent<Di
         }
     }
 
-    @NotNull
     @Override
-    public DiscordProperties getNotificationProperties() {
-        return fileIoService.readProperties().getDiscordProperties();
+    public @NotNull DiscordProperties getNotificationProperties() {
+        return ioService.readProperties().getDiscordProperties();
     }
 
     private static final class Discord {
+        @NotNull
         private final List<Embeds> embeds;
 
-        private Discord(String title, String message) {
+        private Discord(@NotNull String title, @NotNull String message) {
             Embeds embed = new Embeds(title, message);
             embeds = Collections.singletonList(embed);
         }
 
-        public List<Embeds> getEmbeds() {
+        public @NotNull List<Embeds> getEmbeds() {
             return embeds;
         }
 
     }
 
     private static final class Embeds {
+        @NotNull
         private final String title;
+        @NotNull
         private final String description;
 
-        private Embeds(String title, String description) {
+        private Embeds(@NotNull String title, @NotNull String description) {
             this.title = title;
             this.description = description;
         }
 
-        public String getTitle() {
+        public @NotNull String getTitle() {
             return title;
         }
 
-        public String getDescription() {
+        public @NotNull String getDescription() {
             return description;
         }
     }

@@ -14,7 +14,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.properties.TelegramProperties;
-import com.jasonhhouse.gaps.service.FileIoService;
+import com.jasonhhouse.gaps.service.IO;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import okhttp3.HttpUrl;
@@ -32,13 +32,15 @@ import static com.jasonhhouse.gaps.notifications.NotificationStatus.SEND_MESSAGE
 import static com.jasonhhouse.gaps.notifications.NotificationStatus.TIMEOUT;
 
 public final class TelegramNotificationAgent extends AbstractNotificationAgent<TelegramProperties> {
+    @NotNull
     private static final Logger LOGGER = LoggerFactory.getLogger(TelegramNotificationAgent.class);
+    @NotNull
     private static final ObjectMapper objectMapper = new ObjectMapper();
-
+    @NotNull
     private final OkHttpClient client;
 
-    public TelegramNotificationAgent(FileIoService fileIoService) {
-        super(fileIoService);
+    public TelegramNotificationAgent(@NotNull IO ioService) {
+        super(ioService);
 
         client = new OkHttpClient.Builder()
                 .connectTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
@@ -48,17 +50,17 @@ public final class TelegramNotificationAgent extends AbstractNotificationAgent<T
     }
 
     @Override
-    public int getId() {
+    public @NotNull Integer getId() {
         return 0;
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "Telegram Notification Agent";
     }
 
     @Override
-    public boolean sendMessage(NotificationType notificationType, String level, String title, String message) {
+    public @NotNull Boolean sendMessage(@NotNull NotificationType notificationType, @NotNull String level, @NotNull String title, @NotNull String message) {
         LOGGER.info(SEND_MESSAGE, level, title, message);
 
         if (sendPrepMessage(notificationType)) {
@@ -105,34 +107,36 @@ public final class TelegramNotificationAgent extends AbstractNotificationAgent<T
         }
     }
 
-    @NotNull
     @Override
-    public TelegramProperties getNotificationProperties() {
-        return fileIoService.readProperties().getTelegramProperties();
+    public @NotNull TelegramProperties getNotificationProperties() {
+        return ioService.readProperties().getTelegramProperties();
     }
 
     public static final class Telegram {
+        @NotNull
         private final String chatId;
+        @NotNull
         private final String text;
+        @NotNull
         private final String parseMode;
 
-        public Telegram(String chatId, String text, String parseMode) {
+        public Telegram(@NotNull String chatId, @NotNull String text, @NotNull String parseMode) {
             this.chatId = chatId;
             this.text = text;
             this.parseMode = parseMode;
         }
 
         @JsonProperty("chat_id")
-        public String getChatId() {
+        public @NotNull String getChatId() {
             return chatId;
         }
 
-        public String getText() {
+        public @NotNull String getText() {
             return text;
         }
 
         @JsonProperty("parse_mode")
-        public String getParseMode() {
+        public @NotNull String getParseMode() {
             return parseMode;
         }
     }

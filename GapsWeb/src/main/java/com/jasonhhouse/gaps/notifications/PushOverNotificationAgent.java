@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.properties.PushOverProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
+import com.jasonhhouse.gaps.service.IO;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import okhttp3.HttpUrl;
@@ -25,7 +26,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,13 +34,15 @@ import static com.jasonhhouse.gaps.notifications.NotificationStatus.SEND_MESSAGE
 import static com.jasonhhouse.gaps.notifications.NotificationStatus.TIMEOUT;
 
 public final class PushOverNotificationAgent extends AbstractNotificationAgent<PushOverProperties> {
+    @NotNull
     private static final Logger LOGGER = LoggerFactory.getLogger(PushOverNotificationAgent.class);
+    @NotNull
     private static final ObjectMapper objectMapper = new ObjectMapper();
-
+    @NotNull
     private final OkHttpClient client;
 
-    public PushOverNotificationAgent(FileIoService fileIoService) {
-        super(fileIoService);
+    public PushOverNotificationAgent(@NotNull IO ioService) {
+        super(ioService);
 
         client = new OkHttpClient.Builder()
                 .connectTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
@@ -50,17 +52,17 @@ public final class PushOverNotificationAgent extends AbstractNotificationAgent<P
     }
 
     @Override
-    public int getId() {
+    public @NotNull Integer getId() {
         return 5;
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "PushOver Notification Agent";
     }
 
     @Override
-    public boolean sendMessage(NotificationType notificationType, String level, String title, String message) {
+    public @NotNull Boolean sendMessage(@NotNull NotificationType notificationType, @NotNull String level, @NotNull String title, @NotNull String message) {
         LOGGER.info(SEND_MESSAGE, level, title, message);
 
         if (sendPrepMessage(notificationType)) {
@@ -107,24 +109,37 @@ public final class PushOverNotificationAgent extends AbstractNotificationAgent<P
         }
     }
 
-    @NotNull
     @Override
-    public PushOverProperties getNotificationProperties() {
-        return fileIoService.readProperties().getPushOverProperties();
+    public @NotNull PushOverProperties getNotificationProperties() {
+        return ioService.readProperties().getPushOverProperties();
     }
 
     private static final class PushOver {
-
+        @NotNull
         private final String token;
+        @NotNull
         private final String user;
+        @NotNull
         private final Integer priority;
+        @NotNull
         private final String sound;
+        @NotNull
         private final String title;
+        @NotNull
         private final String message;
+        @NotNull
         private final Integer retry;
+        @NotNull
         private final Integer expire;
 
-        public PushOver(String token, String user, Integer priority, String sound, String title, String message, Integer retry, Integer expire) {
+        public PushOver(@NotNull String token,
+                        @NotNull String user,
+                        @NotNull Integer priority,
+                        @NotNull String sound,
+                        @NotNull String title,
+                        @NotNull String message,
+                        @NotNull Integer retry,
+                        @NotNull Integer expire) {
             this.token = token;
             this.user = user;
             this.priority = priority;
@@ -135,35 +150,35 @@ public final class PushOverNotificationAgent extends AbstractNotificationAgent<P
             this.expire = expire;
         }
 
-        public String getToken() {
+        public @NotNull String getToken() {
             return token;
         }
 
-        public String getUser() {
+        public @NotNull String getUser() {
             return user;
         }
 
-        public Integer getPriority() {
+        public @NotNull Integer getPriority() {
             return priority;
         }
 
-        public String getSound() {
+        public @NotNull String getSound() {
             return sound;
         }
 
-        public String getTitle() {
+        public @NotNull String getTitle() {
             return title;
         }
 
-        public String getMessage() {
+        public @NotNull String getMessage() {
             return message;
         }
 
-        public Integer getRetry() {
+        public @NotNull Integer getRetry() {
             return retry;
         }
 
-        public Integer getExpire() {
+        public @NotNull Integer getExpire() {
             return expire;
         }
     }

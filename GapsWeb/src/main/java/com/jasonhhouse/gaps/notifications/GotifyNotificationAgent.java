@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.properties.GotifyProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
+import com.jasonhhouse.gaps.service.IO;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import okhttp3.HttpUrl;
@@ -24,7 +25,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,12 +34,17 @@ import static com.jasonhhouse.gaps.notifications.NotificationStatus.TIMEOUT;
 
 public final class GotifyNotificationAgent extends AbstractNotificationAgent<GotifyProperties> {
 
+    @NotNull
     private static final Logger LOGGER = LoggerFactory.getLogger(GotifyNotificationAgent.class);
+
+    @NotNull
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    @NotNull
     private final OkHttpClient client;
 
-    public GotifyNotificationAgent(FileIoService fileIoService) {
-        super(fileIoService);
+    public GotifyNotificationAgent(@NotNull IO ioService) {
+        super(ioService);
 
         client = new OkHttpClient.Builder()
                 .connectTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
@@ -50,17 +55,17 @@ public final class GotifyNotificationAgent extends AbstractNotificationAgent<Got
     }
 
     @Override
-    public int getId() {
+    public @NotNull Integer getId() {
         return 3;
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "Gotify Notification Agent";
     }
 
     @Override
-    public boolean sendMessage(NotificationType notificationType, String level, String title, String message) {
+    public @NotNull Boolean sendMessage(@NotNull NotificationType notificationType, @NotNull String level, @NotNull String title, @NotNull String message) {
         LOGGER.info(SEND_MESSAGE, level, title, message);
 
         if (sendPrepMessage(notificationType)) {
@@ -102,26 +107,27 @@ public final class GotifyNotificationAgent extends AbstractNotificationAgent<Got
         }
     }
 
-    @NotNull
     @Override
-    public GotifyProperties getNotificationProperties() {
-        return fileIoService.readProperties().getGotifyProperties();
+    public @NotNull GotifyProperties getNotificationProperties() {
+        return ioService.readProperties().getGotifyProperties();
     }
 
     public static final class Gotify {
+        @NotNull
         private final String title;
+        @NotNull
         private final String message;
 
-        public Gotify(String title, String message) {
+        public Gotify(@NotNull String title, @NotNull String message) {
             this.message = message;
             this.title = title;
         }
 
-        public String getTitle() {
+        public @NotNull String getTitle() {
             return title;
         }
 
-        public String getMessage() {
+        public @NotNull String getMessage() {
             return message;
         }
     }

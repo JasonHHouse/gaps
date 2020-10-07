@@ -83,8 +83,8 @@ describe('Plex Configuration Tests', () => {
   it('Test valid new Plex Server', () => {
     cy.get('#address')
       .clear()
-      .type(atob('MTkyLjE2OC4xLjk='))
-      .should('have.value', atob('MTkyLjE2OC4xLjk='));
+      .type(atob('MTkyLjE2OC4xLjg='))
+      .should('have.value', atob('MTkyLjE2OC4xLjg='));
 
     cy.get('#port')
       .clear()
@@ -178,8 +178,8 @@ describe('Plex Configuration Tests', () => {
   it('Save valid Plex Server', () => {
     cy.get('#address')
       .clear()
-      .type(atob('MTkyLjE2OC4xLjk='))
-      .should('have.value', atob('MTkyLjE2OC4xLjk='));
+      .type(atob('MTkyLjE2OC4xLjg='))
+      .should('have.value', atob('MTkyLjE2OC4xLjg='));
 
     cy.get('#port')
       .clear()
@@ -220,15 +220,18 @@ describe('Plex Configuration Tests', () => {
 
     // Define card here
     cy.get('.card-header')
-      .should('have.text', 'Red');
+      .should('have.text', 'Joker');
 
     cy.get('.list-group > :nth-child(1)')
       .should('have.text', 'Best Movies');
 
     cy.get('.list-group > :nth-child(2)')
-      .should('have.text', 'Movies with new Metadata');
+      .should('have.text', 'Movies');
 
     cy.get('.list-group > :nth-child(3)')
+      .should('have.text', 'Movies with new Metadata');
+
+    cy.get('.list-group > :nth-child(4)')
       .should('have.text', 'Saw');
   });
 
@@ -293,8 +296,8 @@ describe('Plex Configuration Tests', () => {
   it('Save duplicate valid Plex Server', () => {
     cy.get('#address')
       .clear()
-      .type(atob('MTkyLjE2OC4xLjk='))
-      .should('have.value', atob('MTkyLjE2OC4xLjk='));
+      .type(atob('MTkyLjE2OC4xLjg='))
+      .should('have.value', atob('MTkyLjE2OC4xLjg='));
 
     cy.get('#port')
       .clear()
@@ -335,21 +338,24 @@ describe('Plex Configuration Tests', () => {
 
     // Define card here
     cy.get('.card-header')
-      .should('have.text', 'Red');
+      .should('have.text', 'Joker');
 
     cy.get('.list-group > :nth-child(1)')
       .should('have.text', 'Best Movies');
 
     cy.get('.list-group > :nth-child(2)')
-      .should('have.text', 'Movies with new Metadata');
+      .should('have.text', 'Movies');
 
     cy.get('.list-group > :nth-child(3)')
+      .should('have.text', 'Movies with new Metadata');
+
+    cy.get('.list-group > :nth-child(4)')
       .should('have.text', 'Saw');
 
     cy.get('#address')
       .clear()
-      .type('192.168.1.9')
-      .should('have.value', '192.168.1.9');
+      .type('192.168.1.8')
+      .should('have.value', '192.168.1.8');
 
     cy.get('#port')
       .clear()

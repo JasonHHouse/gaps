@@ -25,8 +25,8 @@ describe('Not Searched Yet Recommended', () => {
     cy.get('#dropdownMenuLink')
       .click();
 
-    cy.get('[data-key="1"]')
+    cy.get('[data-cy="Movies with new Metadata"]')
       .first()
-      .should('have.text', 'Red - Movies with new Metadata');
+      .should('have.text', 'Joker - Movies with new Metadata');
   });
 });

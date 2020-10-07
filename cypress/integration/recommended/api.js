@@ -8,17 +8,32 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/* global cy, describe, it, before, expect */
+/* global cy, describe, it, expect */
 /* eslint no-undef: "error" */
 
 import {
-  nuke, redLibraryBefore, searchPlexForMoviesFromSaw, spyOnAddEventListener,
+  redLibraryBefore, spyOnAddEventListener,
 } from '../common.js';
 
 function searchSawLibrary(cy) {
   cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
 
-  searchPlexForMoviesFromSaw(cy);
+  cy.get('#dropdownMenuLink')
+    .click();
+
+  cy.get('[data-cy=Saw]')
+    .first()
+    .click();
+
+  cy.get('[data-cy=searchForMovies]')
+    .click();
+
+  cy.get('label > input')
+    .clear()
+    .type('Saw');
+
+  cy.get('#movies_info')
+    .should('have.text', 'Showing 1 to 1 of 1 entries');
 
   cy.visit('/recommended', { onBeforeLoad: spyOnAddEventListener });
 }
@@ -33,13 +48,11 @@ describe('Recommended API', () => {
       });
   });
 
-  before(nuke);
-  before(redLibraryBefore);
-
   it('Get library Red - Saw', () => {
+    redLibraryBefore();
     searchSawLibrary(cy);
 
-    cy.request('/libraries/721fee4db63634b88ed699f8b0a16d7682a7a0d9/2')
+    cy.request('/libraries/c51c432ae94e316d52570550f915ecbcd71bede8/5')
       .then((resp) => {
         cy.log(resp.body);
         const result = resp.body;

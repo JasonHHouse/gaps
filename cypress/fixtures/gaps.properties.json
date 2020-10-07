@@ -1,0 +1,179 @@
+{
+  "plexServers": [
+    {
+      "plexLibraries": [
+        {
+          "location": {
+            "value": "",
+            "id": 4,
+            "path": "/data/gaps/Best Movies"
+          },
+          "allowSync": 1,
+          "art": "/:/resources/movie-fanart.jpg",
+          "composite": "/library/sections/4/composite/1602040076",
+          "filters": 1,
+          "refreshing": 0,
+          "thumb": "/:/resources/movie.png",
+          "key": 4,
+          "type": "movie",
+          "title": "Best Movies",
+          "agent": "com.plexapp.agents.imdb",
+          "scanner": "Plex Movie Scanner",
+          "language": "en",
+          "uuid": "4f7abfee-824d-485b-906a-27c917e222d5",
+          "updatedAt": 1601899630,
+          "createdAt": 1601864973,
+          "scannedAt": 1602040076,
+          "content": 1,
+          "directory": 1,
+          "contentChangedAt": -30488,
+          "hidden": 0
+        },
+        {
+          "location": {
+            "value": "",
+            "id": 1,
+            "path": "/data/Movies"
+          },
+          "allowSync": 1,
+          "art": "/:/resources/movie-fanart.jpg",
+          "composite": "/library/sections/1/composite/1602040754",
+          "filters": 1,
+          "refreshing": 0,
+          "thumb": "/:/resources/movie.png",
+          "key": 1,
+          "type": "movie",
+          "title": "Movies",
+          "agent": "com.plexapp.agents.themoviedb",
+          "scanner": "Plex Movie Scanner",
+          "language": "en",
+          "uuid": "07c0a834-dbd1-43eb-b647-0099474bfd00",
+          "updatedAt": 1601969240,
+          "createdAt": 1584962634,
+          "scannedAt": 1602040754,
+          "content": 1,
+          "directory": 1,
+          "contentChangedAt": -20533,
+          "hidden": 0
+        },
+        {
+          "location": {
+            "value": "",
+            "id": 6,
+            "path": "/data/gaps/Movies"
+          },
+          "allowSync": 1,
+          "art": "/:/resources/movie-fanart.jpg",
+          "composite": "/library/sections/6/composite/1602040754",
+          "filters": 1,
+          "refreshing": 0,
+          "thumb": "/:/resources/movie.png",
+          "key": 6,
+          "type": "movie",
+          "title": "Movies with new Metadata",
+          "agent": "tv.plex.agents.movie",
+          "scanner": "Plex Movie",
+          "language": "en-US",
+          "uuid": "f6763a83-03d8-4c88-af3f-15b2f45a37ad",
+          "updatedAt": 1601899889,
+          "createdAt": 1601865143,
+          "scannedAt": 1602040754,
+          "content": 1,
+          "directory": 1,
+          "contentChangedAt": -26463,
+          "hidden": 0
+        },
+        {
+          "location": {
+            "value": "",
+            "id": 5,
+            "path": "/data/gaps/Movies2"
+          },
+          "allowSync": 1,
+          "art": "/:/resources/movie-fanart.jpg",
+          "composite": "/library/sections/5/composite/1602040763",
+          "filters": 1,
+          "refreshing": 0,
+          "thumb": "/:/resources/movie.png",
+          "key": 5,
+          "type": "movie",
+          "title": "Saw",
+          "agent": "com.plexapp.agents.imdb",
+          "scanner": "Plex Movie Scanner",
+          "language": "en",
+          "uuid": "236126a3-a526-470c-b59e-9c83efb03b05",
+          "updatedAt": 1601900204,
+          "createdAt": 1601865059,
+          "scannedAt": 1602040763,
+          "content": 1,
+          "directory": 1,
+          "contentChangedAt": -29899,
+          "hidden": 0
+        }
+      ],
+      "friendlyName": "Joker",
+      "machineIdentifier": "c51c432ae94e316d52570550f915ecbcd71bede8",
+      "plexToken": "mQw4uawxTyYEmqNUrvBz",
+      "address": "192.168.1.8",
+      "port": 32400
+    }
+  ],
+  "telegramProperties": {
+    "enabled": false,
+    "notificationTypes": [],
+    "botId": "",
+    "chatId": ""
+  },
+  "pushBulletProperties": {
+    "enabled": false,
+    "notificationTypes": [],
+    "channel_tag": "",
+    "accessToken": ""
+  },
+  "emailProperties": {
+    "enabled": false,
+    "notificationTypes": [],
+    "username": "",
+    "password": "",
+    "mailTo": "",
+    "mailFrom": "",
+    "mailServer": "",
+    "mailPort": 0,
+    "mailTransportProtocol": "",
+    "mailSmtpAuth": "",
+    "mailSmtpTlsEnabled": false
+  },
+  "gotifyProperties": {
+    "enabled": false,
+    "notificationTypes": [],
+    "address": "",
+    "token": ""
+  },
+  "slackProperties": {
+    "enabled": false,
+    "notificationTypes": [],
+    "webHookUrl": ""
+  },
+  "pushOverProperties": {
+    "enabled": false,
+    "notificationTypes": [],
+    "token": "",
+    "user": "",
+    "priority": 0,
+    "sound": "",
+    "retry": 0,
+    "expire": 0
+  },
+  "discordProperties": {
+    "enabled": false,
+    "notificationTypes": [],
+    "webHookUrl": ""
+  },
+  "movieDbApiKey": "723b4c763114904392ca441909aa0375",
+  "password": "",
+  "schedule": {
+    "id": 2,
+    "message": "Weekly",
+    "enabled": true
+  }
+}

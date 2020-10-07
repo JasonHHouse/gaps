@@ -94,6 +94,7 @@
                     <a class="dropdown-item"
                        data-ol-has-click-handler=""
                        href="javascript:void(0)"
+                       th:data-cy="*{plexLibrary.title}"
                        th:data-key="*{plexLibrary.key}"
                        th:data-machineIdentifier="*{instance.value.machineIdentifier}"
                        th:each="plexLibrary : *{instance.value.plexLibraries}"
@@ -120,7 +121,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Your movies are really missing</h5>
                     <p class="card-text">You need to run Gaps at least once to have found the missing movies.</p>
-                    <a class="btn btn-primary" href="javascript:void(0)" onclick="searchForMovies()">Search</a>
+                    <a data-cy="searchForMovies" class="btn btn-primary" href="javascript:void(0)" onclick="searchForMovies()">Search</a>
                 </div>
             </div>
         </div>
@@ -160,7 +161,7 @@
     <div class="card">
         <div class="row no-gutters">
             <div class="col-12 col-md-auto">
-                <img style="height: auto; width: 225px; display: block;"
+                <img data-cy="{{imdbId}}" style="height: auto; width: 225px; display: block;"
                      src="http://{{address}}:{{port}}{{posterUrl}}/?X-Plex-Token={{plexToken}}"
                 class="card-img" alt="Plex Poster">
             </div>

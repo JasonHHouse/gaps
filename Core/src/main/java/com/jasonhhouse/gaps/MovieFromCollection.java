@@ -1,7 +1,11 @@
 package com.jasonhhouse.gaps;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public final class MovieFromCollection {
     @NotNull
@@ -11,10 +15,13 @@ public final class MovieFromCollection {
     @NotNull
     private final Boolean owned;
 
-    public MovieFromCollection(@NotNull String title, @NotNull String tmdbId, @NotNull Boolean owned) {
-        this.title = title;
-        this.tmdbId = tmdbId;
-        this.owned = owned;
+    @JsonCreator
+    public MovieFromCollection(@JsonProperty(value = "title") @Nullable String title,
+                               @JsonProperty(value = "tmdbId") @Nullable String tmdbId,
+                               @JsonProperty(value = "owned") @Nullable Boolean owned) {
+        this.title = StringUtils.isEmpty(title) ? "" : title;
+        this.tmdbId = StringUtils.isEmpty(tmdbId) ? "" : tmdbId;
+        this.owned = owned != null && owned;
     }
 
     @NotNull

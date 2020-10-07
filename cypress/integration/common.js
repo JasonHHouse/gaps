@@ -31,66 +31,6 @@ export function spyOnAddEventListener(win) {
   };
 }
 
-export function searchPlexForMoviesFromSaw(cy) {
-  cy.get('#dropdownMenuLink')
-    .click();
-
-  cy.get('[data-key="2"]')
-    .first()
-    .click();
-
-  cy.get('.card-body > .btn')
-    .click();
-
-  cy.get('label > input')
-    .clear()
-    .type('Saw');
-
-  cy.get('#movies_info')
-    .should('have.text', 'Showing 1 to 1 of 1 entries');
-
-  cy.get('.card-img')
-    .should('be.visible')
-    .and(($img) => {
-      // "naturalWidth" and "naturalHeight" are set when the image loads
-      expect($img[0].naturalWidth).to.be.greaterThan(0);
-    });
-}
-
-export function searchPlexForMoviesFromBestMovies(cy) {
-  cy.get('#dropdownMenuLink')
-    .click();
-
-  cy.get('[data-key="5"]')
-    .first()
-    .click();
-
-  cy.get('.card-body > .btn')
-    .click();
-
-  // Wait for timeout from clearing data
-  cy.wait(5000);
-}
-
-export function searchPlexForMoviesFromMovies(cy) {
-  cy.get('#dropdownMenuLink')
-    .click();
-
-  cy.get('[data-key="1"]')
-    .first()
-    .click();
-
-  cy.get('.card-body > .btn')
-    .click();
-
-  cy.get('label > input')
-    .clear()
-    .type('Gods');
-
-  cy.get('#movies_info')
-    .should('have.text', 'Showing 1 to 1 of 1 entries (filtered from 21 total entries)');
-}
-
 export function nuke() {
   cy.request('PUT', '/nuke')
     .then((response) => {
@@ -120,8 +60,8 @@ export function redLibraryBefore() {
 
   cy.get('#address')
     .clear()
-    .type(atob('MTkyLjE2OC4xLjk='))
-    .should('have.value', atob('MTkyLjE2OC4xLjk='));
+    .type(atob('MTkyLjE2OC4xLjg='))
+    .should('have.value', atob('MTkyLjE2OC4xLjg='));
 
   cy.get('#port')
     .clear()
@@ -164,16 +104,19 @@ export function redLibraryBefore() {
     .should('not.be.visible');
 
   // Define card here
-  cy.get('.card-header')
-    .should('have.text', 'Red');
+  cy.get('[data-cy=Joker]')
+    .should('have.text', 'Joker');
 
-  cy.get('.list-group > :nth-child(1)')
+  cy.get('[data-cy="Best Movies"]')
     .should('have.text', 'Best Movies');
 
-  cy.get('.list-group > :nth-child(2)')
+  cy.get('[data-cy="Movies"]')
+    .should('have.text', 'Movies');
+
+  cy.get('[data-cy="Movies with new Metadata"]')
     .should('have.text', 'Movies with new Metadata');
 
-  cy.get('.list-group > :nth-child(3)')
+  cy.get('[data-cy=Saw]')
     .should('have.text', 'Saw');
 }
 

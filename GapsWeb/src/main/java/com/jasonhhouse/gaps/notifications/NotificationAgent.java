@@ -13,18 +13,16 @@ package com.jasonhhouse.gaps.notifications;
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.properties.NotificationProperties;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public interface NotificationAgent<T extends NotificationProperties> {
 
-    int getId();
+    @NotNull Integer getId();
 
-    String getName();
+    @NotNull String getName();
 
-    boolean isEnabled();
+    @NotNull Boolean isEnabled();
 
-    boolean sendMessage(NotificationType notificationType, String level, String title, String message);
+    @NotNull Boolean sendMessage(@NotNull NotificationType notificationType, @NotNull String level, @NotNull String title, @NotNull String message);
 
-    @NotNull
-    T getNotificationProperties();
+    @NotNull T getNotificationProperties();
 }

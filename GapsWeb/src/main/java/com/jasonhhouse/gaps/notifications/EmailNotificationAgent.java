@@ -13,6 +13,7 @@ package com.jasonhhouse.gaps.notifications;
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.properties.EmailProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
+import com.jasonhhouse.gaps.service.IO;
 import java.util.Properties;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,24 +27,26 @@ import static com.jasonhhouse.gaps.notifications.NotificationStatus.SEND_MESSAGE
 
 public final class EmailNotificationAgent extends AbstractNotificationAgent<EmailProperties> {
 
+    @NotNull
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailNotificationAgent.class);
 
-    public EmailNotificationAgent(FileIoService fileIoService) {
-        super(fileIoService);
+    @NotNull
+    public EmailNotificationAgent(@NotNull IO ioService) {
+        super(ioService);
     }
 
     @Override
-    public int getId() {
+    public @NotNull Integer getId() {
         return 4;
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "Email Notification Agent";
     }
 
     @Override
-    public boolean sendMessage(NotificationType notificationType, String level, String title, String message) {
+    public @NotNull Boolean sendMessage(@NotNull NotificationType notificationType, @NotNull String level, @NotNull String title, @NotNull String message) {
         LOGGER.info(SEND_MESSAGE, level, title, message);
 
         if (sendPrepMessage(notificationType)) {
@@ -66,10 +69,9 @@ public final class EmailNotificationAgent extends AbstractNotificationAgent<Emai
         }
     }
 
-    @NotNull
     @Override
-    public EmailProperties getNotificationProperties() {
-        return fileIoService.readProperties().getEmailProperties();
+    public @NotNull EmailProperties getNotificationProperties() {
+        return ioService.readProperties().getEmailProperties();
     }
 
     private JavaMailSenderImpl getJavaMailSender() {
