@@ -37,7 +37,7 @@ describe('Plex Configuration Tests', () => {
     const port = faker.random.number(64000);
     const token = faker.random.alphaNumeric(32);
 
-    cy.populatePlexConfiguration(ip,port,token);
+    cy.populatePlexConfiguration(ip, port, token);
 
     cy.get('#testPlexServer')
       .click();
@@ -68,7 +68,7 @@ describe('Plex Configuration Tests', () => {
   });
 
   it('Test valid new Plex Server', () => {
-    cy.populatePlexConfiguration(atob('MTkyLjE2OC4xLjg='),atob('MzI0MDA='), atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
+    cy.populatePlexConfiguration(atob('MTkyLjE2OC4xLjg='), atob('MzI0MDA='), atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
 
     cy.get('#testPlexServer')
       .click();
@@ -103,7 +103,7 @@ describe('Plex Configuration Tests', () => {
     const port = faker.random.number(64000);
     const token = faker.random.alphaNumeric(32);
 
-    cy.populatePlexConfiguration(ip,port,token);
+    cy.populatePlexConfiguration(ip, port, token);
 
     cy.get('#addPlexServer')
       .click();
@@ -137,7 +137,7 @@ describe('Plex Configuration Tests', () => {
   });
 
   it('Save valid Plex Server', () => {
-    cy.populatePlexConfiguration(atob('MTkyLjE2OC4xLjg='),atob('MzI0MDA='), atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
+    cy.populatePlexConfiguration(atob('MTkyLjE2OC4xLjg='), atob('MzI0MDA='), atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
 
     cy.get('#addPlexServer')
       .click();
@@ -242,7 +242,7 @@ describe('Plex Configuration Tests', () => {
   });
 
   it('Save duplicate valid Plex Server', () => {
-    cy.populatePlexConfiguration(atob('MTkyLjE2OC4xLjg='),atob('MzI0MDA='), atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
+    cy.populatePlexConfiguration(atob('MTkyLjE2OC4xLjg='), atob('MzI0MDA='), atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
 
     cy.get('#addPlexServer')
       .click();
@@ -287,7 +287,7 @@ describe('Plex Configuration Tests', () => {
     cy.get('.list-group > :nth-child(4)')
       .should('have.text', 'Saw');
 
-    cy.populatePlexConfiguration(atob('MTkyLjE2OC4xLjg='),atob('MzI0MDA='), atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
+    cy.populatePlexConfiguration(atob('MTkyLjE2OC4xLjg='), atob('MzI0MDA='), atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
 
     cy.get('#addPlexServer')
       .click();

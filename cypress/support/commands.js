@@ -25,7 +25,7 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 Cypress.Commands.add('populateTmdb', (key) => {
-  if(key) {
+  if (key) {
     cy.get('[data-cy=movieDbApiKey]')
       .clear()
       .type(key)
@@ -51,5 +51,5 @@ Cypress.Commands.add('populatePlexConfiguration', (address, port, token) => {
   cy.get('#plexToken')
     .clear()
     .type(token)
-    .should('have.value',token);
+    .should('have.value', token);
 })
