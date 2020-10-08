@@ -23,3 +23,33 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('populateTmdb', (key) => {
+  if(key) {
+    cy.get('[data-cy=movieDbApiKey]')
+      .clear()
+      .type(key)
+      .should('have.value', key);
+  } else {
+    cy.get('[data-cy=movieDbApiKey]')
+      .clear()
+      .should('have.value', '');
+  }
+});
+
+Cypress.Commands.add('populatePlexConfiguration', (address, port, token) => {
+  cy.get('#address')
+    .clear()
+    .type(address)
+    .should('have.value', address);
+
+  cy.get('#port')
+    .clear()
+    .type(port)
+    .should('have.value', port);
+
+  cy.get('#plexToken')
+    .clear()
+    .type(token)
+    .should('have.value',token);
+})

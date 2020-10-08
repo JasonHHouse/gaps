@@ -37,20 +37,7 @@ describe('Plex Configuration Tests', () => {
     const port = faker.random.number(64000);
     const token = faker.random.alphaNumeric(32);
 
-    cy.get('#address')
-      .clear()
-      .type(ip)
-      .should('have.value', ip);
-
-    cy.get('#port')
-      .clear()
-      .type(port)
-      .should('have.value', port);
-
-    cy.get('#plexToken')
-      .clear()
-      .type(token)
-      .should('have.value', token);
+    cy.populatePlexConfiguration(ip,port,token);
 
     cy.get('#testPlexServer')
       .click();
@@ -81,20 +68,7 @@ describe('Plex Configuration Tests', () => {
   });
 
   it('Test valid new Plex Server', () => {
-    cy.get('#address')
-      .clear()
-      .type(atob('MTkyLjE2OC4xLjg='))
-      .should('have.value', atob('MTkyLjE2OC4xLjg='));
-
-    cy.get('#port')
-      .clear()
-      .type(atob('MzI0MDA='))
-      .should('have.value', atob('MzI0MDA='));
-
-    cy.get('#plexToken')
-      .clear()
-      .type(atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='))
-      .should('have.value', atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
+    cy.populatePlexConfiguration(atob('MTkyLjE2OC4xLjg='),atob('MzI0MDA='), atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
 
     cy.get('#testPlexServer')
       .click();
@@ -129,20 +103,7 @@ describe('Plex Configuration Tests', () => {
     const port = faker.random.number(64000);
     const token = faker.random.alphaNumeric(32);
 
-    cy.get('#address')
-      .clear()
-      .type(ip)
-      .should('have.value', ip);
-
-    cy.get('#port')
-      .clear()
-      .type(port)
-      .should('have.value', port);
-
-    cy.get('#plexToken')
-      .clear()
-      .type(token)
-      .should('have.value', token);
+    cy.populatePlexConfiguration(ip,port,token);
 
     cy.get('#addPlexServer')
       .click();
@@ -176,20 +137,7 @@ describe('Plex Configuration Tests', () => {
   });
 
   it('Save valid Plex Server', () => {
-    cy.get('#address')
-      .clear()
-      .type(atob('MTkyLjE2OC4xLjg='))
-      .should('have.value', atob('MTkyLjE2OC4xLjg='));
-
-    cy.get('#port')
-      .clear()
-      .type(atob('MzI0MDA='))
-      .should('have.value', atob('MzI0MDA='));
-
-    cy.get('#plexToken')
-      .clear()
-      .type(atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='))
-      .should('have.value', atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
+    cy.populatePlexConfiguration(atob('MTkyLjE2OC4xLjg='),atob('MzI0MDA='), atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
 
     cy.get('#addPlexServer')
       .click();
@@ -294,20 +242,7 @@ describe('Plex Configuration Tests', () => {
   });
 
   it('Save duplicate valid Plex Server', () => {
-    cy.get('#address')
-      .clear()
-      .type(atob('MTkyLjE2OC4xLjg='))
-      .should('have.value', atob('MTkyLjE2OC4xLjg='));
-
-    cy.get('#port')
-      .clear()
-      .type(atob('MzI0MDA='))
-      .should('have.value', atob('MzI0MDA='));
-
-    cy.get('#plexToken')
-      .clear()
-      .type(atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='))
-      .should('have.value', atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
+    cy.populatePlexConfiguration(atob('MTkyLjE2OC4xLjg='),atob('MzI0MDA='), atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
 
     cy.get('#addPlexServer')
       .click();
@@ -352,20 +287,7 @@ describe('Plex Configuration Tests', () => {
     cy.get('.list-group > :nth-child(4)')
       .should('have.text', 'Saw');
 
-    cy.get('#address')
-      .clear()
-      .type('192.168.1.8')
-      .should('have.value', '192.168.1.8');
-
-    cy.get('#port')
-      .clear()
-      .type(atob('MzI0MDA='))
-      .should('have.value', atob('MzI0MDA='));
-
-    cy.get('#plexToken')
-      .clear()
-      .type(atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='))
-      .should('have.value', atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
+    cy.populatePlexConfiguration(atob('MTkyLjE2OC4xLjg='),atob('MzI0MDA='), atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
 
     cy.get('#addPlexServer')
       .click();

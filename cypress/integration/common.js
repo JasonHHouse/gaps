@@ -47,10 +47,7 @@ export function redLibraryBefore() {
 
   cy.visit('/configuration', { onBeforeLoad: spyOnAddEventListener });
 
-  cy.get('[data-cy=movieDbApiKey]')
-    .clear()
-    .type('723b4c763114904392ca441909aa0375')
-    .should('have.value', '723b4c763114904392ca441909aa0375');
+  cy.populateTmdb('723b4c763114904392ca441909aa0375');
 
   cy.get('#saveTmdbKey')
     .click();
@@ -58,20 +55,7 @@ export function redLibraryBefore() {
   cy.get('#plexTab')
     .click();
 
-  cy.get('#address')
-    .clear()
-    .type(atob('MTkyLjE2OC4xLjg='))
-    .should('have.value', atob('MTkyLjE2OC4xLjg='));
-
-  cy.get('#port')
-    .clear()
-    .type(atob('MzI0MDA='))
-    .should('have.value', atob('MzI0MDA='));
-
-  cy.get('#plexToken')
-    .clear()
-    .type(atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='))
-    .should('have.value', atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
+  cy.populatePlexConfiguration(atob('MTkyLjE2OC4xLjg='), atob('MzI0MDA='), atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
 
   cy.get('#addPlexServer')
     .click();
@@ -123,10 +107,7 @@ export function redLibraryBefore() {
 export function jokerLibraryBefore() {
   cy.visit('/configuration', { onBeforeLoad: spyOnAddEventListener });
 
-  cy.get('[data-cy=movieDbApiKey]')
-    .clear()
-    .type('723b4c763114904392ca441909aa0375')
-    .should('have.value', '723b4c763114904392ca441909aa0375');
+  cy.populateTmdb('723b4c763114904392ca441909aa0375');
 
   cy.get('#saveTmdbKey')
     .click();
@@ -134,20 +115,7 @@ export function jokerLibraryBefore() {
   cy.get('#plexTab')
     .click();
 
-  cy.get('#address')
-    .clear()
-    .type('192.168.1.8')
-    .should('have.value', '192.168.1.8');
-
-  cy.get('#port')
-    .clear()
-    .type(atob('MzI0MDA='))
-    .should('have.value', atob('MzI0MDA='));
-
-  cy.get('#plexToken')
-    .clear()
-    .type(atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='))
-    .should('have.value', atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
+  cy.populatePlexConfiguration(atob('MTkyLjE2OC4xLjg='), atob('MzI0MDA='), atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
 
   cy.get('#addPlexServer')
     .click();

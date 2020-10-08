@@ -21,10 +21,7 @@ describe('TMDB Configuration Tests', () => {
   it('Test invalid TMDB Key', () => {
     const invalidKey = faker.random.alphaNumeric(16);
 
-    cy.get('[data-cy=movieDbApiKey]')
-      .clear()
-      .type(invalidKey)
-      .should('have.value', invalidKey);
+    cy.populateTmdb(invalidKey);
 
     cy.get('#testTmdbKey')
       .click();
@@ -45,10 +42,7 @@ describe('TMDB Configuration Tests', () => {
   });
 
   it('Test valid TMDB Key', () => {
-    cy.get('[data-cy=movieDbApiKey]')
-      .clear()
-      .type('723b4c763114904392ca441909aa0375')
-      .should('have.value', '723b4c763114904392ca441909aa0375');
+    cy.populateTmdb('723b4c763114904392ca441909aa0375');
 
     cy.get('#testTmdbKey')
       .click();
@@ -69,10 +63,7 @@ describe('TMDB Configuration Tests', () => {
   it('Save invalid TMDB Key', () => {
     const invalidKey = faker.random.alphaNumeric(16);
 
-    cy.get('[data-cy=movieDbApiKey]')
-      .clear()
-      .type(invalidKey)
-      .should('have.value', invalidKey);
+    cy.populateTmdb(invalidKey);
 
     cy.get('#saveTmdbKey')
       .click();
@@ -96,10 +87,7 @@ describe('TMDB Configuration Tests', () => {
   });
 
   it('Save valid TMDB Key', () => {
-    cy.get('[data-cy=movieDbApiKey]')
-      .clear()
-      .type('723b4c763114904392ca441909aa0375')
-      .should('have.value', '723b4c763114904392ca441909aa0375');
+    cy.populateTmdb('723b4c763114904392ca441909aa0375');
 
     cy.get('#saveTmdbKey')
       .click();
@@ -123,9 +111,7 @@ describe('TMDB Configuration Tests', () => {
   });
 
   it('Attempt to save empty TMDB Key', () => {
-    cy.get('[data-cy=movieDbApiKey]')
-      .clear()
-      .should('have.value', '');
+    cy.populateTmdb();
 
     cy.get('#saveTmdbKey')
       .click();
@@ -147,9 +133,7 @@ describe('TMDB Configuration Tests', () => {
   });
 
   it('Attempt to test empty TMDB Key', () => {
-    cy.get('[data-cy=movieDbApiKey]')
-      .clear()
-      .should('have.value', '');
+    cy.populateTmdb('');
 
     cy.get('#testTmdbKey')
       .click();
