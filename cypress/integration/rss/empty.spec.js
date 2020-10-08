@@ -8,38 +8,21 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/* global cy, it, describe */
+/* global cy, describe, it, before */
 /* eslint no-undef: "error" */
 
-import { spyOnAddEventListener } from '../common.js';
+import { nuke, spyOnAddEventListener } from '../common.spec.js';
 
-describe('Verify Log In Page', () => {
-  it('Default page', () => {
-    cy.visit('/login', { onBeforeLoad: spyOnAddEventListener });
+describe('Not Searched Yet RSS', () => {
+  before(nuke);
 
-    cy.get(':nth-child(1) > label')
-      .should('have.text', 'Username');
-
-    cy.get(':nth-child(2) > label')
-      .should('have.text', 'Password');
-
-    cy.get('.btn')
-      .should('have.text', 'Log In');
-
-    cy.get('#username')
-      .clear()
-      .type('badUser')
-      .should('have.value', 'badUser');
-
-    cy.get('#password')
-      .clear()
-      .type('password')
-      .should('have.value', 'password');
-
-    cy.get('.btn')
-      .click();
+  it('Clean configuration page load', () => {
+    cy.visit('/rssCheck', { onBeforeLoad: spyOnAddEventListener });
 
     cy.get('.card-img-top')
+      .should('be.visible');
+
+    cy.get('.card-body')
       .should('be.visible');
   });
 });

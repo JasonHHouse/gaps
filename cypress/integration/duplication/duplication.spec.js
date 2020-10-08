@@ -11,7 +11,7 @@
 /* global cy, it, describe, beforeEach, expect */
 /* eslint no-undef: "error" */
 
-import { nuke, redLibraryBefore, spyOnAddEventListener } from '../common.js';
+import { nuke, redLibraryBefore, spyOnAddEventListener } from '../common.spec.js';
 
 function checkForDuplicates(ownedMovies, recommendedMovies) {
   cy.log(`recommendedMovies.length: ${recommendedMovies.length}`);

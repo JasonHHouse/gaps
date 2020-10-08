@@ -8,10 +8,10 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/* global cy, describe, it, before, expect */
+/* global cy, describe, it, beforeEach */
 /* eslint no-undef: "error" */
 
-import { redLibraryBefore, spyOnAddEventListener } from '../common.js';
+import { nuke, redLibraryBefore, spyOnAddEventListener } from '../common.spec.js';
 
 function searchSawLibrary(cy) {
   cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
@@ -35,10 +35,47 @@ function searchSawLibrary(cy) {
   cy.visit('/recommended', { onBeforeLoad: spyOnAddEventListener });
 }
 
-describe('Searched RSS', () => {
-  before(redLibraryBefore);
+describe('Search for Recommended', () => {
+  beforeEach(nuke);
+  beforeEach(redLibraryBefore);
 
-  it('Get full RSS for Red', () => {
+  it('Clean configuration page load', () => {
+    searchSawLibrary(cy);
+
+    cy.get('[data-cy=libraryTitle]')
+      .then(($libraryTitle) => {
+        if ($libraryTitle.text() !== 'Joker - Saw') {
+          cy.get('[data-cy=dropdownMenu]')
+            .click();
+
+          cy.get('[data-cy=Saw]')
+            .click();
+        }
+      });
+
+    cy.get('#noMovieContainer > .card > .card-img-top')
+      .should('not.be.visible');
+  });
+
+  it('Search Movies', () => {
+    searchSawLibrary(cy);
+
+    cy.get('[data-cy=dropdownMenu]')
+      .click();
+
+    cy.get('[data-cy=Saw]')
+      .click();
+
+    cy.get('[data-cy=searchForMovies]')
+      .click();
+
+    cy.wait(5000);
+
+    cy.get('#movies_info')
+      .should('have.text', 'Showing 1 to 7 of 7 entries');
+  });
+
+  it('Research Movies', () => {
     searchSawLibrary(cy);
 
     cy.get('[data-cy=dropdownMenu]')
@@ -55,12 +92,12 @@ describe('Searched RSS', () => {
     cy.get('#movies_info')
       .should('have.text', 'Showing 1 to 7 of 7 entries');
 
-    cy.visit('/rssCheck', { onBeforeLoad: spyOnAddEventListener });
+    cy.get('#movieContainer > [onclick="searchForMovies()"]')
+      .click();
 
-    cy.request('/rss/c51c432ae94e316d52570550f915ecbcd71bede8/5')
-      .then((resp) => {
-        const result = resp.body;
-        expect(result).to.have.lengthOf(7);
-      });
+    cy.wait(5000);
+
+    cy.get('#movies_info')
+      .should('have.text', 'Showing 1 to 7 of 7 entries');
   });
 });

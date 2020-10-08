@@ -11,7 +11,7 @@
 /* global cy, it, expect, before, describe */
 /* eslint no-undef: "error" */
 
-import { nuke, redLibraryBefore, spyOnAddEventListener } from '../common.js';
+import { nuke, redLibraryBefore, spyOnAddEventListener } from '../common.spec.js';
 
 describe('Find owned movies', () => {
   before(nuke);

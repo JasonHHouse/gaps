@@ -8,10 +8,10 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/* global cy, describe, it, beforeEach */
+/* global cy, describe, it, expect */
 /* eslint no-undef: "error" */
 
-import { nuke, redLibraryBefore, spyOnAddEventListener } from '../common.js';
+import { redLibraryBefore, spyOnAddEventListener } from '../common.spec.js';
 
 function searchSawLibrary(cy) {
   cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
@@ -35,69 +35,25 @@ function searchSawLibrary(cy) {
   cy.visit('/recommended', { onBeforeLoad: spyOnAddEventListener });
 }
 
-describe('Search for Recommended', () => {
-  beforeEach(nuke);
-  beforeEach(redLibraryBefore);
-
-  it('Clean configuration page load', () => {
-    searchSawLibrary(cy);
-
-    cy.get('[data-cy=libraryTitle]')
-      .then(($libraryTitle) => {
-        if ($libraryTitle.text() !== 'Joker - Saw') {
-          cy.get('[data-cy=dropdownMenu]')
-            .click();
-
-          cy.get('[data-cy=Saw]')
-            .click();
-        }
+describe('Recommended API', () => {
+  it('Get Bad recommended', () => {
+    cy.request('/recommended/a/2')
+      .then((resp) => {
+        cy.log(resp.body);
+        const result = resp.body;
+        expect(result.code).to.eq(41);
       });
-
-    cy.get('#noMovieContainer > .card > .card-img-top')
-      .should('not.be.visible');
   });
 
-  it('Search Movies', () => {
+  it('Get library Red - Saw', () => {
+    redLibraryBefore();
     searchSawLibrary(cy);
 
-    cy.get('[data-cy=dropdownMenu]')
-      .click();
-
-    cy.get('[data-cy=Saw]')
-      .click();
-
-    cy.get('[data-cy=searchForMovies]')
-      .click();
-
-    cy.wait(5000);
-
-    cy.get('#movies_info')
-      .should('have.text', 'Showing 1 to 7 of 7 entries');
-  });
-
-  it('Research Movies', () => {
-    searchSawLibrary(cy);
-
-    cy.get('[data-cy=dropdownMenu]')
-      .click();
-
-    cy.get('[data-cy=Saw]')
-      .click();
-
-    cy.get('[data-cy=searchForMovies]')
-      .click();
-
-    cy.wait(5000);
-
-    cy.get('#movies_info')
-      .should('have.text', 'Showing 1 to 7 of 7 entries');
-
-    cy.get('#movieContainer > [onclick="searchForMovies()"]')
-      .click();
-
-    cy.wait(5000);
-
-    cy.get('#movies_info')
-      .should('have.text', 'Showing 1 to 7 of 7 entries');
+    cy.request('/libraries/c51c432ae94e316d52570550f915ecbcd71bede8/5')
+      .then((resp) => {
+        cy.log(resp.body);
+        const result = resp.body;
+        expect(result.code).to.eq(40);
+      });
   });
 });

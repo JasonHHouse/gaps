@@ -12,7 +12,7 @@
 /* eslint no-undef: "error" */
 
 import faker from 'faker';
-import { CYPRESS_VALUES, nuke } from '../common.js';
+import { CYPRESS_VALUES, nuke } from '../common.spec.js';
 
 function checkElements(token, user, priority, sound, retry, expire, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#pushOverToken')

@@ -12,7 +12,7 @@
 /* eslint no-undef: "error" */
 
 import faker from 'faker';
-import { CYPRESS_VALUES, nuke } from '../common.js';
+import { CYPRESS_VALUES, nuke } from '../common.spec.js';
 
 function checkElements(username, password, mailTo, mailFrom, mailServer, mailPort, mailTransportProtocol, mailSmtpAuth, mailSmtpTlsEnabled, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#emailUsername')

@@ -11,7 +11,7 @@
 /* global cy, it, describe */
 /* eslint no-undef: "error" */
 
-import { spyOnAddEventListener } from '../common.js';
+import { spyOnAddEventListener } from '../common.spec.js';
 
 describe('Verify About Page', () => {
   it('Default page', () => {

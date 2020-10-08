@@ -12,7 +12,7 @@
 /* eslint no-undef: "error" */
 
 import faker from 'faker';
-import { spyOnAddEventListener } from '../common.js';
+import { spyOnAddEventListener } from '../common.spec.js';
 
 describe('TMDB Configuration Tests', () => {
   before(() => {

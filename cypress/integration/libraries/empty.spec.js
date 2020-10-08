@@ -8,21 +8,27 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/* global cy, describe, it, before */
+/* global cy, it, before, describe */
 /* eslint no-undef: "error" */
 
-import { nuke, spyOnAddEventListener } from '../common.js';
+import { redLibraryBefore, spyOnAddEventListener } from '../common.spec.js';
 
-describe('Not Searched Yet RSS', () => {
-  before(nuke);
+describe('Not Searched Yet Library', () => {
+  before(redLibraryBefore);
 
   it('Clean configuration page load', () => {
-    cy.visit('/rssCheck', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
+
+    cy.get('[data-cy=libraryTitle]')
+      .contains('Joker');
+
+    cy.get('[data-cy=dropdownMenu]')
+      .should('have.text', 'Libraries');
+
+    cy.get('[data-cy="Movies with new Metadata"]')
+      .should('have.text', 'Joker - Movies with new Metadata');
 
     cy.get('.card-img-top')
-      .should('be.visible');
-
-    cy.get('.card-body')
       .should('be.visible');
   });
 });

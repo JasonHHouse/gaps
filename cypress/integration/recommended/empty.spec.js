@@ -8,52 +8,24 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/* global cy, describe, it, expect */
+/* global cy, describe, it, before */
 /* eslint no-undef: "error" */
 
-import { redLibraryBefore, spyOnAddEventListener } from '../common.js';
+import { redLibraryBefore, spyOnAddEventListener } from '../common.spec.js';
 
-function searchSawLibrary(cy) {
-  cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
+describe('Not Searched Yet Recommended', () => {
+  before(redLibraryBefore);
 
-  cy.get('[data-cy=dropdownMenu]')
-    .click();
+  it('Clean configuration page load', () => {
+    cy.visit('/recommended', { onBeforeLoad: spyOnAddEventListener });
 
-  cy.get('[data-cy=Saw]')
-    .click();
+    cy.get('#noMovieContainer > .card > .card-img-top')
+      .should('be.visible');
 
-  cy.get('[data-cy=searchForMovies]')
-    .click();
+    cy.get('[data-cy=dropdownMenu]')
+      .click();
 
-  cy.get('label > input')
-    .clear()
-    .type('Saw');
-
-  cy.get('#movies_info')
-    .should('have.text', 'Showing 1 to 1 of 1 entries');
-
-  cy.visit('/recommended', { onBeforeLoad: spyOnAddEventListener });
-}
-
-describe('Recommended API', () => {
-  it('Get Bad recommended', () => {
-    cy.request('/recommended/a/2')
-      .then((resp) => {
-        cy.log(resp.body);
-        const result = resp.body;
-        expect(result.code).to.eq(41);
-      });
-  });
-
-  it('Get library Red - Saw', () => {
-    redLibraryBefore();
-    searchSawLibrary(cy);
-
-    cy.request('/libraries/c51c432ae94e316d52570550f915ecbcd71bede8/5')
-      .then((resp) => {
-        cy.log(resp.body);
-        const result = resp.body;
-        expect(result.code).to.eq(40);
-      });
+    cy.get('[data-cy="Movies with new Metadata"]')
+      .should('have.text', 'Joker - Movies with new Metadata');
   });
 });

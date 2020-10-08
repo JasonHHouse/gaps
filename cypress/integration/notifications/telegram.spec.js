@@ -12,7 +12,7 @@
 /* eslint no-undef: "error" */
 
 import faker from 'faker';
-import { CYPRESS_VALUES, nuke } from '../common.js';
+import { CYPRESS_VALUES, nuke } from '../common.spec.js';
 
 function checkElements(botId, chatId, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#telegramBotId')

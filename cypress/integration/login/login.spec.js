@@ -8,25 +8,36 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/* global cy, it, before, describe */
+/* global cy, it, describe */
 /* eslint no-undef: "error" */
 
-import { redLibraryBefore, spyOnAddEventListener } from '../common.js';
+import { spyOnAddEventListener } from '../common.spec.js';
 
-describe('Not Searched Yet Library', () => {
-  before(redLibraryBefore);
+describe('Verify Log In Page', () => {
+  it('Default page', () => {
+    cy.visit('/login', { onBeforeLoad: spyOnAddEventListener });
 
-  it('Clean configuration page load', () => {
-    cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
+    cy.get(':nth-child(1) > label')
+      .should('have.text', 'Username');
 
-    cy.get('[data-cy=libraryTitle]')
-      .contains('Joker');
+    cy.get(':nth-child(2) > label')
+      .should('have.text', 'Password');
 
-    cy.get('[data-cy=dropdownMenu]')
-      .should('have.text', 'Libraries');
+    cy.get('.btn')
+      .should('have.text', 'Log In');
 
-    cy.get('[data-cy="Movies with new Metadata"]')
-      .should('have.text', 'Joker - Movies with new Metadata');
+    cy.get('#username')
+      .clear()
+      .type('badUser')
+      .should('have.value', 'badUser');
+
+    cy.get('#password')
+      .clear()
+      .type('password')
+      .should('have.value', 'password');
+
+    cy.get('.btn')
+      .click();
 
     cy.get('.card-img-top')
       .should('be.visible');
