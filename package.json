@@ -4,11 +4,8 @@
   "description": "Gaps searches through your Plex Server or local folders for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.",
   "main": "/",
   "dependencies": {
-    "@cypress/code-coverage": "^3.8.1",
     "cssnano": "^4.1.10",
-    "cypress-intellij-reporter": "0.0.4",
     "faker": "^5.1.0",
-    "nyc": "^15.1.0",
     "postcss-cli": "^7.1.1",
     "uglify-es": "^3.3.9",
     "uglify-js": "^3.10.0",

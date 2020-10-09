@@ -94,7 +94,7 @@ public final class PushBulletNotificationAgent extends AbstractNotificationAgent
             return false;
         }
 
-        LOGGER.info("pushBulletMessage {}", pushBulletMessage);
+        LOGGER.info("Sending pushBulletMessage");
         RequestBody body = RequestBody.create(pushBulletMessage, MediaType.get(org.springframework.http.MediaType.APPLICATION_JSON_VALUE));
 
         Request request = new Request.Builder()

@@ -84,7 +84,7 @@ public final class SlackNotificationAgent extends AbstractNotificationAgent<Slac
             return false;
         }
 
-        LOGGER.info("slackMessage {}", slackMessage);
+        LOGGER.info("Sending slackMessage");
         RequestBody body = RequestBody.create(slackMessage, MediaType.get(org.springframework.http.MediaType.APPLICATION_JSON_VALUE));
 
         Request request = new Request.Builder()

@@ -88,7 +88,7 @@ public final class DiscordNotificationAgent extends AbstractNotificationAgent<Di
             return false;
         }
 
-        LOGGER.info("discordMessage {}", discordMessage);
+        LOGGER.info("Sending discordMessage");
         RequestBody body = RequestBody.create(discordMessage, MediaType.get(org.springframework.http.MediaType.APPLICATION_JSON_VALUE));
 
         Request request = new Request.Builder()

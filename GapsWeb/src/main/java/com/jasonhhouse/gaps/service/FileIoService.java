@@ -293,7 +293,7 @@ public class FileIoService implements IO {
     @Override
     @NotNull
     public PlexProperties readProperties() {
-        LOGGER.info("readProperties()");
+        LOGGER.debug("readProperties()");
 
         final File file = Paths.get(gapsConfiguration.getStorageFolder(), gapsConfiguration.getProperties().getGapsProperties()).toFile();
         if (!file.exists()) {

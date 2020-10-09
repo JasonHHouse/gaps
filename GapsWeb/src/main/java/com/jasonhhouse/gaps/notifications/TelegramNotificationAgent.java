@@ -84,7 +84,7 @@ public final class TelegramNotificationAgent extends AbstractNotificationAgent<T
             return false;
         }
 
-        LOGGER.info("telegramMessage {}", telegramMessage);
+        LOGGER.info("Sending telegramMessage");
         RequestBody body = RequestBody.create(telegramMessage, MediaType.get(org.springframework.http.MediaType.APPLICATION_JSON_VALUE));
 
         Request request = new Request.Builder()

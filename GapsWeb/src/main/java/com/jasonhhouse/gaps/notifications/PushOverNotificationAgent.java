@@ -86,7 +86,7 @@ public final class PushOverNotificationAgent extends AbstractNotificationAgent<P
             return false;
         }
 
-        LOGGER.info("pushOverMessage {}", pushOverMessage);
+        LOGGER.info("Sending pushOverMessage");
         RequestBody body = RequestBody.create(pushOverMessage, MediaType.get(org.springframework.http.MediaType.APPLICATION_JSON_VALUE));
 
         Request request = new Request.Builder()

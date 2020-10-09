@@ -84,7 +84,7 @@ public final class GotifyNotificationAgent extends AbstractNotificationAgent<Got
             return false;
         }
 
-        LOGGER.info("Gotify {}", gotifyMessage);
+        LOGGER.info("Sending gotifyMessage");
         RequestBody body = RequestBody.create(gotifyMessage, MediaType.get(org.springframework.http.MediaType.APPLICATION_JSON_VALUE));
 
         Request request = new Request.Builder()
