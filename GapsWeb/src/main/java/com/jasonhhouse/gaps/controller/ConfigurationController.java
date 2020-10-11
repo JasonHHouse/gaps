@@ -90,11 +90,10 @@ public class ConfigurationController {
             Payload payload = plexQuery.getLibraries(plexServer);
 
             if (payload.getCode() == Payload.PLEX_LIBRARIES_FOUND.getCode()) {
-                int initialCount = plexProperties.getPlexServers().size();
-                plexProperties.addPlexServer(plexServer);
-                if (plexProperties.getPlexServers().size() == initialCount) {
+                if (plexProperties.getPlexServers().contains(plexServer)) {
                     template.convertAndSend(CONFIGURATION_PLEX + "/duplicate", Payload.DUPLICATE_PLEX_LIBRARY);
                 } else {
+                    plexProperties.addPlexServer(plexServer);
                     fileIoService.writeProperties(plexProperties);
                     template.convertAndSend(CONFIGURATION_PLEX_COMPLETE, payload.setExtras(plexServer));
                 }

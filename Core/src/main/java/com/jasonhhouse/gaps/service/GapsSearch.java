@@ -11,6 +11,8 @@
 
 package com.jasonhhouse.gaps.service;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Handles the process of searching, movies, counts, and canceling
  */
@@ -19,7 +21,7 @@ public interface GapsSearch {
     /**
      * Kicks of searching for all missing movies
      */
-    void run(String machineIdentifier, Integer key);
+    void run(@NotNull String machineIdentifier, @NotNull Integer key);
 
     /**
      * Cancel the current search

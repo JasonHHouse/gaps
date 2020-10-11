@@ -32,8 +32,6 @@ public final class BasicMovie implements Comparable<BasicMovie> {
     @NotNull
     private final String posterUrl;
     @NotNull
-    private String imdbId;
-    @NotNull
     private final String language;
     @NotNull
     private final String overview;
@@ -43,6 +41,8 @@ public final class BasicMovie implements Comparable<BasicMovie> {
     private final Integer ratingKey;
     @NotNull
     private final String key;
+    @NotNull
+    private String imdbId;
     @NotNull
     private String collectionTitle;
     @NotNull
@@ -85,10 +85,6 @@ public final class BasicMovie implements Comparable<BasicMovie> {
         this.collectionId = collectionId;
     }
 
-    public void setTmdbId(int tmdbId) {
-        this.tmdbId = tmdbId;
-    }
-
     public @NotNull String getName() {
         return name;
     }
@@ -115,6 +111,10 @@ public final class BasicMovie implements Comparable<BasicMovie> {
 
     public @NotNull Integer getTmdbId() {
         return tmdbId;
+    }
+
+    public void setTmdbId(int tmdbId) {
+        this.tmdbId = tmdbId;
     }
 
     public void setTmdbId(@NotNull Integer tmdbId) {
@@ -287,7 +287,7 @@ public final class BasicMovie implements Comparable<BasicMovie> {
             return this;
         }
 
-        public @NotNull Builder setTmdbId(@NotNull  Integer tmdbId) {
+        public @NotNull Builder setTmdbId(@NotNull Integer tmdbId) {
             this.tmdbId = tmdbId;
             return this;
         }

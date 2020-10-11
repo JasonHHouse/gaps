@@ -11,8 +11,8 @@
 package com.jasonhhouse.gaps;
 
 import com.jasonhhouse.gaps.properties.PlexProperties;
-import com.jasonhhouse.gaps.service.GapsSearch;
 import com.jasonhhouse.gaps.service.FileIoService;
+import com.jasonhhouse.gaps.service.GapsSearch;
 import com.jasonhhouse.gaps.service.NotificationService;
 import com.jasonhhouse.gaps.service.PlexQuery;
 import com.jasonhhouse.gaps.service.TmdbService;
@@ -23,22 +23,34 @@ import java.util.Map;
 import java.util.Set;
 import okhttp3.HttpUrl;
 import org.apache.commons.collections4.CollectionUtils;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.server.ResponseStatusException;
 
-public class SearchGapsTask implements Runnable {
+public final class SearchGapsTask implements Runnable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchGapsTask.class);
 
+    @NotNull
     private final GapsSearch gapsSearch;
+    @NotNull
     private final TmdbService tmdbService;
+    @NotNull
     private final FileIoService fileIoService;
+    @NotNull
     private final PlexQuery plexQuery;
+    @NotNull
     private final GapsUrlGenerator gapsUrlGenerator;
+    @NotNull
     private final NotificationService notificationService;
 
-    public SearchGapsTask(GapsSearch gapsSearch, TmdbService tmdbService, FileIoService fileIoService, PlexQuery plexQuery, GapsUrlGenerator gapsUrlGenerator, NotificationService notificationService) {
+    public SearchGapsTask(@NotNull GapsSearch gapsSearch,
+                          @NotNull TmdbService tmdbService,
+                          @NotNull FileIoService fileIoService,
+                          @NotNull PlexQuery plexQuery,
+                          @NotNull GapsUrlGenerator gapsUrlGenerator,
+                          @NotNull NotificationService notificationService) {
         this.gapsSearch = gapsSearch;
         this.tmdbService = tmdbService;
         this.fileIoService = fileIoService;
@@ -71,7 +83,7 @@ public class SearchGapsTask implements Runnable {
     }
 
     private boolean checkTmdbKey() {
-        LOGGER.info("checkTmdbKey()");
+        LOGGER.debug("checkTmdbKey()");
 
         String tmdbKey = fileIoService.readProperties().getMovieDbApiKey();
         Payload payload = tmdbService.testTmdbKey(tmdbKey);
@@ -85,9 +97,10 @@ public class SearchGapsTask implements Runnable {
         }
     }
 
-    private void checkPlexServers(PlexProperties plexProperties) {
-        LOGGER.info("checkPlexServers()");
+    private void checkPlexServers(@NotNull PlexProperties plexProperties) {
+        LOGGER.debug("checkPlexServers()");
 
+        int counter = 0;
         for (PlexServer plexServer : plexProperties.getPlexServers()) {
             Payload payload = plexQuery.queryPlexServer(plexServer);
             if (payload.getCode() == Payload.PLEX_CONNECTION_SUCCEEDED.getCode()) {
@@ -95,11 +108,15 @@ public class SearchGapsTask implements Runnable {
             } else {
                 notificationService.plexServerConnectFailed(plexServer, payload.getReason());
             }
+            counter++;
         }
+        LOGGER.info("checkPlexServers() executed {} times", counter);
     }
 
-    private void updatePlexLibraries(PlexProperties plexProperties) {
-        LOGGER.info("updatePlexLibraries()");
+    private void updatePlexLibraries(@NotNull PlexProperties plexProperties) {
+        LOGGER.debug("updatePlexLibraries()");
+
+        int counter = 0;
         //Update each Plex Library from each Plex Server
         for (PlexServer plexServer : plexProperties.getPlexServers()) {
             Payload getLibrariesResults = plexQuery.getLibraries(plexServer);
@@ -108,11 +125,15 @@ public class SearchGapsTask implements Runnable {
             } else {
                 LOGGER.warn("Plex libraries not found for Plex Server {}", plexServer.getFriendlyName());
             }
+            counter++;
         }
+        LOGGER.info("updatePlexLibraries() executed {} times", counter);
     }
 
-    private void updateLibraryMovies(PlexProperties plexProperties) {
-        LOGGER.info("updateLibraryMovies()");
+    private void updateLibraryMovies(@NotNull PlexProperties plexProperties) {
+        LOGGER.debug("updateLibraryMovies()");
+
+        int counter = 0;
         for (PlexServer plexServer : plexProperties.getPlexServers()) {
             for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
                 HttpUrl url = gapsUrlGenerator.generatePlexLibraryUrl(plexServer, plexLibrary);
@@ -124,20 +145,25 @@ public class SearchGapsTask implements Runnable {
                 } catch (ResponseStatusException e) {
                     notificationService.plexLibraryScanFailed(plexServer, plexLibrary, e.getMessage());
                 }
+                counter++;
             }
         }
+        LOGGER.info("updateLibraryMovies() executed {} times", counter);
     }
 
-    private void findRecommendedMovies(PlexProperties plexProperties) {
-        LOGGER.info("findRecommendedMovies()");
+    private void findRecommendedMovies(@NotNull PlexProperties plexProperties) {
+        LOGGER.debug("updateLibraryMovies()");
+        int counter =0;
         for (PlexServer plexServer : plexProperties.getPlexServers()) {
             for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
                 gapsSearch.run(plexServer.getMachineIdentifier(), plexLibrary.getKey());
+                counter++;
             }
         }
+        LOGGER.info("findRecommendedMovies() executed {} times", counter);
     }
 
-    private Map<Pair<String, Integer>, BasicMovie> generateOwnedMovieMap(PlexProperties plexProperties) {
+    private @NotNull Map<Pair<String, Integer>, BasicMovie> generateOwnedMovieMap(@NotNull PlexProperties plexProperties) {
         Set<BasicMovie> everyBasicMovie = fileIoService.readMovieIdsFromFile();
         Map<Pair<String, Integer>, BasicMovie> previousMovies = new HashMap<>();
 
