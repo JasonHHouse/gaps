@@ -10,14 +10,19 @@
 
 package com.jasonhhouse.gaps.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.jasonhhouse.gaps.BasicMovie;
 import com.jasonhhouse.gaps.Pair;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.PlexServer;
+import com.jasonhhouse.gaps.plex.PlexServer;
 import com.jasonhhouse.gaps.UrlGenerator;
 import com.jasonhhouse.gaps.properties.PlexProperties;
-import com.jasonhhouse.plex.libs.MediaContainer;
-import com.jasonhhouse.plex.libs.PlexLibrary;
+import com.jasonhhouse.gaps.plex.PlexLogin;
+import com.jasonhhouse.gaps.plex.PlexLibrary;
+import com.jasonhhouse.radarr_v3.Movie;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,6 +38,9 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -105,13 +113,17 @@ public class PlexQueryImpl implements PlexQuery {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason);
                 }
 
-                InputStream inputStream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
-                JAXBContext jaxbContext = JAXBContext.newInstance(MediaContainer.class);
-                Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-                MediaContainer mediaContainer = (MediaContainer) jaxbUnmarshaller.unmarshal(inputStream);
+                XMLInputFactory xmlInputFactory = XMLInputFactory.newFactory();
+                XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(body.getBytes()));
+
+                XmlMapper xmlMapper = new XmlMapper();
+                xmlStreamReader.next();
+
+                List<PlexLibrary> plexLibraries = xmlMapper.readValue(xmlStreamReader, new TypeReference<>() {
+                });
 
                 //Remove everything except movie folders
-                List<PlexLibrary> plexLibraries = mediaContainer.getPlexLibraries().stream().filter(plexLibrary -> plexLibrary.getType().equalsIgnoreCase("movie")).collect(Collectors.toList());
+                plexLibraries = plexLibraries.stream().filter(plexLibrary -> plexLibrary.getType().equalsIgnoreCase("movie")).collect(Collectors.toList());
 
                 LOGGER.info("{} Plex libraries found", plexLibraries.size());
                 plexServer.getPlexLibraries().clear();
@@ -121,7 +133,7 @@ public class PlexQueryImpl implements PlexQuery {
                 String reason = String.format("Error connecting to Plex to get library list: %s", url);
                 LOGGER.error(reason, e);
                 return Payload.PLEX_CONNECTION_FAILED.setExtras("url:" + url);
-            } catch (JAXBException e) {
+            } catch (XMLStreamException e) {
                 String reason = "Error parsing XML from Plex: " + url;
                 LOGGER.error(reason, e);
                 return Payload.PARSING_PLEX_FAILED.setExtras("url:" + url);
@@ -210,65 +222,10 @@ public class PlexQueryImpl implements PlexQuery {
     }
 
     @Override
-    public @NotNull com.jasonhhouse.plex.video.MediaContainer findAllPlexVideos(@NotNull String url) {
-        LOGGER.info("findAllPlexVideos()");
-
-        OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(180, TimeUnit.SECONDS)
-                .writeTimeout(180, TimeUnit.SECONDS)
-                .readTimeout(180, TimeUnit.SECONDS)
-                .build();
-
-        if (StringUtils.isEmpty(url)) {
-            LOGGER.info("No URL added to findAllPlexVideos().");
-            return new com.jasonhhouse.plex.video.MediaContainer();
-        }
-
-        com.jasonhhouse.plex.video.MediaContainer mediaContainer;
-        try {
-            HttpUrl httpUrl = urlGenerator.generatePlexUrl(url);
-
-            Request request = new Request.Builder()
-                    .url(httpUrl)
-                    .build();
-
-            try (Response response = client.newCall(request).execute()) {
-                String body = response.body() != null ? response.body().string() : null;
-
-                if (StringUtils.isBlank(body)) {
-                    String reason = "Body returned empty from Plex";
-                    LOGGER.error(reason);
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason);
-                }
-
-                InputStream inputStream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
-                JAXBContext jaxbContext = JAXBContext.newInstance(com.jasonhhouse.plex.video.MediaContainer.class);
-                Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-                mediaContainer = (com.jasonhhouse.plex.video.MediaContainer) jaxbUnmarshaller.unmarshal(inputStream);
-
-            } catch (IOException e) {
-                String reason = String.format("Error connecting to Plex to get Movie list: %s", url);
-                LOGGER.error(reason, e);
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason, e);
-            } catch (JAXBException e) {
-                String reason = String.format("Error parsing XML from Plex: %s", url);
-                LOGGER.error(reason, e);
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
-            }
-        } catch (IllegalArgumentException | NullPointerException e) {
-            String reason = String.format("Error with plex Url: %s", url);
-            LOGGER.error(reason, e);
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason, e);
-        }
-
-        return mediaContainer;
-    }
-
-    @Override
     public void findAllMovieIds(@NotNull List<BasicMovie> basicMovies, @NotNull PlexServer plexServer, @NotNull PlexLibrary plexLibrary) {
         LOGGER.info("findAllMovieIds( {}, {} )", plexServer, plexLibrary);
 
-        if(plexLibrary.getScanner().equals("Plex Movie Scanner")) {
+        if (plexLibrary.getScanner().equals("Plex Movie Scanner")) {
             LOGGER.info("PlexLibrary {} uses old scanner", plexLibrary.getTitle());
             return;
         }
@@ -349,10 +306,10 @@ public class PlexQueryImpl implements PlexQuery {
     }
 
     @Override
-    public @NotNull PlexServer getPlexServerFromMachineIdentifier(@NotNull PlexProperties plexProperties, @NotNull String machineIdentifier) throws IllegalArgumentException{
+    public @NotNull PlexServer getPlexServerFromMachineIdentifier(@NotNull PlexProperties plexProperties, @NotNull String machineIdentifier) throws IllegalArgumentException {
         LOGGER.info("generatePlexUrl( {} )", machineIdentifier);
-        for(PlexServer plexServer : plexProperties.getPlexServers()) {
-            if(plexServer.getMachineIdentifier().equals(machineIdentifier)) {
+        for (PlexServer plexServer : plexProperties.getPlexServers()) {
+            if (plexServer.getMachineIdentifier().equals(machineIdentifier)) {
                 return plexServer;
             }
         }
@@ -361,14 +318,56 @@ public class PlexQueryImpl implements PlexQuery {
     }
 
     @Override
-    public @NotNull PlexLibrary getPlexLibraryFromKey(@NotNull PlexServer plexServer,@NotNull Integer key) throws IllegalArgumentException {
-        for(PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
-            if(plexLibrary.getKey().equals(key)) {
+    public @NotNull PlexLibrary getPlexLibraryFromKey(@NotNull PlexServer plexServer, @NotNull Integer key) throws IllegalArgumentException {
+        for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
+            if (plexLibrary.getKey().equals(key)) {
                 return plexLibrary;
             }
         }
 
         throw new IllegalArgumentException(String.format("No PlexLibrary matching key %s found", key));
+    }
+
+    @Override
+    public @NotNull String loginToPlex(@NotNull PlexLogin plexLogin) {
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(180, TimeUnit.SECONDS)
+                .writeTimeout(180, TimeUnit.SECONDS)
+                .readTimeout(180, TimeUnit.SECONDS)
+                .build();
+
+        HttpUrl httpUrl = urlGenerator.generatePlexLoginUrl(plexLogin);
+
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                .addHeader("X-Plex-Product", "Gaps")
+                .addHeader("X-Plex-Version", "0.8.3")
+                .addHeader("X-Plex-Client-Identifier", "b1547b7b-06db-49ab-969c-5bb8e8582d68")
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            String body = response.body() != null ? response.body().string() : null;
+
+            if (StringUtils.isBlank(body)) {
+                LOGGER.error("Body returned empty for Plex Login with username {}", plexLogin.getUsername());
+            }
+
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            JsonNode root = objectMapper.readTree(body);
+
+            if (root.has("error")) {
+                //Failed
+                return root.get("error").textValue();
+            }
+
+             return root.get("user").get("authToken").textValue();
+        } catch (IOException e) {
+            String reason = String.format("Error connecting to Plex to get Movie list: %s", httpUrl);
+            LOGGER.error(reason, e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason, e);
+        }
     }
 
     @Override

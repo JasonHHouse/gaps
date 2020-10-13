@@ -9,14 +9,13 @@
  */
 package com.jasonhhouse.gaps.service;
 
-import com.jasonhhouse.gaps.PlexServer;
+import com.jasonhhouse.gaps.plex.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
-import com.jasonhhouse.plex.libs.PlexLibrary;
+import com.jasonhhouse.gaps.plex.PlexLibrary;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javax.validation.constraints.NotNull;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;

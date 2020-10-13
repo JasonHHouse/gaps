@@ -53,3 +53,21 @@ export async function savePlexLibraryConfiguration(machineIdentifier, key) {
       document.getElementById('scheduleSaveError').style.display = 'block';
   } */
 }
+
+export async function getPlexToken() {
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+
+  const url = `https://plex.tv/users/sign_in.json?user%5Blogin%5D=${username}&user%5Bpassword%5D=${password}`;
+
+  /* ToDo remove this and query for the value from server */
+  const response = await fetch(url, {
+    method: 'post',
+    headers: {
+      'X-Plex-Product': 'Gaps',
+      'X-Plex-Version': '0.8.3',
+      'X-Plex-Client-Identifier': 'b1547b7b-06db-49ab-969c-5bb8e8582d68',
+    },
+  });
+  await response.json();
+}

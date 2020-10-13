@@ -11,7 +11,7 @@
 
 package com.jasonhhouse.gaps.service;
 
-import com.jasonhhouse.gaps.PlexServer;
+import com.jasonhhouse.gaps.plex.PlexServer;
 import com.jasonhhouse.gaps.notifications.DiscordNotificationAgent;
 import com.jasonhhouse.gaps.notifications.EmailNotificationAgent;
 import com.jasonhhouse.gaps.notifications.GotifyNotificationAgent;

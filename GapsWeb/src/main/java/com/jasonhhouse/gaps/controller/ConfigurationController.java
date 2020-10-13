@@ -12,12 +12,13 @@ package com.jasonhhouse.gaps.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.PlexServer;
+import com.jasonhhouse.gaps.plex.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
 import com.jasonhhouse.gaps.service.PlexQueryImpl;
 import com.jasonhhouse.gaps.service.SchedulerService;
 import com.jasonhhouse.gaps.service.TmdbService;
+import com.jasonhhouse.gaps.plex.PlexLogin;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import javax.validation.Valid;
@@ -192,4 +193,14 @@ public class ConfigurationController {
         return ResponseEntity.ok().body(payload);
     }
 
+    @PostMapping(value = "/login/plex",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<Payload> postLoginPlex(final PlexLogin plexLogin) {
+        LOGGER.info("postLoginPlex( {} )", plexLogin);
+
+        String authToken = plexQuery.loginToPlex(plexLogin);
+        return ResponseEntity.ok().body(Payload.PLEX_CONNECTION_SUCCEEDED.setExtras(authToken));
+    }
 }

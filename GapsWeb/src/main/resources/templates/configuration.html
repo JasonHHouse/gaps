@@ -81,10 +81,14 @@
             <a class="nav-link active" data-toggle="tab" href="#tmdb" id="tmdbTab">TMDB</a>
         </li>
         <li class="nav-item">
+            <span class="badge badge-pill badge-primary" style="float:right;margin-bottom:-10px;">Deprecated</span>
             <a class="nav-link" data-toggle="tab" href="#plex" id="plexTab">Plex</a>
         </li>
         <li class="nav-item">
             <span class="badge badge-pill badge-primary" style="float:right;margin-bottom:-10px;">New</span>
+            <a class="nav-link" data-toggle="tab" href="#plex" id="plexTab">Plex via Login</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#schedule" id="scheduleTab">Schedule</a>
         </li>
         <li class="nav-item">
@@ -274,6 +278,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="tab-pane fade top-margin" id="plexNew">
+            <div th:insert="fragments/plex :: configuration"></div>
         </div>
         <div class="tab-pane fade top-margin" id="schedule">
             <p>Gaps can be set to automatically run. This is through a cron job that will search for new Plex Libraries

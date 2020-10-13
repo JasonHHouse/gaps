@@ -10,7 +10,9 @@
 
 package com.jasonhhouse.gaps;
 
-import com.jasonhhouse.plex.libs.PlexLibrary;
+import com.jasonhhouse.gaps.plex.PlexLogin;
+import com.jasonhhouse.gaps.plex.PlexServer;
+import com.jasonhhouse.gaps.plex.PlexLibrary;
 import okhttp3.HttpUrl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -103,7 +105,7 @@ public class GapsUrlGenerator implements UrlGenerator {
     }
 
     @Override
-    public @Nullable HttpUrl generatePlexLibraryUrl(@NotNull PlexServer plexServer,@NotNull  PlexLibrary plexLibrary) {
+    public @Nullable HttpUrl generatePlexLibraryUrl(@NotNull PlexServer plexServer, @NotNull  PlexLibrary plexLibrary) {
         return new HttpUrl.Builder()
                 .scheme(HTTP)
                 .host(plexServer.getAddress())
@@ -126,6 +128,18 @@ public class GapsUrlGenerator implements UrlGenerator {
                 .addPathSegment(METADATA)
                 .addPathSegment(ratingKey.toString())
                 .addQueryParameter(PLEX_TOKEN, plexServer.getPlexToken())
+                .build();
+    }
+
+    @Override
+    public @NotNull HttpUrl generatePlexLoginUrl(@NotNull PlexLogin plexLogin) {
+        return new HttpUrl.Builder()
+                .scheme(HTTPS)
+                .host("plex.tv")
+                .addPathSegment("users")
+                .addPathSegment("sign_in.json")
+                .addQueryParameter("user%5Blogin%5D", plexLogin.getUsername())
+                .addQueryParameter("user%5Bpassword%5D", plexLogin.getPassword())
                 .build();
     }
 

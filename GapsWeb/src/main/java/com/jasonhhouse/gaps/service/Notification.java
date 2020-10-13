@@ -1,7 +1,7 @@
 package com.jasonhhouse.gaps.service;
 
-import com.jasonhhouse.gaps.PlexServer;
-import com.jasonhhouse.plex.libs.PlexLibrary;
+import com.jasonhhouse.gaps.plex.PlexServer;
+import com.jasonhhouse.gaps.plex.PlexLibrary;
 import org.jetbrains.annotations.NotNull;
 
 public interface Notification {

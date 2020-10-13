@@ -14,7 +14,7 @@ package com.jasonhhouse.gaps.service;
 import com.jasonhhouse.gaps.BasicMovie;
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.PlexServer;
+import com.jasonhhouse.gaps.plex.PlexServer;
 import com.jasonhhouse.gaps.properties.DiscordProperties;
 import com.jasonhhouse.gaps.properties.EmailProperties;
 import com.jasonhhouse.gaps.properties.GotifyProperties;

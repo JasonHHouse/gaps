@@ -11,10 +11,10 @@ package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.BasicMovie;
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.PlexServer;
+import com.jasonhhouse.gaps.plex.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
-import com.jasonhhouse.plex.libs.PlexLibrary;
+import com.jasonhhouse.gaps.plex.PlexLibrary;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -57,11 +57,11 @@ public class LibraryController {
         if (CollectionUtils.isNotEmpty(plexProperties.getPlexServers())) {
             //Read first plex servers movies
             plexServer = plexProperties.getPlexServers().stream().findFirst().orElse(new PlexServer());
-            plexLibrary = plexServer.getPlexLibraries().stream().findFirst().orElse(new PlexLibrary());
+            plexLibrary = plexServer.getPlexLibraries().stream().findFirst().orElse(new PlexLibrary(null, null, null, null, null, null, null));
             plexServersFound = true;
         } else {
             plexServer = new PlexServer();
-            plexLibrary = new PlexLibrary();
+            plexLibrary = new PlexLibrary(null, null, null, null, null, null, null);
             plexServersFound = false;
         }
 
