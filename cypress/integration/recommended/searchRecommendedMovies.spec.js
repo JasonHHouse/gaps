@@ -11,30 +11,47 @@
 /* global cy, describe, it, beforeEach */
 /* eslint no-undef: "error" */
 
-import { redLibraryBefore, searchPlexForMoviesFromSaw, spyOnAddEventListener } from '../common.js';
+import { nuke, redLibraryBefore, spyOnAddEventListener } from '../common.spec.js';
 
 function searchSawLibrary(cy) {
   cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
 
-  searchPlexForMoviesFromSaw(cy);
+  cy.get('[data-cy=dropdownMenu]')
+    .click();
+
+  cy.get('[data-cy=Saw]')
+    .click();
+
+  cy.get('[data-cy=searchForMovies]')
+    .click();
+
+  cy.get('label > input')
+    .clear()
+    .type('Saw');
+
+  cy.get('#movies_info')
+    .should('have.text', 'Showing 1 to 1 of 1 entries');
 
   cy.visit('/recommended', { onBeforeLoad: spyOnAddEventListener });
 }
 
 describe('Search for Recommended', () => {
+  beforeEach(nuke);
   beforeEach(redLibraryBefore);
 
   it('Clean configuration page load', () => {
     searchSawLibrary(cy);
 
-    cy.get('#libraryTitle').then(($libraryTitle) => {
-      if ($libraryTitle.text() !== 'Red - Saw') {
-        cy.get('#dropdownMenuLink').click();
-        cy.get('[data-key="2"]')
-          .first()
-          .click();
-      }
-    });
+    cy.get('[data-cy=libraryTitle]')
+      .then(($libraryTitle) => {
+        if ($libraryTitle.text() !== 'Joker - Saw') {
+          cy.get('[data-cy=dropdownMenu]')
+            .click();
+
+          cy.get('[data-cy=Saw]')
+            .click();
+        }
+      });
 
     cy.get('#noMovieContainer > .card > .card-img-top')
       .should('not.be.visible');
@@ -43,46 +60,56 @@ describe('Search for Recommended', () => {
   it('Search Movies', () => {
     searchSawLibrary(cy);
 
-    cy.get('#dropdownMenuLink')
+    cy.get('[data-cy=dropdownMenu]')
       .click();
 
-    cy.get('[data-key="2"]')
-      .first()
+    cy.get('[data-cy=Saw]')
       .click();
 
-    cy.get('.card-body > .btn')
+    cy.get('[data-cy=searchForMovies]')
       .click();
 
-    cy.wait(5000);
-
-    cy.get('#movies_info')
+    cy.get('#movies_info', { timeout: 5000 })
       .should('have.text', 'Showing 1 to 7 of 7 entries');
+
+    cy.get('[data-cy=tt0432348-176]')
+      .should('have.text', 'Saw');
+
+    cy.get('[data-cy=tt0432348-215]')
+      .should('have.text', 'Saw II');
   });
 
   it('Research Movies', () => {
     searchSawLibrary(cy);
 
-    cy.get('#dropdownMenuLink')
+    cy.get('[data-cy=dropdownMenu]')
       .click();
 
-    cy.get('[data-key="2"]')
-      .first()
+    cy.get('[data-cy=Saw]')
       .click();
 
-    cy.get('.card-body > .btn')
+    cy.get('[data-cy=searchForMovies]')
       .click();
 
-    cy.wait(5000);
-
-    cy.get('#movies_info')
+    cy.get('#movies_info', { timeout: 5000 })
       .should('have.text', 'Showing 1 to 7 of 7 entries');
+
+    cy.get('[data-cy=tt0432348-176]')
+      .should('have.text', 'Saw');
+
+    cy.get('[data-cy=tt0432348-215]')
+      .should('have.text', 'Saw II');
 
     cy.get('#movieContainer > [onclick="searchForMovies()"]')
       .click();
 
-    cy.wait(5000);
-
-    cy.get('#movies_info')
+    cy.get('#movies_info', { timeout: 5000 })
       .should('have.text', 'Showing 1 to 7 of 7 entries');
+
+    cy.get('[data-cy=tt0432348-176]')
+      .should('have.text', 'Saw');
+
+    cy.get('[data-cy=tt0432348-215]')
+      .should('have.text', 'Saw II');
   });
 });

@@ -12,7 +12,7 @@
 /* eslint no-undef: "error" */
 
 import faker from 'faker';
-import { CYPRESS_VALUES, nuke } from '../common.js';
+import { CYPRESS_VALUES, nuke } from '../common.spec.js';
 
 function checkElements(token, user, priority, sound, retry, expire, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#pushOverToken')
@@ -230,102 +230,6 @@ describe('Check PushOver Notification Agent', () => {
       .should(CYPRESS_VALUES.notBeVisible);
   });
 
-  it('Check saving and test PushOver Notification', () => {
-    cy.visit('/configuration');
-
-    cy.get('#notificationTab')
-      .click();
-
-    cy.get('#pushOverShowHide')
-      .click();
-
-    checkElements('', '', 0, 'pushover', '0', '0', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
-
-    cy.get('#pushOverToken')
-      .clear()
-      .type(atob('YWM1ZjJya2JwejEyMnBqenNlMnBlbmJkdmYxZ2dh'))
-      .should('have.value', atob('YWM1ZjJya2JwejEyMnBqenNlMnBlbmJkdmYxZ2dh'));
-
-    cy.get('#pushOverUser')
-      .clear()
-      .type(atob('dTdiemZkZW5kdmRqbnM1eXRrMmV3YjIxZDduaWJ5'))
-      .should('have.value', atob('dTdiemZkZW5kdmRqbnM1eXRrMmV3YjIxZDduaWJ5'));
-
-    cy.get('#pushOverPriority')
-      .select('1')
-      .should('have.value', '1');
-
-    cy.get('#pushOverSound')
-      .select('spacealarm')
-      .should('have.value', 'spacealarm');
-
-    cy.get('#pushOverRetry')
-      .clear()
-      .type('1')
-      .should('have.value', '1');
-
-    cy.get('#pushOverExpire')
-      .clear()
-      .type('2')
-      .should('have.value', '2');
-
-    cy.get('#pushOverTmdbApiConnectionNotification')
-      .click();
-
-    cy.get('#pushOverPlexServerConnectionNotification')
-      .click();
-
-    cy.get('#pushOverPlexMetadataUpdateNotification')
-      .click();
-
-    cy.get('#pushOverPlexLibraryUpdateNotification')
-      .click();
-
-    cy.get('#pushOverGapsMissingCollectionsNotification')
-      .click();
-
-    cy.get('#pushOverEnabled')
-      .select('Enabled');
-
-    cy.get('#savePushOver')
-      .click();
-
-    cy.get('#pushOverTestSuccess')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#pushOverTestError')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#pushOverSaveSuccess')
-      .should(CYPRESS_VALUES.beVisible);
-
-    cy.get('#pushOverSaveError')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#pushOverSpinner')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#testPushOver')
-      .click();
-
-    cy.wait(2000);
-
-    cy.get('#pushOverTestSuccess')
-      .should(CYPRESS_VALUES.beVisible);
-
-    cy.get('#pushOverTestError')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#pushOverSaveSuccess')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#pushOverSaveError')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#pushOverSpinner')
-      .should(CYPRESS_VALUES.notBeVisible);
-  });
-
   it('Check Successful Saving and Failure Testing PushOver Notification', () => {
     cy.visit('/configuration');
 
@@ -388,13 +292,11 @@ describe('Check PushOver Notification Agent', () => {
     cy.get('#testPushOver')
       .click();
 
-    cy.wait(2000);
+    cy.get('#pushOverTestError', { timeout: 5000 })
+      .should(CYPRESS_VALUES.beVisible);
 
     cy.get('#pushOverTestSuccess')
       .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#pushOverTestError')
-      .should(CYPRESS_VALUES.beVisible);
 
     cy.get('#pushOverSaveSuccess')
       .should(CYPRESS_VALUES.notBeVisible);

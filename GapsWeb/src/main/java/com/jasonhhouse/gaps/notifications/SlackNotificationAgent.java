@@ -15,7 +15,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.properties.SlackProperties;
-import com.jasonhhouse.gaps.service.FileIoService;
+import com.jasonhhouse.gaps.service.IO;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import okhttp3.Headers;
@@ -26,7 +26,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,12 +33,15 @@ import static com.jasonhhouse.gaps.notifications.NotificationStatus.TIMEOUT;
 
 public final class SlackNotificationAgent extends AbstractNotificationAgent<SlackProperties> {
 
+    @NotNull
     private static final Logger LOGGER = LoggerFactory.getLogger(SlackNotificationAgent.class);
+    @NotNull
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    @NotNull
     private final OkHttpClient client;
 
-    public SlackNotificationAgent(FileIoService fileIoService) {
-        super(fileIoService);
+    public SlackNotificationAgent(@NotNull IO ioService) {
+        super(ioService);
 
         client = new OkHttpClient.Builder()
                 .connectTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
@@ -49,17 +51,17 @@ public final class SlackNotificationAgent extends AbstractNotificationAgent<Slac
     }
 
     @Override
-    public int getId() {
+    public @NotNull Integer getId() {
         return 2;
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "Slack Notification Agent";
     }
 
     @Override
-    public boolean sendMessage(NotificationType notificationType, String level, String title, String message) {
+    public @NotNull Boolean sendMessage(@NotNull NotificationType notificationType, @NotNull String level, @NotNull String title, @NotNull String message) {
         LOGGER.info("sendMessage( {}, {}, {} )", level, title, message);
 
         if (sendPrepMessage(notificationType)) {
@@ -82,7 +84,7 @@ public final class SlackNotificationAgent extends AbstractNotificationAgent<Slac
             return false;
         }
 
-        LOGGER.info("slackMessage {}", slackMessage);
+        LOGGER.info("Sending slackMessage");
         RequestBody body = RequestBody.create(slackMessage, MediaType.get(org.springframework.http.MediaType.APPLICATION_JSON_VALUE));
 
         Request request = new Request.Builder()
@@ -106,58 +108,62 @@ public final class SlackNotificationAgent extends AbstractNotificationAgent<Slac
         }
     }
 
-    @NotNull
     @Override
-    public SlackProperties getNotificationProperties() {
-        return fileIoService.readProperties().getSlackProperties();
+    public @NotNull SlackProperties getNotificationProperties() {
+        return ioService.readProperties().getSlackProperties();
     }
 
     private static final class Slack {
+        @NotNull
         private final Block[] blocks;
 
-        private Slack(String message) {
+        private Slack(@NotNull String message) {
             blocks = new Block[1];
             blocks[0] = new SlackNotificationAgent.Block(new Text(message));
         }
 
-        public Block[] getBlocks() {
+        public @NotNull Block[] getBlocks() {
             return blocks;
         }
     }
 
     private static final class Block {
+        @NotNull
         private final String type;
+        @NotNull
         private final Text text;
 
-        private Block(Text text) {
+        private Block(@NotNull Text text) {
             this.type = "section";
             this.text = text;
         }
 
-        public String getType() {
+        public @NotNull String getType() {
             return type;
         }
 
-        public Text getText() {
+        public @NotNull Text getText() {
             return text;
         }
     }
 
     private static final class Text {
+        @NotNull
         private final String type;
+        @NotNull
         private final String value;
 
-        private Text(String value) {
+        private Text(@NotNull String value) {
             this.type = "mrkdwn";
             this.value = value;
         }
 
-        public String getType() {
+        public @NotNull String getType() {
             return type;
         }
 
         @JsonProperty("text")
-        public String getValue() {
+        public @NotNull String getValue() {
             return value;
         }
     }

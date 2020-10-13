@@ -11,10 +11,9 @@
 /* global cy, it, describe */
 /* eslint no-undef: "error" */
 
-import { spyOnAddEventListener } from '../common.js';
+import { spyOnAddEventListener } from '../common.spec.js';
 
-function checkNavIcons(cy, isLibDefault = true, isMissingDefault = true, isRssDefault = true,
-  isSettingsDefault = true, isUpdatesDefault = true, isAboutDefault = true) {
+function checkNavIcons(cy, isLibDefault = true, isMissingDefault = true, isRssDefault = true, isSettingsDefault = true, isUpdatesDefault = true, isAboutDefault = true) {
   cy.get(':nth-child(1) > .nav-link > .icon')
     .should('have.class', isLibDefault ? 'list-ul-default' : 'list-ul-active');
 

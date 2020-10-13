@@ -13,6 +13,8 @@ package com.jasonhhouse.gaps.notifications;
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.properties.NotificationProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
+import com.jasonhhouse.gaps.service.IO;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,33 +24,23 @@ public abstract class AbstractNotificationAgent<T extends NotificationProperties
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractNotificationAgent.class);
 
-    protected final FileIoService fileIoService;
+    protected final IO ioService;
     protected T t;
 
-    protected AbstractNotificationAgent(FileIoService fileIoService) {
-        this.fileIoService = fileIoService;
+    protected AbstractNotificationAgent(@NotNull IO ioService) {
+        this.ioService = ioService;
     }
 
     @Override
-    public boolean isEnabled() {
+    public @NotNull Boolean isEnabled() {
         NotificationProperties notificationProperties = getNotificationProperties();
-
-        if (notificationProperties == null) {
-            return false;
-        } else {
-            return notificationProperties.getEnabled();
-        }
+        return notificationProperties.getEnabled();
     }
 
-    protected boolean sendPrepMessage(NotificationType notificationType) {
+    protected @NotNull Boolean sendPrepMessage(@NotNull NotificationType notificationType) {
         LOGGER.info("sendPrepMessage()");
 
         t = getNotificationProperties();
-
-        if (t == null) {
-            LOGGER.warn("Notification Properties are null");
-            return true;
-        }
 
         if (!notificationType.equals(NotificationType.TEST) && !t.getNotificationTypes().contains(notificationType)) {
             LOGGER.info(AGENT_NOT_ENABLED_FOR_NOTIFICATION_TYPE, getName(), notificationType);

@@ -11,12 +11,26 @@
 /* global cy, describe, it, before, expect */
 /* eslint no-undef: "error" */
 
-import { redLibraryBefore, searchPlexForMoviesFromSaw, spyOnAddEventListener } from '../common.js';
+import { redLibraryBefore, spyOnAddEventListener } from '../common.spec.js';
 
 function searchSawLibrary(cy) {
   cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
 
-  searchPlexForMoviesFromSaw(cy);
+  cy.get('[data-cy=dropdownMenu]')
+    .click();
+
+  cy.get('[data-cy=Saw]')
+    .click();
+
+  cy.get('[data-cy=searchForMovies]')
+    .click();
+
+  cy.get('label > input')
+    .clear()
+    .type('Saw');
+
+  cy.get('#movies_info')
+    .should('have.text', 'Showing 1 to 1 of 1 entries');
 
   cy.visit('/recommended', { onBeforeLoad: spyOnAddEventListener });
 }
@@ -27,24 +41,21 @@ describe('Searched RSS', () => {
   it('Get full RSS for Red', () => {
     searchSawLibrary(cy);
 
-    cy.get('#dropdownMenuLink')
+    cy.get('[data-cy=dropdownMenu]')
       .click();
 
-    cy.get('[data-key="2"]')
-      .first()
+    cy.get('[data-cy=Saw]')
       .click();
 
-    cy.get('.card-body > .btn')
+    cy.get('[data-cy=searchForMovies]')
       .click();
 
-    cy.wait(5000);
-
-    cy.get('#movies_info')
+    cy.get('#movies_info', { timeout: 5000 })
       .should('have.text', 'Showing 1 to 7 of 7 entries');
 
     cy.visit('/rssCheck', { onBeforeLoad: spyOnAddEventListener });
 
-    cy.request('/rss/721fee4db63634b88ed699f8b0a16d7682a7a0d9/2')
+    cy.request('/rss/c51c432ae94e316d52570550f915ecbcd71bede8/5')
       .then((resp) => {
         const result = resp.body;
         expect(result).to.have.lengthOf(7);

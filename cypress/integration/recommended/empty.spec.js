@@ -8,28 +8,24 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/* global cy, it, describe */
+/* global cy, describe, it, before */
 /* eslint no-undef: "error" */
 
-import { spyOnAddEventListener } from '../common.js';
+import { redLibraryBefore, spyOnAddEventListener } from '../common.spec.js';
 
-describe('Verify About Page', () => {
-  it('Default page', () => {
-    cy.visit('/about', { onBeforeLoad: spyOnAddEventListener });
+describe('Not Searched Yet Recommended', () => {
+  before(redLibraryBefore);
 
-    cy.get('h3.top-margin')
-      .should('have.text', 'About');
+  it('Clean configuration page load', () => {
+    cy.visit('/recommended', { onBeforeLoad: spyOnAddEventListener });
 
-    cy.get('.container > :nth-child(3)')
-      .should('have.text', 'v0.8.2');
+    cy.get('#noMovieContainer > .card > .card-img-top')
+      .should('be.visible');
 
-    cy.get('.container > :nth-child(6)')
-      .should('have.text', 'Software');
+    cy.get('[data-cy=dropdownMenu]')
+      .click();
 
-    cy.get(':nth-child(8)')
-      .should('have.text', 'License');
-
-    cy.get(':nth-child(10)')
-      .should('have.text', 'Support');
+    cy.get('[data-cy="Movies with new Metadata"]')
+      .should('have.text', 'Joker - Movies with new Metadata');
   });
 });

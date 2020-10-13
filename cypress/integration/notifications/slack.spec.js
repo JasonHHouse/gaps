@@ -12,7 +12,7 @@
 /* eslint no-undef: "error" */
 
 import faker from 'faker';
-import { CYPRESS_VALUES, nuke } from '../common.js';
+import { CYPRESS_VALUES, nuke } from '../common.spec.js';
 
 function checkElements(slackWebHookUrl, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#slackWebHookUrl')
@@ -180,79 +180,6 @@ describe('Check Slack Notification Agent', () => {
 
     cy.get('#slackSaveSuccess')
       .should(CYPRESS_VALUES.beVisible);
-
-    cy.get('#slackSaveError')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#slackSpinner')
-      .should(CYPRESS_VALUES.notBeVisible);
-  });
-
-  it('Check saving and test Slack Notification', () => {
-    cy.visit('/configuration');
-
-    cy.get('#notificationTab')
-      .click();
-
-    cy.get('#slackShowHide')
-      .click();
-
-    checkElements('', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
-
-    cy.get('#slackWebHookUrl')
-      .clear()
-      .type(atob('aHR0cHM6Ly9ob29rcy5zbGFjay5jb20vc2VydmljZXMvVDAxN1hSMEJNUlYvQjAxOEs0TkE3NjAvemsxcVVWMno1N0w4c3lqQ0ExUU8xRFFE'))
-      .should('have.value', atob('aHR0cHM6Ly9ob29rcy5zbGFjay5jb20vc2VydmljZXMvVDAxN1hSMEJNUlYvQjAxOEs0TkE3NjAvemsxcVVWMno1N0w4c3lqQ0ExUU8xRFFE'));
-
-    cy.get('#slackTmdbApiConnectionNotification')
-      .click();
-
-    cy.get('#slackPlexServerConnectionNotification')
-      .click();
-
-    cy.get('#slackPlexMetadataUpdateNotification')
-      .click();
-
-    cy.get('#slackPlexLibraryUpdateNotification')
-      .click();
-
-    cy.get('#slackGapsMissingCollectionsNotification')
-      .click();
-
-    cy.get('#slackEnabled')
-      .select('Enabled');
-
-    cy.get('#saveSlack')
-      .click();
-
-    cy.get('#slackTestSuccess')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#slackTestError')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#slackSaveSuccess')
-      .should(CYPRESS_VALUES.beVisible);
-
-    cy.get('#slackSaveError')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#slackSpinner')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#testSlack')
-      .click();
-
-    cy.wait(2000);
-
-    cy.get('#slackTestSuccess')
-      .should(CYPRESS_VALUES.beVisible);
-
-    cy.get('#slackTestError')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#slackSaveSuccess')
-      .should(CYPRESS_VALUES.notBeVisible);
 
     cy.get('#slackSaveError')
       .should(CYPRESS_VALUES.notBeVisible);

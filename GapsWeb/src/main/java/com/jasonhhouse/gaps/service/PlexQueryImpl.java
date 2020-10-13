@@ -62,7 +62,7 @@ public class PlexQueryImpl implements PlexQuery {
 
     public static final String ID_IDX_START = "://";
     public static final String ID_IDX_END = "?";
-    private static final long TIMEOUT = 2500;
+    private static final long TIMEOUT = 5000;
     private static final Logger LOGGER = LoggerFactory.getLogger(PlexQueryImpl.class);
 
     private final UrlGenerator urlGenerator;
@@ -114,6 +114,7 @@ public class PlexQueryImpl implements PlexQuery {
                 List<PlexLibrary> plexLibraries = mediaContainer.getPlexLibraries().stream().filter(plexLibrary -> plexLibrary.getType().equalsIgnoreCase("movie")).collect(Collectors.toList());
 
                 LOGGER.info("{} Plex libraries found", plexLibraries.size());
+                plexServer.getPlexLibraries().clear();
                 plexServer.getPlexLibraries().addAll(plexLibraries);
                 return Payload.PLEX_LIBRARIES_FOUND.setExtras("size():" + plexLibraries.size());
             } catch (IOException e) {

@@ -11,7 +11,7 @@
 /* global cy, it, describe, before, expect */
 /* eslint no-undef: "error" */
 
-import { spyOnAddEventListener } from '../common.js';
+import { spyOnAddEventListener } from '../common.spec.js';
 
 describe('Schedule Configuration Tests', () => {
   before(() => {

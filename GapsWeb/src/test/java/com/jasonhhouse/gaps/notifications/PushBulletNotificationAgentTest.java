@@ -9,27 +9,35 @@
  *
  */
 
-package com.jasonhhouse.gaps.service;
+package com.jasonhhouse.gaps.notifications;
 
+import com.jasonhhouse.gaps.NotificationType;
+import com.jasonhhouse.gaps.service.FakeIoService;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-/**
- * Handles the process of searching, movies, counts, and canceling
- */
-public interface GapsSearch {
+import static org.junit.jupiter.api.Assertions.*;
 
-    /**
-     * Kicks of searching for all missing movies
-     */
-    void run(@NotNull String machineIdentifier, @NotNull Integer key);
+class PushBulletNotificationAgentTest {
 
-    /**
-     * Cancel the current search
-     */
-    void cancelSearch();
+    @NotNull
+    private PushBulletNotificationAgent pushBulletNotificationAgent;
 
-    /**
-     * @return Returns true if currently searching
-     */
-    boolean isSearching();
+    @BeforeEach
+    void setUp() {
+        pushBulletNotificationAgent = new PushBulletNotificationAgent(new FakeIoService());
+    }
+
+    @Test
+    void sendMessage() {
+        Boolean sentSuccessfully = pushBulletNotificationAgent.sendMessage(NotificationType.TEST, "DEBUG", "Gaps Test", "Test Successful");
+        assertTrue(sentSuccessfully, "Should have sent test pushBullet message");
+    }
+
+    @Test
+    void failToMessage() {
+        Boolean sentUnsuccessfully = pushBulletNotificationAgent.sendMessage(NotificationType.GAPS_MISSING_COLLECTIONS, "DEBUG", "Gaps Test", "Test Successful");
+        assertFalse(sentUnsuccessfully, "Should have not sent pushBullet email message");
+    }
 }

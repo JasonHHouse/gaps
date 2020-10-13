@@ -9,27 +9,35 @@
  *
  */
 
-package com.jasonhhouse.gaps.service;
+package com.jasonhhouse.gaps.notifications;
 
+import com.jasonhhouse.gaps.NotificationType;
+import com.jasonhhouse.gaps.service.FakeIoService;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-/**
- * Handles the process of searching, movies, counts, and canceling
- */
-public interface GapsSearch {
+import static org.junit.jupiter.api.Assertions.*;
 
-    /**
-     * Kicks of searching for all missing movies
-     */
-    void run(@NotNull String machineIdentifier, @NotNull Integer key);
+class DiscordNotificationAgentTest {
 
-    /**
-     * Cancel the current search
-     */
-    void cancelSearch();
+    @NotNull
+    private DiscordNotificationAgent discordNotificationAgent;
 
-    /**
-     * @return Returns true if currently searching
-     */
-    boolean isSearching();
+    @BeforeEach
+    void setUp() {
+        discordNotificationAgent = new DiscordNotificationAgent(new FakeIoService());
+    }
+
+    @Test
+    void sendMessage() {
+        Boolean sentSuccessfully = discordNotificationAgent.sendMessage(NotificationType.TEST, "DEBUG", "Gaps Test", "Test Successful");
+        assertTrue(sentSuccessfully, "Should have sent test discord message");
+    }
+
+    @Test
+    void failToMessage() {
+        Boolean sentUnsuccessfully = discordNotificationAgent.sendMessage(NotificationType.GAPS_MISSING_COLLECTIONS, "DEBUG", "Gaps Test", "Test Successful");
+        assertFalse(sentUnsuccessfully, "Should have not sent test discord message");
+    }
 }

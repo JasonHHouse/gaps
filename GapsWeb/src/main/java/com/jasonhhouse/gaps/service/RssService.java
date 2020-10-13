@@ -14,6 +14,7 @@ import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.plex.libs.PlexLibrary;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.validation.constraints.NotNull;
@@ -39,7 +40,7 @@ public class RssService {
         Map<PlexLibrary, PlexServer> plexServerMap = new HashMap<>();
 
         PlexProperties plexProperties = fileIoService.readProperties();
-        Set<PlexServer> plexServers = plexProperties.getPlexServers();
+        List<PlexServer> plexServers = plexProperties.getPlexServers();
         if (CollectionUtils.isEmpty(plexServers)) {
             return Collections.emptyMap();
         }

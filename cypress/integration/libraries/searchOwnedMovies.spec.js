@@ -11,34 +11,45 @@
 /* global cy, it, expect, before, describe */
 /* eslint no-undef: "error" */
 
-import {
-  jokerLibraryBefore, redLibraryBefore, searchPlexForMoviesFromSaw, spyOnAddEventListener,
-} from '../common.js';
+import { nuke, redLibraryBefore, spyOnAddEventListener } from '../common.spec.js';
 
 describe('Find owned movies', () => {
+  before(nuke);
   before(redLibraryBefore);
 
-  it('Find Movies', () => {
+  it('Find Saw Movies', () => {
     cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
 
-    searchPlexForMoviesFromSaw(cy);
+    cy.get('[data-cy=dropdownMenu]')
+      .click();
+
+    cy.get('[data-cy=Saw]')
+      .click();
+
+    cy.get('[data-cy=searchForMovies]')
+      .click();
+
+    cy.get('label > input')
+      .clear()
+      .type('Saw');
+
+    cy.get('#movies_info')
+      .should('have.text', 'Showing 1 to 1 of 1 entries');
   });
 
-  it('Refresh Movies', () => {
+  it('Refresh Saw Movies', () => {
     cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
 
-    cy.get('#dropdownMenuLink')
+    cy.get('[data-cy=dropdownMenu]')
       .click();
 
-    cy.get('[data-key="1"]')
-      .first()
+    cy.get('[data-cy="Best Movies"]')
       .click();
 
-    cy.get('#dropdownMenuLink')
+    cy.get('[data-cy=dropdownMenu]')
       .click();
 
-    cy.get('[data-key="2"]')
-      .first()
+    cy.get('[data-cy=Saw]')
       .click();
 
     cy.get('label > input')
@@ -56,14 +67,13 @@ describe('Find owned movies', () => {
       });
   });
 
-  it('Research Movies', () => {
+  it('Research Saw Movies', () => {
     cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
 
-    cy.get('#dropdownMenuLink')
+    cy.get('[data-cy=dropdownMenu]')
       .click();
 
-    cy.get('[data-key="2"]')
-      .first()
+    cy.get('[data-cy=Saw]')
       .click();
 
     cy.get('label > input')
@@ -87,18 +97,16 @@ describe('Find owned movies', () => {
       });
   });
 
-  it('Regular Movies Empty', () => {
-    jokerLibraryBefore();
-
+  it('Movies with Metadata Empty', () => {
     cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
 
-    cy.get('#dropdownMenuLink')
+    cy.get('[data-cy=dropdownMenu]')
       .click();
 
-    cy.get('[data-key="1"][data-machineidentifier="721fee4db63634b88ed699f8b0a16d7682a7a0d9"]')
+    cy.get('[data-cy="Movies with new Metadata"]')
       .click();
 
-    cy.get('.card-body > .btn')
+    cy.get('[data-cy=searchForMovies]')
       .should('be.visible');
   });
 });

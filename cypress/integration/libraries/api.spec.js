@@ -11,14 +11,22 @@
 /* global cy, it, expect, describe, before, beforeEach */
 /* eslint no-undef: "error" */
 
-import {
-  nuke, redLibraryBefore, searchPlexForMoviesFromSaw, spyOnAddEventListener,
-} from '../common.js';
+import { nuke, redLibraryBefore, spyOnAddEventListener } from '../common.spec.js';
 
 function searchSawLibrary(cy) {
   cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
 
-  searchPlexForMoviesFromSaw(cy);
+  cy.get('[data-cy=dropdownMenu]')
+    .click();
+
+  cy.get('[data-cy=Saw]')
+    .click();
+
+  cy.get('[data-cy=searchForMovies]')
+    .click();
+
+  cy.get('#movies_info')
+    .should('have.text', 'Showing 1 to 1 of 1 entries');
 
   cy.visit('/recommended', { onBeforeLoad: spyOnAddEventListener });
 }
@@ -33,13 +41,12 @@ describe('Library API', () => {
       });
   });
 
-  before(nuke);
   before(redLibraryBefore);
 
-  it('Get library Red - Saw', () => {
+  it('Get library Joker - Saw', () => {
     searchSawLibrary(cy);
 
-    cy.request('/libraries/721fee4db63634b88ed699f8b0a16d7682a7a0d9/2')
+    cy.request('/libraries/c51c432ae94e316d52570550f915ecbcd71bede8/5')
       .then((resp) => {
         cy.log(resp.body);
         const result = resp.body;
@@ -52,8 +59,8 @@ describe('Plex Movie List API', () => {
   beforeEach(nuke);
   beforeEach(redLibraryBefore);
 
-  it('Get library Red - Saw', () => {
-    cy.request('/plex/movies/721fee4db63634b88ed699f8b0a16d7682a7a0d9/2')
+  it('Get library Joker - Saw', () => {
+    cy.request('/plex/movies/c51c432ae94e316d52570550f915ecbcd71bede8/5')
       .then((resp) => {
         cy.log(resp.body);
         const result = resp.body;

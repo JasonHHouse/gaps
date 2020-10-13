@@ -11,7 +11,7 @@
 /* global cy, describe, it, before */
 /* eslint no-undef: "error" */
 
-import { nuke, spyOnAddEventListener } from '../common.js';
+import { nuke, spyOnAddEventListener } from '../common.spec.js';
 
 describe('Not Searched Yet RSS', () => {
   before(nuke);

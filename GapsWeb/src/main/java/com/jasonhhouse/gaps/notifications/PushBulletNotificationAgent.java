@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.properties.PushBulletProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
+import com.jasonhhouse.gaps.service.IO;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import okhttp3.Headers;
@@ -25,7 +26,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,12 +35,17 @@ import static com.jasonhhouse.gaps.notifications.NotificationStatus.TIMEOUT;
 
 public final class PushBulletNotificationAgent extends AbstractNotificationAgent<PushBulletProperties> {
 
+    @NotNull
     private static final Logger LOGGER = LoggerFactory.getLogger(PushBulletNotificationAgent.class);
+
+    @NotNull
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    @NotNull
     private final OkHttpClient client;
 
-    public PushBulletNotificationAgent(FileIoService fileIoService) {
-        super(fileIoService);
+    public PushBulletNotificationAgent(@NotNull IO ioService) {
+        super(ioService);
 
         client = new OkHttpClient.Builder()
                 .connectTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
@@ -49,19 +54,18 @@ public final class PushBulletNotificationAgent extends AbstractNotificationAgent
                 .build();
     }
 
-
     @Override
-    public int getId() {
+    public @NotNull Integer getId() {
         return 1;
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "PushBullet Notification Agent";
     }
 
     @Override
-    public boolean sendMessage(NotificationType notificationType, String level, String title, String message) {
+    public @NotNull Boolean sendMessage(@NotNull NotificationType notificationType, @NotNull String level, @NotNull String title, @NotNull String message) {
         LOGGER.info(SEND_MESSAGE, level, title, message);
 
         if (sendPrepMessage(notificationType)) {
@@ -90,7 +94,7 @@ public final class PushBulletNotificationAgent extends AbstractNotificationAgent
             return false;
         }
 
-        LOGGER.info("pushBulletMessage {}", pushBulletMessage);
+        LOGGER.info("Sending pushBulletMessage");
         RequestBody body = RequestBody.create(pushBulletMessage, MediaType.get(org.springframework.http.MediaType.APPLICATION_JSON_VALUE));
 
         Request request = new Request.Builder()
@@ -114,19 +118,22 @@ public final class PushBulletNotificationAgent extends AbstractNotificationAgent
         }
     }
 
-    @NotNull
     @Override
-    public PushBulletProperties getNotificationProperties() {
-        return fileIoService.readProperties().getPushBulletProperties();
+    public @NotNull PushBulletProperties getNotificationProperties() {
+        return ioService.readProperties().getPushBulletProperties();
     }
 
     public static final class PushBullet {
+        @NotNull
         private final String type;
+        @NotNull
         private final String channelTag;
+        @NotNull
         private final String title;
+        @NotNull
         private final String body;
 
-        public PushBullet(String channelTag, String title, String body) {
+        public PushBullet(@NotNull String channelTag, @NotNull String title, @NotNull String body) {
             this.channelTag = channelTag;
             this.title = title;
             this.body = body;
@@ -134,19 +141,19 @@ public final class PushBulletNotificationAgent extends AbstractNotificationAgent
         }
 
         @JsonProperty("channel_tag")
-        public String getChannelTag() {
+        public @NotNull String getChannelTag() {
             return channelTag;
         }
 
-        public String getType() {
+        public @NotNull String getType() {
             return type;
         }
 
-        public String getTitle() {
+        public @NotNull String getTitle() {
             return title;
         }
 
-        public String getBody() {
+        public @NotNull String getBody() {
             return body;
         }
     }

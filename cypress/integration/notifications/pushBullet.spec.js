@@ -12,7 +12,7 @@
 /* eslint no-undef: "error" */
 
 import faker from 'faker';
-import { CYPRESS_VALUES, nuke } from '../common.js';
+import { CYPRESS_VALUES, nuke } from '../common.spec.js';
 
 function checkElements(channelTag, token, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#pushBulletChannelTag')
@@ -249,84 +249,6 @@ describe('Check PushBullet Notification Agent', () => {
       .should(CYPRESS_VALUES.notBeVisible);
   });
 
-  it('Check saving and test PushBullet Notification', () => {
-    cy.visit('/configuration');
-
-    cy.get('#notificationTab')
-      .click();
-
-    cy.get('#pushBulletShowHide')
-      .click();
-
-    checkElements('', '', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
-
-    cy.get('#pushBulletChannelTag')
-      .clear()
-      .type(atob('Z2Fwcw=='))
-      .should('have.value', atob('Z2Fwcw=='));
-
-    cy.get('#pushBulletAccessToken')
-      .clear()
-      .type(atob('by5pdjBXbXRuTFdJM3hmaFRTTmh1dVF2Tm1vdlVGSHN6dA=='))
-      .should('have.value', atob('by5pdjBXbXRuTFdJM3hmaFRTTmh1dVF2Tm1vdlVGSHN6dA=='));
-
-    cy.get('#pushBulletTmdbApiConnectionNotification')
-      .click();
-
-    cy.get('#pushBulletPlexServerConnectionNotification')
-      .click();
-
-    cy.get('#pushBulletPlexMetadataUpdateNotification')
-      .click();
-
-    cy.get('#pushBulletPlexLibraryUpdateNotification')
-      .click();
-
-    cy.get('#pushBulletGapsMissingCollectionsNotification')
-      .click();
-
-    cy.get('#pushBulletEnabled')
-      .select('Enabled');
-
-    cy.get('#savePushBullet')
-      .click();
-
-    cy.get('#pushBulletTestSuccess')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#pushBulletTestError')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#pushBulletSaveSuccess')
-      .should(CYPRESS_VALUES.beVisible);
-
-    cy.get('#pushBulletSaveError')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#pushBulletSpinner')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#testPushBullet')
-      .click();
-
-    cy.wait(2000);
-
-    cy.get('#pushBulletTestSuccess')
-      .should(CYPRESS_VALUES.beVisible);
-
-    cy.get('#pushBulletTestError')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#pushBulletSaveSuccess')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#pushBulletSaveError')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#pushBulletSpinner')
-      .should(CYPRESS_VALUES.notBeVisible);
-  });
-
   it('Check Successful Saving and Failure Testing PushBullet Notification', () => {
     cy.visit('/configuration');
 
@@ -383,13 +305,11 @@ describe('Check PushBullet Notification Agent', () => {
     cy.get('#testPushBullet')
       .click();
 
-    cy.wait(2000);
+    cy.get('#pushBulletTestError', { timeout: 5000 })
+      .should(CYPRESS_VALUES.beVisible);
 
     cy.get('#pushBulletTestSuccess')
       .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#pushBulletTestError')
-      .should(CYPRESS_VALUES.beVisible);
 
     cy.get('#pushBulletSaveSuccess')
       .should(CYPRESS_VALUES.notBeVisible);

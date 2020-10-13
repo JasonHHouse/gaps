@@ -11,7 +11,7 @@
 /* global cy, it, describe */
 /* eslint no-undef: "error" */
 
-import { nuke, spyOnAddEventListener } from '../common.js';
+import { nuke, spyOnAddEventListener } from '../common.spec.js';
 
 describe('Configuration Tests', () => {
   it('Clean configuration page load', () => {

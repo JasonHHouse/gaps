@@ -11,35 +11,25 @@
 /* global cy, it, describe */
 /* eslint no-undef: "error" */
 
-import { spyOnAddEventListener } from '../common.js';
+import { spyOnAddEventListener } from '../common.spec.js';
 
-describe('Verify Log In Page', () => {
+describe('Verify About Page', () => {
   it('Default page', () => {
-    cy.visit('/login', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit('/about', { onBeforeLoad: spyOnAddEventListener });
 
-    cy.get(':nth-child(1) > label')
-      .should('have.text', 'Username');
+    cy.get('h3.top-margin')
+      .should('have.text', 'About');
 
-    cy.get(':nth-child(2) > label')
-      .should('have.text', 'Password');
+    cy.get('.container > :nth-child(3)')
+      .should('have.text', 'v0.8.3');
 
-    cy.get('.btn')
-      .should('have.text', 'Log In');
+    cy.get('.container > :nth-child(6)')
+      .should('have.text', 'Software');
 
-    cy.get('#username')
-      .clear()
-      .type('badUser')
-      .should('have.value', 'badUser');
+    cy.get(':nth-child(8)')
+      .should('have.text', 'License');
 
-    cy.get('#password')
-      .clear()
-      .type('password')
-      .should('have.value', 'password');
-
-    cy.get('.btn')
-      .click();
-
-    cy.get('.card-img-top')
-      .should('be.visible');
+    cy.get(':nth-child(10)')
+      .should('have.text', 'Support');
   });
 });

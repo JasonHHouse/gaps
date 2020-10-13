@@ -55,6 +55,7 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,8 +107,13 @@ public class GapsSearchService implements GapsSearch {
     }
 
     @Override
-    public void run(String machineIdentifier, Integer key) {
+    public void run(@NotNull String machineIdentifier,@NotNull  Integer key) {
         LOGGER.info("run( {}, {} )", machineIdentifier, key);
+
+        //ToDo
+        if(key.equals(1)) {
+            return;
+        }
 
         PlexProperties plexProperties = fileIoService.readProperties();
         Optional<PlexServer> optionalPlexServer = plexProperties.getPlexServers().stream().filter(tempPlexServer -> tempPlexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst();
@@ -186,11 +192,7 @@ public class GapsSearchService implements GapsSearch {
 
         template.convertAndSend(FINISHED_SEARCHING_URL, Payload.SEARCH_SUCCESSFUL);
 
-        LOGGER.info("Recommended");
-        for (BasicMovie basicMovie : recommended) {
-            String strMovie = basicMovie.toString();
-            LOGGER.info(strMovie);
-        }
+        LOGGER.info("Recommending {} movies.", recommended.size());
     }
 
     @Override
@@ -216,7 +218,7 @@ public class GapsSearchService implements GapsSearch {
     @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private void searchForMovies(PlexProperties plexProperties, String machineIdentifier, Integer key, List<BasicMovie> ownedBasicMovies, List<BasicMovie> everyBasicMovie, Set<BasicMovie> recommended, List<BasicMovie> searched,
                                  AtomicInteger searchedMovieCount) throws SearchCancelledException, IOException {
-        LOGGER.info("searchForMovies()");
+        LOGGER.debug("searchForMovies()");
         OkHttpClient client = new OkHttpClient();
 
         if (StringUtils.isEmpty(plexProperties.getMovieDbApiKey())) {
@@ -364,7 +366,7 @@ public class GapsSearchService implements GapsSearch {
 
     private void searchMovieDetails(PlexProperties plexProperties, String machineIdentifier, Integer key, List<BasicMovie> ownedBasicMovies, List<BasicMovie> everyBasicMovie, Set<BasicMovie> recommended, List<BasicMovie> searched,
                                     AtomicInteger searchedMovieCount, BasicMovie basicMovie, OkHttpClient client, String languageCode) {
-        LOGGER.info("searchMovieDetails()");
+        LOGGER.debug("searchMovieDetails()");
         HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(plexProperties.getMovieDbApiKey(), String.valueOf(basicMovie.getTmdbId()), languageCode);
 
         Request request = new Request.Builder()
@@ -422,7 +424,7 @@ public class GapsSearchService implements GapsSearch {
 
     private void handleCollection(PlexProperties plexProperties, String machineIdentifier, Integer key, List<BasicMovie> ownedBasicMovies, List<BasicMovie> everyBasicMovie, Set<BasicMovie> recommended, List<BasicMovie> searched,
                                   AtomicInteger searchedMovieCount, BasicMovie basicMovie, OkHttpClient client, String languageCode) {
-        LOGGER.info("handleCollection()");
+        LOGGER.debug("handleCollection()");
         HttpUrl collectionUrl = urlGenerator.generateCollectionUrl(plexProperties.getMovieDbApiKey(), String.valueOf(basicMovie.getCollectionId()), languageCode);
 
         Request request = new Request.Builder()
@@ -468,13 +470,13 @@ public class GapsSearchService implements GapsSearch {
                             LOGGER.warn("Could not parse date");
                         }
                     }
-                    String id = jsonNode.get(ID).textValue();
+                    Integer tmdbId = jsonNode.get(ID).intValue();
 
                     BasicMovie collectionBasicMovie = new BasicMovie.Builder(title, year).build();
                     LOGGER.info(collectionBasicMovie.toString());
 
                     Boolean owned = ownedBasicMovies.contains(collectionBasicMovie);
-                    moviesInCollection.add(new MovieFromCollection(title, id, owned));
+                    moviesInCollection.add(new MovieFromCollection(title, tmdbId, owned));
                 });
             }
 

@@ -111,7 +111,7 @@
                 <div class="form-group">
                     <label for="movieDbApiKey">Movie Database Api Key</label>
                     <div class="input-group">
-                        <input class="form-control" id="movieDbApiKey" required th:field="*{movieDbApiKey}" type="text">
+                        <input class="form-control" id="movieDbApiKey" data-cy="movieDbApiKey" required th:field="*{movieDbApiKey}" type="text">
                         <div class="invalid-feedback" id="emptyTmdbKeyLabel">
                             Please enter a Movie Database Key.
                         </div>
@@ -418,10 +418,10 @@
     <div id="{{machineIdentifier}}" class="col-lg-4">
         <div class="top-margin">
             <div class="card border-secondary mb-3" style="max-width: 20rem;">
-                <div class="card-header">{{friendlyName}}</div>
+                <div data-cy="{{friendlyName}}" class="card-header">{{friendlyName}}</div>
                 <ul class="list-group list-group-flush">
                     {{#each plexLibraries}}
-                    <li class="list-group-item">{{title}}</li>
+                    <li data-cy="{{title}}" class="list-group-item">{{title}}</li>
                     {{/each}}
                 </ul>
                 <div class="card-body">

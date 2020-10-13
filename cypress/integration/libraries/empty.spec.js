@@ -8,42 +8,27 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/* global cy, describe, it, before, expect */
+/* global cy, it, before, describe */
 /* eslint no-undef: "error" */
 
-import {
-  nuke, redLibraryBefore, searchPlexForMoviesFromSaw, spyOnAddEventListener,
-} from '../common.js';
+import { redLibraryBefore, spyOnAddEventListener } from '../common.spec.js';
 
-function searchSawLibrary(cy) {
-  cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
-
-  searchPlexForMoviesFromSaw(cy);
-
-  cy.visit('/recommended', { onBeforeLoad: spyOnAddEventListener });
-}
-
-describe('Recommended API', () => {
-  it('Get Bad recommended', () => {
-    cy.request('/recommended/a/2')
-      .then((resp) => {
-        cy.log(resp.body);
-        const result = resp.body;
-        expect(result.code).to.eq(41);
-      });
-  });
-
-  before(nuke);
+describe('Not Searched Yet Library', () => {
   before(redLibraryBefore);
 
-  it('Get library Red - Saw', () => {
-    searchSawLibrary(cy);
+  it('Clean configuration page load', () => {
+    cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
 
-    cy.request('/libraries/721fee4db63634b88ed699f8b0a16d7682a7a0d9/2')
-      .then((resp) => {
-        cy.log(resp.body);
-        const result = resp.body;
-        expect(result.code).to.eq(40);
-      });
+    cy.get('[data-cy=libraryTitle]')
+      .contains('Joker');
+
+    cy.get('[data-cy=dropdownMenu]')
+      .should('have.text', 'Libraries');
+
+    cy.get('[data-cy="Movies with new Metadata"]')
+      .should('have.text', 'Joker - Movies with new Metadata');
+
+    cy.get('.card-img-top')
+      .should('be.visible');
   });
 });

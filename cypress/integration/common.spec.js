@@ -31,66 +31,6 @@ export function spyOnAddEventListener(win) {
   };
 }
 
-export function searchPlexForMoviesFromSaw(cy) {
-  cy.get('#dropdownMenuLink')
-    .click();
-
-  cy.get('[data-key="2"]')
-    .first()
-    .click();
-
-  cy.get('.card-body > .btn')
-    .click();
-
-  cy.get('label > input')
-    .clear()
-    .type('Saw');
-
-  cy.get('#movies_info')
-    .should('have.text', 'Showing 1 to 1 of 1 entries');
-
-  cy.get('.card-img')
-    .should('be.visible')
-    .and(($img) => {
-      // "naturalWidth" and "naturalHeight" are set when the image loads
-      expect($img[0].naturalWidth).to.be.greaterThan(0);
-    });
-}
-
-export function searchPlexForMoviesFromBestMovies(cy) {
-  cy.get('#dropdownMenuLink')
-    .click();
-
-  cy.get('[data-key="5"]')
-    .first()
-    .click();
-
-  cy.get('.card-body > .btn')
-    .click();
-
-  // Wait for timeout from clearing data
-  cy.wait(5000);
-}
-
-export function searchPlexForMoviesFromMovies(cy) {
-  cy.get('#dropdownMenuLink')
-    .click();
-
-  cy.get('[data-key="1"]')
-    .first()
-    .click();
-
-  cy.get('.card-body > .btn')
-    .click();
-
-  cy.get('label > input')
-    .clear()
-    .type('Gods');
-
-  cy.get('#movies_info')
-    .should('have.text', 'Showing 1 to 1 of 1 entries (filtered from 21 total entries)');
-}
-
 export function nuke() {
   cy.request('PUT', '/nuke')
     .then((response) => {
@@ -107,10 +47,7 @@ export function redLibraryBefore() {
 
   cy.visit('/configuration', { onBeforeLoad: spyOnAddEventListener });
 
-  cy.get('#movieDbApiKey')
-    .clear()
-    .type('723b4c763114904392ca441909aa0375')
-    .should('have.value', '723b4c763114904392ca441909aa0375');
+  cy.populateTmdb('723b4c763114904392ca441909aa0375');
 
   cy.get('#saveTmdbKey')
     .click();
@@ -118,26 +55,10 @@ export function redLibraryBefore() {
   cy.get('#plexTab')
     .click();
 
-  cy.get('#address')
-    .clear()
-    .type(atob('MTkyLjE2OC4xLjk='))
-    .should('have.value', atob('MTkyLjE2OC4xLjk='));
+  cy.populatePlexConfiguration(atob('MTkyLjE2OC4xLjg='), atob('MzI0MDA='), atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
 
-  cy.get('#port')
-    .clear()
-    .type(atob('MzI0MDA='))
-    .should('have.value', atob('MzI0MDA='));
-
-  cy.get('#plexToken')
-    .clear()
-    .type(atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='))
-    .should('have.value', atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
-
-  cy.get('#addPlexServer')
+  cy.get('#addPlexServer', { timeout: 15000 })
     .click();
-
-  // Wait for timeout from plex
-  cy.wait(10000);
 
   cy.get('#plexSpinner')
     .should('not.be.visible');
@@ -164,26 +85,26 @@ export function redLibraryBefore() {
     .should('not.be.visible');
 
   // Define card here
-  cy.get('.card-header')
-    .should('have.text', 'Red');
+  cy.get('[data-cy=Joker]')
+    .should('have.text', 'Joker');
 
-  cy.get('.list-group > :nth-child(1)')
+  cy.get('[data-cy="Best Movies"]')
     .should('have.text', 'Best Movies');
 
-  cy.get('.list-group > :nth-child(2)')
+  cy.get('[data-cy="Movies"]')
+    .should('have.text', 'Movies');
+
+  cy.get('[data-cy="Movies with new Metadata"]')
     .should('have.text', 'Movies with new Metadata');
 
-  cy.get('.list-group > :nth-child(3)')
+  cy.get('[data-cy=Saw]')
     .should('have.text', 'Saw');
 }
 
 export function jokerLibraryBefore() {
   cy.visit('/configuration', { onBeforeLoad: spyOnAddEventListener });
 
-  cy.get('#movieDbApiKey')
-    .clear()
-    .type('723b4c763114904392ca441909aa0375')
-    .should('have.value', '723b4c763114904392ca441909aa0375');
+  cy.populateTmdb('723b4c763114904392ca441909aa0375');
 
   cy.get('#saveTmdbKey')
     .click();
@@ -191,20 +112,7 @@ export function jokerLibraryBefore() {
   cy.get('#plexTab')
     .click();
 
-  cy.get('#address')
-    .clear()
-    .type('192.168.1.8')
-    .should('have.value', '192.168.1.8');
-
-  cy.get('#port')
-    .clear()
-    .type(atob('MzI0MDA='))
-    .should('have.value', atob('MzI0MDA='));
-
-  cy.get('#plexToken')
-    .clear()
-    .type(atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='))
-    .should('have.value', atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
+  cy.populatePlexConfiguration(atob('MTkyLjE2OC4xLjg='), atob('MzI0MDA='), atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
 
   cy.get('#addPlexServer')
     .click();

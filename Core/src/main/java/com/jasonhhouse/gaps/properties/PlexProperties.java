@@ -16,7 +16,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.Schedule;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 public final class PlexProperties {
 
     @NotNull
-    private final Set<PlexServer> plexServers;
+    private final List<PlexServer> plexServers;
     @NotNull
     private String movieDbApiKey;
     @NotNull
@@ -49,7 +51,7 @@ public final class PlexProperties {
     private Schedule schedule;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public PlexProperties(@JsonProperty(value = "plexServers") @Nullable Set<PlexServer> plexServers,
+    public PlexProperties(@JsonProperty(value = "plexServers") @Nullable List<PlexServer> plexServers,
                           @JsonProperty(value = "telegramProperties") @Nullable TelegramProperties telegramProperties,
                           @JsonProperty(value = "pushBulletProperties") @Nullable PushBulletProperties pushBulletProperties,
                           @JsonProperty(value = "emailProperties") @Nullable EmailProperties emailProperties,
@@ -60,7 +62,7 @@ public final class PlexProperties {
                           @JsonProperty(value = "movieDbApiKey") @Nullable String movieDbApiKey,
                           @JsonProperty(value = "password") @Nullable String password,
                           @JsonProperty(value = "schedule") @Nullable Schedule schedule) {
-        this.plexServers = plexServers == null ? new HashSet<>() : plexServers;
+        this.plexServers = plexServers == null ? new ArrayList<>() : plexServers;
         this.telegramProperties = telegramProperties == null ? TelegramProperties.getDefault() : telegramProperties;
         this.pushBulletProperties = pushBulletProperties == null ? PushBulletProperties.getDefault() : pushBulletProperties;
         this.emailProperties = emailProperties == null ? EmailProperties.getDefault() : emailProperties;
@@ -74,7 +76,7 @@ public final class PlexProperties {
     }
 
     public PlexProperties() {
-        this.plexServers = new HashSet<>();
+        this.plexServers = new ArrayList<>();
         this.telegramProperties = TelegramProperties.getDefault();
         this.pushBulletProperties = PushBulletProperties.getDefault();
         this.emailProperties = EmailProperties.getDefault();
@@ -88,7 +90,7 @@ public final class PlexProperties {
     }
 
     @NotNull
-    public Set<PlexServer> getPlexServers() {
+    public List<PlexServer> getPlexServers() {
         return plexServers;
     }
 

@@ -12,7 +12,7 @@
 /* eslint no-undef: "error" */
 
 import faker from 'faker';
-import { CYPRESS_VALUES, nuke } from '../common.js';
+import { CYPRESS_VALUES, nuke } from '../common.spec.js';
 
 function checkElements(discordWebHookUrl, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#discordWebHookUrl')
@@ -237,79 +237,6 @@ describe('Check Discord Notification Agent', () => {
       .should(CYPRESS_VALUES.notBeVisible);
   });
 
-  it('Check saving and test Discord Notification', () => {
-    cy.visit('/configuration');
-
-    cy.get('#notificationTab')
-      .click();
-
-    cy.get('#discordShowHide')
-      .click();
-
-    checkElements('', CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, CYPRESS_VALUES.notBeChecked, 'false');
-
-    cy.get('#discordWebHookUrl')
-      .clear()
-      .type(atob('aHR0cHM6Ly9kaXNjb3JkYXBwLmNvbS9hcGkvd2ViaG9va3MvNzU2MzExMTkwOTU0NTczOTU2L0Uwa25VRF91akxIQU5oZTA3MGEwYW9PMUNnMGRNQUV4Z1FBbEZGTS1GZUgwNnl3VGExLU42c2ZhREpQSC1lM2dDVEZz'))
-      .should('have.value', atob('aHR0cHM6Ly9kaXNjb3JkYXBwLmNvbS9hcGkvd2ViaG9va3MvNzU2MzExMTkwOTU0NTczOTU2L0Uwa25VRF91akxIQU5oZTA3MGEwYW9PMUNnMGRNQUV4Z1FBbEZGTS1GZUgwNnl3VGExLU42c2ZhREpQSC1lM2dDVEZz'));
-
-    cy.get('#discordTmdbApiConnectionNotification')
-      .click();
-
-    cy.get('#discordPlexServerConnectionNotification')
-      .click();
-
-    cy.get('#discordPlexMetadataUpdateNotification')
-      .click();
-
-    cy.get('#discordPlexLibraryUpdateNotification')
-      .click();
-
-    cy.get('#discordGapsMissingCollectionsNotification')
-      .click();
-
-    cy.get('#discordEnabled')
-      .select('Enabled');
-
-    cy.get('#saveDiscord')
-      .click();
-
-    cy.get('#discordTestSuccess')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#discordTestError')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#discordSaveSuccess')
-      .should(CYPRESS_VALUES.beVisible);
-
-    cy.get('#discordSaveError')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#discordSpinner')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#testDiscord')
-      .click();
-
-    cy.wait(2000);
-
-    cy.get('#discordTestSuccess')
-      .should(CYPRESS_VALUES.beVisible);
-
-    cy.get('#discordTestError')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#discordSaveSuccess')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#discordSaveError')
-      .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#discordSpinner')
-      .should(CYPRESS_VALUES.notBeVisible);
-  });
-
   it('Check Successful Saving and Failure Testing Discord Notification', () => {
     cy.visit('/configuration');
 
@@ -363,13 +290,11 @@ describe('Check Discord Notification Agent', () => {
     cy.get('#testDiscord')
       .click();
 
-    cy.wait(2000);
+    cy.get('#discordTestError', { timeout: 5000 })
+      .should(CYPRESS_VALUES.beVisible);
 
     cy.get('#discordTestSuccess')
       .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#discordTestError')
-      .should(CYPRESS_VALUES.beVisible);
 
     cy.get('#discordSaveSuccess')
       .should(CYPRESS_VALUES.notBeVisible);
