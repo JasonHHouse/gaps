@@ -26,9 +26,7 @@ describe('TMDB Configuration Tests', () => {
     cy.get('#testTmdbKey')
       .click();
 
-    cy.wait(2000);
-
-    cy.get('#tmdbTestError')
+    cy.get('#tmdbTestError', { timeout: 5000 })
       .should('be.visible');
 
     cy.get('#tmdbTestSuccess')

@@ -290,13 +290,11 @@ describe('Check Discord Notification Agent', () => {
     cy.get('#testDiscord')
       .click();
 
-    cy.wait(2000);
+    cy.get('#discordTestError', { timeout: 5000 })
+      .should(CYPRESS_VALUES.beVisible);
 
     cy.get('#discordTestSuccess')
       .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#discordTestError')
-      .should(CYPRESS_VALUES.beVisible);
 
     cy.get('#discordSaveSuccess')
       .should(CYPRESS_VALUES.notBeVisible);

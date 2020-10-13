@@ -57,11 +57,8 @@ export function redLibraryBefore() {
 
   cy.populatePlexConfiguration(atob('MTkyLjE2OC4xLjg='), atob('MzI0MDA='), atob('bVF3NHVhd3hUeVlFbXFOVXJ2Qno='));
 
-  cy.get('#addPlexServer')
+  cy.get('#addPlexServer', { timeout: 15000 })
     .click();
-
-  // Wait for timeout from plex
-  cy.wait(10000);
 
   cy.get('#plexSpinner')
     .should('not.be.visible');

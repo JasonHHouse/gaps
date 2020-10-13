@@ -292,13 +292,11 @@ describe('Check PushOver Notification Agent', () => {
     cy.get('#testPushOver')
       .click();
 
-    cy.wait(2000);
+    cy.get('#pushOverTestError', { timeout: 5000 })
+      .should(CYPRESS_VALUES.beVisible);
 
     cy.get('#pushOverTestSuccess')
       .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#pushOverTestError')
-      .should(CYPRESS_VALUES.beVisible);
 
     cy.get('#pushOverSaveSuccess')
       .should(CYPRESS_VALUES.notBeVisible);

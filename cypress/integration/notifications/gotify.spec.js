@@ -305,13 +305,11 @@ describe('Check Gotify Notification Agent', () => {
     cy.get('#testGotify')
       .click();
 
-    cy.wait(2000);
+    cy.get('#gotifyTestError', { timeout: 5000 })
+      .should(CYPRESS_VALUES.beVisible);
 
     cy.get('#gotifyTestSuccess')
       .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#gotifyTestError')
-      .should(CYPRESS_VALUES.beVisible);
 
     cy.get('#gotifySaveSuccess')
       .should(CYPRESS_VALUES.notBeVisible);

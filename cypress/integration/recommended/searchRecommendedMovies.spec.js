@@ -69,10 +69,14 @@ describe('Search for Recommended', () => {
     cy.get('[data-cy=searchForMovies]')
       .click();
 
-    cy.wait(5000);
-
-    cy.get('#movies_info')
+    cy.get('#movies_info', { timeout: 5000 })
       .should('have.text', 'Showing 1 to 7 of 7 entries');
+
+    cy.get('[data-cy=tt0432348-176]')
+      .should('have.text', 'Saw');
+
+    cy.get('[data-cy=tt0432348-215]')
+      .should('have.text', 'Saw II');
   });
 
   it('Research Movies', () => {
@@ -87,17 +91,25 @@ describe('Search for Recommended', () => {
     cy.get('[data-cy=searchForMovies]')
       .click();
 
-    cy.wait(5000);
-
-    cy.get('#movies_info')
+    cy.get('#movies_info', { timeout: 5000 })
       .should('have.text', 'Showing 1 to 7 of 7 entries');
+
+    cy.get('[data-cy=tt0432348-176]')
+      .should('have.text', 'Saw');
+
+    cy.get('[data-cy=tt0432348-215]')
+      .should('have.text', 'Saw II');
 
     cy.get('#movieContainer > [onclick="searchForMovies()"]')
       .click();
 
-    cy.wait(5000);
-
-    cy.get('#movies_info')
+    cy.get('#movies_info', { timeout: 5000 })
       .should('have.text', 'Showing 1 to 7 of 7 entries');
+
+    cy.get('[data-cy=tt0432348-176]')
+      .should('have.text', 'Saw');
+
+    cy.get('[data-cy=tt0432348-215]')
+      .should('have.text', 'Saw II');
   });
 });

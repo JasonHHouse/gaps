@@ -50,9 +50,7 @@ describe('Searched RSS', () => {
     cy.get('[data-cy=searchForMovies]')
       .click();
 
-    cy.wait(5000);
-
-    cy.get('#movies_info')
+    cy.get('#movies_info', { timeout: 5000 })
       .should('have.text', 'Showing 1 to 7 of 7 entries');
 
     cy.visit('/rssCheck', { onBeforeLoad: spyOnAddEventListener });

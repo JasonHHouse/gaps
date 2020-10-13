@@ -42,7 +42,7 @@ describe('Plex Configuration Tests', () => {
     cy.get('#testPlexServer')
       .click();
 
-    cy.get('#plexSpinner')
+    cy.get('#plexSpinner', { timeout: 15000 })
       .should('not.be.visible');
 
     cy.get('#plexTestError')
@@ -108,10 +108,7 @@ describe('Plex Configuration Tests', () => {
     cy.get('#addPlexServer')
       .click();
 
-    // Wait for timeout from plex
-    cy.wait(5000);
-
-    cy.get('#plexSpinner')
+    cy.get('#plexSpinner', { timeout: 15000 })
       .should('not.be.visible');
 
     cy.get('#plexTestError')

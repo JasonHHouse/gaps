@@ -236,13 +236,11 @@ describe('Check Telegram Notification Agent', () => {
     cy.get('#testTelegram')
       .click();
 
-    cy.wait(2000);
+    cy.get('#telegramTestError', { timeout: 5000 })
+      .should(CYPRESS_VALUES.beVisible);
 
     cy.get('#telegramTestSuccess')
       .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#telegramTestError')
-      .should(CYPRESS_VALUES.beVisible);
 
     cy.get('#telegramSaveSuccess')
       .should(CYPRESS_VALUES.notBeVisible);

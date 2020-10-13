@@ -11,16 +11,16 @@ public final class MovieFromCollection {
     @NotNull
     private final String title;
     @NotNull
-    private final String tmdbId;
+    private final Integer tmdbId;
     @NotNull
     private final Boolean owned;
 
     @JsonCreator
     public MovieFromCollection(@JsonProperty(value = "title") @Nullable String title,
-                               @JsonProperty(value = "tmdbId") @Nullable String tmdbId,
+                               @JsonProperty(value = "tmdbId") @Nullable Integer tmdbId,
                                @JsonProperty(value = "owned") @Nullable Boolean owned) {
         this.title = StringUtils.isEmpty(title) ? "" : title;
-        this.tmdbId = StringUtils.isEmpty(tmdbId) ? "" : tmdbId;
+        this.tmdbId = tmdbId == null ? -1 : tmdbId;
         this.owned = owned != null && owned;
     }
 
@@ -30,7 +30,7 @@ public final class MovieFromCollection {
     }
 
     @NotNull
-    public String getTmdbId() {
+    public Integer getTmdbId() {
         return tmdbId;
     }
 

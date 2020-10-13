@@ -305,13 +305,11 @@ describe('Check PushBullet Notification Agent', () => {
     cy.get('#testPushBullet')
       .click();
 
-    cy.wait(2000);
+    cy.get('#pushBulletTestError', { timeout: 5000 })
+      .should(CYPRESS_VALUES.beVisible);
 
     cy.get('#pushBulletTestSuccess')
       .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#pushBulletTestError')
-      .should(CYPRESS_VALUES.beVisible);
 
     cy.get('#pushBulletSaveSuccess')
       .should(CYPRESS_VALUES.notBeVisible);

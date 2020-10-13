@@ -34,16 +34,16 @@ class MovieFromCollectionTest {
 
     @Test
     void testReadingFromJson() throws JsonProcessingException {
-        MovieFromCollection movieFromCollection = objectMapper.readValue("{\"title\":\"TITLE\",\"tmdbId\":\"123QWE\",\"owned\":true}", MovieFromCollection.class);
+        MovieFromCollection movieFromCollection = objectMapper.readValue("{\"title\":\"TITLE\",\"tmdbId\":123,\"owned\":true}", MovieFromCollection.class);
         assertEquals("TITLE", movieFromCollection.getTitle(), "Title should be 'TITLE'");
-        assertEquals("123QWE", movieFromCollection.getTmdbId(), "tmdbId should be '123QWE'");
+        assertEquals(123, movieFromCollection.getTmdbId(), "tmdbId should be '123'");
         assertTrue(movieFromCollection.getOwned(), "Title should be 'TITLE'");
     }
 
     @Test
     void testWritingToJson() throws JsonProcessingException {
-        MovieFromCollection movieFromCollection = new MovieFromCollection("TITLE","123QWE",true);
+        MovieFromCollection movieFromCollection = new MovieFromCollection("TITLE",123,true);
         String json = objectMapper.writeValueAsString(movieFromCollection);
-        assertEquals("{\"title\":\"TITLE\",\"tmdbId\":\"123QWE\",\"owned\":true}", json, "JSON output should be equal");
+        assertEquals("{\"title\":\"TITLE\",\"tmdbId\":123,\"owned\":true}", json, "JSON output should be equal");
     }
 }

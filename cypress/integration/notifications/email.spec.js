@@ -473,13 +473,11 @@ describe('Check Email Notification Agent', () => {
     cy.get('#testEmail')
       .click();
 
-    cy.wait(2000);
+    cy.get('#emailTestError', { timeout: 5000 })
+      .should(CYPRESS_VALUES.beVisible);
 
     cy.get('#emailTestSuccess')
       .should(CYPRESS_VALUES.notBeVisible);
-
-    cy.get('#emailTestError')
-      .should(CYPRESS_VALUES.beVisible);
 
     cy.get('#emailSaveSuccess')
       .should(CYPRESS_VALUES.notBeVisible);

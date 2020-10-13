@@ -110,6 +110,11 @@ public class GapsSearchService implements GapsSearch {
     public void run(@NotNull String machineIdentifier,@NotNull  Integer key) {
         LOGGER.info("run( {}, {} )", machineIdentifier, key);
 
+        //ToDo
+        if(key.equals(1)) {
+            return;
+        }
+
         PlexProperties plexProperties = fileIoService.readProperties();
         Optional<PlexServer> optionalPlexServer = plexProperties.getPlexServers().stream().filter(tempPlexServer -> tempPlexServer.getMachineIdentifier().equals(machineIdentifier)).findFirst();
         PlexServer plexServer;
@@ -465,13 +470,13 @@ public class GapsSearchService implements GapsSearch {
                             LOGGER.warn("Could not parse date");
                         }
                     }
-                    String id = jsonNode.get(ID).textValue();
+                    Integer tmdbId = jsonNode.get(ID).intValue();
 
                     BasicMovie collectionBasicMovie = new BasicMovie.Builder(title, year).build();
                     LOGGER.info(collectionBasicMovie.toString());
 
                     Boolean owned = ownedBasicMovies.contains(collectionBasicMovie);
-                    moviesInCollection.add(new MovieFromCollection(title, id, owned));
+                    moviesInCollection.add(new MovieFromCollection(title, tmdbId, owned));
                 });
             }
 
