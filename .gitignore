@@ -48,8 +48,6 @@ cypress/videos
 !**/libraries/*.min.js
 
 ### Ignore everything in Gaps on Windows except startup
-GapsOnWindows/*
+GapsAsJar/*
 !GapsAsJar/start.bat
 !GapsAsJar/gaps.nsi
-
-GapsAsJar/*
