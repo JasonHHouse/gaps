@@ -73,6 +73,11 @@ public class SchedulerService {
         return objectMapper.writeValueAsString(fileIoService.readProperties().getSchedule());
     }
 
+    public void test() {
+        LOGGER.info("test()");
+        searchGapsTask.run();
+    }
+
     private void setTaskForScheduler(Schedule schedule) {
         if (scheduledFuture != null) {
             scheduledFuture.cancel(true);
