@@ -65,7 +65,7 @@ export async function getPlexToken() {
     method: 'post',
     headers: {
       'X-Plex-Product': 'Gaps',
-      'X-Plex-Version': '0.8.3',
+      'X-Plex-Version': '0.8.4',
       'X-Plex-Client-Identifier': 'b1547b7b-06db-49ab-969c-5bb8e8582d68',
     },
   });

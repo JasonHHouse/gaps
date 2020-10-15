@@ -342,7 +342,7 @@ public class PlexQueryImpl implements PlexQuery {
         Request request = new Request.Builder()
                 .url(httpUrl)
                 .addHeader("X-Plex-Product", "Gaps")
-                .addHeader("X-Plex-Version", "0.8.3")
+                .addHeader("X-Plex-Version", "0.8.4")
                 .addHeader("X-Plex-Client-Identifier", "b1547b7b-06db-49ab-969c-5bb8e8582d68")
                 .build();
 
