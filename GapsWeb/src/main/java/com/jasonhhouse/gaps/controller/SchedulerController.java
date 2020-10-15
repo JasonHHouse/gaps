@@ -74,4 +74,17 @@ public class SchedulerController {
         LOGGER.info("getAllSchedules()");
         return ResponseEntity.ok().body(schedulerService.getAllSchedules());
     }
+
+    @GetMapping(value = "/test",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getTestSchedule() {
+        LOGGER.info("getTestSchedule()");
+        new Runnable() {
+            @Override
+            public void run() {
+                schedulerService.test();
+            }
+        };
+        return ResponseEntity.ok().body("{\"message\":\"Test schedule started\"}");
+    }
 }

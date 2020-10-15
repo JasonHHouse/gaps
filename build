@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-VERSION=0.8.3
+VERSION=0.8.4
 JAR_VERSION="GapsWeb/target/GapsWeb-$VERSION.jar"
 ZIP_VERSION="GapsAsJar-$VERSION.zip"
 npm ci
@@ -14,10 +14,10 @@ docker buildx build --platform linux/arm/v7 -t housewrecker/gaps:raspbian-latest
 
 ### Making Windows/Linux/Mac Zip
 mkdir -p GapsOnWindows
-rm GapsAsJar/*.jar
-rm GapsAsJar/*.md
-rm GapsAsJar/*.sh
-rm GapsAsJar/*.bat
+rm -f GapsAsJar/*.jar
+rm -f GapsAsJar/*.md
+rm -f GapsAsJar/*.sh
+rm -f GapsAsJar/*.bat
 cp $JAR_VERSION GapsAsJar/gaps.jar
 cp README.md GapsAsJar/
 cp startOnWindows.bat GapsAsJar/
