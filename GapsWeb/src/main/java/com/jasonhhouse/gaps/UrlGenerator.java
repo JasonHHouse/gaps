@@ -58,14 +58,6 @@ public interface UrlGenerator {
     @NotNull HttpUrl generateCollectionUrl(@NotNull String movieDbKey, @NotNull String collectionId, @NotNull String language);
 
     /**
-     * Using plex token, address, and port, create a plex url to query for plex movie collections to select from
-     *
-     * @param plexUrl Takes URL and parses it
-     * @return query
-     */
-    @Nullable HttpUrl generatePlexUrl(@NotNull String plexUrl);
-
-    /**
      * Using plex token, address, and port, create a plex library url to query for all plex movies
      *
      * @param plexServer  The PlexServer to query

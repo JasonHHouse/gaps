@@ -100,11 +100,6 @@ public class GapsUrlGenerator implements UrlGenerator {
     }
 
     @Override
-    public @Nullable HttpUrl generatePlexUrl(@NotNull String plexUrl) {
-        return HttpUrl.parse(plexUrl);
-    }
-
-    @Override
     public @Nullable HttpUrl generatePlexLibraryUrl(@NotNull PlexServer plexServer, @NotNull  PlexLibrary plexLibrary) {
         return new HttpUrl.Builder()
                 .scheme(HTTP)
