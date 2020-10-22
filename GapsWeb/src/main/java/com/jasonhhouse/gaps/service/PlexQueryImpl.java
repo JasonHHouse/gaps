@@ -48,6 +48,7 @@ import javax.xml.xpath.XPathFactory;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.apache.commons.lang3.StringUtils;
@@ -341,6 +342,7 @@ public class PlexQueryImpl implements PlexQuery {
 
         Request request = new Request.Builder()
                 .url(httpUrl)
+                .post(RequestBody.create(new byte[0], null))
                 .addHeader("X-Plex-Product", "Gaps")
                 .addHeader("X-Plex-Version", "0.8.4")
                 .addHeader("X-Plex-Client-Identifier", "b1547b7b-06db-49ab-969c-5bb8e8582d68")

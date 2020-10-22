@@ -14,7 +14,9 @@ package com.jasonhhouse.gaps.plex;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public final class PlexLogin {
     @NotNull
@@ -24,10 +26,10 @@ public final class PlexLogin {
     private final String password;
 
     @JsonCreator
-    public PlexLogin(@JsonProperty(value = "username") @NotNull String username,
-                     @JsonProperty(value = "password") @NotNull String password) {
-        this.username = username;
-        this.password = password;
+    public PlexLogin(@JsonProperty(value = "username") @Nullable String username,
+                     @JsonProperty(value = "password") @Nullable String password) {
+        this.username = StringUtils.isEmpty(username) ? "" : username;
+        this.password = StringUtils.isEmpty(password) ? "" : password;
     }
 
     public @NotNull String getUsername() {

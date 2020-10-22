@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -193,11 +194,11 @@ public class ConfigurationController {
         return ResponseEntity.ok().body(payload);
     }
 
-    @PostMapping(value = "/login/plex",
+    @PutMapping(value = "/login/plex",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<Payload> postLoginPlex(final PlexLogin plexLogin) {
+    public ResponseEntity<Payload> postLoginPlex(@RequestBody final PlexLogin plexLogin) {
         LOGGER.info("postLoginPlex( {} )", plexLogin);
 
         String authToken = plexQuery.loginToPlex(plexLogin);

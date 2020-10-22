@@ -13,6 +13,9 @@
 
 /* eslint no-undef: "error" */
 
+import Payload from './payload.min.js';
+import hideAllAlertsAndSpinners from './alerts-manager.min.js';
+
 export function openPlexLibraryConfigurationModel(title, machineIdentifier, key) {
   const obj = {
     title,
@@ -55,19 +58,29 @@ export async function savePlexLibraryConfiguration(machineIdentifier, key) {
 }
 
 export async function getPlexToken() {
-  const username = document.getElementById('username').value;
-  const password = document.getElementById('password').value;
+  const obj = {
+    username: document.getElementById('username').value,
+    password: document.getElementById('password').value,
+  };
 
-  const url = `https://plex.tv/users/sign_in.json?user%5Blogin%5D=${username}&user%5Bpassword%5D=${password}`;
-
-  /* ToDo remove this and query for the value from server */
-  const response = await fetch(url, {
-    method: 'post',
+  const response = await fetch('/configuration/login/plex/', {
+    method: 'put',
     headers: {
-      'X-Plex-Product': 'Gaps',
-      'X-Plex-Version': '0.8.4',
-      'X-Plex-Client-Identifier': 'b1547b7b-06db-49ab-969c-5bb8e8582d68',
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
+    body: JSON.stringify(obj),
   });
-  await response.json();
+  const put = await response.json();
+  if (put.code && put.code === Payload.PLEX_CONNECTION_SUCCEEDED) {
+    hideAllAlertsAndSpinners();
+    document.getElementById('scheduleSaveSuccess').style.display = 'block';
+    const plexLoginToken = document.getElementById('plexLoginToken');
+    plexLoginToken.readOnly = false;
+    plexLoginToken.value = put.extras;
+    plexLoginToken.readOnly = true;
+  } else {
+    hideAllAlertsAndSpinners();
+    document.getElementById('scheduleSaveError').style.display = 'block';
+  }
 }

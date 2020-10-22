@@ -22,7 +22,7 @@ import { saveGotifyNotifications, testGotifyNotifications } from '../modules/got
 import { saveEmailNotifications, testEmailNotifications } from '../modules/email-notifications.min.js';
 import { saveDiscordNotifications, testDiscordNotifications } from '../modules/discord-notifications.min.js';
 import { getSoundOptions, savePushOverNotifications, testPushOverNotifications } from '../modules/push-over-notifications.min.js';
-import { openPlexLibraryConfigurationModel, savePlexLibraryConfiguration } from '../modules/plex-configuration.min.js';
+import { getPlexToken, openPlexLibraryConfigurationModel, savePlexLibraryConfiguration } from '../modules/plex-configuration.min.js';
 
 function testTmdbKey() {
   hideAllAlertsAndSpinners();
@@ -304,6 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.saveSchedule = saveSchedule;
   window.openPlexLibraryConfigurationModel = openPlexLibraryConfigurationModel;
   window.savePlexLibraryConfiguration = savePlexLibraryConfiguration;
+  window.getPlexToken = getPlexToken;
 
   getSoundOptions();
 });

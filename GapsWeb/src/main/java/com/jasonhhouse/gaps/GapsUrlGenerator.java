@@ -138,8 +138,8 @@ public class GapsUrlGenerator implements UrlGenerator {
                 .host("plex.tv")
                 .addPathSegment("users")
                 .addPathSegment("sign_in.json")
-                .addQueryParameter("user%5Blogin%5D", plexLogin.getUsername())
-                .addQueryParameter("user%5Bpassword%5D", plexLogin.getPassword())
+                .addEncodedQueryParameter("user[login]", plexLogin.getUsername())
+                .addEncodedQueryParameter("user[password]", plexLogin.getPassword())
                 .build();
     }
 

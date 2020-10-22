@@ -35,15 +35,15 @@
         </div>
 
         <div class="form-group">
-            <label for="plexToken">Plex Token</label>
+            <label for="plexLoginToken">Plex Token</label>
             <div class="input-group">
-                <input aria-describedby="tokenHelp" class="form-control" id="plexToken" required type="text" disabled>
+                <input aria-describedby="tokenHelp" class="form-control" id="plexLoginToken" required type="text" readonly>
             </div>
         </div>
 
-        <a class="btn btn-info" href="javascript:void(0)" id="testPlexServer" onclick="getPlexToken();"
+        <a class="btn btn-info" href="javascript:void(0)" id="getPlexToken" onclick="getPlexToken();"
            type="button">Get Token</a>
-        <a class="btn btn-primary" href="javascript:void(0)" id="addPlexServer" onclick="addPlexServer();"
+        <a class="btn btn-primary" href="javascript:void(0)" id="refreshPlexToken" onclick="refreshPlexToken();"
            type="button">Refresh Token</a>
 
         <div class="spinner-border text-primary gaps-hide top-margin" id="plexSpinner" role="status">

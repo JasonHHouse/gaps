@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PlexLibrary {
+public final class PlexLibrary {
 
     @NotNull
     private final Integer key;
