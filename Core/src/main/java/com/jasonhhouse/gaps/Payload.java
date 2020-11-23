@@ -60,7 +60,11 @@ public enum Payload {
     DISCORD_NOTIFICATION_UPDATE_SUCCEEDED(140, "Discord Notification Update Succeeded."),
     DISCORD_NOTIFICATION_UPDATE_FAILED(141, "Discord Notification Update Failed."),
     DISCORD_NOTIFICATION_FOUND(142, "Discord Notification Found."),
-    DISCORD_NOTIFICATION_NOT_FOUND(143, "Discord Notification Not Found.");
+    DISCORD_NOTIFICATION_NOT_FOUND(143, "Discord Notification Not Found."),
+    OMBI_PROPERTIES_SAVE_SUCCEEDED(150, "OMBI Properties Save Succeeded."),
+    OMBI_PROPERTIES_SAVE_FAILED(151, "OMBI Properties Save Failed."),
+    OMBI_PROPERTIES_NOTIFICATION_SENT(152, "OMBI Notification Sent."),
+    OMBI_PROPERTIES_NOTIFICATION_NOT_SENT(153, "OMBI Notification Not Sent.");
 
     private final int code;
     private final String reason;

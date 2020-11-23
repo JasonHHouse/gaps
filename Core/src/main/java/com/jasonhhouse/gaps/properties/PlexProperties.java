@@ -17,9 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.Schedule;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,6 +47,8 @@ public final class PlexProperties {
     private DiscordProperties discordProperties;
     @NotNull
     private Schedule schedule;
+    @NotNull
+    private OmbiProperties ombiProperties;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public PlexProperties(@JsonProperty(value = "plexServers") @Nullable List<PlexServer> plexServers,
@@ -61,7 +61,8 @@ public final class PlexProperties {
                           @JsonProperty(value = "discordProperties") @Nullable DiscordProperties discordProperties,
                           @JsonProperty(value = "movieDbApiKey") @Nullable String movieDbApiKey,
                           @JsonProperty(value = "password") @Nullable String password,
-                          @JsonProperty(value = "schedule") @Nullable Schedule schedule) {
+                          @JsonProperty(value = "schedule") @Nullable Schedule schedule,
+                          @JsonProperty(value = "ombiProperties") @Nullable OmbiProperties ombiProperties) {
         this.plexServers = plexServers == null ? new ArrayList<>() : plexServers;
         this.telegramProperties = telegramProperties == null ? TelegramProperties.getDefault() : telegramProperties;
         this.pushBulletProperties = pushBulletProperties == null ? PushBulletProperties.getDefault() : pushBulletProperties;
@@ -73,6 +74,7 @@ public final class PlexProperties {
         this.movieDbApiKey = movieDbApiKey == null ? "" : movieDbApiKey;
         this.password = password == null ? "" : password;
         this.schedule = schedule == null ? Schedule.EVERY_MONDAY : schedule;
+        this.ombiProperties = ombiProperties == null ? OmbiProperties.getDefault() : ombiProperties;
     }
 
     public PlexProperties() {
@@ -84,6 +86,7 @@ public final class PlexProperties {
         this.slackProperties = SlackProperties.getDefault();
         this.pushOverProperties = PushOverProperties.getDefault();
         this.discordProperties = DiscordProperties.getDefault();
+        this.ombiProperties = OmbiProperties.getDefault();
         this.movieDbApiKey = "";
         this.password = "";
         this.schedule = Schedule.EVERY_MONDAY;
@@ -187,6 +190,14 @@ public final class PlexProperties {
         this.discordProperties = discordProperties;
     }
 
+    public @NotNull OmbiProperties getOmbiProperties() {
+        return ombiProperties;
+    }
+
+    public void setOmbiProperties(@NotNull OmbiProperties ombiProperties) {
+        this.ombiProperties = ombiProperties;
+    }
+
     @Override
     public String toString() {
         return "PlexProperties{" +
@@ -203,4 +214,5 @@ public final class PlexProperties {
                 ", schedule=" + schedule +
                 '}';
     }
+
 }
