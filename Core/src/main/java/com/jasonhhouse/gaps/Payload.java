@@ -64,7 +64,9 @@ public enum Payload {
     OMBI_PROPERTIES_SAVE_SUCCEEDED(150, "OMBI Properties Save Succeeded."),
     OMBI_PROPERTIES_SAVE_FAILED(151, "OMBI Properties Save Failed."),
     OMBI_PROPERTIES_NOTIFICATION_SENT(152, "OMBI Notification Sent."),
-    OMBI_PROPERTIES_NOTIFICATION_NOT_SENT(153, "OMBI Notification Not Sent.");
+    OMBI_PROPERTIES_NOTIFICATION_NOT_SENT(153, "OMBI Notification Not Sent."),
+    OMBI_TEST_CONNECTION_SUCCEEDED(154, "OMBI Test Connection Succeeded."),
+    OMBI_TEST_CONNECTION_FAILED(155, "OMBI Test Connection Failed.");
 
     private final int code;
     private final String reason;

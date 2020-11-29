@@ -2,11 +2,11 @@ package com.jasonhhouse.gaps.controller;
 
 
 import com.jasonhhouse.gaps.Payload;
-import com.jasonhhouse.gaps.properties.DiscordProperties;
 import com.jasonhhouse.gaps.properties.OmbiProperties;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
 import com.jasonhhouse.gaps.service.OmbiService;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -35,7 +35,7 @@ public class OmbiController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             value = "/save")
     @ResponseBody
-    public ResponseEntity<Payload> putSaveOmbi(@RequestBody OmbiProperties ombiProperties) {
+    public ResponseEntity<Payload> putSaveOmbi(@RequestBody @NotNull OmbiProperties ombiProperties) {
         LOGGER.info("putSaveOmbi( {} )", ombiProperties);
 
         try {
@@ -54,19 +54,18 @@ public class OmbiController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             value = "/test")
     @ResponseBody
-    public ResponseEntity<Payload> putTestOmbi(@RequestBody OmbiProperties ombiProperties) {
-        LOGGER.info("putTestOmbi( {} )", ombiProperties);
+    public ResponseEntity<Payload> putTestOmbi() {
+        LOGGER.info("putTestOmbi()");
 
         try {
-            //ToDo
             PlexProperties plexProperties = fileIoService.readProperties();
-            plexProperties.setOmbiProperties(ombiProperties);
-            fileIoService.writeProperties(plexProperties);
-            LOGGER.info(Payload.OMBI_PROPERTIES_SAVE_SUCCEEDED.getReason());
-            return ResponseEntity.ok().body(Payload.OMBI_PROPERTIES_SAVE_SUCCEEDED);
+            OmbiProperties ombiProperties = plexProperties.getOmbiProperties();
+            Payload payload = ombiService.testConnection(ombiProperties);
+            LOGGER.info(payload.getReason());
+            return ResponseEntity.ok().body(payload);
         } catch (Exception e) {
-            LOGGER.error(Payload.OMBI_PROPERTIES_SAVE_FAILED.getReason(), e);
-            return ResponseEntity.ok().body(Payload.OMBI_PROPERTIES_SAVE_FAILED.setExtras(e.getMessage()));
+            LOGGER.error(Payload.OMBI_TEST_CONNECTION_FAILED.getReason(), e);
+            return ResponseEntity.ok().body(Payload.OMBI_TEST_CONNECTION_FAILED.setExtras(e.getMessage()));
         }
     }
 }

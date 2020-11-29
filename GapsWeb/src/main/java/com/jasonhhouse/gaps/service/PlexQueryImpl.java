@@ -60,8 +60,6 @@ import org.xml.sax.SAXException;
 @Service
 public class PlexQueryImpl implements PlexQuery {
 
-    public static final String ID_IDX_START = "://";
-    public static final String ID_IDX_END = "?";
     private static final long TIMEOUT = 5000;
     private static final Logger LOGGER = LoggerFactory.getLogger(PlexQueryImpl.class);
 
