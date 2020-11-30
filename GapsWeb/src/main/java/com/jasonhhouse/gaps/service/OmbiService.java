@@ -56,6 +56,7 @@ public class OmbiService {
         try {
             Request request = new Request.Builder()
                     .addHeader("ApiKey", ombiProperties.getApiKey())
+                    .addHeader("ContentType", org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
                     .url(url)
                     .build();
 
@@ -121,7 +122,6 @@ public class OmbiService {
                         LOGGER.error(reason);
                         return Payload.OMBI_SEND_RECOMMENDED_MOVIES_FAILED;
                     }
-
 
                 } catch (IOException e) {
                     String reason = String.format("Error connecting to Ombi: %s", url);

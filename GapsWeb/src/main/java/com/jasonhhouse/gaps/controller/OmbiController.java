@@ -67,8 +67,7 @@ public class OmbiController {
         }
     }
 
-    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,
             value = "/test")
     @ResponseBody
     public ResponseEntity<Payload> putTestOmbi() {
