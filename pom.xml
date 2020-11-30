@@ -12,12 +12,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.4.RELEASE</version>
+        <version>2.4.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.jasonhhouse</groupId>
     <artifactId>Gaps</artifactId>
-    <version>0.8.4</version>
+    <version>0.8.5</version>
     <name>Gaps</name>
     <description>Demo project for Spring Boot</description>
 
@@ -114,10 +114,15 @@
     </build>
 
     <distributionManagement>
-        <repository>
+        <!--<repository>
             <id>github</id>
             <name>GitHub OWNER Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/JasonHHouse/gaps</url>
+        </repository>-->
+        <repository>
+            <id>unraid</id>
+            <name>GitHub OWNER Apache Maven Packages</name>
+            <url>http://192.168.1.8:2187/repository/unraid/</url>
         </repository>
     </distributionManagement>
 </project>
