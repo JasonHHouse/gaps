@@ -119,27 +119,27 @@ public class OmbiService {
                     if (StringUtils.isBlank(body)) {
                         String reason = "Body returned empty from Ombi";
                         LOGGER.error(reason);
-                        return Collections.emptyList();
+                        return Payload.OMBI_SEND_RECOMMENDED_MOVIES_FAILED;
                     }
 
-                    List<BasicMovie> basicMovies = new ArrayList<>();
 
-                    return basicMovies;
                 } catch (IOException e) {
                     String reason = String.format("Error connecting to Ombi: %s", url);
                     LOGGER.error(reason, e);
-                    return Collections.emptyList();
+                    return Payload.OMBI_SEND_RECOMMENDED_MOVIES_FAILED.setExtras(reason);
                 }
             } catch (IllegalArgumentException e) {
                 String reason = "Error with Ombi Url: " + url;
                 LOGGER.error(reason, e);
-                return Collections.emptyList();
+                return Payload.OMBI_SEND_RECOMMENDED_MOVIES_FAILED.setExtras(reason);
             } catch (JsonProcessingException e) {
                 String reason = "Error writing movie to JSON";
                 LOGGER.error(reason, e);
-                return Collections.emptyList();
+                return Payload.OMBI_SEND_RECOMMENDED_MOVIES_FAILED.setExtras(reason);
             }
         }
+
+        return Payload.OMBI_SEND_RECOMMENDED_MOVIES_SUCCEEDED;
     }
 
     private @NotNull List<BasicMovie> getRequestedMovies(@NotNull OmbiProperties ombiProperties) {
