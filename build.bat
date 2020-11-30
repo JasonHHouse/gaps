@@ -7,7 +7,7 @@ call npm run uglifyjs-pages
 call mvn clean install
 del GapsOnWindows\*.jar
 del GapsOnWindows\README.md
-copy GapsWeb\target\GapsWeb-0.8.4.jar GapsOnWindows\gaps.jar
+copy GapsWeb\target\GapsWeb-0.8.5.jar GapsOnWindows\gaps.jar
 copy README.md GapsOnWindows\
 cd GapsOnWindows
 makensis gaps.nsi

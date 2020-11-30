@@ -5,7 +5,7 @@
     <parent>
         <artifactId>Gaps</artifactId>
         <groupId>com.jasonhhouse</groupId>
-        <version>0.8.4</version>
+        <version>0.8.5</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -21,19 +21,19 @@
         <dependency>
             <groupId>com.jasonhhouse</groupId>
             <artifactId>Core</artifactId>
-            <version>0.8.4</version>
+            <version>0.8.5</version>
         </dependency>
 
         <dependency>
             <groupId>com.jasonhhouse</groupId>
             <artifactId>Plex</artifactId>
-            <version>0.8.4</version>
+            <version>0.8.5</version>
         </dependency>
 
         <dependency>
             <groupId>com.jasonhhouse</groupId>
             <artifactId>RadarrV3</artifactId>
-            <version>0.8.4</version>
+            <version>0.8.5</version>
         </dependency>
 
         <dependency>
@@ -80,7 +80,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.4.8</version>
+            <version>1.5.0</version>
         </dependency>
 
         <dependency>
@@ -132,7 +132,7 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
-            <version>4.5.2</version>
+            <version>4.5.3</version>
         </dependency>
 
         <dependency>
@@ -170,7 +170,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>29.0-jre</version>
+            <version>30.0-jre</version>
         </dependency>
 
         <dependency>
