@@ -68,7 +68,9 @@ public enum Payload {
     OMBI_TEST_CONNECTION_SUCCEEDED(154, "OMBI Test Connection Succeeded."),
     OMBI_TEST_CONNECTION_FAILED(155, "OMBI Test Connection Failed."),
     OMBI_SEND_RECOMMENDED_MOVIES_SUCCEEDED(156, "OMBI Send Recommended Movies Succeeded."),
-    OMBI_SEND_RECOMMENDED_MOVIES_FAILED(157, "OMBI Send Recommended Movies Failed.");
+    OMBI_SEND_RECOMMENDED_MOVIES_FAILED(157, "OMBI Send Recommended Movies Failed."),
+    OMBI_PROPERTIES_FOUND(158, "OMBI Properties Found."),
+    OMBI_PROPERTIES_NOT_FOUND(159, "OMBI Properties Not Found.");
 
     private final int code;
     private final String reason;

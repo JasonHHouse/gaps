@@ -1,6 +1,7 @@
 package com.jasonhhouse.gaps.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.properties.OmbiProperties;
 import com.jasonhhouse.gaps.properties.PlexProperties;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +31,21 @@ public class OmbiController {
     public OmbiController(OmbiService ombiService, FileIoService fileIoService) {
         this.ombiService = ombiService;
         this.fileIoService = fileIoService;
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<Payload> getOmbi() {
+        LOGGER.info("getOmbi()");
+
+        try {
+            PlexProperties plexProperties = fileIoService.readProperties();
+            OmbiProperties ombiProperties = plexProperties.getOmbiProperties();
+            return ResponseEntity.ok().body(Payload.OMBI_PROPERTIES_FOUND.setExtras(ombiProperties));
+        } catch (Exception e) {
+            LOGGER.error(Payload.OMBI_PROPERTIES_SAVE_FAILED.getReason(), e);
+            return ResponseEntity.ok().body(Payload.OMBI_PROPERTIES_NOT_FOUND.setExtras(e.getMessage()));
+        }
     }
 
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,
