@@ -1,16 +1,15 @@
 ### INSTRUCTIONS ###
-# The purpose of this docker container is to simplify bringing up Gaps while developing.
-# 1. Build a Gaps Development image
-#     - docker build -f Dockerfile.dev -t gaps_dev .
+## The purpose of this docker container is to simplify bringing up Gaps while developing.
 # 1. Build Gaps Jar
 #     - mvn clean install
 # 2. Verify Gaps version is correct in "docker-compose-dev.yaml"
 #     - update "gapsVersion: 0.8.6" with the correct version
 # 3. Bring up development container in background. This will build a docker image if it does not already exist.
 #     - docker-compose -f docker-compose-dev.yaml up -d
-# 4. To test any new changes do the following:
-#     - mvn clean install
-#     - docker-compose -f docker-compose-dev.yaml restart
+#
+## To test any new changes do the following
+#     - build new jars
+#     - restart docker container
 
 version: "3"
 services:
@@ -19,8 +18,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-      args:
-        gapsVersion: 0.8.6
     ports:
       - 8484:8484
     restart: unless-stopped
@@ -28,11 +25,4 @@ services:
       - "32400"
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./GapsWeb/target:/usr/app/target:ro
-
-### Could potentially leverage this to eliminate gaps version build argument
-#  MVN_VERSION=$(mvn -q \
-#  -Dexec.executable=echo \
-#  -Dexec.args='${project.version}' \
-#  --non-recursive \
-#  exec:exec)
+      - ./GapsWeb/target:/usr/app:ro
