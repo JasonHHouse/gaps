@@ -40,7 +40,7 @@ public class MoviesTest {
 
     @Test
     void MovieTitle() {
-        assertEquals(23, movies.size(), "Should find 23 movies");
+        assertEquals(157, movies.size(), "Should find 157 movies");
     }
 
 }

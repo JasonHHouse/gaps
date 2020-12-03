@@ -32,13 +32,17 @@ class EmailNotificationAgentTest {
 
     @Test
     void sendMessage() {
-        Boolean sentSuccessfully = emailNotificationAgent.sendMessage(NotificationType.TEST, "DEBUG", "Gaps Test", "Test Successful");
-        assertTrue(sentSuccessfully, "Should have sent test email message");
+        if (emailNotificationAgent.isEnabled()) {
+            Boolean sentSuccessfully = emailNotificationAgent.sendMessage(NotificationType.TEST, "DEBUG", "Gaps Test", "Test Successful");
+            assertTrue(sentSuccessfully, "Should have sent test email message");
+        }
     }
 
     @Test
     void failToMessage() {
-        Boolean sentUnsuccessfully = emailNotificationAgent.sendMessage(NotificationType.GAPS_MISSING_COLLECTIONS, "DEBUG", "Gaps Test", "Test Successful");
-        assertFalse(sentUnsuccessfully, "Should have not sent test email message");
+        if (emailNotificationAgent.isEnabled()) {
+            Boolean sentUnsuccessfully = emailNotificationAgent.sendMessage(NotificationType.GAPS_MISSING_COLLECTIONS, "DEBUG", "Gaps Test", "Test Successful");
+            assertFalse(sentUnsuccessfully, "Should have not sent test email message");
+        }
     }
 }
