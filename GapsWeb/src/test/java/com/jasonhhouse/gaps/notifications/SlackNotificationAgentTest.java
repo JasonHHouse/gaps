@@ -17,7 +17,8 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SlackNotificationAgentTest {
 
@@ -31,13 +32,17 @@ class SlackNotificationAgentTest {
 
     @Test
     void sendMessage() {
-        Boolean sentSuccessfully = slackNotificationAgent.sendMessage(NotificationType.TEST, "DEBUG", "Gaps Test", "Test Successful");
-        assertTrue(sentSuccessfully, "Should have sent test slack message");
+        if (slackNotificationAgent.isEnabled()) {
+            Boolean sentSuccessfully = slackNotificationAgent.sendMessage(NotificationType.TEST, "DEBUG", "Gaps Test", "Test Successful");
+            assertTrue(sentSuccessfully, "Should have sent test slack message");
+        }
     }
 
     @Test
     void failToMessage() {
-        Boolean sentUnsuccessfully = slackNotificationAgent.sendMessage(NotificationType.GAPS_MISSING_COLLECTIONS, "DEBUG", "Gaps Test", "Test Successful");
-        assertFalse(sentUnsuccessfully, "Should have not sent slack email message");
+        if (slackNotificationAgent.isEnabled()) {
+            Boolean sentUnsuccessfully = slackNotificationAgent.sendMessage(NotificationType.GAPS_MISSING_COLLECTIONS, "DEBUG", "Gaps Test", "Test Successful");
+            assertFalse(sentUnsuccessfully, "Should have not sent slack email message");
+        }
     }
 }

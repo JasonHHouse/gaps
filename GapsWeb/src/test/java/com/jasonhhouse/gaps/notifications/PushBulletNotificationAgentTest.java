@@ -17,7 +17,8 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PushBulletNotificationAgentTest {
 
@@ -31,13 +32,17 @@ class PushBulletNotificationAgentTest {
 
     @Test
     void sendMessage() {
-        Boolean sentSuccessfully = pushBulletNotificationAgent.sendMessage(NotificationType.TEST, "DEBUG", "Gaps Test", "Test Successful");
-        assertTrue(sentSuccessfully, "Should have sent test pushBullet message");
+        if (pushBulletNotificationAgent.isEnabled()) {
+            Boolean sentSuccessfully = pushBulletNotificationAgent.sendMessage(NotificationType.TEST, "DEBUG", "Gaps Test", "Test Successful");
+            assertTrue(sentSuccessfully, "Should have sent test pushBullet message");
+        }
     }
 
     @Test
     void failToMessage() {
-        Boolean sentUnsuccessfully = pushBulletNotificationAgent.sendMessage(NotificationType.GAPS_MISSING_COLLECTIONS, "DEBUG", "Gaps Test", "Test Successful");
-        assertFalse(sentUnsuccessfully, "Should have not sent pushBullet email message");
+        if (pushBulletNotificationAgent.isEnabled()) {
+            Boolean sentUnsuccessfully = pushBulletNotificationAgent.sendMessage(NotificationType.GAPS_MISSING_COLLECTIONS, "DEBUG", "Gaps Test", "Test Successful");
+            assertFalse(sentUnsuccessfully, "Should have not sent pushBullet email message");
+        }
     }
 }

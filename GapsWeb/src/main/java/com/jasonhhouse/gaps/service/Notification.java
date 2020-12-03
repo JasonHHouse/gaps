@@ -27,4 +27,6 @@ public interface Notification {
     @NotNull Boolean test();
 
     @NotNull Boolean test(@NotNull Integer id) throws IllegalArgumentException, IllegalAccessException;
+
+    @NotNull Boolean isAnyNotificationAgentEnabled();
 }

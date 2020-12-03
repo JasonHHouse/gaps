@@ -17,7 +17,7 @@
     </parent>
     <groupId>com.jasonhhouse</groupId>
     <artifactId>Gaps</artifactId>
-    <version>0.8.5</version>
+    <version>0.8.6</version>
     <name>Gaps</name>
     <description>Demo project for Spring Boot</description>
 
@@ -71,14 +71,21 @@
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
-                <version>5.5.2</version>
+                <version>5.7.0</version>
                 <scope>test</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
-                <version>5.5.2</version>
+                <version>5.7.0</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.junit.vintage</groupId>
+                <artifactId>junit-vintage-engine</artifactId>
+                <version>5.7.0</version>
                 <scope>test</scope>
             </dependency>
 
