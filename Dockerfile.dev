@@ -1,14 +1,9 @@
 FROM adoptopenjdk/openjdk11-openj9:jre-11.0.8_10_openj9-0.21.0
 
 ## Build image with sensible default environment values ##
-ARG gapsVersion=*
-ENV env_gapsVersion=$gapsVersion
-
-ARG springProfile=no-ssl-no-login
-ENV env_springProfile=$springProfile
-
-ARG javaInitialHeapSize=150M
-ENV env_javaInitialHeapSize=$javaInitialHeapSize
+ENV gapsVersion=*
+ENV springProfile=no-ssl-no-login
+ENV javaInitialHeapSize=150M
 
 
 EXPOSE 32400
