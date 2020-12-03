@@ -1,0 +1,26 @@
+FROM adoptopenjdk/openjdk11-openj9:jre-11.0.8_10_openj9-0.21.0
+
+ARG gapsVersion
+
+EXPOSE 32400
+
+## Update image ##
+RUN apt-get update -y && apt-get upgrade -y
+
+## Create data directory ##
+RUN mkdir -p /usr/data && chmod 777 /usr/data
+COPY movieIds.json /usr/data
+
+## Create application directory ##
+RUN mkdir -p /usr/app/target && chmod 777 /usr/app
+
+## Set working directory ##
+WORKDIR /usr/app
+
+## Build start script ##
+RUN echo "#!/bin/bash" >> startGaps.sh
+RUN echo "java -Xms150M -XX:+UseG1GC -XX:+HeapDumpOnOutOfMemoryError -XX:+UseStringDeduplication -XX:+UseStringCache -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -jar -Dspring.profiles.active=no-ssl-no-login ./target/GapsWeb-*.jar" >> startGaps.sh
+RUN chmod +x ./startGaps.sh
+
+## Set Docker Container Entrypoint ##
+ENTRYPOINT "./startGaps.sh"
