@@ -13,7 +13,6 @@ package com.jasonhhouse.gaps.notifications;
 
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.service.FakeIoService;
-import com.jasonhhouse.gaps.service.IO;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,13 +32,17 @@ class TelegramNotificationAgentTest {
 
     @Test
     void sendMessage() {
-        Boolean sentSuccessfully = telegramNotificationAgent.sendMessage(NotificationType.TEST, "DEBUG", "Gaps Test", "Test Successful");
-        assertTrue(sentSuccessfully, "Should have sent test telegram message");
+        if (telegramNotificationAgent.isEnabled()) {
+            Boolean sentSuccessfully = telegramNotificationAgent.sendMessage(NotificationType.TEST, "DEBUG", "Gaps Test", "Test Successful");
+            assertTrue(sentSuccessfully, "Should have sent test telegram message");
+        }
     }
 
     @Test
     void failToMessage() {
-        Boolean sentUnsuccessfully = telegramNotificationAgent.sendMessage(NotificationType.GAPS_MISSING_COLLECTIONS, "DEBUG", "Gaps Test", "Test Successful");
-        assertFalse(sentUnsuccessfully, "Should have not sent telegram email message");
+        if (telegramNotificationAgent.isEnabled()) {
+            Boolean sentUnsuccessfully = telegramNotificationAgent.sendMessage(NotificationType.GAPS_MISSING_COLLECTIONS, "DEBUG", "Gaps Test", "Test Successful");
+            assertFalse(sentUnsuccessfully, "Should have not sent telegram email message");
+        }
     }
 }

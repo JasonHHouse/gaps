@@ -17,7 +17,8 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DiscordNotificationAgentTest {
 
@@ -31,13 +32,17 @@ class DiscordNotificationAgentTest {
 
     @Test
     void sendMessage() {
-        Boolean sentSuccessfully = discordNotificationAgent.sendMessage(NotificationType.TEST, "DEBUG", "Gaps Test", "Test Successful");
-        assertTrue(sentSuccessfully, "Should have sent test discord message");
+        if (discordNotificationAgent.isEnabled()) {
+            Boolean sentSuccessfully = discordNotificationAgent.sendMessage(NotificationType.TEST, "DEBUG", "Gaps Test", "Test Successful");
+            assertTrue(sentSuccessfully, "Should have sent test discord message");
+        }
     }
 
     @Test
     void failToMessage() {
-        Boolean sentUnsuccessfully = discordNotificationAgent.sendMessage(NotificationType.GAPS_MISSING_COLLECTIONS, "DEBUG", "Gaps Test", "Test Successful");
-        assertFalse(sentUnsuccessfully, "Should have not sent test discord message");
+        if(discordNotificationAgent.isEnabled()) {
+            Boolean sentUnsuccessfully = discordNotificationAgent.sendMessage(NotificationType.GAPS_MISSING_COLLECTIONS, "DEBUG", "Gaps Test", "Test Successful");
+            assertFalse(sentUnsuccessfully, "Should have not sent test discord message");
+        }
     }
 }

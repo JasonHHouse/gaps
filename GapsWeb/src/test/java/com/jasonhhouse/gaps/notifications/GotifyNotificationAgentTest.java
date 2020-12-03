@@ -17,7 +17,8 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GotifyNotificationAgentTest {
 
@@ -31,13 +32,17 @@ class GotifyNotificationAgentTest {
 
     @Test
     void sendMessage() {
-        Boolean sentSuccessfully = gotifyNotificationAgent.sendMessage(NotificationType.TEST, "DEBUG", "Gaps Test", "Test Successful");
-        assertTrue(sentSuccessfully, "Should have sent test gotify message");
+        if (gotifyNotificationAgent.isEnabled()) {
+            Boolean sentSuccessfully = gotifyNotificationAgent.sendMessage(NotificationType.TEST, "DEBUG", "Gaps Test", "Test Successful");
+            assertTrue(sentSuccessfully, "Should have sent test gotify message");
+        }
     }
 
     @Test
     void failToMessage() {
-        Boolean sentUnsuccessfully = gotifyNotificationAgent.sendMessage(NotificationType.GAPS_MISSING_COLLECTIONS, "DEBUG", "Gaps Test", "Test Successful");
-        assertFalse(sentUnsuccessfully, "Should have not sent test gotify message");
+        if (gotifyNotificationAgent.isEnabled()) {
+            Boolean sentUnsuccessfully = gotifyNotificationAgent.sendMessage(NotificationType.GAPS_MISSING_COLLECTIONS, "DEBUG", "Gaps Test", "Test Successful");
+            assertFalse(sentUnsuccessfully, "Should have not sent test gotify message");
+        }
     }
 }

@@ -35,25 +35,23 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSecurityConfig.class);
 
-    private final GapsConfiguration myConfig;
     private final GapsConfiguration gapsConfiguration;
     private final FileIoService fileIoService;
 
     @Autowired
-    public WebSecurityConfig(GapsConfiguration myConfig, GapsConfiguration gapsConfiguration, FileIoService fileIoService) {
-        this.myConfig = myConfig;
+    public WebSecurityConfig(GapsConfiguration gapsConfiguration, FileIoService fileIoService) {
         this.gapsConfiguration = gapsConfiguration;
         this.fileIoService = fileIoService;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        LOGGER.info("Name: {}", myConfig.getName());
-        LOGGER.info("Description: {}", myConfig.getDescription());
-        LOGGER.info("Version: {}", myConfig.getVersion());
-        LOGGER.info("LoginEnabled: {}", myConfig.getLoginEnabled());
+        LOGGER.info("Name: {}", gapsConfiguration.getName());
+        LOGGER.info("Description: {}", gapsConfiguration.getDescription());
+        LOGGER.info("Version: {}", gapsConfiguration.getVersion());
+        LOGGER.info("LoginEnabled: {}", gapsConfiguration.getLoginEnabled());
 
-        if (myConfig.getLoginEnabled() && myConfig.getSslEnabled()) {
+        if (gapsConfiguration.getLoginEnabled() && gapsConfiguration.getSslEnabled()) {
             LOGGER.info("Login Enabled. Configuring site security with ssl.");
             http.cors().and().csrf().disable()
                     .authorizeRequests().antMatchers("/images/gaps.ico",
@@ -72,7 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                     .logout()
                     .permitAll();
-        } else if (Boolean.TRUE.equals(myConfig.getLoginEnabled()) && !myConfig.getSslEnabled()) {
+        } else if (Boolean.TRUE.equals(gapsConfiguration.getLoginEnabled()) && !gapsConfiguration.getSslEnabled()) {
             LOGGER.info("Login Enabled. Configuring site security without ssl.");
 
             http.cors().and().csrf().disable()
@@ -102,7 +100,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public UserDetailsService userDetailsService() {
         LOGGER.info("userDetailsService()");
-        if (Boolean.TRUE.equals(myConfig.getLoginEnabled())) {
+        if (Boolean.TRUE.equals(gapsConfiguration.getLoginEnabled())) {
 
             PlexProperties plexProperties = fileIoService.readProperties();
 

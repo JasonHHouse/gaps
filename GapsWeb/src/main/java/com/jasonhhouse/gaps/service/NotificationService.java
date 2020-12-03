@@ -234,4 +234,9 @@ public class NotificationService implements Notification {
         }
         throw new IllegalArgumentException("Invalid Id for Notification Agent");
     }
+
+    @Override
+    public @NotNull Boolean isAnyNotificationAgentEnabled() {
+        return notificationAgents.stream().anyMatch(NotificationAgent::isEnabled);
+    }
 }
