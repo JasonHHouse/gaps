@@ -2,14 +2,14 @@
 ## The purpose of this docker container is to simplify bringing up Gaps while developing.
 # 1. Build Gaps Jar
 #     - mvn clean install
-# 2. Verify Gaps version is correct in "docker-compose-dev.yaml"
-#     - update "gapsVersion: 0.8.6" with the correct version
-# 3. Bring up development container in background. This will build a docker image if it does not already exist.
+# 2. Bring up development container in background. This will build a docker image if it does not already exist.
 #     - docker-compose -f docker-compose-dev.yaml up -d
+#
+# Optional: Uncomment & override env variables if needed
 #
 ## To test any new changes do the following
 #     - build new jars
-#     - restart docker container
+#     - restart docker container; a rebuild is no longer necessary
 
 version: "3"
 services:
@@ -19,9 +19,9 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     environment:
-      #gapsVersion: 0.8.6
+      #gapsVersion: *
       #springProfile: no-ssl-no-login
-      #javaInitialHeapSize: 1G
+      #javaInitialHeapSize: 150M
     ports:
       - 8484:8484
     restart: unless-stopped
