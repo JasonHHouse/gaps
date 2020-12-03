@@ -1,5 +1,16 @@
 FROM adoptopenjdk/openjdk11-openj9:jre-11.0.8_10_openj9-0.21.0
 
+## Build image with sensible default environment values ##
+ARG gapsVersion=*
+ENV env_gapsVersion=$gapsVersion
+
+ARG springProfile=no-ssl-no-login
+ENV env_springProfile=$springProfile
+
+ARG javaInitialHeapSize=150M
+ENV env_javaInitialHeapSize=$javaInitialHeapSize
+
+
 EXPOSE 32400
 
 ## Update image ##
@@ -16,4 +27,13 @@ RUN mkdir -p /usr/app/target && chmod 777 /usr/app
 WORKDIR /usr/app
 
 ## Set Docker Container Entrypoint Command ##
-ENTRYPOINT ["/bin/sh", "-c", "java -Xms150M -XX:+UseG1GC -XX:+HeapDumpOnOutOfMemoryError -XX:+UseStringDeduplication -XX:+UseStringCache -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -jar -Dspring.profiles.active=no-ssl-no-login ./GapsWeb-*.jar"]
+ENTRYPOINT  java  \
+            -Xms${env_javaInitialHeapSize}  \
+            -XX:+UseG1GC  \
+            -XX:+HeapDumpOnOutOfMemoryError   \
+            -XX:+UseStringDeduplication   \
+            -XX:+UseStringCache   \
+            -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 \
+            -jar  \
+            -Dspring.profiles.active=${env_springProfile} \
+            ./GapsWeb-${env_gapsVersion}.jar

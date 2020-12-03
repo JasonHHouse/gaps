@@ -18,6 +18,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    environment:
+      #gapsVersion: 0.8.6
+      #springProfile: no-ssl-no-login
+      #javaInitialHeapSize: 1G
     ports:
       - 8484:8484
     restart: unless-stopped
