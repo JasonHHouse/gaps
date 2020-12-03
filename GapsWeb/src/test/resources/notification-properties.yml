@@ -1,0 +1,39 @@
+enabled: false
+notification:
+  telegram:
+    enabled: false
+    botId: botId
+    chatId: chatId
+  slack:
+    enabled: false
+    webHookUrl: webHookUrl
+  pushOver:
+    enabled: false
+    token: token
+    user: user
+    priority: 1
+    sound: spacealarm
+    retry: 1
+    expire: 2
+  pushBullet:
+    enabled: false
+    channelTag: channelTag
+    accessToken: accessToken
+  gotify:
+    enabled: false
+    address: address
+    token: token
+  email:
+    enabled: false
+    username: username
+    password: password
+    mailTo: mailTo
+    mailFrom: mailFrom
+    mailServer: mailServer
+    mailPort: mailPort
+    mailTransportProtocol: mailTransportProtocol
+    mailSmtpAuth: mailSmtpAuth
+    mailSmtpTlsEnabled: mailSmtpTlsEnabled
+  discord:
+    enabled: false
+    webHookUrl: webHookUrl
