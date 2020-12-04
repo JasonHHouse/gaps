@@ -23,12 +23,12 @@ WORKDIR /usr/app
 
 ## Set Docker Container Entrypoint Command ##
 ENTRYPOINT  java  \
-            -Xms${env_javaInitialHeapSize}  \
+            -Xms${javaInitialHeapSize}  \
             -XX:+UseG1GC  \
             -XX:+HeapDumpOnOutOfMemoryError   \
             -XX:+UseStringDeduplication   \
             -XX:+UseStringCache   \
             -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 \
             -jar  \
-            -Dspring.profiles.active=${env_springProfile} \
-            ./GapsWeb-${env_gapsVersion}.jar
+            -Dspring.profiles.active=${springProfile} \
+            ./GapsWeb-${gapsVersion}.jar
