@@ -18,7 +18,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    environment:
+    #environment:
       #gapsVersion: *
       #springProfile: no-ssl-no-login
       #javaInitialHeapSize: 150M
