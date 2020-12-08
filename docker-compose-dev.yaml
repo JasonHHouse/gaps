@@ -2,8 +2,11 @@
 ## The purpose of this docker container is to simplify bringing up Gaps while developing.
 # 1. Build Gaps Jar
 #     - mvn clean install
-# 2. Bring up development container in background. This will build a docker image if it does not already exist.
-#     - docker-compose -f docker-compose-dev.yaml up -d
+# 2. Build docker image either of the two below should suffice
+#     - docker build -f Dockerfile.dev .
+#     - docker-compose -f docker-compose-dev.yaml build
+# 3. Bring up development container in background. This will build a docker image if it does not already exist.
+#     - docker-compose up -d -f docker-compose-dev.yaml
 #
 # Optional: Uncomment & override env variables if needed
 #
