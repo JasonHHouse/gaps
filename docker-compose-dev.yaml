@@ -1,7 +1,7 @@
 ### INSTRUCTIONS ###
 ## The purpose of this docker container is to simplify bringing up Gaps while developing.
 # 1. Build Gaps Jar
-#     - mvn clean install
+#     - ./minify && mvn clean install
 # 2. Build docker image either of the two below should suffice
 #     - docker build -f Dockerfile.dev .
 #     - docker-compose -f docker-compose-dev.yaml build
