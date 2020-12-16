@@ -1,0 +1,34 @@
+FROM adoptopenjdk/openjdk11-openj9:jre-11.0.8_10_openj9-0.21.0
+
+## Build image with sensible default environment values ##
+ENV gapsVersion=*
+ENV springProfile=no-ssl-no-login
+ENV javaInitialHeapSize=150M
+
+
+EXPOSE 32400
+
+## Update image ##
+RUN apt-get update -y && apt-get upgrade -y
+
+## Create data directory ##
+RUN mkdir -p /usr/data && chmod 777 /usr/data
+COPY movieIds.json /usr/data
+
+## Create application directory ##
+RUN mkdir -p /usr/app/target && chmod 777 /usr/app
+
+## Set working directory ##
+WORKDIR /usr/app
+
+## Set Docker Container Entrypoint Command ##
+ENTRYPOINT  java  \
+            -Xms${javaInitialHeapSize}  \
+            -XX:+UseG1GC  \
+            -XX:+HeapDumpOnOutOfMemoryError   \
+            -XX:+UseStringDeduplication   \
+            -XX:+UseStringCache   \
+            -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 \
+            -jar  \
+            -Dspring.profiles.active=${springProfile} \
+            ./GapsWeb-${gapsVersion}.jar

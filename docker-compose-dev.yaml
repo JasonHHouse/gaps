@@ -1,0 +1,35 @@
+### INSTRUCTIONS ###
+## The purpose of this docker container is to simplify bringing up Gaps while developing.
+# 1. Build Gaps Jar
+#     - ./minify && mvn clean install
+# 2. Build docker image either of the two below should suffice
+#     - docker build -f Dockerfile.dev .
+#     - docker-compose -f docker-compose-dev.yaml build
+# 3. Bring up development container in background. This will build a docker image if it does not already exist.
+#     - docker-compose up -d -f docker-compose-dev.yaml
+#
+# Optional: Uncomment & override env variables if needed
+#
+## To test any new changes do the following
+#     - build new jars
+#     - restart docker container; a rebuild is no longer necessary
+
+version: "3"
+services:
+  gaps:
+    container_name: gaps_dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    #environment:
+      #gapsVersion: *
+      #springProfile: no-ssl-no-login
+      #javaInitialHeapSize: 150M
+    ports:
+      - 8484:8484
+    restart: unless-stopped
+    expose:
+      - "32400"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./GapsWeb/target:/usr/app:ro
