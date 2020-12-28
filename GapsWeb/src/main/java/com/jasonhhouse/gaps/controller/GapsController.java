@@ -105,6 +105,13 @@ public class GapsController {
         return new ModelAndView("updates");
     }
 
+    @GetMapping(value = "/output",
+            produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView getOutput() {
+        LOGGER.info("getOutput()");
+        return new ModelAndView("output");
+    }
+
     @GetMapping(value = "/sounds",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Object getSounds() {
