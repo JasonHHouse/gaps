@@ -4,7 +4,7 @@ LABEL maintainer="jh5975@gmail.com"
 LABEL name="Jason House" 
 LABEL github="https://github.com/JasonHHouse/Gaps" 
 
-EXPOSE 32400
+EXPOSE 8484
 
 RUN apt-get -y update
 
