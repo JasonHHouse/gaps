@@ -1,4 +1,4 @@
-FROM bellsoft/liberica-openjdk-alpine:11.0.7
+FROM bellsoft/liberica-openjdk-alpine:11.0.9
 
 LABEL maintainer="jh5975@gmail.com"
 LABEL name="Jason House" 
