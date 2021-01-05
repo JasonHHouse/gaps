@@ -1,4 +1,4 @@
-gapsz:
+gaps:
   image: housewrecker/gaps:latest
   container_name: gaps
   environment:

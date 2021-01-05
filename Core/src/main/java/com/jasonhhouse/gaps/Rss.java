@@ -20,8 +20,8 @@ public final class Rss {
     @JsonProperty("release_date")
     private final Integer releaseDate;
 
-    @JsonProperty("tvdb_id")
-    private final Integer tvdbId;
+    @JsonProperty("tmdb_id")
+    private final Integer tmdbId;
 
     @JsonProperty("title")
     private final String title;
@@ -29,10 +29,10 @@ public final class Rss {
     @JsonProperty("poster_path")
     private final String posterPath;
 
-    public Rss(String imdbId, Integer releaseDate, Integer tvdbId, String title, String posterPath) {
+    public Rss(String imdbId, Integer releaseDate, Integer tmdbId, String title, String posterPath) {
         this.imdbId = imdbId;
         this.releaseDate = releaseDate;
-        this.tvdbId = tvdbId;
+        this.tmdbId = tmdbId;
         this.title = title;
         this.posterPath = posterPath;
     }
@@ -45,8 +45,8 @@ public final class Rss {
         return releaseDate;
     }
 
-    public Integer getTvdbId() {
-        return tvdbId;
+    public Integer getTmdbId() {
+        return tmdbId;
     }
 
     public String getTitle() {
@@ -64,14 +64,14 @@ public final class Rss {
         Rss rss = (Rss) o;
         return Objects.equals(imdbId, rss.imdbId) &&
                 Objects.equals(releaseDate, rss.releaseDate) &&
-                Objects.equals(tvdbId, rss.tvdbId) &&
+                Objects.equals(tmdbId, rss.tmdbId) &&
                 Objects.equals(title, rss.title) &&
                 Objects.equals(posterPath, rss.posterPath);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(imdbId, releaseDate, tvdbId, title, posterPath);
+        return Objects.hash(imdbId, releaseDate, tmdbId, title, posterPath);
     }
 
     @Override
@@ -79,7 +79,7 @@ public final class Rss {
         return "Rss{" +
                 "imdbId='" + imdbId + '\'' +
                 ", releaseDate=" + releaseDate +
-                ", tvdbId=" + tvdbId +
+                ", tmdbId=" + tmdbId +
                 ", title='" + title + '\'' +
                 ", posterPath='" + posterPath + '\'' +
                 '}';
