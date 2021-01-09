@@ -19,14 +19,14 @@ function checkForDuplicates(ownedMovies, recommendedMovies) {
 
   Object.values(recommendedMovies).forEach((recommendedMovie) => {
     Object.values(ownedMovies).forEach((ownedMovie) => {
-      if (recommendedMovie.tvdbId === ownedMovie.tvdbId
+      if (recommendedMovie.tmdbId === ownedMovie.tmdbId
         || recommendedMovie.imdbId === ownedMovie.imdbId) {
         cy.log(`Recommended Movie: ${recommendedMovie}`);
         cy.log(`Owned Movie: ${ownedMovie}`);
       }
 
-      if ((recommendedMovie.tvdbId !== undefined && ownedMovie.tvdbId !== undefined)) {
-        expect(recommendedMovie.tvdbId).to.not.eq(ownedMovie.tvdbId);
+      if ((recommendedMovie.tmdbId !== undefined && ownedMovie.tmdbId !== undefined)) {
+        expect(recommendedMovie.tmdbId).to.not.eq(ownedMovie.tmdbId);
       }
 
       if ((recommendedMovie.imdbId !== undefined && ownedMovie.imdbId !== undefined)) {
