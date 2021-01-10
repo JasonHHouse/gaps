@@ -99,12 +99,13 @@ public class FileIoService implements IO {
     @Override
     public void writeRssFile(@NotNull String machineIdentifier, @NotNull Integer key, @NotNull Set<BasicMovie> recommended) {
         Path path = Paths.get(gapsConfiguration.getStorageFolder(), machineIdentifier, key.toString(), gapsConfiguration.getProperties().getRssFeed());
-
-        try {
-            Files.delete(path);
-        } catch (IOException e) {
-            LOGGER.error("Can't delete existing file", e);
-            return;
+        if (Files.exists(path)) {
+            try {
+                Files.delete(path);
+            } catch (IOException e) {
+                LOGGER.error("Can't delete existing file", e);
+                return;
+            }
         }
 
         try {
@@ -197,11 +198,13 @@ public class FileIoService implements IO {
 
     @Override
     public void writeMovieIdsToFile(@NotNull Set<BasicMovie> everyBasicMovie, @NotNull Path path) {
-        try {
-            Files.delete(path);
-        } catch (IOException e) {
-            LOGGER.error("Can't delete existing file", e);
-            return;
+        if (Files.exists(path)) {
+            try {
+                Files.delete(path);
+            } catch (IOException e) {
+                LOGGER.error("Can't delete existing file", e);
+                return;
+            }
         }
 
         try {
@@ -340,19 +343,13 @@ public class FileIoService implements IO {
                 nuke(children.toPath());
             }
         } else {
-            try {
-                Files.delete(path);
-                LOGGER.info("File deleted: {}", path.toFile().getPath());
-            } catch (IOException e) {
-                LOGGER.error("Can't delete existing file", e);
-                return;
-            }
-
-            boolean isDeleted = path.toFile().delete();
-            if (isDeleted) {
-
-            } else {
-                LOGGER.warn("File not deleted: {}", path.toFile().getPath());
+            if (Files.exists(path)) {
+                try {
+                    Files.delete(path);
+                    LOGGER.info("File deleted: {}", path.toFile().getPath());
+                } catch (IOException e) {
+                    LOGGER.error("Can't delete existing file", e);
+                }
             }
         }
     }

@@ -26,7 +26,6 @@ import org.jetbrains.annotations.Nullable;
 public final class PushBulletProperties extends AbstractNotificationProperties {
 
     @NotNull
-    @JsonProperty("channel_tag")
     @Schema(required = true, description = "The channel tag to receive messages")
     private final String channelTag;
 

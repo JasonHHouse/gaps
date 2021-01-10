@@ -1,4 +1,3 @@
-
 package com.jasonhhouse.plex.libs;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -9,6 +8,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.jetbrains.annotations.NotNull;
 
 
 /**
@@ -55,7 +55,7 @@ import javax.xml.bind.annotation.XmlType;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @XmlRootElement(name = "Directory")
-public class PlexLibrary {
+public class PlexLibrary implements Comparable<PlexLibrary> {
 
     @XmlElement(name = "Location", required = true)
     protected Location location;
@@ -545,5 +545,14 @@ public class PlexLibrary {
                 ", contentChangedAt=" + contentChangedAt +
                 ", hidden=" + hidden +
                 '}';
+    }
+
+    @Override
+    public int compareTo(@NotNull PlexLibrary o) {
+        if (getTitle() != null) {
+            return getTitle().compareTo(o.getTitle());
+        } else {
+            return 0;
+        }
     }
 }
