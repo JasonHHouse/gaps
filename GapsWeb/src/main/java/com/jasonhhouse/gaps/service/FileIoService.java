@@ -167,7 +167,7 @@ public class FileIoService implements IO {
         final File ownedMovieFile = Paths.get(gapsConfiguration.getStorageFolder(), machineIdentifier, key.toString(), gapsConfiguration.getProperties().getOwnedMovies()).toFile();
 
         if (!ownedMovieFile.exists()) {
-            LOGGER.warn(ownedMovieFile + " does not exist");
+            LOGGER.warn("{} does not exist", ownedMovieFile);
             return Collections.emptyList();
         }
 
