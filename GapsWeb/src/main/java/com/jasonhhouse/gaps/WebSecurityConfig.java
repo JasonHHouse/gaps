@@ -60,6 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     "/js/jquery-3.4.1.min.js",
                     "/js/bootstrap.bundle.min.js",
                     "/js/index.min.js",
+
                     "/images/final-2.svg",
                     "/images/final-gaps.svg").permitAll()
                     .anyRequest().fullyAuthenticated()
@@ -70,7 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                     .logout()
                     .permitAll();
-        } else if (Boolean.TRUE.equals(gapsConfiguration.getLoginEnabled()) && !gapsConfiguration.getSslEnabled()) {
+        } else if (Boolean.TRUE.equals(gapsConfiguration.getLoginEnabled()) && Boolean.FALSE.equals(gapsConfiguration.getSslEnabled())) {
             LOGGER.info("Login Enabled. Configuring site security without ssl.");
 
             http.cors().and().csrf().disable()

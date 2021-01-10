@@ -41,21 +41,6 @@ public class SearchController {
         gapsSearch.cancelSearch();
     }
 
-    /**
-     * Main REST call to start Gaps searching for missing movies
-     *
-     * @deprecated No long used to do search
-     */
-    @PostMapping(value = "startSearching")
-    @ResponseStatus(value = HttpStatus.OK)
-    @Deprecated(forRemoval = true)
-    public void postStartSearching() {
-        LOGGER.info("postStartSearching()");
-        LOGGER.warn("Deprecated Method");
-
-        throw new IllegalStateException("Need to pass in machineIdentifier and plex key");
-    }
-
     @GetMapping(value = "/searchStatus",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SearchStatus> getIsSearching() {

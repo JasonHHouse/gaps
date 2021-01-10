@@ -17,6 +17,7 @@ import com.jasonhhouse.gaps.Schedule;
 import java.io.IOException;
 
 public class ScheduleSerializer extends StdSerializer<Schedule> {
+
     public ScheduleSerializer() {
         this(null);
     }
@@ -28,9 +29,9 @@ public class ScheduleSerializer extends StdSerializer<Schedule> {
     @Override
     public void serialize(Schedule value, JsonGenerator jsonGenerator, SerializerProvider provider) throws IOException {
         jsonGenerator.writeStartObject();
-        jsonGenerator.writeNumberField(Schedule.ID, value.getId());
-        jsonGenerator.writeStringField(Schedule.MESSAGE, value.getMessage());
-        jsonGenerator.writeBooleanField("enabled", value.getEnabled());
+        jsonGenerator.writeNumberField(Schedule.ID_LABEL, value.getId());
+        jsonGenerator.writeStringField(Schedule.MESSAGE_LABEL, value.getMessage());
+        jsonGenerator.writeBooleanField(Schedule.ENABLED_LABEL, value.getEnabled());
         jsonGenerator.writeEndObject();
     }
 }

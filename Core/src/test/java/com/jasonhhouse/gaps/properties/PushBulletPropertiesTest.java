@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PushBulletPropertiesTest {
+class PushBulletPropertiesTest {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -36,7 +36,7 @@ public class PushBulletPropertiesTest {
         PushBulletProperties pushBulletProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[]}", PushBulletProperties.class);
         assertTrue(CollectionUtils.isEmpty(pushBulletProperties.getNotificationTypes()));
         assertTrue(pushBulletProperties.getEnabled());
-        assertTrue(StringUtils.isEmpty(pushBulletProperties.getChannel_tag()));
+        assertTrue(StringUtils.isEmpty(pushBulletProperties.getChannelTag()));
         assertTrue(StringUtils.isEmpty(pushBulletProperties.getAccessToken()));
     }
 
@@ -45,7 +45,7 @@ public class PushBulletPropertiesTest {
         PushBulletProperties pushBulletProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[],\"channel_tag\":\"123\"}", PushBulletProperties.class);
         assertTrue(CollectionUtils.isEmpty(pushBulletProperties.getNotificationTypes()));
         assertTrue(pushBulletProperties.getEnabled());
-        assertEquals("123", pushBulletProperties.getChannel_tag());
+        assertEquals("123", pushBulletProperties.getChannelTag());
         assertTrue(StringUtils.isEmpty(pushBulletProperties.getAccessToken()));
     }
 
@@ -54,7 +54,7 @@ public class PushBulletPropertiesTest {
         PushBulletProperties pushBulletProperties = objectMapper.readValue("{\"enabled\":true,\"notificationTypes\":[\"TEST\"],\"channel_tag\":\"123\",\"accessToken\":\"abc\"}", PushBulletProperties.class);
         assertTrue(CollectionUtils.isNotEmpty(pushBulletProperties.getNotificationTypes()));
         assertTrue(pushBulletProperties.getEnabled());
-        assertEquals("123", pushBulletProperties.getChannel_tag());
+        assertEquals("123", pushBulletProperties.getChannelTag());
         assertEquals("abc", pushBulletProperties.getAccessToken());
     }
 }

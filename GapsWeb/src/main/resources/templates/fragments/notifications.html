@@ -10,11 +10,15 @@
 
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Notifications</title>
+</head>
 <body>
 <header th:fragment="telegram">
     <div class="row">
         <h4 class="col-10">Telegram Notifications</h4>
-        <a id="telegramShowHide" class="btn btn-primary" data-toggle="collapse" href="#telegramConfiguration" role="button" aria-expanded="false" aria-controls="telegramConfiguration">
+        <a id="telegramShowHide" class="btn btn-primary" data-toggle="collapse" href="#telegramConfiguration" role="button" aria-expanded="false"
+           aria-controls="telegramConfiguration">
             Show/Hide
         </a>
     </div>
@@ -23,7 +27,8 @@
             <label for="telegramBotId">Bot ID</label>
             <input type="text" class="form-control" id="telegramBotId" aria-describedby="telegramBotIdHelp"
                    th:value="${plexProperties?.telegramProperties?.botId}">
-            <small id="telegramBotIdHelp" class="form-text text-muted"><a href="https://telegram.me/botfather" target="_blank" rel="noopener noreferrer">BotFather</a> is the one bot to rule them all.
+            <small id="telegramBotIdHelp" class="form-text text-muted"><a href="https://telegram.me/botfather" target="_blank" rel="noopener noreferrer">BotFather</a> is the one
+                bot to rule them all.
 
                 1. Make a bot using BotFather
                 2. Paste the bot token in this field
@@ -132,7 +137,7 @@
 <header th:fragment="slack">
     <div class="row">
         <h4 class="col-10">Slack Notifications</h4>
-        <a id="slackShowHide"  class="btn btn-primary" data-toggle="collapse" href="#slackConfiguration" role="button" aria-expanded="false" aria-controls="slackConfiguration">
+        <a id="slackShowHide" class="btn btn-primary" data-toggle="collapse" href="#slackConfiguration" role="button" aria-expanded="false" aria-controls="slackConfiguration">
             Show/Hide
         </a>
     </div>
@@ -237,7 +242,8 @@
 <header th:fragment="push-bullet">
     <div class="row">
         <h4 class="col-10">PushBullet Notifications</h4>
-        <a id="pushBulletShowHide"  class="btn btn-primary" data-toggle="collapse" href="#pushBulletConfiguration" role="button" aria-expanded="false" aria-controls="pushBulletConfiguration">
+        <a id="pushBulletShowHide" class="btn btn-primary" data-toggle="collapse" href="#pushBulletConfiguration" role="button" aria-expanded="false"
+           aria-controls="pushBulletConfiguration">
             Show/Hide
         </a>
     </div>
@@ -255,7 +261,7 @@
                    aria-describedby="pushBulletAccessTokenHelp"
                    th:value="${plexProperties?.pushBulletProperties?.accessToken}">
             <small id="pushBulletAccessTokenHelp" class="form-text text-muted">The Access Token can be found <a href="https://www.pushbullet.com/account"
-                                                                                                               target="_blank" rel="noopener noreferrer">here.</a></small>
+                                                                                                                target="_blank" rel="noopener noreferrer">here.</a></small>
         </div>
         <div class="form-group">
             <label>Notification Types</label>
@@ -462,7 +468,7 @@
 <header th:fragment="email">
     <div class="row">
         <h4 class="col-10">Email Notifications</h4>
-        <a id="emailShowHide"  class="btn btn-primary" data-toggle="collapse" href="#emailConfiguration" role="button" aria-expanded="false" aria-controls="emailConfiguration">
+        <a id="emailShowHide" class="btn btn-primary" data-toggle="collapse" href="#emailConfiguration" role="button" aria-expanded="false" aria-controls="emailConfiguration">
             Show/Hide
         </a>
     </div>
@@ -621,7 +627,8 @@
 <header th:fragment="push-over">
     <div class="row">
         <h4 class="col-10">PushOver Notifications</h4>
-        <a id="pushOverShowHide"  class="btn btn-primary" data-toggle="collapse" href="#pushOverConfiguration" role="button" aria-expanded="false" aria-controls="pushOverConfiguration">
+        <a id="pushOverShowHide" class="btn btn-primary" data-toggle="collapse" href="#pushOverConfiguration" role="button" aria-expanded="false"
+           aria-controls="pushOverConfiguration">
             Show/Hide
         </a>
     </div>
@@ -642,11 +649,26 @@
         <div class="form-group">
             <label for="pushOverPriority">Priority</label>
             <select class="form-control" id="pushOverPriority">
-                <option value="-2" th:selected="${T(org.apache.commons.lang3.math.NumberUtils).isCreatable(plexProperties?.pushOverProperties?.getPriority()) && plexProperties?.pushOverProperties?.getPriority()?.equals(-2) ? true : false}">No Notification/Alert</option>
-                <option value="-1" th:selected="${T(org.apache.commons.lang3.math.NumberUtils).isCreatable(plexProperties?.pushOverProperties?.getPriority()) && plexProperties?.pushOverProperties?.getPriority()?.equals(-1) ? true : false}">Quiet Notification</option>
-                <option value="0" th:selected="${T(org.apache.commons.lang3.math.NumberUtils).isCreatable(plexProperties?.pushOverProperties?.getPriority()) && plexProperties?.pushOverProperties?.getPriority()?.equals(0) ? true : false}">Normal Priority</option>
-                <option value="1" th:selected="${T(org.apache.commons.lang3.math.NumberUtils).isCreatable(plexProperties?.pushOverProperties?.getPriority()) &&  plexProperties?.pushOverProperties?.getPriority()?.equals(1) ? true : false}">High-Priority</option>
-                <option value="2" th:selected="${T(org.apache.commons.lang3.math.NumberUtils).isCreatable(plexProperties?.pushOverProperties?.getPriority()) &&  plexProperties?.pushOverProperties?.getPriority()?.equals(2) ? true : false}">High-Priority with required user confirmation</option>
+                <option value="-2"
+                        th:selected="${T(org.apache.commons.lang3.math.NumberUtils).isCreatable(plexProperties?.pushOverProperties?.getPriority()) && plexProperties?.pushOverProperties?.getPriority()?.equals(-2) ? true : false}">
+                    No Notification/Alert
+                </option>
+                <option value="-1"
+                        th:selected="${T(org.apache.commons.lang3.math.NumberUtils).isCreatable(plexProperties?.pushOverProperties?.getPriority()) && plexProperties?.pushOverProperties?.getPriority()?.equals(-1) ? true : false}">
+                    Quiet Notification
+                </option>
+                <option value="0"
+                        th:selected="${T(org.apache.commons.lang3.math.NumberUtils).isCreatable(plexProperties?.pushOverProperties?.getPriority()) && plexProperties?.pushOverProperties?.getPriority()?.equals(0) ? true : false}">
+                    Normal Priority
+                </option>
+                <option value="1"
+                        th:selected="${T(org.apache.commons.lang3.math.NumberUtils).isCreatable(plexProperties?.pushOverProperties?.getPriority()) &&  plexProperties?.pushOverProperties?.getPriority()?.equals(1) ? true : false}">
+                    High-Priority
+                </option>
+                <option value="2"
+                        th:selected="${T(org.apache.commons.lang3.math.NumberUtils).isCreatable(plexProperties?.pushOverProperties?.getPriority()) &&  plexProperties?.pushOverProperties?.getPriority()?.equals(2) ? true : false}">
+                    High-Priority with required user confirmation
+                </option>
             </select>
         </div>
         <div class="form-group">
@@ -759,7 +781,8 @@
 <header th:fragment="discord">
     <div class="row">
         <h4 class="col-10">Discord Notifications</h4>
-        <a id="discordShowHide"  class="btn btn-primary" data-toggle="collapse" href="#discordConfiguration" role="button" aria-expanded="false" aria-controls="discordConfiguration">
+        <a id="discordShowHide" class="btn btn-primary" data-toggle="collapse" href="#discordConfiguration" role="button" aria-expanded="false"
+           aria-controls="discordConfiguration">
             Show/Hide
         </a>
     </div>
@@ -768,8 +791,9 @@
             <label for="discordWebHookUrl">WebHook Url</label>
             <input type="text" class="form-control" id="discordWebHookUrl" aria-describedby="discordWebHookUrlHelp"
                    th:value="${plexProperties?.discordProperties?.webHookUrl}">
-            <small id="discordWebHookUrlHelp" class="form-text text-muted">Get your WebHook as explained <a href="https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks"
-                                                                                                          target="_blank" rel="noopener noreferrer">here.</a></small>
+            <small id="discordWebHookUrlHelp" class="form-text text-muted">Get your WebHook as explained <a
+                    href="https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks"
+                    target="_blank" rel="noopener noreferrer">here.</a></small>
         </div>
         <div class="form-group">
             <label>Notification Types</label>

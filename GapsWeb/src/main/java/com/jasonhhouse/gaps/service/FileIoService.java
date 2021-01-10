@@ -13,9 +13,9 @@ package com.jasonhhouse.gaps.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.BasicMovie;
+import com.jasonhhouse.gaps.GapsConfiguration;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.Rss;
-import com.jasonhhouse.gaps.GapsConfiguration;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import java.io.BufferedReader;
 import java.io.File;
@@ -98,29 +98,28 @@ public class FileIoService implements IO {
 
     @Override
     public void writeRssFile(@NotNull String machineIdentifier, @NotNull Integer key, @NotNull Set<BasicMovie> recommended) {
-        File file = Paths.get(gapsConfiguration.getStorageFolder(), machineIdentifier, key.toString(), gapsConfiguration.getProperties().getRssFeed()).toFile();
+        Path path = Paths.get(gapsConfiguration.getStorageFolder(), machineIdentifier, key.toString(), gapsConfiguration.getProperties().getRssFeed());
 
-        if (file.exists()) {
-            boolean deleted = file.delete();
-            if (!deleted) {
-                LOGGER.error("Can't delete existing file {}", file.getPath());
-                return;
-            }
+        try {
+            Files.delete(path);
+        } catch (IOException e) {
+            LOGGER.error("Can't delete existing file", e);
+            return;
         }
 
         try {
-            boolean created = file.createNewFile();
+            boolean created = path.toFile().createNewFile();
             if (!created) {
-                LOGGER.error("Can't create file {}", file.getPath());
+                LOGGER.error("Can't create file {}", path.toFile().getPath());
                 return;
             }
         } catch (IOException e) {
-            LOGGER.error(String.format("Can't create file %s", file.getPath()), e);
+            LOGGER.error(String.format("Can't create file %s", path.toFile().getPath()), e);
             return;
         }
 
         // Create writer that java will close for us.
-        try (FileOutputStream outputStream = new FileOutputStream(file)) {
+        try (FileOutputStream outputStream = new FileOutputStream(path.toFile())) {
             List<Rss> rssList = recommended.stream().map(movie -> new Rss(movie.getImdbId(), movie.getYear(), movie.getTmdbId(), movie.getName(), movie.getPosterUrl())).collect(Collectors.toList());
             byte[] output = objectMapper.writeValueAsBytes(rssList);
             outputStream.write(output);
@@ -134,17 +133,17 @@ public class FileIoService implements IO {
     @Override
     public void writeRecommendedToFile(@NotNull Set<BasicMovie> recommended, @NotNull String machineIdentifier, @NotNull Integer key) {
         LOGGER.info("writeRecommendedToFile()");
-        final File file = Paths.get(gapsConfiguration.getStorageFolder(), machineIdentifier, key.toString(), gapsConfiguration.getProperties().getRecommendedMovies()).toFile();
+        final Path path = Paths.get(gapsConfiguration.getStorageFolder(), machineIdentifier, key.toString(), gapsConfiguration.getProperties().getRecommendedMovies());
         makeFolder(machineIdentifier, key);
-        writeMovieIdsToFile(recommended, file);
+        writeMovieIdsToFile(recommended, path);
     }
 
     @Override
     public void writeOwnedMoviesToFile(@NotNull List<BasicMovie> ownedBasicMovies, @NotNull String machineIdentifier, @NotNull Integer key) {
         LOGGER.info("writeOwnedMoviesToFile()");
-        final File file = Paths.get(gapsConfiguration.getStorageFolder(), machineIdentifier, key.toString(), gapsConfiguration.getProperties().getOwnedMovies()).toFile();
+        final Path path = Paths.get(gapsConfiguration.getStorageFolder(), machineIdentifier, key.toString(), gapsConfiguration.getProperties().getOwnedMovies());
         makeFolder(machineIdentifier, key);
-        writeMovieIdsToFile(new HashSet<>(ownedBasicMovies), file);
+        writeMovieIdsToFile(new HashSet<>(ownedBasicMovies), path);
     }
 
     private void makeFolder(@NotNull String machineIdentifier, @NotNull Integer key) {
@@ -192,38 +191,37 @@ public class FileIoService implements IO {
     @Override
     public void writeMovieIdsToFile(@NotNull Set<BasicMovie> everyBasicMovie) {
         LOGGER.info("writeMovieIdsToFile()");
-        File file = Paths.get(gapsConfiguration.getStorageFolder(), gapsConfiguration.getProperties().getMovieIds()).toFile();
-        writeMovieIdsToFile(everyBasicMovie, file);
+        Path path = Paths.get(gapsConfiguration.getStorageFolder(), gapsConfiguration.getProperties().getMovieIds());
+        writeMovieIdsToFile(everyBasicMovie, path);
     }
 
     @Override
-    public void writeMovieIdsToFile(@NotNull Set<BasicMovie> everyBasicMovie, @NotNull File file) {
-        if (file.exists()) {
-            boolean deleted = file.delete();
-            if (!deleted) {
-                LOGGER.error("Can't delete existing file {}", file.getName());
-                return;
-            }
-        }
-
+    public void writeMovieIdsToFile(@NotNull Set<BasicMovie> everyBasicMovie, @NotNull Path path) {
         try {
-            boolean created = file.createNewFile();
-            if (!created) {
-                LOGGER.error("Can't create file {}", file.getAbsolutePath());
-                return;
-            }
+            Files.delete(path);
         } catch (IOException e) {
-            LOGGER.error(String.format("Can't create file %s", file.getAbsolutePath()), e);
+            LOGGER.error("Can't delete existing file", e);
             return;
         }
 
-        try (FileOutputStream outputStream = new FileOutputStream(file)) {
+        try {
+            boolean created = path.toFile().createNewFile();
+            if (!created) {
+                LOGGER.error("Can't create file {}", path.toFile().getAbsolutePath());
+                return;
+            }
+        } catch (IOException e) {
+            LOGGER.error(String.format("Can't create file %s", path.toFile().getAbsolutePath()), e);
+            return;
+        }
+
+        try (FileOutputStream outputStream = new FileOutputStream(path.toFile())) {
             byte[] output = objectMapper.writeValueAsBytes(everyBasicMovie);
             outputStream.write(output);
         } catch (FileNotFoundException e) {
-            LOGGER.error(String.format("Can't find file %s", file.getAbsolutePath()), e);
+            LOGGER.error(String.format("Can't find file %s", path.toFile().getAbsolutePath()), e);
         } catch (IOException e) {
-            LOGGER.error(String.format("Can't write to file %s", file.getAbsolutePath()), e);
+            LOGGER.error(String.format("Can't write to file %s", path.toFile().getAbsolutePath()), e);
         }
     }
 
@@ -321,7 +319,7 @@ public class FileIoService implements IO {
     @NotNull
     public Payload nuke() {
         LOGGER.info("nuke()");
-        File folder = new File(gapsConfiguration.getStorageFolder());
+        Path folder = new File(gapsConfiguration.getStorageFolder()).toPath();
         try {
             nuke(folder);
             return Payload.NUKE_SUCCESSFUL;
@@ -331,22 +329,30 @@ public class FileIoService implements IO {
         }
     }
 
-    private void nuke(File file) {
-        LOGGER.info("nuke( {} )", file);
-        if (!file.isFile()) {
-            File[] files = file.listFiles();
+    private void nuke(Path path) {
+        LOGGER.info("nuke( {} )", path);
+        if (!path.toFile().isFile()) {
+            File[] files = path.toFile().listFiles();
             if (files == null) {
                 return;
             }
             for (File children : files) {
-                nuke(children);
+                nuke(children.toPath());
             }
         } else {
-            boolean isDeleted = file.delete();
+            try {
+                Files.delete(path);
+                LOGGER.info("File deleted: {}", path.toFile().getPath());
+            } catch (IOException e) {
+                LOGGER.error("Can't delete existing file", e);
+                return;
+            }
+
+            boolean isDeleted = path.toFile().delete();
             if (isDeleted) {
-                LOGGER.info("File deleted: {}", file);
+
             } else {
-                LOGGER.warn("File not deleted: {}", file);
+                LOGGER.warn("File not deleted: {}", path.toFile().getPath());
             }
         }
     }

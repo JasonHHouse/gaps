@@ -50,7 +50,7 @@ public interface PlexQuery {
 
     void findAllMovieIds(@NotNull List<BasicMovie> basicMovies, @NotNull PlexServer plexServer, @NotNull PlexLibrary plexLibrary);
 
-    @NotNull PlexServer getPlexServerFromMachineIdentifier(@NotNull PlexProperties plexProperties,@NotNull String machineIdentifier) throws IllegalArgumentException;
+    @NotNull PlexServer getPlexServerFromMachineIdentifier(@NotNull PlexProperties plexProperties,@NotNull String machineIdentifier);
 
-    @NotNull PlexLibrary getPlexLibraryFromKey(@NotNull PlexServer plexServer,@NotNull Integer key) throws IllegalArgumentException;
+    @NotNull PlexLibrary getPlexLibraryFromKey(@NotNull PlexServer plexServer,@NotNull Integer key);
 }

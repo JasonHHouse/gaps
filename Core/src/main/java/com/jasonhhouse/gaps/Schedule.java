@@ -28,9 +28,9 @@ public enum Schedule {
     EVERY_TWO_WEEKS("Bi-weekly", "0 0 4 1,15 * ?", 3),
     EVERY_MONTH("Monthly", "0 0 4 1 * ?", 4);
 
-    public static final String ID = "id";
-    public static final String MESSAGE = "message";
-    public static final String ENABLED = "enabled";
+    public static final String ID_LABEL = "id";
+    public static final String MESSAGE_LABEL = "message";
+    public static final String ENABLED_LABEL = "enabled";
 
     @NotNull
     private final String message;

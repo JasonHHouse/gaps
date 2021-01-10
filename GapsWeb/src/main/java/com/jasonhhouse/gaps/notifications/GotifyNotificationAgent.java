@@ -14,7 +14,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.properties.GotifyProperties;
-import com.jasonhhouse.gaps.service.FileIoService;
 import com.jasonhhouse.gaps.service.IO;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
