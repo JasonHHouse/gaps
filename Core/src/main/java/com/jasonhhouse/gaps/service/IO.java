@@ -14,7 +14,6 @@ package com.jasonhhouse.gaps.service;
 import com.jasonhhouse.gaps.BasicMovie;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.properties.PlexProperties;
-import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;

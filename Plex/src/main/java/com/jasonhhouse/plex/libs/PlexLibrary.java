@@ -2,6 +2,7 @@ package com.jasonhhouse.plex.libs;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.Objects;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -518,6 +519,19 @@ public class PlexLibrary implements Comparable<PlexLibrary> {
      */
     public void setHidden(Integer value) {
         this.hidden = value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PlexLibrary that = (PlexLibrary) o;
+        return Objects.equals(key, that.key) && Objects.equals(type, that.type) && Objects.equals(title, that.title) && Objects.equals(agent, that.agent) && Objects.equals(scanner, that.scanner) && Objects.equals(language, that.language) && Objects.equals(uuid, that.uuid);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(key, type, title, agent, scanner, language, uuid);
     }
 
     @Override
