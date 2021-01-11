@@ -86,7 +86,7 @@ public class GapsSearchService implements GapsSearch {
 
     private final SimpMessagingTemplate template;
 
-    private final AtomicInteger tempTvdbCounter;
+    private final AtomicInteger tempTmdbCounter;
 
     private final FileIoService fileIoService;
 
@@ -102,7 +102,7 @@ public class GapsSearchService implements GapsSearch {
         this.fileIoService = fileIoService;
         this.notificationService = notificationService;
 
-        tempTvdbCounter = new AtomicInteger();
+        tempTmdbCounter = new AtomicInteger();
         cancelSearch = new AtomicBoolean(true);
     }
 
@@ -162,7 +162,7 @@ public class GapsSearchService implements GapsSearch {
             searchForMovies(plexProperties, machineIdentifier, key, ownedBasicMovies, everyBasicMovie, recommended, searched, searchedMovieCount);
             watch.stop();
             LOGGER.info("Time Elapsed: {} seconds.", TimeUnit.MILLISECONDS.toSeconds(watch.getTime()));
-            LOGGER.info("Times used TVDB ID: {}", tempTvdbCounter);
+            LOGGER.info("Times used TMDB ID: {}", tempTmdbCounter);
         } catch (SearchCancelledException e) {
             String reason = "Search cancelled";
             LOGGER.error(reason);
@@ -252,12 +252,12 @@ public class GapsSearchService implements GapsSearch {
                 LOGGER.info(basicMovie.toString());
                 if (basicMovie.getTmdbId() != -1 && basicMovie.getCollectionId() != -1) {
                     LOGGER.info("Used Collection ID to get {}", basicMovie.getName());
-                    tempTvdbCounter.incrementAndGet();
+                    tempTmdbCounter.incrementAndGet();
                     handleCollection(plexProperties, machineIdentifier, key, ownedBasicMovies, everyBasicMovie, recommended, searched, searchedMovieCount, basicMovie, client, languageCode);
                     continue;
                 } else if (basicMovie.getTmdbId() != -1) {
-                    LOGGER.info("Used TVDB ID to get {}", basicMovie.getName());
-                    tempTvdbCounter.incrementAndGet();
+                    LOGGER.info("Used TMDB ID to get {}", basicMovie.getName());
+                    tempTmdbCounter.incrementAndGet();
                     searchMovieDetails(plexProperties, machineIdentifier, key, ownedBasicMovies, everyBasicMovie, recommended, searched, searchedMovieCount, basicMovie, client, languageCode);
                     continue;
                 } else if (StringUtils.isNotBlank(basicMovie.getImdbId())) {

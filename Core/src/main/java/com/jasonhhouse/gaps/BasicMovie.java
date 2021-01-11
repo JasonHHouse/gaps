@@ -156,7 +156,7 @@ public final class BasicMovie implements Comparable<BasicMovie> {
         }
         BasicMovie basicMovie = (BasicMovie) o;
 
-        //Compare tvdb id first
+        //Compare tmdb id first
         if (tmdbId != -1 && tmdbId.equals(basicMovie.tmdbId)) {
             return true;
         }
@@ -192,7 +192,7 @@ public final class BasicMovie implements Comparable<BasicMovie> {
                 ", moviesInCollection=" + moviesInCollection +
                 ", collection='" + collectionTitle + '\'' +
                 ", collectionId=" + collectionId +
-                ", tvdbId=" + tmdbId +
+                ", tmdbId=" + tmdbId +
                 ", ratingKey=" + ratingKey +
                 ", key='" + key + '\'' +
                 '}';
