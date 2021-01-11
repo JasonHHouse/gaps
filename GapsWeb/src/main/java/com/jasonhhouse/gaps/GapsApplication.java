@@ -11,6 +11,7 @@
 package com.jasonhhouse.gaps;
 
 import java.util.concurrent.Executor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -28,6 +29,7 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -67,6 +69,16 @@ public class GapsApplication {
     @Qualifier("Gaps")
     public TaskScheduler taskScheduler() {
         return new ThreadPoolTaskScheduler();
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(@NotNull CorsRegistry registry) {
+                registry.addMapping("/*").allowedOrigins("https://gaps.FQDN/");
+            }
+        };
     }
 
     @Configuration

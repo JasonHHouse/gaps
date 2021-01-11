@@ -89,8 +89,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         } else {
             http.cors().and().csrf().disable();
         }
-
-        http.headers().addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN));
     }
 
     @Override
