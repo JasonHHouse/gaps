@@ -80,13 +80,13 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.5.0</version>
+            <version>${springdoc.openapi.ui}</version>
         </dependency>
 
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
-            <version>3.32.3.2</version>
+            <version>3.34.0</version>
         </dependency>
 
         <dependency>
@@ -170,7 +170,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>30.0-jre</version>
+            <version>${guava}</version>
         </dependency>
 
         <dependency>
