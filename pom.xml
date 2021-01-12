@@ -285,15 +285,10 @@
     </build>
 
     <distributionManagement>
-        <!--<repository>
+        <repository>
             <id>github</id>
             <name>GitHub OWNER Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/JasonHHouse/gaps</url>
-        </repository>-->
-        <repository>
-            <id>unraid</id>
-            <name>GitHub OWNER Apache Maven Packages</name>
-            <url>http://192.168.1.8:2187/repository/unraid/</url>
         </repository>
     </distributionManagement>
 </project>
