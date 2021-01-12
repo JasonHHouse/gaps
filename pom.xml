@@ -76,7 +76,7 @@
             <dependency>
                 <groupId>org.hibernate.validator</groupId>
                 <artifactId>hibernate-validator</artifactId>
-                <version>${hibernate.validator}</version>
+                <version>${hibernate.validator}</version> 
                 <scope>compile</scope>
             </dependency>
 
