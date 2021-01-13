@@ -72,6 +72,7 @@ public class SchedulerController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Schedule>> getAllSchedules() {
         LOGGER.info("getAllSchedules()");
+
         return ResponseEntity.ok().body(schedulerService.getAllSchedules());
     }
 
@@ -79,12 +80,14 @@ public class SchedulerController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getTestSchedule() {
         LOGGER.info("getTestSchedule()");
-        new Runnable() {
-            @Override
-            public void run() {
-                schedulerService.test();
-            }
-        };
+        new MyRunnable();
         return ResponseEntity.ok().body("{\"message\":\"Test schedule started\"}");
+    }
+
+    private class MyRunnable implements Runnable {
+        @Override
+        public void run() {
+            schedulerService.test();
+        }
     }
 }

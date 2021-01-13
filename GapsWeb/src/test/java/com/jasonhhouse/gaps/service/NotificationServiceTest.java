@@ -49,7 +49,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    public void plexServerConnectFailed() {
+    void plexServerConnectFailed() {
         PlexServer plexServer = new PlexServer();
         plexServer.setFriendlyName("Friendly Name");
         String error = "";
@@ -59,7 +59,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    public void tmdbConnectionFailed() {
+    void tmdbConnectionFailed() {
         if (notificationService.isAnyNotificationAgentEnabled()) {
             Boolean result = notificationService.tmdbConnectionFailed("");
             assertFalse(result, "Should have failed to send plex server connect failed");

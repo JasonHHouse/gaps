@@ -20,13 +20,13 @@ public interface Notification {
 
     @NotNull Boolean recommendedMoviesSearchStarted(@NotNull PlexServer plexServer, @NotNull PlexLibrary plexLibrary);
 
-    @NotNull Boolean recommendedMoviesSearchFailed(@NotNull PlexServer plexServer, @NotNull PlexLibrary plexLibrary,@NotNull  String error);
+    @NotNull Boolean recommendedMoviesSearchFailed(@NotNull PlexServer plexServer, @NotNull PlexLibrary plexLibrary, @NotNull String error);
 
     @NotNull Boolean recommendedMoviesSearchFinished(@NotNull PlexServer plexServer, @NotNull PlexLibrary plexLibrary);
 
     @NotNull Boolean test();
 
-    @NotNull Boolean test(@NotNull Integer id) throws IllegalArgumentException, IllegalAccessException;
+    @NotNull Boolean test(@NotNull Integer id);
 
     @NotNull Boolean isAnyNotificationAgentEnabled();
 }

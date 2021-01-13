@@ -13,16 +13,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.jasonhhouse.plex.libs.PlexLibrary;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.LinkedHashSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public final class PlexServer {
 
     @Schema(description = "Libraries that are of type movie in your Plex Server")
-    private final Set<PlexLibrary> plexLibraries;
+    private final List<PlexLibrary> plexLibraries;
     @Schema(description = "Human readable way to identify your Plex Server")
     private String friendlyName;
     @Schema(description = "UID to identify the Plex Server")
@@ -35,7 +36,7 @@ public final class PlexServer {
     private Integer port;
 
     public PlexServer() {
-        plexLibraries = new LinkedHashSet<>();
+        plexLibraries = new ArrayList<>();
     }
 
     public PlexServer(String friendlyName, String machineIdentifier, String plexToken, String address, Integer port) {
@@ -44,7 +45,7 @@ public final class PlexServer {
         this.plexToken = plexToken;
         this.address = address;
         this.port = port;
-        plexLibraries = new LinkedHashSet<>();
+        plexLibraries = new ArrayList<>();
     }
 
     public String getFriendlyName() {
@@ -63,7 +64,8 @@ public final class PlexServer {
         this.machineIdentifier = machineIdentifier;
     }
 
-    public Set<PlexLibrary> getPlexLibraries() {
+    public List<PlexLibrary> getPlexLibraries() {
+        Collections.sort(plexLibraries);
         return plexLibraries;
     }
 

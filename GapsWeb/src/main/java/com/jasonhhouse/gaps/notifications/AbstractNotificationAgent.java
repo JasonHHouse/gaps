@@ -12,7 +12,6 @@ package com.jasonhhouse.gaps.notifications;
 
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.properties.NotificationProperties;
-import com.jasonhhouse.gaps.service.FileIoService;
 import com.jasonhhouse.gaps.service.IO;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;

@@ -128,14 +128,14 @@
         </div>
 
         <div class="top-margin bottom-margin" id="movieContainer" style="display: none;">
-            <table class="display" id="movies" style="width:100%">
+            <table class="display" id="movies" aria-label="Table of Owned Movies" style="width:100%">
                 <thead>
                 <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
             </table>
@@ -164,7 +164,7 @@
             <div class="col-12 col-md-auto">
                 <img data-cy="{{imdbId}}" style="height: auto; width: 225px; display: block;"
                      src="http://{{address}}:{{port}}{{posterUrl}}/?X-Plex-Token={{plexToken}}"
-                class="card-img" alt="Plex Poster">
+                     class="card-img" alt="Plex Poster">
             </div>
             <div class="col-12 col-md">
                 <div class="card-body">
