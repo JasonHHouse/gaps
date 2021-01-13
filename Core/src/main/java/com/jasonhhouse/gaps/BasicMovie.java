@@ -17,9 +17,12 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
+@Entity
 @JsonDeserialize(builder = BasicMovie.Builder.class)
 public final class BasicMovie implements Comparable<BasicMovie> {
 
@@ -47,6 +50,7 @@ public final class BasicMovie implements Comparable<BasicMovie> {
     private String collectionTitle;
     @NotNull
     private Integer collectionId;
+    @Id
     @NotNull
     private Integer tmdbId;
 
