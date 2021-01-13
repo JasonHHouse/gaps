@@ -29,8 +29,8 @@ public class ScheduleDeserializer extends StdDeserializer<Schedule> {
     @Override
     public Schedule deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
-        int id = node.get(Schedule.ID).numberValue().intValue();
-        Boolean enabled = node.get(Schedule.ENABLED).booleanValue();
+        int id = node.get(Schedule.ID_LABEL).numberValue().intValue();
+        Boolean enabled = node.get(Schedule.ENABLED_LABEL).booleanValue();
         return Schedule.getSchedule(id).setEnabled(enabled);
     }
 }

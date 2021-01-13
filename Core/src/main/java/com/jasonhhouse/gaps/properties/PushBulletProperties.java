@@ -27,7 +27,7 @@ public final class PushBulletProperties extends AbstractNotificationProperties {
 
     @NotNull
     @Schema(required = true, description = "The channel tag to receive messages")
-    private final String channel_tag;
+    private final String channelTag;
 
     @NotNull
     @Schema(required = true, description = "The API token connect to PushBullet")
@@ -36,10 +36,10 @@ public final class PushBulletProperties extends AbstractNotificationProperties {
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public PushBulletProperties(@JsonProperty(value = "enabled", required = true) @NotNull Boolean enabled,
                                 @JsonProperty(value = "notificationTypes", required = true) @NotNull List<NotificationType> notificationTypes,
-                                @JsonProperty(value = "channel_tag") @Nullable String channel_tag,
+                                @JsonProperty(value = "channel_tag") @Nullable String channelTag,
                                 @JsonProperty(value = "accessToken") @Nullable String accessToken) {
         super(enabled, notificationTypes);
-        this.channel_tag = channel_tag == null ? "" : channel_tag;
+        this.channelTag = channelTag == null ? "" : channelTag;
         this.accessToken = accessToken == null ? "" : accessToken;
     }
 
@@ -48,8 +48,8 @@ public final class PushBulletProperties extends AbstractNotificationProperties {
     }
 
     @NotNull
-    public String getChannel_tag() {
-        return channel_tag;
+    public String getChannelTag() {
+        return channelTag;
     }
 
     @NotNull
@@ -60,7 +60,7 @@ public final class PushBulletProperties extends AbstractNotificationProperties {
     @Override
     public String toString() {
         return "PushBulletProperties{" +
-                "channel_tag='" + channel_tag + '\'' +
+                "channelTag='" + channelTag + '\'' +
                 ", accessToken='" + accessToken + '\'' +
                 ", enabled=" + enabled +
                 ", notificationTypes=" + notificationTypes +

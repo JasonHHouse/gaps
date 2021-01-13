@@ -9,19 +9,16 @@
  */
 package com.jasonhhouse.gaps.controller;
 
-import com.jasonhhouse.gaps.service.GapsSearch;
 import com.jasonhhouse.gaps.SearchStatus;
+import com.jasonhhouse.gaps.service.GapsSearch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
 public class SearchController {
@@ -39,21 +36,6 @@ public class SearchController {
     public void cancelSearching() {
         LOGGER.info("cancelSearching()");
         gapsSearch.cancelSearch();
-    }
-
-    /**
-     * Main REST call to start Gaps searching for missing movies
-     *
-     * @deprecated No long used to do search
-     */
-    @PostMapping(value = "startSearching")
-    @ResponseStatus(value = HttpStatus.OK)
-    @Deprecated(forRemoval = true)
-    public void postStartSearching() {
-        LOGGER.info("postStartSearching()");
-        LOGGER.warn("Deprecated Method");
-
-        throw new IllegalStateException("Need to pass in machineIdentifier and plex key");
     }
 
     @GetMapping(value = "/searchStatus",

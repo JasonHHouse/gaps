@@ -14,7 +14,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasonhhouse.gaps.NotificationType;
 import com.jasonhhouse.gaps.properties.PushBulletProperties;
-import com.jasonhhouse.gaps.service.FileIoService;
 import com.jasonhhouse.gaps.service.IO;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -84,7 +83,7 @@ public final class PushBulletNotificationAgent extends AbstractNotificationAgent
                 .add("Access-Token", t.getAccessToken())
                 .build();
 
-        PushBullet pushBullet = new PushBullet(t.getChannel_tag(), title, message);
+        PushBullet pushBullet = new PushBullet(t.getChannelTag(), title, message);
 
         String pushBulletMessage = "";
         try {

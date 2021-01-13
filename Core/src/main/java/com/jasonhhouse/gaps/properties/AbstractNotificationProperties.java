@@ -27,7 +27,7 @@ abstract class AbstractNotificationProperties implements NotificationProperties 
     @NotNull
     protected final List<NotificationType> notificationTypes;
 
-    public AbstractNotificationProperties(@NotNull Boolean enabled, @NotNull List<NotificationType> notificationTypes) {
+    protected AbstractNotificationProperties(@NotNull Boolean enabled, @NotNull List<NotificationType> notificationTypes) {
         this.enabled = enabled;
         this.notificationTypes = notificationTypes;
     }

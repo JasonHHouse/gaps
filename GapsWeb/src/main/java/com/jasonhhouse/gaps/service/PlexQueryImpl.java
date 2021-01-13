@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -298,8 +299,7 @@ public class PlexQueryImpl implements PlexQuery {
                 }
 
                 InputStream fileIS = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
-                DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder builder = builderFactory.newDocumentBuilder();
+                DocumentBuilder builder = getDocumentBuilder();
                 Document xmlDocument = builder.parse(fileIS);
                 XPath xPath = XPathFactory.newInstance().newXPath();
                 String expression = "/MediaContainer/Video/Guid";
@@ -396,8 +396,7 @@ public class PlexQueryImpl implements PlexQuery {
                 }
 
                 InputStream fileIS = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
-                DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder builder = builderFactory.newDocumentBuilder();
+                DocumentBuilder builder = getDocumentBuilder();
                 Document xmlDocument = builder.parse(fileIS);
                 XPath xPath = XPathFactory.newInstance().newXPath();
                 String expression = "/MediaContainer/Video";
@@ -525,11 +524,17 @@ public class PlexQueryImpl implements PlexQuery {
         }
 
         InputStream fileIS = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
-        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = builderFactory.newDocumentBuilder();
+        DocumentBuilder builder = getDocumentBuilder();
         Document xmlDocument = builder.parse(fileIS);
         XPath xPath = XPathFactory.newInstance().newXPath();
         return (T) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
+    }
+
+    private DocumentBuilder getDocumentBuilder() throws ParserConfigurationException {
+        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+        builderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        builderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+        return builderFactory.newDocumentBuilder();
     }
 
 }

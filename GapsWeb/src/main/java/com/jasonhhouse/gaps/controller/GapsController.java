@@ -121,7 +121,7 @@ public class GapsController {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(resource.getInputStream(), Object.class);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Failed to read sounds.json", e);
         }
         return null;
     }

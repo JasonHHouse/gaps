@@ -47,7 +47,6 @@ public class ConfigurationController {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final String TMDB_KEY = "tmdbKey:";
     private static final String SUCCESS = "success";
-    private static final String FAILED_TO_READ_PLEX_PROPERTIES = "Failed to read PlexProperties";
     private static final String CONFIGURATION_PLEX = "/configuration/plex";
     private static final String CONFIGURATION_PLEX_COMPLETE = CONFIGURATION_PLEX + "/complete";
 

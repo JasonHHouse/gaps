@@ -1,10 +1,10 @@
-FROM adoptopenjdk/openjdk11-openj9:jre-11.0.8_10_openj9-0.21.0
+FROM adoptopenjdk/openjdk11-openj9:jre-11.0.9_11_openj9-0.23.0
 
 LABEL maintainer="jh5975@gmail.com"
 LABEL name="Jason House" 
 LABEL github="https://github.com/JasonHHouse/Gaps" 
 
-EXPOSE 32400
+EXPOSE 8484
 
 RUN apt-get -y update
 
@@ -24,7 +24,7 @@ RUN mkdir -p /usr/app && chmod 777 /usr/data
 
 WORKDIR /usr/app
 
-COPY GapsWeb/target/GapsWeb-0.8.6.jar /usr/app/gaps.jar
+COPY GapsWeb/target/GapsWeb-0.8.9.jar /usr/app/gaps.jar
 
 COPY start.sh /usr/app/
 

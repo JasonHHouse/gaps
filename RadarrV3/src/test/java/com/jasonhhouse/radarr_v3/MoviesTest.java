@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class MoviesTest {
+class MoviesTest {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static List<Movie> movies;
