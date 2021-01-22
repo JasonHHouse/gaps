@@ -14,18 +14,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.jasonhhouse.plex.libs.PlexLibrary;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArrayList;
 import javax.validation.constraints.NotNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public final class PlexServer {
 
-    @JsonPropertyOrder({ "id", "name" })
     @Schema(description = "Libraries that are of type movie in your Plex Server")
     private final List<PlexLibrary> plexLibraries;
     @Schema(description = "Human readable way to identify your Plex Server")
@@ -68,13 +64,13 @@ public final class PlexServer {
         this.machineIdentifier = machineIdentifier;
     }
 
+    public List<PlexLibrary> getPlexLibraries() {
+        return plexLibraries;
+    }
+
     public void setPlexLibraries(@NotNull List<PlexLibrary> plexLibraries) {
         this.plexLibraries.clear();
         this.plexLibraries.addAll(plexLibraries);
-    }
-
-    public List<PlexLibrary> getPlexLibraries() {
-        return plexLibraries;
     }
 
     public String getPlexToken() {
