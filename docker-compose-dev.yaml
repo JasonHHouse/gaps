@@ -27,6 +27,7 @@ services:
       #javaInitialHeapSize: 150M
     ports:
       - 8484:8484
+      - 5005:5005
     restart: unless-stopped
     expose:
       - "32400"
