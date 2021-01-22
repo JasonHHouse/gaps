@@ -11,12 +11,12 @@ package com.jasonhhouse.gaps;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.jasonhhouse.plex.libs.PlexLibrary;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import javax.validation.constraints.NotNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -36,7 +36,7 @@ public final class PlexServer {
     private Integer port;
 
     public PlexServer() {
-        plexLibraries = new ArrayList<>();
+        plexLibraries = new SortedList<>(new PlexLibraryComparator());
     }
 
     public PlexServer(String friendlyName, String machineIdentifier, String plexToken, String address, Integer port) {
@@ -45,7 +45,7 @@ public final class PlexServer {
         this.plexToken = plexToken;
         this.address = address;
         this.port = port;
-        plexLibraries = new ArrayList<>();
+        plexLibraries = new SortedList<>(new PlexLibraryComparator());
     }
 
     public String getFriendlyName() {
@@ -65,8 +65,12 @@ public final class PlexServer {
     }
 
     public List<PlexLibrary> getPlexLibraries() {
-        Collections.sort(plexLibraries);
         return plexLibraries;
+    }
+
+    public void setPlexLibraries(@NotNull List<PlexLibrary> plexLibraries) {
+        this.plexLibraries.clear();
+        this.plexLibraries.addAll(plexLibraries);
     }
 
     public String getPlexToken() {

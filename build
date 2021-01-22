@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-VERSION=0.8.9
+VERSION=0.8.10
 JAR_VERSION="GapsWeb/target/GapsWeb-$VERSION.jar"
 ZIP_VERSION="GapsAsJar-$VERSION.zip"
 npm ci

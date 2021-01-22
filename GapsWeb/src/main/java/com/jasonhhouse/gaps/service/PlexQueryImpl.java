@@ -115,8 +115,7 @@ public class PlexQueryImpl implements PlexQuery {
                 List<PlexLibrary> plexLibraries = mediaContainer.getPlexLibraries().stream().filter(plexLibrary -> plexLibrary.getType().equalsIgnoreCase("movie")).collect(Collectors.toList());
 
                 LOGGER.info("{} Plex libraries found", plexLibraries.size());
-                plexServer.getPlexLibraries().clear();
-                plexServer.getPlexLibraries().addAll(plexLibraries);
+                plexServer.setPlexLibraries(plexLibraries);
                 return Payload.PLEX_LIBRARIES_FOUND.setExtras("size():" + plexLibraries.size());
             } catch (IOException e) {
                 String reason = String.format("Error connecting to Plex to get library list: %s", url);
