@@ -10,6 +10,7 @@
 
 package com.jasonhhouse.gaps;
 
+import java.util.Objects;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 
@@ -25,8 +26,9 @@ public class GapsConfiguration {
     private final Boolean sslEnabled;
     private final String storageFolder;
     private final Properties properties;
+    private final String baseUrl;
 
-    public GapsConfiguration(String name, String description, String version, Boolean loginEnabled, Boolean sslEnabled, String storageFolder, Properties properties) {
+    public GapsConfiguration(String name, String description, String version, Boolean loginEnabled, Boolean sslEnabled, String storageFolder, Properties properties, String baseUrl) {
         this.name = name;
         this.description = description;
         this.version = version;
@@ -34,6 +36,7 @@ public class GapsConfiguration {
         this.sslEnabled = sslEnabled;
         this.storageFolder = storageFolder;
         this.properties = properties;
+        this.baseUrl = Objects.toString(baseUrl, "");
     }
 
     public String getStorageFolder() {
@@ -64,15 +67,21 @@ public class GapsConfiguration {
         return properties;
     }
 
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
     @Override
     public String toString() {
-        return "YamlConfig{" +
+        return "GapsConfiguration{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", version='" + version + '\'' +
                 ", loginEnabled=" + loginEnabled +
                 ", sslEnabled=" + sslEnabled +
-                ", storagePath='" + storageFolder + '\'' +
+                ", storageFolder='" + storageFolder + '\'' +
+                ", properties=" + properties +
+                ", baseUrl='" + baseUrl + '\'' +
                 '}';
     }
 

@@ -10,6 +10,7 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.jasonhhouse.gaps.BasicMovie;
+import com.jasonhhouse.gaps.GapsConfiguration;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
@@ -34,19 +35,23 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
-@RequestMapping("/libraries")
+@RequestMapping
 public class LibraryController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LibraryController.class);
 
     private final FileIoService fileIoService;
 
+    private final GapsConfiguration gapsConfiguration;
+
     @Autowired
-    public LibraryController(FileIoService fileIoService) {
+    public LibraryController(FileIoService fileIoService, GapsConfiguration gapsConfiguration) {
         this.fileIoService = fileIoService;
+        this.gapsConfiguration = gapsConfiguration;
     }
 
-    @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping(value = "${info.app.baseUrl}/libraries",
+            produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getLibraries() {
         LOGGER.info("getLibraries()");
 
@@ -77,10 +82,12 @@ public class LibraryController {
         modelAndView.addObject("plexServer", plexServer);
         modelAndView.addObject("plexLibrary", plexLibrary);
         modelAndView.addObject("plexServersFound", plexServersFound);
+        modelAndView.addObject("librariesPage", true);
+        modelAndView.addObject("gapsConfiguration", gapsConfiguration);
         return modelAndView;
     }
 
-    @GetMapping(path = "{machineIdentifier}/{key}",
+    @GetMapping(path = "/libraries/{machineIdentifier}/{key}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Payload> getLibraries(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {

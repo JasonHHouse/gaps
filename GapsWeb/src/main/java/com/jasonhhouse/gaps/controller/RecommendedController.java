@@ -9,6 +9,7 @@
  */
 package com.jasonhhouse.gaps.controller;
 
+import com.jasonhhouse.gaps.GapsConfiguration;
 import com.jasonhhouse.gaps.service.GapsSearch;
 import com.jasonhhouse.gaps.BasicMovie;
 import com.jasonhhouse.gaps.Payload;
@@ -39,21 +40,24 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
-@RequestMapping("/recommended")
+@RequestMapping
 public class RecommendedController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RecommendedController.class);
 
     private final FileIoService fileIoService;
     private final GapsSearch gapsSearch;
+    private final GapsConfiguration gapsConfiguration;
 
     @Autowired
-    public RecommendedController(FileIoService fileIoService, GapsSearch gapsSearch) {
+    public RecommendedController(FileIoService fileIoService, GapsSearch gapsSearch, GapsConfiguration gapsConfiguration) {
         this.fileIoService = fileIoService;
         this.gapsSearch = gapsSearch;
+        this.gapsConfiguration = gapsConfiguration;
     }
 
-    @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping(value = "${info.app.baseUrl}/recommended",
+            produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getRecommended() {
         LOGGER.info("getRecommended()");
 
@@ -77,10 +81,12 @@ public class RecommendedController {
         modelAndView.addObject("plexProperties", plexProperties);
         modelAndView.addObject("plexServer", plexServer);
         modelAndView.addObject("plexLibrary", plexLibrary);
+        modelAndView.addObject("recommendedPage", true);
+        modelAndView.addObject("gapsConfiguration", gapsConfiguration);
         return modelAndView;
     }
 
-    @GetMapping(path = "{machineIdentifier}/{key}",
+    @GetMapping(path = "/recommended/{machineIdentifier}/{key}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Payload> getRecommended(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
@@ -112,7 +118,7 @@ public class RecommendedController {
      * @param machineIdentifier plex server id
      * @param key               plex library key
      */
-    @PutMapping(value = "/find/{machineIdentifier}/{key}",
+    @PutMapping(value = "/recommended/find/{machineIdentifier}/{key}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     public void putFindRecommencedMovies(@PathVariable("machineIdentifier") final String machineIdentifier, @PathVariable("key") final Integer key) {
@@ -127,7 +133,7 @@ public class RecommendedController {
      * @param machineIdentifier plex server id
      * @param key               plex library key
      */
-    @MessageMapping("/cancel/{machineIdentifier}/{key}")
+    @MessageMapping("/recommended/cancel/{machineIdentifier}/{key}")
     public void cancelSearching(@DestinationVariable final String machineIdentifier, @DestinationVariable final Integer key) {
         LOGGER.info("cancelSearching( {}, {} )", machineIdentifier, key);
         gapsSearch.cancelSearch();

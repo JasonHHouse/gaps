@@ -11,6 +11,7 @@ package com.jasonhhouse.gaps.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.jasonhhouse.gaps.GapsConfiguration;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
@@ -41,7 +42,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(value = "/configuration")
+@RequestMapping
 public class ConfigurationController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationController.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -55,16 +56,19 @@ public class ConfigurationController {
     private final PlexQueryImpl plexQuery;
     private final FileIoService fileIoService;
     private final SchedulerService schedulerService;
+    private final GapsConfiguration gapsConfiguration;
 
-    public ConfigurationController(TmdbService tmdbService, SimpMessagingTemplate template, PlexQueryImpl plexQuery, FileIoService fileIoService, SchedulerService schedulerService) {
+    public ConfigurationController(TmdbService tmdbService, SimpMessagingTemplate template, PlexQueryImpl plexQuery, FileIoService fileIoService, SchedulerService schedulerService, GapsConfiguration gapsConfiguration) {
         this.tmdbService = tmdbService;
         this.template = template;
         this.plexQuery = plexQuery;
         this.fileIoService = fileIoService;
         this.schedulerService = schedulerService;
+        this.gapsConfiguration = gapsConfiguration;
     }
 
-    @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping(value = "${info.app.baseUrl}/configuration",
+            produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getConfiguration() {
         LOGGER.info("getConfiguration()");
 
@@ -72,11 +76,13 @@ public class ConfigurationController {
         ModelAndView modelAndView = new ModelAndView("configuration");
         modelAndView.addObject("plexProperties", plexProperties);
         modelAndView.addObject("schedules", schedulerService.getAllSchedules());
+        modelAndView.addObject("configurationPage", true);
+        modelAndView.addObject("gapsConfiguration", gapsConfiguration);
         return modelAndView;
     }
 
     @Operation(summary = "Adds new Plex Server")
-    @PostMapping(value = "/add/plex",
+    @PostMapping(value = "/configuration/add/plex",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     public void postAddPlexServer(@Parameter(description = "The details of the Plex Server to add.") @Valid final PlexServer plexServer) {
@@ -106,7 +112,7 @@ public class ConfigurationController {
     }
 
     @Operation(summary = "Tests connection to a single Plex Server")
-    @PutMapping(value = "/test/plex",
+    @PutMapping(value = "/configuration/test/plex",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -124,7 +130,7 @@ public class ConfigurationController {
     }
 
     @Operation(summary = "Tests connection to a single Plex Server")
-    @PutMapping(value = "/test/plex/{machineIdentifier}",
+    @PutMapping(value = "/configuration/test/plex/{machineIdentifier}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<String> putTestPlexServerByMachineId(@PathVariable("machineIdentifier") final String machineIdentifier) {
@@ -146,7 +152,7 @@ public class ConfigurationController {
         return ResponseEntity.ok().body(objectNode.toString());
     }
 
-    @DeleteMapping(value = "/delete/plex/{machineIdentifier}",
+    @DeleteMapping(value = "/configuration/delete/plex/{machineIdentifier}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<String> deletePlexServer(@PathVariable("machineIdentifier") final String machineIdentifier) {
@@ -168,7 +174,7 @@ public class ConfigurationController {
         return ResponseEntity.ok().body(objectNode.toString());
     }
 
-    @PutMapping(value = "/test/tmdbKey/{tmdbKey}",
+    @PutMapping(value = "/configuration/test/tmdbKey/{tmdbKey}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Payload> postTestTmdbKey(@PathVariable("tmdbKey") final String tmdbKey) {
@@ -178,7 +184,7 @@ public class ConfigurationController {
         return ResponseEntity.ok().body(payload);
     }
 
-    @PostMapping(value = "/save/tmdbKey/{tmdbKey}",
+    @PostMapping(value = "/configuration/save/tmdbKey/{tmdbKey}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Payload> postSaveTmdbKey(@PathVariable("tmdbKey") final String tmdbKey) {

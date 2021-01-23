@@ -10,6 +10,7 @@
 
 package com.jasonhhouse.gaps.controller;
 
+import com.jasonhhouse.gaps.GapsConfiguration;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
@@ -34,14 +35,16 @@ public class RSSController {
 
     private final FileIoService fileIoService;
     private final RssService rssService;
+    private final GapsConfiguration gapsConfiguration;
 
     @Autowired
-    public RSSController(FileIoService fileIoService, RssService rssService) {
+    public RSSController(FileIoService fileIoService, RssService rssService, GapsConfiguration gapsConfiguration) {
         this.fileIoService = fileIoService;
         this.rssService = rssService;
+        this.gapsConfiguration = gapsConfiguration;
     }
 
-    @GetMapping(path = "/rss/{machineIdentifier}/{libraryKey}",
+    @GetMapping(path = "${info.app.baseUrl}/rss/{machineIdentifier}/{libraryKey}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public String getRss(@PathVariable("machineIdentifier") String machineIdentifier, @PathVariable("libraryKey") Integer libraryKey) {
         LOGGER.info("getRss( {}, {} )", machineIdentifier, libraryKey);
@@ -62,7 +65,7 @@ public class RSSController {
         }
     }
 
-    @GetMapping(path = "/rssCheck")
+    @GetMapping(path = "${info.app.baseUrl}/rssCheck")
     public ModelAndView getRssCheck() {
         LOGGER.info("getRssCheck()");
 
@@ -72,6 +75,8 @@ public class RSSController {
         modelAndView.addObject("plexServers", plexProperties.getPlexServers());
         modelAndView.addObject("plexServerMap", map);
         modelAndView.addObject("foundPlexLibraries", MapUtils.isNotEmpty(map));
+        modelAndView.addObject("rssCheckPage", true);
+        modelAndView.addObject("gapsConfiguration", gapsConfiguration);
         return modelAndView;
     }
 }

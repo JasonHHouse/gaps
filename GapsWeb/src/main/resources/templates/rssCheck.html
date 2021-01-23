@@ -28,52 +28,7 @@
     <a class="" href=".">
         <img src="/images/final-gaps.svg" class="d-inline-block align-top" alt="" width="96" height="96">
     </a>
-    <div class="collapse navbar-collapse" id="navbarColor01">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item nav-button-padding">
-                <a class="nav-link center-text nav-anchor-spacing" href="/libraries">
-                    <div class="icon list-ul-default"></div>
-                    Libraries
-                </a>
-            </li>
-            <li class="nav-item nav-button-padding">
-                <a class="nav-link center-text nav-anchor-spacing" href="/recommended">
-                    <div class="icon collection-fill-default"></div>
-                    Missing
-                </a>
-            </li>
-            <li class="nav-item nav-button-padding" hidden>
-                <a class="nav-link center-text nav-anchor-spacing" href="/mislabeled">
-                    <div class="icon exclamation-triangle-default"></div>
-                    Mislabeled
-                </a>
-            </li>
-            <li  aria-current="page" class="nav-item nav-button-padding active">
-                <a class="nav-link center-text nav-anchor-spacing" href="/rssCheck">
-                    <div class="icon rss-active"></div>
-                    RSS
-                </a>
-            </li>
-            <li class="nav-item nav-button-padding">
-                <a class="nav-link center-text nav-anchor-spacing" href="/configuration">
-                    <div class="icon gear-default"></div>
-                    Settings
-                </a>
-            </li>
-            <li class="nav-item nav-button-padding">
-                <a class="nav-link center-text nav-anchor-spacing" href="/updates">
-                    <div class="icon arrow-clockwise-default"></div>
-                    Updates
-                </a>
-            </li>
-            <li class="nav-item nav-button-padding">
-                <a class="nav-link center-text nav-anchor-spacing" href="/about">
-                    <div class="icon info-circle-default"></div>
-                    About
-                </a>
-            </li>
-        </ul>
-    </div>
+    <div th:insert="fragments/header :: navBar"></div>
 </nav>
 
 <div class="container">

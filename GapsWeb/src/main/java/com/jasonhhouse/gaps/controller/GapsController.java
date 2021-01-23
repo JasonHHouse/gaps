@@ -10,6 +10,7 @@
 package com.jasonhhouse.gaps.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jasonhhouse.gaps.GapsConfiguration;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
@@ -40,12 +41,15 @@ public class GapsController {
 
     private final FileIoService fileIoService;
 
+    private final GapsConfiguration gapsConfiguration;
+
     @Autowired
-    public GapsController(FileIoService fileIoService) {
+    public GapsController(FileIoService fileIoService, GapsConfiguration gapsConfiguration) {
         this.fileIoService = fileIoService;
+        this.gapsConfiguration = gapsConfiguration;
     }
 
-    @GetMapping(value = "/home",
+    @GetMapping(value = "${info.app.baseUrl}/home",
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getIndexOnClick() {
         LOGGER.info("getIndexOnClick()");
@@ -54,10 +58,11 @@ public class GapsController {
 
         ModelAndView modelAndView = new ModelAndView("index");
         modelAndView.addObject("plexProperties", plexProperties);
+        modelAndView.addObject("gapsConfiguration", gapsConfiguration);
         return modelAndView;
     }
 
-    @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping(value = "${info.app.baseUrl}",produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getIndex() {
         LOGGER.info("getIndex()");
 
@@ -68,9 +73,9 @@ public class GapsController {
             return new ModelAndView("redirect:/libraries");
         }
 
-
         ModelAndView modelAndView = new ModelAndView("index");
         modelAndView.addObject("plexProperties", plexProperties);
+        modelAndView.addObject("gapsConfiguration", gapsConfiguration);
         return modelAndView;
     }
 
@@ -84,25 +89,33 @@ public class GapsController {
         return ResponseEntity.ok().body(payload);
     }
 
-    @GetMapping(value = "/about",
+    @GetMapping(value = "${info.app.baseUrl}/about",
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getAbout() {
         LOGGER.info("getAbout()");
-        return new ModelAndView("about");
+
+        ModelAndView modelAndView = new ModelAndView("about");
+        modelAndView.addObject("aboutPage", true);
+        modelAndView.addObject("gapsConfiguration", gapsConfiguration);
+        return modelAndView;
     }
 
-    @GetMapping(value = "/login",
+    @GetMapping(value = "${info.app.baseUrl}/login",
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getLogin() {
         LOGGER.info("getLogin()");
         return new ModelAndView("login");
     }
 
-    @GetMapping(value = "/updates",
+    @GetMapping(value = "${info.app.baseUrl}/updates",
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getUpdates() {
         LOGGER.info("getUpdates()");
-        return new ModelAndView("updates");
+
+        ModelAndView modelAndView = new ModelAndView("updates");
+        modelAndView.addObject("updatesPage", true);
+        modelAndView.addObject("gapsConfiguration", gapsConfiguration);
+        return modelAndView;
     }
 
     @GetMapping(value = "/sounds",

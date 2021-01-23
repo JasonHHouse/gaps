@@ -9,6 +9,7 @@
  */
 package com.jasonhhouse.gaps.controller;
 
+import com.jasonhhouse.gaps.GapsConfiguration;
 import com.jasonhhouse.gaps.Mislabeled;
 import com.jasonhhouse.gaps.service.PlexQuery;
 import com.jasonhhouse.gaps.properties.PlexProperties;
@@ -31,7 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(value = "/mislabeled")
+@RequestMapping(value = "${info.app.baseUrl}/mislabeled")
 public class MislabeledController {
     private static final Logger LOGGER = LoggerFactory.getLogger(MislabeledController.class);
 
@@ -39,20 +40,25 @@ public class MislabeledController {
     private final PlexQuery plexQuery;
     private final MislabeledService mislabeledService;
     private final MediaContainerService mediaContainerService;
+    private final GapsConfiguration gapsConfiguration;
 
     @Autowired
-    public MislabeledController(FileIoService fileIoService, PlexQuery plexQuery, MislabeledService mislabeledService, MediaContainerService mediaContainerService) {
+    public MislabeledController(FileIoService fileIoService, PlexQuery plexQuery, MislabeledService mislabeledService, MediaContainerService mediaContainerService, GapsConfiguration gapsConfiguration) {
         this.fileIoService = fileIoService;
         this.plexQuery = plexQuery;
         this.mislabeledService = mislabeledService;
         this.mediaContainerService = mediaContainerService;
+        this.gapsConfiguration = gapsConfiguration;
     }
 
     @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getMislabeled() {
         LOGGER.info("getMislabeled()");
 
-        return new ModelAndView("mislabeled");
+        ModelAndView modelAndView = new ModelAndView("mislabeled");
+        modelAndView.addObject("mislabeledPage", true);
+        modelAndView.addObject("gapsConfiguration", gapsConfiguration);
+        return modelAndView;
     }
 
     @GetMapping(value = "/{machineIdentifier}/{key}")
