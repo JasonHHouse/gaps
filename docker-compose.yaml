@@ -12,4 +12,4 @@ gaps:
     - "32400"
   volumes:
     - /etc/localtime:/etc/localtime:ro
-    - /home/gaps:/usr/data
+    - /home/gaps:/usr/data:Z
