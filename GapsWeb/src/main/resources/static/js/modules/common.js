@@ -62,3 +62,7 @@ export function getRecommendedMoviesForTable(url, movieContainer, noMovieContain
     },
   });
 }
+
+export function getContextPath(url) {
+  return document.getElementById('contextPath').value + url;
+}

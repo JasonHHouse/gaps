@@ -4,7 +4,7 @@ FROM adoptopenjdk/openjdk11-openj9:jre-11.0.9_11_openj9-0.23.0
 ENV gapsVersion=*
 ENV springProfile=no-ssl-no-login
 ENV javaInitialHeapSize=150M
-
+#ENV baseUrl="/gaps"
 
 EXPOSE 32400
 
@@ -30,5 +30,6 @@ ENTRYPOINT  java  \
             -XX:+UseStringCache   \
             -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 \
             -jar  \
+            -Dinfo.app.baseUrl=${baseUrl} \
             -Dspring.profiles.active=${springProfile} \
             ./GapsWeb-${gapsVersion}.jar

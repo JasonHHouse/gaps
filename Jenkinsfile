@@ -17,7 +17,7 @@ pipeline {
     stage('Build Jars') {
       steps {
         withSonarQubeEnv('SonarQube') {
-           sh 'mvn clean install pmd:pmd checkstyle:checkstyle spotbugs:spotbugs sonar:sonar'
+           sh 'mvn clean install pmd:pmd checkstyle:checkstyle spotbugs:spotbugs'
         }
       }
     }

@@ -11,54 +11,69 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Notifications</title>
+    <title>Header</title>
 </head>
 <body>
 <header th:fragment="navBar">
-    <div class="collapse navbar-collapse" id="navbarColor01">
-        <ul class="navbar-nav mr-auto">
-            <li th:attr="aria-current=${librariesPage} ? 'page' : '', class=${librariesPage} ? 'nav-item nav-button-padding active' : 'nav-item nav-button-padding'">
-                <a class="nav-link center-text nav-anchor-spacing" th:href="${gapsConfiguration.getBaseUrl()} + '/libraries'">
-                    <div th:attr="class=${librariesPage} ? 'icon list-ul-active' : 'icon list-ul-default'"></div>
-                    Libraries
-                </a>
-            </li>
-            <li th:attr="aria-current=${recommendedPage} ? 'page' : '', class=${recommendedPage} ? 'nav-item nav-button-padding active' : 'nav-item nav-button-padding'">
-                <a class="nav-link center-text nav-anchor-spacing" th:href="${gapsConfiguration.getBaseUrl()} + '/recommended'">
-                    <div th:attr="class=${recommendedPage} ? 'icon collection-fill-active' : 'icon collection-fill-default'"></div>
-                    Missing
-                </a>
-            </li>
-            <!--<li th:attr="aria-current=${mislabeledPage} ? 'page' : '', class=${mislabeledPage} ? 'nav-item nav-button-padding active' : 'nav-item nav-button-padding'">
-                <a class="nav-link center-text nav-anchor-spacing" th:href="${gapsConfiguration.getBaseUrl()} + '/mislabeled'">
-                    <div th:attr="class=${mislabeledPage} ? 'icon exclamation-triangle-active' : 'icon exclamation-triangle-default'"></div>
-                    Mislabeled
-                </a>
-            </li>-->
-            <li th:attr="aria-current=${rssCheckPage} ? 'page' : '', class=${rssCheckPage} ? 'nav-item nav-button-padding active' : 'nav-item nav-button-padding'">
-                <a class="nav-link center-text nav-anchor-spacing" th:href="${gapsConfiguration.getBaseUrl()} + '/rssCheck'">
-                    <div th:attr="class=${rssCheckPage} ? 'icon rss-active' : 'icon rss-default'"></div>
-                    RSS
-                </a>
-            </li>
-            <li th:attr="aria-current=${configurationPage} ? 'page' : '', class=${configurationPage} ? 'nav-item nav-button-padding active' : 'nav-item nav-button-padding'">
-                <a class="nav-link center-text nav-anchor-spacing" th:href="${gapsConfiguration.getBaseUrl()} + '/configuration'">
-                    <div th:attr="class=${configurationPage} ? 'icon gear-active' : 'icon gear-default'"></div>
-                    Settings
-                </a>
-            </li>
-            <li th:attr="aria-current=${updatesPage} ? 'page' : '', class=${updatesPage} ? 'nav-item nav-button-padding active' : 'nav-item nav-button-padding'">
-                <a class="nav-link center-text nav-anchor-spacing" th:href="${gapsConfiguration.getBaseUrl()} + '/updates'">
-                    <div th:attr="class=${updatesPage} ? 'icon arrow-clockwise-active' : 'icon arrow-clockwise-default'"></div>
-                    Updates
-                </a>
-            </li>
-            <li th:attr="aria-current=${aboutPage} ? 'page' : '', class=${aboutPage} ? 'nav-item nav-button-padding active' : 'nav-item nav-button-padding'">
-                <a class="nav-link center-text nav-anchor-spacing" th:href="${gapsConfiguration.getBaseUrl()} + '/about'">
-                    <div th:attr="class=${aboutPage} ? 'icon info-circle-active' : 'icon info-circle-default'"></div>
-                    About
-                </a>
-            </li>
-        </ul>
-    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="" th:href="@{/}">
+            <img th:src="@{/images/final-gaps.svg}" class="d-inline-block align-top" alt="" width="96" height="96">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li th:attr="aria-current=${librariesPage} ? 'page' : '', class=${librariesPage} ? 'nav-item nav-button-padding active' : 'nav-item nav-button-padding'">
+                    <a class="nav-link center-text nav-anchor-spacing" th:href="@{'/libraries'}">
+                        <div th:attr="class=${librariesPage} ? 'icon activePage' : 'icon default'"
+                             th:style="'mask: url(' + @{'/images/list-ul.svg'} + ') no-repeat center / contain; -webkit-mask: url(' + @{'/images/list-ul.svg'} + ') no-repeat center / contain;'"></div>
+                        Libraries
+                    </a>
+                </li>
+                <li th:attr="aria-current=${recommendedPage} ? 'page' : '', class=${recommendedPage} ? 'nav-item nav-button-padding active' : 'nav-item nav-button-padding'">
+                    <a class="nav-link center-text nav-anchor-spacing" th:href="@{'/recommended'}">
+                        <div th:attr="class=${recommendedPage} ? 'icon activePage' : 'icon default'"
+                             th:style="'mask: url(' + @{'/images/collection-fill.svg'} + ') no-repeat center / contain; -webkit-mask: url(' + @{'/images/collection-fill.svg'} + ') no-repeat center / contain;'"></div>
+                        Missing
+                    </a>
+                </li>
+                <!--<li th:attr="aria-current=${mislabeledPage} ? 'page' : '', class=${mislabeledPage} ? 'nav-item nav-button-padding active' : 'nav-item nav-button-padding'">
+                    <a class="nav-link center-text nav-anchor-spacing" th:href="${gapsConfiguration.getBaseUrl()} + '/mislabeled'">
+                        <div th:attr="class=${mislabeledPage} ? 'icon activePage' : 'icon default'"
+                            th:style="'mask: url(' + @{'/images/exclamation-triangle.svg'} + ') no-repeat center / contain; -webkit-mask: url(' + @{'/images/exclamation-triangle.svg'} + ') no-repeat center / contain;'"></div>
+                        Mislabeled
+                    </a>
+                </li>-->
+                <li th:attr="aria-current=${rssCheckPage} ? 'page' : '', class=${rssCheckPage} ? 'nav-item nav-button-padding active' : 'nav-item nav-button-padding'">
+                    <a class="nav-link center-text nav-anchor-spacing" th:href="@{'/rssCheck'}">
+                        <div th:attr="class=${rssCheckPage} ? 'icon activePage' : 'icon default'"
+                             th:style="'mask: url(' + @{'/images/rss.svg'} + ') no-repeat center / contain; -webkit-mask: url(' + @{'/images/rss.svg'} + ') no-repeat center / contain;'"></div>
+                        RSS
+                    </a>
+                </li>
+                <li th:attr="aria-current=${configurationPage} ? 'page' : '', class=${configurationPage} ? 'nav-item nav-button-padding active' : 'nav-item nav-button-padding'">
+                    <a class="nav-link center-text nav-anchor-spacing" th:href="@{'/configuration'}">
+                        <div th:attr="class=${configurationPage} ? 'icon activePage' : 'icon default'"
+                             th:style="'mask: url(' + @{'/images/gear.svg'} + ') no-repeat center / contain; -webkit-mask: url(' + @{'/images/gear.svg'} + ') no-repeat center / contain;'"></div>
+                        Settings
+                    </a>
+                </li>
+                <li th:attr="aria-current=${updatesPage} ? 'page' : '', class=${updatesPage} ? 'nav-item nav-button-padding active' : 'nav-item nav-button-padding'">
+                    <a class="nav-link center-text nav-anchor-spacing" th:href="@{'/updates'}">
+                        <div th:attr="class=${updatesPage} ? 'icon activePage' : 'icon default'"
+                             th:style="'mask: url(' + @{'/images/arrow-clockwise.svg'} + ') no-repeat center / contain; -webkit-mask: url(' + @{'/images/arrow-clockwise.svg'} + ') no-repeat center / contain;'"></div>
+                        Updates
+                    </a>
+                </li>
+                <li th:attr="aria-current=${aboutPage} ? 'page' : '', class=${aboutPage} ? 'nav-item nav-button-padding active' : 'nav-item nav-button-padding'">
+                    <a class="nav-link center-text nav-anchor-spacing" th:href="@{'/about'}">
+                        <div th:attr="class=${aboutPage} ? 'icon activePage' : 'icon default'"
+                             th:style="'mask: url(' + @{'/images/info-circle.svg'} + ') no-repeat center / contain; -webkit-mask: url(' + @{'/images/info-circle.svg'} + ') no-repeat center / contain;'"></div>
+                        About
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 </header>
+
+</body>
+</html>

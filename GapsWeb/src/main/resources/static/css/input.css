@@ -71,88 +71,12 @@
     margin-right: auto;
 }
 
-.list-ul-default {
+.default {
     background-color: #fafafa; /* defines the background color of the image */
-    mask: url(/images/list-ul.svg) no-repeat center / contain;
-    -webkit-mask: url(/images/list-ul.svg) no-repeat center / contain;
 }
 
-.list-ul-active {
+.activePage {
     background-color: #00bc8c; /* defines the background color of the image */
-    mask: url(/images/list-ul.svg) no-repeat center / contain;
-    -webkit-mask: url(/images/list-ul.svg) no-repeat center / contain;
-}
-
-.collection-fill-active {
-    background-color: #00bc8c; /* defines the background color of the image */
-    mask: url(/images/collection-fill.svg) no-repeat center / contain;
-    -webkit-mask: url(/images/collection-fill.svg) no-repeat center / contain;
-}
-
-.collection-fill-default {
-    background-color: #fafafa; /* defines the background color of the image */
-    mask: url(/images/collection-fill.svg) no-repeat center / contain;
-    -webkit-mask: url(/images/collection-fill.svg) no-repeat center / contain;
-}
-
-.exclamation-triangle-default {
-    background-color: #fafafa; /* defines the background color of the image */
-    mask: url(/images/exclamation-triangle.svg) no-repeat center / contain;
-    -webkit-mask: url(/images/exclamation-triangle.svg) no-repeat center / contain;
-}
-
-.exclamation-triangle-active {
-    background-color: #00bc8c; /* defines the background color of the image */
-    mask: url(/images/exclamation-triangle.svg) no-repeat center / contain;
-    -webkit-mask: url(/images/exclamation-triangle.svg) no-repeat center / contain;
-}
-
-.rss-default {
-    background-color: #fafafa; /* defines the background color of the image */
-    mask: url(/images/rss.svg) no-repeat center / contain;
-    -webkit-mask: url(/images/rss.svg) no-repeat center / contain;
-}
-
-.rss-active {
-    background-color: #00bc8c; /* defines the background color of the image */
-    mask: url(/images/rss.svg) no-repeat center / contain;
-    -webkit-mask: url(/images/rss.svg) no-repeat center / contain;
-}
-
-.gear-default {
-    background-color: #fafafa; /* defines the background color of the image */
-    mask: url(/images/gear.svg) no-repeat center / contain;
-    -webkit-mask: url(/images/gear.svg) no-repeat center / contain;
-}
-
-.gear-active {
-    background-color: #00bc8c; /* defines the background color of the image */
-    mask: url(/images/gear.svg) no-repeat center / contain;
-    -webkit-mask: url(/images/gear.svg) no-repeat center / contain;
-}
-
-.arrow-clockwise-default {
-    background-color: #fafafa; /* defines the background color of the image */
-    mask: url(/images/arrow-clockwise.svg) no-repeat center / contain;
-    -webkit-mask: url(/images/arrow-clockwise.svg) no-repeat center / contain;
-}
-
-.arrow-clockwise-active {
-    background-color: #00bc8c; /* defines the background color of the image */
-    mask: url(/images/arrow-clockwise.svg) no-repeat center / contain;
-    -webkit-mask: url(/images/arrow-clockwise.svg) no-repeat center / contain;
-}
-
-.info-circle-default {
-    background-color: #fafafa; /* defines the background color of the image */
-    mask: url(/images/info-circle.svg) no-repeat center / contain;
-    -webkit-mask: url(/images/info-circle.svg) no-repeat center / contain;
-}
-
-.info-circle-active {
-    background-color: #00bc8c; /* defines the background color of the image */
-    mask: url(/images/info-circle.svg) no-repeat center / contain;
-    -webkit-mask: url(/images/info-circle.svg) no-repeat center / contain;
 }
 
 .long-text {

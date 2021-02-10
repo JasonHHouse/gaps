@@ -23,6 +23,7 @@ import { saveEmailNotifications, testEmailNotifications } from '../modules/email
 import { saveDiscordNotifications, testDiscordNotifications } from '../modules/discord-notifications.min.js';
 import { getSoundOptions, savePushOverNotifications, testPushOverNotifications } from '../modules/push-over-notifications.min.js';
 import { openPlexLibraryConfigurationModel, savePlexLibraryConfiguration } from '../modules/plex-configuration.min.js';
+import { getContextPath } from '../modules/common.min.js';
 
 function testTmdbKey() {
   hideAllAlertsAndSpinners();
@@ -35,7 +36,7 @@ function testTmdbKey() {
 
   $.ajax({
     type: 'PUT',
-    url: `/configuration/test/tmdbKey/${$('#movieDbApiKey').val()}`,
+    url: getContextPath(`/configuration/test/tmdbKey/${$('#movieDbApiKey').val()}`),
     contentType: 'application/json',
     dataType: 'json',
     success(result) {
@@ -65,7 +66,7 @@ function saveTmdbKey() {
 
   $.ajax({
     type: 'POST',
-    url: `/configuration/save/tmdbKey/${$('#movieDbApiKey').val()}`,
+    url: getContextPath(`/configuration/save/tmdbKey/${$('#movieDbApiKey').val()}`),
     contentType: 'application/json; charset=utf-8',
     dataType: 'json',
     success(result) {
@@ -95,7 +96,7 @@ function testPlexServer() {
 
   $.ajax({
     type: 'PUT',
-    url: '/configuration/test/plex',
+    url: getContextPath('/configuration/test/plex'),
     data: {
       plexToken: $('#plexToken').val(),
       address: $('#address').val(),
@@ -129,7 +130,7 @@ function addPlexServer() {
 
   $.ajax({
     type: 'POST',
-    url: '/configuration/add/plex',
+    url: getContextPath('/configuration/add/plex'),
     data: {
       plexToken: $('#plexToken').val(),
       address: $('#address').val(),
@@ -149,7 +150,7 @@ function testExistingPlexServer(machineIdentifier) {
 
   $.ajax({
     type: 'PUT',
-    url: `/configuration/test/plex/${machineIdentifier}`,
+    url: getContextPath(`/configuration/test/plex/${machineIdentifier}`),
     dataType: 'json',
     success(result) {
       hideAllAlertsAndSpinners();
@@ -172,7 +173,7 @@ function removePlexServer(machineIdentifier) {
 
   $.ajax({
     type: 'DELETE',
-    url: `/configuration/delete/plex/${machineIdentifier}`,
+    url: getContextPath(`/configuration/delete/plex/${machineIdentifier}`),
     success(result) {
       hideAllAlertsAndSpinners();
       if (result && result.success) {
@@ -196,7 +197,7 @@ function setDeleteAllEnabledOrDisabled() {
 function nuke() {
   $.ajax({
     type: 'PUT',
-    url: '/nuke',
+    url: getContextPath('/nuke'),
     success(result) {
       hideAllAlertsAndSpinners();
       if (result && result.code === Payload.NUKE_SUCCESSFUL) {
@@ -245,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
   });
 
-  const socket = new SockJS('/gs-guide-websocket');
+  const socket = new SockJS(getContextPath('/gs-guide-websocket'));
   const stompClient = Stomp.over(socket);
   stompClient.connect({}, () => {
     stompClient.subscribe('/configuration/plex/complete', (message) => {

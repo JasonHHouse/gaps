@@ -13,68 +13,18 @@
 <head>
     <title>Gaps</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
-    <link href="/images/gaps.ico" rel="shortcut icon"/>
-    <link href="/css/libraries/bootstrap.min.css" rel="stylesheet"/>
-    <link href="/css/libraries/datatables.min.css" rel="stylesheet" type="text/css"/>
-    <link href="/css/libraries/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css"/>
-    <link href="/css/input.min.css" rel="stylesheet">
+    <link th:href="@{/images/gaps.ico}" rel="shortcut icon"/>
+    <link th:href="@{/css/libraries/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/libraries/datatables.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/libraries/dataTables.bootstrap4.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/input.min.css}" rel="stylesheet">
 
     <!--Let browser know website is optimized for mobile-->
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="" href=".">
-        <img src="/images/final-gaps.svg" class="d-inline-block align-top" alt="" width="96" height="96">
-    </a>
-    <div class="collapse navbar-collapse" id="navbarColor01">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item nav-button-padding">
-                <a class="nav-link center-text nav-anchor-spacing" href="/libraries">
-                    <div class="icon list-ul-default"></div>
-                    Libraries
-                </a>
-            </li>
-            <li class="nav-item nav-button-padding">
-                <a class="nav-link center-text nav-anchor-spacing" href="/recommended">
-                    <div class="icon collection-fill-default"></div>
-                    Missing
-                </a>
-            </li>
-            <li class="nav-item nav-button-padding" hidden>
-                <a class="nav-link center-text nav-anchor-spacing" href="/mislabeled">
-                    <div class="icon exclamation-triangle-default"></div>
-                    Mislabeled
-                </a>
-            </li>
-            <li  aria-current="page" class="nav-item nav-button-padding active">
-                <a class="nav-link center-text nav-anchor-spacing" href="/rssCheck">
-                    <div class="icon rss-active"></div>
-                    RSS
-                </a>
-            </li>
-            <li class="nav-item nav-button-padding">
-                <a class="nav-link center-text nav-anchor-spacing" href="/configuration">
-                    <div class="icon gear-default"></div>
-                    Settings
-                </a>
-            </li>
-            <li class="nav-item nav-button-padding">
-                <a class="nav-link center-text nav-anchor-spacing" href="/updates">
-                    <div class="icon arrow-clockwise-default"></div>
-                    Updates
-                </a>
-            </li>
-            <li class="nav-item nav-button-padding">
-                <a class="nav-link center-text nav-anchor-spacing" href="/about">
-                    <div class="icon info-circle-default"></div>
-                    About
-                </a>
-            </li>
-        </ul>
-    </div>
-</nav>
+<div th:insert="fragments/header :: navBar"></div>
 
 <div class="container">
     <h3 class="top-margin">RSS</h3>
@@ -82,11 +32,11 @@
     <div th:if="${!foundPlexLibraries}" th:remove="tag">
         <div class="top-margin bottom-margin">
             <div class="card mx-auto" style="width: 24rem;">
-                <img alt="..." class="card-img-top" src="/images/mind_the_gap.png">
+                <img alt="..." class="card-img-top" th:src="@{/images/mind_the_gap.png}">
                 <div class="card-body">
                     <h5 class="card-title">Your movies are really missing</h5>
                     <p class="card-text">You need to run Gaps at least once to have found the missing movies.</p>
-                    <a class="btn btn-primary" href="/recommended">Search</a>
+                    <a class="btn btn-primary" th:href="@{/recommended}">Search</a>
                 </div>
             </div>
         </div>
@@ -97,7 +47,7 @@
 
         <form action="/rss" class="top-margin" method="get">
             <div th:each="instance : ${plexServerMap}" class="form-check">
-                <a th:href="'/rss/' + ${instance.value.getMachineIdentifier() + '/' + instance.key.getKey()}"
+                <a th:th:href="'@{/rss/}' + ${instance.value.getMachineIdentifier() + '/' + instance.key.getKey()}"
                    th:text="${instance.value.getFriendlyName() + ' - ' + instance.key.getTitle()}">
                 </a>
             </div>
@@ -106,7 +56,7 @@
 
 </div>
 
-<script src="/js/libraries/jquery-3.4.1.min.js" type="text/javascript"></script>
-<script src="/js/libraries/bootstrap.bundle.min.js" type="text/javascript"></script>
+<script th:src="@{/js/libraries/jquery-3.4.1.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/libraries/bootstrap.bundle.min.js}" type="text/javascript"></script>
 </body>
 </html>

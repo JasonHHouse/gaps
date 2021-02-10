@@ -16,6 +16,8 @@ ENV ENABLE_SSL false
 
 ENV ENABLE_LOGIN false
 
+ENV BASE_URL ""
+
 RUN mkdir -p /usr/data && chmod 777 /usr/data
 
 COPY movieIds.json /usr/data

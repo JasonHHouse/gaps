@@ -88,7 +88,10 @@ public class GapsController {
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getAbout() {
         LOGGER.info("getAbout()");
-        return new ModelAndView("about");
+
+        ModelAndView modelAndView = new ModelAndView("about");
+        modelAndView.addObject("aboutPage", true);
+        return modelAndView;
     }
 
     @GetMapping(value = "/login",
@@ -102,7 +105,9 @@ public class GapsController {
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getUpdates() {
         LOGGER.info("getUpdates()");
-        return new ModelAndView("updates");
+        ModelAndView modelAndView = new ModelAndView("updates");
+        modelAndView.addObject("updatesPage", true);
+        return modelAndView;
     }
 
     @GetMapping(value = "/sounds",

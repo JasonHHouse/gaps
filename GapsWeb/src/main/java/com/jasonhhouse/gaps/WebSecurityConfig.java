@@ -80,7 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                     .formLogin()
                     .loginPage("/login")
-                    .defaultSuccessUrl(gapsConfiguration.getBaseUrl() + "/home")
+                    .defaultSuccessUrl("/home")
                     .permitAll()
                     .and()
                     .logout()
