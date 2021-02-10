@@ -11,11 +11,11 @@
 /* global cy, it, describe */
 /* eslint no-undef: "error" */
 
-import { spyOnAddEventListener } from '../common.spec.js';
+import { BASE_URL, spyOnAddEventListener } from '../common.spec.js';
 
 describe('Verify Log In Page', () => {
   it('Default page', () => {
-    cy.visit('/login', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/login`, { onBeforeLoad: spyOnAddEventListener });
 
     cy.get(':nth-child(1) > label')
       .should('have.text', 'Username');

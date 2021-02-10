@@ -12,7 +12,7 @@
 /* eslint no-undef: "error" */
 
 import faker from 'faker';
-import { CYPRESS_VALUES, nuke } from '../common.spec.js';
+import { BASE_URL, CYPRESS_VALUES, nuke } from '../common.spec.js';
 
 function checkElements(slackWebHookUrl, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#slackWebHookUrl')
@@ -49,7 +49,7 @@ describe('Check Slack Notification Agent', () => {
         expect(body.extras.notificationTypes.length).to.eq(0);
         expect(body.extras.webHookUrl).to.eq('');
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -96,7 +96,7 @@ describe('Check Slack Notification Agent', () => {
         expect(body.code).to.eq(92);
         expect(body.extras.webHookUrl).to.eq(slack.webHookUrl);
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -124,7 +124,7 @@ describe('Check Slack Notification Agent', () => {
         expect(body.code).to.eq(92);
         expect(body.extras.webHookUrl).to.eq(slack.webHookUrl);
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -134,7 +134,7 @@ describe('Check Slack Notification Agent', () => {
   });
 
   it('Check saving Slack Notification', () => {
-    cy.visit('/configuration');
+    cy.visit(`${BASE_URL}/configuration`);
 
     cy.get('#notificationTab')
       .click();
@@ -189,7 +189,7 @@ describe('Check Slack Notification Agent', () => {
   });
 
   it('Check Successful Saving and Failure Testing Slack Notification', () => {
-    cy.visit('/configuration');
+    cy.visit(`${BASE_URL}/configuration`);
 
     cy.get('#notificationTab')
       .click();

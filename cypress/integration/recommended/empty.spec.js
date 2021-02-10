@@ -11,13 +11,13 @@
 /* global cy, describe, it, before */
 /* eslint no-undef: "error" */
 
-import { redLibraryBefore, spyOnAddEventListener } from '../common.spec.js';
+import { BASE_URL, redLibraryBefore, spyOnAddEventListener } from '../common.spec.js';
 
 describe('Not Searched Yet Recommended', () => {
   before(redLibraryBefore);
 
   it('Clean configuration page load', () => {
-    cy.visit('/recommended', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/recommended`, { onBeforeLoad: spyOnAddEventListener });
 
     cy.get('#noMovieContainer > .card > .card-img-top')
       .should('be.visible');

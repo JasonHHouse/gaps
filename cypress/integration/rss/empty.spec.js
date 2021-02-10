@@ -11,13 +11,13 @@
 /* global cy, describe, it, before */
 /* eslint no-undef: "error" */
 
-import { nuke, spyOnAddEventListener } from '../common.spec.js';
+import { BASE_URL, nuke, spyOnAddEventListener } from '../common.spec.js';
 
 describe('Not Searched Yet RSS', () => {
   before(nuke);
 
   it('Clean configuration page load', () => {
-    cy.visit('/rssCheck', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/rssCheck`, { onBeforeLoad: spyOnAddEventListener });
 
     cy.get('.card-img-top')
       .should('be.visible');

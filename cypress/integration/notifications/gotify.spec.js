@@ -12,7 +12,7 @@
 /* eslint no-undef: "error" */
 
 import faker from 'faker';
-import { CYPRESS_VALUES, nuke } from '../common.spec.js';
+import { BASE_URL, CYPRESS_VALUES, nuke } from '../common.spec.js';
 
 function checkElements(address, token, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#gotifyAddress')
@@ -53,7 +53,7 @@ describe('Check Gotify Notification Agent', () => {
         expect(body.extras.address).to.eq('');
         expect(body.extras.token).to.eq('');
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -105,7 +105,7 @@ describe('Check Gotify Notification Agent', () => {
         expect(body.extras.address).to.eq(gotify.address);
         expect(body.extras.token).to.eq(gotify.token);
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -157,7 +157,7 @@ describe('Check Gotify Notification Agent', () => {
         expect(body.extras.address).to.eq(gotify.address);
         expect(body.extras.token).to.eq(gotify.token);
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -189,7 +189,7 @@ describe('Check Gotify Notification Agent', () => {
   });
 
   it('Check saving Gotify Notification', () => {
-    cy.visit('/configuration');
+    cy.visit(`${BASE_URL}/configuration`);
 
     cy.get('#notificationTab')
       .click();
@@ -250,7 +250,7 @@ describe('Check Gotify Notification Agent', () => {
   });
 
   it('Check Successful Saving and Failure Testing Gotify Notification', () => {
-    cy.visit('/configuration');
+    cy.visit(`${BASE_URL}/configuration`);
 
     cy.get('#notificationTab')
       .click();

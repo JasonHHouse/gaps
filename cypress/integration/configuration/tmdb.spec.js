@@ -12,11 +12,11 @@
 /* eslint no-undef: "error" */
 
 import faker from 'faker';
-import { spyOnAddEventListener } from '../common.spec.js';
+import { BASE_URL, spyOnAddEventListener } from '../common.spec.js';
 
 describe('TMDB Configuration Tests', () => {
   before(() => {
-    cy.visit('/configuration', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/configuration`, { onBeforeLoad: spyOnAddEventListener });
   });
   it('Test invalid TMDB Key', () => {
     const invalidKey = faker.random.alphaNumeric(16);
@@ -78,7 +78,7 @@ describe('TMDB Configuration Tests', () => {
     cy.get('#tmdbSaveSuccess')
       .should('be.visible');
 
-    cy.visit('/configuration', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/configuration`, { onBeforeLoad: spyOnAddEventListener });
 
     cy.get('[data-cy=movieDbApiKey]')
       .should('have.value', invalidKey);
@@ -102,7 +102,7 @@ describe('TMDB Configuration Tests', () => {
     cy.get('#tmdbSaveSuccess')
       .should('be.visible');
 
-    cy.visit('/configuration', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/configuration`, { onBeforeLoad: spyOnAddEventListener });
 
     cy.get('[data-cy=movieDbApiKey]')
       .should('have.value', '723b4c763114904392ca441909aa0375');

@@ -43,6 +43,7 @@ server:
   error:
     whitelabel:
       enabled: false
+    path: /error
 info:
   app:
     name: Gaps

@@ -11,7 +11,7 @@
 /* global cy, it, describe */
 /* eslint no-undef: "error" */
 
-import { spyOnAddEventListener } from '../common.spec.js';
+import { BASE_URL, spyOnAddEventListener } from '../common.spec.js';
 
 function checkNavIcons(cy, isLibDefault = true, isMissingDefault = true, isRssDefault = true, isSettingsDefault = true, isUpdatesDefault = true, isAboutDefault = true) {
   cy.get(':nth-child(1) > .nav-link > .icon')
@@ -38,49 +38,43 @@ function checkNavIcons(cy, isLibDefault = true, isMissingDefault = true, isRssDe
 
 describe('Verify Navbars', () => {
   it('Index page', () => {
-    cy.visit('/home', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/home`, { onBeforeLoad: spyOnAddEventListener });
 
     checkNavIcons(cy);
   });
 
   it('About page', () => {
-    cy.visit('/about', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/about`, { onBeforeLoad: spyOnAddEventListener });
 
     checkNavIcons(cy, undefined, undefined, undefined, undefined, undefined, false);
   });
 
   it('Settings page', () => {
-    cy.visit('/configuration', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/configuration`, { onBeforeLoad: spyOnAddEventListener });
 
     checkNavIcons(cy, undefined, undefined, undefined, false, undefined, undefined);
   });
 
   it('Libraries page', () => {
-    cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
-
-    checkNavIcons(cy, false, undefined, undefined, undefined, undefined, undefined);
-  });
-
-  it('Libraries page', () => {
-    cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/libraries`, { onBeforeLoad: spyOnAddEventListener });
 
     checkNavIcons(cy, false, undefined, undefined, undefined, undefined, undefined);
   });
 
   it('Recommended page', () => {
-    cy.visit('/recommended', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/recommended`, { onBeforeLoad: spyOnAddEventListener });
 
     checkNavIcons(cy, undefined, false, undefined, undefined, undefined, undefined);
   });
 
   it('RSS page', () => {
-    cy.visit('/rssCheck', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/rssCheck`, { onBeforeLoad: spyOnAddEventListener });
 
     checkNavIcons(cy, undefined, undefined, false, undefined, undefined, undefined);
   });
 
   it('Updates page', () => {
-    cy.visit('/updates', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/updates`, { onBeforeLoad: spyOnAddEventListener });
 
     checkNavIcons(cy, undefined, undefined, undefined, undefined, false, undefined);
   });

@@ -12,7 +12,7 @@
 /* eslint no-undef: "error" */
 
 import faker from 'faker';
-import { CYPRESS_VALUES, nuke } from '../common.spec.js';
+import { BASE_URL, CYPRESS_VALUES, nuke } from '../common.spec.js';
 
 function checkElements(token, user, priority, sound, retry, expire, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#pushOverToken')
@@ -69,7 +69,7 @@ describe('Check PushOver Notification Agent', () => {
         expect(body.extras.retry).to.eq(0);
         expect(body.extras.expire).to.eq(0);
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -107,7 +107,7 @@ describe('Check PushOver Notification Agent', () => {
         expect(body.extras.retry).to.eq(pushOver.retry);
         expect(body.extras.expire).to.eq(pushOver.expire);
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -145,7 +145,7 @@ describe('Check PushOver Notification Agent', () => {
         expect(body.extras.retry).to.eq(pushOver.retry);
         expect(body.extras.expire).to.eq(pushOver.expire);
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -155,7 +155,7 @@ describe('Check PushOver Notification Agent', () => {
   });
 
   it('Check saving PushOver Notification', () => {
-    cy.visit('/configuration');
+    cy.visit(`${BASE_URL}/configuration`);
 
     cy.get('#notificationTab')
       .click();
@@ -231,7 +231,7 @@ describe('Check PushOver Notification Agent', () => {
   });
 
   it('Check Successful Saving and Failure Testing PushOver Notification', () => {
-    cy.visit('/configuration');
+    cy.visit(`${BASE_URL}/configuration`);
 
     cy.get('#notificationTab')
       .click();

@@ -11,7 +11,9 @@
 /* global cy, it, describe, beforeEach, expect */
 /* eslint no-undef: "error" */
 
-import { nuke, redLibraryBefore, spyOnAddEventListener } from '../common.spec.js';
+import {
+  BASE_URL, nuke, redLibraryBefore, spyOnAddEventListener,
+} from '../common.spec.js';
 
 function checkForDuplicates(ownedMovies, recommendedMovies) {
   cy.log(`recommendedMovies.length: ${recommendedMovies.length}`);
@@ -37,7 +39,7 @@ function checkForDuplicates(ownedMovies, recommendedMovies) {
 }
 
 function searchBestMovieLibrary(cy) {
-  cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
+  cy.visit(`${BASE_URL}/libraries`, { onBeforeLoad: spyOnAddEventListener });
 
   cy.get('[data-cy=dropdownMenu]')
     .click();
@@ -51,7 +53,7 @@ function searchBestMovieLibrary(cy) {
   // Wait for timeout from clearing data
   cy.wait(5000);
 
-  cy.visit('/recommended', { onBeforeLoad: spyOnAddEventListener });
+  cy.visit(`${BASE_URL}/recommended`, { onBeforeLoad: spyOnAddEventListener });
 
   cy.get('[data-cy=dropdownMenu]')
     .click();
@@ -64,7 +66,7 @@ function searchBestMovieLibrary(cy) {
 }
 
 function searchMovieWithNewMetadataLibrary(cy) {
-  cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
+  cy.visit(`${BASE_URL}/libraries`, { onBeforeLoad: spyOnAddEventListener });
 
   cy.get('[data-cy=dropdownMenu]')
     .click();
@@ -82,7 +84,7 @@ function searchMovieWithNewMetadataLibrary(cy) {
   cy.get('#movies_info')
     .contains('Showing 1 to 1 of 1 entries');
 
-  cy.visit('/recommended', { onBeforeLoad: spyOnAddEventListener });
+  cy.visit(`${BASE_URL}/recommended`, { onBeforeLoad: spyOnAddEventListener });
 }
 
 function waitUtilSearchingIsDone() {

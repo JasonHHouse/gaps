@@ -12,7 +12,7 @@
 /* eslint no-undef: "error" */
 
 import faker from 'faker';
-import { CYPRESS_VALUES, nuke } from '../common.spec.js';
+import { BASE_URL, CYPRESS_VALUES, nuke } from '../common.spec.js';
 
 function checkElements(discordWebHookUrl, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#discordWebHookUrl')
@@ -52,7 +52,7 @@ describe('Check Discord Notification Agent', () => {
             expect(body.extras.webHookUrl).to.eq(discord.webHookUrl);
           });
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -106,7 +106,7 @@ describe('Check Discord Notification Agent', () => {
         expect(body.code).to.eq(142);
         expect(body.extras.webHookUrl).to.eq(dummyAll.webHookUrl);
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -154,7 +154,7 @@ describe('Check Discord Notification Agent', () => {
         expect(body.code).to.eq(142);
         expect(body.extras.webHookUrl).to.eq(tmdbOnly.webHookUrl);
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -183,7 +183,7 @@ describe('Check Discord Notification Agent', () => {
   });
 
   it('Check saving Discord Notification', () => {
-    cy.visit('/configuration');
+    cy.visit(`${BASE_URL}/configuration`);
 
     cy.get('#notificationTab')
       .click();
@@ -238,7 +238,7 @@ describe('Check Discord Notification Agent', () => {
   });
 
   it('Check Successful Saving and Failure Testing Discord Notification', () => {
-    cy.visit('/configuration');
+    cy.visit(`${BASE_URL}/configuration`);
 
     cy.get('#notificationTab')
       .click();

@@ -11,10 +11,10 @@
 /* global cy, describe, it, expect */
 /* eslint no-undef: "error" */
 
-import { redLibraryBefore, spyOnAddEventListener } from '../common.spec.js';
+import { BASE_URL, redLibraryBefore, spyOnAddEventListener } from '../common.spec.js';
 
 function searchSawLibrary(cy) {
-  cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
+  cy.visit(`${BASE_URL}/libraries`, { onBeforeLoad: spyOnAddEventListener });
 
   cy.get('[data-cy=dropdownMenu]')
     .click();
@@ -32,7 +32,7 @@ function searchSawLibrary(cy) {
   cy.get('#movies_info')
     .should('have.text', 'Showing 1 to 1 of 1 entries');
 
-  cy.visit('/recommended', { onBeforeLoad: spyOnAddEventListener });
+  cy.visit(`${BASE_URL}/recommended`, { onBeforeLoad: spyOnAddEventListener });
 }
 
 describe('Recommended API', () => {

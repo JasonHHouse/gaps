@@ -12,7 +12,7 @@
 /* eslint no-undef: "error" */
 
 import faker from 'faker';
-import { CYPRESS_VALUES, nuke } from '../common.spec.js';
+import { BASE_URL, CYPRESS_VALUES, nuke } from '../common.spec.js';
 
 function checkElements(channelTag, token, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#pushBulletChannelTag')
@@ -53,7 +53,7 @@ describe('Check PushBullet Notification Agent', () => {
         expect(body.extras.channel_tag).to.eq('');
         expect(body.extras.accessToken).to.eq('');
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -105,7 +105,7 @@ describe('Check PushBullet Notification Agent', () => {
         expect(body.extras.channel_tag).to.eq(pushBullet.channel_tag);
         expect(body.extras.accessToken).to.eq(pushBullet.accessToken);
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -157,7 +157,7 @@ describe('Check PushBullet Notification Agent', () => {
         expect(body.extras.channel_tag).to.eq(pushBullet.channel_tag);
         expect(body.extras.accessToken).to.eq(pushBullet.accessToken);
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -189,7 +189,7 @@ describe('Check PushBullet Notification Agent', () => {
   });
 
   it('Check saving PushBullet Notification', () => {
-    cy.visit('/configuration');
+    cy.visit(`${BASE_URL}/configuration`);
 
     cy.get('#notificationTab')
       .click();
@@ -250,7 +250,7 @@ describe('Check PushBullet Notification Agent', () => {
   });
 
   it('Check Successful Saving and Failure Testing PushBullet Notification', () => {
-    cy.visit('/configuration');
+    cy.visit(`${BASE_URL}/configuration`);
 
     cy.get('#notificationTab')
       .click();

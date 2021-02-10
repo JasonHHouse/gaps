@@ -12,7 +12,7 @@
 /* eslint no-undef: "error" */
 
 import faker from 'faker';
-import { CYPRESS_VALUES, nuke } from '../common.spec.js';
+import { BASE_URL, CYPRESS_VALUES, nuke } from '../common.spec.js';
 
 function checkElements(botId, chatId, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#telegramBotId')
@@ -53,7 +53,7 @@ describe('Check Telegram Notification Agent', () => {
         expect(body.extras.botId).to.eq('');
         expect(body.extras.chatId).to.eq('');
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -83,7 +83,7 @@ describe('Check Telegram Notification Agent', () => {
         expect(body.extras.chatId).to.eq(telegram.chatId);
         expect(body.extras.botId).to.eq(telegram.botId);
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -113,7 +113,7 @@ describe('Check Telegram Notification Agent', () => {
         expect(body.extras.chatId).to.eq(telegram.chatId);
         expect(body.extras.botId).to.eq(telegram.botId);
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -123,7 +123,7 @@ describe('Check Telegram Notification Agent', () => {
   });
 
   it('Check saving Telegram Notification', () => {
-    cy.visit('/configuration');
+    cy.visit(`${BASE_URL}/configuration`);
 
     cy.get('#notificationTab')
       .click();
@@ -181,7 +181,7 @@ describe('Check Telegram Notification Agent', () => {
   });
 
   it('Check Successful Saving and Failure Testing Telegram Notification', () => {
-    cy.visit('/configuration');
+    cy.visit(`${BASE_URL}/configuration`);
 
     cy.get('#notificationTab')
       .click();
