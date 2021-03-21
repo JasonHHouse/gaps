@@ -20,6 +20,10 @@ jobs:
         run: mvn clean install
       - name: Build Docker
         run: docker build -f Dockerfile -t gaps-dev .
+      - name: Build Docker Compose
+        run: docker-compose -f docker-compose-dev.yaml build
+      - name: Run Docker Compose
+        run: docker-compose up -d -f docker-compose-dev.yaml
       #- name: Run Application
       #  run: java -jar -Dspring.profiles.active=no-ssl-no-login GapsWeb/target/GapsWeb-0.8.10.jar
       #- name: Run Cypress
