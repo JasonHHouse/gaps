@@ -18,7 +18,9 @@ jobs:
           java-version: '11.0.9'
       - name: Build with Maven
         run: mvn clean install
-      - name: Run Application
-        run: java -jar -Dspring.profiles.active=no-ssl-no-login GapsWeb/target/GapsWeb-0.8.10.jar
+      - name: Build Docker
+        run: docker build -f Dockerfile -t gaps-dev .
+      #- name: Run Application
+      #  run: java -jar -Dspring.profiles.active=no-ssl-no-login GapsWeb/target/GapsWeb-0.8.10.jar
       #- name: Run Cypress
       #  run: cypress run --headless --browser firefox
