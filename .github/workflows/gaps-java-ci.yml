@@ -9,7 +9,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '15.x'
-      - run: npm ci
+      - run: npm ci && npm install
       - name: Minify
         run: ./minify
       - name: Set up JDK 11
@@ -23,7 +23,9 @@ jobs:
       - name: Build Docker Compose
         run: docker-compose -f docker-compose-dev.yaml build
       - name: Run Docker Compose
-        run: docker-compose up -d -f docker-compose-dev.yaml
+      - uses: isbang/compose-action@v0.1
+        with: 
+          compose-file: 'docker-compose-dev.yaml'
       - name: Cypress Tests
         run: ./node_modules/.bin/cypress run
       #- name: Run Application
