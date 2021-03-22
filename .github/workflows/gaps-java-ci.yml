@@ -29,8 +29,4 @@ jobs:
       - name: Cypress Tests
         uses: cypress-io/github-action@v2
         with:
-          browser: firefox
-      #- name: Run Application
-      #  run: java -jar -Dspring.profiles.active=no-ssl-no-login GapsWeb/target/GapsWeb-0.8.10.jar
-      #- name: Run Cypress
-      #  run: cypress run --headless --browser firefox
+          browser: chrome
