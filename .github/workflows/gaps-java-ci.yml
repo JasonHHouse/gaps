@@ -23,7 +23,7 @@ jobs:
       - name: Build Docker Compose
         run: docker-compose -f docker-compose-dev.yaml build
       - name: Run Docker Compose
-      - uses: isbang/compose-action@v0.1
+        uses: isbang/compose-action@v0.1
         with: 
           compose-file: 'docker-compose-dev.yaml'
       - name: Cypress Tests
