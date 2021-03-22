@@ -9,7 +9,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '15.x'
-      - run: npm ci && npm install
+      - run: npm ci
       - name: Minify
         run: ./minify
       - name: Set up JDK 11
