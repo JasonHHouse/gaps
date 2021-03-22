@@ -3,6 +3,9 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: cypress/browsers:node12.16.1-chrome80-ff73
+      options: --user 1001
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 15.x
@@ -29,4 +32,4 @@ jobs:
       - name: Cypress Tests
         uses: cypress-io/github-action@v2
         with:
-          browser: chrome
+          browser: firefox
