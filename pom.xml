@@ -6,6 +6,7 @@
     <modules>
         <module>Core</module>
         <module>GapsWeb</module>
+        <module>MockedPlex</module>
         <module>Plex</module>
         <module>RadarrV3</module>
     </modules>

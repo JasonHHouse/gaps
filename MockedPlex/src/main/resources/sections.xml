@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MediaContainer size="6" allowSync="0" identifier="com.plexapp.plugins.library"
+                mediaTagPrefix="/system/bundle/media/flags/" mediaTagVersion="1615295203" title1="Plex Library">
+    <Directory allowSync="1" art="/:/resources/movie-fanart.jpg" composite="/library/sections/4/composite/1616522659"
+               filters="1" refreshing="0" thumb="/:/resources/movie.png" key="4" type="movie" title="Best Movies"
+               agent="com.plexapp.agents.imdb" scanner="Plex Movie Scanner" language="en"
+               uuid="UUID1" updatedAt="1601899630" createdAt="1601864973"
+               scannedAt="1616522659" content="1" directory="1" contentChangedAt="7485269086340221160" hidden="0">
+        <Location id="4" path="/data/gaps/Best Movies"/>
+    </Directory>
+    <Directory allowSync="1" art="/:/resources/movie-fanart.jpg" composite="/library/sections/1/composite/1616523026"
+               filters="1" refreshing="0" thumb="/:/resources/movie.png" key="1" type="movie" title="Movies"
+               agent="com.plexapp.agents.themoviedb" scanner="Plex Movie Scanner" language="en"
+               uuid="UUID2" updatedAt="1601969240" createdAt="1584962634"
+               scannedAt="1616523026" content="1" directory="1" contentChangedAt="7485269086342285307" hidden="0">
+        <Location id="1" path="/data/Movies"/>
+    </Directory>
+    <Directory allowSync="1" art="/:/resources/movie-fanart.jpg" composite="/library/sections/6/composite/1616523027"
+               filters="1" refreshing="0" thumb="/:/resources/movie.png" key="6" type="movie"
+               title="Movies with new Metadata" agent="tv.plex.agents.movie" scanner="Plex Movie" language="en-US"
+               uuid="UUID3" updatedAt="1601899889" createdAt="1601865143"
+               scannedAt="1616523027" content="1" directory="1" contentChangedAt="7485269086340225185" hidden="0">
+        <Location id="6" path="/data/gaps/Movies"/>
+    </Directory>
+    <Directory allowSync="1" art="/:/resources/movie-fanart.jpg" composite="/library/sections/5/composite/1616523033"
+               filters="1" refreshing="0" thumb="/:/resources/movie.png" key="5" type="movie" title="Saw"
+               agent="com.plexapp.agents.imdb" scanner="Plex Movie Scanner" language="en"
+               uuid="UUID4" updatedAt="1601900204" createdAt="1601865059"
+               scannedAt="1616523033" content="1" directory="1" contentChangedAt="7485269086340221749" hidden="0">
+        <Location id="5" path="/data/gaps/Movies2"/>
+    </Directory>
+    <Directory allowSync="1" art="/:/resources/show-fanart.jpg" composite="/library/sections/2/composite/1616523085"
+               filters="1" refreshing="0" thumb="/:/resources/show.png" key="2" type="show" title="TV Shows"
+               agent="com.plexapp.agents.thetvdb" scanner="Plex Series Scanner" language="en"
+               uuid="UUID5" updatedAt="1601961875" createdAt="1584962647"
+               scannedAt="1616523085" content="1" directory="1" contentChangedAt="7485269086342306732" hidden="0">
+        <Location id="2" path="/data/TV"/>
+    </Directory>
+    <Directory allowSync="1" art="/:/resources/artist-fanart.jpg" composite="/library/sections/3/composite/1616523033"
+               filters="1" refreshing="0" thumb="/:/resources/artist.png" key="3" type="artist" title="Music"
+               agent="tv.plex.agents.music" scanner="Plex Music" language="en"
+               uuid="UUID6" updatedAt="1598628682" createdAt="1585012128"
+               scannedAt="1616523033" content="1" directory="1" contentChangedAt="7485269086341776100" hidden="0">
+        <Location id="3" path="/data/Music"/>
+    </Directory>
+</MediaContainer>
