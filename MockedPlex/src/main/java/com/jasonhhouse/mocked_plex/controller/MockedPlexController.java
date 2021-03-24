@@ -19,11 +19,14 @@ import java.nio.charset.StandardCharsets;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -41,29 +44,53 @@ public class MockedPlexController {
     @GetMapping(path = "/library/sections",
             produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<String> getPlexLibrarySections(@RequestParam(value = "X-Plex-Token", required = false) final String xPlexToken) {
-        LOGGER.info("getPlex( {} )", xPlexToken);
+        LOGGER.info("getPlexLibrarySections( {} )", xPlexToken);
         return ResponseEntity.ok(getPlexXmlFile("sections.xml"));
     }
 
     @GetMapping(path = "/library/sections/5/all",
             produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<String> getSaw(@RequestParam(value = "X-Plex-Token", required = false) final String xPlexToken) {
-        LOGGER.info("getPlex( {} )", xPlexToken);
+        LOGGER.info("getSaw( {} )", xPlexToken);
         return ResponseEntity.ok(getPlexXmlFile("saw.xml"));
     }
 
     @GetMapping(path = "/library/sections/4/all",
             produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<String> getBestMovies(@RequestParam(value = "X-Plex-Token", required = false) final String xPlexToken) {
-        LOGGER.info("getPlex( {} )", xPlexToken);
+        LOGGER.info("getBestMovies( {} )", xPlexToken);
         return ResponseEntity.ok(getPlexXmlFile("bestMovies.xml"));
     }
 
     @GetMapping(path = "/library/sections/6/all",
             produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<String> getNewMetadata(@RequestParam(value = "X-Plex-Token", required = false) final String xPlexToken) {
-        LOGGER.info("getPlex( {} )", xPlexToken);
+        LOGGER.info("getNewMetadata( {} )", xPlexToken);
         return ResponseEntity.ok(getPlexXmlFile("newMetadata.xml"));
+    }
+
+    @GetMapping(path = "/library/metadata/{movieId}",
+            produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<String> getMovie(@PathVariable(value = "movieId") final Integer movieId, @RequestParam(value = "X-Plex-Token", required = false) final String xPlexToken) {
+        LOGGER.info("getMovie( {} )", xPlexToken);
+        return ResponseEntity.ok(getPlexXmlFile(movieId + ".xml"));
+    }
+
+    @GetMapping(path = "/library/metadata/{movieId}/thumb/{thumbId}",
+            produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<byte[]> getThumb(@PathVariable(value = "movieId") final Integer movieId,
+                                           @PathVariable(value = "thumbId") final Integer thumbId,
+                                           @RequestParam(value = "X-Plex-Token", required = false) final String xPlexToken) {
+        LOGGER.info("getThumb( {}, {}, {})", movieId, thumbId, xPlexToken);
+
+        ClassPathResource imgFile = new ClassPathResource("sawImage.jpg");
+        try {
+            byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
+            return ResponseEntity.ok(bytes);
+        } catch (IOException e) {
+            LOGGER.error("Can't find saw image", e);
+            return ResponseEntity.noContent().build();
+        }
     }
 
     private @NotNull String getPlexXmlFile(@NotNull String fileName) {
@@ -80,11 +107,11 @@ public class MockedPlexController {
 
                 return fullFile.toString();
             } catch (IOException e) {
-                LOGGER.error(String.format("Failed to read file %s", fileName), e);
+                LOGGER.error(String.format("Failed to read file %s", fileName));
                 return "";
             }
         } catch (FileNotFoundException e) {
-            LOGGER.error(String.format("Failed to find file %s", fileName), e);
+            LOGGER.error(String.format("Failed to find file %s", fileName));
             return "";
         }
     }
