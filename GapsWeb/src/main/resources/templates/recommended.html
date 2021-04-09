@@ -26,7 +26,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <a class="" href=".">
-        <img src="/images/final-gaps.svg" class="d-inline-block align-top" alt="" width="96" height="96">
+        <img alt="" class="d-inline-block align-top" height="96" loading="lazy" src="/images/final-gaps.svg" width="96">
     </a>
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
@@ -78,13 +78,13 @@
 <div class="container">
     <h3 class="top-margin">Missing Movies</h3>
 
-    <h4 class="top-margin text-primary" id="libraryTitle"
-        data-cy="libraryTitle"
+    <h4 class="top-margin text-primary" data-cy="libraryTitle"
+        id="libraryTitle"
         th:text="${plexServer.friendlyName} + ' - ' + ${plexLibrary.title}"></h4>
 
     <div class="dropdown show">
-        <a aria-expanded="false" aria-haspopup="true" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-           href="#" data-cy="dropdownMenu"
+        <a aria-expanded="false" aria-haspopup="true" class="btn btn-primary dropdown-toggle" data-cy="dropdownMenu"
+           data-toggle="dropdown" href="#"
            id="dropdownMenuLink" role="button">
             Recommended
         </a>
@@ -94,11 +94,11 @@
                 <a class="dropdown-item"
                    data-ol-has-click-handler=""
                    href="javascript:void(0)"
+                   onclick="switchPlexLibrary(this.getAttribute('data-machineIdentifier'), this.getAttribute('data-key'))"
                    th:data-cy="*{plexLibrary.title}"
                    th:data-key="*{plexLibrary.key}"
                    th:data-machineIdentifier="*{instance.value.machineIdentifier}"
                    th:each="plexLibrary : *{instance.value.plexLibraries}"
-                   onclick="switchPlexLibrary(this.getAttribute('data-machineIdentifier'), this.getAttribute('data-key'))"
                    th:text="(*{instance.value.friendlyName} + ' - ' + *{plexLibrary.title})"></a>
             </div>
         </div>
@@ -106,18 +106,19 @@
 
     <div class="top-margin bottom-margin" id="notSearchedYetContainer" style="display: none;">
         <div class="card mx-auto" style="width: 24rem;">
-            <img alt="..." class="card-img-top" src="/images/mind_the_gap.png">
+            <img alt="..." class="card-img-top" loading="lazy" src="/images/mind_the_gap.png">
             <div class="card-body">
                 <h5 class="card-title">Your movies are really missing</h5>
                 <p class="card-text">You need to run Gaps at least once to have found the missing movies.</p>
-                <a data-cy="searchForMovies" class="btn btn-primary" href="javascript:void(0)" onclick="searchForMovies()">Search</a>
+                <a class="btn btn-primary" data-cy="searchForMovies" href="javascript:void(0)"
+                   onclick="searchForMovies()">Search</a>
             </div>
         </div>
     </div>
 
     <div class="top-margin bottom-margin" id="noMovieContainer" style="display: none;">
         <div class="card mx-auto" style="width: 24rem;">
-            <img alt="..." class="card-img-top" src="/images/mind_the_gap.png">
+            <img alt="..." class="card-img-top" loading="lazy" src="/images/mind_the_gap.png">
             <div class="card-body">
                 <h5 class="card-title">Your movies are really missing</h5>
                 <p class="card-text">You need to find your owned movies first.</p>
@@ -149,14 +150,14 @@
             </div>
         </div>
 
-        <table class="display top-margin" aria-label="Table of Recommended Movies" id="movies" style="width:100%">
+        <table aria-label="Table of Recommended Movies" class="display top-margin" id="movies" style="width:100%">
             <thead>
             <tr>
                 <th scope="col">Movie</th>
-                <th scope="col" hidden>Title</th>
-                <th scope="col" hidden>Year</th>
-                <th scope="col" hidden>Language</th>
-                <th scope="col" hidden>Summary</th>
+                <th hidden scope="col">Title</th>
+                <th hidden scope="col">Year</th>
+                <th hidden scope="col">Language</th>
+                <th hidden scope="col">Summary</th>
             </tr>
             </thead>
         </table>
@@ -172,7 +173,7 @@
     <div class="card">
         <div class="row no-gutters">
             <div class="col-12 col-md-auto">
-                <img style="height: auto; width: 225px; display: block;"
+                <img loading="lazy" style="height: auto; width: 225px; display: block;"
                      data-cy="{{imdbId}}"
                      src="{{posterUrl}}"
                      class="card-img" alt="Plex Poster">
@@ -186,20 +187,22 @@
                     <div>
                         <span class="card-text">Owned</span><br>
                         {{#each moviesInCollection}}
-                            {{#if this.owned}}
-                                <a data-cy="{{@root.imdbId}}-{{this.tmdbId}}" href="https://www.themoviedb.org/movie/{{this.tmdbId}}" class="card-link" target="_blank"
-                                   rel="noopener noreferrer">{{this.title}}</a>
-                            {{/if}}
+                        {{#if this.owned}}
+                        <a data-cy="{{@root.imdbId}}-{{this.tmdbId}}"
+                           href="https://www.themoviedb.org/movie/{{this.tmdbId}}" class="card-link" target="_blank"
+                           rel="noopener noreferrer">{{this.title}}</a>
+                        {{/if}}
                         {{/each}}
                     </div>
                     <br>
                     <div>
                         <span class="card-text">Missing</span><br>
                         {{#each moviesInCollection}}
-                            {{#if (isNotOwned this.owned)}}
-                                <a data-cy="{{@root.imdbId}}-{{this.tmdbId}}" href="https://www.themoviedb.org/movie/{{this.tmdbId}}" class="card-link" target="_blank"
-                                   rel="noopener noreferrer">{{this.title}}</a>
-                            {{/if}}
+                        {{#if (isNotOwned this.owned)}}
+                        <a data-cy="{{@root.imdbId}}-{{this.tmdbId}}"
+                           href="https://www.themoviedb.org/movie/{{this.tmdbId}}" class="card-link" target="_blank"
+                           rel="noopener noreferrer">{{this.title}}</a>
+                        {{/if}}
                         {{/each}}
                     </div>
                 </div>
@@ -223,6 +226,6 @@
 <script src="/js/libraries/sockjs-1.4.0.min.js" type="text/javascript"></script>
 <script src="/js/libraries/stomp-2.3.3.min.js" type="text/javascript"></script>
 <script src="/js/libraries/handlebars-v4.7.6.min.js" type="text/javascript"></script>
-<script type="module" src="/js/page/recommended.min.js"></script>
+<script src="/js/page/recommended.min.js" type="module"></script>
 </body>
 </html>
