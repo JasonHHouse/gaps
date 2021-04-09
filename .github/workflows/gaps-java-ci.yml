@@ -26,11 +26,3 @@ jobs:
         uses: isbang/compose-action@v0.1
         with: 
           compose-file: 'docker-compose-dev.yaml'
-      - name: Start Mocked Plex
-        run: mvn -f MockedPlex/pom.xml spring-boot:run
-      - name: Cypress Tests
-        uses: cypress-io/github-action@v2
-        with:
-          browser: chrome
-          headless: true
-          wait-on: 'http://localhost:8484'
