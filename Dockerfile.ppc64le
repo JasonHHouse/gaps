@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11-openj9:ppc64le-tumbleweed-jre-11.0.9_11_openj9-0.23.0
+FROM adoptopenjdk/openjdk11-openj9:ppc64le-tumbleweed-jre-11.0.10_9_openj9-0.24.0
 
 LABEL maintainer="jh5975@gmail.com"
 LABEL name="Jason House" 
