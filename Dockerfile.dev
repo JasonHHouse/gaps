@@ -5,11 +5,7 @@ ENV gapsVersion=*
 ENV springProfile=no-ssl-no-login
 ENV javaInitialHeapSize=150M
 
-
 EXPOSE 32400
-
-## Update image ##
-RUN apt-get update -y && apt-get upgrade -y
 
 ## Create data directory ##
 RUN mkdir -p /usr/data && chmod 777 /usr/data
