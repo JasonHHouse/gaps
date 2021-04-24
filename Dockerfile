@@ -1,14 +1,20 @@
-FROM adoptopenjdk/openjdk11-openj9:jre-11.0.10_9_openj9-0.24.0
+##
+# Copyright 2019 Jason H House
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+##
+
+FROM adoptopenjdk/openjdk11-openj9:jre-11.0.11_9_openj9-0.26.0
 
 LABEL maintainer="jh5975@gmail.com"
 LABEL name="Jason House" 
 LABEL github="https://github.com/JasonHHouse/Gaps" 
 
 EXPOSE 8484
-
-RUN apt-get -y update
-
-RUN apt-get -y upgrade
 
 ENV JAR_FILE gaps.jar
 
@@ -24,17 +30,9 @@ RUN mkdir -p /usr/app && chmod 777 /usr/data
 
 WORKDIR /usr/app
 
-COPY GapsWeb/target/GapsWeb-0.8.11.jar /usr/app/gaps.jar
+COPY GapsWeb/target/GapsWeb-0.8.12.jar /usr/app/gaps.jar
 
 COPY start.sh /usr/app/
 
 CMD ./start.sh
 
-##Figure out how to do Unraid configuration
-#docker build -f Dockerfile -t gaps-dev .
-#docker run -p 8484:8484 --env ENABLE_SSL=true --env ENABLE_LOGIN=true --name gaps-dev -v /home/jason/gaps:/usr/data:Z gaps-dev
-#docker run -p 8484:8484 --env ENABLE_SSL=true --name gaps-dev -v /home/jason/gaps:/usr/data:Z gaps-dev
-#docker run -p 8484:8484 --env ENABLE_LOGIN=true --name gaps-dev -v /home/jason/gaps:/usr/data:Z gaps-dev
-#docker run -p 8484:8484 --name gaps-dev -v /home/jason/gaps:/usr/data:Z gaps-dev
-
-#docker buildx build --platform linux/ppc64le,linux/s390x,linux/amd64 -t housewrecker/gaps:latest -f Dockerfile .

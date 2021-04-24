@@ -75,6 +75,9 @@ function searchMovieWithNewMetadataLibrary(cy) {
   cy.get('[data-cy=searchForMovies]')
     .click();
 
+  // Wait for timeout to load page
+  cy.wait(5000);
+
   cy.get('label > input')
     .clear()
     .type('God');

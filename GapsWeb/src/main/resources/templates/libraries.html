@@ -26,7 +26,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <a class="" href=".">
-        <img src="/images/final-gaps.svg" class="d-inline-block align-top" alt="" width="96" height="96">
+        <img alt="" class="d-inline-block align-top" height="96" loading="lazy" src="/images/final-gaps.svg" width="96">
     </a>
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
@@ -80,26 +80,26 @@
     <h3 class="top-margin">Libraries</h3>
 
     <div th:if="${plexServersFound}" th:remove="tag">
-        <h4 class="top-margin text-primary" id="libraryTitle"
-            data-cy="libraryTitle"
-            th:text="${plexServer.friendlyName} + ' - ' + ${plexLibrary.title}"
+        <h4 class="top-margin text-primary" data-cy="libraryTitle"
+            id="libraryTitle"
             th:data-key="*{plexLibrary.key}"
-            th:data-machineIdentifier="*{plexServer.machineIdentifier}"></h4>
+            th:data-machineIdentifier="*{plexServer.machineIdentifier}"
+            th:text="${plexServer.friendlyName} + ' - ' + ${plexLibrary.title}"></h4>
 
         <div class="dropdown show">
-            <a aria-expanded="false" aria-haspopup="true" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-               data-cy="dropdownMenu" href="#" id="dropdownMenuLink" role="button">Libraries</a>
+            <a aria-expanded="false" aria-haspopup="true" class="btn btn-primary dropdown-toggle" data-cy="dropdownMenu"
+               data-toggle="dropdown" href="#" id="dropdownMenuLink" role="button">Libraries</a>
 
             <div aria-labelledby="dropdownMenuLink" class="dropdown-menu">
                 <div th:each="instance : ${plexServers}" th:remove="tag">
                     <a class="dropdown-item"
                        data-ol-has-click-handler=""
                        href="javascript:void(0)"
+                       onclick="switchPlexLibrary(this.getAttribute('data-machineIdentifier'), this.getAttribute('data-key'))"
                        th:data-cy="*{plexLibrary.title}"
                        th:data-key="*{plexLibrary.key}"
                        th:data-machineIdentifier="*{instance.value.machineIdentifier}"
                        th:each="plexLibrary : *{instance.value.plexLibraries}"
-                       onclick="switchPlexLibrary(this.getAttribute('data-machineIdentifier'), this.getAttribute('data-key'))"
                        th:text="(*{instance.value.friendlyName} + ' - ' + *{plexLibrary.title})"></a>
                 </div>
             </div>
@@ -118,17 +118,18 @@
 
         <div class="top-margin bottom-margin" id="noMovieContainer" style="display: none;">
             <div class="card mx-auto" style="width: 24rem;">
-                <img alt="..." class="card-img-top" src="/images/mind_the_gap.png">
+                <img alt="..." class="card-img-top" loading="lazy" src="/images/mind_the_gap.png">
                 <div class="card-body">
                     <h5 class="card-title">Your movies are really missing</h5>
                     <p class="card-text">You need to run Gaps at least once to have found the missing movies.</p>
-                    <a data-cy="searchForMovies" class="btn btn-primary" href="javascript:void(0)" onclick="searchForMovies()">Search</a>
+                    <a class="btn btn-primary" data-cy="searchForMovies" href="javascript:void(0)"
+                       onclick="searchForMovies()">Search</a>
                 </div>
             </div>
         </div>
 
         <div class="top-margin bottom-margin" id="movieContainer" style="display: none;">
-            <table class="display" id="movies" aria-label="Table of Owned Movies" style="width:100%">
+            <table aria-label="Table of Owned Movies" class="display" id="movies" style="width:100%">
                 <thead>
                 <tr>
                     <th scope="col"></th>
@@ -146,7 +147,7 @@
     <div th:remove="tag" th:unless="${plexServersFound}">
         <div class="top-margin bottom-margin">
             <div class="card mx-auto" style="width: 24rem;">
-                <img alt="..." class="card-img-top" src="/images/mind_the_gap.png">
+                <img alt="..." class="card-img-top" loading="lazy" src="/images/mind_the_gap.png">
                 <div class="card-body">
                     <h5 class="card-title">Your movies are really missing</h5>
                     <p class="card-text">You need to configure Gaps before you can search for missing movies. Check out
@@ -162,7 +163,7 @@
     <div class="card">
         <div class="row no-gutters">
             <div class="col-12 col-md-auto">
-                <img data-cy="{{imdbId}}" style="height: auto; width: 225px; display: block;"
+                <img loading="lazy" data-cy="{{imdbId}}" style="height: auto; width: 225px; display: block;"
                      src="http://{{address}}:{{port}}{{posterUrl}}/?X-Plex-Token={{plexToken}}"
                      class="card-img" alt="Plex Poster">
             </div>
@@ -186,6 +187,6 @@
 <script src="/js/libraries/bootstrap.bundle.min.js" type="text/javascript"></script>
 <script src="/js/libraries/datatables.min.js" type="text/javascript"></script>
 <script src="/js/libraries/handlebars-v4.7.6.min.js" type="text/javascript"></script>
-<script type="module" src="/js/page/libraries.min.js"></script>
+<script src="/js/page/libraries.min.js" type="module"></script>
 </body>
 </html>
