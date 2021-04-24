@@ -52,3 +52,4 @@ cypress/videos
 GapsAsJar/*
 !GapsAsJar/start.bat
 !GapsAsJar/gaps.nsi
+.DS_Store

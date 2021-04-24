@@ -14,6 +14,8 @@ LABEL maintainer="jh5975@gmail.com"
 LABEL name="Jason House" 
 LABEL github="https://github.com/JasonHHouse/Gaps"
 
+RUN apt-get update
+
 RUN apt-get install -y openjdk-11-jre
 
 EXPOSE 32400
