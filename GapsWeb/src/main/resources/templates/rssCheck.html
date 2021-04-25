@@ -32,7 +32,7 @@
     <div th:if="${!foundPlexLibraries}" th:remove="tag">
         <div class="top-margin bottom-margin">
             <div class="card mx-auto" style="width: 24rem;">
-                <img alt="..." class="card-img-top" th:src="@{/images/mind_the_gap.png}">
+                <img loading="lazy" alt="..." class="card-img-top" th:src="@{/images/mind_the_gap.png}">
                 <div class="card-body">
                     <h5 class="card-title">Your movies are really missing</h5>
                     <p class="card-text">You need to run Gaps at least once to have found the missing movies.</p>
