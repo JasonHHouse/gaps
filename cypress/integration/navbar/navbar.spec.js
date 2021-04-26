@@ -14,7 +14,7 @@
 import { BASE_URL, spyOnAddEventListener } from '../common.spec.js';
 
 function checkNavIcons(cy, isLibDefault = true, isMissingDefault = true, isRssDefault = true, isSettingsDefault = true, isUpdatesDefault = true, isAboutDefault = true) {
-  cy.get('[data-cy=librariesIcon]') // ToDo Update Icon data-cy below
+  cy.get('[data-cy=librariesIcon]')
     .should('have.class', isLibDefault ? 'default' : 'activePage');
 
   cy.get('[data-cy=recommendedIcon]')

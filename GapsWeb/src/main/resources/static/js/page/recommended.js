@@ -86,8 +86,6 @@ function searchForMovies() {
   searchTitle.text('Searching for Movies');
   searchDescription.text("Gaps is looking through your Plex libraries. This could take a while so just sit tight, and we'll find all the missing movies for you.");
 
-  // ToDo
-  // Change to searching with recommended
   $.ajax({
     type: 'PUT',
     url: getContextPath(`/recommended/find/${plexServer.machineIdentifier}/${libraryKey}`),
