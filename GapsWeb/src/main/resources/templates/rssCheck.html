@@ -47,7 +47,7 @@
 
         <form action="/rss" class="top-margin" method="get">
             <div th:each="instance : ${plexServerMap}" class="form-check">
-                <a th:th:href="'@{/rss/}' + ${instance.value.getMachineIdentifier() + '/' + instance.key.getKey()}"
+                <a th:href="(@{'/rss/'} + ${instance.value.getMachineIdentifier()} + '/' + ${instance.key.getKey()})"
                    th:text="${instance.value.getFriendlyName() + ' - ' + instance.key.getTitle()}">
                 </a>
             </div>

@@ -9,7 +9,6 @@
  */
 
 // ToDo
-// Update all the calls with the new common function
 // Test in cypress
 // Update docker
 // Push and notify on github
@@ -17,12 +16,13 @@
 import getNotificationTypes from './notification-types.min.js';
 import Payload from './payload.min.js';
 import hideAllAlertsAndSpinners from './alerts-manager.min.js';
+import { getContextPath } from './common.min.js';
 
 export async function testSlackNotifications() {
   hideAllAlertsAndSpinners();
   document.getElementById('slackSpinner').style.display = 'block';
 
-  const response = await fetch('/notifications/test/2', {
+  const response = await fetch(getContextPath('/notifications/test/2'), {
     method: 'put',
   });
   const put = await response.json();
@@ -47,7 +47,7 @@ export async function saveSlackNotifications() {
     document.getElementById('slackPlexLibraryUpdateNotification').checked,
     document.getElementById('slackGapsMissingCollectionsNotification').checked);
 
-  const response = await fetch('/notifications/slack', {
+  const response = await fetch(getContextPath('/notifications/slack'), {
     method: 'put',
     headers: {
       Accept: 'application/json',

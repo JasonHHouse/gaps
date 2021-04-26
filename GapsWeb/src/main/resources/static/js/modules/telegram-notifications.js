@@ -11,12 +11,13 @@
 import getNotificationTypes from './notification-types.min.js';
 import Payload from './payload.min.js';
 import hideAllAlertsAndSpinners from './alerts-manager.min.js';
+import { getContextPath } from './common.min.js';
 
 export async function testTelegramNotifications() {
   hideAllAlertsAndSpinners();
   document.getElementById('telegramSpinner').style.display = 'block';
 
-  const response = await fetch('/notifications/test/0', {
+  const response = await fetch(getContextPath('/notifications/test/0'), {
     method: 'put',
   });
   const put = await response.json();
@@ -42,7 +43,7 @@ export async function saveTelegramNotifications() {
     document.getElementById('telegramPlexLibraryUpdateNotification').checked,
     document.getElementById('telegramGapsMissingCollectionsNotification').checked);
 
-  const response = await fetch('/notifications/telegram', {
+  const response = await fetch(getContextPath('/notifications/telegram'), {
     method: 'put',
     headers: {
       Accept: 'application/json',

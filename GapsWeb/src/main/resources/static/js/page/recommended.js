@@ -12,8 +12,8 @@
 /* global Handlebars, SockJS, Stomp */
 /* eslint no-undef: "error" */
 
-import { getRecommendedMoviesForTable } from '../modules/common.js';
-import Payload from '../modules/payload.js';
+import { getContextPath, getRecommendedMoviesForTable } from '../modules/common.min.js';
+import Payload from '../modules/payload.min.js';
 
 let libraryTitle;
 let notSearchedYetContainer;
@@ -90,7 +90,7 @@ function searchForMovies() {
   // Change to searching with recommended
   $.ajax({
     type: 'PUT',
-    url: `/recommended/find/${plexServer.machineIdentifier}/${libraryKey}`,
+    url: getContextPath(`/recommended/find/${plexServer.machineIdentifier}/${libraryKey}`),
     contentType: 'application/json',
   });
 
@@ -181,7 +181,7 @@ jQuery(($) => {
   socket = new SockJS('/gs-guide-websocket');
   stompClient = Stomp.over(socket);
   stompClient.connect({}, () => {
-    stompClient.subscribe('/finishedSearching', (message) => {
+    stompClient.subscribe(getContextPath('/finishedSearching'), (message) => {
       searchContainer.css({ display: 'none' });
 
       const payload = JSON.parse(message.body);
@@ -201,7 +201,7 @@ jQuery(($) => {
       }
     });
 
-    stompClient.subscribe('/newMovieFound', (status) => {
+    stompClient.subscribe(getContextPath('/newMovieFound'), (status) => {
       const obj = JSON.parse(status.body);
       showSearchStatus(obj);
 

@@ -11,6 +11,7 @@
 
 import hideAllAlertsAndSpinners from './alerts-manager.min.js';
 import Payload from './payload.min.js';
+import { getContextPath } from './common.min.js';
 
 export default async function saveSchedule() {
   hideAllAlertsAndSpinners();
@@ -19,7 +20,7 @@ export default async function saveSchedule() {
   body.schedule = document.getElementById('setSchedule').value;
   body.enabled = document.getElementById('scheduleEnabled').value;
 
-  const response = await fetch('/schedule', {
+  const response = await fetch(getContextPath('/schedule'), {
     method: 'put',
     headers: {
       Accept: 'application/json',

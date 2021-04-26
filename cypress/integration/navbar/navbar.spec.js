@@ -14,26 +14,23 @@
 import { BASE_URL, spyOnAddEventListener } from '../common.spec.js';
 
 function checkNavIcons(cy, isLibDefault = true, isMissingDefault = true, isRssDefault = true, isSettingsDefault = true, isUpdatesDefault = true, isAboutDefault = true) {
-  cy.get(':nth-child(1) > .nav-link > .icon')
-    .should('have.class', isLibDefault ? 'list-ul-default' : 'list-ul-active');
+  cy.get('[data-cy=librariesIcon]') // ToDo Update Icon data-cy below
+    .should('have.class', isLibDefault ? 'default' : 'activePage');
 
-  cy.get(':nth-child(2) > .nav-link > .icon')
-    .should('have.class', isMissingDefault ? 'collection-fill-default' : 'collection-fill-active');
+  cy.get('[data-cy=recommendedIcon]')
+    .should('have.class', isMissingDefault ? 'default' : 'activePage');
 
-  cy.get(':nth-child(3) > .nav-link > .icon')
-    .should('not.be.visible');
+  cy.get('[data-cy=rssCheckIcon]')
+    .should('have.class', isRssDefault ? 'default' : 'activePage');
 
-  cy.get(':nth-child(4) > .nav-link > .icon')
-    .should('have.class', isRssDefault ? 'rss-default' : 'rss-active');
+  cy.get('[data-cy=configurationIcon]')
+    .should('have.class', isSettingsDefault ? 'default' : 'activePage');
 
-  cy.get(':nth-child(5) > .nav-link > .icon')
-    .should('have.class', isSettingsDefault ? 'gear-default' : 'gear-active');
+  cy.get('[data-cy=updatesIcon]')
+    .should('have.class', isUpdatesDefault ? 'default' : 'activePage');
 
-  cy.get(':nth-child(6) > .nav-link > .icon')
-    .should('have.class', isUpdatesDefault ? 'arrow-clockwise-default' : 'arrow-clockwise-active');
-
-  cy.get(':nth-child(7) > .nav-link > .icon')
-    .should('have.class', isAboutDefault ? 'info-circle-default' : 'info-circle-active');
+  cy.get('[data-cy=aboutIcon]')
+    .should('have.class', isAboutDefault ? 'default' : 'activePage');
 }
 
 describe('Verify Navbars', () => {

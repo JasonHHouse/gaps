@@ -34,7 +34,7 @@ spring:
     password: admin
 server:
   servlet:
-    context-path: /gaps
+    context-path: /
   http2:
     enabled: true
   port: 8484

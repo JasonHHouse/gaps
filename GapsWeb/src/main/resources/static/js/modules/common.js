@@ -8,61 +8,54 @@
  * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-export function getOwnedMoviesForTable(url, movieContainer, noMovieContainer, moviesTable) {
-  $.ajax({
-    type: 'GET',
-    url,
-    contentType: 'application/json; charset=utf-8',
-    dataType: 'json',
-    success(result) {
-      if (result.code === 40) {
-        movieContainer.show(100);
-        noMovieContainer.css({ display: 'none' });
-        moviesTable.rows.add(result.extras).draw();
-      } else {
-        movieContainer.css({ display: 'none' });
-        noMovieContainer.show(100);
-      }
-    },
-    error() {
-      movieContainer.css({ display: 'none' });
-      noMovieContainer.show(100);
-      // Show error + error
-    },
-  });
-}
-
-export function getRecommendedMoviesForTable(url, movieContainer, noMovieContainer, notSearchedYetContainer, moviesTable) {
-  $.ajax({
-    type: 'GET',
-    url,
-    contentType: 'application/json; charset=utf-8',
-    dataType: 'json',
-    success(result) {
-      if (result.code === 50) {
-        movieContainer.show(100);
-        noMovieContainer.css({ display: 'none' });
-        notSearchedYetContainer.css({ display: 'none' });
-        moviesTable.rows.add(result.extras).draw();
-      } else if (result.code === 41) {
-        movieContainer.css({ display: 'none' });
-        notSearchedYetContainer.css({ display: 'none' });
-        noMovieContainer.show(100);
-      } else {
-        movieContainer.css({ display: 'none' });
-        noMovieContainer.css({ display: 'none' });
-        notSearchedYetContainer.show(100);
-      }
-    },
-    error() {
-      movieContainer.css({ display: 'none' });
-      notSearchedYetContainer.css({ display: 'none' });
-      noMovieContainer.show(100);
-      // Show error + error
-    },
-  });
-}
+import Payload from './payload.min.js';
 
 export function getContextPath(url) {
-  return document.getElementById('contextPath').value + url;
+  const contextPath = document.getElementById('contextPath').value;
+  if (contextPath && contextPath !== '/') {
+    return contextPath + url;
+  }
+  return url;
+}
+
+export async function getOwnedMoviesForTable(url, movieContainer, noMovieContainer, moviesTable) {
+  const response = await fetch(getContextPath(url), {
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+    },
+  });
+  const get = await response.json();
+  if (get.code && get.code === Payload.PLEX_LIBRARY_MOVIE_FOUND) {
+    movieContainer.show(100);
+    noMovieContainer.css({ display: 'none' });
+    moviesTable.rows.add(get.extras).draw();
+  } else {
+    movieContainer.css({ display: 'none' });
+    noMovieContainer.show(100);
+  }
+}
+
+export async function getRecommendedMoviesForTable(url, movieContainer, noMovieContainer, notSearchedYetContainer, moviesTable) {
+  const response = await fetch(getContextPath(url), {
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+    },
+  });
+  const get = await response.json();
+  if (get.code && get.code === Payload.RECOMMENDED_MOVIES_FOUND) {
+    movieContainer.show(100);
+    noMovieContainer.css({ display: 'none' });
+    notSearchedYetContainer.css({ display: 'none' });
+    moviesTable.rows.add(get.extras).draw();
+  } else if (get.code && get.code === Payload.PLEX_LIBRARY_MOVIE_NOT_FOUND) {
+    movieContainer.css({ display: 'none' });
+    notSearchedYetContainer.css({ display: 'none' });
+    noMovieContainer.show(100);
+  } else {
+    movieContainer.css({ display: 'none' });
+    noMovieContainer.css({ display: 'none' });
+    notSearchedYetContainer.show(100);
+  }
 }

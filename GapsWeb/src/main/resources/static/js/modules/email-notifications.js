@@ -12,12 +12,13 @@
 import getNotificationTypes from './notification-types.min.js';
 import Payload from './payload.min.js';
 import hideAllAlertsAndSpinners from './alerts-manager.min.js';
+import { getContextPath } from './common.min.js';
 
 export async function testEmailNotifications() {
   hideAllAlertsAndSpinners();
   document.getElementById('emailSpinner').style.display = 'block';
 
-  const response = await fetch('/notifications/test/4', {
+  const response = await fetch(getContextPath('/notifications/test/4'), {
     method: 'put',
   });
   const put = await response.json();
@@ -51,7 +52,7 @@ export async function saveEmailNotifications() {
     document.getElementById('emailPlexLibraryUpdateNotification').checked,
     document.getElementById('emailGapsMissingCollectionsNotification').checked);
 
-  const response = await fetch('/notifications/email', {
+  const response = await fetch(getContextPath('/notifications/email'), {
     method: 'put',
     headers: {
       Accept: 'application/json',

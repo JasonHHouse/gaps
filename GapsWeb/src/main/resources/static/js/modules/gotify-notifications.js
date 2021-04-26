@@ -12,12 +12,13 @@
 import getNotificationTypes from './notification-types.min.js';
 import Payload from './payload.min.js';
 import hideAllAlertsAndSpinners from './alerts-manager.min.js';
+import { getContextPath } from './common.min.js';
 
 export async function testGotifyNotifications() {
   hideAllAlertsAndSpinners();
   document.getElementById('gotifySpinner').style.display = 'block';
 
-  const response = await fetch('/notifications/test/3', {
+  const response = await fetch(getContextPath('/notifications/test/3'), {
     method: 'put',
   });
   const put = await response.json();
@@ -43,7 +44,7 @@ export async function saveGotifyNotifications() {
     document.getElementById('gotifyPlexLibraryUpdateNotification').checked,
     document.getElementById('gotifyGapsMissingCollectionsNotification').checked);
 
-  const response = await fetch('/notifications/gotify', {
+  const response = await fetch(getContextPath('/notifications/gotify'), {
     method: 'put',
     headers: {
       Accept: 'application/json',

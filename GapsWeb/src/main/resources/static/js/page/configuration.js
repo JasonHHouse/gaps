@@ -15,6 +15,7 @@
 import hideAllAlertsAndSpinners from '../modules/alerts-manager.min.js';
 import saveSchedule from '../modules/schedule.min.js';
 import Payload from '../modules/payload.min.js';
+import { getContextPath } from '../modules/common.min.js';
 import { saveTelegramNotifications, testTelegramNotifications } from '../modules/telegram-notifications.min.js';
 import { saveSlackNotifications, testSlackNotifications } from '../modules/slack-notifications.min.js';
 import { savePushBulletNotifications, testPushBulletNotifications } from '../modules/push-bullet-notifications.min.js';
@@ -23,7 +24,6 @@ import { saveEmailNotifications, testEmailNotifications } from '../modules/email
 import { saveDiscordNotifications, testDiscordNotifications } from '../modules/discord-notifications.min.js';
 import { getSoundOptions, savePushOverNotifications, testPushOverNotifications } from '../modules/push-over-notifications.min.js';
 import { openPlexLibraryConfigurationModel, savePlexLibraryConfiguration } from '../modules/plex-configuration.min.js';
-import { getContextPath } from '../modules/common.min.js';
 
 function testTmdbKey() {
   hideAllAlertsAndSpinners();
@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const socket = new SockJS(getContextPath('/gs-guide-websocket'));
   const stompClient = Stomp.over(socket);
   stompClient.connect({}, () => {
-    stompClient.subscribe('/configuration/plex/complete', (message) => {
+    stompClient.subscribe(getContextPath('/configuration/plex/complete'), (message) => {
       const payload = JSON.parse(message.body);
 
       hideAllAlertsAndSpinners();
@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('plexSaveError').style.display = 'block';
       }
     });
-    stompClient.subscribe('/configuration/plex/duplicate', () => {
+    stompClient.subscribe(getContextPath('/configuration/plex/duplicate'), () => {
       hideAllAlertsAndSpinners();
       document.getElementById('plexDuplicateError').style.display = 'block';
     });
