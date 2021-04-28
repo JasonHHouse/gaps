@@ -176,10 +176,10 @@ jQuery(($) => {
 
   getRecommendedMoviesForTable(`/recommended/${plexServer.machineIdentifier}/${libraryKey}`, movieContainer, noMovieContainer, notSearchedYetContainer, moviesTable);
 
-  socket = new SockJS('/gs-guide-websocket');
+  socket = new SockJS(getContextPath('/gs-guide-websocket'));
   stompClient = Stomp.over(socket);
   stompClient.connect({}, () => {
-    stompClient.subscribe(getContextPath('/finishedSearching'), (message) => {
+    stompClient.subscribe('/finishedSearching', (message) => {
       searchContainer.css({ display: 'none' });
 
       const payload = JSON.parse(message.body);
@@ -199,7 +199,7 @@ jQuery(($) => {
       }
     });
 
-    stompClient.subscribe(getContextPath('/newMovieFound'), (status) => {
+    stompClient.subscribe('/newMovieFound', (status) => {
       const obj = JSON.parse(status.body);
       showSearchStatus(obj);
 

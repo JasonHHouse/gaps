@@ -22,7 +22,11 @@ import { savePushBulletNotifications, testPushBulletNotifications } from '../mod
 import { saveGotifyNotifications, testGotifyNotifications } from '../modules/gotify-notifications.min.js';
 import { saveEmailNotifications, testEmailNotifications } from '../modules/email-notifications.min.js';
 import { saveDiscordNotifications, testDiscordNotifications } from '../modules/discord-notifications.min.js';
-import { getSoundOptions, savePushOverNotifications, testPushOverNotifications } from '../modules/push-over-notifications.min.js';
+import {
+  getSoundOptions,
+  savePushOverNotifications,
+  testPushOverNotifications,
+} from '../modules/push-over-notifications.min.js';
 import { openPlexLibraryConfigurationModel, savePlexLibraryConfiguration } from '../modules/plex-configuration.min.js';
 
 function testTmdbKey() {
@@ -131,6 +135,7 @@ function addPlexServer() {
   $.ajax({
     type: 'POST',
     url: getContextPath('/configuration/add/plex'),
+    contentType: 'application/x-www-form-urlencoded; charset=utf-8',
     data: {
       plexToken: $('#plexToken').val(),
       address: $('#address').val(),
@@ -249,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const socket = new SockJS(getContextPath('/gs-guide-websocket'));
   const stompClient = Stomp.over(socket);
   stompClient.connect({}, () => {
-    stompClient.subscribe(getContextPath('/configuration/plex/complete'), (message) => {
+    stompClient.subscribe('/configuration/plex/complete', (message) => {
       const payload = JSON.parse(message.body);
 
       hideAllAlertsAndSpinners();
@@ -271,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('plexSaveError').style.display = 'block';
       }
     });
-    stompClient.subscribe(getContextPath('/configuration/plex/duplicate'), () => {
+    stompClient.subscribe('/configuration/plex/duplicate', () => {
       hideAllAlertsAndSpinners();
       document.getElementById('plexDuplicateError').style.display = 'block';
     });

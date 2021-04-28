@@ -25,7 +25,7 @@ export async function getSoundOptions() {
     defaultSound = pushOverBody.extras.sound;
   }
 
-  const soundsResponse = await fetch('/sounds', {
+  const soundsResponse = await fetch(getContextPath('/sounds'), {
     method: 'get',
   });
   const body = await soundsResponse.json();
