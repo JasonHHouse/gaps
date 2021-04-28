@@ -91,7 +91,7 @@ function searchMovieWithNewMetadataLibrary(cy) {
 }
 
 function waitUtilSearchingIsDone() {
-  cy.request(`${BASE_URL}//searchStatus`)
+  cy.request(`${BASE_URL}/searchStatus`)
     .then((resp) => {
       if (resp.status === 200 && resp.body.isSearching === false) {
         return;
