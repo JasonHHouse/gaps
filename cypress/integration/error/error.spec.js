@@ -11,7 +11,7 @@
 /* global cy, it, expect, describe */
 /* eslint no-undef: "error" */
 
-import {BASE_URL} from "../common.spec";
+import { BASE_URL } from '../common.spec.js';
 
 describe('Check Error Page', () => {
   it('Does error page load', () => {
