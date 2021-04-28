@@ -34,7 +34,7 @@ describe('Schedule Configuration Tests', () => {
     cy.get('#scheduleSaveError')
       .should('not.be.visible');
 
-    cy.request('/schedule')
+    cy.request(`${BASE_URL}/schedule`)
       .then((resp) => {
         const result = resp.body;
         expect(result).to.have.property('message', 'Monthly');
@@ -54,7 +54,7 @@ describe('Schedule Configuration Tests', () => {
     cy.get('#scheduleSaveError')
       .should('not.be.visible');
 
-    cy.request('/schedule')
+    cy.request(`${BASE_URL}/schedule`)
       .then((resp) => {
         const result = resp.body;
         expect(result).to.have.property('message', 'Hourly');

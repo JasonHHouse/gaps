@@ -35,7 +35,7 @@ function searchSawLibrary(cy) {
 
 describe('Library API', () => {
   it('Get bad library', () => {
-    cy.request('/libraries/abc/123')
+    cy.request(`${BASE_URL}/libraries/abc/123`)
       .then((resp) => {
         cy.log(resp.body);
         const result = resp.body;
@@ -48,7 +48,7 @@ describe('Library API', () => {
   it('Get library Joker - Saw', () => {
     searchSawLibrary(cy);
 
-    cy.request('/libraries/c51c432ae94e316d52570550f915ecbcd71bede8/5')
+    cy.request(`${BASE_URL}/libraries/c51c432ae94e316d52570550f915ecbcd71bede8/5`)
       .then((resp) => {
         cy.log(resp.body);
         const result = resp.body;
@@ -62,7 +62,7 @@ describe('Plex Movie List API', () => {
   beforeEach(redLibraryBefore);
 
   it('Get library Joker - Saw', () => {
-    cy.request('/plex/movies/c51c432ae94e316d52570550f915ecbcd71bede8/5')
+    cy.request(`${BASE_URL}/plex/movies/c51c432ae94e316d52570550f915ecbcd71bede8/5`)
       .then((resp) => {
         cy.log(resp.body);
         const result = resp.body;

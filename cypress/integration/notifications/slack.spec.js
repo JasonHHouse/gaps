@@ -41,7 +41,7 @@ describe('Check Slack Notification Agent', () => {
   beforeEach(nuke);
 
   it('Check for Empty Slack Notification Agent Settings', () => {
-    cy.request('/notifications/slack')
+    cy.request(`${BASE_URL}/notifications/slack`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(92);
@@ -84,13 +84,13 @@ describe('Check Slack Notification Agent', () => {
       webHookUrl: faker.internet.url(),
     };
 
-    cy.request('PUT', '/notifications/slack', slack)
+    cy.request('PUT', `${BASE_URL}/notifications/slack`, slack)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(90);
         expect(body.extras).to.eq(null);
       })
-      .request('/notifications/slack')
+      .request(`${BASE_URL}/notifications/slack`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(92);
@@ -112,13 +112,13 @@ describe('Check Slack Notification Agent', () => {
       webHookUrl: faker.internet.url(),
     };
 
-    cy.request('PUT', '/notifications/slack', slack)
+    cy.request('PUT', `${BASE_URL}/notifications/slack`, slack)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(90);
         expect(body.extras).to.eq(null);
       })
-      .request('/notifications/slack')
+      .request(`${BASE_URL}/notifications/slack`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(92);

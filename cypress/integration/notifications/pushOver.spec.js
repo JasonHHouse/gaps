@@ -56,7 +56,7 @@ describe('Check PushOver Notification Agent', () => {
   beforeEach(nuke);
 
   it('Check for Empty PushOver Notification Agent Settings', () => {
-    cy.request('/notifications/pushOver')
+    cy.request(`${BASE_URL}/notifications/pushOver`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(132);
@@ -90,13 +90,13 @@ describe('Check PushOver Notification Agent', () => {
       expire: faker.random.number(10000),
     };
 
-    cy.request('PUT', '/notifications/pushOver', pushOver)
+    cy.request('PUT', `${BASE_URL}/notifications/pushOver`, pushOver)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(130);
         expect(body.extras).to.eq(null);
       })
-      .request('/notifications/pushOver')
+      .request(`${BASE_URL}/notifications/pushOver`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(132);
@@ -128,13 +128,13 @@ describe('Check PushOver Notification Agent', () => {
       expire: faker.random.number(10000),
     };
 
-    cy.request('PUT', '/notifications/pushOver', pushOver)
+    cy.request('PUT', `${BASE_URL}/notifications/pushOver`, pushOver)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(130);
         expect(body.extras).to.eq(null);
       })
-      .request('/notifications/pushOver')
+      .request(`${BASE_URL}/notifications/pushOver`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(132);

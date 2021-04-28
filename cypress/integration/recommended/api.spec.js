@@ -37,7 +37,7 @@ function searchSawLibrary(cy) {
 
 describe('Recommended API', () => {
   it('Get Bad recommended', () => {
-    cy.request('/recommended/a/2')
+    cy.request(`${BASE_URL}/recommended/a/2`)
       .then((resp) => {
         cy.log(resp.body);
         const result = resp.body;
@@ -49,7 +49,7 @@ describe('Recommended API', () => {
     redLibraryBefore();
     searchSawLibrary(cy);
 
-    cy.request('/libraries/c51c432ae94e316d52570550f915ecbcd71bede8/5')
+    cy.request(`${BASE_URL}/libraries/c51c432ae94e316d52570550f915ecbcd71bede8/5`)
       .then((resp) => {
         cy.log(resp.body);
         const result = resp.body;

@@ -41,7 +41,7 @@ describe('Check Discord Notification Agent', () => {
   beforeEach(nuke);
 
   it('Check for Empty Discord Notification Agent Settings', () => {
-    cy.request('/notifications/discord')
+    cy.request(`${BASE_URL}/notifications/discord`)
       .then((resp) => {
         const { body } = resp;
         cy.fixture('discord.empty.json')
@@ -94,13 +94,13 @@ describe('Check Discord Notification Agent', () => {
       webHookUrl: faker.internet.url(),
     };
 
-    cy.request('PUT', '/notifications/discord', dummyAll)
+    cy.request('PUT', `${BASE_URL}/notifications/discord`, dummyAll)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(140);
         expect(body.extras).to.eq(null);
       })
-      .request('/notifications/discord')
+      .request(`${BASE_URL}/notifications/discord`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(142);
@@ -142,13 +142,13 @@ describe('Check Discord Notification Agent', () => {
       ],
       webHookUrl: faker.internet.url(),
     };
-    cy.request('PUT', '/notifications/discord', tmdbOnly)
+    cy.request('PUT', `${BASE_URL}/notifications/discord`, tmdbOnly)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(140);
         expect(body.extras).to.eq(null);
       })
-      .request('/notifications/discord')
+      .request(`${BASE_URL}/notifications/discord`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(142);

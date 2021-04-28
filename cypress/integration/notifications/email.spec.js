@@ -65,7 +65,7 @@ describe('Check Email Notification Agent', () => {
   beforeEach(nuke);
 
   it('Check for Email Gotify Notification Agent Settings', () => {
-    cy.request('/notifications/email')
+    cy.request(`${BASE_URL}/notifications/email`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(122);
@@ -148,13 +148,13 @@ describe('Check Email Notification Agent', () => {
       mailSmtpTlsEnabled: faker.random.boolean(),
     };
 
-    cy.request('PUT', '/notifications/email', email)
+    cy.request('PUT', `${BASE_URL}/notifications/email`, email)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(120);
         expect(body.extras).to.eq(null);
       })
-      .request('/notifications/email')
+      .request(`${BASE_URL}/notifications/email`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(122);
@@ -230,13 +230,13 @@ describe('Check Email Notification Agent', () => {
       mailSmtpTlsEnabled: faker.random.boolean(),
     };
 
-    cy.request('PUT', '/notifications/email', email)
+    cy.request('PUT', `${BASE_URL}/notifications/email`, email)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(120);
         expect(body.extras).to.eq(null);
       })
-      .request('/notifications/email')
+      .request(`${BASE_URL}/notifications/email`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(122);

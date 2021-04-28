@@ -44,7 +44,7 @@ describe('Check PushBullet Notification Agent', () => {
   beforeEach(nuke);
 
   it('Check for Empty PushBullet Notification Agent Settings', () => {
-    cy.request('/notifications/pushbullet')
+    cy.request(`${BASE_URL}/notifications/pushbullet`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(102);
@@ -92,13 +92,13 @@ describe('Check PushBullet Notification Agent', () => {
       accessToken: faker.random.alphaNumeric(),
     };
 
-    cy.request('PUT', '/notifications/pushbullet', pushBullet)
+    cy.request('PUT', `${BASE_URL}/notifications/pushbullet`, pushBullet)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(100);
         expect(body.extras).to.eq(null);
       })
-      .request('/notifications/pushbullet')
+      .request(`${BASE_URL}/notifications/pushbullet`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(102);
@@ -144,13 +144,13 @@ describe('Check PushBullet Notification Agent', () => {
       accessToken: faker.random.alphaNumeric(),
     };
 
-    cy.request('PUT', '/notifications/pushbullet', pushBullet)
+    cy.request('PUT', `${BASE_URL}/notifications/pushbullet`, pushBullet)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(100);
         expect(body.extras).to.eq(null);
       })
-      .request('/notifications/pushbullet')
+      .request(`${BASE_URL}/notifications/pushbullet`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(102);

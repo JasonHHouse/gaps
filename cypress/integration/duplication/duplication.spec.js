@@ -91,7 +91,7 @@ function searchMovieWithNewMetadataLibrary(cy) {
 }
 
 function waitUtilSearchingIsDone() {
-  cy.request('/searchStatus')
+  cy.request(`${BASE_URL}//searchStatus`)
     .then((resp) => {
       if (resp.status === 200 && resp.body.isSearching === false) {
         return;
@@ -111,11 +111,11 @@ describe('Search for Duplicates', () => {
     waitUtilSearchingIsDone();
 
     let ownedMovies;
-    cy.request('/plex/movies/c51c432ae94e316d52570550f915ecbcd71bede8/1')
+    cy.request(`${BASE_URL}/plex/movies/c51c432ae94e316d52570550f915ecbcd71bede8/1`)
       .then((resp) => {
         ownedMovies = resp.body;
         cy.log(`ownedMovies.length: ${ownedMovies.length}`);
-      }).request('/recommended/c51c432ae94e316d52570550f915ecbcd71bede8/1')
+      }).request(`${BASE_URL}/recommended/c51c432ae94e316d52570550f915ecbcd71bede8/1`)
       .then((resp) => {
         const recommendedMovies = resp.body.extras;
         checkForDuplicates(ownedMovies, recommendedMovies);
@@ -128,10 +128,10 @@ describe('Search for Duplicates', () => {
     waitUtilSearchingIsDone();
 
     let ownedMovies;
-    cy.request('/plex/movies/c51c432ae94e316d52570550f915ecbcd71bede8/4')
+    cy.request(`${BASE_URL}/plex/movies/c51c432ae94e316d52570550f915ecbcd71bede8/4`)
       .then((resp) => {
         ownedMovies = resp.body;
-      }).request('/recommended/c51c432ae94e316d52570550f915ecbcd71bede8/4')
+      }).request(`${BASE_URL}/recommended/c51c432ae94e316d52570550f915ecbcd71bede8/4`)
       .then((resp) => {
         const recommendedMovies = resp.body.extras;
         checkForDuplicates(ownedMovies, recommendedMovies);

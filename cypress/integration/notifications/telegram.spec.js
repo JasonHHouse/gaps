@@ -44,7 +44,7 @@ describe('Check Telegram Notification Agent', () => {
   beforeEach(nuke);
 
   it('Check for Empty Telegram Notification Agent Settings', () => {
-    cy.request('/notifications/telegram')
+    cy.request(`${BASE_URL}/notifications/telegram`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(82);
@@ -70,13 +70,13 @@ describe('Check Telegram Notification Agent', () => {
       botId: faker.random.alphaNumeric(),
     };
 
-    cy.request('PUT', '/notifications/telegram', telegram)
+    cy.request('PUT', `${BASE_URL}/notifications/telegram`, telegram)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(80);
         expect(body.extras).to.eq(null);
       })
-      .request('/notifications/telegram')
+      .request(`${BASE_URL}/notifications/telegram`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(82);
@@ -100,13 +100,13 @@ describe('Check Telegram Notification Agent', () => {
       botId: faker.random.alphaNumeric(),
     };
 
-    cy.request('PUT', '/notifications/telegram', telegram)
+    cy.request('PUT', `${BASE_URL}/notifications/telegram`, telegram)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(80);
         expect(body.extras).to.eq(null);
       })
-      .request('/notifications/telegram')
+      .request(`${BASE_URL}/notifications/telegram`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(82);

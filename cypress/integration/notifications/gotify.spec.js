@@ -44,7 +44,7 @@ describe('Check Gotify Notification Agent', () => {
   beforeEach(nuke);
 
   it('Check for Empty Gotify Notification Agent Settings', () => {
-    cy.request('/notifications/gotify')
+    cy.request(`${BASE_URL}/notifications/gotify`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(112);
@@ -92,13 +92,13 @@ describe('Check Gotify Notification Agent', () => {
       token: faker.random.alphaNumeric(),
     };
 
-    cy.request('PUT', '/notifications/gotify', gotify)
+    cy.request('PUT', `${BASE_URL}/notifications/gotify`, gotify)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(110);
         expect(body.extras).to.eq(null);
       })
-      .request('/notifications/gotify')
+      .request(`${BASE_URL}/notifications/gotify`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(112);
@@ -144,13 +144,13 @@ describe('Check Gotify Notification Agent', () => {
       token: faker.random.alphaNumeric(),
     };
 
-    cy.request('PUT', '/notifications/gotify', gotify)
+    cy.request('PUT', `${BASE_URL}/notifications/gotify`, gotify)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(110);
         expect(body.extras).to.eq(null);
       })
-      .request('/notifications/gotify')
+      .request(`${BASE_URL}/notifications/gotify`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(112);
