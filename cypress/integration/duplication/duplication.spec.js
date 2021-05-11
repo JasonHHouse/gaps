@@ -11,7 +11,9 @@
 /* global cy, it, describe, beforeEach, expect */
 /* eslint no-undef: "error" */
 
-import { nuke, redLibraryBefore, spyOnAddEventListener } from '../common.spec.js';
+import {
+  BASE_URL, nuke, redLibraryBefore, spyOnAddEventListener,
+} from '../common.spec.js';
 
 function checkForDuplicates(ownedMovies, recommendedMovies) {
   cy.log(`recommendedMovies.length: ${recommendedMovies.length}`);
@@ -37,7 +39,7 @@ function checkForDuplicates(ownedMovies, recommendedMovies) {
 }
 
 function searchBestMovieLibrary(cy) {
-  cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
+  cy.visit(`${BASE_URL}/libraries`, { onBeforeLoad: spyOnAddEventListener });
 
   cy.get('[data-cy=dropdownMenu]')
     .click();
@@ -51,7 +53,7 @@ function searchBestMovieLibrary(cy) {
   // Wait for timeout from clearing data
   cy.wait(5000);
 
-  cy.visit('/recommended', { onBeforeLoad: spyOnAddEventListener });
+  cy.visit(`${BASE_URL}/recommended`, { onBeforeLoad: spyOnAddEventListener });
 
   cy.get('[data-cy=dropdownMenu]')
     .click();
@@ -64,7 +66,7 @@ function searchBestMovieLibrary(cy) {
 }
 
 function searchMovieWithNewMetadataLibrary(cy) {
-  cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
+  cy.visit(`${BASE_URL}/libraries`, { onBeforeLoad: spyOnAddEventListener });
 
   cy.get('[data-cy=dropdownMenu]')
     .click();
@@ -85,11 +87,11 @@ function searchMovieWithNewMetadataLibrary(cy) {
   cy.get('#movies_info')
     .contains('Showing 1 to 1 of 1 entries');
 
-  cy.visit('/recommended', { onBeforeLoad: spyOnAddEventListener });
+  cy.visit(`${BASE_URL}/recommended`, { onBeforeLoad: spyOnAddEventListener });
 }
 
 function waitUtilSearchingIsDone() {
-  cy.request('/searchStatus')
+  cy.request(`${BASE_URL}/searchStatus`)
     .then((resp) => {
       if (resp.status === 200 && resp.body.isSearching === false) {
         return;
@@ -109,11 +111,11 @@ describe('Search for Duplicates', () => {
     waitUtilSearchingIsDone();
 
     let ownedMovies;
-    cy.request('/plex/movies/c51c432ae94e316d52570550f915ecbcd71bede8/1')
+    cy.request(`${BASE_URL}/plex/movies/c51c432ae94e316d52570550f915ecbcd71bede8/1`)
       .then((resp) => {
         ownedMovies = resp.body;
         cy.log(`ownedMovies.length: ${ownedMovies.length}`);
-      }).request('/recommended/c51c432ae94e316d52570550f915ecbcd71bede8/1')
+      }).request(`${BASE_URL}/recommended/c51c432ae94e316d52570550f915ecbcd71bede8/1`)
       .then((resp) => {
         const recommendedMovies = resp.body.extras;
         checkForDuplicates(ownedMovies, recommendedMovies);
@@ -126,10 +128,10 @@ describe('Search for Duplicates', () => {
     waitUtilSearchingIsDone();
 
     let ownedMovies;
-    cy.request('/plex/movies/c51c432ae94e316d52570550f915ecbcd71bede8/4')
+    cy.request(`${BASE_URL}/plex/movies/c51c432ae94e316d52570550f915ecbcd71bede8/4`)
       .then((resp) => {
         ownedMovies = resp.body;
-      }).request('/recommended/c51c432ae94e316d52570550f915ecbcd71bede8/4')
+      }).request(`${BASE_URL}/recommended/c51c432ae94e316d52570550f915ecbcd71bede8/4`)
       .then((resp) => {
         const recommendedMovies = resp.body.extras;
         checkForDuplicates(ownedMovies, recommendedMovies);

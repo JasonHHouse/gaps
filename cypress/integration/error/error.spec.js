@@ -11,9 +11,11 @@
 /* global cy, it, expect, describe */
 /* eslint no-undef: "error" */
 
+import { BASE_URL } from '../common.spec.js';
+
 describe('Check Error Page', () => {
   it('Does error page load', () => {
-    cy.request({ url: '/bad', method: 'GET', failOnStatusCode: false })
+    cy.request({ url: `${BASE_URL}/bad`, method: 'GET', failOnStatusCode: false })
       .should((response) => {
         expect(response.status).to.eq(404);
       });

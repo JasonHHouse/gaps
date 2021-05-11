@@ -11,14 +11,16 @@
 /* global cy, it, expect, before, describe */
 /* eslint no-undef: "error" */
 
-import { nuke, redLibraryBefore, spyOnAddEventListener } from '../common.spec.js';
+import {
+  BASE_URL, nuke, redLibraryBefore, spyOnAddEventListener,
+} from '../common.spec.js';
 
 describe('Find owned movies', () => {
   before(nuke);
   before(redLibraryBefore);
 
   it('Find Saw Movies', () => {
-    cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/libraries`, { onBeforeLoad: spyOnAddEventListener });
 
     cy.get('[data-cy=dropdownMenu]')
       .click();
@@ -38,7 +40,7 @@ describe('Find owned movies', () => {
   });
 
   it('Refresh Saw Movies', () => {
-    cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/libraries`, { onBeforeLoad: spyOnAddEventListener });
 
     cy.get('[data-cy=dropdownMenu]')
       .click();
@@ -68,7 +70,7 @@ describe('Find owned movies', () => {
   });
 
   it('Research Saw Movies', () => {
-    cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/libraries`, { onBeforeLoad: spyOnAddEventListener });
 
     cy.get('[data-cy=dropdownMenu]')
       .click();
@@ -98,7 +100,7 @@ describe('Find owned movies', () => {
   });
 
   it('Movies with Metadata Empty', () => {
-    cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/libraries`, { onBeforeLoad: spyOnAddEventListener });
 
     cy.get('[data-cy=dropdownMenu]')
       .click();

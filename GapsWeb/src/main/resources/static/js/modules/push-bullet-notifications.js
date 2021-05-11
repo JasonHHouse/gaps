@@ -11,12 +11,13 @@
 import getNotificationTypes from './notification-types.min.js';
 import Payload from './payload.min.js';
 import hideAllAlertsAndSpinners from './alerts-manager.min.js';
+import { getContextPath } from './common.min.js';
 
 export async function testPushBulletNotifications() {
   hideAllAlertsAndSpinners();
   document.getElementById('pushBulletSpinner').style.display = 'block';
 
-  const response = await fetch('/notifications/test/1', {
+  const response = await fetch(getContextPath('/notifications/test/1'), {
     method: 'put',
   });
   const put = await response.json();
@@ -42,7 +43,7 @@ export async function savePushBulletNotifications() {
     document.getElementById('pushBulletPlexLibraryUpdateNotification').checked,
     document.getElementById('pushBulletGapsMissingCollectionsNotification').checked);
 
-  const response = await fetch('/notifications/pushbullet', {
+  const response = await fetch(getContextPath('/notifications/pushbullet'), {
     method: 'put',
     headers: {
       Accept: 'application/json',

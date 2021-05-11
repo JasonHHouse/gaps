@@ -11,11 +11,11 @@
 /* global cy, it, describe, before, expect */
 /* eslint no-undef: "error" */
 
-import { spyOnAddEventListener } from '../common.spec.js';
+import { BASE_URL, spyOnAddEventListener } from '../common.spec.js';
 
 describe('Schedule Configuration Tests', () => {
   before(() => {
-    cy.visit('/configuration', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/configuration`, { onBeforeLoad: spyOnAddEventListener });
 
     cy.get('#scheduleTab')
       .click();
@@ -34,7 +34,7 @@ describe('Schedule Configuration Tests', () => {
     cy.get('#scheduleSaveError')
       .should('not.be.visible');
 
-    cy.request('/schedule')
+    cy.request(`${BASE_URL}/schedule`)
       .then((resp) => {
         const result = resp.body;
         expect(result).to.have.property('message', 'Monthly');
@@ -54,7 +54,7 @@ describe('Schedule Configuration Tests', () => {
     cy.get('#scheduleSaveError')
       .should('not.be.visible');
 
-    cy.request('/schedule')
+    cy.request(`${BASE_URL}/schedule`)
       .then((resp) => {
         const result = resp.body;
         expect(result).to.have.property('message', 'Hourly');

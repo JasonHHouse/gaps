@@ -12,7 +12,7 @@
 /* global Handlebars */
 /* eslint no-undef: "error" */
 
-import { getOwnedMoviesForTable } from '../modules/common.min.js';
+import { getContextPath, getOwnedMoviesForTable } from '../modules/common.min.js';
 
 let libraryTitle;
 let noMovieContainer;
@@ -45,7 +45,7 @@ function searchForMovies() {
 
   $.ajax({
     type: 'GET',
-    url: `/plex/movies/${machineIdentifier}/${key}`,
+    url: getContextPath(`/plex/movies/${machineIdentifier}/${key}`),
     contentType: 'application/json',
     success(data) {
       movieSearchingContainer.css({ display: 'none' });
@@ -62,7 +62,7 @@ jQuery(($) => {
   movieSearchingContainer = $('#movieSearchingContainer');
   plexServers = JSON.parse($('#plexServers').val());
   const plexServer = JSON.parse($('#plexServer').val());
-  const key = JSON.parse($('#libraryKey').val());
+  const key = $('#libraryKey').val();
 
   moviesTable = $('#movies').DataTable({
     deferRender: true,

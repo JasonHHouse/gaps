@@ -11,6 +11,9 @@
 /* global cy, expect */
 /* eslint no-undef: "error" */
 
+// export const BASE_URL = '';
+export const BASE_URL = '/gaps';
+
 export const CYPRESS_VALUES = {
   notBeChecked: 'not.be.checked',
   beChecked: 'be.checked',
@@ -32,7 +35,7 @@ export function spyOnAddEventListener(win) {
 }
 
 export function nuke() {
-  cy.request('PUT', '/nuke')
+  cy.request('PUT', `${BASE_URL}/nuke`)
     .then((response) => {
       expect(response.body).to.have.property('code', 30);
       expect(response.body).to.have.property('reason', 'Nuke successful. All files deleted.');
@@ -45,7 +48,7 @@ export function nuke() {
 export function redLibraryBefore() {
   nuke();
 
-  cy.visit('/configuration', { onBeforeLoad: spyOnAddEventListener });
+  cy.visit(`${BASE_URL}/configuration`, { onBeforeLoad: spyOnAddEventListener });
 
   cy.populateTmdb('723b4c763114904392ca441909aa0375');
 
@@ -102,7 +105,7 @@ export function redLibraryBefore() {
 }
 
 export function jokerLibraryBefore() {
-  cy.visit('/configuration', { onBeforeLoad: spyOnAddEventListener });
+  cy.visit(`${BASE_URL}/configuration`, { onBeforeLoad: spyOnAddEventListener });
 
   cy.populateTmdb('723b4c763114904392ca441909aa0375');
 

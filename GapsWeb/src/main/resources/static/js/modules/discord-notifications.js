@@ -11,12 +11,13 @@
 import getNotificationTypes from './notification-types.min.js';
 import Payload from './payload.min.js';
 import hideAllAlertsAndSpinners from './alerts-manager.min.js';
+import { getContextPath } from './common.min.js';
 
 export async function testDiscordNotifications() {
   hideAllAlertsAndSpinners();
   document.getElementById('discordSpinner').style.display = 'block';
 
-  const response = await fetch('/notifications/test/6', {
+  const response = await fetch(getContextPath('/notifications/test/6'), {
     method: 'put',
   });
   const put = await response.json();
@@ -41,7 +42,7 @@ export async function saveDiscordNotifications() {
     document.getElementById('discordPlexLibraryUpdateNotification').checked,
     document.getElementById('discordGapsMissingCollectionsNotification').checked);
 
-  const response = await fetch('/notifications/discord', {
+  const response = await fetch(getContextPath('/notifications/discord'), {
     method: 'put',
     headers: {
       Accept: 'application/json',

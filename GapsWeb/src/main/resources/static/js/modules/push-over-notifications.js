@@ -13,10 +13,11 @@
 import getNotificationTypes from './notification-types.min.js';
 import Payload from './payload.min.js';
 import hideAllAlertsAndSpinners from './alerts-manager.min.js';
+import { getContextPath } from './common.min.js';
 
 export async function getSoundOptions() {
   let defaultSound;
-  const pushOverResponse = await fetch('/notifications/pushOver', {
+  const pushOverResponse = await fetch(getContextPath('/notifications/pushOver'), {
     method: 'get',
   });
   const pushOverBody = await pushOverResponse.json();
@@ -24,7 +25,7 @@ export async function getSoundOptions() {
     defaultSound = pushOverBody.extras.sound;
   }
 
-  const soundsResponse = await fetch('/sounds', {
+  const soundsResponse = await fetch(getContextPath('/sounds'), {
     method: 'get',
   });
   const body = await soundsResponse.json();
@@ -50,7 +51,7 @@ export async function testPushOverNotifications() {
   hideAllAlertsAndSpinners();
   document.getElementById('pushOverSpinner').style.display = 'block';
 
-  const response = await fetch('/notifications/test/5', {
+  const response = await fetch(getContextPath('/notifications/test/5'), {
     method: 'put',
   });
   const put = await response.json();
@@ -80,7 +81,7 @@ export async function savePushOverNotifications() {
     document.getElementById('pushOverPlexLibraryUpdateNotification').checked,
     document.getElementById('pushOverGapsMissingCollectionsNotification').checked);
 
-  const response = await fetch('/notifications/pushOver', {
+  const response = await fetch(getContextPath('/notifications/pushOver'), {
     method: 'put',
     headers: {
       Accept: 'application/json',

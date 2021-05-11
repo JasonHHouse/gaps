@@ -12,7 +12,7 @@
 /* eslint no-undef: "error" */
 
 import faker from 'faker';
-import { CYPRESS_VALUES, nuke } from '../common.spec.js';
+import { BASE_URL, CYPRESS_VALUES, nuke } from '../common.spec.js';
 
 function checkElements(channelTag, token, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#pushBulletChannelTag')
@@ -44,7 +44,7 @@ describe('Check PushBullet Notification Agent', () => {
   beforeEach(nuke);
 
   it('Check for Empty PushBullet Notification Agent Settings', () => {
-    cy.request('/notifications/pushbullet')
+    cy.request(`${BASE_URL}/notifications/pushbullet`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(102);
@@ -53,7 +53,7 @@ describe('Check PushBullet Notification Agent', () => {
         expect(body.extras.channel_tag).to.eq('');
         expect(body.extras.accessToken).to.eq('');
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -92,20 +92,20 @@ describe('Check PushBullet Notification Agent', () => {
       accessToken: faker.random.alphaNumeric(),
     };
 
-    cy.request('PUT', '/notifications/pushbullet', pushBullet)
+    cy.request('PUT', `${BASE_URL}/notifications/pushbullet`, pushBullet)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(100);
         expect(body.extras).to.eq(null);
       })
-      .request('/notifications/pushbullet')
+      .request(`${BASE_URL}/notifications/pushbullet`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(102);
         expect(body.extras.channel_tag).to.eq(pushBullet.channel_tag);
         expect(body.extras.accessToken).to.eq(pushBullet.accessToken);
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -144,20 +144,20 @@ describe('Check PushBullet Notification Agent', () => {
       accessToken: faker.random.alphaNumeric(),
     };
 
-    cy.request('PUT', '/notifications/pushbullet', pushBullet)
+    cy.request('PUT', `${BASE_URL}/notifications/pushbullet`, pushBullet)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(100);
         expect(body.extras).to.eq(null);
       })
-      .request('/notifications/pushbullet')
+      .request(`${BASE_URL}/notifications/pushbullet`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(102);
         expect(body.extras.channel_tag).to.eq(pushBullet.channel_tag);
         expect(body.extras.accessToken).to.eq(pushBullet.accessToken);
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -189,7 +189,7 @@ describe('Check PushBullet Notification Agent', () => {
   });
 
   it('Check saving PushBullet Notification', () => {
-    cy.visit('/configuration');
+    cy.visit(`${BASE_URL}/configuration`);
 
     cy.get('#notificationTab')
       .click();
@@ -250,7 +250,7 @@ describe('Check PushBullet Notification Agent', () => {
   });
 
   it('Check Successful Saving and Failure Testing PushBullet Notification', () => {
-    cy.visit('/configuration');
+    cy.visit(`${BASE_URL}/configuration`);
 
     cy.get('#notificationTab')
       .click();

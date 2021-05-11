@@ -11,17 +11,17 @@
 /* global cy, it, describe */
 /* eslint no-undef: "error" */
 
-import { spyOnAddEventListener } from '../common.spec.js';
+import { BASE_URL, spyOnAddEventListener } from '../common.spec.js';
 
 describe('Verify About Page', () => {
   it('Default page', () => {
-    cy.visit('/about', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/about`, { onBeforeLoad: spyOnAddEventListener });
 
     cy.get('h3.top-margin')
       .should('have.text', 'About');
 
     cy.get('.container > :nth-child(3)')
-      .should('have.text', 'v0.8.12');
+      .should('have.text', 'v0.9.0');
 
     cy.get('.container > :nth-child(6)')
       .should('have.text', 'Software');

@@ -12,11 +12,11 @@
 /* eslint no-undef: "error" */
 
 import faker from 'faker';
-import { spyOnAddEventListener } from '../common.spec.js';
+import { BASE_URL, spyOnAddEventListener } from '../common.spec.js';
 
 describe('Plex Configuration Tests', () => {
   before(() => {
-    cy.visit('/configuration', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/configuration`, { onBeforeLoad: spyOnAddEventListener });
 
     cy.get('#plexTab')
       .click();

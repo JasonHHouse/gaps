@@ -77,6 +77,7 @@ public class RecommendedController {
         modelAndView.addObject("plexProperties", plexProperties);
         modelAndView.addObject("plexServer", plexServer);
         modelAndView.addObject("plexLibrary", plexLibrary);
+        modelAndView.addObject("recommendedPage", true);
         return modelAndView;
     }
 

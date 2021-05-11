@@ -11,36 +11,36 @@
 /* global cy, it, describe */
 /* eslint no-undef: "error" */
 
-import { nuke, spyOnAddEventListener } from '../common.spec.js';
+import { BASE_URL, nuke, spyOnAddEventListener } from '../common.spec.js';
 
 describe('Configuration Tests', () => {
   it('Clean configuration page load', () => {
     nuke();
 
-    cy.visit('/configuration', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/configuration`, { onBeforeLoad: spyOnAddEventListener });
 
-    cy.get('.active > .nav-link')
-      .should('have.attr', 'href', '/configuration')
+    cy.get('[data-cy=configuration]')
+      .should('have.attr', 'href', `${BASE_URL}/configuration`)
       .parent()
       .should('have.attr', 'aria-current', 'page');
 
-    cy.get('.navbar-nav > :nth-child(1) > .nav-link')
-      .should('have.attr', 'href', '/libraries')
+    cy.get('[data-cy=libraries]')
+      .should('have.attr', 'href', `${BASE_URL}/libraries`)
       .parent()
       .should('not.have.attr', 'aria-current', 'page');
 
-    cy.get('.navbar-nav > :nth-child(2) > .nav-link')
-      .should('have.attr', 'href', '/recommended')
+    cy.get('[data-cy=recommended]')
+      .should('have.attr', 'href', `${BASE_URL}/recommended`)
       .parent()
       .should('not.have.attr', 'aria-current', 'page');
 
-    cy.get('.navbar-nav > :nth-child(4) > .nav-link')
-      .should('have.attr', 'href', '/rssCheck')
+    cy.get('[data-cy=rssCheck]')
+      .should('have.attr', 'href', `${BASE_URL}/rssCheck`)
       .parent()
       .should('not.have.attr', 'aria-current', 'page');
 
-    cy.get('.navbar-nav > :nth-child(7) > .nav-link')
-      .should('have.attr', 'href', '/about')
+    cy.get('[data-cy=about]')
+      .should('have.attr', 'href', `${BASE_URL}/about`)
       .parent()
       .should('not.have.attr', 'aria-current', 'page');
 

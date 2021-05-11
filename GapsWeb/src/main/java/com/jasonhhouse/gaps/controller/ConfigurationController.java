@@ -72,6 +72,7 @@ public class ConfigurationController {
         ModelAndView modelAndView = new ModelAndView("configuration");
         modelAndView.addObject("plexProperties", plexProperties);
         modelAndView.addObject("schedules", schedulerService.getAllSchedules());
+        modelAndView.addObject("configurationPage", true);
         return modelAndView;
     }
 

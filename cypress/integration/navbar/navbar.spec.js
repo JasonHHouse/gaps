@@ -11,76 +11,67 @@
 /* global cy, it, describe */
 /* eslint no-undef: "error" */
 
-import { spyOnAddEventListener } from '../common.spec.js';
+import { BASE_URL, spyOnAddEventListener } from '../common.spec.js';
 
 function checkNavIcons(cy, isLibDefault = true, isMissingDefault = true, isRssDefault = true, isSettingsDefault = true, isUpdatesDefault = true, isAboutDefault = true) {
-  cy.get(':nth-child(1) > .nav-link > .icon')
-    .should('have.class', isLibDefault ? 'list-ul-default' : 'list-ul-active');
+  cy.get('[data-cy=librariesIcon]')
+    .should('have.class', isLibDefault ? 'default' : 'activePage');
 
-  cy.get(':nth-child(2) > .nav-link > .icon')
-    .should('have.class', isMissingDefault ? 'collection-fill-default' : 'collection-fill-active');
+  cy.get('[data-cy=recommendedIcon]')
+    .should('have.class', isMissingDefault ? 'default' : 'activePage');
 
-  cy.get(':nth-child(3) > .nav-link > .icon')
-    .should('not.be.visible');
+  cy.get('[data-cy=rssCheckIcon]')
+    .should('have.class', isRssDefault ? 'default' : 'activePage');
 
-  cy.get(':nth-child(4) > .nav-link > .icon')
-    .should('have.class', isRssDefault ? 'rss-default' : 'rss-active');
+  cy.get('[data-cy=configurationIcon]')
+    .should('have.class', isSettingsDefault ? 'default' : 'activePage');
 
-  cy.get(':nth-child(5) > .nav-link > .icon')
-    .should('have.class', isSettingsDefault ? 'gear-default' : 'gear-active');
+  cy.get('[data-cy=updatesIcon]')
+    .should('have.class', isUpdatesDefault ? 'default' : 'activePage');
 
-  cy.get(':nth-child(6) > .nav-link > .icon')
-    .should('have.class', isUpdatesDefault ? 'arrow-clockwise-default' : 'arrow-clockwise-active');
-
-  cy.get(':nth-child(7) > .nav-link > .icon')
-    .should('have.class', isAboutDefault ? 'info-circle-default' : 'info-circle-active');
+  cy.get('[data-cy=aboutIcon]')
+    .should('have.class', isAboutDefault ? 'default' : 'activePage');
 }
 
 describe('Verify Navbars', () => {
   it('Index page', () => {
-    cy.visit('/home', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/home`, { onBeforeLoad: spyOnAddEventListener });
 
     checkNavIcons(cy);
   });
 
   it('About page', () => {
-    cy.visit('/about', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/about`, { onBeforeLoad: spyOnAddEventListener });
 
     checkNavIcons(cy, undefined, undefined, undefined, undefined, undefined, false);
   });
 
   it('Settings page', () => {
-    cy.visit('/configuration', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/configuration`, { onBeforeLoad: spyOnAddEventListener });
 
     checkNavIcons(cy, undefined, undefined, undefined, false, undefined, undefined);
   });
 
   it('Libraries page', () => {
-    cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
-
-    checkNavIcons(cy, false, undefined, undefined, undefined, undefined, undefined);
-  });
-
-  it('Libraries page', () => {
-    cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/libraries`, { onBeforeLoad: spyOnAddEventListener });
 
     checkNavIcons(cy, false, undefined, undefined, undefined, undefined, undefined);
   });
 
   it('Recommended page', () => {
-    cy.visit('/recommended', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/recommended`, { onBeforeLoad: spyOnAddEventListener });
 
     checkNavIcons(cy, undefined, false, undefined, undefined, undefined, undefined);
   });
 
   it('RSS page', () => {
-    cy.visit('/rssCheck', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/rssCheck`, { onBeforeLoad: spyOnAddEventListener });
 
     checkNavIcons(cy, undefined, undefined, false, undefined, undefined, undefined);
   });
 
   it('Updates page', () => {
-    cy.visit('/updates', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/updates`, { onBeforeLoad: spyOnAddEventListener });
 
     checkNavIcons(cy, undefined, undefined, undefined, undefined, false, undefined);
   });

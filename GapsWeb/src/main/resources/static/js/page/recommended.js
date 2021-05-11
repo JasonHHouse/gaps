@@ -12,8 +12,8 @@
 /* global Handlebars, SockJS, Stomp */
 /* eslint no-undef: "error" */
 
-import { getRecommendedMoviesForTable } from '../modules/common.js';
-import Payload from '../modules/payload.js';
+import { getContextPath, getRecommendedMoviesForTable } from '../modules/common.min.js';
+import Payload from '../modules/payload.min.js';
 
 let libraryTitle;
 let notSearchedYetContainer;
@@ -86,11 +86,9 @@ function searchForMovies() {
   searchTitle.text('Searching for Movies');
   searchDescription.text("Gaps is looking through your Plex libraries. This could take a while so just sit tight, and we'll find all the missing movies for you.");
 
-  // ToDo
-  // Change to searching with recommended
   $.ajax({
     type: 'PUT',
-    url: `/recommended/find/${plexServer.machineIdentifier}/${libraryKey}`,
+    url: getContextPath(`/recommended/find/${plexServer.machineIdentifier}/${libraryKey}`),
     contentType: 'application/json',
   });
 
@@ -178,7 +176,7 @@ jQuery(($) => {
 
   getRecommendedMoviesForTable(`/recommended/${plexServer.machineIdentifier}/${libraryKey}`, movieContainer, noMovieContainer, notSearchedYetContainer, moviesTable);
 
-  socket = new SockJS('/gs-guide-websocket');
+  socket = new SockJS(getContextPath('/gs-guide-websocket'));
   stompClient = Stomp.over(socket);
   stompClient.connect({}, () => {
     stompClient.subscribe('/finishedSearching', (message) => {

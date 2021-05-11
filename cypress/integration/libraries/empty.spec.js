@@ -11,13 +11,13 @@
 /* global cy, it, before, describe */
 /* eslint no-undef: "error" */
 
-import { redLibraryBefore, spyOnAddEventListener } from '../common.spec.js';
+import { BASE_URL, redLibraryBefore, spyOnAddEventListener } from '../common.spec.js';
 
 describe('Not Searched Yet Library', () => {
   before(redLibraryBefore);
 
   it('Clean configuration page load', () => {
-    cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
+    cy.visit(`${BASE_URL}/libraries`, { onBeforeLoad: spyOnAddEventListener });
 
     cy.get('[data-cy=libraryTitle]')
       .contains('Joker');

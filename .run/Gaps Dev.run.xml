@@ -15,7 +15,7 @@
         <package-json value="$PROJECT_DIR$/package.json" />
         <command value="run" />
         <scripts>
-          <script value="eslint-cypress" />
+          <script value="minify-input-css" />
         </scripts>
         <node-interpreter value="project" />
         <envs />

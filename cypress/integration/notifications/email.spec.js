@@ -12,7 +12,7 @@
 /* eslint no-undef: "error" */
 
 import faker from 'faker';
-import { CYPRESS_VALUES, nuke } from '../common.spec.js';
+import { BASE_URL, CYPRESS_VALUES, nuke } from '../common.spec.js';
 
 function checkElements(username, password, mailTo, mailFrom, mailServer, mailPort, mailTransportProtocol, mailSmtpAuth, mailSmtpTlsEnabled, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
   cy.get('#emailUsername')
@@ -65,7 +65,7 @@ describe('Check Email Notification Agent', () => {
   beforeEach(nuke);
 
   it('Check for Email Gotify Notification Agent Settings', () => {
-    cy.request('/notifications/email')
+    cy.request(`${BASE_URL}/notifications/email`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(122);
@@ -81,7 +81,7 @@ describe('Check Email Notification Agent', () => {
         expect(body.extras.mailSmtpAuth).to.eq('');
         expect(body.extras.mailSmtpTlsEnabled).to.eq(false);
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -148,13 +148,13 @@ describe('Check Email Notification Agent', () => {
       mailSmtpTlsEnabled: faker.random.boolean(),
     };
 
-    cy.request('PUT', '/notifications/email', email)
+    cy.request('PUT', `${BASE_URL}/notifications/email`, email)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(120);
         expect(body.extras).to.eq(null);
       })
-      .request('/notifications/email')
+      .request(`${BASE_URL}/notifications/email`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(122);
@@ -163,7 +163,7 @@ describe('Check Email Notification Agent', () => {
         expect(body.extras.mailPort).to.eq(email.mailPort);
         expect(body.extras.mailSmtpTlsEnabled).to.eq(email.mailSmtpTlsEnabled);
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -230,13 +230,13 @@ describe('Check Email Notification Agent', () => {
       mailSmtpTlsEnabled: faker.random.boolean(),
     };
 
-    cy.request('PUT', '/notifications/email', email)
+    cy.request('PUT', `${BASE_URL}/notifications/email`, email)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(120);
         expect(body.extras).to.eq(null);
       })
-      .request('/notifications/email')
+      .request(`${BASE_URL}/notifications/email`)
       .then((resp) => {
         const { body } = resp;
         expect(body.code).to.eq(122);
@@ -245,7 +245,7 @@ describe('Check Email Notification Agent', () => {
         expect(body.extras.mailPort).to.eq(email.mailPort);
         expect(body.extras.mailSmtpTlsEnabled).to.eq(email.mailSmtpTlsEnabled);
       })
-      .visit('/configuration')
+      .visit(`${BASE_URL}/configuration`)
       .then(() => {
         cy.get('#notificationTab')
           .click();
@@ -298,7 +298,7 @@ describe('Check Email Notification Agent', () => {
   });
 
   it('Check saving Email Notification', () => {
-    cy.visit('/configuration');
+    cy.visit(`${BASE_URL}/configuration`);
 
     cy.get('#notificationTab')
       .click();
@@ -400,7 +400,7 @@ describe('Check Email Notification Agent', () => {
   });
 
   it('Check Successful Saving and Failure Testing Email Notification', () => {
-    cy.visit('/configuration');
+    cy.visit(`${BASE_URL}/configuration`);
 
     cy.get('#notificationTab')
       .click();

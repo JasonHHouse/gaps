@@ -2,6 +2,7 @@
 
 SET s=false
 SET l=false
+SET u=""
 
 :initial
 if "%1"=="" goto done
@@ -20,17 +21,17 @@ goto initial
 if %s% == true (
     if %l% == true (
         echo "Running with SSL and Login"
-        call java -jar -Dspring.profiles.active=ssl gaps.jar
+        call java -jar -Dspring.profiles.active=ssl -Dinfo.app.baseUrl=%u% gaps.jar
     ) else (
         echo "Running with SSL and without Login"
-        call java -jar -Dspring.profiles.active=ssl-no-login gaps.jar
+        call java -jar -Dspring.profiles.active=ssl-no-login -Dinfo.app.baseUrl=%u% gaps.jar
     )
 ) else (
     if %l% == true (
         echo "Running without SSL and with Login"
-        call java -jar -Dspring.profiles.active=no-ssl gaps.jar
+        call java -jar -Dspring.profiles.active=no-ssl -Dinfo.app.baseUrl=%u% gaps.jar
     ) else (
         echo "Running without SSL and without Login"
-        call java -jar -Dspring.profiles.active=no-ssl-no-login gaps.jar
+        call java -jar -Dspring.profiles.active=no-ssl-no-login -Dinfo.app.baseUrl=%u% gaps.jar
     )
 )

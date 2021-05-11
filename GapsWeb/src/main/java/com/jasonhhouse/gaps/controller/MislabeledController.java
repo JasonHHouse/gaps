@@ -52,7 +52,10 @@ public class MislabeledController {
     public ModelAndView getMislabeled() {
         LOGGER.info("getMislabeled()");
 
-        return new ModelAndView("mislabeled");
+
+        ModelAndView modelAndView = new ModelAndView("mislabeled");
+        modelAndView.addObject("mislabeledPage", true);
+        return modelAndView;
     }
 
     @GetMapping(value = "/{machineIdentifier}/{key}")

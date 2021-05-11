@@ -13,6 +13,8 @@
 
 /* eslint no-undef: "error" */
 
+import { getContextPath } from './common.min.js';
+
 export function openPlexLibraryConfigurationModel(title, machineIdentifier, key) {
   const obj = {
     title,
@@ -35,7 +37,7 @@ export async function savePlexLibraryConfiguration(machineIdentifier, key) {
     defaultLibrary: document.getElementById('defaultLibrary').value,
   };
 
-  const response = await fetch('/configuration/update/plex/library', {
+  const response = await fetch(getContextPath('/configuration/update/plex/library'), {
     method: 'put',
     headers: {
       Accept: 'application/json',

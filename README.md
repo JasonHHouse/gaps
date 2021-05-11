@@ -79,6 +79,8 @@ Open your browser and navigate to, http://{IP_ADDRESS}:8484
 
 If everything worked, you will be greeted by the gaps home page.
 
+_Note: If you would like to set a base URL, use the variable `BASE_URL` and set the value you would like when running in Docker. Gaps on UNRAID has a BASE_URL variable in the template. If using a base URL, navigate to http://{IP_ADDRESS}:8484/BASE_URL 
+
 ![Home Page](https://github.com/JasonHHouse/gaps/blob/master/images/gaps-main.png)
 
 ## 🎈 Usage <a name="usage"></a>

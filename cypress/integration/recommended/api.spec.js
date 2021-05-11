@@ -11,10 +11,10 @@
 /* global cy, describe, it, expect */
 /* eslint no-undef: "error" */
 
-import { redLibraryBefore, spyOnAddEventListener } from '../common.spec.js';
+import { BASE_URL, redLibraryBefore, spyOnAddEventListener } from '../common.spec.js';
 
 function searchSawLibrary(cy) {
-  cy.visit('/libraries', { onBeforeLoad: spyOnAddEventListener });
+  cy.visit(`${BASE_URL}/libraries`, { onBeforeLoad: spyOnAddEventListener });
 
   cy.get('[data-cy=dropdownMenu]')
     .click();
@@ -32,12 +32,12 @@ function searchSawLibrary(cy) {
   cy.get('#movies_info')
     .should('have.text', 'Showing 1 to 1 of 1 entries');
 
-  cy.visit('/recommended', { onBeforeLoad: spyOnAddEventListener });
+  cy.visit(`${BASE_URL}/recommended`, { onBeforeLoad: spyOnAddEventListener });
 }
 
 describe('Recommended API', () => {
   it('Get Bad recommended', () => {
-    cy.request('/recommended/a/2')
+    cy.request(`${BASE_URL}/recommended/a/2`)
       .then((resp) => {
         cy.log(resp.body);
         const result = resp.body;
@@ -49,7 +49,7 @@ describe('Recommended API', () => {
     redLibraryBefore();
     searchSawLibrary(cy);
 
-    cy.request('/libraries/c51c432ae94e316d52570550f915ecbcd71bede8/5')
+    cy.request(`${BASE_URL}/libraries/c51c432ae94e316d52570550f915ecbcd71bede8/5`)
       .then((resp) => {
         cy.log(resp.body);
         const result = resp.body;
