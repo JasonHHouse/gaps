@@ -5,14 +5,14 @@ echo "Base URL: $BASE_URL"
 echo "Jar File: $JAR_FILE"
 if [ $ENABLE_SSL == true ]; then
   if [ $ENABLE_LOGIN == true ]; then
-    java -jar -Dspring.profiles.active=ssl -Dinfo.app.baseUrl=$BASE_URL $JAR_FILE
+    java -jar -Dspring.profiles.active=ssl -Dserver.servlet.context-path=$BASE_URL $JAR_FILE
   else
-    java -jar -Dspring.profiles.active=ssl-no-login -Dinfo.app.baseUrl=$BASE_URL $JAR_FILE
+    java -jar -Dspring.profiles.active=ssl-no-login -Dserver.servlet.context-path=$BASE_URL $JAR_FILE
   fi
 else
     if [ $ENABLE_LOGIN == true ]; then
-      java -jar -Dspring.profiles.active=no-ssl -Dinfo.app.baseUrl=$BASE_URL $JAR_FILE
+      java -jar -Dspring.profiles.active=no-ssl -Dserver.servlet.context-path=$BASE_URL $JAR_FILE
     else
-      java -jar -Dspring.profiles.active=no-ssl-no-login -Dinfo.app.baseUrl=$BASE_URL $JAR_FILE
+      java -jar -Dspring.profiles.active=no-ssl-no-login -Dserver.servlet.context-path=$BASE_URL $JAR_FILE
     fi
 fi
