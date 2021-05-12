@@ -210,65 +210,10 @@ public class PlexQueryImpl implements PlexQuery {
     }
 
     @Override
-    public @NotNull com.jasonhhouse.plex.video.MediaContainer findAllPlexVideos(@NotNull String url) {
-        LOGGER.info("findAllPlexVideos()");
-
-        OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(180, TimeUnit.SECONDS)
-                .writeTimeout(180, TimeUnit.SECONDS)
-                .readTimeout(180, TimeUnit.SECONDS)
-                .build();
-
-        if (StringUtils.isEmpty(url)) {
-            LOGGER.info("No URL added to findAllPlexVideos().");
-            return new com.jasonhhouse.plex.video.MediaContainer();
-        }
-
-        com.jasonhhouse.plex.video.MediaContainer mediaContainer;
-        try {
-            HttpUrl httpUrl = urlGenerator.generatePlexUrl(url);
-
-            Request request = new Request.Builder()
-                    .url(httpUrl)
-                    .build();
-
-            try (Response response = client.newCall(request).execute()) {
-                String body = response.body() != null ? response.body().string() : null;
-
-                if (StringUtils.isBlank(body)) {
-                    String reason = "Body returned empty from Plex";
-                    LOGGER.error(reason);
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason);
-                }
-
-                InputStream inputStream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
-                JAXBContext jaxbContext = JAXBContext.newInstance(com.jasonhhouse.plex.video.MediaContainer.class);
-                Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-                mediaContainer = (com.jasonhhouse.plex.video.MediaContainer) jaxbUnmarshaller.unmarshal(inputStream);
-
-            } catch (IOException e) {
-                String reason = String.format("Error connecting to Plex to get Movie list: %s", url);
-                LOGGER.error(reason, e);
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, reason, e);
-            } catch (JAXBException e) {
-                String reason = String.format("Error parsing XML from Plex: %s", url);
-                LOGGER.error(reason, e);
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, reason, e);
-            }
-        } catch (IllegalArgumentException | NullPointerException e) {
-            String reason = String.format("Error with plex Url: %s", url);
-            LOGGER.error(reason, e);
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, reason, e);
-        }
-
-        return mediaContainer;
-    }
-
-    @Override
     public void findAllMovieIds(@NotNull List<BasicMovie> basicMovies, @NotNull PlexServer plexServer, @NotNull PlexLibrary plexLibrary) {
         LOGGER.info("findAllMovieIds( {}, {} )", plexServer, plexLibrary);
 
-        if(plexLibrary.getScanner().equals("Plex Movie Scanner")) {
+        if (plexLibrary.getScanner().equals("Plex Movie Scanner")) {
             LOGGER.info("PlexLibrary {} uses old scanner", plexLibrary.getTitle());
             return;
         }
@@ -348,10 +293,10 @@ public class PlexQueryImpl implements PlexQuery {
     }
 
     @Override
-    public @NotNull PlexServer getPlexServerFromMachineIdentifier(@NotNull PlexProperties plexProperties, @NotNull String machineIdentifier) throws IllegalArgumentException{
+    public @NotNull PlexServer getPlexServerFromMachineIdentifier(@NotNull PlexProperties plexProperties, @NotNull String machineIdentifier) throws IllegalArgumentException {
         LOGGER.info("generatePlexUrl( {} )", machineIdentifier);
-        for(PlexServer plexServer : plexProperties.getPlexServers()) {
-            if(plexServer.getMachineIdentifier().equals(machineIdentifier)) {
+        for (PlexServer plexServer : plexProperties.getPlexServers()) {
+            if (plexServer.getMachineIdentifier().equals(machineIdentifier)) {
                 return plexServer;
             }
         }
@@ -360,9 +305,9 @@ public class PlexQueryImpl implements PlexQuery {
     }
 
     @Override
-    public @NotNull PlexLibrary getPlexLibraryFromKey(@NotNull PlexServer plexServer,@NotNull Integer key) throws IllegalArgumentException {
-        for(PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
-            if(plexLibrary.getKey().equals(key)) {
+    public @NotNull PlexLibrary getPlexLibraryFromKey(@NotNull PlexServer plexServer, @NotNull Integer key) throws IllegalArgumentException {
+        for (PlexLibrary plexLibrary : plexServer.getPlexLibraries()) {
+            if (plexLibrary.getKey().equals(key)) {
                 return plexLibrary;
             }
         }

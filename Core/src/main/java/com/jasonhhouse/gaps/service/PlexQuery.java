@@ -17,7 +17,6 @@ import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.plex.libs.PlexLibrary;
-import com.jasonhhouse.plex.video.MediaContainer;
 import java.util.List;
 import java.util.Map;
 import okhttp3.HttpUrl;
@@ -46,11 +45,9 @@ public interface PlexQuery {
      */
     @NotNull List<BasicMovie> findAllPlexMovies(@NotNull Map<Pair<String, Integer>, BasicMovie> previousMovies, @NotNull HttpUrl url);
 
-    @NotNull MediaContainer findAllPlexVideos(@NotNull String url);
-
     void findAllMovieIds(@NotNull List<BasicMovie> basicMovies, @NotNull PlexServer plexServer, @NotNull PlexLibrary plexLibrary);
 
-    @NotNull PlexServer getPlexServerFromMachineIdentifier(@NotNull PlexProperties plexProperties,@NotNull String machineIdentifier);
+    @NotNull PlexServer getPlexServerFromMachineIdentifier(@NotNull PlexProperties plexProperties, @NotNull String machineIdentifier);
 
-    @NotNull PlexLibrary getPlexLibraryFromKey(@NotNull PlexServer plexServer,@NotNull Integer key);
+    @NotNull PlexLibrary getPlexLibraryFromKey(@NotNull PlexServer plexServer, @NotNull Integer key);
 }
