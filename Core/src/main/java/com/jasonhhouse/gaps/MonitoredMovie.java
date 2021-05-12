@@ -6,15 +6,18 @@ import javax.persistence.Id;
 import org.jetbrains.annotations.NotNull;
 
 @Entity
-public class Monitored {
+public class MonitoredMovie {
     @Id
     @NotNull
-    private final Integer tmdbId;
+    private Integer tmdbId;
 
     @NotNull
-    private final Boolean monitored;
+    private Boolean monitored;
 
-    public Monitored(@NotNull Integer tmdbId, @NotNull Boolean monitored) {
+    public MonitoredMovie() {
+    }
+
+    public MonitoredMovie(@NotNull Integer tmdbId, @NotNull Boolean monitored) {
         this.tmdbId = tmdbId;
         this.monitored = monitored;
     }
@@ -23,16 +26,24 @@ public class Monitored {
         return tmdbId;
     }
 
+    public void setTmdbId(@NotNull Integer tmdbId) {
+        this.tmdbId = tmdbId;
+    }
+
     public @NotNull Boolean getMonitored() {
         return monitored;
+    }
+
+    public void setMonitored(@NotNull Boolean monitored) {
+        this.monitored = monitored;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Monitored monitored1 = (Monitored) o;
-        return tmdbId.equals(monitored1.tmdbId) && monitored.equals(monitored1.monitored);
+        MonitoredMovie monitoredMovie1 = (MonitoredMovie) o;
+        return tmdbId.equals(monitoredMovie1.tmdbId) && monitored.equals(monitoredMovie1.monitored);
     }
 
     @Override
