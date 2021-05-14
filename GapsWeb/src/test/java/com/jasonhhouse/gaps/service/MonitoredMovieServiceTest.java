@@ -2,8 +2,6 @@ package com.jasonhhouse.gaps.service;
 
 import com.jasonhhouse.gaps.MonitoredMovie;
 import com.jasonhhouse.gaps.sql.MonitoredMovieRepository;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +19,7 @@ class MonitoredMovieServiceTest {
     private MonitoredMovieRepository monitoredMovieRepository;
 
     @Test
-    void injectedComponentsAreNotNull(){
+    void injectedComponentsAreNotNull() {
         assertThat(monitoredMovieRepository).isNotNull();
     }
 
@@ -43,4 +41,5 @@ class MonitoredMovieServiceTest {
         MonitoredMovie monitoredMovie1 = monitoredMovieRepository.findMonitoredMovieByTmdbId(123);
         assertEquals(monitoredMovie, monitoredMovie1, "Should save and update monitored movie");
     }
+
 }

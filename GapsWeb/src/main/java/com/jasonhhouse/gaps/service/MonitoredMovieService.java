@@ -4,6 +4,8 @@ import com.jasonhhouse.gaps.MonitoredMovie;
 import com.jasonhhouse.gaps.sql.MonitoredMovieRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +20,10 @@ public class MonitoredMovieService {
         List<MonitoredMovie> result = new ArrayList<>();
         monitoredMovieRepository.findAll().forEach(result::add);
         return result;
+    }
+
+    public Map<Integer, Boolean> map() {
+        return list().stream().collect(Collectors.toMap(MonitoredMovie::getTmdbId, MonitoredMovie::getMonitored));
     }
 
     public void saveAll(List<MonitoredMovie> monitoredMovies) {

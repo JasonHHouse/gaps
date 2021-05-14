@@ -60,7 +60,9 @@ public enum Payload {
     DISCORD_NOTIFICATION_UPDATE_SUCCEEDED(140, "Discord Notification Update Succeeded."),
     DISCORD_NOTIFICATION_UPDATE_FAILED(141, "Discord Notification Update Failed."),
     DISCORD_NOTIFICATION_FOUND(142, "Discord Notification Found."),
-    DISCORD_NOTIFICATION_NOT_FOUND(143, "Discord Notification Not Found.");
+    DISCORD_NOTIFICATION_NOT_FOUND(143, "Discord Notification Not Found."),
+    MONITORED_MOVIE_UPDATE_SUCCEEDED(150, "Monitored Movie Update Succeeded."),
+    MONITORED_MOVIE_UPDATE_FAILED(151, "Monitored Movie Update Failed.");
 
     private final int code;
     private final String reason;
