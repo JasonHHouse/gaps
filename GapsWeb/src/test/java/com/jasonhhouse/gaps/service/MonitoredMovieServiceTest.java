@@ -29,8 +29,18 @@ class MonitoredMovieServiceTest {
     public void testAddingMonitored() {
         MonitoredMovie monitoredMovie = new MonitoredMovie(123, false);
         monitoredMovieRepository.save(monitoredMovie);
-        List<MonitoredMovie> monitoredMovieList = new ArrayList<>();
-        monitoredMovieRepository.findAll().forEach(monitoredMovieList::add);
-        assertEquals(monitoredMovie, monitoredMovieList.get(0), "Should save and find monitored movie");
+        MonitoredMovie monitoredMovie1 = monitoredMovieRepository.findMonitoredMovieByTmdbId(123);
+        assertEquals(monitoredMovie, monitoredMovie1, "Should save and find monitored movie");
+    }
+
+    @Test
+    public void testUpdateMonitoredMovie() {
+        MonitoredMovie monitoredMovie = new MonitoredMovie(123, false);
+        monitoredMovieRepository.save(monitoredMovie);
+        monitoredMovie = monitoredMovieRepository.findMonitoredMovieByTmdbId(123);
+        monitoredMovie.setMonitored(true);
+        monitoredMovieRepository.save(monitoredMovie);
+        MonitoredMovie monitoredMovie1 = monitoredMovieRepository.findMonitoredMovieByTmdbId(123);
+        assertEquals(monitoredMovie, monitoredMovie1, "Should save and update monitored movie");
     }
 }
