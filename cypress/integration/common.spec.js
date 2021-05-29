@@ -11,8 +11,8 @@
 /* global cy, expect */
 /* eslint no-undef: "error" */
 
-// export const BASE_URL = '';
-export const BASE_URL = '/gaps';
+export const BASE_URL = '';
+// export const BASE_URL = '/gaps';
 
 export const CYPRESS_VALUES = {
   notBeChecked: 'not.be.checked',
