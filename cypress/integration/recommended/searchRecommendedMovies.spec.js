@@ -71,9 +71,10 @@ describe('Search for Recommended', () => {
     cy.get('[data-cy=searchForMovies]')
       .click();
 
-    cy.scrollTo(0, 1000);
+    // cy.scrollTo(0, 1000);
 
     cy.get('#movies_info', { timeout: 5000 })
+      .scrollIntoView()
       .should('have.text', 'Showing 1 to 7 of 7 entries');
 
     cy.get('[data-cy=tt0432348-176]')
