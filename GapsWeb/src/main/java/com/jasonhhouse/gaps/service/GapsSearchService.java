@@ -468,6 +468,7 @@ public class GapsSearchService implements GapsSearch {
                     Integer tmdbId = jsonNode.get(ID).intValue();
 
                     BasicMovie collectionBasicMovie = new BasicMovie.Builder(title, year).build();
+                    collectionBasicMovie.setTmdbId(tmdbId);
                     LOGGER.info(collectionBasicMovie.toString());
 
                     Boolean owned = ownedBasicMovies.contains(collectionBasicMovie);
