@@ -48,11 +48,14 @@ public final class BasicMovie implements Comparable<BasicMovie> {
     @NotNull
     private Integer collectionId;
     @NotNull
+    private String backdropPathUrl;
+    @NotNull
     private Integer tmdbId;
 
     private BasicMovie(@NotNull String name,
                        @NotNull Integer year,
                        @NotNull String posterUrl,
+                       @NotNull String backdropPathUrl,
                        @NotNull String collectionTitle,
                        @NotNull Integer collectionId,
                        @NotNull Integer tmdbId,
@@ -66,6 +69,7 @@ public final class BasicMovie implements Comparable<BasicMovie> {
         this.nameWithoutBadCharacters = name.replaceAll("[<>`~\\[\\]()*&^%$#@!|{}.,?\\-_=+:;]", "");
         this.year = year;
         this.posterUrl = posterUrl;
+        this.backdropPathUrl = backdropPathUrl;
         this.collectionTitle = collectionTitle;
         this.collectionId = collectionId;
         this.tmdbId = tmdbId;
@@ -133,6 +137,14 @@ public final class BasicMovie implements Comparable<BasicMovie> {
         return moviesInCollection;
     }
 
+    public void setBackdropPathUrl(@NotNull String backdropPathUrl) {
+        this.backdropPathUrl = backdropPathUrl;
+    }
+
+    public @NotNull String getBackdropPathUrl() {
+        return backdropPathUrl;
+    }
+
     @JsonIgnore
     public @NotNull String getNameWithoutBadCharacters() {
         return nameWithoutBadCharacters;
@@ -181,20 +193,21 @@ public final class BasicMovie implements Comparable<BasicMovie> {
 
     @Override
     public String toString() {
-        return "Movie{" +
+        return "BasicMovie{" +
                 "name='" + name + '\'' +
                 ", year=" + year +
                 ", nameWithoutBadCharacters='" + nameWithoutBadCharacters + '\'' +
                 ", posterUrl='" + posterUrl + '\'' +
-                ", imdbId='" + imdbId + '\'' +
+                ", backdropPathUrl='" + backdropPathUrl + '\'' +
                 ", language='" + language + '\'' +
                 ", overview='" + overview + '\'' +
                 ", moviesInCollection=" + moviesInCollection +
-                ", collection='" + collectionTitle + '\'' +
-                ", collectionId=" + collectionId +
-                ", tmdbId=" + tmdbId +
                 ", ratingKey=" + ratingKey +
                 ", key='" + key + '\'' +
+                ", imdbId='" + imdbId + '\'' +
+                ", collectionTitle='" + collectionTitle + '\'' +
+                ", collectionId=" + collectionId +
+                ", tmdbId=" + tmdbId +
                 '}';
     }
 
@@ -214,6 +227,10 @@ public final class BasicMovie implements Comparable<BasicMovie> {
         @NotNull
         @JsonProperty
         private String posterUrl;
+
+        @NotNull
+        @JsonProperty
+        private String backdropPathUrl;
 
         @NotNull
         @JsonProperty
@@ -260,6 +277,7 @@ public final class BasicMovie implements Comparable<BasicMovie> {
             this.imdbId = "";
             this.collectionTitle = "";
             this.posterUrl = "";
+            this.backdropPathUrl = "";
             this.collectionId = -1;
             this.language = "en";
             this.overview = "";
@@ -269,11 +287,16 @@ public final class BasicMovie implements Comparable<BasicMovie> {
         }
 
         public @NotNull BasicMovie build() {
-            return new BasicMovie(name, year, posterUrl, collectionTitle, collectionId, tmdbId, imdbId, language, overview, moviesInCollection, ratingKey, key);
+            return new BasicMovie(name, year, posterUrl, backdropPathUrl, collectionTitle, collectionId, tmdbId, imdbId, language, overview, moviesInCollection, ratingKey, key);
         }
 
         public @NotNull Builder setPosterUrl(@NotNull String posterUrl) {
             this.posterUrl = posterUrl;
+            return this;
+        }
+
+        public @NotNull Builder setBackdropPathUrl(@NotNull String backdropPathUrl) {
+            this.backdropPathUrl = backdropPathUrl;
             return this;
         }
 
