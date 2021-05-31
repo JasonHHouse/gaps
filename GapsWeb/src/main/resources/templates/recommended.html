@@ -147,12 +147,19 @@
                 <h5 class="card-title">Owned</h5>
                 <div class="list-group">
                     {{#each moviesInCollection}}
-                    {{#if this.owned}}
-                    <a data-cy="{{@root.imdbId}}-{{this.tmdbId}}"
-                       href="https://www.themoviedb.org/movie/{{this.tmdbId}}" target="_blank"
-                       class="list-group-item list-group-item-action"
-                       rel="noopener noreferrer">{{this.title}}</a>
-                    {{/if}}
+                        {{#if this.owned}}
+                            {{#if (isEqual this.tmdbId @root.tmdbId)}}
+                            <a data-cy="{{@root.imdbId}}-{{this.tmdbId}}"
+                               href="https://www.themoviedb.org/movie/{{this.tmdbId}}" target="_blank"
+                               class="list-group-item list-group-item-action active"
+                               rel="noopener noreferrer">{{this.title}}</a>
+                            {{else}}
+                            <a data-cy="{{@root.imdbId}}-{{this.tmdbId}}"
+                               href="https://www.themoviedb.org/movie/{{this.tmdbId}}" target="_blank"
+                               class="list-group-item list-group-item-action"
+                               rel="noopener noreferrer">{{this.title}}</a>
+                            {{/if}}
+                        {{/if}}
                     {{/each}}
                 </div>
             </div>
@@ -160,12 +167,19 @@
                 <h5 class="card-title">Missing</h5>
                 <div class="list-group">
                     {{#each moviesInCollection}}
-                    {{#if (isNotOwned this.owned)}}
-                    <a data-cy="{{@root.imdbId}}-{{this.tmdbId}}"
-                       class="list-group-item list-group-item-action"
-                       href="https://www.themoviedb.org/movie/{{this.tmdbId}}" target="_blank"
-                       rel="noopener noreferrer">{{this.title}}</a>
-                    {{/if}}
+                        {{#if (isNotOwned this.owned)}}
+                            {{#if (isEqual this.tmdbId @root.tmdbId)}}
+                            <a data-cy="{{@root.imdbId}}-{{this.tmdbId}}"
+                               class="list-group-item list-group-item-action active"
+                               href="https://www.themoviedb.org/movie/{{this.tmdbId}}" target="_blank"
+                               rel="noopener noreferrer">{{this.title}}</a>
+                            {{else}}
+                            <a data-cy="{{@root.imdbId}}-{{this.tmdbId}}"
+                               class="list-group-item list-group-item-action"
+                               href="https://www.themoviedb.org/movie/{{this.tmdbId}}" target="_blank"
+                               rel="noopener noreferrer">{{this.title}}</a>
+                            {{/if}}
+                        {{/if}}
                     {{/each}}
                 </div>
             </div>
