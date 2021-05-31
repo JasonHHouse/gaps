@@ -51,6 +51,8 @@ public final class BasicMovie implements Comparable<BasicMovie> {
     private String backdropPathUrl;
     @NotNull
     private Integer tmdbId;
+    @NotNull
+    private List<String> genres;
 
     private BasicMovie(@NotNull String name,
                        @NotNull Integer year,
@@ -64,7 +66,8 @@ public final class BasicMovie implements Comparable<BasicMovie> {
                        @NotNull String overview,
                        @NotNull List<MovieFromCollection> moviesInCollection,
                        @NotNull Integer ratingKey,
-                       @NotNull String key) {
+                       @NotNull String key,
+                       @NotNull List<String> genres) {
         this.name = name;
         this.nameWithoutBadCharacters = name.replaceAll("[<>`~\\[\\]()*&^%$#@!|{}.,?\\-_=+:;]", "");
         this.year = year;
@@ -79,6 +82,7 @@ public final class BasicMovie implements Comparable<BasicMovie> {
         this.moviesInCollection = moviesInCollection;
         this.ratingKey = ratingKey;
         this.key = key;
+        this.genres = genres;
     }
 
     public @NotNull Integer getCollectionId() {
@@ -137,12 +141,20 @@ public final class BasicMovie implements Comparable<BasicMovie> {
         return moviesInCollection;
     }
 
+    public @NotNull String getBackdropPathUrl() {
+        return backdropPathUrl;
+    }
+
     public void setBackdropPathUrl(@NotNull String backdropPathUrl) {
         this.backdropPathUrl = backdropPathUrl;
     }
 
-    public @NotNull String getBackdropPathUrl() {
-        return backdropPathUrl;
+    public @NotNull List<String> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(@NotNull List<String> genres) {
+        this.genres = genres;
     }
 
     @JsonIgnore
@@ -198,7 +210,6 @@ public final class BasicMovie implements Comparable<BasicMovie> {
                 ", year=" + year +
                 ", nameWithoutBadCharacters='" + nameWithoutBadCharacters + '\'' +
                 ", posterUrl='" + posterUrl + '\'' +
-                ", backdropPathUrl='" + backdropPathUrl + '\'' +
                 ", language='" + language + '\'' +
                 ", overview='" + overview + '\'' +
                 ", moviesInCollection=" + moviesInCollection +
@@ -207,7 +218,9 @@ public final class BasicMovie implements Comparable<BasicMovie> {
                 ", imdbId='" + imdbId + '\'' +
                 ", collectionTitle='" + collectionTitle + '\'' +
                 ", collectionId=" + collectionId +
+                ", backdropPathUrl='" + backdropPathUrl + '\'' +
                 ", tmdbId=" + tmdbId +
+                ", genres=" + genres +
                 '}';
     }
 
@@ -268,6 +281,10 @@ public final class BasicMovie implements Comparable<BasicMovie> {
         @JsonProperty
         private String key;
 
+        @NotNull
+        @JsonProperty
+        private List<String> genres;
+
         @JsonCreator
         public Builder(@JsonProperty(value = "name") @NotNull String name,
                        @JsonProperty(value = "year") @NotNull Integer year) {
@@ -284,10 +301,11 @@ public final class BasicMovie implements Comparable<BasicMovie> {
             this.moviesInCollection = new ArrayList<>();
             this.ratingKey = -1;
             this.key = "";
+            this.genres = new ArrayList<>();
         }
 
         public @NotNull BasicMovie build() {
-            return new BasicMovie(name, year, posterUrl, backdropPathUrl, collectionTitle, collectionId, tmdbId, imdbId, language, overview, moviesInCollection, ratingKey, key);
+            return new BasicMovie(name, year, posterUrl, backdropPathUrl, collectionTitle, collectionId, tmdbId, imdbId, language, overview, moviesInCollection, ratingKey, key, genres);
         }
 
         public @NotNull Builder setPosterUrl(@NotNull String posterUrl) {
@@ -342,6 +360,11 @@ public final class BasicMovie implements Comparable<BasicMovie> {
 
         public @NotNull Builder setKey(@NotNull String key) {
             this.key = key;
+            return this;
+        }
+
+        public @NotNull Builder setGenres(@NotNull List<String> genres) {
+            this.genres = genres;
             return this;
         }
     }
