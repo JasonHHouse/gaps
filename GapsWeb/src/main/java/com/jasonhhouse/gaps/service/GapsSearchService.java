@@ -70,6 +70,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class GapsSearchService implements GapsSearch {
 
     public static final String COLLECTION_ID = "belongs_to_collection";
+    public static final String BACKDROP_PATH = "backdrop_path";
     public static final String TITLE = "title";
     public static final String NAME = "name";
     public static final String ID = "id";
@@ -391,8 +392,10 @@ public class GapsSearchService implements GapsSearch {
 
             int collectionId = movieDetails.get(COLLECTION_ID).get(ID).intValue();
             String collectionName = movieDetails.get(COLLECTION_ID).get(NAME).textValue();
+            String backdropPath = movieDetails.get(COLLECTION_ID).get(BACKDROP_PATH).textValue();
             basicMovie.setCollectionId(collectionId);
             basicMovie.setCollectionTitle(collectionName);
+            basicMovie.setBackdropPathUrl(backdropPath);
 
             int indexOfMovie = everyBasicMovie.indexOf(basicMovie);
             if (indexOfMovie != -1) {
@@ -400,12 +403,14 @@ public class GapsSearchService implements GapsSearch {
                 everyBasicMovie.get(indexOfMovie).setTmdbId(basicMovie.getTmdbId());
                 everyBasicMovie.get(indexOfMovie).setCollectionId(basicMovie.getCollectionId());
                 everyBasicMovie.get(indexOfMovie).setCollectionTitle(basicMovie.getCollectionTitle());
+                everyBasicMovie.get(indexOfMovie).setBackdropPathUrl(basicMovie.getBackdropPathUrl());
             } else {
                 BasicMovie newBasicMovie = new BasicMovie.Builder(basicMovie.getName(), basicMovie.getYear())
                         .setTmdbId(basicMovie.getTmdbId())
                         .setImdbId(basicMovie.getImdbId())
                         .setCollectionTitle(basicMovie.getCollectionTitle())
                         .setCollectionId(basicMovie.getCollectionId())
+                        .setBackdropPathUrl(basicMovie.getBackdropPathUrl())
                         .build();
                 everyBasicMovie.add(newBasicMovie);
             }
@@ -500,6 +505,7 @@ public class GapsSearchService implements GapsSearch {
                         .setLanguage(basicMovie.getLanguage())
                         .setOverview(basicMovie.getOverview())
                         .setPosterUrl(basicMovie.getPosterUrl())
+                        .setBackdropPathUrl(basicMovie.getBackdropPathUrl())
                         .build();
                 everyBasicMovie.add(newBasicMovie);
 
@@ -540,6 +546,7 @@ public class GapsSearchService implements GapsSearch {
                         .setCollectionTitle(basicMovie.getCollectionTitle())
                         .setPosterUrl(posterUrl)
                         .setMoviesInCollection(moviesInCollection)
+                        .setBackdropPathUrl(basicMovie.getBackdropPathUrl())
                         .build();
 
                 if (ownedBasicMovies.contains(basicMovieFromCollection)) {
@@ -608,6 +615,7 @@ public class GapsSearchService implements GapsSearch {
                                 .setCollectionId(basicMovie.getCollectionId())
                                 .setCollectionTitle(basicMovie.getCollectionTitle())
                                 .setPosterUrl("https://image.tmdb.org/t/p/w185/" + movieDet.get("poster_path").textValue())
+                                .setBackdropPathUrl("https://image.tmdb.org/t/p/original/" + movieDet.get(COLLECTION_ID).get(BACKDROP_PATH).textValue())
                                 .setOverview(movieDet.get("overview").textValue())
                                 .setMoviesInCollection(moviesInCollection)
                                 .build();

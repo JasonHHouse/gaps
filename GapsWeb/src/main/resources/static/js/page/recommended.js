@@ -121,6 +121,9 @@ jQuery(($) => {
     isNotOwned(value) {
       return !value;
     },
+    isEqual(a, b) {
+      return a === b;
+    },
   });
 
   libraryTitle = $('#libraryTitle');
