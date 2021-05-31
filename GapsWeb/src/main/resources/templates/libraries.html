@@ -122,7 +122,9 @@
                 <div class="card-body">
                     <h5 class="card-title">{{name}} ({{year}})</h5>
                     <p class="card-text text-muted">{{overview}}</p>
-                    <p class="card-text"><small class="text-info">English</small></p>
+                    {{#each genres}}
+                    <div class="card-text">{{this}}</div>
+                    {{/each}}
                 </div>
             </div>
         </div>

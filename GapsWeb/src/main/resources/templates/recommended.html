@@ -137,11 +137,11 @@
                         <h5 class="card-title">{{name}} ({{year}})</h5>
                         <h6 class="card-title">{{collectionTitle}}</h6>
                         <p class="card-text">{{overview}}</p>
-                        <p class="card-text">
+                        <div>
                             {{#each genres}}
-                            <small class="text-info">{{this}}</small>
+                            <div class="card-text">{{this}}</div>
                             {{/each}}
-                        </p>
+                        </div>
                     </div>
                 </div>
             </div>
