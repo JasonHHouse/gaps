@@ -76,7 +76,7 @@ describe('Search for Recommended', () => {
 
     cy.get('[data-cy=searchForMovies]')
       .click();
-    
+
     cy.get('[data-cy="backdropPath-tt0432348"]')
       .should('be.visible')
       .and(($img) => {
