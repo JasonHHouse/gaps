@@ -36,9 +36,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -71,6 +73,7 @@ public class GapsSearchService implements GapsSearch {
 
     public static final String COLLECTION_ID = "belongs_to_collection";
     public static final String BACKDROP_PATH = "backdrop_path";
+    public static final String GENRES = "genres";
     public static final String TITLE = "title";
     public static final String NAME = "name";
     public static final String ID = "id";
@@ -78,6 +81,7 @@ public class GapsSearchService implements GapsSearch {
     public static final String PARTS = "parts";
     public static final String MOVIE_RESULTS = "movie_results";
     public static final String FINISHED_SEARCHING_URL = "/finishedSearching";
+    private static final String languageCode = "en-US";
     private static final Logger LOGGER = LoggerFactory.getLogger(GapsSearchService.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -95,8 +99,10 @@ public class GapsSearchService implements GapsSearch {
 
     private final NotificationService notificationService;
 
+
     @Autowired
-    public GapsSearchService(@Qualifier("real") UrlGenerator urlGenerator, SimpMessagingTemplate template, FileIoService fileIoService, TmdbService tmdbService, NotificationService notificationService) {
+    public GapsSearchService(@Qualifier("real") UrlGenerator urlGenerator,
+                             SimpMessagingTemplate template, FileIoService fileIoService, TmdbService tmdbService, NotificationService notificationService) {
         this.template = template;
         this.tmdbService = tmdbService;
         this.urlGenerator = urlGenerator;
@@ -108,7 +114,7 @@ public class GapsSearchService implements GapsSearch {
     }
 
     @Override
-    public void run(@NotNull String machineIdentifier,@NotNull  Integer key) {
+    public void run(@NotNull String machineIdentifier, @NotNull Integer key) {
         LOGGER.info("run( {}, {} )", machineIdentifier, key);
 
         PlexProperties plexProperties = fileIoService.readProperties();
@@ -228,7 +234,6 @@ public class GapsSearchService implements GapsSearch {
         }
 
         for (BasicMovie basicMovie : ownedBasicMovies) {
-            String languageCode = "en-US";
 
             //Cancel search if needed
             if (cancelSearch.get()) {
@@ -397,6 +402,9 @@ public class GapsSearchService implements GapsSearch {
             basicMovie.setCollectionTitle(collectionName);
             basicMovie.setBackdropPathUrl(backdropPath);
 
+            List<String> genres = getGenres(movieDetails);
+            basicMovie.setGenres(genres);
+
             int indexOfMovie = everyBasicMovie.indexOf(basicMovie);
             if (indexOfMovie != -1) {
                 LOGGER.info("Merging movie data");
@@ -404,6 +412,7 @@ public class GapsSearchService implements GapsSearch {
                 everyBasicMovie.get(indexOfMovie).setCollectionId(basicMovie.getCollectionId());
                 everyBasicMovie.get(indexOfMovie).setCollectionTitle(basicMovie.getCollectionTitle());
                 everyBasicMovie.get(indexOfMovie).setBackdropPathUrl(basicMovie.getBackdropPathUrl());
+                everyBasicMovie.get(indexOfMovie).setGenres(genres);
             } else {
                 BasicMovie newBasicMovie = new BasicMovie.Builder(basicMovie.getName(), basicMovie.getYear())
                         .setTmdbId(basicMovie.getTmdbId())
@@ -411,6 +420,7 @@ public class GapsSearchService implements GapsSearch {
                         .setCollectionTitle(basicMovie.getCollectionTitle())
                         .setCollectionId(basicMovie.getCollectionId())
                         .setBackdropPathUrl(basicMovie.getBackdropPathUrl())
+                        .setGenres(basicMovie.getGenres())
                         .build();
                 everyBasicMovie.add(newBasicMovie);
             }
@@ -420,6 +430,19 @@ public class GapsSearchService implements GapsSearch {
         } catch (IOException e) {
             LOGGER.error(String.format("Error getting movie details %s", basicMovie), e);
         }
+    }
+
+    private @NotNull List<String> getGenres(@NotNull JsonNode movieDetails) {
+        List<String> genres = new ArrayList<>();
+
+        Iterator<JsonNode> jsonNodeIterator = movieDetails.get(GENRES).elements();
+
+        while (jsonNodeIterator.hasNext()) {
+            JsonNode genre = jsonNodeIterator.next();
+            genres.add(genre.get(NAME).textValue());
+        }
+
+        return genres;
     }
 
     private void handleCollection(PlexProperties plexProperties, String machineIdentifier, Integer key, List<BasicMovie> ownedBasicMovies, List<BasicMovie> everyBasicMovie, Set<BasicMovie> recommended, List<BasicMovie> searched,
@@ -506,6 +529,7 @@ public class GapsSearchService implements GapsSearch {
                         .setOverview(basicMovie.getOverview())
                         .setPosterUrl(basicMovie.getPosterUrl())
                         .setBackdropPathUrl(basicMovie.getBackdropPathUrl())
+                        .setGenres(basicMovie.getGenres())
                         .build();
                 everyBasicMovie.add(newBasicMovie);
 
@@ -547,6 +571,7 @@ public class GapsSearchService implements GapsSearch {
                         .setPosterUrl(posterUrl)
                         .setMoviesInCollection(moviesInCollection)
                         .setBackdropPathUrl(basicMovie.getBackdropPathUrl())
+                        .setGenres(basicMovie.getGenres())
                         .build();
 
                 if (ownedBasicMovies.contains(basicMovieFromCollection)) {
@@ -608,6 +633,8 @@ public class GapsSearchService implements GapsSearch {
                             basicMovieFromCollection.setCollectionTitle(collection.get(NAME).textValue());
                         }
 
+                        List<String> genres = getGenres(movieDet);
+
                         // Add movie with imbd_id and other details for RSS to recommended list
                         BasicMovie recommendedBasicMovie = new BasicMovie.Builder(movieDet.get(TITLE).textValue(), year)
                                 .setTmdbId(movieDet.get(ID).intValue())
@@ -618,6 +645,7 @@ public class GapsSearchService implements GapsSearch {
                                 .setBackdropPathUrl("https://image.tmdb.org/t/p/original/" + movieDet.get(COLLECTION_ID).get(BACKDROP_PATH).textValue())
                                 .setOverview(movieDet.get("overview").textValue())
                                 .setMoviesInCollection(moviesInCollection)
+                                .setGenres(genres)
                                 .build();
 
                         if (ownedBasicMovies.contains(recommendedBasicMovie)) {

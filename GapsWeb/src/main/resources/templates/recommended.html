@@ -123,12 +123,13 @@
 <script id="movieCard" type="text/x-handlebars-template">
     <div class="card">
         <img loading="lazy" style="height: 450px;width: auto;display: block;filter: brightness(0.20);"
+             data-cy="backdropPath-{{imdbId}}"
              src="{{backdropPathUrl}}" class="card-img" alt="Backdrop Poster">
         <div class="card-img-overlay">
             <div class="row no-gutters">
                 <div class="col-12 col-md-auto">
                     <img loading="lazy" style="height: auto; width: 225px; display: block;"
-                         data-cy="{{imdbId}}"
+                         data-cy="posterUrl-{{imdbId}}"
                          src="{{posterUrl}}"
                          class="card-img" alt="Plex Poster">
                 </div>
@@ -137,7 +138,11 @@
                         <h5 class="card-title">{{name}} ({{year}})</h5>
                         <h6 class="card-title">{{collectionTitle}}</h6>
                         <p class="card-text">{{overview}}</p>
-                        <p class="card-text"><small class="text-info">English</small></p>
+                        <div>
+                            {{#each genres}}
+                            <div data-cy="{{this.tmdbId}}{{this}}" class="card-text">{{this}}</div>
+                            {{/each}}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -148,17 +153,10 @@
                 <div class="list-group">
                     {{#each moviesInCollection}}
                         {{#if this.owned}}
-                            {{#if (isEqual this.tmdbId @root.tmdbId)}}
-                            <a data-cy="{{@root.imdbId}}-{{this.tmdbId}}"
-                               href="https://www.themoviedb.org/movie/{{this.tmdbId}}" target="_blank"
-                               class="list-group-item list-group-item-action active"
-                               rel="noopener noreferrer">{{this.title}}</a>
-                            {{else}}
                             <a data-cy="{{@root.imdbId}}-{{this.tmdbId}}"
                                href="https://www.themoviedb.org/movie/{{this.tmdbId}}" target="_blank"
                                class="list-group-item list-group-item-action"
                                rel="noopener noreferrer">{{this.title}}</a>
-                            {{/if}}
                         {{/if}}
                     {{/each}}
                 </div>

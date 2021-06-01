@@ -8,7 +8,7 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/* global cy, describe, it, beforeEach */
+/* global cy, describe, expect, it, beforeEach */
 /* eslint no-undef: "error" */
 
 import {
@@ -30,6 +30,12 @@ function searchSawLibrary(cy) {
   cy.get('label > input')
     .clear()
     .type('Saw');
+
+  cy.get('[data-cy=Horror]')
+    .should('have.text', 'Horror');
+
+  cy.get('[data-cy=Crime]')
+    .should('have.text', 'Crime');
 
   cy.get('#movies_info')
     .should('have.text', 'Showing 1 to 1 of 1 entries');
@@ -70,6 +76,20 @@ describe('Search for Recommended', () => {
 
     cy.get('[data-cy=searchForMovies]')
       .click();
+
+    cy.get('[data-cy="backdropPath-tt0432348"]')
+      .should('be.visible')
+      .and(($img) => {
+        // "naturalWidth" and "naturalHeight" are set when the image loads
+        expect($img[0].naturalWidth).to.be.greaterThan(0);
+      });
+
+    cy.get('[data-cy=posterUrl-tt0432348]')
+      .should('be.visible')
+      .and(($img) => {
+        // "naturalWidth" and "naturalHeight" are set when the image loads
+        expect($img[0].naturalWidth).to.be.greaterThan(0);
+      });
 
     cy.scrollTo(0, 1000);
 
