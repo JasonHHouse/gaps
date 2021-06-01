@@ -35,6 +35,12 @@ describe('Find owned movies', () => {
       .clear()
       .type('Saw');
 
+    cy.get('[data-cy=Horror]')
+      .should('have.text', 'Horror');
+
+    cy.get('[data-cy=Crime]')
+      .should('have.text', 'Crime');
+
     cy.get('#movies_info')
       .should('have.text', 'Showing 1 to 1 of 1 entries');
   });
@@ -57,6 +63,12 @@ describe('Find owned movies', () => {
     cy.get('label > input')
       .clear()
       .type('Saw');
+
+    cy.get('[data-cy=Horror]')
+      .should('have.text', 'Horror');
+
+    cy.get('[data-cy=Crime]')
+      .should('have.text', 'Crime');
 
     cy.get('#movies_info')
       .should('have.text', 'Showing 1 to 1 of 1 entries');
@@ -81,6 +93,12 @@ describe('Find owned movies', () => {
     cy.get('label > input')
       .clear()
       .type('Saw');
+
+    cy.get('[data-cy=Horror]')
+      .should('have.text', 'Horror');
+
+    cy.get('[data-cy=Crime]')
+      .should('have.text', 'Crime');
 
     cy.get('#movies_info')
       .should('have.text', 'Showing 1 to 1 of 1 entries');

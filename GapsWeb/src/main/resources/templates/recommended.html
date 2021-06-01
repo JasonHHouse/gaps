@@ -123,12 +123,13 @@
 <script id="movieCard" type="text/x-handlebars-template">
     <div class="card">
         <img loading="lazy" style="height: 450px;width: auto;display: block;filter: brightness(0.20);"
+             data-cy="backdropPath-{{imdbId}}"
              src="{{backdropPathUrl}}" class="card-img" alt="Backdrop Poster">
         <div class="card-img-overlay">
             <div class="row no-gutters">
                 <div class="col-12 col-md-auto">
                     <img loading="lazy" style="height: auto; width: 225px; display: block;"
-                         data-cy="{{imdbId}}"
+                         data-cy="posterUrl-{{imdbId}}"
                          src="{{posterUrl}}"
                          class="card-img" alt="Plex Poster">
                 </div>
@@ -139,7 +140,7 @@
                         <p class="card-text">{{overview}}</p>
                         <div>
                             {{#each genres}}
-                            <div class="card-text">{{this}}</div>
+                            <div data-cy="{{this.tmdbId}}{{this}}" class="card-text">{{this}}</div>
                             {{/each}}
                         </div>
                     </div>
