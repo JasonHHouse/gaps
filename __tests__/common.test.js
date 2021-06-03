@@ -1,5 +1,8 @@
-jest.mock('../__mocks__/getRecommendedMovies');
-import { getYear, isEqual, isNotOwned, getRecommendedMoviesForTable } from '../GapsWeb/src/main/resources/static/js/modules/common';
+/* global test, expect */
+
+import {
+  getYear, isEqual, isNotOwned,
+} from '../GapsWeb/src/main/resources/static/js/modules/common.js';
 
 test('Checks for valid year', () => {
   expect(getYear(2005)).toBe(' (2005)');
@@ -18,11 +21,11 @@ test('Checks for no year', () => {
 });
 
 test('Two equal TMDB IDs', () => {
-  expect(isEqual(1234567,1234567)).toBe(true);
+  expect(isEqual(1234567, 1234567)).toBe(true);
 });
 
 test('Two unequal TMDB IDs', () => {
-  expect(isEqual(1234567,7654321)).toBe(false);
+  expect(isEqual(1234567, 7654321)).toBe(false);
 });
 
 test('Should be owned', () => {
