@@ -12,7 +12,7 @@
 /* global Handlebars, SockJS, Stomp */
 /* eslint no-undef: "error" */
 
-import { getContextPath, getRecommendedMoviesForTable } from '../modules/common.min.js';
+import { getContextPath, getRecommendedMoviesForTable, getYear, isEqual, isNotOwned } from '../modules/common.min.js';
 import Payload from '../modules/payload.min.js';
 
 let libraryTitle;
@@ -118,18 +118,9 @@ function copyToClipboard() {
 
 jQuery(($) => {
   Handlebars.registerHelper({
-    isNotOwned(value) {
-      return !value;
-    },
-    isEqual(a, b) {
-      return a === b;
-    },
-    getYear(year) {
-      if (year && (year !== -1 || year !== 0)) {
-        return ` (${year})`;
-      }
-      return '';
-    },
+    isNotOwned,
+    isEqual,
+    getYear,
   });
 
   libraryTitle = $('#libraryTitle');
