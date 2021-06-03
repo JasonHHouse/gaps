@@ -13,9 +13,6 @@ package com.jasonhhouse.gaps;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jasonhhouse.gaps.properties.DiscordProperties;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,16 +31,17 @@ class MovieFromCollectionTest {
 
     @Test
     void testReadingFromJson() throws JsonProcessingException {
-        MovieFromCollection movieFromCollection = objectMapper.readValue("{\"title\":\"TITLE\",\"tmdbId\":123,\"owned\":true}", MovieFromCollection.class);
+        MovieFromCollection movieFromCollection = objectMapper.readValue("{\"title\":\"TITLE\",\"tmdbId\":123,\"owned\":true,\"year\":5}}", MovieFromCollection.class);
         assertEquals("TITLE", movieFromCollection.getTitle(), "Title should be 'TITLE'");
         assertEquals(123, movieFromCollection.getTmdbId(), "tmdbId should be '123'");
         assertTrue(movieFromCollection.getOwned(), "Title should be 'TITLE'");
+        assertEquals(5, movieFromCollection.getYear(), "year should be '5'");
     }
 
     @Test
     void testWritingToJson() throws JsonProcessingException {
-        MovieFromCollection movieFromCollection = new MovieFromCollection("TITLE",123,true);
+        MovieFromCollection movieFromCollection = new MovieFromCollection("TITLE",123,true, 5);
         String json = objectMapper.writeValueAsString(movieFromCollection);
-        assertEquals("{\"title\":\"TITLE\",\"tmdbId\":123,\"owned\":true}", json, "JSON output should be equal");
+        assertEquals("{\"title\":\"TITLE\",\"tmdbId\":123,\"owned\":true,\"year\":5}", json, "JSON output should be equal");
     }
 }

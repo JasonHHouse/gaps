@@ -97,10 +97,10 @@ describe('Search for Recommended', () => {
       .should('have.text', 'Showing 1 to 7 of 7 entries');
 
     cy.get('[data-cy=tt0432348-176]')
-      .should('have.text', 'Saw');
+      .should('have.text', 'Saw (2004)');
 
     cy.get('[data-cy=tt0432348-215]')
-      .should('have.text', 'Saw II');
+      .should('have.text', 'Saw II (2005)');
   });
 
   it('Research Movies', () => {
@@ -119,10 +119,10 @@ describe('Search for Recommended', () => {
       .should('have.text', 'Showing 1 to 7 of 7 entries');
 
     cy.get('[data-cy=tt0432348-176]')
-      .should('have.text', 'Saw');
+      .should('have.text', 'Saw (2004)');
 
     cy.get('[data-cy=tt0432348-215]')
-      .should('have.text', 'Saw II');
+      .should('have.text', 'Saw II (2005)');
 
     cy.get('#movieContainer > [onclick="searchForMovies()"]')
       .click();
@@ -131,9 +131,9 @@ describe('Search for Recommended', () => {
       .should('have.text', 'Showing 1 to 7 of 7 entries');
 
     cy.get('[data-cy=tt0432348-176]')
-      .should('have.text', 'Saw');
+      .should('have.text', 'Saw (2004)');
 
     cy.get('[data-cy=tt0432348-215]')
-      .should('have.text', 'Saw II');
+      .should('have.text', 'Saw II (2005)');
   });
 });
