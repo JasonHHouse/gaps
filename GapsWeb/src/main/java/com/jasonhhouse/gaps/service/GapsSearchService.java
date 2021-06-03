@@ -36,7 +36,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -500,7 +499,7 @@ public class GapsSearchService implements GapsSearch {
                     LOGGER.info(collectionBasicMovie.toString());
 
                     Boolean owned = ownedBasicMovies.contains(collectionBasicMovie);
-                    moviesInCollection.add(new MovieFromCollection(title, tmdbId, owned));
+                    moviesInCollection.add(new MovieFromCollection(title, tmdbId, owned, year));
                 });
             }
 
