@@ -32,3 +32,9 @@ test('Should be owned', () => {
 test('Should not be owned', () => {
   expect(isNotOwned(false)).toBe(true);
 });
+
+// async/await can also be used with `.resolves`.
+it('works with async/await and resolves', async () => {
+  expect.assertions(1);
+  await expect(getRecommendedMoviesForTable()).resolves.toEqual();
+});
