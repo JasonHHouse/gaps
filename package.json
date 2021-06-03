@@ -28,7 +28,7 @@
     "uglifyjs-pages": "rm -f GapsWeb/src/main/resources/static/js/page/*.min.js && uglifyjs-folder GapsWeb/src/main/resources/static/js/page/ -eo GapsWeb/src/main/resources/static/js/page/\n",
     "eslint-cypress": "./node_modules/.bin/eslint --fix cypress/integration",
     "eslint-gaps": "./node_modules/.bin/eslint --fix GapsWeb/src/main/resources/static/js",
-    "test": "jest --verbose GapsWeb/src/test/resources/static/"
+    "test": "jest --verbose __tests__"
   },
   "repository": {
     "type": "git",

@@ -1,4 +1,5 @@
-import { getYear, isEqual, isNotOwned } from '../../../../../main/resources/static/js/modules/common';
+jest.mock('../__mocks__/getRecommendedMovies');
+import { getYear, isEqual, isNotOwned, getRecommendedMoviesForTable } from '../GapsWeb/src/main/resources/static/js/modules/common';
 
 test('Checks for valid year', () => {
   expect(getYear(2005)).toBe(' (2005)');
