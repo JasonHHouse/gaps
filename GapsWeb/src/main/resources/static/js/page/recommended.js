@@ -121,6 +121,15 @@ jQuery(($) => {
     isNotOwned(value) {
       return !value;
     },
+    isEqual(a, b) {
+      return a === b;
+    },
+    getYear(year) {
+      if (year && (year !== -1 || year !== 0)) {
+        return ` (${year})`;
+      }
+      return '';
+    },
   });
 
   libraryTitle = $('#libraryTitle');

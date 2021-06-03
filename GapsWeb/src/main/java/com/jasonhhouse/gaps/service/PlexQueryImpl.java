@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -405,7 +406,17 @@ public class PlexQueryImpl implements PlexQuery {
                         ratingKey = Integer.valueOf(node.getAttributes().getNamedItem("ratingKey").getNodeValue());
                     }
 
-                    BasicMovie basicMovie = getOrCreateOwnedMovie(previousMovies, title, year, tmdbId, imdbId, thumbnail, summary, ratingKey, key);
+                    List<String> genres = new ArrayList<>();
+                    if (node.hasChildNodes()) {
+                        for (int j = 0; j < node.getChildNodes().getLength(); j++) {
+                            Node childNode = node.getChildNodes().item(j);
+                            if (childNode.getNodeName().equalsIgnoreCase("genre")) {
+                                genres.add(childNode.getAttributes().getNamedItem("tag").getNodeValue());
+                            }
+                        }
+                    }
+
+                    BasicMovie basicMovie = getOrCreateOwnedMovie(previousMovies, title, year, tmdbId, imdbId, thumbnail, summary, ratingKey, key, genres);
                     ownedBasicMovies.add(basicMovie);
                 }
                 LOGGER.info("{} movies found in plex", ownedBasicMovies.size());
@@ -428,7 +439,10 @@ public class PlexQueryImpl implements PlexQuery {
         return ownedBasicMovies;
     }
 
-    private BasicMovie getOrCreateOwnedMovie(Map<Pair<String, Integer>, BasicMovie> previousMovies, @NotNull String title, int year, @NotNull Integer tmdbId, @NotNull String imdbId, @NotNull String thumbnail, @NotNull String summary, @NotNull Integer ratingKey, @NotNull String key) {
+    private BasicMovie getOrCreateOwnedMovie(Map<Pair<String, Integer>, BasicMovie> previousMovies, @NotNull String title, int year,
+                                             @NotNull Integer tmdbId, @NotNull String imdbId, @NotNull String thumbnail,
+                                             @NotNull String summary, @NotNull Integer ratingKey, @NotNull String key,
+                                             @NotNull List<String> genres) {
         Pair<String, Integer> moviePair = new Pair<>(title, year);
         if (previousMovies.containsKey(moviePair)) {
             BasicMovie previousBasicMovie = previousMovies.get(moviePair);
@@ -442,6 +456,7 @@ public class PlexQueryImpl implements PlexQuery {
                     .setLanguage(previousBasicMovie.getLanguage())
                     .setTmdbId(previousBasicMovie.getTmdbId())
                     .setCollectionId(previousBasicMovie.getCollectionId())
+                    .setGenres(genres)
                     .build();
         } else {
             return new BasicMovie.Builder(title, year)
@@ -451,6 +466,7 @@ public class PlexQueryImpl implements PlexQuery {
                     .setRatingKey(ratingKey)
                     .setTmdbId(tmdbId)
                     .setImdbId(imdbId)
+                    .setGenres(genres)
                     .build();
         }
     }

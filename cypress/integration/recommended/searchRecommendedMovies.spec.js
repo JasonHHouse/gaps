@@ -8,7 +8,7 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/* global cy, describe, it, beforeEach */
+/* global cy, describe, expect, it, beforeEach */
 /* eslint no-undef: "error" */
 
 import {
@@ -30,6 +30,12 @@ function searchSawLibrary(cy) {
   cy.get('label > input')
     .clear()
     .type('Saw');
+
+  cy.get('[data-cy=Horror]')
+    .should('have.text', 'Horror');
+
+  cy.get('[data-cy=Crime]')
+    .should('have.text', 'Crime');
 
   cy.get('#movies_info')
     .should('have.text', 'Showing 1 to 1 of 1 entries');
@@ -71,17 +77,29 @@ describe('Search for Recommended', () => {
     cy.get('[data-cy=searchForMovies]')
       .click();
 
-    // cy.scrollTo(0, 1000);
+    cy.get('[data-cy="backdropPath-tt0432348"]')
+      .should('be.visible')
+      .and(($img) => {
+        // "naturalWidth" and "naturalHeight" are set when the image loads
+        expect($img[0].naturalWidth).to.be.greaterThan(0);
+      });
+
+    cy.get('[data-cy=posterUrl-tt0432348]')
+      .should('be.visible')
+      .and(($img) => {
+        // "naturalWidth" and "naturalHeight" are set when the image loads
+        expect($img[0].naturalWidth).to.be.greaterThan(0);
+      });
 
     cy.get('#movies_info', { timeout: 5000 })
       .scrollIntoView()
       .should('have.text', 'Showing 1 to 7 of 7 entries');
 
     cy.get('[data-cy=tt0432348-176]')
-      .should('have.text', 'Saw');
+      .should('have.text', 'Saw (2004)');
 
     cy.get('[data-cy=tt0432348-215]')
-      .should('have.text', 'Saw II');
+      .should('have.text', 'Saw II (2005)');
   });
 
   it('Research Movies', () => {
@@ -100,10 +118,10 @@ describe('Search for Recommended', () => {
       .should('have.text', 'Showing 1 to 7 of 7 entries');
 
     cy.get('[data-cy=tt0432348-176]')
-      .should('have.text', 'Saw');
+      .should('have.text', 'Saw (2004)');
 
     cy.get('[data-cy=tt0432348-215]')
-      .should('have.text', 'Saw II');
+      .should('have.text', 'Saw II (2005)');
 
     cy.get('#movieContainer > [onclick="searchForMovies()"]')
       .click();
@@ -112,9 +130,9 @@ describe('Search for Recommended', () => {
       .should('have.text', 'Showing 1 to 7 of 7 entries');
 
     cy.get('[data-cy=tt0432348-176]')
-      .should('have.text', 'Saw');
+      .should('have.text', 'Saw (2004)');
 
     cy.get('[data-cy=tt0432348-215]')
-      .should('have.text', 'Saw II');
+      .should('have.text', 'Saw II (2005)');
   });
 });

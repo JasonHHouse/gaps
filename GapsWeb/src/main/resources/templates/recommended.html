@@ -122,40 +122,63 @@
 
 <script id="movieCard" type="text/x-handlebars-template">
     <div class="card">
-        <div class="row no-gutters">
-            <div class="col-12 col-md-auto">
-                <img loading="lazy" style="height: auto; width: 225px; display: block;"
-                     data-cy="{{imdbId}}"
-                     src="{{posterUrl}}"
-                     class="card-img" alt="Plex Poster">
+        <img loading="lazy" style="height: 450px;width: auto;display: block;filter: brightness(0.20);"
+             data-cy="backdropPath-{{imdbId}}"
+             src="{{backdropPathUrl}}" class="card-img" alt="Backdrop Poster">
+        <div class="card-img-overlay">
+            <div class="row no-gutters">
+                <div class="col-12 col-md-auto">
+                    <img loading="lazy" style="height: auto; width: 225px; display: block;"
+                         data-cy="posterUrl-{{imdbId}}"
+                         src="{{posterUrl}}"
+                         class="card-img" alt="Plex Poster">
+                </div>
+                <div class="col-12 col-md">
+                    <div class="card-body">
+                        <h5 class="card-title">{{name}} ({{year}})</h5>
+                        <h6 class="card-title">{{collectionTitle}}</h6>
+                        <p class="card-text">{{overview}}</p>
+                        <div>
+                            {{#each genres}}
+                            <div data-cy="{{this.tmdbId}}{{this}}" class="card-text">{{this}}</div>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-12 col-md">
-                <div class="card-body">
-                    <h5 class="card-title">{{name}} ({{year}})</h5>
-                    <h6 class="card-title">{{collectionTitle}}</h6>
-                    <p class="card-text text-muted long-text">{{overview}}</p>
-                    <p class="card-text"><small class="text-info">English</small></p>
-                    <div>
-                        <span class="card-text">Owned</span><br>
-                        {{#each moviesInCollection}}
+        </div>
+        <div class="row card-body">
+            <div class="col-6">
+                <h5 class="card-title">Owned</h5>
+                <div class="list-group">
+                    {{#each moviesInCollection}}
                         {{#if this.owned}}
-                        <a data-cy="{{@root.imdbId}}-{{this.tmdbId}}"
-                           href="https://www.themoviedb.org/movie/{{this.tmdbId}}" class="card-link" target="_blank"
-                           rel="noopener noreferrer">{{this.title}}</a>
+                            <a data-cy="{{@root.imdbId}}-{{this.tmdbId}}"
+                               href="https://www.themoviedb.org/movie/{{this.tmdbId}}" target="_blank"
+                               class="list-group-item list-group-item-action"
+                               rel="noopener noreferrer">{{this.title}}{{getYear this.year}}</a>
                         {{/if}}
-                        {{/each}}
-                    </div>
-                    <br>
-                    <div>
-                        <span class="card-text">Missing</span><br>
-                        {{#each moviesInCollection}}
+                    {{/each}}
+                </div>
+            </div>
+            <div class="col-6">
+                <h5 class="card-title">Missing</h5>
+                <div class="list-group">
+                    {{#each moviesInCollection}}
                         {{#if (isNotOwned this.owned)}}
-                        <a data-cy="{{@root.imdbId}}-{{this.tmdbId}}"
-                           href="https://www.themoviedb.org/movie/{{this.tmdbId}}" class="card-link" target="_blank"
-                           rel="noopener noreferrer">{{this.title}}</a>
+                            {{#if (isEqual this.tmdbId @root.tmdbId)}}
+                            <a data-cy="{{@root.imdbId}}-{{this.tmdbId}}"
+                               class="list-group-item list-group-item-action active"
+                               href="https://www.themoviedb.org/movie/{{this.tmdbId}}" target="_blank"
+                               rel="noopener noreferrer">{{this.title}}{{getYear this.year}}</a>
+                            {{else}}
+                            <a data-cy="{{@root.imdbId}}-{{this.tmdbId}}"
+                               class="list-group-item list-group-item-action"
+                               href="https://www.themoviedb.org/movie/{{this.tmdbId}}" target="_blank"
+                               rel="noopener noreferrer">{{this.title}}{{getYear this.year}}</a>
+                            {{/if}}
                         {{/if}}
-                        {{/each}}
-                    </div>
+                    {{/each}}
                 </div>
             </div>
         </div>
