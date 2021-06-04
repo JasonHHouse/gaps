@@ -51,6 +51,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         LOGGER.info("Version: {}", gapsConfiguration.getVersion());
         LOGGER.info("LoginEnabled: {}", gapsConfiguration.getLoginEnabled());
 
+        //Test changing up the login with 
+        //https://dzone.com/articles/add-login-to-your-spring-boot-app-in-10-mins
+
         if (gapsConfiguration.getLoginEnabled() && gapsConfiguration.getSslEnabled()) {
             LOGGER.info("Login Enabled. Configuring site security with ssl.");
             http.cors().and().csrf().disable()
@@ -87,6 +90,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll();
 
         } else {
+            //TODO
+            //Test needing cors and csrf disabled
             http.cors().and().csrf().disable();
         }
     }
