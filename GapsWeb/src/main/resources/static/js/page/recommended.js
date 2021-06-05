@@ -12,7 +12,9 @@
 /* global Handlebars, SockJS, Stomp */
 /* eslint no-undef: "error" */
 
-import { getContextPath, getRecommendedMoviesForTable, getYear, isEqual, isNotOwned } from '../modules/common.min.js';
+import {
+  getContextPath, getRecommendedMoviesForTable, getYear, isEqual, isNotOwned,
+} from '../modules/common.min.js';
 import Payload from '../modules/payload.min.js';
 
 let libraryTitle;
@@ -218,7 +220,4 @@ jQuery(($) => {
   window.copyToClipboard = copyToClipboard;
 });
 
-window.onbeforeunload = function () {
-  disconnect();
-  // return false;
-};
+window.onbeforeunload = disconnect;
