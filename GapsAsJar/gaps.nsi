@@ -48,4 +48,4 @@ RMDIR /r $INSTDIR
 SectionEnd
 
 # name the installer
-OutFile "gaps-0.9.5-installer.exe"
+OutFile "gaps-0.9.6-installer.exe"

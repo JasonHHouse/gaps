@@ -18,6 +18,21 @@ export function getContextPath(url) {
   return url;
 }
 
+export function getYear(year) {
+  if ((year && year !== -1) && (year && year !== 0)) {
+    return ` (${year})`;
+  }
+  return '';
+}
+
+export function isEqual(a, b) {
+  return a === b;
+}
+
+export function isNotOwned(value) {
+  return !value;
+}
+
 export async function getOwnedMoviesForTable(url, movieContainer, noMovieContainer, moviesTable) {
   const response = await fetch(getContextPath(url), {
     method: 'get',
