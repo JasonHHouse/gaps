@@ -12,10 +12,14 @@
     "uglifyjs-folder": "^2.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/node": "^7.14.2",
+    "@babel/preset-env": "^7.14.4",
     "cypress": "^7.4.0",
     "eslint": "^7.10.0",
     "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-plugin-import": "^2.22.1"
+    "eslint-plugin-import": "^2.22.1",
+    "jest": "^27.0.3"
   },
   "scripts": {
     "e2e": "cypress open",
@@ -23,7 +27,8 @@
     "uglifyjs-modules": "rm -f GapsWeb/src/main/resources/static/js/modules/*.min.js && uglifyjs-folder GapsWeb/src/main/resources/static/js/modules/ -eo GapsWeb/src/main/resources/static/js/modules/\n",
     "uglifyjs-pages": "rm -f GapsWeb/src/main/resources/static/js/page/*.min.js && uglifyjs-folder GapsWeb/src/main/resources/static/js/page/ -eo GapsWeb/src/main/resources/static/js/page/\n",
     "eslint-cypress": "./node_modules/.bin/eslint --fix cypress/integration",
-    "eslint-gaps": "./node_modules/.bin/eslint --fix GapsWeb/src/main/resources/static/js"
+    "eslint-gaps": "./node_modules/.bin/eslint --fix GapsWeb/src/main/resources/static/js",
+    "test": "jest --verbose __tests__"
   },
   "repository": {
     "type": "git",
