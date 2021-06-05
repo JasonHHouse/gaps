@@ -51,44 +51,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         LOGGER.info("Version: {}", gapsConfiguration.getVersion());
         LOGGER.info("LoginEnabled: {}", gapsConfiguration.getLoginEnabled());
 
-        //Test changing up the login with 
-        //https://dzone.com/articles/add-login-to-your-spring-boot-app-in-10-mins
-
         if (gapsConfiguration.getLoginEnabled() && gapsConfiguration.getSslEnabled()) {
             LOGGER.info("Login Enabled. Configuring site security with ssl.");
-            http.cors().and().csrf().disable()
-                    .authorizeRequests().antMatchers("/images/gaps.ico",
-                    "/css/bootstrap.min.css",
-                    "/css/input.min.css",
-                    "/js/jquery-3.4.1.min.js",
-                    "/js/bootstrap.bundle.min.js",
-                    "/js/index.min.js",
 
-                    "/images/final-2.svg",
-                    "/images/final-gaps.svg").permitAll()
-                    .anyRequest().fullyAuthenticated()
+            http.cors().and().csrf().disable()
+                    .authorizeRequests()
+                    .antMatchers("/rss/**").permitAll()
+                    .anyRequest()
+                    .authenticated()
                     .and()
-                    .formLogin()
-                    .loginPage("/login")
-                    .permitAll()
-                    .and()
-                    .logout()
-                    .permitAll();
+                    .httpBasic();
         } else if (Boolean.TRUE.equals(gapsConfiguration.getLoginEnabled()) && Boolean.FALSE.equals(gapsConfiguration.getSslEnabled())) {
             LOGGER.info("Login Enabled. Configuring site security without ssl.");
 
             http.cors().and().csrf().disable()
                     .authorizeRequests()
-                    .anyRequest().fullyAuthenticated()
+                    .antMatchers("/rss/**").permitAll()
+                    .anyRequest()
+                    .authenticated()
                     .and()
-                    .formLogin()
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/home")
-                    .permitAll()
-                    .and()
-                    .logout()
-                    .permitAll();
-
+                    .httpBasic();
         } else {
             //TODO
             //Test needing cors and csrf disabled
