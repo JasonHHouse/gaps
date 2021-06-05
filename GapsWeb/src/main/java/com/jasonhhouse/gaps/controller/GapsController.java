@@ -94,13 +94,6 @@ public class GapsController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/login",
-            produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView getLogin() {
-        LOGGER.info("getLogin()");
-        return new ModelAndView("login");
-    }
-
     @GetMapping(value = "/updates",
             produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getUpdates() {
