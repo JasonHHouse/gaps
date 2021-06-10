@@ -342,7 +342,7 @@ public class GapsSearchService implements GapsSearch {
                 } catch (JsonProcessingException e) {
                     LOGGER.error(String.format("Error parsing movie %s.", basicMovie), e);
                     LOGGER.error("URL: {}", searchMovieUrl);
-                } catch (IOException e) {
+                } catch (Exception e) {
                     LOGGER.error(String.format("Error searching for movie %s.", basicMovie), e);
                     LOGGER.error("URL: {}", searchMovieUrl);
                 } finally {
@@ -634,6 +634,13 @@ public class GapsSearchService implements GapsSearch {
 
                         List<String> genres = getGenres(movieDet);
 
+                        String backdropPathUrl = "";
+                        if (movieDet.has(COLLECTION_ID) && movieDet.get(COLLECTION_ID) != null && movieDet.get(COLLECTION_ID).has(BACKDROP_PATH)) {
+                            backdropPathUrl = "https://image.tmdb.org/t/p/original/" + movieDet.get(COLLECTION_ID).get(BACKDROP_PATH).textValue();
+                        } else {
+                            LOGGER.warn("Could not find collection information on movie with collection. Movie was {} ({})", movieDet.get(TITLE), year);
+                        }
+
                         // Add movie with imbd_id and other details for RSS to recommended list
                         BasicMovie recommendedBasicMovie = new BasicMovie.Builder(movieDet.get(TITLE).textValue(), year)
                                 .setTmdbId(movieDet.get(ID).intValue())
@@ -641,7 +648,7 @@ public class GapsSearchService implements GapsSearch {
                                 .setCollectionId(basicMovie.getCollectionId())
                                 .setCollectionTitle(basicMovie.getCollectionTitle())
                                 .setPosterUrl("https://image.tmdb.org/t/p/w185/" + movieDet.get("poster_path").textValue())
-                                .setBackdropPathUrl("https://image.tmdb.org/t/p/original/" + movieDet.get(COLLECTION_ID).get(BACKDROP_PATH).textValue())
+                                .setBackdropPathUrl(backdropPathUrl)
                                 .setOverview(movieDet.get("overview").textValue())
                                 .setMoviesInCollection(moviesInCollection)
                                 .setGenres(genres)

@@ -1,6 +1,6 @@
 {
   "name": "gaps",
-  "version": "0.9.6",
+  "version": "0.9.7",
   "description": "Gaps searches through your Plex Server or local folders for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.",
   "main": "/",
   "dependencies": {
@@ -15,7 +15,7 @@
     "@babel/core": "^7.14.3",
     "@babel/node": "^7.14.2",
     "@babel/preset-env": "^7.14.4",
-    "cypress": "^7.4.0",
+    "cypress": "^7.5.0",
     "eslint": "^7.10.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.1",
