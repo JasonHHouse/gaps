@@ -17,21 +17,13 @@ spring:
   mvc:
     async:
       request-timeout: -1
-  resources:
-    cache:
-      cachecontrol:
-        max-age: 120
-        must-revalidate: true
-        cache-public: true
-  jpa:
-    database-platform: com.jasonhhouse.gaps.sql.SQLDialect
-    hibernate:
-      ddl-auto: update
-  datasource:
-    url: jdbc:sqlite:/usr/data/gaps.db
-    driver-class-name: org.sqlite.JDBC
-    username: admin
-    password: admin
+  web:
+    resources:
+      cache:
+        cachecontrol:
+          max-age: 120
+          must-revalidate: true
+          cache-public: true
 server:
   servlet:
     context-path: /
@@ -50,7 +42,7 @@ info:
   app:
     name: Gaps
     description: Gaps searches through your Plex Server or local folders for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.
-    version: 0.9.8
+    version: 0.9.9
     storageFolder: /usr/data
     properties:
       rssFeed: rssFeed.json
