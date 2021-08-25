@@ -41,13 +41,13 @@
         <mockito.core>2.21.0</mockito.core>
         <okhttp>4.2.0</okhttp>
         <okhttp.mockwebserver>4.9.0</okhttp.mockwebserver>
-        <sockjs.client>1.1.2</sockjs.client>
+        <sockjs.client>1.5.1</sockjs.client>
         <sonar.inclusions>cypress/integration,src/main/**</sonar.inclusions>
         <sonar.sources>.</sonar.sources>
-        <springdoc.openapi.ui>1.5.2</springdoc.openapi.ui>
-        <stomp.websocket>2.3.3-1</stomp.websocket>
-        <webjars.bootstrap>4.5.3</webjars.bootstrap>
-        <webjars.jquery>3.5.1</webjars.jquery>
+        <springdoc.openapi.ui>1.5.10</springdoc.openapi.ui>
+        <stomp.websocket>2.3.4</stomp.websocket>
+        <webjars.bootstrap>5.1.0</webjars.bootstrap>
+        <webjars.jquery>3.6.0</webjars.jquery>
     </properties>
 
     <dependencyManagement>
