@@ -591,7 +591,7 @@ public class GapsSearchService implements GapsSearch {
                     LOGGER.info("Owned movie found: {}", basicMovieFromCollection);
                     searched.add(basicMovieFromCollection);
                     sendEmptySearchUpdate(ownedBasicMovies.size(), searchedMovieCount);
-                } else if (!searched.contains(basicMovieFromCollection) && year != 0 && year < Year.now().getValue()) {
+                } else if (!searched.contains(basicMovieFromCollection) && year != 0) {
                     LOGGER.info("Missing movie found: {}", basicMovieFromCollection);
 
                     // Get recommended Movie details from MovieDB API
