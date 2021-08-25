@@ -21,7 +21,7 @@ describe('Verify About Page', () => {
       .should('have.text', 'About');
 
     cy.get('.container > :nth-child(3)')
-      .should('have.text', 'v0.9.9');
+      .should('have.text', 'v0.9.10');
 
     cy.get('.container > :nth-child(6)')
       .should('have.text', 'Software');
