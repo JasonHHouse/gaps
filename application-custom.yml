@@ -20,15 +20,6 @@ spring:
         max-age: 120
         must-revalidate: true
         cache-public: true
-  jpa:
-    database-platform: com.jasonhhouse.gaps.sql.SQLDialect
-    hibernate:
-      ddl-auto: update
-  datasource:
-    url: jdbc:sqlite:/{CUSTOM_FOLDER}/gaps.db #Change to folder that gaps has permission to read, write, and delete in.
-    driver-class-name: org.sqlite.JDBC
-    username: admin
-    password: admin
 server:
   http2:
     enabled: true

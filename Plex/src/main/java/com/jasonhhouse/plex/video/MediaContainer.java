@@ -11,24 +11,14 @@
 package com.jasonhhouse.plex.video;
 
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Entity
 @XmlRootElement(name = "MediaContainer")
 public final class MediaContainer {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @OneToMany(cascade = CascadeType.ALL)
     private List<Video> videos;
     private Integer size;
     private String allowSync;

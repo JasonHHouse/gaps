@@ -8,8 +8,6 @@
 
 spring:
   profiles: windows
-  datasource:
-    url: jdbc:sqlite:gaps.db
 info:
   app:
     loginEnabled: false
