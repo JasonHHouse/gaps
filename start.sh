@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 echo "Enable SSL: $ENABLE_SSL"
 echo "Enable Login: $ENABLE_LOGIN"
 echo "Base URL: $BASE_URL"
