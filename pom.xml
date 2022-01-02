@@ -17,7 +17,7 @@
     </parent>
     <groupId>com.jasonhhouse</groupId>
     <artifactId>Gaps</artifactId>
-    <version>0.9.10</version>
+    <version>0.9.11</version>
     <name>Gaps</name>
     <description>Demo project for Spring Boot</description>
 
@@ -26,7 +26,7 @@
         <apache.commons.lang3>3.9</apache.commons.lang3>
         <apache.commons.text>1.9</apache.commons.text>
         <commons.io>2.8.0</commons.io>
-        <gaps.version>0.9.10</gaps.version>
+        <gaps.version>0.9.11</gaps.version>
         <google.findbugs>3.0.0</google.findbugs>
         <guava>30.1-jre</guava>
         <hibernate.validator>6.1.5.Final</hibernate.validator>
