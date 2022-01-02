@@ -28,7 +28,7 @@ RUN mkdir -p /usr/data && chmod 777 /usr/data
 
 COPY movieIds.json /usr/data
 
-RUN mkdir -p /usr/app && chmod 777 /usr/data
+RUN mkdir -p /usr/app && chmod 777 /usr/app
 
 WORKDIR /usr/app
 
