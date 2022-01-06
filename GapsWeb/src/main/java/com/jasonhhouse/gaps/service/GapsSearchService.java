@@ -618,7 +618,7 @@ public class GapsSearchService implements GapsSearch {
                         JsonNode movieDet = objectMapper.readTree(movieDetailJson);
 
                         // Get the release year from movie release date
-                        if (movieDet.has(RELEASE_DATE)) {
+                        if (movieDet.has(RELEASE_DATE) && StringUtils.isNotEmpty(movieDet.get(RELEASE_DATE).textValue())) {
                             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
                             LocalDate date = LocalDate.parse(movieDet.get(RELEASE_DATE).textValue(), formatter);
                             year = date.getYear();

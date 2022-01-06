@@ -11,7 +11,7 @@
 ##
 
 set -e
-VERSION=0.9.11
+VERSION=0.9.12
 JAR_VERSION="GapsWeb/target/GapsWeb-$VERSION.jar"
 ZIP_VERSION="GapsAsJar-$VERSION.zip"
 npm ci
