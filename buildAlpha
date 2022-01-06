@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
+npm ci
 ./minify
+npm run test
 mvn clean install
 docker build -f Dockerfile -t "housewrecker/gaps:alpha" .
 docker push "housewrecker/gaps:alpha"
