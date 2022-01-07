@@ -4,22 +4,23 @@
   "description": "Gaps searches through your Plex Server for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.",
   "main": "/",
   "dependencies": {
-    "cssnano": "^4.1.10",
-    "faker": "^5.1.0",
-    "postcss-cli": "^7.1.1",
+    "cssnano": "^5.0.14",
+    "faker": "^5.5.3",
+    "postcss": "^8.4.5",
+    "postcss-cli": "^9.1.0",
     "uglify-es": "^3.3.9",
-    "uglify-js": "^3.10.0",
-    "uglifyjs-folder": "^2.0.0"
+    "uglify-js": "^3.14.5",
+    "uglifyjs-folder": "^3.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.14.3",
-    "@babel/node": "^7.14.2",
-    "@babel/preset-env": "^7.14.4",
-    "cypress": "^8.3.0",
-    "eslint": "^7.10.0",
-    "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-plugin-import": "^2.22.1",
-    "jest": "^27.0.3"
+    "@babel/core": "^7.16.7",
+    "@babel/node": "^7.16.7",
+    "@babel/preset-env": "^7.16.7",
+    "cypress": "^9.2.0",
+    "eslint": "^8.6.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
+    "jest": "^27.4.7"
   },
   "scripts": {
     "e2e": "cypress open",

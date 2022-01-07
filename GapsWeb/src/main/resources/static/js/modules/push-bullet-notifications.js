@@ -37,11 +37,13 @@ export async function savePushBulletNotifications() {
   body.channel_tag = document.getElementById('pushBulletChannelTag').value;
   body.accessToken = document.getElementById('pushBulletAccessToken').value;
   body.enabled = document.getElementById('pushBulletEnabled').value;
-  body.notificationTypes = getNotificationTypes(document.getElementById('pushBulletTmdbApiConnectionNotification').checked,
+  body.notificationTypes = getNotificationTypes(
+    document.getElementById('pushBulletTmdbApiConnectionNotification').checked,
     document.getElementById('pushBulletPlexServerConnectionNotification').checked,
     document.getElementById('pushBulletPlexMetadataUpdateNotification').checked,
     document.getElementById('pushBulletPlexLibraryUpdateNotification').checked,
-    document.getElementById('pushBulletGapsMissingCollectionsNotification').checked);
+    document.getElementById('pushBulletGapsMissingCollectionsNotification').checked,
+  );
 
   const response = await fetch(getContextPath('/notifications/pushbullet'), {
     method: 'put',

@@ -38,11 +38,13 @@ export async function saveGotifyNotifications() {
   body.address = document.getElementById('gotifyAddress').value;
   body.token = document.getElementById('gotifyToken').value;
   body.enabled = document.getElementById('gotifyEnabled').value;
-  body.notificationTypes = getNotificationTypes(document.getElementById('gotifyTmdbApiConnectionNotification').checked,
+  body.notificationTypes = getNotificationTypes(
+    document.getElementById('gotifyTmdbApiConnectionNotification').checked,
     document.getElementById('gotifyPlexServerConnectionNotification').checked,
     document.getElementById('gotifyPlexMetadataUpdateNotification').checked,
     document.getElementById('gotifyPlexLibraryUpdateNotification').checked,
-    document.getElementById('gotifyGapsMissingCollectionsNotification').checked);
+    document.getElementById('gotifyGapsMissingCollectionsNotification').checked,
+  );
 
   const response = await fetch(getContextPath('/notifications/gotify'), {
     method: 'put',
