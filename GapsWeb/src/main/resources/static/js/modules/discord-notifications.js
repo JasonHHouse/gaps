@@ -36,11 +36,13 @@ export async function saveDiscordNotifications() {
   const body = {};
   body.webHookUrl = document.getElementById('discordWebHookUrl').value;
   body.enabled = document.getElementById('discordEnabled').value;
-  body.notificationTypes = getNotificationTypes(document.getElementById('discordTmdbApiConnectionNotification').checked,
+  body.notificationTypes = getNotificationTypes(
+    document.getElementById('discordTmdbApiConnectionNotification').checked,
     document.getElementById('discordPlexServerConnectionNotification').checked,
     document.getElementById('discordPlexMetadataUpdateNotification').checked,
     document.getElementById('discordPlexLibraryUpdateNotification').checked,
-    document.getElementById('discordGapsMissingCollectionsNotification').checked);
+    document.getElementById('discordGapsMissingCollectionsNotification').checked,
+  );
 
   const response = await fetch(getContextPath('/notifications/discord'), {
     method: 'put',

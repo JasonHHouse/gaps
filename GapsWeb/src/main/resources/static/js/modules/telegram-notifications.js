@@ -37,11 +37,13 @@ export async function saveTelegramNotifications() {
   body.botId = document.getElementById('telegramBotId').value;
   body.chatId = document.getElementById('telegramChatId').value;
   body.enabled = document.getElementById('telegramEnabled').value;
-  body.notificationTypes = getNotificationTypes(document.getElementById('telegramTmdbApiConnectionNotification').checked,
+  body.notificationTypes = getNotificationTypes(
+    document.getElementById('telegramTmdbApiConnectionNotification').checked,
     document.getElementById('telegramPlexServerConnectionNotification').checked,
     document.getElementById('telegramPlexMetadataUpdateNotification').checked,
     document.getElementById('telegramPlexLibraryUpdateNotification').checked,
-    document.getElementById('telegramGapsMissingCollectionsNotification').checked);
+    document.getElementById('telegramGapsMissingCollectionsNotification').checked,
+  );
 
   const response = await fetch(getContextPath('/notifications/telegram'), {
     method: 'put',

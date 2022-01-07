@@ -46,11 +46,13 @@ export async function saveEmailNotifications() {
   body.mailSmtpTlsEnabled = document.getElementById('emailSmtpTlsEnabled').value;
 
   body.enabled = document.getElementById('emailEnabled').value;
-  body.notificationTypes = getNotificationTypes(document.getElementById('emailTmdbApiConnectionNotification').checked,
+  body.notificationTypes = getNotificationTypes(
+    document.getElementById('emailTmdbApiConnectionNotification').checked,
     document.getElementById('emailPlexServerConnectionNotification').checked,
     document.getElementById('emailPlexMetadataUpdateNotification').checked,
     document.getElementById('emailPlexLibraryUpdateNotification').checked,
-    document.getElementById('emailGapsMissingCollectionsNotification').checked);
+    document.getElementById('emailGapsMissingCollectionsNotification').checked,
+  );
 
   const response = await fetch(getContextPath('/notifications/email'), {
     method: 'put',

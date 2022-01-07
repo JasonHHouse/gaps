@@ -36,11 +36,13 @@ export async function saveSlackNotifications() {
   const body = {};
   body.webHookUrl = document.getElementById('slackWebHookUrl').value;
   body.enabled = document.getElementById('slackEnabled').value;
-  body.notificationTypes = getNotificationTypes(document.getElementById('slackTmdbApiConnectionNotification').checked,
+  body.notificationTypes = getNotificationTypes(
+    document.getElementById('slackTmdbApiConnectionNotification').checked,
     document.getElementById('slackPlexServerConnectionNotification').checked,
     document.getElementById('slackPlexMetadataUpdateNotification').checked,
     document.getElementById('slackPlexLibraryUpdateNotification').checked,
-    document.getElementById('slackGapsMissingCollectionsNotification').checked);
+    document.getElementById('slackGapsMissingCollectionsNotification').checked,
+  );
 
   const response = await fetch(getContextPath('/notifications/slack'), {
     method: 'put',

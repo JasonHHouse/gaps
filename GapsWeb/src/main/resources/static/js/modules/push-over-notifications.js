@@ -75,11 +75,13 @@ export async function savePushOverNotifications() {
   body.retry = document.getElementById('pushOverRetry').value;
   body.expire = document.getElementById('pushOverExpire').value;
   body.enabled = document.getElementById('pushOverEnabled').value;
-  body.notificationTypes = getNotificationTypes(document.getElementById('pushOverTmdbApiConnectionNotification').checked,
+  body.notificationTypes = getNotificationTypes(
+    document.getElementById('pushOverTmdbApiConnectionNotification').checked,
     document.getElementById('pushOverPlexServerConnectionNotification').checked,
     document.getElementById('pushOverPlexMetadataUpdateNotification').checked,
     document.getElementById('pushOverPlexLibraryUpdateNotification').checked,
-    document.getElementById('pushOverGapsMissingCollectionsNotification').checked);
+    document.getElementById('pushOverGapsMissingCollectionsNotification').checked,
+  );
 
   const response = await fetch(getContextPath('/notifications/pushOver'), {
     method: 'put',
