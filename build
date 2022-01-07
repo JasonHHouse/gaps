@@ -18,35 +18,19 @@ npm ci
 ./minify
 npm run test
 mvn clean install
-docker buildx build --platform linux/s390x,linux/amd64 -t housewrecker/gaps:s390x-latest -t housewrecker/gaps:amd64-latest -f Dockerfile --push .
-docker buildx build --platform linux/riscv64 -t housewrecker/gaps:risc-latest -f Dockerfile.riscv64 --push .
-docker buildx build --platform linux/ppc64le -t housewrecker/gaps:ppc64le-latest -f Dockerfile.ppc64le --push .
-docker buildx build --platform linux/arm64 -t housewrecker/gaps:arm-latest -f Dockerfile.arm64 --push .
-docker buildx build --platform linux/arm/v7 -t housewrecker/gaps:arm32v7-latest -f Dockerfile.arm32v7 --push .
 
-docker manifest create housewrecker/gaps:latest \
-  -a housewrecker/gaps:amd64-latest \
-  -a housewrecker/gaps:risc-latest \
-  -a housewrecker/gaps:ppc64le-latest \
-  -a housewrecker/gaps:arm-latest \
-  -a housewrecker/gaps:arm32v7-latest \
-  -a housewrecker/gaps:s390x-latest
-docker manifest push housewrecker/gaps:latest
-
-docker buildx build --platform linux/s390x,linux/amd64 -t housewrecker/gaps:s390x-v$VERSION -t housewrecker/gaps:amd64-v$VERSION -f Dockerfile --push .
+docker buildx build --platform linux/s390x,linux/amd64,linux/ppc64le -t housewrecker/gaps:s390x-v$VERSION -t housewrecker/gaps:x64-v$VERSION -t housewrecker/gaps:ppc64le-v$VERSION -f Dockerfile --push .
 docker buildx build --platform linux/riscv64 -t housewrecker/gaps:risc-v$VERSION -f Dockerfile.riscv64 --push .
-docker buildx build --platform linux/ppc64le -t housewrecker/gaps:ppc64le-v$VERSION -f Dockerfile.ppc64le --push .
 docker buildx build --platform linux/arm64 -t housewrecker/gaps:arm-v$VERSION -f Dockerfile.arm64 --push .
 docker buildx build --platform linux/arm/v7 -t housewrecker/gaps:arm32v7-v$VERSION -f Dockerfile.arm32v7 --push .
 
-docker manifest create housewrecker/gaps:v$VERSION \
-  -a housewrecker/gaps:amd64-v$VERSION \
-  -a housewrecker/gaps:risc-v$VERSION \
-  -a housewrecker/gaps:ppc64le-v$VERSION \
-  -a housewrecker/gaps:arm-v$VERSION \
-  -a housewrecker/gaps:arm32v7-v$VERSION \
-  -a housewrecker/gaps:s390x-v$VERSION
-docker manifest push housewrecker/gaps:v$VERSION
+docker manifest create housewrecker/gaps:latest \
+  --amend housewrecker/gaps:x64-v$VERSION \
+  --amend housewrecker/gaps:risc-v$VERSION \
+  --amend housewrecker/gaps:arm-v$VERSION \
+  --amend housewrecker/gaps:arm32v7-v$VERSION
+
+docker manifest push housewrecker/gaps:latest
 
 ## Making Windows/Linux/Mac Zip
 mkdir -p GapsOnWindows
