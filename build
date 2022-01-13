@@ -19,16 +19,18 @@ npm ci
 npm run test
 mvn clean install
 
-docker buildx build --platform linux/s390x,linux/amd64,linux/ppc64le -t housewrecker/gaps:s390x-v$VERSION -t housewrecker/gaps:x64-v$VERSION -t housewrecker/gaps:ppc64le-v$VERSION -f Dockerfile --push .
+docker buildx build --platform linux/s390x,linux/amd64,linux/ppc64le,linux/arm64/v8,linux/arm/v7 \
+  -t housewrecker/gaps:s390x-v$VERSION \
+  -t housewrecker/gaps:x64-v$VERSION \
+  -t housewrecker/gaps:ppc64le-v$VERSION \
+  -t housewrecker/gaps:arm-v$VERSION \
+  -t housewrecker/gaps:arm32v7-v$VERSION \
+  -f Dockerfile --push .
 docker buildx build --platform linux/riscv64 -t housewrecker/gaps:risc-v$VERSION -f Dockerfile.riscv64 --push .
-docker buildx build --platform linux/arm64 -t housewrecker/gaps:arm-v$VERSION -f Dockerfile.arm64 --push .
-docker buildx build --platform linux/arm/v7 -t housewrecker/gaps:arm32v7-v$VERSION -f Dockerfile.arm32v7 --push .
 
 docker manifest create housewrecker/gaps:latest \
   --amend housewrecker/gaps:x64-v$VERSION \
-  --amend housewrecker/gaps:risc-v$VERSION \
-  --amend housewrecker/gaps:arm-v$VERSION \
-  --amend housewrecker/gaps:arm32v7-v$VERSION
+  --amend housewrecker/gaps:risc-v$VERSION
 
 docker manifest push housewrecker/gaps:latest
 
