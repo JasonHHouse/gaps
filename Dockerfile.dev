@@ -35,7 +35,6 @@ ENTRYPOINT  java  \
             -XX:+UseG1GC  \
             -XX:+HeapDumpOnOutOfMemoryError   \
             -XX:+UseStringDeduplication   \
-            -XX:+UseStringCache   \
             -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 \
             -jar  \
             -Dserver.servlet.context-path=${baseUrl} \
