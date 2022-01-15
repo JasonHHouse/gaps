@@ -49,13 +49,13 @@ Gaps can run in <a href="https://www.docker.com/">Docker</a>. If you choose to r
 
 #### Option 2
 <code>
-Gaps can run as an exe on Windows. GapsOnWindows can be found on the <a href="https://github.com/JasonHHouse/gaps/releases">releases</a> page. Gaps-{version}.zip.
+Gaps can run as an exe on Windows. GapsAsJar can be found on the <a href="https://github.com/JasonHHouse/gaps/releases">releases</a> page. Gaps-{version}.zip.
 </code>
 
 ### Installing
 With Docker installed, you'll need to now pull down the latest Gaps image. The Gaps image is hosted [here](https://hub.docker.com/r/housewrecker/gaps). To pull the image, run the following command in a terminal
 
-If you are running an x86 machine, use the folowing commands. Check out the wikis for how to build [ARM v8](https://github.com/JasonHHouse/gaps/wiki/Running-Gaps-in-Docker-on-ARM-v8), [ARM v7](https://github.com/JasonHHouse/gaps/wiki/Running-Gaps-in-Docker-on-ARM-v7), or [RISC](https://github.com/JasonHHouse/gaps/wiki/Running-Gaps-in-Docker-on-RISC).
+If you are running an x86 machine, use the following commands. Check out the wikis for how to build [ARM v8](https://github.com/JasonHHouse/gaps/wiki/Running-Gaps-in-Docker-on-ARM-v8), [ARM v7](https://github.com/JasonHHouse/gaps/wiki/Running-Gaps-in-Docker-on-ARM-v7), or [RISC](https://github.com/JasonHHouse/gaps/wiki/Running-Gaps-in-Docker-on-RISC).
 
 ```
 docker pull housewrecker/gaps:latest
@@ -125,7 +125,7 @@ If Plex and Gaps are both running in the same Docker, you may need to use the IP
 
 So, in the first case, the host is localhost and the port 32400. In the second case, the host is 127.0.0.1 with the same port.
 
-Lastly, you'll need to get your personal Plex Token. If you do not know already it's easy to find. Plex has a great write up [here](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/) about how to find your token.
+Lastly, you'll need to get your personal Plex Token. If you do not know already it's easy to find. Plex has a great writeup [here](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/) about how to find your token.
 
 Click the *Test* button to confirm your Plex server configuration works.
 
@@ -168,7 +168,7 @@ Click the *Search* button to find your missing movies.
 
 ![Gaps Recommended Movies](https://github.com/JasonHHouse/gaps/blob/master/images/recommended.png) 
 
-For large libraries, this can take a while to run. The results are stored and only need to be rerun when Plex updates. Missing movies are added as found. Do not navigate away. Gaps will still run but you'll have to check logs to know when it is complete. It is currently easier to just leave the page open. Fixes for this are coming soon.
+For large libraries, this can take a while to run. The results are stored and only need to be rerun when Plex updates. Missing movies are added as found. Do not navigate away. Gaps will still run, but you'll have to check logs to know when it is complete. It is currently easier to just leave the page open. Fixes for this are coming soon.
 
 ### Recommended and RSS
 

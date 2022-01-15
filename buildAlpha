@@ -4,5 +4,6 @@ npm ci
 ./minify
 npm run test
 mvn clean install
-docker build -f Dockerfile -t "housewrecker/gaps:alpha" .
-docker push "housewrecker/gaps:alpha"
+docker buildx build --platform linux/s390x,linux/amd64,linux/ppc64le,linux/arm64/v8,linux/arm/v7 \
+  -t housewrecker/gaps:alpha \
+  -f Dockerfile --push .
