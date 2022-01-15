@@ -25,29 +25,29 @@
         <apache.commons.collections4>4.4</apache.commons.collections4>
         <apache.commons.lang3>3.9</apache.commons.lang3>
         <apache.commons.text>1.9</apache.commons.text>
-        <commons.io>2.8.0</commons.io>
+        <commons.io>2.11.0</commons.io>
         <gaps.version>0.9.12</gaps.version>
         <google.findbugs>3.0.0</google.findbugs>
-        <guava>30.1-jre</guava>
+        <guava>31.0.1-jre</guava>
         <hibernate.validator>6.1.5.Final</hibernate.validator>
-        <jackson.version>2.12.1</jackson.version>
+        <jackson.version>2.13.1</jackson.version>
         <jakarta.xml.bind.api>2.3.2</jakarta.xml.bind.api>
         <java.version>11</java.version>
         <javax.validation.api>2.0.1.Final</javax.validation.api>
         <jaxb.api.version>2.3.0</jaxb.api.version>
         <jaxb.runtime>2.3.2</jaxb.runtime>
-        <jetbrains.annotations>17.0.0</jetbrains.annotations>
+        <jetbrains.annotations>23.0.0</jetbrains.annotations>
         <junit>5.8.2</junit>
         <log4j2.version>2.17.0</log4j2.version>
-        <mockito.core>2.21.0</mockito.core>
-        <okhttp>4.2.0</okhttp>
+        <mockito.core>4.2.0</mockito.core>
+        <okhttp>4.9.3</okhttp>
         <okhttp.mockwebserver>4.9.0</okhttp.mockwebserver>
         <sockjs.client>1.5.1</sockjs.client>
         <sonar.inclusions>cypress/integration,src/main/**</sonar.inclusions>
         <sonar.sources>.</sonar.sources>
         <springdoc.openapi.ui>1.5.10</springdoc.openapi.ui>
         <stomp.websocket>2.3.4</stomp.websocket>
-        <webjars.bootstrap>5.1.0</webjars.bootstrap>
+        <webjars.bootstrap>5.1.3</webjars.bootstrap>
         <webjars.jquery>3.6.0</webjars.jquery>
     </properties>
 
