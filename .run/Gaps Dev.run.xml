@@ -6,57 +6,8 @@
         <option name="removeVolumesOnComposeDown" value="true" />
         <option name="commandLineOptions" value="--build" />
         <option name="sourceFilePath" value="docker-compose-dev.yaml" />
-        <option name="upExitCodeFromService" value="" />
-        <option name="upTimeout" value="" />
       </settings>
     </deployment>
-    <method v="2">
-      <option name="NpmBeforeRunTask" enabled="true">
-        <package-json value="$PROJECT_DIR$/package.json" />
-        <command value="run" />
-        <scripts>
-          <script value="minify-input-css" />
-        </scripts>
-        <node-interpreter value="project" />
-        <envs />
-      </option>
-      <option name="NpmBeforeRunTask" enabled="true">
-        <package-json value="$PROJECT_DIR$/package.json" />
-        <command value="run" />
-        <scripts>
-          <script value="uglifyjs-modules" />
-        </scripts>
-        <node-interpreter value="project" />
-        <envs />
-      </option>
-      <option name="NpmBeforeRunTask" enabled="true">
-        <package-json value="$PROJECT_DIR$/package.json" />
-        <command value="run" />
-        <scripts>
-          <script value="uglifyjs-pages" />
-        </scripts>
-        <node-interpreter value="project" />
-        <envs />
-      </option>
-      <option name="NpmBeforeRunTask" enabled="true">
-        <package-json value="$PROJECT_DIR$/package.json" />
-        <command value="run" />
-        <scripts>
-          <script value="eslint-cypress" />
-        </scripts>
-        <node-interpreter value="project" />
-        <envs />
-      </option>
-      <option name="NpmBeforeRunTask" enabled="true">
-        <package-json value="$PROJECT_DIR$/package.json" />
-        <command value="run" />
-        <scripts>
-          <script value="eslint-gaps" />
-        </scripts>
-        <node-interpreter value="project" />
-        <envs />
-      </option>
-      <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/pom.xml" goal="clean install" />
-    </method>
+    <method v="2" />
   </configuration>
 </component>
