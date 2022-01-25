@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.jasonhhouse.gaps.MovieStatus;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.Schedule;
 import java.util.ArrayList;
@@ -47,6 +48,8 @@ public final class PlexProperties {
     private DiscordProperties discordProperties;
     @NotNull
     private Schedule schedule;
+    @NotNull
+    private MovieStatus movieStatus;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public PlexProperties(@JsonProperty(value = "plexServers") @Nullable List<PlexServer> plexServers,
@@ -59,7 +62,8 @@ public final class PlexProperties {
                           @JsonProperty(value = "discordProperties") @Nullable DiscordProperties discordProperties,
                           @JsonProperty(value = "movieDbApiKey") @Nullable String movieDbApiKey,
                           @JsonProperty(value = "password") @Nullable String password,
-                          @JsonProperty(value = "schedule") @Nullable Schedule schedule) {
+                          @JsonProperty(value = "schedule") @Nullable Schedule schedule,
+                          @JsonProperty(value = "movieStatus") @Nullable MovieStatus movieStatus) {
         this.plexServers = plexServers == null ? new ArrayList<>() : plexServers;
         this.telegramProperties = telegramProperties == null ? TelegramProperties.getDefault() : telegramProperties;
         this.pushBulletProperties = pushBulletProperties == null ? PushBulletProperties.getDefault() : pushBulletProperties;
@@ -71,6 +75,7 @@ public final class PlexProperties {
         this.movieDbApiKey = movieDbApiKey == null ? "" : movieDbApiKey;
         this.password = password == null ? "" : password;
         this.schedule = schedule == null ? Schedule.EVERY_MONDAY : schedule;
+        this.movieStatus = movieStatus == null ? MovieStatus.ALL : movieStatus;
     }
 
     public PlexProperties() {
@@ -85,6 +90,7 @@ public final class PlexProperties {
         this.movieDbApiKey = "";
         this.password = "";
         this.schedule = Schedule.EVERY_MONDAY;
+        this.movieStatus = MovieStatus.ALL;
     }
 
     @NotNull
@@ -185,6 +191,14 @@ public final class PlexProperties {
         this.discordProperties = discordProperties;
     }
 
+    public @NotNull MovieStatus getMovieStatus() {
+        return movieStatus;
+    }
+
+    public void setMovieStatus(@NotNull MovieStatus movieStatus) {
+        this.movieStatus = movieStatus;
+    }
+
     @Override
     public String toString() {
         return "PlexProperties{" +
@@ -199,6 +213,7 @@ public final class PlexProperties {
                 ", pushOverProperties=" + pushOverProperties +
                 ", discordProperties=" + discordProperties +
                 ", schedule=" + schedule +
+                ", movieStatus=" + movieStatus +
                 '}';
     }
 }

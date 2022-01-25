@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.jasonhhouse.gaps.BasicMovie;
 import com.jasonhhouse.gaps.MovieFromCollection;
+import com.jasonhhouse.gaps.MovieStatus;
 import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.SearchCancelledException;
@@ -31,7 +32,6 @@ import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -98,15 +98,17 @@ public class GapsSearchService implements GapsSearch {
 
     private final NotificationService notificationService;
 
+    private final MovieStatusService movieStatusService;
 
     @Autowired
     public GapsSearchService(@Qualifier("real") UrlGenerator urlGenerator,
-                             SimpMessagingTemplate template, FileIoService fileIoService, TmdbService tmdbService, NotificationService notificationService) {
+                             SimpMessagingTemplate template, FileIoService fileIoService, TmdbService tmdbService, NotificationService notificationService, MovieStatusService movieStatusService) {
         this.template = template;
         this.tmdbService = tmdbService;
         this.urlGenerator = urlGenerator;
         this.fileIoService = fileIoService;
         this.notificationService = notificationService;
+        this.movieStatusService = movieStatusService;
 
         tempTmdbCounter = new AtomicInteger();
         cancelSearch = new AtomicBoolean(true);
@@ -624,6 +626,13 @@ public class GapsSearchService implements GapsSearch {
                             year = date.getYear();
                         } else {
                             LOGGER.warn("No year found for {}. Value returned was '{}'. Not adding the movie to recommended list.", title, movieDet.get(RELEASE_DATE));
+                            continue;
+                        }
+
+                        if(movieStatusService.getRawMovieStatus().equals(MovieStatus.RELEASED) &&
+                                movieDet.has("status") &&
+                                !movieDet.get("status").textValue().equalsIgnoreCase("Released")) {
+                            LOGGER.warn("Movie '{} ({})' not released yet. Not adding the movie to recommended list.", title, movieDet.get(RELEASE_DATE));
                             continue;
                         }
 

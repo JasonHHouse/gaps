@@ -65,7 +65,7 @@ public enum Schedule {
         }
     }
 
-    public static List<Schedule> getAllSchedules() {
+    public static @NotNull List<Schedule> getAllSchedules() {
         return Arrays.asList(HOURLY, DAILY_4AM, EVERY_MONDAY, EVERY_TWO_WEEKS, EVERY_MONTH);
     }
 
