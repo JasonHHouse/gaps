@@ -14,6 +14,7 @@
 
 import hideAllAlertsAndSpinners from '../modules/alerts-manager.min.js';
 import saveSchedule from '../modules/schedule.min.js';
+import saveMovieStatus from '../modules/movieStatus.min.js';
 import Payload from '../modules/payload.min.js';
 import { getContextPath } from '../modules/common.min.js';
 import { saveTelegramNotifications, testTelegramNotifications } from '../modules/telegram-notifications.min.js';
@@ -308,6 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.testPushOver = testPushOverNotifications;
   window.savePushOver = savePushOverNotifications;
   window.saveSchedule = saveSchedule;
+  window.saveMovieStatus = saveMovieStatus;
   window.openPlexLibraryConfigurationModel = openPlexLibraryConfigurationModel;
   window.savePlexLibraryConfiguration = savePlexLibraryConfiguration;
 

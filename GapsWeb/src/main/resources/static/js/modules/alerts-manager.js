@@ -27,6 +27,11 @@ function hideScheduleAlertsAndSpinners() {
   document.getElementById('scheduleSaveError').style.display = 'none';
 }
 
+function hideMovieStatusAlertsAndSpinners() {
+  document.getElementById('movieStatusSaveSuccess').style.display = 'none';
+  document.getElementById('movieStatusSaveError').style.display = 'none';
+}
+
 function hidePlexAlertsAndSpinners() {
   document.getElementById('plexSpinner').style.display = 'none';
   document.getElementById('plexSaveSuccess').style.display = 'none';
@@ -98,6 +103,7 @@ export default function hideAllAlertsAndSpinners() {
   hideTmdbAlertsAndSpinners();
   hideDeleteAlertsAndSpinners();
   hideScheduleAlertsAndSpinners();
+  hideMovieStatusAlertsAndSpinners();
   hidePlexAlertsAndSpinners();
   hideTelegramAlertsAndSpinners();
   hideSlackAlertsAndSpinners();

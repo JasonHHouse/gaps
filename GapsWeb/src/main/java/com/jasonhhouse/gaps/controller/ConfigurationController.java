@@ -15,6 +15,7 @@ import com.jasonhhouse.gaps.Payload;
 import com.jasonhhouse.gaps.PlexServer;
 import com.jasonhhouse.gaps.properties.PlexProperties;
 import com.jasonhhouse.gaps.service.FileIoService;
+import com.jasonhhouse.gaps.service.MovieStatusService;
 import com.jasonhhouse.gaps.service.PlexQueryImpl;
 import com.jasonhhouse.gaps.service.SchedulerService;
 import com.jasonhhouse.gaps.service.TmdbService;
@@ -22,6 +23,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -50,18 +52,31 @@ public class ConfigurationController {
     private static final String CONFIGURATION_PLEX = "/configuration/plex";
     private static final String CONFIGURATION_PLEX_COMPLETE = CONFIGURATION_PLEX + "/complete";
 
+    @NotNull
     private final TmdbService tmdbService;
+    @NotNull
     private final SimpMessagingTemplate template;
+    @NotNull
     private final PlexQueryImpl plexQuery;
+    @NotNull
     private final FileIoService fileIoService;
+    @NotNull
     private final SchedulerService schedulerService;
+    @NotNull
+    private final MovieStatusService movieStatusService;
 
-    public ConfigurationController(TmdbService tmdbService, SimpMessagingTemplate template, PlexQueryImpl plexQuery, FileIoService fileIoService, SchedulerService schedulerService) {
+    public ConfigurationController(@NotNull TmdbService tmdbService,
+                                   @NotNull SimpMessagingTemplate template,
+                                   @NotNull PlexQueryImpl plexQuery,
+                                   @NotNull FileIoService fileIoService,
+                                   @NotNull SchedulerService schedulerService,
+                                   @NotNull MovieStatusService movieStatusService) {
         this.tmdbService = tmdbService;
         this.template = template;
         this.plexQuery = plexQuery;
         this.fileIoService = fileIoService;
         this.schedulerService = schedulerService;
+        this.movieStatusService = movieStatusService;
     }
 
     @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
@@ -72,6 +87,7 @@ public class ConfigurationController {
         ModelAndView modelAndView = new ModelAndView("configuration");
         modelAndView.addObject("plexProperties", plexProperties);
         modelAndView.addObject("schedules", schedulerService.getAllSchedules());
+        modelAndView.addObject("movieStatuses", movieStatusService.getAllMovieStatuses());
         modelAndView.addObject("configurationPage", true);
         return modelAndView;
     }

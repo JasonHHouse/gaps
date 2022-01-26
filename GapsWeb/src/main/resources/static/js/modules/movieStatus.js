@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Jason H House
+ * Copyright 2022 Jason H House
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *
@@ -13,14 +13,13 @@ import hideAllAlertsAndSpinners from './alerts-manager.min.js';
 import Payload from './payload.min.js';
 import { getContextPath } from './common.min.js';
 
-export default async function saveSchedule() {
+export default async function saveMovieStatus() {
   hideAllAlertsAndSpinners();
 
   const body = {};
-  body.schedule = document.getElementById('setSchedule').value;
-  body.enabled = document.getElementById('scheduleEnabled').value;
+  body.status = document.getElementById('setMovieStatus').value;
 
-  const response = await fetch(getContextPath('/schedule'), {
+  const response = await fetch(getContextPath('/movieStatus'), {
     method: 'put',
     headers: {
       Accept: 'application/json',
@@ -29,11 +28,11 @@ export default async function saveSchedule() {
     body: JSON.stringify(body),
   });
   const put = await response.json();
-  if (put && put.code && put.code === Payload.SCHEDULE_UPDATED) {
+  if (put && put.code && put.code === Payload.MOVIE_STATUS_UPDATED) {
     hideAllAlertsAndSpinners();
-    document.getElementById('scheduleSaveSuccess').style.display = 'block';
+    document.getElementById('movieStatusSaveSuccess').style.display = 'block';
   } else {
     hideAllAlertsAndSpinners();
-    document.getElementById('scheduleSaveError').style.display = 'block';
+    document.getElementById('movieStatusSaveError').style.display = 'block';
   }
 }
