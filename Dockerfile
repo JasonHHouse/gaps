@@ -32,7 +32,7 @@ RUN mkdir -p /usr/app && chmod 777 /usr/app
 
 WORKDIR /usr/app
 
-COPY GapsWeb/target/GapsWeb-0.10.2.jar /usr/app/gaps.jar
+COPY GapsWeb/target/GapsWeb-0.10.3.jar /usr/app/gaps.jar
 
 COPY start.sh /usr/app/
 
