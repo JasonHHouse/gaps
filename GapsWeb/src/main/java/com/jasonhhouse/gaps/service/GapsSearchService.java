@@ -494,14 +494,17 @@ public class GapsSearchService implements GapsSearch {
                             LOGGER.warn("Could not parse date");
                         }
                     }
-                    Integer tmdbId = jsonNode.get(ID).intValue();
+                    if((movieStatusService.getRawMovieStatus().equals(MovieStatus.RELEASED) && year != 0) ||
+                            movieStatusService.getRawMovieStatus().equals(MovieStatus.ALL)) {
+                        Integer tmdbId = jsonNode.get(ID).intValue();
 
-                    BasicMovie collectionBasicMovie = new BasicMovie.Builder(title, year).build();
-                    collectionBasicMovie.setTmdbId(tmdbId);
-                    LOGGER.info(collectionBasicMovie.toString());
+                        BasicMovie collectionBasicMovie = new BasicMovie.Builder(title, year).build();
+                        collectionBasicMovie.setTmdbId(tmdbId);
+                        LOGGER.info(collectionBasicMovie.toString());
 
-                    Boolean owned = ownedBasicMovies.contains(collectionBasicMovie);
-                    moviesInCollection.add(new MovieFromCollection(title, tmdbId, owned, year));
+                        Boolean owned = ownedBasicMovies.contains(collectionBasicMovie);
+                        moviesInCollection.add(new MovieFromCollection(title, tmdbId, owned, year));
+                    }
                 });
             }
 
@@ -629,7 +632,7 @@ public class GapsSearchService implements GapsSearch {
                             continue;
                         }
 
-                        if(movieStatusService.getRawMovieStatus().equals(MovieStatus.RELEASED) &&
+                        if (movieStatusService.getRawMovieStatus().equals(MovieStatus.RELEASED) &&
                                 movieDet.has("status") &&
                                 !movieDet.get("status").textValue().equalsIgnoreCase("Released")) {
                             LOGGER.warn("Movie '{} ({})' not released yet. Not adding the movie to recommended list.", title, movieDet.get(RELEASE_DATE));
