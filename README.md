@@ -16,6 +16,8 @@
 
 ---
 
+# Unforntately, I no longer have the time to maintain Gaps and it is no longer under active development.
+
 <p align="center"> Gaps searches through your Plex Server for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.
     <br> 
 </p>
@@ -32,8 +34,6 @@
 - [Acknowledgments](#acknowledgement)
 
 ## 🧐 About <a name = "about"></a>
-
-Unforntately, I no longer have the time to maintain Gaps and it is no longer under active development.
 
 Gaps is a FOSS application. An example of Gaps running would be having a copy of 'Alien (1979)' and Gaps recommending 'Aliens (1986)' and 'Alien³ (1992)' to be added to your collection.
 
