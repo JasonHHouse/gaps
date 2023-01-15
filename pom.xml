@@ -24,7 +24,7 @@
     <properties>
         <apache.commons.collections4>4.4</apache.commons.collections4>
         <apache.commons.lang3>3.9</apache.commons.lang3>
-        <apache.commons.text>1.9</apache.commons.text>
+        <apache.commons.text>1.10.0</apache.commons.text>
         <commons.io>2.11.0</commons.io>
         <gaps.version>0.10.4</gaps.version>
         <google.findbugs>3.0.0</google.findbugs>
