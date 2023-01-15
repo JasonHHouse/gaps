@@ -10,7 +10,7 @@
     "postcss-cli": "^9.1.0",
     "uglify-es": "^3.3.9",
     "uglify-js": "^3.17.4",
-    "uglifyjs-folder": "^3.0.0"
+    "uglifyjs-folder": "^3.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",
