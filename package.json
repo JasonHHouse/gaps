@@ -4,7 +4,7 @@
   "description": "Gaps searches through your Plex Server for all movies, then queries for known movies in the same collection. If those movies don't exist in your library, Gaps will recommend getting those movies, legally of course.",
   "main": "/",
   "dependencies": {
-    "cssnano": "^5.0.14",
+    "cssnano": "^5.1.14",
     "faker": "^5.5.3",
     "postcss": "^8.4.5",
     "postcss-cli": "^9.1.0",
