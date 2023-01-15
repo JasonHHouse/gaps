@@ -28,7 +28,7 @@
         <commons.io>2.11.0</commons.io>
         <gaps.version>0.10.4</gaps.version>
         <google.findbugs>3.0.0</google.findbugs>
-        <guava>31.0.1-jre</guava>
+        <guava>31.1-jre</guava>
         <hibernate.validator>6.1.5.Final</hibernate.validator>
         <jackson.version>2.14.1</jackson.version>
         <jakarta.xml.bind.api>2.3.2</jakarta.xml.bind.api>
