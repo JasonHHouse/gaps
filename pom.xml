@@ -36,7 +36,7 @@
         <javax.validation.api>2.0.1.Final</javax.validation.api>
         <jaxb.api.version>2.3.0</jaxb.api.version>
         <jaxb.runtime>2.3.2</jaxb.runtime>
-        <jetbrains.annotations>23.0.0</jetbrains.annotations>
+        <jetbrains.annotations>24.0.0</jetbrains.annotations>
         <junit>5.8.2</junit>
         <log4j2.version>2.17.0</log4j2.version>
         <mockito.core>4.3.1</mockito.core>
