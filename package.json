@@ -9,7 +9,7 @@
     "postcss": "^8.4.5",
     "postcss-cli": "^9.1.0",
     "uglify-es": "^3.3.9",
-    "uglify-js": "^3.14.5",
+    "uglify-js": "^3.17.4",
     "uglifyjs-folder": "^3.0.0"
   },
   "devDependencies": {
