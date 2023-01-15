@@ -5,7 +5,7 @@
   "main": "/",
   "dependencies": {
     "cssnano": "^5.1.14",
-    "faker": "^5.5.3",
+    "faker": "^6.6.6",
     "postcss": "^8.4.5",
     "postcss-cli": "^9.1.0",
     "uglify-es": "^3.3.9",
