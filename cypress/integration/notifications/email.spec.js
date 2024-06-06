@@ -11,7 +11,7 @@
 /* global cy, describe, it, beforeEach, expect */
 /* eslint no-undef: "error" */
 
-import faker from 'faker';
+import faker from "@faker-js/faker";
 import { BASE_URL, CYPRESS_VALUES, nuke } from '../common.spec.js';
 
 function checkElements(username, password, mailTo, mailFrom, mailServer, mailPort, mailTransportProtocol, mailSmtpAuth, mailSmtpTlsEnabled, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {

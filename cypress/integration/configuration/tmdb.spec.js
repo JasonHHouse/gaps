@@ -11,7 +11,7 @@
 /* global cy, it, describe, before */
 /* eslint no-undef: "error" */
 
-import faker from 'faker';
+import faker from "@faker-js/faker";
 import { BASE_URL, spyOnAddEventListener } from '../common.spec.js';
 
 describe('TMDB Configuration Tests', () => {

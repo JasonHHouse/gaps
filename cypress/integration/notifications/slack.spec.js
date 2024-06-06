@@ -11,7 +11,7 @@
 /* global cy, describe, it, beforeEach, expect */
 /* eslint no-undef: "error" */
 
-import faker from 'faker';
+import faker from "@faker-js/faker";
 import { BASE_URL, CYPRESS_VALUES, nuke } from '../common.spec.js';
 
 function checkElements(slackWebHookUrl, tmdbApi, plexServer, plexMetadata, plexLibrary, gapsCollections, enabled) {
