@@ -16,13 +16,12 @@ import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -32,20 +31,19 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSecurityConfig.class);
 
     private final GapsConfiguration gapsConfiguration;
     private final FileIoService fileIoService;
 
-    @Autowired
     public WebSecurityConfig(GapsConfiguration gapsConfiguration, FileIoService fileIoService) {
         this.gapsConfiguration = gapsConfiguration;
         this.fileIoService = fileIoService;
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         LOGGER.info("Name: {}", gapsConfiguration.getName());
         LOGGER.info("Description: {}", gapsConfiguration.getDescription());
         LOGGER.info("Version: {}", gapsConfiguration.getVersion());
@@ -57,8 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             http.cors().and().csrf().disable()
                     .authorizeRequests()
                     .antMatchers("/rss/**").permitAll()
-                    .anyRequest()
-                    .authenticated()
+                    .anyRequest().authenticated()
                     .and()
                     .httpBasic();
         } else if (Boolean.TRUE.equals(gapsConfiguration.getLoginEnabled()) && Boolean.FALSE.equals(gapsConfiguration.getSslEnabled())) {
@@ -67,8 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             http.cors().and().csrf().disable()
                     .authorizeRequests()
                     .antMatchers("/rss/**").permitAll()
-                    .anyRequest()
-                    .authenticated()
+                    .anyRequest().authenticated()
                     .and()
                     .httpBasic();
         } else {
@@ -76,16 +72,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             //Test needing cors and csrf disabled
             http.cors().and().csrf().disable();
         }
+        
+        return http.build();
     }
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        super.configure(web);
-        web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
-    }
+
 
     @Bean
-    @Override
     public UserDetailsService userDetailsService() {
         LOGGER.info("userDetailsService()");
         if (Boolean.TRUE.equals(gapsConfiguration.getLoginEnabled())) {
@@ -112,7 +105,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
             return new InMemoryUserDetailsManager(userDetails);
         } else {
-            return super.userDetailsService();
+            return new InMemoryUserDetailsManager();
         }
     }
 }

@@ -126,6 +126,26 @@ public class Location {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        
+        Location location = (Location) o;
+        
+        if (value != null ? !value.equals(location.value) : location.value != null) return false;
+        if (id != null ? !id.equals(location.id) : location.id != null) return false;
+        return path != null ? path.equals(location.path) : location.path == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = value != null ? value.hashCode() : 0;
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + (path != null ? path.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Location{" +
                 "value='" + value + '\'' +
