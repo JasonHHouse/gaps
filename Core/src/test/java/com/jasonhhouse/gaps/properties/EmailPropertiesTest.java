@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class EmailPropertiesTest {
+public class EmailPropertiesTest {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 

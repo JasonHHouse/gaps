@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class BasicMovieFromCollectionTest {
+public class BasicMovieFromCollectionTest {
 
     @Test
     void MovieFromCollectionTest_Invalid_Owned (){

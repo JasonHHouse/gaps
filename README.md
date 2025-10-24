@@ -45,7 +45,9 @@ Windows Users check out the <a href="https://github.com/JasonHHouse/gaps/wiki/Wi
 ### Prerequisites
 What things you need to install the software and how to install them.
 
-#### Option 1 
+**Java 21 Required**: Gaps requires Java 21 (LTS) to run. Download from [Adoptium](https://adoptium.net/) or use your package manager.
+
+#### Option 1
 <code>
 Gaps can run in <a href="https://www.docker.com/">Docker</a>. If you choose to run this way, you'll need a Docker environment installed. Docker has a good write up on installing Docker CE. Check it out <a href="https://docs.docker.com/install/">here</a>. Once you get docker up and running
 </code>

@@ -32,14 +32,13 @@
         <hibernate.validator>6.2.5.Final</hibernate.validator>
         <jackson.version>2.16.1</jackson.version>
         <jakarta.xml.bind.api>2.3.2</jakarta.xml.bind.api>
-        <java.version>17</java.version>
+        <java.version>21</java.version>
         <javax.validation.api>2.0.1.Final</javax.validation.api>
         <jaxb.api.version>2.3.0</jaxb.api.version>
         <jaxb.runtime>2.3.2</jaxb.runtime>
         <jetbrains.annotations>24.1.0</jetbrains.annotations>
-        <junit>5.10.1</junit>
+        <junit>5.11.3</junit>
         <log4j2.version>2.22.1</log4j2.version>
-        <mockito.core>5.8.0</mockito.core>
         <okhttp>4.12.0</okhttp>
         <okhttp.mockwebserver>4.12.0</okhttp.mockwebserver>
         <sockjs.client>1.5.1</sockjs.client>
@@ -226,13 +225,6 @@
                 <scope>test</scope>
             </dependency>
 
-            <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-core</artifactId>
-                <version>${mockito.core}</version>
-                <scope>test</scope>
-            </dependency>
-
         </dependencies>
     </dependencyManagement>
 
@@ -252,6 +244,32 @@
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>4.5.2.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.12</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-aggregate</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report-aggregate</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

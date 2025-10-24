@@ -1,25 +1,13 @@
 package com.jasonhhouse.gaps.service;
 
 import com.jasonhhouse.gaps.Payload;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(MockitoJUnitRunner.class)
 public class TmdbServiceTest {
 
-    @InjectMocks
-    TmdbService tmdbService;
-
-    @Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
-    }
+    private final TmdbService tmdbService = new TmdbService();
 
     @Test
     public void nullTmdbKey() {

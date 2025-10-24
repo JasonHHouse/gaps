@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MovieFromCollectionTest {
+public class MovieFromCollectionTest {
 
     @NotNull
     private ObjectMapper objectMapper;
