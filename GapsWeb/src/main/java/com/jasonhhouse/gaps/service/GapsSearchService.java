@@ -281,30 +281,15 @@ public class GapsSearchService implements GapsSearch {
                         .url(searchMovieUrl)
                         .build();
 
-                String json = "";
-                try (Response response = client.newCall(request).execute()) {
+                String json = executeHttpRequest(client, request);
 
-                    ResponseBody responseBody = response.body();
-                    if (responseBody != null) {
-                        json = responseBody.string();
-                    }
-
+                try {
                     if (StringUtils.isEmpty(json)) {
                         LOGGER.error("Body returned null from TheMovieDB for: {}", basicMovie);
                         continue;
                     }
 
-                    JsonNode foundMovies = objectMapper.readTree(json);
-                    ArrayNode results;
-
-                    if (foundMovies.has(MOVIE_RESULTS) &&
-                            foundMovies.get(MOVIE_RESULTS).getNodeType().equals(JsonNodeType.ARRAY)) {
-                        //Results from 'find'
-                        results = (ArrayNode) foundMovies.get(MOVIE_RESULTS);
-                    } else {
-                        //Results from 'search'
-                        results = (ArrayNode) foundMovies.get("results");
-                    }
+                    ArrayNode results = parseMovieSearchResults(json);
 
                     if (results == null) {
                         LOGGER.error("Results returned null from TheMovieDB for: {}", basicMovie);
@@ -326,19 +311,7 @@ public class GapsSearchService implements GapsSearch {
                     int id = result.get(ID).intValue();
                     basicMovie.setTmdbId(id);
 
-                    int indexOfMovie = everyBasicMovie.indexOf(basicMovie);
-                    if (indexOfMovie != -1) {
-                        LOGGER.info("Merging movie data");
-                        everyBasicMovie.get(indexOfMovie).setTmdbId(basicMovie.getTmdbId());
-                    } else {
-                        BasicMovie newBasicMovie = new BasicMovie.Builder(basicMovie.getName(), basicMovie.getYear())
-                                .setTmdbId(basicMovie.getTmdbId())
-                                .setImdbId(basicMovie.getImdbId())
-                                .setCollectionTitle(basicMovie.getCollectionTitle())
-                                .setCollectionId(basicMovie.getCollectionId())
-                                .build();
-                        everyBasicMovie.add(newBasicMovie);
-                    }
+                    updateOrAddMovieWithTmdbId(everyBasicMovie, basicMovie);
 
                     searchMovieDetails(plexProperties, machineIdentifier, key, ownedBasicMovies, everyBasicMovie, recommended, searched, searchedMovieCount, basicMovie, client, languageCode);
                 } catch (JsonProcessingException e) {
@@ -375,12 +348,8 @@ public class GapsSearchService implements GapsSearch {
                 .url(movieDetailUrl)
                 .build();
 
-        try (Response movieDetailResponse = client.newCall(request).execute()) {
-            String movieDetailJson = "";
-            ResponseBody responseBody = movieDetailResponse.body();
-            if (responseBody != null) {
-                movieDetailJson = responseBody.string();
-            }
+        try {
+            String movieDetailJson = executeHttpRequest(client, request);
 
             if (StringUtils.isEmpty(movieDetailJson)) {
                 LOGGER.error("Body returned null from TheMovieDB for details on {}", basicMovie.getName());
@@ -406,25 +375,7 @@ public class GapsSearchService implements GapsSearch {
             List<String> genres = getGenres(movieDetails);
             basicMovie.setGenres(genres);
 
-            int indexOfMovie = everyBasicMovie.indexOf(basicMovie);
-            if (indexOfMovie != -1) {
-                LOGGER.info("Merging movie data");
-                everyBasicMovie.get(indexOfMovie).setTmdbId(basicMovie.getTmdbId());
-                everyBasicMovie.get(indexOfMovie).setCollectionId(basicMovie.getCollectionId());
-                everyBasicMovie.get(indexOfMovie).setCollectionTitle(basicMovie.getCollectionTitle());
-                everyBasicMovie.get(indexOfMovie).setBackdropPathUrl(basicMovie.getBackdropPathUrl());
-                everyBasicMovie.get(indexOfMovie).setGenres(genres);
-            } else {
-                BasicMovie newBasicMovie = new BasicMovie.Builder(basicMovie.getName(), basicMovie.getYear())
-                        .setTmdbId(basicMovie.getTmdbId())
-                        .setImdbId(basicMovie.getImdbId())
-                        .setCollectionTitle(basicMovie.getCollectionTitle())
-                        .setCollectionId(basicMovie.getCollectionId())
-                        .setBackdropPathUrl(basicMovie.getBackdropPathUrl())
-                        .setGenres(basicMovie.getGenres())
-                        .build();
-                everyBasicMovie.add(newBasicMovie);
-            }
+            updateOrAddMovieWithCollectionDetails(everyBasicMovie, basicMovie, genres);
 
             handleCollection(plexProperties, machineIdentifier, key, ownedBasicMovies, everyBasicMovie, recommended, searched, searchedMovieCount, basicMovie, client, languageCode);
 
@@ -455,12 +406,8 @@ public class GapsSearchService implements GapsSearch {
                 .url(collectionUrl)
                 .build();
 
-        try (Response collectionResponse = client.newCall(request).execute()) {
-            String collectionJson = "";
-            ResponseBody responseBody = collectionResponse.body();
-            if (responseBody != null) {
-                collectionJson = responseBody.string();
-            }
+        try {
+            String collectionJson = executeHttpRequest(client, request);
 
             if (StringUtils.isEmpty(collectionJson)) {
                 LOGGER.error("Body returned null from TheMovieDB for collection information about {}", basicMovie.getName());
@@ -476,39 +423,7 @@ public class GapsSearchService implements GapsSearch {
 
             int indexOfMovie = everyBasicMovie.indexOf(basicMovie);
 
-            List<MovieFromCollection> moviesInCollection = new ArrayList<>();
-            if (collection.has(PARTS)) {
-                JsonNode parts = collection.get(PARTS);
-                parts.iterator().forEachRemaining(jsonNode -> {
-                    String title = jsonNode.get(TITLE).textValue();
-                    int year = 0;
-                    if (jsonNode.has(RELEASE_DATE)) {
-                        String oldDate = jsonNode.get(RELEASE_DATE).textValue();
-
-                        try {
-                            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(oldDate);
-                            Calendar calendar = new GregorianCalendar();
-                            calendar.setTime(date);
-                            year = calendar.get(Calendar.YEAR);
-                        } catch (ParseException e) {
-                            LOGGER.warn("Could not parse date");
-                        }
-                    }
-                    if((movieStatusService.getRawMovieStatus().equals(MovieStatus.RELEASED) && year != 0) ||
-                            movieStatusService.getRawMovieStatus().equals(MovieStatus.ALL)) {
-                        Integer tmdbId = jsonNode.get(ID).intValue();
-
-                        BasicMovie collectionBasicMovie = new BasicMovie.Builder(title, year).build();
-                        collectionBasicMovie.setTmdbId(tmdbId);
-                        LOGGER.info(collectionBasicMovie.toString());
-
-                        Boolean owned = ownedBasicMovies.contains(collectionBasicMovie);
-                        moviesInCollection.add(new MovieFromCollection(title, tmdbId, owned, year));
-                    }
-                });
-            }
-
-            LOGGER.info("MoviesInCollection: {}", Arrays.toString(moviesInCollection.toArray()));
+            List<MovieFromCollection> moviesInCollection = buildMoviesInCollectionList(collection, ownedBasicMovies);
 
             if (indexOfMovie != -1) {
                 LOGGER.info("Movie found: {}", basicMovie);
@@ -546,18 +461,11 @@ public class GapsSearchService implements GapsSearch {
                 int tmdbId = part.get(ID).intValue();
                 //Files can't have : so need to remove to find matches correctly
                 String title = part.get(TITLE).textValue();
-                int year;
-                try {
-                    if (part.has(RELEASE_DATE) && StringUtils.isNotEmpty(part.get(RELEASE_DATE).textValue())) {
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
-                        LocalDate date = LocalDate.parse(part.get(RELEASE_DATE).textValue(), formatter);
-                        year = date.getYear();
-                    } else {
-                        LOGGER.warn("No year found for {}. Value returned was empty. Not adding the movie to recommended list.", title);
-                        continue;
-                    }
-                } catch (StringIndexOutOfBoundsException | NumberFormatException e) {
-                    LOGGER.warn("No year found for {}. Value returned was empty. Not adding the movie to recommended list.", title);
+
+                String releaseDate = part.has(RELEASE_DATE) ? part.get(RELEASE_DATE).textValue() : "";
+                int year = parseYearFromDateString(releaseDate, title);
+                if (year == 0) {
+                    LOGGER.warn("Not adding the movie to recommended list.");
                     continue;
                 }
 
@@ -597,96 +505,15 @@ public class GapsSearchService implements GapsSearch {
                     searched.add(basicMovieFromCollection);
                     sendEmptySearchUpdate(ownedBasicMovies.size(), searchedMovieCount);
                 } else if (!searched.contains(basicMovieFromCollection) && year != 0) {
-                    LOGGER.info("Missing movie found: {}", basicMovieFromCollection);
-
-                    // Get recommended Movie details from MovieDB API
-                    HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(plexProperties.getMovieDbApiKey(), String.valueOf(basicMovieFromCollection.getTmdbId()), languageCode);
-
-                    Request newReq = new Request.Builder()
-                            .url(movieDetailUrl)
-                            .build();
-
-                    try (Response movieDetailResponse = client.newCall(newReq).execute()) {
-                        String movieDetailJson = "";
-                        ResponseBody movieDetailResponseBody = movieDetailResponse.body();
-                        if (movieDetailResponseBody != null) {
-                            movieDetailJson = movieDetailResponseBody.string();
-                        }
-
-                        LOGGER.info(movieDetailJson);
-
-                        if (StringUtils.isEmpty(movieDetailJson)) {
-                            LOGGER.error("Body returned null from TheMovieDB for details on {}", basicMovie.getName());
-                            return;
-                        }
-
-                        JsonNode movieDet = objectMapper.readTree(movieDetailJson);
-
-                        // Get the release year from movie release date
-                        if (movieDet.has(RELEASE_DATE) && StringUtils.isNotEmpty(movieDet.get(RELEASE_DATE).textValue())) {
-                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
-                            LocalDate date = LocalDate.parse(movieDet.get(RELEASE_DATE).textValue(), formatter);
-                            year = date.getYear();
-                        } else {
-                            LOGGER.warn("No year found for {}. Value returned was '{}'. Not adding the movie to recommended list.", title, movieDet.get(RELEASE_DATE));
-                            continue;
-                        }
-
-                        if (movieStatusService.getRawMovieStatus().equals(MovieStatus.RELEASED) &&
-                                movieDet.has("status") &&
-                                !movieDet.get("status").textValue().equalsIgnoreCase("Released")) {
-                            LOGGER.warn("Movie '{} ({})' not released yet. Not adding the movie to recommended list.", title, movieDet.get(RELEASE_DATE));
-                            continue;
-                        }
-
-                        if (collection.has(NAME)) {
-                            basicMovie.setCollectionTitle(collection.get(NAME).textValue());
-                            basicMovieFromCollection.setCollectionTitle(collection.get(NAME).textValue());
-                        }
-
-                        List<String> genres = getGenres(movieDet);
-
-                        String backdropPathUrl = "";
-                        if (movieDet.has(COLLECTION_ID) && movieDet.get(COLLECTION_ID) != null && movieDet.get(COLLECTION_ID).has(BACKDROP_PATH)) {
-                            backdropPathUrl = "https://image.tmdb.org/t/p/original/" + movieDet.get(COLLECTION_ID).get(BACKDROP_PATH).textValue();
-                        } else {
-                            LOGGER.warn("Could not find collection information on movie with collection. Movie was {} ({})", movieDet.get(TITLE), year);
-                        }
-
-                        // Add movie with imbd_id and other details for RSS to recommended list
-                        BasicMovie recommendedBasicMovie = new BasicMovie.Builder(movieDet.get(TITLE).textValue(), year)
-                                .setTmdbId(movieDet.get(ID).intValue())
-                                .setImdbId(movieDet.get("imdb_id").textValue())
-                                .setCollectionId(basicMovie.getCollectionId())
-                                .setCollectionTitle(basicMovie.getCollectionTitle())
-                                .setPosterUrl("https://image.tmdb.org/t/p/w185/" + movieDet.get("poster_path").textValue())
-                                .setBackdropPathUrl(backdropPathUrl)
-                                .setOverview(movieDet.get("overview").textValue())
-                                .setMoviesInCollection(moviesInCollection)
-                                .setGenres(genres)
-                                .build();
-
-                        if (ownedBasicMovies.contains(recommendedBasicMovie)) {
-                            LOGGER.info("Skip owned movie: {}", recommendedBasicMovie);
-                            continue;
-                        }
-
-                        if (recommended.add(recommendedBasicMovie)) {
-                            // Write current list of recommended movies to file.
-                            fileIoService.writeRssFile(machineIdentifier, key, new HashSet<>(recommended));
-
-                            LOGGER.info("/newMovieFound:{}", recommendedBasicMovie);
-
-                            //Send message over websocket
-                            SearchResults searchResults = new SearchResults(searchedMovieCount.get(), ownedBasicMovies.size(), recommendedBasicMovie);
-                            template.convertAndSend("/newMovieFound", objectMapper.writeValueAsString(searchResults));
-                        }
+                    try {
+                        processMissingMovieFromCollection(plexProperties, machineIdentifier, key,
+                                basicMovieFromCollection, basicMovie, collection, moviesInCollection,
+                                ownedBasicMovies, recommended, searchedMovieCount, client, languageCode, title);
                     } catch (RuntimeException e) {
                         throw e;
                     } catch (Exception e) {
                         LOGGER.warn(e.getMessage());
                     }
-
                 } else {
                     sendEmptySearchUpdate(ownedBasicMovies.size(), searchedMovieCount);
                 }
@@ -704,6 +531,269 @@ public class GapsSearchService implements GapsSearch {
         //No new movie, just updated counts
         SearchResults searchResults = new SearchResults(searchedMovieCount.get(), totalMovieCount, null);
         template.convertAndSend("/newMovieFound", objectMapper.writeValueAsString(searchResults));
+    }
+
+    /**
+     * Executes an HTTP request and returns the response body as a string.
+     *
+     * @param client  The OkHttpClient to use for the request
+     * @param request The request to execute
+     * @return The response body as a string, or empty string if the response body is null
+     * @throws IOException If an error occurs during the request
+     */
+    private String executeHttpRequest(OkHttpClient client, Request request) throws IOException {
+        try (Response response = client.newCall(request).execute()) {
+            ResponseBody responseBody = response.body();
+            if (responseBody != null) {
+                return responseBody.string();
+            }
+            return "";
+        }
+    }
+
+    /**
+     * Parses the movie search results from TMDB API response.
+     * Handles both 'find' and 'search' API response formats.
+     *
+     * @param json The JSON response from TMDB
+     * @return ArrayNode containing the search results, or null if parsing fails
+     * @throws JsonProcessingException If JSON parsing fails
+     */
+    private ArrayNode parseMovieSearchResults(String json) throws JsonProcessingException {
+        JsonNode foundMovies = objectMapper.readTree(json);
+        ArrayNode results;
+
+        if (foundMovies.has(MOVIE_RESULTS) &&
+                foundMovies.get(MOVIE_RESULTS).getNodeType().equals(JsonNodeType.ARRAY)) {
+            //Results from 'find'
+            results = (ArrayNode) foundMovies.get(MOVIE_RESULTS);
+        } else {
+            //Results from 'search'
+            results = (ArrayNode) foundMovies.get("results");
+        }
+
+        return results;
+    }
+
+    /**
+     * Updates or adds a BasicMovie to the everyBasicMovie list with new TMDB information.
+     *
+     * @param everyBasicMovie The list of all movies
+     * @param basicMovie      The movie to update or add
+     */
+    private void updateOrAddMovieWithTmdbId(List<BasicMovie> everyBasicMovie, BasicMovie basicMovie) {
+        int indexOfMovie = everyBasicMovie.indexOf(basicMovie);
+        if (indexOfMovie != -1) {
+            LOGGER.info("Merging movie data");
+            everyBasicMovie.get(indexOfMovie).setTmdbId(basicMovie.getTmdbId());
+        } else {
+            BasicMovie newBasicMovie = new BasicMovie.Builder(basicMovie.getName(), basicMovie.getYear())
+                    .setTmdbId(basicMovie.getTmdbId())
+                    .setImdbId(basicMovie.getImdbId())
+                    .setCollectionTitle(basicMovie.getCollectionTitle())
+                    .setCollectionId(basicMovie.getCollectionId())
+                    .build();
+            everyBasicMovie.add(newBasicMovie);
+        }
+    }
+
+    /**
+     * Updates or adds a BasicMovie to the everyBasicMovie list with full collection details.
+     *
+     * @param everyBasicMovie The list of all movies
+     * @param basicMovie      The movie to update or add
+     * @param genres          The genres list
+     */
+    private void updateOrAddMovieWithCollectionDetails(List<BasicMovie> everyBasicMovie, BasicMovie basicMovie, List<String> genres) {
+        int indexOfMovie = everyBasicMovie.indexOf(basicMovie);
+        if (indexOfMovie != -1) {
+            LOGGER.info("Merging movie data");
+            everyBasicMovie.get(indexOfMovie).setTmdbId(basicMovie.getTmdbId());
+            everyBasicMovie.get(indexOfMovie).setCollectionId(basicMovie.getCollectionId());
+            everyBasicMovie.get(indexOfMovie).setCollectionTitle(basicMovie.getCollectionTitle());
+            everyBasicMovie.get(indexOfMovie).setBackdropPathUrl(basicMovie.getBackdropPathUrl());
+            everyBasicMovie.get(indexOfMovie).setGenres(genres);
+        } else {
+            BasicMovie newBasicMovie = new BasicMovie.Builder(basicMovie.getName(), basicMovie.getYear())
+                    .setTmdbId(basicMovie.getTmdbId())
+                    .setImdbId(basicMovie.getImdbId())
+                    .setCollectionTitle(basicMovie.getCollectionTitle())
+                    .setCollectionId(basicMovie.getCollectionId())
+                    .setBackdropPathUrl(basicMovie.getBackdropPathUrl())
+                    .setGenres(basicMovie.getGenres())
+                    .build();
+            everyBasicMovie.add(newBasicMovie);
+        }
+    }
+
+    /**
+     * Parses a year from a date string in yyyy-MM-dd format.
+     *
+     * @param dateString The date string to parse
+     * @param movieTitle The movie title (for logging purposes)
+     * @return The year, or 0 if parsing fails
+     */
+    private int parseYearFromDateString(String dateString, String movieTitle) {
+        if (StringUtils.isEmpty(dateString)) {
+            LOGGER.warn("No year found for {}. Value returned was empty.", movieTitle);
+            return 0;
+        }
+
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
+            LocalDate date = LocalDate.parse(dateString, formatter);
+            return date.getYear();
+        } catch (StringIndexOutOfBoundsException | NumberFormatException e) {
+            LOGGER.warn("No year found for {}. Value returned was empty. Error: {}", movieTitle, e.getMessage());
+            return 0;
+        }
+    }
+
+    /**
+     * Builds a list of MovieFromCollection objects from collection parts JSON.
+     *
+     * @param collection         The collection JSON node
+     * @param ownedBasicMovies  List of movies owned by the user
+     * @return List of MovieFromCollection objects
+     */
+    private List<MovieFromCollection> buildMoviesInCollectionList(JsonNode collection, List<BasicMovie> ownedBasicMovies) {
+        List<MovieFromCollection> moviesInCollection = new ArrayList<>();
+        if (collection.has(PARTS)) {
+            JsonNode parts = collection.get(PARTS);
+            parts.iterator().forEachRemaining(jsonNode -> {
+                String title = jsonNode.get(TITLE).textValue();
+                int year = 0;
+                if (jsonNode.has(RELEASE_DATE)) {
+                    String oldDate = jsonNode.get(RELEASE_DATE).textValue();
+
+                    try {
+                        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(oldDate);
+                        Calendar calendar = new GregorianCalendar();
+                        calendar.setTime(date);
+                        year = calendar.get(Calendar.YEAR);
+                    } catch (ParseException e) {
+                        LOGGER.warn("Could not parse date");
+                    }
+                }
+                if((movieStatusService.getRawMovieStatus().equals(MovieStatus.RELEASED) && year != 0) ||
+                        movieStatusService.getRawMovieStatus().equals(MovieStatus.ALL)) {
+                    Integer tmdbId = jsonNode.get(ID).intValue();
+
+                    BasicMovie collectionBasicMovie = new BasicMovie.Builder(title, year).build();
+                    collectionBasicMovie.setTmdbId(tmdbId);
+                    LOGGER.info(collectionBasicMovie.toString());
+
+                    Boolean owned = ownedBasicMovies.contains(collectionBasicMovie);
+                    moviesInCollection.add(new MovieFromCollection(title, tmdbId, owned, year));
+                }
+            });
+        }
+        LOGGER.info("MoviesInCollection: {}", Arrays.toString(moviesInCollection.toArray()));
+        return moviesInCollection;
+    }
+
+    /**
+     * Processes a missing movie from a collection, fetches its details, and adds it to recommendations if appropriate.
+     *
+     * @param plexProperties           Plex properties containing API keys
+     * @param machineIdentifier        Machine identifier for Plex server
+     * @param key                      Library key
+     * @param basicMovieFromCollection The basic movie from the collection
+     * @param basicMovie               The original movie being processed
+     * @param collection               The collection JSON node
+     * @param moviesInCollection       List of movies in the collection
+     * @param ownedBasicMovies         List of owned movies
+     * @param recommended              Set of recommended movies to add to
+     * @param searchedMovieCount       Counter of searched movies
+     * @param client                   HTTP client
+     * @param languageCode             Language code for API requests
+     * @param title                    Movie title
+     * @throws Exception If an error occurs during processing
+     */
+    private void processMissingMovieFromCollection(PlexProperties plexProperties, String machineIdentifier, Integer key,
+                                                    BasicMovie basicMovieFromCollection, BasicMovie basicMovie,
+                                                    JsonNode collection, List<MovieFromCollection> moviesInCollection,
+                                                    List<BasicMovie> ownedBasicMovies, Set<BasicMovie> recommended,
+                                                    AtomicInteger searchedMovieCount, OkHttpClient client,
+                                                    String languageCode, String title) throws Exception {
+        LOGGER.info("Missing movie found: {}", basicMovieFromCollection);
+
+        // Get recommended Movie details from MovieDB API
+        HttpUrl movieDetailUrl = urlGenerator.generateMovieDetailUrl(plexProperties.getMovieDbApiKey(),
+                String.valueOf(basicMovieFromCollection.getTmdbId()), languageCode);
+
+        Request newReq = new Request.Builder()
+                .url(movieDetailUrl)
+                .build();
+
+        String movieDetailJson = executeHttpRequest(client, newReq);
+
+        LOGGER.info(movieDetailJson);
+
+        if (StringUtils.isEmpty(movieDetailJson)) {
+            LOGGER.error("Body returned null from TheMovieDB for details on {}", basicMovie.getName());
+            return;
+        }
+
+        JsonNode movieDet = objectMapper.readTree(movieDetailJson);
+
+        // Get the release year from movie release date
+        String movieReleaseDate = movieDet.has(RELEASE_DATE) ? movieDet.get(RELEASE_DATE).textValue() : "";
+        int year = parseYearFromDateString(movieReleaseDate, title);
+        if (year == 0) {
+            LOGGER.warn("Not adding the movie to recommended list.");
+            return;
+        }
+
+        if (movieStatusService.getRawMovieStatus().equals(MovieStatus.RELEASED) &&
+                movieDet.has("status") &&
+                !movieDet.get("status").textValue().equalsIgnoreCase("Released")) {
+            LOGGER.warn("Movie '{} ({})' not released yet. Not adding the movie to recommended list.", title, movieDet.get(RELEASE_DATE));
+            return;
+        }
+
+        if (collection.has(NAME)) {
+            basicMovie.setCollectionTitle(collection.get(NAME).textValue());
+            basicMovieFromCollection.setCollectionTitle(collection.get(NAME).textValue());
+        }
+
+        List<String> genres = getGenres(movieDet);
+
+        String backdropPathUrl = "";
+        if (movieDet.has(COLLECTION_ID) && movieDet.get(COLLECTION_ID) != null && movieDet.get(COLLECTION_ID).has(BACKDROP_PATH)) {
+            backdropPathUrl = "https://image.tmdb.org/t/p/original/" + movieDet.get(COLLECTION_ID).get(BACKDROP_PATH).textValue();
+        } else {
+            LOGGER.warn("Could not find collection information on movie with collection. Movie was {} ({})", movieDet.get(TITLE), year);
+        }
+
+        // Add movie with imbd_id and other details for RSS to recommended list
+        BasicMovie recommendedBasicMovie = new BasicMovie.Builder(movieDet.get(TITLE).textValue(), year)
+                .setTmdbId(movieDet.get(ID).intValue())
+                .setImdbId(movieDet.get("imdb_id").textValue())
+                .setCollectionId(basicMovie.getCollectionId())
+                .setCollectionTitle(basicMovie.getCollectionTitle())
+                .setPosterUrl("https://image.tmdb.org/t/p/w185/" + movieDet.get("poster_path").textValue())
+                .setBackdropPathUrl(backdropPathUrl)
+                .setOverview(movieDet.get("overview").textValue())
+                .setMoviesInCollection(moviesInCollection)
+                .setGenres(genres)
+                .build();
+
+        if (ownedBasicMovies.contains(recommendedBasicMovie)) {
+            LOGGER.info("Skip owned movie: {}", recommendedBasicMovie);
+            return;
+        }
+
+        if (recommended.add(recommendedBasicMovie)) {
+            // Write current list of recommended movies to file.
+            fileIoService.writeRssFile(machineIdentifier, key, new HashSet<>(recommended));
+
+            LOGGER.info("/newMovieFound:{}", recommendedBasicMovie);
+
+            //Send message over websocket
+            SearchResults searchResults = new SearchResults(searchedMovieCount.get(), ownedBasicMovies.size(), recommendedBasicMovie);
+            template.convertAndSend("/newMovieFound", objectMapper.writeValueAsString(searchResults));
+        }
     }
 
 }
