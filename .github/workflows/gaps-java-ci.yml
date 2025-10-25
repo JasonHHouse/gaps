@@ -1,28 +1,21 @@
 name: Java CI
-on: [push]
+on: [push, pull_request]
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js 12.x
-        uses: actions/setup-node@v1
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
         with:
-          node-version: '12.x'
-      - run: npm ci
-      - name: Minify
-        run: ./minify
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
       - name: Build with Maven
-        run: mvn clean install
-      - name: Build Docker
-        run: docker build -f Dockerfile -t gaps-dev .
-      - name: Build Docker Compose
-        run: docker-compose -f docker-compose-dev.yaml build
-      - name: Run Docker Compose
-        uses: isbang/compose-action@v0.1
-        with: 
-          compose-file: 'docker-compose-dev.yaml'
+        run: mvn clean install -DskipTests
+
+      - name: Run unit tests
+        run: mvn test
